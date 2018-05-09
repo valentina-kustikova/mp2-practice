@@ -9,13 +9,20 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test", "test\test.vcxproj",
 	ProjectSection(ProjectDependencies) = postProject
 		{50DD0948-14F2-4888-BDB6-8164E7D04AE8} = {50DD0948-14F2-4888-BDB6-8164E7D04AE8}
 		{6DA76C89-4A06-4B9F-9197-1FF49DC68045} = {6DA76C89-4A06-4B9F-9197-1FF49DC68045}
+		{C6E3E4F6-2250-4746-8D02-2B1767072D51} = {C6E3E4F6-2250-4746-8D02-2B1767072D51}
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RingList", "RingList\RingList.vcxproj", "{C6E3E4F6-2250-4746-8D02-2B1767072D51}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Polynom", "Polynom\Polynom.vcxproj", "{50DD0948-14F2-4888-BDB6-8164E7D04AE8}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C6E3E4F6-2250-4746-8D02-2B1767072D51} = {C6E3E4F6-2250-4746-8D02-2B1767072D51}
+	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ui", "ui\ui.vcxproj", "{35BA6CF6-60DF-43C4-B37E-0D10040EFD24}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ui1", "ui1\ui1.vcxproj", "{35BA6CF6-60DF-43C4-B37E-0D10040EFD24}"
+	ProjectSection(ProjectDependencies) = postProject
+		{50DD0948-14F2-4888-BDB6-8164E7D04AE8} = {50DD0948-14F2-4888-BDB6-8164E7D04AE8}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
