@@ -1,0 +1,4 @@
+﻿  main.cpp
+c:\users\геймер алексей\documents\visual studio 2017\projects\graph\graph\graph.h(147): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
+  Sort.vcxproj -> C:\temp\mp2-practice\sln\vc10\graph\x64\Debug\Sort.exe
+  Sort.vcxproj -> C:\temp\mp2-practice\sln\vc10\graph\x64\Debug\Sort.pdb (Partial PDB)
