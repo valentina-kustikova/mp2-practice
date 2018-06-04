@@ -1,3 +1,6 @@
+# Prerequisites
+*.d
+
 # Compiled Object files
 *.slo
 *.lo
@@ -15,6 +18,7 @@
 
 # Fortran module files
 *.mod
+*.smod
 
 # Compiled Static libraries
 *.lai
@@ -26,14 +30,3 @@
 *.exe
 *.out
 *.app
-
-#MVS files
-*.db
-*.pdb
-*.idb
-*.suo
-*.ilk
-*.tlog
-*.log
-*.lastbuidstate
-*.user
