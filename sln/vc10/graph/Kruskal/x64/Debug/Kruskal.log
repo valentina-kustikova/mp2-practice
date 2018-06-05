@@ -1,0 +1,12 @@
+﻿  main.cpp
+c:\temp\mp2-practice\sln\vc10\graph\graph\graph.h(147): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
+c:\temp\mp2-practice\sln\vc10\graph\graph\algorithms.h(62): warning C4244: инициализация: преобразование "double" в "int", возможна потеря данных
+  c:\temp\mp2-practice\sln\vc10\graph\graph\algorithms.h(40): note: при компиляции функции-члена "<Нет данных>" класса класс <Нет данных>
+  c:\temp\mp2-practice\sln\vc10\graph\kruskal\main.cpp(16): note: см. ссылку на создание экземпляров функции шаблон при компиляции "Graph *Algorithms<Edge>::Kruskal(Graph &,PQueue<T> &)"
+          with
+          [
+              T=Edge
+          ]
+  c:\temp\mp2-practice\sln\vc10\graph\kruskal\main.cpp(16): note: см. в справочнике сведения о создании экземпляров класса класс шаблон при компиляции "Algorithms<Edge>"
+  Kruskal.vcxproj -> C:\temp\mp2-practice\sln\vc10\graph\x64\Debug\Kruskal.exe
+  Kruskal.vcxproj -> C:\temp\mp2-practice\sln\vc10\graph\x64\Debug\Kruskal.pdb (Partial PDB)

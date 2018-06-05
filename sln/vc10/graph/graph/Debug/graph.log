@@ -1,0 +1,9 @@
+﻿  main.cpp
+c:\users\геймер алексей\documents\visual studio 2017\projects\graph\graph\graph.h(136): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
+c:\users\геймер алексей\documents\visual studio 2017\projects\graph\graph\dheap.h(39): warning C4244: +=: преобразование "double" в "int", возможна потеря данных
+  c:\users\геймер алексей\documents\visual studio 2017\projects\graph\graph\dheap.h(35): note: при компиляции функции-члена "<Нет данных>" класса класс <Нет данных>
+  c:\users\геймер алексей\documents\visual studio 2017\projects\graph\graph\main.cpp(14): note: см. ссылку на создание экземпляров функции шаблон при компиляции "void Dheap<Edge>::print(void)"
+  c:\users\геймер алексей\documents\visual studio 2017\projects\graph\graph\main.cpp(13): note: см. в справочнике сведения о создании экземпляров класса класс шаблон при компиляции "Dheap<Edge>"
+c:\users\геймер алексей\documents\visual studio 2017\projects\graph\graph\dheap.h(51): warning C4244: +=: преобразование "double" в "int", возможна потеря данных
+  graph.vcxproj -> C:\Users\Геймер Алексей\documents\visual studio 2017\Projects\graph\Debug\graph.exe
+  graph.vcxproj -> C:\Users\Геймер Алексей\documents\visual studio 2017\Projects\graph\Debug\graph.pdb (Partial PDB)
