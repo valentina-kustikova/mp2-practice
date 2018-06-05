@@ -1,0 +1,3 @@
+﻿  Funcs.cpp
+c:\users\геймер алексей\documents\visual studio 2017\projects\win32project1\win32project1\funcs.cpp(141): warning C4101: prev: неиспользованная локальная переменная
+  Win32Project1.vcxproj -> c:\users\геймер алексей\documents\visual studio 2017\Projects\Win32Project1\Debug\funcs.lib
