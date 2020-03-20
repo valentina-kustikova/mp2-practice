@@ -6,8 +6,6 @@
 #include "../../include/dijkstra.h"
 #include "../../include/graph.h"
 
-#define RANDOM 20
-
 using namespace std;
 
 void main()

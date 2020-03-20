@@ -6,8 +6,6 @@
 #include "../../include/kruskal.h"
 #include "../../include/graph.h"
 
-#define RANDOM 15
-
 using namespace std;
 
 void main()
