@@ -125,7 +125,7 @@ TNode<double, unsigned int> TNode<double, unsigned int>::operator-() const{
 }
 
 TNode<double, unsigned int>& TNode<double, unsigned int>::operator=(const TNode& _monom) {
-	if (*this == _monom) return *this;
+	if (key == _monom.key && pData == _monom.pData) return *this;
 	key = _monom.key;
 	pData = _monom.pData;
 	pNext = _monom.pNext;

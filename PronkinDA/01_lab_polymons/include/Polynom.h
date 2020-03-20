@@ -107,7 +107,7 @@ Polynom Polynom::operator+(const Monom& _monom) {
 	Polynom result(*this);
 	result.monoms->Reset();
 	unsigned int _bkey = 0;
-	while (!result.monoms->IsEnded() && (*result.monoms->ReturnCurrent() < _monom || *result.monoms->ReturnCurrent() == _monom)) result.monoms->Next();
+	while (!result.monoms->IsEnded() && (*result.monoms->ReturnCurrent() < _monom || *result.monoms->ReturnCurrent() != _monom)) result.monoms->Next();
 	if (result.monoms->IsEnded())
 		result.monoms->Back(_monom.key, _monom.pData);
 	else if (*result.monoms->ReturnCurrent() > _monom) {
