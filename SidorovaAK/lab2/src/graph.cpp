@@ -1,5 +1,6 @@
 #include "../include/graph.h"
 #include "../include/separatedset.h"
+#include "../include/exceptions.h"
 
 Graph::Graph()
 {
