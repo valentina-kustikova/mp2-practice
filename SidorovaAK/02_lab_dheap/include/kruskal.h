@@ -6,7 +6,7 @@
 class Kruskal
 {
 public:
-	static void Algorithm(const Graph&, vector<vector<Edge> >&);
+    static void Algorithm(const Graph&, vector<vector<Edge> >&);
 };
 
 #endif

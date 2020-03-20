@@ -10,27 +10,27 @@
 class Graph
 {
 private:
-	int countVertices;
-	float* weights;
+    int countVertices;
+    float* weights;
 
 public:
-	Graph();
-	Graph(int);
-	Graph(float*, int);
-	Graph(const Graph&);
-	~Graph();
+    Graph();
+    Graph(int);
+    Graph(float*, int);
+    Graph(const Graph&);
+    ~Graph();
 
-	int GetCountVertices() const;
+    int GetCountVertices() const;
 
-	void GenerateCommonGraph();
-	void GenerateConnectGraph();
-	void SpecialRandom();
-	void ListOfEdges(Edge*, int&) const;
-	float* AdjacencyMatrix() const;
-	bool IsConnected() const;
+    void GenerateCommonGraph();
+    void GenerateConnectGraph();
+    void SpecialRandom();
+    void ListOfEdges(Edge*, int&) const;
+    float* AdjacencyMatrix() const;
+    bool IsConnected() const;
 
-	friend istream& operator>>(istream&, Graph&);
-	friend ostream& operator<<(ostream&, const Graph&);
+    friend istream& operator>>(istream&, Graph&);
+    friend ostream& operator<<(ostream&, const Graph&);
 };
 
 #endif
