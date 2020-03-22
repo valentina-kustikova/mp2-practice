@@ -12,7 +12,6 @@ public:
 public:
 	TNode(const TNode&);
 	TNode(TKey, TData, TNode* _node = 0);
-	~TNode();
 	bool operator!=(const TNode&) const;
 	friend ostream& operator << (ostream& out, TNode<TData, TKey>& _node) {
 		out << _node.key << " " << *_node.pData << endl;
@@ -32,11 +31,6 @@ TNode<TData, TKey>::TNode(TKey _key, TData _data, TNode* _pNext) {
 	pData = _data;
 	key = _key;
 	pNext = _pNext;
-}
-
-template<class TData, class TKey>
-TNode<TData, TKey>::~TNode() {
-	delete pNext;
 }
 
 template<class TData, class TKey>
