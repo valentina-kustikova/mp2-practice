@@ -1,0 +1,6 @@
+﻿  main.cpp
+d:\mp2-practice-1\emelkhovskayaee\01_lab_polymons\include\tpolinom.h(45): warning C4018: <: несоответствие типов со знаком и без знака
+d:\mp2-practice-1\emelkhovskayaee\01_lab_polymons\include\tpolinom.h(58): warning C4018: <: несоответствие типов со знаком и без знака
+d:\mp2-practice-1\emelkhovskayaee\01_lab_polymons\include\tpolinom.h(79): warning C4244: инициализация: преобразование "double" в "float", возможна потеря данных
+d:\mp2-practice-1\emelkhovskayaee\01_lab_polymons\sample\main.cpp(9): warning C4326: возвращаемый тип "main" должен быть "int", а не "void"
+  Polinom.vcxproj -> D:\mp2-practice-1\EmelkhovskayaEE\01_lab_polymons\sln\Polinom\Debug\Polinom.exe
