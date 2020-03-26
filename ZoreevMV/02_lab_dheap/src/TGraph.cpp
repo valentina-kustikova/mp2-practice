@@ -56,7 +56,7 @@ size_t TEdge::operator[](size_t id) const
 
 std::ostream& operator<<(std::ostream& out, const TEdge& edge)
 {
-    out << "(" << edge.from << ", " << edge.to << ")";
+    out << "(" << edge.from << ", " << edge.to << ")" << "[" << edge.weight << "]";
     return out;
 }
 

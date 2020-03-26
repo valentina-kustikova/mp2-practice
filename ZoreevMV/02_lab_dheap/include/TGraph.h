@@ -9,7 +9,7 @@ struct TEdge
 {
     size_t from; //Исходящая вершина
     size_t to;   //Входящая вершина
-    int weight;  //Вес ребра
+    double weight;  //Вес ребра
 
     //Проверяет ребро на инцидентность вершине
     bool incident(size_t vertex);
