@@ -176,6 +176,7 @@ TGraph& TGraph::operator=(const TGraph& temp)
     {
         edges[i] = temp.edges[i];
     }
+    return *this;
 }
 
 TEdge TGraph::operator[](size_t id) const
