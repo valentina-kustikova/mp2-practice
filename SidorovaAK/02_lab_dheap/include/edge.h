@@ -17,7 +17,7 @@ public:
     Edge(float, int, int);
     ~Edge();
 
-	float GetWeight() const;
+    float GetWeight() const;
     int GetStart() const;
     int GetEnd() const;
 
