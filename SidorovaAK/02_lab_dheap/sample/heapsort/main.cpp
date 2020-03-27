@@ -34,7 +34,7 @@ void main()
         float* elements = new float[size];
         for (int i = 0; i < size; i++)
         {
-            elements[i] = a + rand() % (int)(b - a + 1);
+            elements[i] = (a * 10 + rand() % (int)(b * 10 - a * 10 + 1)) / 10;
             cout << elements[i] << " ";
         }
 
