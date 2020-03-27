@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include "divided_set.h"
 
 struct Edge
 {
@@ -28,6 +29,7 @@ struct Graph
 
 	Graph() = default;
 	Graph(Edge* _edges, int v_count, int e_count);
+	bool vertexCheck(int i) const;
 	friend std::istream& operator>> (std::istream &in, Graph &graph);
 	friend std::ostream& operator<< (std::ostream &out, Graph &graph);
 };

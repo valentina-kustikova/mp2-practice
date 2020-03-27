@@ -44,8 +44,5 @@
     <ClCompile Include="..\..\scr\dijkstra%27s_algorithm.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\include\DHeap.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
   </ItemGroup>
 </Project>

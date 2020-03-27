@@ -7,6 +7,10 @@ bool Pair::operator<(const Pair & pair)
 
 void DijkstrasAlgorithm::dijkstraAlgorithm(const Graph& graph, int vertex_start, std::vector<std::vector<int>>& path, float*& dist_graph)
 {
+	if (!graph.vertexCheck(vertex_start))
+	{
+		throw "Vertex_start not belong graph";
+	}
 	dist_graph = new float[graph.vertex_count];
 	int* up = new int[graph.vertex_count];
 	Pair* dist_mark = new Pair[graph.vertex_count];

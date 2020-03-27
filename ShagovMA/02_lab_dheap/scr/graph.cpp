@@ -39,6 +39,18 @@ Graph::Graph(Edge* _edges, int v_count, int e_count)
 	}
 }
 
+bool Graph::vertexCheck(int i) const
+{
+	for (int j = 0; j < edges_count; j++)
+	{
+		if ((edges[j].n == i) || (edges[j].k == i))
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
 std::istream & operator>>(std::istream & in, Graph & graph)
 {
 	std::cout << "Enter count of vertex" << std::endl;
@@ -46,17 +58,33 @@ std::istream & operator>>(std::istream & in, Graph & graph)
 	std::cout << "Enter count of edges" << std::endl;
 	in >> graph.edges_count;
 	graph.edges = new Edge[graph.edges_count];
+	DividedSet set(graph.vertex_count);
+	for (int i = 0; i < graph.vertex_count; i++)
+	{
+		set.set[i] = i;
+	}
 	for (int i = 0; i < graph.edges_count; i++)
 	{
-		std::cout << "Enter weight of " << i + 1 << "edge" << std::endl;
+		std::cout << "Enter weight of " << i + 1 << " edge" << std::endl;
 		in >> graph.edges[i].weight;
-		std::cout << "Enter start of " << i + 1 << "edge" << std::endl;
+		std::cout << "Enter start of " << i + 1 << " edge" << std::endl;
 		in >> graph.edges[i].n;
-		std::cout << "Enter end of " << i + 1 << "edge" << std::endl;
+		std::cout << "Enter end of " << i + 1 << " edge" << std::endl;
 		in >> graph.edges[i].k;
 		if (graph.edges[i].loop_check())
 		{
 			throw "There is loop";
+		}
+		set.createUnitedSet(set.findSet(graph.edges[i].k), set.findSet(graph.edges[i].n));
+	}
+	for (int j = 0; j < graph.vertex_count; j++)
+	{
+		for (int i = 0; i < graph.vertex_count; i++)
+		{
+			if (set.set[i] != set.set[j])
+			{
+				throw "Graph is not connected";
+			}
 		}
 	}
 	for (int j = 0; j < graph.edges_count; j++)

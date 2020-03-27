@@ -123,7 +123,6 @@
     <ClInclude Include="..\..\include\kruskal%27s_algorithm.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\include\DHeap.cpp" />
     <ClCompile Include="..\..\scr\dijkstra%27s_algorithm.cpp" />
     <ClCompile Include="..\..\scr\divided_set.cpp" />
     <ClCompile Include="..\..\scr\graph.cpp" />
