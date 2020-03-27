@@ -29,6 +29,7 @@ struct Graph
 
 	Graph() = default;
 	Graph(Edge* _edges, int v_count, int e_count);
+	Graph(const Graph& graph);
 	bool vertexCheck(int i) const;
 	friend std::istream& operator>> (std::istream &in, Graph &graph);
 	friend std::ostream& operator<< (std::ostream &out, Graph &graph);
