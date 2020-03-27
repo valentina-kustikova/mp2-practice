@@ -22,7 +22,7 @@ Edge::~Edge()
 };
 //------------------------------------------
 
-int Edge::GetWeight() const
+float Edge::GetWeight() const
 {
     return weight;
 };
