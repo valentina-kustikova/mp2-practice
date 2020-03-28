@@ -115,6 +115,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Exception.h" />
+    <ClInclude Include="Monom.h" />
+    <ClInclude Include="Polynom.h" />
+    <ClInclude Include="TList.h" />
+    <ClInclude Include="TNode.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
