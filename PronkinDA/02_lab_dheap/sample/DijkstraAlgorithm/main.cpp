@@ -3,12 +3,15 @@
 void main() {
 	try {
 		Graph graph(1);
+		int vertex;
 		int* dist;
 		int* path;
 
 		cin >> graph;
+		cout << "Enter start algorithm vertex: ";
+		cin >> vertex;
 
-		DijkstraAlgorithm::dijkstraAlgorithm(graph, dist, path, 1);
+		DijkstraAlgorithm::dijkstraAlgorithm(graph, dist, path, vertex);
 		for (int i = 0; i < graph.getVertexCount(); i++)
 			cout << "Vertex: " << i << " Distance: " << dist[i] << endl;
 	}

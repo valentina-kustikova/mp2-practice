@@ -2,7 +2,7 @@
 
 void DijkstraAlgorithm::dijkstraAlgorithm(const Graph& _graph, int*& _dist, int*& _path, int _vertexNumber) {
 
-	if (!_graph.IsConnected()) throw exception("Incoherent graph");
+	if (!_graph.IsConnected() || _vertexNumber >= _graph.getVertexCount()) throw exception("Incoherent graph");
 
 	_dist = new int[_graph.getVertexCount()];
 	_path = new int[_graph.getVertexCount()];

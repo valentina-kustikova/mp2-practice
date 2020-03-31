@@ -132,6 +132,8 @@ istream& operator>>(istream& in, Graph& graph) {
 
 	graph = Graph(_vertexCount);
 
+	if (_edgeCount > _vertexCount* (_vertexCount - 1) / 2) throw exception("Too many edges");
+
 	for (int i = 0; i < _edgeCount; i++) {
 		Edge edge;
 		in >> edge;
