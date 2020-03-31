@@ -33,11 +33,6 @@
     <ClCompile Include="..\..\src\Graph.cpp" />
     <ClCompile Include="..\..\src\KruskalAlgorithm.cpp" />
     <ClCompile Include="..\..\src\Pair.cpp" />
-    <ClCompile Include="DijkstraAlgorithm.cpp" />
-    <ClCompile Include="DividedSet.cpp" />
-    <ClCompile Include="Graph.cpp" />
-    <ClCompile Include="KruskalAlgorithm.cpp" />
-    <ClCompile Include="Pair.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
