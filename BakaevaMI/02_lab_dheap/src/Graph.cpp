@@ -178,3 +178,17 @@ istream& operator>>(istream& in, Graph& gr)
 
 	return in;
 };
+
+float* Graph::GetWeightMatrix() const
+{
+	float* weight_m = new float[size * size];
+	//memset(weight_m, 0, sizeof(float) * size * size);
+
+	for (int i = 0; i < countEdges; i++)
+	{
+		weight_m[edges[i].begin + edges[i].end * size] = edges[i].weight;
+		weight_m[edges[i].begin * size + edges[i].end] = edges[i].weight;
+	}
+
+	return weight_m;
+};

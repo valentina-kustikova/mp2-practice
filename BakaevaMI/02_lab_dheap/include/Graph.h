@@ -26,6 +26,7 @@ public:
 	int GetCountEdges() const;
 	void SetCountEdges(int);
 	bool IsConnected() const;
+	float* GetWeightMatrix() const;
 
 	friend istream& operator>>(istream& in, Graph& gr);
 };

@@ -43,3 +43,8 @@ void Pair::SetSecond(int d)
 {
 	second = d;
 };
+
+bool Pair::operator<(const Pair& tmp) const
+{
+	return (second < tmp.second);
+};

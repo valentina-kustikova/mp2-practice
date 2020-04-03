@@ -16,6 +16,9 @@ public:
 	int GetSecond() const;
 	void SetFirst(int);
 	void SetSecond(int);
+	bool operator<(const Pair&) const;
+
+	friend class Dijkstra;
 };
 
 #endif

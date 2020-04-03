@@ -27,7 +27,7 @@ public:
 	void Hilling();
 	int GetSize() const;
 	T* GetElements() const;
-	void ChangeSize(int a);
+	//void ChangeSize(int a);
 
 	template<class T>
 	friend ostream& operator<<(ostream& os, TDHeap& tmp);
@@ -162,11 +162,11 @@ T* TDHeap<T>::GetElements() const
 	return elements;
 };
 
-template<class T>
+/*template<class T>
 void TDHeap<T>::ChangeSize(int a)
 {
 	size += a;
-};
+};*/
 
 #endif
 
