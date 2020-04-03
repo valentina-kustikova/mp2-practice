@@ -71,12 +71,18 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <ExecutablePath>D:\Git\mp2-practice-1\PronkinDA\01_lab_polymons\sample;$(ExecutablePath)</ExecutablePath>
+    <IncludePath>D:\Git\mp2-practice-1\PronkinDA\01_lab_polymons\include;$(IncludePath)</IncludePath>
+    <SourcePath>D:\Git\mp2-practice-1\PronkinDA\01_lab_polymons\src;$(SourcePath)</SourcePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
+    <ExecutablePath>D:\Git\mp2-practice-1\PronkinDA\01_lab_polymons\sample;$(ExecutablePath)</ExecutablePath>
+    <IncludePath>D:\Git\mp2-practice-1\PronkinDA\01_lab_polymons\include;$(IncludePath)</IncludePath>
+    <SourcePath>D:\Git\mp2-practice-1\PronkinDA\01_lab_polymons\src;$(SourcePath)</SourcePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -138,15 +144,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Monom.h" />
-    <ClInclude Include="Polynom.h" />
-    <ClInclude Include="TList.h" />
-    <ClInclude Include="TNode.h" />
+    <ClInclude Include="../../include/Monom.h" />
+    <ClInclude Include="../../include/Polynom.h" />
+    <ClInclude Include="../../include/TList.h" />
+    <ClInclude Include="../../include/TNode.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="Monom.cpp" />
-    <ClCompile Include="Polynom.cpp" />
+    <ClCompile Include="../../sample/main.cpp" />
+    <ClCompile Include="../../src/Monom.cpp" />
+    <ClCompile Include="../../src/Polynom.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
