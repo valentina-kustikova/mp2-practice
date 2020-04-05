@@ -4,21 +4,21 @@
 class Pair
 {
 private:
-	int first;
-	int second;
+    int first;
+    int second;
 public:
-	Pair();
-	Pair(int, int);
-	Pair(const Pair&);
-	~Pair();
+    Pair();
+    Pair(int, int);
+    Pair(const Pair&);
+    ~Pair();
 
-	int GetFirst() const;
-	int GetSecond() const;
-	void SetFirst(int);
-	void SetSecond(int);
-	bool operator<(const Pair&) const;
+    int GetFirst() const;
+    int GetSecond() const;
+    void SetFirst(int);
+    void SetSecond(int);
+    bool operator<(const Pair&) const;
 
-	friend class Dijkstra;
+    friend class Dijkstra;
 };
 
 #endif

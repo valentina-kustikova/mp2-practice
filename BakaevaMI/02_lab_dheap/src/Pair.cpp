@@ -2,49 +2,49 @@
 
 Pair::Pair()
 {
-	first = 0;
-	second = 0;
+    first = 0;
+    second = 0;
 };
 
 Pair::Pair(int f, int s)
 {
-	first = f;
-	second = s;
+    first = f;
+    second = s;
 };
 
 Pair::Pair(const Pair& tmp)
 {
-	first = tmp.first;
-	second = tmp.second;
+    first = tmp.first;
+    second = tmp.second;
 };
 
 Pair::~Pair()
 {
-	first = 0;
-	second = 0;
+    first = 0;
+    second = 0;
 };
 
 int Pair::GetFirst() const
 {
-	return first;
+    return first;
 };
 
 int Pair::GetSecond() const
 {
-	return second;
+    return second;
 };
 
 void Pair::SetFirst(int f)
 {
-	first = f;
+    first = f;
 };
 
 void Pair::SetSecond(int d)
 {
-	second = d;
+    second = d;
 };
 
 bool Pair::operator<(const Pair& tmp) const
 {
-	return (second < tmp.second);
+    return (second < tmp.second);
 };

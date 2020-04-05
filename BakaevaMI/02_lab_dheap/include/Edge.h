@@ -4,23 +4,23 @@
 class Edge
 {
 private:
-	int begin;
-	int end;
-	float weight;
+    int begin;
+    int end;
+    float weight;
 
 public:
-	Edge();
-	Edge(const Edge&);
-	Edge(int, int, float);
-	~Edge();
+    Edge();
+    Edge(const Edge&);
+    Edge(int, int, float);
+    ~Edge();
 
-	bool operator<(const Edge&) const;
-	const Edge& operator=(const Edge&);
-	int GetBegin() const;
-	int GetEnd() const;
-	float GetWeight() const;
+    bool operator<(const Edge&) const;
+    const Edge& operator=(const Edge&);
+    int GetBegin() const;
+    int GetEnd() const;
+    float GetWeight() const;
 
-	friend class Graph;
+    friend class Graph;
 };
 
 #endif
