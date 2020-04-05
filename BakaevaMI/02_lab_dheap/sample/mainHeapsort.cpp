@@ -13,14 +13,22 @@ int main()
 	int rangeB = 0;
 	srand((unsigned int)time(NULL));
 
-	cout << "Enter size of array ";
-	cin >> sizeArr; 
+	cout << "\t -Heapsort-" << endl;
 
-	cout << "Enter beginning of range ";
-	cin >> rangeA;
+	do
+	{
+		cout << "  Enter size of array ";
+		cin >> sizeArr;
+	} while (sizeArr <= 0);
 
-	cout << "Enter ending of range ";
-	cin >> rangeB;
+	do
+	{
+		cout << "  Enter beginning of range ";
+		cin >> rangeA;
+
+		cout << "  Enter ending of range ";
+		cin >> rangeB;
+	} while (rangeA > rangeB);
 
 	float* a = new float[sizeArr];
 

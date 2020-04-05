@@ -130,17 +130,17 @@ bool Graph::IsConnected() const
 
 istream& operator>>(istream& in, Graph& gr)
 {
-    cout << "Enter count of vertexes: ";
+    cout << "  Enter count of vertexes: ";
     cin >> gr.size;
 
     if (gr.size <= 0)
-        throw Exception_errors(" Count of vertexes isn't correct! ");
+        throw Exception_errors("  Count of vertexes isn't correct! ");
 
-    cout << " Enter count of edges: ";
+    cout << "  Enter count of edges: ";
     cin >> gr.countEdges;
 
     if (gr.countEdges < 0)
-        throw Exception_errors(" Count of edges isn't correct! ");
+        throw Exception_errors("  Count of edges isn't correct! ");
 
     gr.edges = new Edge[gr.countEdges];
 
