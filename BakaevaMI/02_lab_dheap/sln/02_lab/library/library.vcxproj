@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\include\DHeap.h" />
+    <ClInclude Include="..\..\..\include\Dijkstra.h" />
     <ClInclude Include="..\..\..\include\Edge.h" />
     <ClInclude Include="..\..\..\include\Exception.h" />
     <ClInclude Include="..\..\..\include\Graph.h" />
@@ -30,6 +31,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\DHeap.cpp" />
+    <ClCompile Include="..\..\..\src\Dijkstra.cpp" />
     <ClCompile Include="..\..\..\src\Edge.cpp" />
     <ClCompile Include="..\..\..\src\Graph.cpp" />
     <ClCompile Include="..\..\..\src\Heapsort.cpp" />

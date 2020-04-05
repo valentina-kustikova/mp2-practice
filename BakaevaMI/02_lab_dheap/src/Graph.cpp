@@ -17,7 +17,6 @@ Graph::Graph(const Graph& copy)
 {
 	size = copy.size;
 	countEdges = copy.countEdges;
-	nodes = new int(*copy.nodes);
 	edges = new Edge[countEdges];
 	
 	for (int i = 0; i < countEdges; i++)
@@ -31,10 +30,6 @@ Graph::Graph(const Graph& copy)
 Graph::Graph(int* matrix, int _size)
 {
 	size = _size;
-	nodes = new int[size];
-
-	for (int i = 0; i < size; i++)
-		nodes[i] = i;
 
 	for(int i = 0; i < size; i++)
 		for (int j = 0; j < i; j++)
@@ -72,18 +67,12 @@ Graph::~Graph()
 {
 	size = 0;
 	countEdges = 0;
-	delete[] nodes;
 	delete[] edges;
 };
 
 int Graph::GetSize() const
 {
 	return size;
-};
-
-int* Graph::GetNodes() const
-{
-	return nodes;
 };
 
 Edge* Graph::GetEdges() const
@@ -144,8 +133,14 @@ istream& operator>>(istream& in, Graph& gr)
 	cout << "Enter count of vertexes: ";
 	cin >> gr.size;
 
+	if (gr.size <= 0)
+		throw Exception_errors(" Count of vertexes isn't correct! ");
+
 	cout << " Enter count of edges: ";
 	cin >> gr.countEdges;
+
+	if (gr.countEdges < 0)
+		throw Exception_errors(" Count of edges isn't correct! ");
 
 	gr.edges = new Edge[gr.countEdges];
 

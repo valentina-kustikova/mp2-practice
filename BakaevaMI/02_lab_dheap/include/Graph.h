@@ -11,7 +11,6 @@ class Graph
 private:
 	int size;
 	int countEdges;
-	int* nodes;
 	Edge* edges;
 
 public:
@@ -21,7 +20,6 @@ public:
 	~Graph();
 
 	int GetSize() const;
-	int* GetNodes() const;
 	Edge* GetEdges() const;
 	int GetCountEdges() const;
 	void SetCountEdges(int);
