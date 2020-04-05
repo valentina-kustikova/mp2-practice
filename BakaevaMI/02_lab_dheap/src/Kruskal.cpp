@@ -5,32 +5,32 @@ void Kruskal::KruskalAlg(const Graph& graph, TDHeap<Edge>& result)
 {
     Set nodeSet(graph.GetSize());
 
-    //Create n singletons
+    //Создание n синглетонов
     for (int i = 0; i < graph.GetSize(); i++)
     {
         nodeSet.CreateSingleton(i);
     }
 
-    //Create queue
+    //Создание очереди
     TDHeap<Edge> heapEdge(graph.GetCountEdges(), 2, graph.GetEdges(), graph.GetCountEdges());
     heapEdge.Hilling();
 
-    //Create empty set of edges, which are included in ostav tree
+    //Создание пустого множества ребер, которые включены в оставное дерево
     Edge* edgeSet = new Edge[graph.GetCountEdges()];
     int edgeSetSize = 0;
 
     while ((edgeSetSize != (graph.GetSize() - 1)) && (heapEdge.GetSize() != 0))
     {
-        //Take edge with min weught
+        //Ребро с минимальным весом
         Edge e = heapEdge.GetElements()[0];
 
-        //Find subset A, which is had begin of edge
+        //Поиск подмножества А, которому принадлежит начало ребра
         int subsetA = nodeSet.Find(e.GetBegin());
 
-        //Find subset B, which is had end of edge
+        //Поиск подмножества В, которому принадлежит конец ребра
         int subsetB = nodeSet.Find(e.GetEnd());
 
-        //Combine A and B subsets, put edge e in edgeSet
+        //Объединение А и В, кладем ребро е в edgeSet
         if (subsetA != subsetB)
         {
             nodeSet.Combination(subsetA, subsetB);

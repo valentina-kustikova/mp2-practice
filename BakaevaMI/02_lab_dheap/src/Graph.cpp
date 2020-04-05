@@ -167,7 +167,7 @@ istream& operator>>(istream& in, Graph& gr)
         gr.edges[i] = Edge(begin, end, weight);
     };
 
-    //Сonnectivity test
+    //Проверка на связность графа
     if (!gr.IsConnected())
         throw Exception_errors(" Graph isn't connected!");
 
@@ -177,7 +177,6 @@ istream& operator>>(istream& in, Graph& gr)
 float* Graph::GetWeightMatrix() const
 {
     float* weight_m = new float[size * size];
-    //memset(weight_m, 0, sizeof(float) * size * size);
 
     for (int i = 0; i < countEdges; i++)
     {

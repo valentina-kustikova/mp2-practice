@@ -11,14 +11,14 @@ void Dijkstra::DijkstraAlg(const Graph& gr, int start, float* res_dist, vector<v
 
     for (int i = 0; i < gr.GetSize(); i++)
     {
-        dist[i].SetFirst(i); // �������
-        dist[i].SetSecond(INT_MAX); //�����
+        dist[i].first = i; // Вершины
+        dist[i].second = INT_MAX; //Метки
         visited[i] = start;
     }
 
-    dist[start].SetSecond(0);
+    dist[start].second = 0;
 
-    //Priority queue from marks
+    //Создание приоритетной очереди из меток
     TDHeap<Pair> heapVisited(gr.GetSize(), 2, dist, gr.GetSize());
     heapVisited.Hilling();
 
@@ -47,7 +47,7 @@ void Dijkstra::DijkstraAlg(const Graph& gr, int start, float* res_dist, vector<v
         heapVisited.Hilling();
     }
 
-    //Array of result distants
+    //Массив результатирующих расстояний
     for (int i = 0; i < gr.GetSize(); i++)
         res_dist[dist[i].first] = dist[i].second;
 
