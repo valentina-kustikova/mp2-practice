@@ -149,7 +149,7 @@ inline bool Monom::operator<(const Monom & _monom) const
 
 
 
-inline char Monom::znakmonoma()//remove
+inline char Monom::znakmonoma()
 {
 	if (koef > 0)
 		return '+';
@@ -262,7 +262,7 @@ Monom Monom::convert(const string & _monom)
 	return Monom(key, koef);
 }
 
-istream & operator>>(istream & in, Monom & _monom) // convert
+istream & operator>>(istream & in, Monom & _monom)
 {
 	in.ignore(in.rdbuf()->in_avail());
 

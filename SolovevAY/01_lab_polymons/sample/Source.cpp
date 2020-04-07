@@ -1,4 +1,3 @@
-
 #include "Polynom.h"
 #include "stdlib.h"
 #include "string"
@@ -19,7 +18,7 @@ int main()
 	int choosepolynom = 0;
 	try
 	{
-	
+
 		cout << "Polynom testing" << endl;
 		cout << "vvedite polynom 1" << endl;//-2+5x^2y+z-yz+x^2yz
 		cin >> testpoly1;

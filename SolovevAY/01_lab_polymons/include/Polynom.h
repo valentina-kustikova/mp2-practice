@@ -1,11 +1,11 @@
-﻿#include "TList.h"
+#include "TList.h"
 #include "string"
 #include "iostream"
 using namespace std;
 class Polynom
 {
 private:
-	static Polynom convert(const string& _expression);
+	static Polynom convert(const string& _expression);// ?? static ? ?????????? void
 
 protected:
 	TList<UINT, double> *monoms;
@@ -94,7 +94,7 @@ Polynom Polynom::convert(const string& _expression)
 Polynom::Polynom()
 {
 	monoms = new TList<UINT, double>;
-	
+	monoms->InsertBegin(0, .0);
 }
 
 Polynom::Polynom(const string& _expression)
@@ -134,7 +134,6 @@ Polynom::~Polynom()
 {
 	delete monoms;
 }
-
 
 
 Polynom & Polynom::operator=(const Polynom& _polynom)
@@ -224,18 +223,18 @@ Polynom Polynom::operator+(const Polynom& _polynom) const
 		{
 			Monom sum = m1 + m2;
 			if (sum.koef != 0)
-				result = result + sum; 
+				result = result + sum;
 			p1.monoms->Next();
 			p2.monoms->Next();
 		}
 		else if (m1.key > m2.key)
 		{
-			result = result + m2; 
+			result = result + m2;
 			p2.monoms->Next();
 		}
 		else
 		{
-			result = result + m1; 
+			result = result + m1;
 			p1.monoms->Next();
 		}
 	}
@@ -250,7 +249,7 @@ Polynom Polynom::operator+(const Polynom& _polynom) const
 	while (!p2.monoms->IsEnded())
 	{
 		Monom m2 = Monom(p2.monoms->getCurrentNodeKey(), p2.monoms->getCurrentNodeData());
-		result = result + m2; 
+		result = result + m2;
 		p2.monoms->Next();
 	}
 
@@ -298,7 +297,7 @@ Polynom Polynom::operator*(const Monom& _monom) const
 		Monom tmp(polynomial.monoms->getCurrentNodeKey(), polynomial.monoms->getCurrentNodeData());
 		tmp = tmp * _monom;
 		if (tmp.koef != 0)
-			result = result + tmp; 
+			result = result + tmp;
 		polynomial.monoms->Next();
 	}
 	return result;

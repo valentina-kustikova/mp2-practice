@@ -293,3 +293,4 @@ TData TList<TKey, TData>::getCurrentNodeData() const
 	return pCurrent->koef;
 }
 
+
