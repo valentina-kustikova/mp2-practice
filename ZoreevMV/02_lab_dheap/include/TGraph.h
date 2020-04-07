@@ -59,6 +59,4 @@ public:
 
     friend std::ostream& operator<<(std::ostream& out, const TGraph& graph);
     friend std::istream& operator>>(std::istream& in, TGraph& graph);
-
-    friend class TKruskalsAlgorithm;
 };
