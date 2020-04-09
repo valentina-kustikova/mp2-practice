@@ -8,8 +8,7 @@ SeparatedSet::SeparatedSet(int _size)
     size = _size;
 
     arr = new int[size];
-    for (int i = 0; i < size; i++)
-        arr[i] = -1;
+	memset(arr, -1, size * sizeof(int));
 };
 
 SeparatedSet::SeparatedSet(int _size, int* _arr)
@@ -19,16 +18,14 @@ SeparatedSet::SeparatedSet(int _size, int* _arr)
     size = _size;
 
     arr = new int[size];
-    for (int i = 0; i < size; i++)
-        arr[i] = _arr[i];
+	memcpy(arr, _arr, sizeof(int));
 };
 
 SeparatedSet::SeparatedSet(const SeparatedSet& _copy)
 {
     size = _copy.size;
     arr = new int[size];
-    for (int i = 0; i < size; i++)
-        arr[i] = _copy.arr[i];
+	memcpy(arr, _copy.arr, sizeof(int));
 };
 
 SeparatedSet::~SeparatedSet()
