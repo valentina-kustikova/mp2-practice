@@ -23,12 +23,22 @@ int main()
     std::cout << keys[i] << " ";
   std::cout << "]" << std::endl;
 
-  HeapSort::heapSort(size, keys);
+  try
+  {
+    HeapSort::heapSort(size, keys);
 
-  std::cout << std::endl << "[ ";
-  for (int i = 0; i < size; i++)
-    std::cout << keys[i] << " ";
-  std::cout << "]" << std::endl;
+    std::cout << std::endl << "[ ";
+    for (int i = 0; i < size; i++)
+      std::cout << keys[i] << " ";
+    std::cout << "]" << std::endl;
+  }
+  catch (ExceptionOutOfRange const & e)
+  {
+    std::cout << "Error: " << e.what() << std::endl;
+    std::cout << "Reason: " << e.why() << std::endl;
+    std::cout << "errorLine: " << e.errorLine() << std::endl;
+    std::cout << "errorFile:" << e.errorFile() << std::endl;
+  }
 
   std::cout << "//~~~~~~~~~~~~~~~~~~~~~~~~~~~//" << std::endl << std::endl;
 
