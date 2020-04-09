@@ -36,19 +36,27 @@ TNode<double, unsigned int>::TNode(const string& _str) {
 		if (sws[i] == 'x') {
 			i++;
 			if (sws[i] == 'y' || sws[i] == 'z' || i == sws.length()) _degreeX = '1';
-			else _degreeX = sws[i];
+			else {
+				_degreeX = sws[i];
+				i++;
+			}
 		}
 		if (sws[i] == 'y') {
 			i++;
 			if (sws[i] == 'x' || sws[i] == 'z' || i == sws.length()) _degreeY = '1';
-			else _degreeY = sws[i];
+			else {
+				_degreeY = sws[i];
+				i++;
+			}
 		}
 		if (sws[i] == 'z') {
 			i++;
 			if (sws[i] == 'x' || sws[i] == 'y' || i == sws.length()) _degreeZ = '1';
-			else _degreeZ = sws[i];
+			else {
+				_degreeZ = sws[i];
+				i++;
+			}
 		}
-		i++;
 	}
 	_degree = _degree + _degreeX + _degreeY + _degreeZ;
 	key = stoi(_degree);
@@ -93,7 +101,7 @@ TNode<double, unsigned int> TNode<double, unsigned int>::operator-() const {
 }
 
 TNode<double, unsigned int>& TNode<double, unsigned int>::operator=(const TNode& _monom) {
-	if (key == _monom.key && pData == _monom.pData) return *this;
+	if (*this == _monom) return *this;
 	key = _monom.key;
 	pData = _monom.pData;
 	pNext = _monom.pNext;
@@ -111,7 +119,7 @@ bool TNode<double, unsigned int>::operator>(const TNode& _monom) const {
 }
 
 bool TNode<double, unsigned int>::operator==(const TNode& _monom) const {
-	if (key == _monom.key) return true;
+	if (key == _monom.key && pData == _monom.pData) return true;
 	return false;
 }
 

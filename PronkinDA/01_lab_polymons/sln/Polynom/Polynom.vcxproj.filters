@@ -15,27 +15,27 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="TNode.h">
+    <ClInclude Include="../../include/Monom.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="TList.h">
+    <ClInclude Include="../../include/Polynom.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="Monom.h">
+    <ClInclude Include="../../include/TList.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="Polynom.h">
+    <ClInclude Include="../../include/TNode.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
+    <ClCompile Include="../../sample/main.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="Monom.cpp">
+    <ClCompile Include="../../src/Monom.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="Polynom.cpp">
+    <ClCompile Include="../../src/Polynom.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
