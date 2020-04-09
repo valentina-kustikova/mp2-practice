@@ -118,6 +118,11 @@
   <ItemGroup>
     <ClCompile Include="..\..\sample\Sample_for_HeapSort.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Heap\Heap.vcxproj">
+      <Project>{3c8b03e3-ebfa-4dcf-821d-c4845cd21ad2}</Project>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
