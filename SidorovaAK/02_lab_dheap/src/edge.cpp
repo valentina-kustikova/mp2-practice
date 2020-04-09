@@ -39,7 +39,7 @@ int Edge::GetEnd() const
 
 const Edge& Edge::operator=(const Edge& _e)
 {
-    if (this == &_e)
+    if (*this == _e)
         return *this;
 
     weight = _e.weight;
@@ -47,6 +47,11 @@ const Edge& Edge::operator=(const Edge& _e)
     end = _e.end;
 
     return *this;
+};
+
+bool Edge::operator==(const Edge& _e) const
+{
+	return ((start == _e.start) && (end == _e.end) && (weight == _e.weight));
 };
 
 bool Edge::operator>(const Edge& _e) const

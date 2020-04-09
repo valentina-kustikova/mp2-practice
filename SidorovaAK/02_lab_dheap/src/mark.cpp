@@ -19,13 +19,18 @@ Mark::Mark(const Mark& _copy)
 
 const Mark& Mark::operator=(const Mark& _m)
 {
-    if (this == &_m)
+    if (*this == _m)
         return *this;
     
     dist = _m.dist;
     vert = _m.vert;
 
     return *this;
+};
+
+bool Mark::operator==(const Mark& _m) const
+{
+	return((vert == _m.vert) && (dist == _m.dist));
 };
 
 bool Mark::operator>(const Mark& _m) const

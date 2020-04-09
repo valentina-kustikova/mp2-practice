@@ -13,6 +13,7 @@ public:
     ~Mark() {};
 
     const Mark& operator=(const Mark&);
+	bool operator==(const Mark&) const;
     bool operator>(const Mark&) const;
     bool operator>=(const Mark&) const;
     bool operator<(const Mark&) const;
