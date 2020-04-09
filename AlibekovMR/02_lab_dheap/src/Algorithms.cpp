@@ -3,6 +3,8 @@
 
 void HeapSort::heapSort(int _size, int _array[])
 {
+  if (_size < 0)
+    throw ExceptionOutOfRange(__LINE__, __FILE__);
   int size = _size;
   TDHeap<int> heap(2, size, size, _array);
   for (int i = size - 1; i >= 0; i--)

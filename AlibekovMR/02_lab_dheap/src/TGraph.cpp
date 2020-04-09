@@ -45,7 +45,7 @@ void TGraph::addNewEdge(const TEdge & _newEdge)
 {
   int maxCountOfEdges = verticesCount * (verticesCount - 1) / 2;
   if (edgesCount + 1 > maxCountOfEdges)
-    ;//exception
+    throw ExceptionOutOfRange(__LINE__, __FILE__);
   if (!isEdgeInGraph(_newEdge))
     edges[edgesCount++] = _newEdge;
 }

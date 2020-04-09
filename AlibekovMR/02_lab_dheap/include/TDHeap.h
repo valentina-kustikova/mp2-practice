@@ -1,6 +1,8 @@
 #ifndef __TDHEAP__H__
 #define __TDHEAP__H__
 
+#include "MyExceptions.h"
+
 template<typename T>
 class TDHeap
 {
@@ -60,6 +62,8 @@ TDHeap<T>::~TDHeap()
 template<typename T>
 void TDHeap<T>::transpose(int i, int j)
 {
+  if ((i < 0) || (i >= size) || (j < 0) || (j >= size))
+    throw ExceptionOutOfRange(__LINE__, __FILE__);
   T tmp = keys[i];
   keys[i] = keys[j];
   keys[j] = tmp;

@@ -117,11 +117,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\Algorithms.cpp" />
+    <ClCompile Include="..\..\src\MyExceptions.cpp" />
     <ClCompile Include="..\..\src\TDisjointSet.cpp" />
     <ClCompile Include="..\..\src\TGraph.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\Algorithms.h" />
+    <ClInclude Include="..\..\include\MyExceptions.h" />
     <ClInclude Include="..\..\include\TDHeap.h" />
     <ClInclude Include="..\..\include\TDisjointSet.h" />
     <ClInclude Include="..\..\include\TGraph.h" />

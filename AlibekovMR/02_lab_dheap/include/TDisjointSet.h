@@ -1,6 +1,8 @@
 #ifndef __TDISJOINTSET__H__
 #define __TDISJOINTSET__H__
 
+#include "MyExceptions.h"
+
 class TDisjointSet
 {
   int size;
