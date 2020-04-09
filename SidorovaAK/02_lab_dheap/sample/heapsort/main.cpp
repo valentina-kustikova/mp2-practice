@@ -1,5 +1,5 @@
-#include "../../include/heapsort.h"
-#include "../../include/exceptions.h"
+#include "heapsort.h"
+#include "exceptions.h"
 
 #include <cmath>
 #include <iostream>
@@ -44,7 +44,7 @@ void main()
         for (int i = 0; i < size; i++)
             cout << elements[i] << " ";
     }
-    catch (Exception ex)
+    catch (const Exception & ex)
     {
         cout << "[ERROR] " << ex.what() << endl << endl;
     }
@@ -61,7 +61,7 @@ void main()
         
         cout << *elements << endl;
     }
-    catch (Exception ex)
+    catch (const Exception & ex)
     {
         cout << "[ERROR] " << ex.what() << endl;
     }
@@ -83,7 +83,7 @@ void main()
 
         cout << *elements << endl;
     }
-    catch (Exception ex)
+    catch (const Exception & ex)
     {
         cout << "[ERROR] " << ex.what() << endl << endl;
     }

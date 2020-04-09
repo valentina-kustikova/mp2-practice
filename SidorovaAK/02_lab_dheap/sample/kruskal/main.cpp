@@ -2,9 +2,9 @@
 #include <vector>
 #include <time.h>
 
-#include "../../include/exceptions.h"
-#include "../../include/kruskal.h"
-#include "../../include/graph.h"
+#include "exceptions.h"
+#include "kruskal.h"
+#include "graph.h"
 
 using namespace std;
 
@@ -48,7 +48,7 @@ void main()
 
         newGraph.clear();
     }
-    catch (Exception ex)
+    catch (const Exception& ex)
     {
         cout << "[ERROR] " << ex.what() << endl << endl;
     }
@@ -82,7 +82,7 @@ void main()
 
         newGraph.clear();
     }
-    catch (Exception ex)
+    catch (const Exception & ex)
     {
         cout << "[ERROR] " << ex.what() << endl << endl;
     }
@@ -115,7 +115,7 @@ void main()
 
         newGraph.clear();
     }
-    catch (Exception ex)
+    catch (const Exception & ex)
     {
         cout << "[ERROR] " << ex.what() << endl << endl;
     }

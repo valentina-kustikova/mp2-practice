@@ -2,9 +2,9 @@
 #include <vector>
 #include <time.h>
 
-#include "../../include/exceptions.h"
-#include "../../include/dijkstra.h"
-#include "../../include/graph.h"
+#include "exceptions.h"
+#include "dijkstra.h"
+#include "graph.h"
 
 using namespace std;
 
@@ -50,7 +50,7 @@ void main()
         paths.clear();
         delete[] result;
     }
-    catch (Exception ex)
+    catch (const Exception & ex)
     {
         cout << "[ERROR] " << ex.what() << endl << endl;
     }
@@ -85,7 +85,7 @@ void main()
         paths.clear();
         delete[] result;
     }
-    catch (Exception ex)
+    catch (const Exception & ex)
     {
         cout << "[ERROR] " << ex.what() << endl << endl;
     }
@@ -120,7 +120,7 @@ void main()
         paths.clear();
         delete[] result;
     }
-    catch (Exception ex)
+    catch (const Exception & ex)
     {
         cout << "[ERROR] " << ex.what() << endl << endl;
     }
@@ -156,7 +156,7 @@ void main()
         paths.clear();
         delete[] result;
     }
-    catch (Exception ex)
+    catch (const Exception & ex)
     {
         cout << "[ERROR] " << ex.what() << endl << endl;
     }
@@ -191,7 +191,7 @@ void main()
         paths.clear();
         delete[] result;
     }
-    catch (Exception ex)
+    catch (const Exception & ex)
     {
         cout << "[ERROR] " << ex.what() << endl << endl;
     }
