@@ -7,27 +7,27 @@ class TNode<double, unsigned int> {
 public:
 	unsigned int key;
 	double pData;
-	TNode* pNext;
+	TNode<double, unsigned int>* pNext;
 
-	TNode(const TNode&);
-	TNode(unsigned int, double, TNode* _monom = 0);
+	TNode(const TNode<double, unsigned int>&);
+	TNode(unsigned int, double, TNode<double, unsigned int>* _monom = 0);
 	TNode(const string&);
 	~TNode();
 
-	TNode operator*(double);
+	TNode<double, unsigned int> operator*(double);
 
-	TNode operator+(const TNode&);
-	TNode operator-(const TNode&);
-	TNode operator*(const TNode&);
+	TNode<double, unsigned int> operator+(const TNode<double, unsigned int>&);
+	TNode<double, unsigned int> operator-(const TNode<double, unsigned int>&);
+	TNode<double, unsigned int> operator*(const TNode<double, unsigned int>&);
 
-	TNode operator-() const;
+	TNode<double, unsigned int> operator-() const;
 
-	TNode& operator=(const TNode&);
+	TNode<double, unsigned int>& operator=(const TNode<double, unsigned int>&);
 
-	bool operator>(const TNode&) const;
-	bool operator<(const TNode&) const;
-	bool operator==(const TNode&) const;
-	bool operator!=(const TNode&) const;
+	bool operator>(const TNode<double, unsigned int>&) const;
+	bool operator<(const TNode<double, unsigned int>&) const;
+	bool operator==(const TNode<double, unsigned int>&) const;
+	bool operator!=(const TNode<double, unsigned int>&) const;
 };
 
 typedef TNode<double, unsigned int> Monom;
