@@ -118,7 +118,7 @@
     <Library Include="..\x64\Debug\my_lib.lib" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\sample\kruskal_and_heapsort.cpp" />
+    <ClCompile Include="..\..\sample\kruskal_test.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\02_lab_dheap\02_lab_dheap.vcxproj">

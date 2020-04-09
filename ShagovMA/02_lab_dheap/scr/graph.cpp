@@ -30,7 +30,7 @@ bool Edge::loop_check()
 
 Graph::Graph(Edge* _edges, int v_count, int e_count)
 {
-	if (_edges = nullptr)
+	if (_edges == nullptr)
 	{
 		throw "Edges were nullptr";
 	}
@@ -43,9 +43,9 @@ Graph::Graph(Edge* _edges, int v_count, int e_count)
 		throw "Edges count < 0";
 	}
 	DividedSet set(v_count);
-	for (int j = 0; j < edges_count; j++)
+	for (int j = 0; j < e_count; j++)
 	{
-		for (int i = j; i < edges_count; i++)
+		for (int i = j; i < e_count; i++)
 		{
 			if ((_edges[i] == _edges[j]) && (i != j))
 			{

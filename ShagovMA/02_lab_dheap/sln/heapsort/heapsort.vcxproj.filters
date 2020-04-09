@@ -15,12 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <Library Include="..\x64\Debug\my_lib.lib">
-      <Filter>Файлы заголовков</Filter>
-    </Library>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="..\..\sample\kruskal_test.cpp">
+    <ClCompile Include="..\..\sample\heapsort_test.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>

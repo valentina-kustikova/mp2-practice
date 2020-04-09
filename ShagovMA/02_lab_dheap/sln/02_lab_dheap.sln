@@ -9,6 +9,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "kruskal's_algorithm", "krus
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dijkstra’s_algorithm", "dijkstra’s_algorithm\dijkstra’s_algorithm.vcxproj", "{D8C6A374-46B4-4DA1-BAFD-18C1027D1CE9}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "heapsort", "heapsort\heapsort.vcxproj", "{5E8808DC-C961-4A2E-BB6F-4A44FDAD9716}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -41,6 +43,14 @@ Global
 		{D8C6A374-46B4-4DA1-BAFD-18C1027D1CE9}.Release|x64.Build.0 = Release|x64
 		{D8C6A374-46B4-4DA1-BAFD-18C1027D1CE9}.Release|x86.ActiveCfg = Release|Win32
 		{D8C6A374-46B4-4DA1-BAFD-18C1027D1CE9}.Release|x86.Build.0 = Release|Win32
+		{5E8808DC-C961-4A2E-BB6F-4A44FDAD9716}.Debug|x64.ActiveCfg = Debug|x64
+		{5E8808DC-C961-4A2E-BB6F-4A44FDAD9716}.Debug|x64.Build.0 = Debug|x64
+		{5E8808DC-C961-4A2E-BB6F-4A44FDAD9716}.Debug|x86.ActiveCfg = Debug|Win32
+		{5E8808DC-C961-4A2E-BB6F-4A44FDAD9716}.Debug|x86.Build.0 = Debug|Win32
+		{5E8808DC-C961-4A2E-BB6F-4A44FDAD9716}.Release|x64.ActiveCfg = Release|x64
+		{5E8808DC-C961-4A2E-BB6F-4A44FDAD9716}.Release|x64.Build.0 = Release|x64
+		{5E8808DC-C961-4A2E-BB6F-4A44FDAD9716}.Release|x86.ActiveCfg = Release|Win32
+		{5E8808DC-C961-4A2E-BB6F-4A44FDAD9716}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

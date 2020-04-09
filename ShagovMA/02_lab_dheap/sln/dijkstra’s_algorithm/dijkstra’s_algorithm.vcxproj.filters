@@ -20,7 +20,7 @@
     </Library>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\sample\dijkstra_algorithm.cpp">
+    <ClCompile Include="..\..\sample\dijkstra_test.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
