@@ -30,7 +30,7 @@ const Mark& Mark::operator=(const Mark& _m)
 
 bool Mark::operator==(const Mark& _m) const
 {
-	return((vert == _m.vert) && (dist == _m.dist));
+    return((vert == _m.vert) && (dist == _m.dist));
 };
 
 bool Mark::operator>(const Mark& _m) const

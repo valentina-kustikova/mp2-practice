@@ -22,7 +22,7 @@ public:
     int GetEnd() const;
 
     const Edge& operator=(const Edge&);
-	bool operator==(const Edge&) const;
+    bool operator==(const Edge&) const;
     bool operator>(const Edge&) const;
     bool operator>=(const Edge&) const;
     bool operator<(const Edge&) const;

@@ -51,7 +51,7 @@ const Edge& Edge::operator=(const Edge& _e)
 
 bool Edge::operator==(const Edge& _e) const
 {
-	return ((start == _e.start) && (end == _e.end) && (weight == _e.weight));
+    return ((start == _e.start) && (end == _e.end) && (weight == _e.weight));
 };
 
 bool Edge::operator>(const Edge& _e) const
