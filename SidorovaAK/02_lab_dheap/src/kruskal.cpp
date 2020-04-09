@@ -1,7 +1,7 @@
-#include "../include/kruskal.h"
-#include "../include/dheap.h"
-#include "../include/edge.h"
-#include "../include/separatedset.h"
+#include "kruskal.h"
+#include "dheap.h"
+#include "edge.h"
+#include "separatedset.h"
 
 #include <cmath>
 #include <algorithm>

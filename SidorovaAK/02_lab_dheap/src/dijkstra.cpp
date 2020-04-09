@@ -1,8 +1,8 @@
-#include "../include/dijkstra.h"
-#include "../include/dheap.h"
-#include "../include/edge.h"
-#include "../include/separatedset.h"
-#include "../include/mark.h"
+#include "dijkstra.h"
+#include "dheap.h"
+#include "edge.h"
+#include "separatedset.h"
+#include "mark.h"
 
 #include <cmath>
 #include <algorithm>

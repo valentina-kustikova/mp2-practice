@@ -1,5 +1,5 @@
-#include "../include/mark.h"
-#include "../include/exceptions.h"
+#include "mark.h"
+#include "exceptions.h"
 
 Mark::Mark(int _v, float _dist)
 {

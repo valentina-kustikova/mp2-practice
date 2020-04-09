@@ -1,5 +1,5 @@
-#include "../include/separatedset.h"
-#include "../include/exceptions.h"
+#include "separatedset.h"
+#include "exceptions.h"
 
 SeparatedSet::SeparatedSet(int _size)
 {

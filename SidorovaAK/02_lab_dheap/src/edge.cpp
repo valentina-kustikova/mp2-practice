@@ -1,5 +1,5 @@
-#include "../include/edge.h"
-#include "../include/exceptions.h"
+#include "edge.h"
+#include "exceptions.h"
 
 Edge::Edge()
 {
