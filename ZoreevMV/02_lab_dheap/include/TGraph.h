@@ -9,9 +9,9 @@
 
 struct TEdge
 {
-    size_t from; //Исходящая вершина
-    size_t to;   //Входящая вершина
-    double weight;  //Вес ребра
+    size_t from;   //Исходящая вершина
+    size_t to;     //Входящая вершина
+    double weight; //Вес ребра
 
     //Проверяет ребро на инцидентность вершине
     bool incident(size_t vertex);
@@ -53,9 +53,6 @@ public:
 
     TGraph& operator=(const TGraph& temp);
 
-    //Оператор индексации рёбер
-    TEdge operator[](size_t id) const;
-
     //Возврат случайного связного графа, содержаего гамильтонов цикл
     static TGraph getRandomConnectedGraph(size_t size);
 
@@ -65,4 +62,8 @@ public:
 private:
     //Вставка вершины
     void insertEdge(const TEdge& edge);
+
+    friend class TKruskalsAlgorithm;
+    friend class TDijkstrasAlgorithm;
+
 };

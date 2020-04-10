@@ -179,19 +179,6 @@ TGraph& TGraph::operator=(const TGraph& temp)
     return *this;
 }
 
-TEdge TGraph::operator[](size_t id) const
-{
-    if (id < edges_count)
-    {
-        return edges[id];
-    }
-    else
-    {
-        throw TBadIdException();
-    }
-}
-
-
 TGraph TGraph::getRandomConnectedGraph(size_t size)
 {
     if (size < 3) throw TBadSizeException();

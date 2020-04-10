@@ -9,7 +9,7 @@ TGraph TKruskalsAlgorithm::findTree(const TGraph& graph)
     TEdge* temp_edges = new TEdge[graph.getEdgesCount()];
     TEdge* result_edges = new TEdge[graph.getVerticiesCount()];
     for (size_t i = 0; i < graph.getEdgesCount(); i++)
-        temp_edges[i] = graph[i];
+        temp_edges[i] = graph.edges[i];
     THeap<TEdge> edges(graph.getEdgesCount(), graph.getEdgesCount(), temp_edges);
 
     size_t i = 0;
