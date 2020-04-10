@@ -66,22 +66,21 @@ std::istream& operator>>(std::istream& in, TEdge& edge)
     return in;
 }
 
-
-TGraph::TGraph(size_t vertices_count_)
-{
-    vertices_count = vertices_count_;
-    edges_count = 0;
-    edges = new TEdge[vertices_count * (vertices_count - 1) / 2];
-}
-
 TGraph::TGraph(size_t vertices_count_, TEdge* edges_ , size_t edges_count_ )
 {
     vertices_count = vertices_count_;
     edges_count = edges_count_;
-    edges = new TEdge[vertices_count * (vertices_count - 1) / 2];
+    edges = new TEdge[edges_count];
     for (int i = 0; i < edges_count; i++)
     {
-        insertEdge(edges_[i]);
+        if (this->isCorrect(edges_[i]))
+        {
+            edges[i] = edges_[i];
+        }
+        else
+        {
+            throw TBadEdgeException();
+        }
     }
 }
 
@@ -89,7 +88,7 @@ TGraph::TGraph(const TGraph& temp)
 {
     edges_count = temp.edges_count;
     vertices_count = temp.vertices_count;
-    edges = new TEdge[vertices_count * (vertices_count - 1) / 2];
+    edges = new TEdge[edges_count];
     for (size_t i = 0; i < edges_count; i++)
     {
         edges[i] = temp.edges[i];
@@ -99,20 +98,6 @@ TGraph::TGraph(const TGraph& temp)
 TGraph::~TGraph()
 {
     delete[] edges;
-}
-
-void TGraph::insertEdge(const TEdge& edge)
-{
-    if (edges_count >= vertices_count * (vertices_count - 1) / 2) throw TContainerIsFullException();
-    if ((edge.from >= vertices_count) || (edge.to >= vertices_count)) throw TBadEdgeException();
-    if (edge.from == edge.to) throw TBadEdgeException();
-    for (int i = 0; i < edges_count; i++)
-    {
-        if ((edges[i].incident(edge.from)) && (edges[i].incident(edge.to))) return;
-    }
-    edges[edges_count] = edge;
-    edges_count++;
-    return;
 }
 
 size_t TGraph::getVerticiesCount() const
@@ -179,26 +164,27 @@ TGraph& TGraph::operator=(const TGraph& temp)
     return *this;
 }
 
-TGraph TGraph::getRandomConnectedGraph(size_t size)
+TGraph TGraph::getRandomConnectedGraph(size_t v_count, size_t e_count)
 {
-    if (size < 3) throw TBadSizeException();
+    if (v_count < 3) throw TBadSizeException();
+    if (e_count >= v_count - 1) throw TBadSizeException();
+    size_t j;
     srand(time(0));
-    TGraph result(size);
-    for (size_t i = 0; i < size - 1; i++)
+    TEdge* result_edges = new TEdge[e_count];
+    for (size_t i = 0; i < v_count - 1; i++)
     {
-        TEdge edge = { i, i + 1, rand() % size };
-        result.insertEdge(edge);
+        TEdge edge = { i, i + 1, rand() % v_count };
+        result_edges[j++] = edge;
     }
-    size_t count = rand() % (size * (size - 1) / 2 - size + 1);
+    /*size_t count = rand() % (size * (size - 1) / 2 - size + 1);
     for (size_t i = 0; i < count; i++)
     {
-        try
-        {
-            TEdge edge = { rand() % size, rand() % size, rand() % size };
-            result.insertEdge(edge);
-        }
-        catch (const TException& exception) {}; //На случай, плохого случайного ребра
-    }
+        TEdge edge = { rand() % size, rand() % size, rand() % size };
+        if (r)
+        result.insertEdge(edge);
+ 
+    }*/
+    TGraph result(v_count, result_edges, e_count);
     return result;
 }
 
@@ -216,12 +202,27 @@ std::istream& operator>>(std::istream& in, TGraph& graph)
     size_t verticies_count, edges_count;
     in >> verticies_count >> edges_count;
     if (edges_count > verticies_count* (verticies_count - 1) / 2) throw TBadSizeException();
-    graph = TGraph(verticies_count);
+    if (graph.edges != nullptr) delete[] graph.edges;
+    graph.edges = new TEdge[edges_count];
+    graph.vertices_count = verticies_count;
+    graph.edges_count = 0;
     for (size_t i = 0; i < edges_count; i++)
     {
         TEdge edge;
         in >> edge;
-        graph.insertEdge(edge);
+        graph.edges[i] = edge;
     }
     return in;
+}
+
+bool TGraph::isCorrect(const TEdge& edge)
+{
+    if (edges_count >= vertices_count * (vertices_count - 1) / 2) return false;
+    if ((edge.from >= vertices_count) || (edge.to >= vertices_count)) return false;
+    if (edge.from == edge.to) return false;
+    for (int i = 0; i < edges_count; i++)
+    {
+        if ((edges[i].incident(edge.from)) && (edges[i].incident(edge.to))) return false;
+    }
+    return true;
 }

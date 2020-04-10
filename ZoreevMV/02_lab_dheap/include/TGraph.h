@@ -39,8 +39,10 @@ private:
     size_t edges_count;    //Количество рёбер
     TEdge* edges;          //Массив рёбер
 
+    
+
 public:
-    TGraph(size_t vertices_count_ = 10);
+    TGraph(size_t verticies_count_, size_t edges_count_);
     TGraph(size_t vertices_count_, TEdge* edges_, size_t edges_count_);
     TGraph(const TGraph& temp);
     ~TGraph();
@@ -54,14 +56,14 @@ public:
     TGraph& operator=(const TGraph& temp);
 
     //Возврат случайного связного графа, содержаего гамильтонов цикл
-    static TGraph getRandomConnectedGraph(size_t size);
+    static TGraph getRandomConnectedGraph(size_t v_count, size_t e_count);
 
     friend std::ostream& operator<<(std::ostream& out, const TGraph& graph);
     friend std::istream& operator>>(std::istream& in, TGraph& graph);
 
 private:
-    //Вставка вершины
-    void insertEdge(const TEdge& edge);
+    //Проверка вершины на корректность
+    bool isCorrect(const TEdge& edge);
 
     friend class TKruskalsAlgorithm;
     friend class TDijkstrasAlgorithm;
