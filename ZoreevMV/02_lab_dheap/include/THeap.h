@@ -7,13 +7,11 @@ class THeap
 {
     size_t max_size; //Максимальное число элементов 
     size_t size;     //Текущее число элементов
-    size_t d;        //Поряд кучи
+    const size_t d = 2;        //Поряд кучи
     Type* keys;      //Элементы
-    bool owner;      //Явлеяется ли куча владельцем массива
 
 public:
-    THeap(size_t d_, size_t max_size_ = 10);
-    THeap(size_t d_, size_t max_size_, size_t size_, Type* keys_, bool owner_ = true);
+    THeap(size_t max_size_, size_t size_, Type* keys_);
     ~THeap();
 
     //Транспонирование элементов
@@ -27,7 +25,7 @@ public:
     void insert(const Type& element);
 
     //Возврат наименьшего ключа
-    Type getMinKey();
+    Type getMinKey() const;
     //Удаление элемента с наименьшим ключом
     void removeMinKey();
 
@@ -35,52 +33,28 @@ public:
     size_t getMinChild(size_t id);
 
     //Проверка на пустоту
-    bool empty();
+    bool empty() const;
 
-private:
+    //Проверка на полноту
+    bool full() const;
+
     //Окучивание
     void Heaping();
 };
 
 template <typename Type>
-THeap<Type>::THeap(size_t d_, size_t max_size_)
-{
-    max_size = max_size_;
-    d = d_;
-    size = 0;
-    owner = true;
-    keys = new Type[max_size];
-}
-
-template <typename Type>
-THeap<Type>::THeap(size_t d_, size_t max_size_, size_t size_, Type* keys_, bool owner_)
+THeap<Type>::THeap(size_t max_size_, size_t size_, Type* keys_)
 {
     max_size = max_size_;
     d = d_;
     size = size_;
-    owner = owner_;
-    if (owner == true)
-    {
-        keys = new Type[max_size];
-        for (int i = 0; i < size; i++)
-        {
-            keys[i] = keys_[i];
-        }
-    }
-    else
-    {
         keys = keys_;
-    }
     Heaping();
 }
 
 template <typename Type>
 THeap<Type>::~THeap()
 {
-    if (owner == true)
-    {
-        delete[] keys;
-    }
     max_size = 0;
     d = 0;
     size = 0;
@@ -126,10 +100,11 @@ void THeap<Type>::insert(const Type& element)
 {
     if (size == max_size) throw TException(ContainerIsFull, __LINE__);
     keys[size++] = element;
+    Heaping();
 }
 
 template <typename Type>
-Type THeap<Type>::getMinKey()
+Type THeap<Type>::getMinKey() const
 {
     return keys[0];
 }
@@ -164,9 +139,15 @@ size_t THeap<Type>::getMinChild(size_t id)
 }
 
 template <typename Type>
-bool THeap<Type>::empty()
+bool THeap<Type>::empty() const
 {
     return (size == 0);
+}
+
+template <typename Type>
+bool THeap<Type>::full() const
+{
+    return (size >= max_size);
 }
 
 template <typename Type>

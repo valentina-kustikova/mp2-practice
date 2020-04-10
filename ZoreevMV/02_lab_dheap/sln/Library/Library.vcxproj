@@ -151,7 +151,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\TDijkstrasAlgorithm.cpp" />
-    <ClCompile Include="..\..\src\TException.cpp" />
     <ClCompile Include="..\..\src\TGenerator.cpp" />
     <ClCompile Include="..\..\src\TGraph.cpp" />
     <ClCompile Include="..\..\src\THeapSort.cpp" />

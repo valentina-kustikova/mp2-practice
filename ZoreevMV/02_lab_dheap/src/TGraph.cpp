@@ -50,7 +50,7 @@ size_t TEdge::operator[](size_t id) const
     }
     else
     {
-        throw TException(BadId, __LINE__);
+        throw TBadIdException;
     }
 }
 
@@ -129,28 +129,28 @@ bool TGraph::connected() const
 {
     if (vertices_count == 0) return true;
 
-    THeap<size_t> queue(2, vertices_count);
+    std::stack<size_t> queue;
     bool* group = new bool[vertices_count];
     for (size_t i = 0; i < vertices_count; i++)
     {
         group[i] = 0;
     }
     
-    queue.insert(0);
+    queue.push(0);
     group[0] = true;
 
     while (!queue.empty())
     {
-        size_t vertex = queue.getMinKey();
+        size_t vertex = queue.top();
         for (size_t i = 0; i < edges_count; i++)
         {
             if (edges[i].incident(vertex) && !group[edges[i][vertex]])
             {
-                queue.insert(edges[i][vertex]);
+                queue.push(edges[i][vertex]);
                 group[edges[i][vertex]] = true;
             }
         }
-        queue.removeMinKey();
+        queue.pop();
     }
 
     for (size_t i = 0; i < vertices_count; i++)

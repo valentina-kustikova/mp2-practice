@@ -2,7 +2,7 @@
 
 int* TGenerator::getRandomArray(size_t size, int max)
 {
-    if (size == 0) throw TException(BadSize, __LINE__);
+    if (size == 0) throw TBadSizeException();
     srand(time(0));
     int* result = new int[size];
     for (size_t i = 0; i < size; i++)
@@ -14,7 +14,7 @@ int* TGenerator::getRandomArray(size_t size, int max)
 
 TGraph TGenerator::getRandomConnectedGraph(size_t size)
 {
-    if (size < 3) throw TException(BadSize, __LINE__);
+    if (size < 3) throw TBadSizeException();
     srand(time(0));
     TGraph result(size);
     for (size_t i = 0; i < size - 1; i++)

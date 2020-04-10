@@ -18,7 +18,7 @@ bool VertexDistance::operator==(const VertexDistance& temp)
 
 TGraph TDijkstrasAlgorithm::findTree(const TGraph& graph, size_t root)
 {
-    if (!graph.connected()) throw TException(WrongGraph, __LINE__);
+    if (!graph.connected()) throw TWrongGraphException();
     VertexDistance* distance = new VertexDistance[graph.getVerticiesCount()];
     size_t* parent = new size_t[graph.getVerticiesCount()];
     TGraph result(graph.getVerticiesCount());
@@ -34,7 +34,7 @@ TGraph TDijkstrasAlgorithm::findTree(const TGraph& graph, size_t root)
     }
     distance[root].distance = 0;
 
-    THeap<VertexDistance> queue(2, graph.getVerticiesCount(), graph.getVerticiesCount(), distance, false);
+    THeap<VertexDistance> queue(graph.getVerticiesCount(), graph.getVerticiesCount(), distance);
 
     while (!queue.empty())
     {

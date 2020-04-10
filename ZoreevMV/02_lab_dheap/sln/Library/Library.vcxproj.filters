@@ -56,9 +56,6 @@
     <ClCompile Include="..\..\src\TDijkstrasAlgorithm.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\TException.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\TGenerator.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>

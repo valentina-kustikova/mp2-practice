@@ -1,8 +1,8 @@
 ﻿#pragma once
 
 #include <iostream>
+#include <stack>
 
-#include "THeap.h"
 #include "TException.h"
 
 struct TEdge

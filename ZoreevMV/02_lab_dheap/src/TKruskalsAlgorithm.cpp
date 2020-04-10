@@ -2,14 +2,14 @@
 
 TGraph TKruskalsAlgorithm::findTree(const TGraph& graph)
 {
-    if (!graph.connected()) throw TException(WrongGraph, __LINE__);
+    if (!graph.connected()) throw TWrongGraphException();
     TSet vertices(graph.getVerticiesCount());
     for (size_t i = 0; i < graph.getVerticiesCount(); i++)
         vertices.createSubset(i);
     TEdge* temp_edges = new TEdge[graph.getEdgesCount()];
     for (size_t i = 0; i < graph.getEdgesCount(); i++)
         temp_edges[i] = graph[i];
-    THeap<TEdge> edges(2, graph.getEdgesCount(), graph.getEdgesCount(), temp_edges, false);
+    THeap<TEdge> edges(graph.getEdgesCount(), graph.getEdgesCount(), temp_edges);
 
     TGraph result(graph.getVerticiesCount());
 
