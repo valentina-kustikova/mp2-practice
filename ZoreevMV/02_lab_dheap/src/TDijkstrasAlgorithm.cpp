@@ -1,4 +1,4 @@
-#include "TDijkstrasAlgorithm.h"
+ï»¿#include "TDijkstrasAlgorithm.h"
 
 bool VertexDistance::operator<(const VertexDistance& temp)
 {
@@ -39,8 +39,8 @@ TGraph TDijkstrasAlgorithm::findTree(const TGraph& graph, size_t root)
         {
             if (graph.edges[i].incident(min.vertex))
             {
-                size_t min_id, inc_id;             //Èíäåêñû âåðøèèí â ìàññèâå dist
-                size_t inc = graph.edges[i][min.vertex]; //Èìÿ ñìåæíîé âåðøèíû
+                size_t min_id, inc_id;                   //Ð˜Ð½Ð´ÐµÐºÑÑ‹ Ð²ÐµÑ€ÑˆÐ¸Ð¸Ð½ Ð² Ð¼Ð°ÑÑÐ¸Ð²Ðµ dist
+                size_t inc = graph.edges[i][min.vertex]; //Ð˜Ð¼Ñ ÑÐ¼ÐµÐ¶Ð½Ð¾Ð¹ Ð²ÐµÑ€ÑˆÐ¸Ð½Ñ‹
                 for (size_t i = 0; i < graph.getVerticiesCount(); i++)
                 {
                     if (distance[i].vertex == min.vertex) min_id = i;

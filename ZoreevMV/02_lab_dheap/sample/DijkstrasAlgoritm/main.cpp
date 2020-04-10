@@ -26,7 +26,7 @@ int main()
     std::cout << "Initial graph:" << std::endl << manual_graph << std::endl;
     std::cout << "Final graph" << std::endl;
     
-        std::cout << TDijkstrasAlgorithm::findTree(manual_graph, 0) << std::endl;
+        std::cout << TDijkstrasAlgorithm::findTree(manual_graph, root) << std::endl;
     }
     catch (const TWrongGraphException& exception)
     {
