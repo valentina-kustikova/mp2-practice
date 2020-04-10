@@ -43,7 +43,7 @@ int main()
                       TEdge(2, 4, 2), TEdge(2, 5, 9), TEdge(3, 4, 4)};
 
   TGraph graph_2(verticesCount_2, vertices_2, edges_2, edgesCount_2);
-  std::cout << graph_2 << std::endl;
+  std::cout << std::endl << graph_2 << std::endl;
   std::cout << "//--------------------------------//" << std::endl;
   graph_2.printAdjacencyMatrix();
   std::cout << "//--------------------------------//" << std::endl;

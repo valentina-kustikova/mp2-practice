@@ -35,7 +35,6 @@ int main()
   catch (ExceptionOutOfRange const & e)
   {
     std::cout << "Error: " << e.what() << std::endl;
-    std::cout << "Reason: " << e.why() << std::endl;
     std::cout << "errorLine: " << e.errorLine() << std::endl;
     std::cout << "errorFile:" << e.errorFile() << std::endl;
   }

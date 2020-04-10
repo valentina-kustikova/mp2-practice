@@ -7,7 +7,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\sample\Sample_for_HeapSort.cpp">
+    <ClCompile Include="..\..\..\sample\Sample_for_Kruskal%27s_Algorithm.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>

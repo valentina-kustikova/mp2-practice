@@ -19,12 +19,6 @@ MyException::MyException(const MyException& _exception)
   line(_exception.errorLine()),
   file(_exception.errorFile()) {}
 
-MyException::MyException(const char * error, const char * reason, int _line, const char * _file)
-  : str_what(error),
-  str_why(reason),
-  line(_line),
-  file(_file) {}
-
 MyException::MyException(const char* message, int _line, const char *_file)
   : str_what(message),
   line(_line),
