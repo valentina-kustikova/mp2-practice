@@ -20,7 +20,7 @@ TGraph TKruskalsAlgorithm::findTree(const TGraph& graph)
         if (vertices.getSubsetName(temp.from) != vertices.getSubsetName(temp.to))
         {
             vertices.uniteSubsets(temp.from, temp.to);
-            result_edges[i] = temp;
+            result_edges[i++] = temp;
         }
     }
 

@@ -8,7 +8,7 @@ int main()
 {
     std::cout << "Kruskal's algorithm demo" << std::endl;
     std::cout << "Random graph test" << std::endl;
-    TGraph random_graph = TGraph::getRandomConnectedGraph(10);
+    TGraph random_graph(10, 20);
     std::cout << "Initial graph:" << std::endl << random_graph << std::endl;
     std::cout << "Final graph" << std::endl;
     std::cout << TKruskalsAlgorithm::findTree(random_graph) << std::endl;

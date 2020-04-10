@@ -25,9 +25,6 @@ TGraph TDijkstrasAlgorithm::findTree(const TGraph& graph, size_t root)
     for (size_t i = 0; i < graph.getVerticiesCount(); i++)
     {
         parent[i] = 0;
-    }
-    for (size_t i = 0; i < graph.getVerticiesCount(); i++)
-    {
         distance[i].vertex = i;
         distance[i].distance = SIZE_MAX;
     }
@@ -67,6 +64,13 @@ TGraph TDijkstrasAlgorithm::findTree(const TGraph& graph, size_t root)
         TEdge temp;
         temp.from = parent[i];
         temp.to = i;
+        double distance_from, distance_to;
+        for (size_t i = 0; i < graph.getVerticiesCount(); i++)
+        {
+            if (distance[i].vertex == temp.from) distance_from = distance[i].distance;
+            if (distance[i].vertex == temp.to) distance_to = distance[i].distance;
+        }
+        temp.weight = distance_to - distance_from;
         edges[j++] = temp;
     }
     for (size_t i = root + 1; i < graph.getVerticiesCount(); i++)
@@ -74,6 +78,13 @@ TGraph TDijkstrasAlgorithm::findTree(const TGraph& graph, size_t root)
         TEdge temp;
         temp.from = parent[i];
         temp.to = i;
+        double distance_from, distance_to;
+        for (size_t i = 0; i < graph.getVerticiesCount(); i++)
+        {
+            if (distance[i].vertex == temp.from) distance_from = distance[i].distance;
+            if (distance[i].vertex == temp.to) distance_to = distance[i].distance;
+        }
+        temp.weight = distance_to - distance_from;
         edges[j++] = temp;
     }
 

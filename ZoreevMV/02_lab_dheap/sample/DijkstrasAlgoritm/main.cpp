@@ -8,7 +8,7 @@ int main()
 {
     std::cout << "Dijkstras's algorithm demo" << std::endl;
     std::cout << "Random graph test" << std::endl;
-    TGraph random_graph = TGenerator::getRandomConnectedGraph(10);
+    TGraph random_graph(10, 20);
     std::cout << "Initial graph:" << std::endl << random_graph << std::endl;
     std::cout << "Final graph for root 0" << std::endl;
     std::cout << TDijkstrasAlgorithm::findTree(random_graph, 0) << std::endl;
@@ -17,38 +17,31 @@ int main()
     std::cout << "Please, input graph" << std::endl;
     try
     {
-    TGraph manual_graph(5);
+    TGraph manual_graph(5, nullptr, 0);
     std::cin >> manual_graph;
     std::cout << "Please, input root vertex: ";
     size_t root;
     std::cin >> root;
-    if (root >= manual_graph.getVerticiesCount()) throw TException(BadId, __LINE__);
+    if (root >= manual_graph.getVerticiesCount()) throw TBadIdException();
     std::cout << "Initial graph:" << std::endl << manual_graph << std::endl;
     std::cout << "Final graph" << std::endl;
     
         std::cout << TDijkstrasAlgorithm::findTree(manual_graph, 0) << std::endl;
     }
-    catch (TException exception)
+    catch (const TWrongGraphException& exception)
     {
-        if (exception.code == WrongGraph)
-        {
-            std::cout << "Wrong kind of graph";
-        }
-        else if ((exception.code == BadEdge) || (exception.code == BadSize))
-        {
-            std::cout << "Wrong input";
-            return 1;
-        }
-        else if (exception.code == BadId)
-        {
-            std::cout << "Wrong root vertex";
-            return 2;
-        }
-        else
-        {
-            std::cout << "Unexpected exception";
-            return 3;
-        }
+        std::cout << "Wrong kind of graph";
+        return 1;
+    }
+    catch (const TBadEdgeException& exception)
+    {
+        std::cout << "Wrong input";
+        return 1;
+    }
+    catch (const TBadIdException& exception)
+    {
+        std::cout << "Wrong root vertex";
+        return 1;
     }
     return 0;
 }
