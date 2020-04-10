@@ -12,25 +12,3 @@ int* TGenerator::getRandomArray(size_t size, int max)
     return result;
 }
 
-TGraph TGenerator::getRandomConnectedGraph(size_t size)
-{
-    if (size < 3) throw TBadSizeException();
-    srand(time(0));
-    TGraph result(size);
-    for (size_t i = 0; i < size - 1; i++)
-    {
-        TEdge edge = { i, i + 1, rand() % size};
-        result.insertEdge(edge);
-    }
-    size_t count = rand() % (size * (size - 1) / 2 - size + 1);
-    for (size_t i = 0; i < count; i++)
-    {
-        try
-        {
-            TEdge edge = { rand() % size, rand() % size, rand() % size };
-            result.insertEdge(edge);
-        }
-        catch (TException exception) {}; //На случай, плохого случайного ребра
-    }
-    return result;
-}

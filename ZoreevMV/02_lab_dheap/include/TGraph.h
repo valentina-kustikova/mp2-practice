@@ -2,6 +2,8 @@
 
 #include <iostream>
 #include <stack>
+#include <time.h>
+#include <random>
 
 #include "TException.h"
 
@@ -43,9 +45,6 @@ public:
     TGraph(const TGraph& temp);
     ~TGraph();
 
-    //Вставка вершины
-    void insertEdge(const TEdge& edge);
-
     size_t getVerticiesCount() const;
     size_t getEdgesCount() const;
 
@@ -57,6 +56,13 @@ public:
     //Оператор индексации рёбер
     TEdge operator[](size_t id) const;
 
+    //Возврат случайного связного графа, содержаего гамильтонов цикл
+    static TGraph getRandomConnectedGraph(size_t size);
+
     friend std::ostream& operator<<(std::ostream& out, const TGraph& graph);
     friend std::istream& operator>>(std::istream& in, TGraph& graph);
+
+private:
+    //Вставка вершины
+    void insertEdge(const TEdge& edge);
 };

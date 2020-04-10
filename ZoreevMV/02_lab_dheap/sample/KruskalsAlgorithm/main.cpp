@@ -24,22 +24,20 @@ int main()
     
         std::cout << TKruskalsAlgorithm::findTree(manual_graph) << std::endl;
     }
-    catch (TException exception)
+    catch (const TWrongGraphException& exception)
     {
-        if (exception.code == WrongGraph)
-        {
-            std::cout << "Wrong kind of graph";
-        }
-        else if ((exception.code == BadEdge) || (exception.code == BadSize))
-        {
-            std::cout << "Wrong input";
-            return 1;
-        }
-        else
-        {
-            std::cout << "Unexpected exception";
-            return 2;
-        }
+        std::cout << "Wrong kind of graph";
+        return 1;
+    }
+    catch (const TBadEdgeException& exception)
+    {
+        std::cout << "Wrong input";
+        return 1;
+    }
+    catch (const TBadSizeException exception)
+    {
+        std::cout << "Wrong input";
+        return 1;
     }
     return 0;
 }

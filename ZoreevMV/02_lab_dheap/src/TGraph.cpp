@@ -50,7 +50,7 @@ size_t TEdge::operator[](size_t id) const
     }
     else
     {
-        throw TBadIdException;
+        throw TBadIdException();
     }
 }
 
@@ -103,9 +103,9 @@ TGraph::~TGraph()
 
 void TGraph::insertEdge(const TEdge& edge)
 {
-    if (edges_count >= vertices_count * (vertices_count - 1) / 2) throw TException(ContainerIsFull, __LINE__);
-    if ((edge.from >= vertices_count) || (edge.to >= vertices_count)) throw TException(BadEdge, __LINE__);
-    if (edge.from == edge.to) throw TException(BadEdge, __LINE__);
+    if (edges_count >= vertices_count * (vertices_count - 1) / 2) throw TContainerIsFullException();
+    if ((edge.from >= vertices_count) || (edge.to >= vertices_count)) throw TBadEdgeException();
+    if (edge.from == edge.to) throw TBadEdgeException();
     for (int i = 0; i < edges_count; i++)
     {
         if ((edges[i].incident(edge.from)) && (edges[i].incident(edge.to))) return;
@@ -187,8 +187,32 @@ TEdge TGraph::operator[](size_t id) const
     }
     else
     {
-        throw TException(BadId, __LINE__);
+        throw TBadIdException();
     }
+}
+
+
+TGraph TGraph::getRandomConnectedGraph(size_t size)
+{
+    if (size < 3) throw TBadSizeException();
+    srand(time(0));
+    TGraph result(size);
+    for (size_t i = 0; i < size - 1; i++)
+    {
+        TEdge edge = { i, i + 1, rand() % size };
+        result.insertEdge(edge);
+    }
+    size_t count = rand() % (size * (size - 1) / 2 - size + 1);
+    for (size_t i = 0; i < count; i++)
+    {
+        try
+        {
+            TEdge edge = { rand() % size, rand() % size, rand() % size };
+            result.insertEdge(edge);
+        }
+        catch (const TException& exception) {}; //На случай, плохого случайного ребра
+    }
+    return result;
 }
 
 std::ostream& operator<<(std::ostream& out, const TGraph& graph)
@@ -204,7 +228,7 @@ std::istream& operator>>(std::istream& in, TGraph& graph)
 {
     size_t verticies_count, edges_count;
     in >> verticies_count >> edges_count;
-    if (edges_count > verticies_count* (verticies_count - 1) / 2) throw TException(BadSize, __LINE__);
+    if (edges_count > verticies_count* (verticies_count - 1) / 2) throw TBadSizeException();
     graph = TGraph(verticies_count);
     for (size_t i = 0; i < edges_count; i++)
     {

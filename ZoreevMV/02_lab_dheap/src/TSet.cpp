@@ -28,7 +28,7 @@ TSet::~TSet()
 
 void TSet::createSubset(int id)
 {
-    if (keys[id] != -1) throw TBadIDException();
+    if (keys[id] != -1) throw TBadIdException();
     keys[id] = id;
 }
 

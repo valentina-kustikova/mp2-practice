@@ -21,7 +21,6 @@ TGraph TDijkstrasAlgorithm::findTree(const TGraph& graph, size_t root)
     if (!graph.connected()) throw TWrongGraphException();
     VertexDistance* distance = new VertexDistance[graph.getVerticiesCount()];
     size_t* parent = new size_t[graph.getVerticiesCount()];
-    TGraph result(graph.getVerticiesCount());
 
     for (size_t i = 0; i < graph.getVerticiesCount(); i++)
     {
@@ -59,17 +58,30 @@ TGraph TDijkstrasAlgorithm::findTree(const TGraph& graph, size_t root)
         }
         queue.removeMinKey();
     }
-    for (size_t i = 0; i < graph.getVerticiesCount(); i++)
+
+    TEdge *edges = new TEdge[graph.getVerticiesCount()];
+    size_t j = 0;
+
+    for (size_t i = 0; i < root; i++)
     {
-        if (i == root) continue;
         TEdge temp;
         temp.from = parent[i];
         temp.to = i;
-        result.insertEdge(temp);
+        edges[j++] = temp;
     }
+    for (size_t i = root + 1; i < graph.getVerticiesCount(); i++)
+    {
+        TEdge temp;
+        temp.from = parent[i];
+        temp.to = i;
+        edges[j++] = temp;
+    }
+
+    TGraph result(graph.getVerticiesCount(), edges, graph.getVerticiesCount() - 1);
 
     delete[] distance;
     delete[] parent;
+    delete[] edges;
 
     return result;
 }

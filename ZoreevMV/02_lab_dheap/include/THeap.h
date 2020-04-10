@@ -46,7 +46,6 @@ template <typename Type>
 THeap<Type>::THeap(size_t max_size_, size_t size_, Type* keys_)
 {
     max_size = max_size_;
-    d = d_;
     size = size_;
         keys = keys_;
     Heaping();
@@ -56,7 +55,6 @@ template <typename Type>
 THeap<Type>::~THeap()
 {
     max_size = 0;
-    d = 0;
     size = 0;
 }
 
@@ -98,7 +96,7 @@ void THeap<Type>::moveDown(size_t id)
 template <typename Type>
 void THeap<Type>::insert(const Type& element)
 {
-    if (size == max_size) throw TException(ContainerIsFull, __LINE__);
+    if (size == max_size) throw TContainerIsFullException();
     keys[size++] = element;
     Heaping();
 }
