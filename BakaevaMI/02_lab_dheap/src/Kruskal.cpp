@@ -1,5 +1,5 @@
-#include "../include/Kruskal.h"
-#include "../include/DHeap.h"
+#include "Kruskal.h"
+#include "DHeap.h"
 
 void Kruskal::KruskalAlg(const Graph& graph, TDHeap<Edge>& result)
 {

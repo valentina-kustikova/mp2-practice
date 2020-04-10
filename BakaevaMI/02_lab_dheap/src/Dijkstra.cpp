@@ -1,6 +1,6 @@
-#include "../include/Dijkstra.h"
-#include "../include/Graph.h"
-#include "../include/Pair.h"
+#include "Dijkstra.h"
+#include "Graph.h"
+#include "Pair.h"
 #include <utility>
 #include <vector>
 

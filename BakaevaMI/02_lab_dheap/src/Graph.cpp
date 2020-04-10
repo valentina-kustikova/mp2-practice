@@ -1,10 +1,10 @@
-#include "../include/Graph.h"
-#include "../include/Set.h"
-#include "../include/Edge.h"
+#include "Graph.h"
+#include "Set.h"
+#include "Edge.h"
 #include <iostream>
 #include <conio.h>
 #include <queue>
-#include "../include/Exception.h"
+#include "Exception.h"
 using namespace std;
 
 Graph::Graph()

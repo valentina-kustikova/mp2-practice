@@ -1,4 +1,4 @@
-#include "../include/Set.h"
+#include "Set.h"
 
 Set::Set(const Set& copy)
 {

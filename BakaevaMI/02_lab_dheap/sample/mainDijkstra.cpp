@@ -1,7 +1,7 @@
 #include <iostream>
 #include <vector>
-#include "../include/Dijkstra.h" 
-#include "../include/Exception.h"
+#include "Dijkstra.h" 
+#include "Exception.h"
 using namespace std;
 
 void main()

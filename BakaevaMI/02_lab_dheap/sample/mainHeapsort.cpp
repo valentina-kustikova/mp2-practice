@@ -1,6 +1,6 @@
 #include <iostream>
-#include "../include/DHeap.h"
-#include "../include/Heapsort.h"
+#include "DHeap.h"
+#include "Heapsort.h"
 #include <ctime>
 #include <conio.h>
 #include <stdlib.h>

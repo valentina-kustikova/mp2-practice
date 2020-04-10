@@ -1,4 +1,4 @@
-#include "../include/Pair.h"
+#include "Pair.h"
 
 Pair::Pair()
 {

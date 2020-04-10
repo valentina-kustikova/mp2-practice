@@ -1,5 +1,5 @@
-#include "../include/Kruskal.h" 
-#include "../include/Exception.h"
+#include "Kruskal.h" 
+#include "Exception.h"
 
 void main()
 {

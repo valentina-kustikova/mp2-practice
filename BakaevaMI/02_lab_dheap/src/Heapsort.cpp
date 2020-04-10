@@ -1,2 +1,2 @@
-#include "../include/Heapsort.h"
+#include "Heapsort.h"
 
