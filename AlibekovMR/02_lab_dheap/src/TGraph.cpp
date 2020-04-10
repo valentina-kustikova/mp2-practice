@@ -50,11 +50,29 @@ void TGraph::addNewEdge(const TEdge & _newEdge)
     edges[edgesCount++] = _newEdge;
 }
 
-bool TGraph::isEdgeInGraph(const TEdge & _edge)
+bool TGraph::isEdgeInGraph(const TEdge & _edge) const
 {
   for (int i = 0; i < edgesCount; i++)
     if (edges[i] == _edge)
       return true;
+  return false;
+}
+
+bool TGraph::isGraphConnected() const
+{
+  if (numberOfComponents() < 1)
+    throw ExceptionGraphWithoutVertices(__LINE__, __FILE__);
+  if (numberOfComponents() == 1)
+    return true;
+  return false;
+}
+
+bool TGraph::isGraphDisconnected() const
+{
+  if (numberOfComponents() < 1)
+    throw ExceptionGraphWithoutVertices(__LINE__, __FILE__);
+  if (numberOfComponents() > 1)
+    return true;
   return false;
 }
 
@@ -110,7 +128,7 @@ std::ostream & operator<<(std::ostream & out, const TGraph & _graph)
   return out;
 }
 
-int* TGraph::getAdjacencyMatrix()
+int* TGraph::getAdjacencyMatrix() const
 {
   int* adjacencyMatrix = new int[verticesCount * verticesCount];
   for (int k = 0; k < verticesCount * verticesCount; k++)
@@ -128,7 +146,7 @@ int* TGraph::getAdjacencyMatrix()
   return adjacencyMatrix;
 }
 
-void TGraph::printAdjacencyMatrix()
+void TGraph::printAdjacencyMatrix() const
 {
   int* adjacencyMatrix = getAdjacencyMatrix();
 
@@ -140,4 +158,85 @@ void TGraph::printAdjacencyMatrix()
   }
 
   delete[] adjacencyMatrix;
+}
+
+int TGraph::numberOfComponents() const
+{
+  int numberOfComponents = 0;
+  if (verticesCount == 0)
+    return numberOfComponents;
+  bool *isVertexPassed = new bool[verticesCount];
+  std::pair<int, int> *verticesWithIndexes = new std::pair<int, int>[verticesCount];
+  for (int i = 0; i < verticesCount; i++)
+  {
+    isVertexPassed[i] = false;
+    verticesWithIndexes[i].first = i;                //first - index
+    verticesWithIndexes[i].second = vertices[i];     //second - vertex
+  }
+  
+  for (int i = 0; i < verticesCount; i++)
+  {
+    if (!isVertexPassed[i])
+    {
+      std::queue<std::pair<int, int>> qVertices;
+      qVertices.push(verticesWithIndexes[0]);
+      while (!qVertices.empty())
+      {
+        std::pair<int, int> vertexWithIndex(qVertices.front());
+        qVertices.pop();
+        isVertexPassed[vertexWithIndex.first] = true;
+        for (int i = 0; i < edgesCount; i++)
+        {
+          if (edges[i].startVertex == vertexWithIndex.second)
+            for (int j = 0; j < verticesCount; j++)
+              if ((vertices[j] == edges[i].endVertex) && (!isVertexPassed[j]))
+              {
+                qVertices.push(std::pair<int, int>(j, vertices[j]));
+                break;
+              }
+          if (edges[i].endVertex == vertexWithIndex.second)
+            for (int j = 0; j < verticesCount; j++)
+              if ((vertices[j] == edges[i].startVertex) && (!isVertexPassed[j]))
+              {
+                qVertices.push(std::pair<int, int>(j, vertices[j]));
+                break;
+              }
+        }
+      }
+      numberOfComponents++;
+    }
+  }
+  return numberOfComponents;
+
+  /*std::queue<int> qVertices;
+  std::queue<int> verticesIndexes;
+  qVertices.push(vertices[0]);
+  verticesIndexes.push(0);
+  while (!qVertices.empty())
+  {
+    int vertex = qVertices.front();
+    int vertexIndex = verticesIndexes.front();
+    qVertices.pop();
+    verticesIndexes.pop();
+    isVertexPassed[vertexIndex] = true;
+    for (int i = 0; i < edgesCount; i++)
+    {
+      if (edges[i].startVertex == vertex)
+        for (int j = 0; j < verticesCount; j++)
+          if ((vertices[j] == edges[i].endVertex) && (!isVertexPassed[j]))
+          {
+            qVertices.push(vertex);
+            verticesIndexes.push(j);
+            break;
+          }
+      if (edges[i].endVertex == vertex)
+        for (int j = 0; j < verticesCount; j++)
+          if ((vertices[j] == edges[i].startVertex) && (!isVertexPassed[j]))
+          {
+            qVertices.push(vertex);
+            verticesIndexes.push(j);
+            break;
+          }
+    }
+  }*/
 };

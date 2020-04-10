@@ -36,4 +36,22 @@ public:
   ~ExceptionOutOfRange();
 };
 
+class ExceptionDisconnectedGraph : public MyException
+{
+public:
+  ExceptionDisconnectedGraph();
+  ExceptionDisconnectedGraph(const ExceptionDisconnectedGraph& _exception);
+  ExceptionDisconnectedGraph(int _line, const char* _file);
+  ~ExceptionDisconnectedGraph();
+};
+
+class ExceptionGraphWithoutVertices : public MyException
+{
+public:
+  ExceptionGraphWithoutVertices();
+  ExceptionGraphWithoutVertices(const ExceptionGraphWithoutVertices& _exception);
+  ExceptionGraphWithoutVertices(int _line, const char* _file);
+  ~ExceptionGraphWithoutVertices();
+};
+
 #endif // !__MY_EXCEPTIONS_H__

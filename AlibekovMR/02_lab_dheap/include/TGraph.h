@@ -3,6 +3,8 @@
 
 #include "TDisjointSet.h"
 #include "iostream"
+#include <queue>
+#include <utility> //temporarily (for pair)
 
 struct TEdge
 {
@@ -37,10 +39,13 @@ public:
   ~TGraph();
 
   void addNewEdge(const TEdge& _newEdge);
-  bool isEdgeInGraph(const TEdge& _edge);
+  bool isEdgeInGraph(const TEdge& _edge) const;
+  bool isGraphConnected() const;
+  bool isGraphDisconnected() const;
 
-  int* getAdjacencyMatrix();
-  void printAdjacencyMatrix();
+  int* getAdjacencyMatrix() const;
+  void printAdjacencyMatrix() const;
+  int numberOfComponents() const;
 
   friend std::ostream& operator<<(std::ostream& out, const TGraph& _graph);
 

@@ -16,6 +16,11 @@ void HeapSort::heapSort(int _size, int _array[])
 
 TGraph KruskalAlgorithm::kruskalAlgorithm(const TGraph& _graph)
 {
+  if (_graph.verticesCount < 1)
+    throw ExceptionGraphWithoutVertices(__LINE__, __FILE__);
+  if (_graph.isGraphDisconnected())
+    throw ExceptionDisconnectedGraph(__LINE__, __FILE__);
+
   int verticesCount = _graph.verticesCount;
   TDisjointSet vertices(verticesCount, _graph.vertices);
   for (int i = 0; i < verticesCount; i++)
