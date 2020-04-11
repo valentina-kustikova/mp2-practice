@@ -25,13 +25,13 @@ public:
     void dipDown(int i);
     void heapify();
     void popMin();
-    void sort();
 
-    void print() const;
     bool full() const;
     bool empty() const;
     inline int getSize() const;
     inline int getCapacity() const;
+
+    friend std::ostream& operator<<(std::ostream& stream, const THeap& heap);
 };
 
 template<typename TData>
@@ -123,23 +123,11 @@ const TData& THeap<TData>::topMin() const
 }
 
 template<typename TData>
-void THeap<TData>::sort()
+std::ostream& operator<<(std::ostream& stream, const THeap<TData>& heap)
 {
-    heapify();
-    while (size > 1)
-    {
-        transpose(0, size - 1);
-        size--;
-        dipDown(0);
-    }
-}
-
-template<typename TData>
-void THeap<TData>::print() const
-{
-    for (int i = 0; i < size; i++)
-        std::cout << elements[i] << ' ';
-    std::cout << '\n';
+    for (int i = 0; i < heap.size; i++)
+        stream << heap.elements[i] << ' ';
+    return stream;
 }
 
 template<typename TData>

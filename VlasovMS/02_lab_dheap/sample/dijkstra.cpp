@@ -1,26 +1,8 @@
 #include <iostream>
-#include "GraphAlgorithms.h"
+#include "DijkstraAlgorithm.h"
 
 int main()
 {
-    TGraph graph1({
-        TEdge(1, 4, 0),
-        TEdge(1, 3, 1),
-        TEdge(2, 4, 2),
-        TEdge(0, 5, 2),
-        TEdge(1, 5, 2),
-        TEdge(0, 4, 3),
-        TEdge(3, 4, 4),
-        TEdge(2, 3, 5),
-        TEdge(0, 1, 8),
-        TEdge(2, 5, 9),
-        TEdge(1, 2, 10)
-        }, 6);
-    std::cout << "Test Graph 1:\n";
-    graph1.print();
-    std::cout << "Paths Tree 1:\n";
-    GraphAlgorithms::kruskalAlgorithm(graph1).print();
-
     std::cout << "Test Graph 2:\n";
     TGraph graph2({
         TEdge(0, 1, 5),
@@ -37,7 +19,7 @@ int main()
         TEdge(5, 7, 24),
         TEdge(6, 7, 5)
         }, 8);
-    graph2.print();
+    std::cout << graph2;
     std::cout << "Paths Data 2:\n";
     TPathData pathData = GraphAlgorithms::dijkstraAlgorithm(graph2);
     TPathList pathList = pathData.getPaths();
@@ -52,9 +34,7 @@ int main()
     TGraph graph3;
     std::cout << "Test Graph 3:\nInput >> ";
     std::cin >> graph3;
-    graph3.print();
-    std::cout << "Paths Tree 3:\n";
-    GraphAlgorithms::kruskalAlgorithm(graph3).print();
+    std::cout << graph3;
     std::cout << "Paths Data 3:\n";
     pathData = GraphAlgorithms::dijkstraAlgorithm(graph3);
     pathList = pathData.getPaths();

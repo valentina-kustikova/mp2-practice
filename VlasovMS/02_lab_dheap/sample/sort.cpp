@@ -2,14 +2,16 @@
 #include <random>
 #include "TArrayController.h"
 
-constexpr int size = 10;
-
 int main()
 {
     std::random_device rd;
     std::mt19937 generator(rd()); // Mersenne
 
-    int arr[size] = { 0 };
+    std::cout << "Input array size: ";
+    int size = 1;
+    std::cin >> size;
+
+    int* arr = new int[size];
     for (int i = 0; i < size; i++)
     {
         arr[i] = static_cast<int>(generator() % 1000U);
@@ -21,4 +23,6 @@ int main()
     for (int i = 0; i < size; i++)
         std::cout << arr[i] << ' ';
     std::cout << '\n';
+
+    delete[] arr;
 }
