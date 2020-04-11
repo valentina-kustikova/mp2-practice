@@ -1,7 +1,7 @@
 #include <iostream>
 #include "DijkstraAlgorithm.h"
 
-int main()
+void unitTest()
 {
     try
     {
@@ -32,14 +32,24 @@ int main()
                 std::cout << pathList[i][j] << ' ';
             std::cout << '\n';
         }
+    }
+    catch (std::exception & e)
+    {
+        std::cerr << e.what();
+    }
+}
 
+void inputTest()
+{
+    try
+    {
         TGraph graph2;
         std::cout << "Test Graph 2:\nInput >> ";
         std::cin >> graph2;
         std::cout << graph2;
         std::cout << "Paths Data 2:\n";
-        pathData = GraphAlgorithms::dijkstraAlgorithm(graph2);
-        pathList = pathData.getPaths();
+        auto pathData = GraphAlgorithms::dijkstraAlgorithm(graph2);
+        auto pathList = pathData.getPaths();
         for (size_t i = 0; i < pathList.size(); i++)
         {
             std::cout << '[' << i << "] dist: " << pathData.getDist(TVertexId(i)) << " path: ";
@@ -52,4 +62,15 @@ int main()
     {
         std::cerr << e.what();
     }
+}
+
+int main()
+{
+    int mode = 1;
+    std::cout << "1 - Unit Test, 2 - Input Test: ";
+    std::cin >> mode;
+    if (mode == 1)
+        unitTest();
+    else if (mode == 2)
+        inputTest();
 }

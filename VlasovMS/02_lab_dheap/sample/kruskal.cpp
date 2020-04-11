@@ -1,7 +1,7 @@
 #include <iostream>
 #include "KruskalAlgorithm.h"
 
-int main()
+void unitTest()
 {
     try
     {
@@ -20,7 +20,17 @@ int main()
             }, 6);
         std::cout << "Test Graph 1:\n" << graph1;
         std::cout << "Paths Tree 1:\n" << GraphAlgorithms::kruskalAlgorithm(graph1);
+    }
+    catch (std::exception & e)
+    {
+        std::cerr << e.what();
+    }
+}
 
+void inputTest()
+{
+    try
+    {
         TGraph graph2;
         std::cout << "Test Graph 2:\nInput >> ";
         std::cin >> graph2;
@@ -31,4 +41,15 @@ int main()
     {
         std::cerr << e.what();
     }
+}
+
+int main()
+{
+    int mode = 1;
+    std::cout << "1 - Unit Test, 2 - Input Test: ";
+    std::cin >> mode;
+    if (mode == 1)
+        unitTest();
+    else if (mode == 2)
+        inputTest();
 }
