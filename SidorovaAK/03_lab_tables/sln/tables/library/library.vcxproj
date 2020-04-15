@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\include\BalanceTree.h" />
     <ClInclude Include="..\..\..\include\tbalancenode.h" />
     <ClInclude Include="..\..\..\include\binaryTree.h" />
     <ClInclude Include="..\..\..\include\exceptions.h" />

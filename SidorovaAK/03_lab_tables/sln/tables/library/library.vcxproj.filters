@@ -27,5 +27,8 @@
     <ClInclude Include="..\..\..\include\tbalancenode.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\include\BalanceTree.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
