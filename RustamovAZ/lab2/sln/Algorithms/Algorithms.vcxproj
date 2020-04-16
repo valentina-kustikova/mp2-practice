@@ -23,11 +23,15 @@
     <ClInclude Include="..\..\include\TDHeap.h" />
     <ClInclude Include="..\..\include\TDisjointSet.h" />
     <ClInclude Include="..\..\include\TGraph.h" />
+    <ClInclude Include="TEdge.h" />
+    <ClInclude Include="TPair.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\Algorithms.cpp" />
     <ClCompile Include="..\..\src\TDisjointSet.cpp" />
     <ClCompile Include="..\..\src\TGraph.cpp" />
+    <ClCompile Include="TEdge.cpp" />
+    <ClCompile Include="TPair.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

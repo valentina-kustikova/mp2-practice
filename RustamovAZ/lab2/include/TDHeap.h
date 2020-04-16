@@ -16,8 +16,8 @@ public:
     ~TDHeap();
 
     void transpose(int a, int b);
-    void siftUp(int _key);
-    void siftDown(int _key);
+    void shiftUp(int _key);
+    void shiftDown(int _key);
     void removeMinKey();
     void heapify();
     T getRoot();
@@ -26,7 +26,7 @@ private:
     int minChild(int _key);
 };
 
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
+
 
 template<typename T>
 TDHeap<T>::TDHeap(int _d, int _maxSize)
@@ -60,13 +60,15 @@ TDHeap<T>::~TDHeap()
 template<typename T>
 void TDHeap<T>::transpose(int i, int j)
 {
+    if ((i < 0) || (i >= size) || (j < 0) || (j >= size))
+        throw std:exception("Key is out of range");
     T tmp = keys[i];
     keys[i] = keys[j];
     keys[j] = tmp;
 }
 
 template<typename T>
-void TDHeap<T>::siftUp(int _key)
+void TDHeap<T>::shiftUp(int _key)
 {
     while (_key > 0)
     {
@@ -81,7 +83,7 @@ void TDHeap<T>::siftUp(int _key)
 }
 
 template<typename T>
-void TDHeap<T>::siftDown(int _key)
+void TDHeap<T>::shiftDown(int _key)
 {
     int minChildKey = minChild(_key);
     while ((minChildKey != -1) && (keys[minChildKey] < keys[_key]))
@@ -97,14 +99,14 @@ void TDHeap<T>::removeMinKey()
 {
     transpose(0, size - 1);
     size--;
-    siftDown(0);
+    shiftDown(0);
 }
 
 template<typename T>
 void TDHeap<T>::heapify()
 {
     for (int i = size - 1; i >= 0; i--)
-        siftDown(i);
+        shiftDown(i);
 }
 
 template<typename T>

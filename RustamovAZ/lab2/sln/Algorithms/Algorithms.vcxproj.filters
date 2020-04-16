@@ -27,6 +27,12 @@
     <ClInclude Include="..\..\include\TGraph.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="TEdge.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TPair.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\Algorithms.cpp">
@@ -36,6 +42,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\TGraph.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TPair.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TEdge.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

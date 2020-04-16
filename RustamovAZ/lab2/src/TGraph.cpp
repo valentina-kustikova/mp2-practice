@@ -52,7 +52,7 @@ void TGraph::addNewEdge(const TEdge& _newEdge)
         edges[edgesCount++] = _newEdge;
 }
 
-bool TGraph::isEdgeInGraph(const TEdge& _edge)
+bool TGraph::isEdgeInGraph(const TEdge& _edge) const
 {
     for (int i = 0; i < edgesCount; i++)
         if (edges[i] == _edge)
@@ -60,42 +60,22 @@ bool TGraph::isEdgeInGraph(const TEdge& _edge)
     return false;
 }
 
-TEdge::TEdge(const TEdge& _edge)
+bool TGraph::isGraphConnected() const
 {
-    startVertex = _edge.startVertex;
-    endVertex = _edge.endVertex;
-    weight = _edge.weight;
-}
-
-bool TEdge::operator>(const TEdge& _edge)
-{
-    return this->weight > _edge.weight;
-}
-
-bool TEdge::operator<(const TEdge& _edge)
-{
-    return this->weight < _edge.weight;
-}
-
-bool TEdge::operator==(const TEdge& _edge)
-{
-    if ((this->startVertex == _edge.startVertex)
-        && (this->endVertex == _edge.endVertex))
-        return true;
-    if ((this->startVertex == _edge.endVertex)
-        && (this->endVertex == _edge.startVertex))
+    if (numberOfComponents() < 1)
+        throw std::exception("Graph has no vertices");
+    if (numberOfComponents() == 1)
         return true;
     return false;
 }
 
-const TEdge& TEdge::operator=(const TEdge& _edge)
+bool TGraph::isGraphDisconnected() const
 {
-    if (*this == _edge)
-        return *this;
-    startVertex = _edge.startVertex;
-    endVertex = _edge.endVertex;
-    weight = _edge.weight;
-    return *this;
+    if (numberOfComponents() < 1)
+        throw std::exception("Graph has no vertices");
+    if (numberOfComponents() > 1)
+        return true;
+    return false;
 }
 
 std::ostream& operator<<(std::ostream& out, const TGraph& _graph)
@@ -112,7 +92,7 @@ std::ostream& operator<<(std::ostream& out, const TGraph& _graph)
     return out;
 }
 
-int* TGraph::getAdjacencyMatrix()
+int* TGraph::getAdjacencyMatrix() const
 {
     int* adjacencyMatrix = new int[verticesCount * verticesCount];
     for (int k = 0; k < verticesCount * verticesCount; k++)
@@ -130,7 +110,7 @@ int* TGraph::getAdjacencyMatrix()
     return adjacencyMatrix;
 }
 
-void TGraph::printAdjacencyMatrix()
+void TGraph::printAdjacencyMatrix() const
 {
     int* adjacencyMatrix = getAdjacencyMatrix();
 
@@ -142,4 +122,57 @@ void TGraph::printAdjacencyMatrix()
     }
 
     delete[] adjacencyMatrix;
-};
+}
+
+
+
+int TGraph::numberOfComponents() const
+{
+    int numberOfComponents = 0;
+    if (verticesCount == 0)
+        return numberOfComponents;
+    bool* isVertexPassed = new bool[verticesCount];
+    std::pair<int, int>* verticesWithIndexes = new std::pair<int, int>[verticesCount];
+    for (int i = 0; i < verticesCount; i++)
+    {
+        isVertexPassed[i] = false;
+        verticesWithIndexes[i].first = i;                //first - index
+        verticesWithIndexes[i].second = vertices[i];     //second - vertex
+    }
+
+    for (int i = 0; i < verticesCount; i++)
+    {
+        if (!isVertexPassed[i])
+        {
+            std::queue<std::pair<int, int>> qVertices;
+            qVertices.push(verticesWithIndexes[0]);
+            while (!qVertices.empty())
+            {
+                std::pair<int, int> vertexWithIndex(qVertices.front());
+                qVertices.pop();
+                isVertexPassed[vertexWithIndex.first] = true;
+                for (int i = 0; i < edgesCount; i++)
+                {
+                    if (edges[i].startVertex == vertexWithIndex.second)
+                        for (int j = 0; j < verticesCount; j++)
+                            if ((vertices[j] == edges[i].endVertex) && (!isVertexPassed[j]))
+                            {
+                                qVertices.push(std::pair<int, int>(j, vertices[j]));
+                                break;
+                            }
+                    if (edges[i].endVertex == vertexWithIndex.second)
+                        for (int j = 0; j < verticesCount; j++)
+                            if ((vertices[j] == edges[i].startVertex) && (!isVertexPassed[j]))
+                            {
+                                qVertices.push(std::pair<int, int>(j, vertices[j]));
+                                break;
+                            }
+                }
+            }
+            numberOfComponents++;
+        }
+    }
+    return numberOfComponents;
+}
+
+;
