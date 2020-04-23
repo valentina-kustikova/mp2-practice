@@ -21,5 +21,11 @@
     <ClInclude Include="..\..\include\TBinaryTreeIterator.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\TAVLTree.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\TAVLTreeNode.h">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

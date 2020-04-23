@@ -4,6 +4,7 @@
 template <typename TKey, typename TData>
 class TBinaryTreeNode
 {
+protected:
     template<typename, typename> friend class TBinaryTree;
     template<typename> friend class TBinaryTreeIterator;
     TKey key;

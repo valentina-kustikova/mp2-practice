@@ -14,8 +14,9 @@ public:
     using Iterator = TBinaryTreeIterator<TBinaryTree<TKey, TData>>;
     using Key = TKey;
     using Data = TData;
+    using Pair = TPair<TKey, TData>;
 
-private:
+protected:
     Node* root_;
     inline Iterator makeIter(Node* node) const;
     static Node* findMax(Node* root);
