@@ -15,6 +15,7 @@ public:
     using Data = TData;
     using Pair = TPair<TKey, TData>;
 protected:
+    using BaseType::root_;
     TBalanceFactor leftBalancing(Node* node);
     TBalanceFactor rightBalancing(Node* node);
 public:

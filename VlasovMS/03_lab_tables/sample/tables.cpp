@@ -1,6 +1,7 @@
 #include <iostream>
 #include "TBinaryTree.h"
 #include "TAVLTree.h"
+#include "TOrderedTable.h"
 
 int main()
 {
@@ -12,5 +13,8 @@ int main()
 
     TAVLTree<int, int> avl = TAVLTree<int, int>();
     auto iter3 = avl.root();
+
+    TArrayTable<int, int> table1;
+    TOrderedTable<int, int> table2(8);
     return 0;
 }

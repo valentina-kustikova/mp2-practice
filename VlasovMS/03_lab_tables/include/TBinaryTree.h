@@ -5,6 +5,7 @@
 
 #include "TBinaryTreeNode.h"
 #include "TBinaryTreeIterator.h"
+#include "TPair.h"
 
 template <typename TKey, typename TData>
 class TBinaryTree

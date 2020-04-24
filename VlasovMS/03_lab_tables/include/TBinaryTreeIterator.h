@@ -8,16 +8,10 @@
 
 #include "TBinaryTreeNode.h"
 
-template<typename TKey, typename TData>
-struct TPair
-{
-    TKey key;
-    TData* data;
-};
-
 template <typename Tree>
 class TBinaryTreeIterator
 {
+protected:
     template<typename, typename> friend class TBinaryTree;
     const Tree* owningTree;
     typename Tree::Node* node;
