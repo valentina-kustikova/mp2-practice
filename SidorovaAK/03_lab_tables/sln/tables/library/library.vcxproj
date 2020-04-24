@@ -20,6 +20,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\include\BalanceTree.h" />
+    <ClInclude Include="..\..\..\include\table.h" />
+    <ClInclude Include="..\..\..\include\tabrecord.h" />
     <ClInclude Include="..\..\..\include\tbalancenode.h" />
     <ClInclude Include="..\..\..\include\binaryTree.h" />
     <ClInclude Include="..\..\..\include\exceptions.h" />

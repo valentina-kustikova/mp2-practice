@@ -6,7 +6,7 @@
 template<typename TKey, class TData>
 class BinaryTree
 {
-private:
+protected:
 	TNode<TKey, TData>* root;
 
 public:
@@ -33,7 +33,7 @@ public:
 template<typename TKey, class TData>
 BinaryTree<TKey, TData>::BinaryTree()
 {
-	root = new TNode<TKey, TData>;
+	root = nullptr;
 };
 
 template<typename TKey, class TData>
@@ -182,7 +182,7 @@ void BinaryTree<TKey, TData>::Insert(const TNode<TKey, TData>* _tnode)
 template<typename TKey, class TData>
 void BinaryTree<TKey, TData>::Insert(const TKey _key, const TData _pData)
 {
-	TNode<TKey, TData>* newTNode = new TNode<TKey, TData>(_key, nullptr, nullptr, nullptr, _pData);
+	TNode<TKey, TData>* newTNode = new TNode<TKey, TData>(_key, _pData);
 	Insert(newTNode);
 };
 
