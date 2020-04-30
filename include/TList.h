@@ -280,67 +280,67 @@ void TList<TData, TKey>::Remove(TKey fkey)
 	throw "The list doesn't contain an elem with this key";
     }
 	
-	if (pFirst == pCur)
+    if (pFirst == pCur)
     {
         if (fpCur == pFirst)
         {
-			Next();
-			fpCur = pCur;
-			fpNext = pNext;
-			fpFirst = pCur;
+            Next();
+            fpCur = pCur;
+            fpNext = pNext;
+            fpFirst = pCur;
         }
-   		else if (fpCur == pFirst->pNext)
-   		{
-   			fpPrev = nullptr;
-   			fpFirst = fpCur;
-   		}
-		else
-		{
-			fpFirst = fpFirst->pNext;
-		}
-		delete pFirst;
-		pFirst = fpFirst;
+   	else if (fpCur == pFirst->pNext)
+   	{
+            fpPrev = nullptr;
+            fpFirst = fpCur;
+   	}
+	else
+	{
+	    fpFirst = fpFirst->pNext;
+	}
+	delete pFirst;
+	pFirst = fpFirst;
 
-		pPrev = fpPrev;
-		pCur = fpCur;
-	    pNext = fpNext;
+	pPrev = fpPrev;
+	pCur = fpCur;
+	pNext = fpNext;
         return;
     }
 
-	if (fpPrev == pCur)
-	{
-		delete pCur;
-		pCur = fpCur;
-		pPrev->pNext = pCur;
-		pNext = fpNext;
-		return;
-	}
+    if (fpPrev == pCur)
+    {
+        delete pCur;
+	pCur = fpCur;
+	pPrev->pNext = pCur;
+	pNext = fpNext;
+	return;
+    }
 
     if (fpCur == pCur)
     {
         delete pCur;
         pCur = fpNext;
         pPrev->pNext = pCur;
-		if (pNext != nullptr)
+	if (pNext != nullptr)
         {
             pNext = pNext->pNext;
         }
         return;
     }
 
-	if (fpNext == pCur)
-	{
-		delete pCur;
-		pCur = fpCur;
-		pCur->pNext = pNext;
-		pPrev = fpPrev;
-		return;
-	}
+    if (fpNext == pCur)
+    {
+	delete pCur;
+	pCur = fpCur;
+	pCur->pNext = pNext;
+	pPrev = fpPrev;
+	return;
+    }
 
     pPrev->pNext = pCur->pNext;
     delete pCur;    
     pCur = pNext;
-	if (pNext != nullptr)
+    if (pNext != nullptr)
     {
         pNext = pNext->pNext;
     }
