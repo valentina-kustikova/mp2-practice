@@ -287,11 +287,11 @@ void TList<double, unsigned int>::Remove(unsigned int fkey)
 
     if (fpNext == pCur)
     {
-	delete pCur;
-	pCur = fpCur;
-	pCur->pNext = pNext;
-	pPrev = fpPrev;
-	return;
+        delete pCur;
+        pCur = fpCur;
+        pCur->pNext = pNext;
+        pPrev = fpPrev;
+        return;
     }
 
     pPrev->pNext = pCur->pNext;
