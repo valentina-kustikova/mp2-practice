@@ -278,7 +278,7 @@ void TList<double, unsigned int>::Remove(unsigned int fkey)
         delete pCur;
         pCur = fpNext;
         pPrev->pNext = pCur;
-	if (pNext != nullptr)
+        if (pNext != nullptr)
         {
             pNext = pNext->pNext;
         }
