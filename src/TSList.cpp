@@ -244,26 +244,33 @@ void TList<double, unsigned int>::Remove(unsigned int fkey)
             Next();
             fpCur = pCur;
             fpNext = pNext;
-            fpPrev->pNext = pCur;
             fpFirst = pCur;
         }
-        else if (fpCur == pFirst->pNext)
-        {
+   	else if (fpCur == pFirst->pNext)
+   	{
             fpPrev = nullptr;
-            fpPrev->pNext = fpCur;
             fpFirst = fpCur;
-        }
-        else
-        {
-            fpFirst = fpFirst->pNext;
-        }
-        delete pFirst;
-        pFirst = fpFirst;
+   	}
+	else
+	{
+	    fpFirst = fpFirst->pNext;
+	}
+	delete pFirst;
+	pFirst = fpFirst;
 
-        pPrev = fpPrev;
-        pCur = fpCur;
-        pNext = fpNext;
+	pPrev = fpPrev;
+	pCur = fpCur;
+	pNext = fpNext;
         return;
+    }
+
+    if (fpPrev == pCur)
+    {
+        delete pCur;
+	pCur = fpCur;
+	pPrev->pNext = pCur;
+	pNext = fpNext;
+	return;
     }
 
     if (fpCur == pCur)
@@ -271,14 +278,24 @@ void TList<double, unsigned int>::Remove(unsigned int fkey)
         delete pCur;
         pCur = fpNext;
         pPrev->pNext = pCur;
-        if (pNext != nullptr)
+	if (pNext != nullptr)
         {
             pNext = pNext->pNext;
         }
         return;
     }
+
+    if (fpNext == pCur)
+    {
+	delete pCur;
+	pCur = fpCur;
+	pCur->pNext = pNext;
+	pPrev = fpPrev;
+	return;
+    }
+
     pPrev->pNext = pCur->pNext;
-    delete pCur;
+    delete pCur;    
     pCur = pNext;
     if (pNext != nullptr)
     {
