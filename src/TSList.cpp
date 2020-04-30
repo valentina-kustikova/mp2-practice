@@ -250,23 +250,23 @@ void TList<double, unsigned int>::Remove(unsigned int fkey)
         {
             fpPrev = nullptr;
             fpFirst = fpCur;
-   	}
-	else
-	{
-	    fpFirst = fpFirst->pNext;
-	}
-	delete pFirst;
-	pFirst = fpFirst;
+        }
+        else
+        {
+            fpFirst = fpFirst->pNext;
+        }
+        delete pFirst;
+        pFirst = fpFirst;
 
-	pPrev = fpPrev;
-	pCur = fpCur;
-	pNext = fpNext;
-    return;
+        pPrev = fpPrev;
+        pCur = fpCur;
+        pNext = fpNext;
+        return;
     }
 
     if (fpPrev == pCur)
     {
-    delete pCur;
+        delete pCur;
 	pCur = fpCur;
 	pPrev->pNext = pCur;
 	pNext = fpNext;
