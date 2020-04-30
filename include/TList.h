@@ -277,7 +277,7 @@ void TList<TData, TKey>::Remove(TKey fkey)
         pPrev = fpPrev;
         pCur = fpCur;
         pNext = fpNext;
-		throw fkey;///////////// throw key "The list doesn't contain an elem with this key - "
+	throw "The list doesn't contain an elem with this key";
     }
 	
 	if (pFirst == pCur)
