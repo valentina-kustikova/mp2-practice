@@ -229,7 +229,7 @@ void TList<TData, TKey>::InsertBefore(TKey fkey, TData* _pData, TKey _key)
         if (fpCur == fpFirst)
             pPrev = node;
         else
-            pPrev = fpPrev;////
+            pPrev = fpPrev;
         pCur = fpCur;
         pNext = fpNext;
         return;
@@ -289,31 +289,31 @@ void TList<TData, TKey>::Remove(TKey fkey)
             fpNext = pNext;
             fpFirst = pCur;
         }
-   	else if (fpCur == pFirst->pNext)
-   	{
+        else if (fpCur == pFirst->pNext)
+        {
             fpPrev = nullptr;
             fpFirst = fpCur;
-   	}
-	else
-	{
-	    fpFirst = fpFirst->pNext;
-	}
-	delete pFirst;
-	pFirst = fpFirst;
+        }
+        else
+        {
+            fpFirst = fpFirst->pNext;
+        }
+        delete pFirst;
+        pFirst = fpFirst;
 
-	pPrev = fpPrev;
-	pCur = fpCur;
-	pNext = fpNext;
+        pPrev = fpPrev;
+        pCur = fpCur;
+        pNext = fpNext;
         return;
     }
 
     if (fpPrev == pCur)
     {
         delete pCur;
-	pCur = fpCur;
-	pPrev->pNext = pCur;
-	pNext = fpNext;
-	return;
+        pCur = fpCur;
+        pPrev->pNext = pCur;
+        pNext = fpNext;
+        return;
     }
 
     if (fpCur == pCur)
@@ -321,7 +321,7 @@ void TList<TData, TKey>::Remove(TKey fkey)
         delete pCur;
         pCur = fpNext;
         pPrev->pNext = pCur;
-	if (pNext != nullptr)
+        if (pNext != nullptr)
         {
             pNext = pNext->pNext;
         }
@@ -330,11 +330,11 @@ void TList<TData, TKey>::Remove(TKey fkey)
 
     if (fpNext == pCur)
     {
-	delete pCur;
-	pCur = fpCur;
-	pCur->pNext = pNext;
-	pPrev = fpPrev;
-	return;
+        delete pCur;
+        pCur = fpCur;
+        pCur->pNext = pNext;
+        pPrev = fpPrev;
+        return;
     }
 
     pPrev->pNext = pCur->pNext;
