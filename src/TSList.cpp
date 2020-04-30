@@ -261,12 +261,12 @@ void TList<double, unsigned int>::Remove(unsigned int fkey)
 	pPrev = fpPrev;
 	pCur = fpCur;
 	pNext = fpNext;
-        return;
+    return;
     }
 
     if (fpPrev == pCur)
     {
-        delete pCur;
+    delete pCur;
 	pCur = fpCur;
 	pPrev->pNext = pCur;
 	pNext = fpNext;
