@@ -345,9 +345,9 @@ void TList<TData, TKey>::Remove(TKey fkey)
         pNext = pNext->pNext;
     }
 
-	pPrev = fpPrev;
-	pCur = fpCur;
-	pNext = fpNext;
+    pPrev = fpPrev;
+    pCur = fpCur;
+    pNext = fpNext;
 }
 
 #endif
