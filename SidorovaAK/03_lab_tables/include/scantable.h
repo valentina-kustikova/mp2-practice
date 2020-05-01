@@ -9,9 +9,9 @@ class TScanTable : public TArrayTable<TKey, TData>
 public:
 	TScanTable(int _size) : TArrayTable<TKey, TData>(_size) {};
 
-	TTabRecord<TKey, TData>* FindRecord(TKey _key) override;
-	void InsertRecord(TKey _key, TData* _data = nullptr) override;
-	void RemoveRecord(TKey _key) override;
+	virtual TTabRecord<TKey, TData>* FindRecord(TKey _key) override;
+	virtual void InsertRecord(TKey _key, TData* _data = nullptr) override;
+	virtual void RemoveRecord(TKey _key) override;
 };
 //-----------------------------------------------
 

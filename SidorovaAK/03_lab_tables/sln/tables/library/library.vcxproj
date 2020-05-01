@@ -22,6 +22,7 @@
     <ClInclude Include="..\..\..\include\arraytable.h" />
     <ClInclude Include="..\..\..\include\balancetree.h" />
     <ClInclude Include="..\..\..\include\scantable.h" />
+    <ClInclude Include="..\..\..\include\sorttable.h" />
     <ClInclude Include="..\..\..\include\table.h" />
     <ClInclude Include="..\..\..\include\tabrecord.h" />
     <ClInclude Include="..\..\..\include\tbalancenode.h" />

@@ -21,6 +21,7 @@ public:
 
 	bool IsEmpty() const { return dataCount == 0; }
 	bool IsFull() const { return dataCount >= tabSize; }
+	int GetTabSize() const { return tabSize; }
 	int GetDataCount() const { return dataCount; }
 	int GetCurrentPos() const { return currPos; }
 	
