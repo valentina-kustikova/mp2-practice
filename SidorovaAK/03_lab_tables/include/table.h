@@ -17,6 +17,7 @@ protected:
 	int currPos;
 
 public:
+	TTable() : tabSize(0), dataCount(0), currPos(0) {};
 	TTable(int _tabSize);
 
 	bool IsEmpty() const { return dataCount == 0; }

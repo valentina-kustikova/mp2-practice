@@ -7,6 +7,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "library", "library\library.
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "scantable", "scantable\scantable.vcxproj", "{31621C1E-47BB-427E-A7E7-7BE33F3AB3EB}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sorttable", "sorttable\sorttable.vcxproj", "{B156A58F-7008-429A-9DE1-082961804FA9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -31,6 +33,14 @@ Global
 		{31621C1E-47BB-427E-A7E7-7BE33F3AB3EB}.Release|x64.Build.0 = Release|x64
 		{31621C1E-47BB-427E-A7E7-7BE33F3AB3EB}.Release|x86.ActiveCfg = Release|Win32
 		{31621C1E-47BB-427E-A7E7-7BE33F3AB3EB}.Release|x86.Build.0 = Release|Win32
+		{B156A58F-7008-429A-9DE1-082961804FA9}.Debug|x64.ActiveCfg = Debug|x64
+		{B156A58F-7008-429A-9DE1-082961804FA9}.Debug|x64.Build.0 = Debug|x64
+		{B156A58F-7008-429A-9DE1-082961804FA9}.Debug|x86.ActiveCfg = Debug|Win32
+		{B156A58F-7008-429A-9DE1-082961804FA9}.Debug|x86.Build.0 = Debug|Win32
+		{B156A58F-7008-429A-9DE1-082961804FA9}.Release|x64.ActiveCfg = Release|x64
+		{B156A58F-7008-429A-9DE1-082961804FA9}.Release|x64.Build.0 = Release|x64
+		{B156A58F-7008-429A-9DE1-082961804FA9}.Release|x86.ActiveCfg = Release|Win32
+		{B156A58F-7008-429A-9DE1-082961804FA9}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

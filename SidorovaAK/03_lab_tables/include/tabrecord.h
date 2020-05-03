@@ -25,9 +25,38 @@ public:
 	void SetData(TData _data) { data = _data; }
 	void SetKey(TKey _key) { key = _key; }
 
+	bool operator>(const TTabRecord& _record) const;
+	bool operator>=(const TTabRecord& _record) const;
+	bool operator<(const TTabRecord& _record) const;
+	bool operator<=(const TTabRecord& _record) const;
+
 	template<typename TKey, class TData> friend ostream& operator<<(ostream& _out, const TTabRecord& _record);
 };
 //------------------------------------------
+
+template<typename TKey, class TData>
+bool TTabRecord<TKey, TData>::operator>(const TTabRecord& _record) const
+{
+	return(key > _record.key);
+};
+
+template<typename TKey, class TData>
+bool TTabRecord<TKey, TData>::operator>=(const TTabRecord& _record) const
+{
+	return(key >= _record.key);
+};
+
+template<typename TKey, class TData>
+bool TTabRecord<TKey, TData>::operator<(const TTabRecord& _record) const
+{
+	return(key < _record.key);
+};
+
+template<typename TKey, class TData>
+bool TTabRecord<TKey, TData>::operator<=(const TTabRecord& _record) const
+{
+	return(key <= _record.key);
+};
 
 template<typename TKey, class TData>
 ostream& operator<<(ostream& _out, const TTabRecord<TKey, TData>& _record)

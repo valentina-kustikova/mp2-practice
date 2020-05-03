@@ -3,6 +3,8 @@
 
 #include "table.h"
 
+template<typename TKey, class TData> class TSortTable;
+
 template<typename TKey, class TData>
 class TArrayTable : public TTable<TKey, TData>
 {
@@ -10,12 +12,15 @@ protected:
 	TTabRecord<TKey, TData>** pRecs;
 
 public:
+	TArrayTable() : TTable<TKey, TData>(), pRecs(nullptr) {};
 	TArrayTable(int _size);
 	~TArrayTable();
 
 	TTabRecord<TKey, TData>* GetRecord() const;
 	virtual TKey GetKey() const;
 	virtual TData* GetData() const;
+
+	friend TSortTable<TKey, TData>;
 };
 //----------------------------------------
 

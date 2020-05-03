@@ -7,6 +7,7 @@ template<typename TKey, class TData>
 class TScanTable : public TArrayTable<TKey, TData>
 {
 public:
+	TScanTable() : TArrayTable<TKey, TData>() {};
 	TScanTable(int _size) : TArrayTable<TKey, TData>(_size) {};
 
 	virtual TTabRecord<TKey, TData>* FindRecord(TKey _key) override;
