@@ -24,9 +24,9 @@ public:
 
 	void SetSortType(TSortType _type);
 
-	virtual TTabRecord<TKey, TData>* FindRecord(TKey _key) override;
-	virtual void InsertRecord(TKey _key, TData* _data = nullptr) override;
-	virtual void RemoveRecord(TKey _key) override;
+	virtual TTabRecord<TKey, TData>* FindRecord(const TKey _key) override;
+	virtual void InsertRecord(const TKey _key, TData* _data = nullptr) override;
+	virtual void RemoveRecord(const TKey _key) override;
 };
 //------------------------------------------------
 
@@ -155,7 +155,7 @@ void TSortTable<TKey, TData>::SetSortType(TSortType _type)
 };
 
 template<typename TKey, class TData>
-TTabRecord<TKey, TData>* TSortTable<TKey, TData>::FindRecord(TKey _key)
+TTabRecord<TKey, TData>* TSortTable<TKey, TData>::FindRecord(const TKey _key)
 {
 	int i, i1 = 0, i2 = this->dataCount - 1;
 	TTabRecord<TKey, TData>* record = nullptr;
@@ -185,7 +185,7 @@ TTabRecord<TKey, TData>* TSortTable<TKey, TData>::FindRecord(TKey _key)
 };
 
 template<typename TKey, class TData>
-void TSortTable<TKey, TData>::InsertRecord(TKey _key, TData* _data)
+void TSortTable<TKey, TData>::InsertRecord(const TKey _key, TData* _data)
 {
 	if (!this->IsFull())
 	{
@@ -200,7 +200,7 @@ void TSortTable<TKey, TData>::InsertRecord(TKey _key, TData* _data)
 };
 
 template<typename TKey, class TData>
-void TSortTable<TKey, TData>::RemoveRecord(TKey _key)
+void TSortTable<TKey, TData>::RemoveRecord(const TKey _key)
 {
 	if (!this->IsEmpty())
 	{

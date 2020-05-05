@@ -1,33 +1,42 @@
 #ifndef _TNODE_H_
 #define _TNODE_H_
 
+#include <iostream>
+
+#include "tabrecord.h"
+
+using namespace std;
+
+template<typename TKey, class TData> class TBinaryTreeTable;
+
 template<typename TKey, class TData>
-class TNode
+class TNode : public TTabRecord<TKey, TData>
 {
 public:
-	TKey key;
 	TNode<TKey, TData>* pParent;
 	TNode<TKey, TData>* pLeft;
 	TNode<TKey, TData>* pRight;
-	TData* pData;
 
-	TNode(TKey _key, TData* _pData = nullptr, TNode<TKey, TData>* _pParent = nullptr, 
+	TNode(TKey _key = {}, TData* _pData = nullptr, TNode<TKey, TData>* _pParent = nullptr,
 		TNode<TKey, TData>* _pLeft = nullptr, TNode<TKey, TData>* _pRight = nullptr);
 	TNode(const TNode<TKey, TData>& _copy);
 	~TNode();
 
-	TKey GetKey() const;
-	TNode<TKey, TData>* GetLeft() const;
-	TNode<TKey, TData>* GetRight() const;
+	TNode<TKey, TData>* GetParent() const { return pParent; };
+	TNode<TKey, TData>* GetLeft() const { return pLeft; };
+	TNode<TKey, TData>* GetRight() const { return pRight; };
+
+	void SetpLeft(const TNode* _pLeft) { pLeft = _pLeft; };
+	void SetpRight(const TNode* _pRight) { pRight = _pRight; };
+
+	friend TBinaryTreeTable<TKey, TData>;
 };
 //---------------------------------------------------------
 
 template<typename TKey, class TData>
 TNode<TKey, TData>::TNode(TKey _key, TData* _pData, TNode<TKey, TData>* _pParent, 
-	TNode<TKey, TData>* _pLeft, TNode<TKey, TData>* _pRight)
+	TNode<TKey, TData>* _pLeft, TNode<TKey, TData>* _pRight) : TTabRecord<TKey, TData>(_key, _pData)
 {
-	key = _key;
-	pData = _pData;
 	pParent = _pParent;
 	pLeft = _pLeft;
 	pRight = _pRight;
@@ -36,8 +45,8 @@ TNode<TKey, TData>::TNode(TKey _key, TData* _pData, TNode<TKey, TData>* _pParent
 template<typename TKey, class TData>
 TNode<TKey, TData>::TNode(const TNode<TKey, TData>& _copy)
 {
-	key = _copy.key;
-	pData = _copy.pData;
+	this->key = _copy.key;
+	this->data = _copy.data;
 	pParent = _copy.pParent;
 	pLeft = _copy.pLeft;
 	pRight = _copy.pRight;
@@ -46,30 +55,10 @@ TNode<TKey, TData>::TNode(const TNode<TKey, TData>& _copy)
 template<typename TKey, class TData>
 TNode<TKey, TData>::~TNode()
 {
-	key = 0;
-	pData = nullptr;
 	pParent = nullptr;
 	pLeft = nullptr;
 	pRight = nullptr;
 };
-//---------------------------------------------------------
-
-template<typename TKey, class TData>
-TKey TNode<TKey, TData>::GetKey() const
-{
-	return key;
-};
-
-template<typename TKey, class TData>
-TNode<TKey, TData>* TNode<TKey, TData>::GetLeft() const
-{
-	return pLeft;
-};
-
-template<typename TKey, class TData>
-TNode<TKey, TData>* TNode<TKey, TData>::GetRight() const
-{
-	return pRight;
-};
+//----------------------------------------------------
 
 #endif

@@ -10,14 +10,14 @@ public:
 	TScanTable() : TArrayTable<TKey, TData>() {};
 	TScanTable(int _size) : TArrayTable<TKey, TData>(_size) {};
 
-	virtual TTabRecord<TKey, TData>* FindRecord(TKey _key) override;
-	virtual void InsertRecord(TKey _key, TData* _data = nullptr) override;
-	virtual void RemoveRecord(TKey _key) override;
+	virtual TTabRecord<TKey, TData>* FindRecord(const TKey _key) override;
+	virtual void InsertRecord(const TKey _key, TData* _data = nullptr) override;
+	virtual void RemoveRecord(const TKey _key) override;
 };
 //-----------------------------------------------
 
 template<typename TKey, class TData>
-TTabRecord<TKey, TData>* TScanTable<TKey, TData>::FindRecord(TKey _key)
+TTabRecord<TKey, TData>* TScanTable<TKey, TData>::FindRecord(const TKey _key)
 {
 	for (int i = 0; i < this->dataCount; i++)
 	{
@@ -32,7 +32,7 @@ TTabRecord<TKey, TData>* TScanTable<TKey, TData>::FindRecord(TKey _key)
 };
 
 template<typename TKey, class TData>
-void TScanTable<TKey, TData>::InsertRecord(TKey _key, TData* _data)
+void TScanTable<TKey, TData>::InsertRecord(const TKey _key, TData* _data)
 {
 	if (!this->IsFull())
 		this->pRecs[this->dataCount++] = new TTabRecord<TKey, TData>(_key, _data);
@@ -41,7 +41,7 @@ void TScanTable<TKey, TData>::InsertRecord(TKey _key, TData* _data)
 };
 
 template<typename TKey, class TData>
-void TScanTable<TKey, TData>::RemoveRecord(TKey _key)
+void TScanTable<TKey, TData>::RemoveRecord(const TKey _key)
 {
 	if ((!this->IsEmpty()) && (this->FindRecord(_key)))
 	{

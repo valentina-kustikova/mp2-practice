@@ -1,7 +1,7 @@
 #ifndef _BALANCETREE_H_
 #define _BALANCETREE_H_
 
-#include "binarytree.h"
+#include "tbinarytreetable.h"
 #include "tbalancenode.h"
 
 template<typename TKey, class TData>

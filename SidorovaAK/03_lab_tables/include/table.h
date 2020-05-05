@@ -21,18 +21,17 @@ public:
 	TTable(int _tabSize);
 
 	bool IsEmpty() const { return dataCount == 0; }
-	bool IsFull() const { return dataCount >= tabSize; }
+	virtual bool IsFull() const { return dataCount >= tabSize; }
 	int GetTabSize() const { return tabSize; }
 	int GetDataCount() const { return dataCount; }
 	int GetCurrentPos() const { return currPos; }
 	
-	virtual TTabRecord<TKey, TData>* FindRecord(TKey _key) = 0;
-	virtual void InsertRecord(TKey _key, TData* _data = nullptr) = 0;
-	virtual void RemoveRecord(TKey _key) = 0;
+	virtual TTabRecord<TKey, TData>* FindRecord(const TKey _key) = 0;
+	virtual void InsertRecord(const TKey _key, TData* _data = nullptr) = 0;
+	virtual void RemoveRecord(const TKey _key) = 0;
 	
 	virtual bool Reset();
 	virtual bool GetNext();
-
 	virtual bool IsTabEnded() const { return currPos >= tabSize; }
 	
 	virtual TTabRecord<TKey, TData>* GetRecord() const = 0;

@@ -33,9 +33,6 @@
     <ClInclude Include="..\..\..\include\balancetree.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\include\binarytree.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\include\arraytable.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
@@ -43,6 +40,9 @@
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\include\sorttable.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\tbinarytreetable.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

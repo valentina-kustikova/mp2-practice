@@ -13,7 +13,7 @@ protected:
 	TData* data;
 
 public:
-	TTabRecord(TKey _key = static_cast<TKey>(0), TData* _data = nullptr)
+	TTabRecord(TKey _key = {}, TData* _data = nullptr)
 	{
 		key = _key;
 		data = _data;
@@ -22,8 +22,8 @@ public:
 	TData* GetData() const { return data; }
 	TKey GetKey() const { return key; }
 
-	void SetData(TData _data) { data = _data; }
-	void SetKey(TKey _key) { key = _key; }
+	void SetData(TData* _data) { data = _data; }
+	void SetKey(const TKey _key) { key = _key; }
 
 	bool operator>(const TTabRecord& _record) const;
 	bool operator>=(const TTabRecord& _record) const;
