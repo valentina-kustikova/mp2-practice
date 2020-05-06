@@ -1,4 +1,4 @@
-#include "tbinarytreetable.h"
+#include "binarytreetable.h"
 
 void Test_CreateEmptyTable()
 {

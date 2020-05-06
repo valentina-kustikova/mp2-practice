@@ -1,5 +1,5 @@
-#ifndef _TBINARYTREETABLE_H_
-#define _TBINARYTREETABLE_H_
+#ifndef _BINARYTREETABLE_H_
+#define _BINARYTREETABLE_H_
 
 #include <stack>
 
@@ -32,7 +32,7 @@ public:
 	virtual bool GetNext() override;
 	virtual bool IsTabEnded() const override{ return this->currPos >= this->dataCount; }
 
-	virtual TTabRecord<TKey, TData>* FindRecord(const TKey _key) override;
+	TTabRecord<TKey, TData>* FindRecord(const TKey _key) override;
 	void InsertRecord(TNode<TKey, TData>* _tnode);
 	virtual void InsertRecord(const TKey _key, TData* _pData = nullptr) override;
 	void RemoveRecord(TNode<TKey, TData>* _tnode);

@@ -24,9 +24,9 @@ public:
 
 	void SetSortType(TSortType _type);
 
-	virtual TTabRecord<TKey, TData>* FindRecord(const TKey _key) override;
-	virtual void InsertRecord(const TKey _key, TData* _data = nullptr) override;
-	virtual void RemoveRecord(const TKey _key) override;
+	TTabRecord<TKey, TData>* FindRecord(const TKey _key) override;
+	void InsertRecord(const TKey _key, TData* _data = nullptr) override;
+	void RemoveRecord(const TKey _key) override;
 };
 //------------------------------------------------
 
