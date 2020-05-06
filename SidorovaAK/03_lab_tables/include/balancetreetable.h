@@ -90,7 +90,11 @@ int TBalanceTreeTable<TKey, TData>::LeftTreeBalancing(TBalanceNode<TKey, TData>*
 		if (left->GetBalance() == -1)
 		{
 			(*_node)->pLeft = left->pRight;
+			if(left->pRight)
+				left->pRight->pParent = (*_node);
 			left->pRight = (*_node);
+			left->pParent = (*_node)->pParent;
+			(*_node)->pParent = left;
 			(*_node)->SetBalance(0);
 			(*_node) = left;
 		}
@@ -98,9 +102,16 @@ int TBalanceTreeTable<TKey, TData>::LeftTreeBalancing(TBalanceNode<TKey, TData>*
 		{
 			TBalanceNode<TKey, TData>* right = (TBalanceNode<TKey, TData>*)(left->pRight);
 			left->pRight = right->pLeft;
+			if(right->pLeft)
+				right->pLeft->pParent = left;
 			right->pLeft = left;
+			left->pParent = right;
 			(*_node)->pLeft = right->pRight;
+			if(right->pRight)
+				right->pRight->pParent = (*_node);
 			right->pRight = (*_node);
+			right->pParent = (*_node)->pParent;
+			(*_node)->pParent = right;
 			if (right->GetBalance() == -1)
 				(*_node)->SetBalance(1);
 			else
@@ -141,9 +152,16 @@ int TBalanceTreeTable<TKey, TData>::RightTreeBalancing(TBalanceNode<TKey, TData>
 		{
 			TBalanceNode<TKey, TData>* left = (TBalanceNode<TKey, TData>*)(right->pLeft);
 			right->pLeft = left->pRight;
+			if(left->pRight)
+				left->pRight->pParent = right;
 			left->pRight = right;
+			right->pParent = left;
 			(*_node)->pRight = left->pLeft;
-			left->pRight = (*_node);
+			if(left->pLeft)
+				left->pLeft->pParent = (*_node);
+			left->pLeft = (*_node);
+			left->pParent = (*_node);
+			(*_node)->pParent = left;
 			if (left->GetBalance() == -1)
 				(*_node)->SetBalance(1);
 			else
@@ -158,7 +176,11 @@ int TBalanceTreeTable<TKey, TData>::RightTreeBalancing(TBalanceNode<TKey, TData>
 		else
 		{
 			(*_node)->pRight = right->pLeft;
+			if (right->pLeft)
+				right->pLeft->pParent = (*_node);
 			right->pLeft = (*_node);
+			right->pParent = (*_node)->pParent;
+			(*_node)->pParent = right;
 			(*_node)->SetBalance(1);
 			(*_node) = right;
 		}
