@@ -96,7 +96,12 @@ void TArrayHashTable<TKey, TData>::InsertRecord(const TKey _key, TData* _data)
 		throw Exception("Table is full!");
 
 	if (FindRecord(_key))
-		throw Exception("Tab record with this key is already in the table!");
+	{
+		TTabRecord<TKey, TData>* record = FindRecord(_key);
+		record->SetData(_data);
+
+		return;
+	}
 
 	if (freePos != -1)
 	{
