@@ -15,6 +15,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "balancetreetable", "balance
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "arrayhashtable", "arrayhashtable\arrayhashtable.vcxproj", "{999178F6-8E93-4512-8D27-E93CBCD0A792}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "listhashtable", "listhashtable\listhashtable.vcxproj", "{FE82A3DC-2BA8-4887-AEB8-CFB4341C52EE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -71,6 +73,14 @@ Global
 		{999178F6-8E93-4512-8D27-E93CBCD0A792}.Release|x64.Build.0 = Release|x64
 		{999178F6-8E93-4512-8D27-E93CBCD0A792}.Release|x86.ActiveCfg = Release|Win32
 		{999178F6-8E93-4512-8D27-E93CBCD0A792}.Release|x86.Build.0 = Release|Win32
+		{FE82A3DC-2BA8-4887-AEB8-CFB4341C52EE}.Debug|x64.ActiveCfg = Debug|x64
+		{FE82A3DC-2BA8-4887-AEB8-CFB4341C52EE}.Debug|x64.Build.0 = Debug|x64
+		{FE82A3DC-2BA8-4887-AEB8-CFB4341C52EE}.Debug|x86.ActiveCfg = Debug|Win32
+		{FE82A3DC-2BA8-4887-AEB8-CFB4341C52EE}.Debug|x86.Build.0 = Debug|Win32
+		{FE82A3DC-2BA8-4887-AEB8-CFB4341C52EE}.Release|x64.ActiveCfg = Release|x64
+		{FE82A3DC-2BA8-4887-AEB8-CFB4341C52EE}.Release|x64.Build.0 = Release|x64
+		{FE82A3DC-2BA8-4887-AEB8-CFB4341C52EE}.Release|x86.ActiveCfg = Release|Win32
+		{FE82A3DC-2BA8-4887-AEB8-CFB4341C52EE}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
