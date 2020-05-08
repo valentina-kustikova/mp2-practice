@@ -7,389 +7,389 @@ template<typename TKey, class TData>
 class TTabRecordList
 {
 protected:
-	TTabRecordLink<TKey, TData>* pFirst;
-	TTabRecordLink<TKey, TData>* pCurrent;
-	TTabRecordLink<TKey, TData>* pNext;
-	TTabRecordLink<TKey, TData>* pPrev;
+    TTabRecordLink<TKey, TData>* pFirst;
+    TTabRecordLink<TKey, TData>* pCurrent;
+    TTabRecordLink<TKey, TData>* pNext;
+    TTabRecordLink<TKey, TData>* pPrev;
 
 public:
-	TTabRecordList();
-	TTabRecordList(const TTabRecordList&);
-	TTabRecordList(const TTabRecordLink<TKey, TData>*);
-	~TTabRecordList();
+    TTabRecordList();
+    TTabRecordList(const TTabRecordList&);
+    TTabRecordList(const TTabRecordLink<TKey, TData>*);
+    ~TTabRecordList();
 
-	void Reset();
-	void Next();
-	bool IsEnded() const;
-	
-	bool IsEmpty() const { return pFirst? false : true; }
+    void Reset();
+    void Next();
+    bool IsEnded() const;
+    
+    bool IsEmpty() const { return pFirst? false : true; }
 
-	TTabRecordLink<TKey, TData>* GetFirst() const { return pFirst; }
-	TTabRecordLink<TKey, TData>* GetCurrent() const { return pCurrent; }
+    TTabRecordLink<TKey, TData>* GetFirst() const { return pFirst; }
+    TTabRecordLink<TKey, TData>* GetCurrent() const { return pCurrent; }
 
-	TTabRecordLink<TKey, TData>* Search(TKey);
-	void PushBegin(TKey, TData*);
-	void PushEnd(TKey, TData*);
-	void PushBefore(TKey, TKey, TData*);
-	void PushAfter(TKey, TKey, TData*);
-	void Delete(TKey);
+    TTabRecordLink<TKey, TData>* Search(TKey);
+    void PushBegin(TKey, TData*);
+    void PushEnd(TKey, TData*);
+    void PushBefore(TKey, TKey, TData*);
+    void PushAfter(TKey, TKey, TData*);
+    void Delete(TKey);
 };
 //-----------------------------------------------------------------
 
 template<typename TKey, class TData>
 TTabRecordList<TKey, TData>::TTabRecordList()
 {
-	pFirst = pNext = pPrev = pCurrent = nullptr;
+    pFirst = pNext = pPrev = pCurrent = nullptr;
 };
 
 template<typename TKey, class TData>
 TTabRecordList<TKey, TData>::TTabRecordList(const TTabRecordList& _copy)
 {
-	pNext = pPrev = pCurrent = nullptr;
+    pNext = pPrev = pCurrent = nullptr;
 
-	if (!_copy.pFirst)
-		pFirst = nullptr;
-	else
-	{
-		pFirst = new TTabRecordLink<TKey, TData>(*_copy.pFirst);
-		pFirst->pNext = nullptr;
-		pCurrent = pFirst;
+    if (!_copy.pFirst)
+        pFirst = nullptr;
+    else
+    {
+        pFirst = new TTabRecordLink<TKey, TData>(*_copy.pFirst);
+        pFirst->pNext = nullptr;
+        pCurrent = pFirst;
 
-		TTabRecordLink<TKey, TData>* iter = new TTabRecordLink<TKey, TData>;
-		iter = _copy.pFirst;
+        TTabRecordLink<TKey, TData>* iter = new TTabRecordLink<TKey, TData>;
+        iter = _copy.pFirst;
 
-		while (iter->pNext)
-		{
-			iter = iter->pNext;
-			pCurrent->pNext = new TTabRecordLink<TKey, TData>(*iter);
+        while (iter->pNext)
+        {
+            iter = iter->pNext;
+            pCurrent->pNext = new TTabRecordLink<TKey, TData>(*iter);
 
-			pPrev = pCurrent;
-			pCurrent = pCurrent->pNext;
-			pNext = pCurrent->pNext = nullptr;
-		}
+            pPrev = pCurrent;
+            pCurrent = pCurrent->pNext;
+            pNext = pCurrent->pNext = nullptr;
+        }
 
-		pPrev = nullptr;
-		pCurrent = pFirst;
-		pNext = pFirst->pNext;
-	}
+        pPrev = nullptr;
+        pCurrent = pFirst;
+        pNext = pFirst->pNext;
+    }
 };
 
 template<typename TKey, class TData>
 TTabRecordList<TKey, TData>::TTabRecordList(const TTabRecordLink<TKey, TData>* _node)
 {
-	pNext = pPrev = pCurrent = nullptr;
+    pNext = pPrev = pCurrent = nullptr;
 
-	if (!_node)
-		pFirst = nullptr;
-	else
-	{
-		TTabRecordLink<TKey, TData>* node = new TTabRecordLink<TKey, TData>(*_node);
-		pFirst = node;
+    if (!_node)
+        pFirst = nullptr;
+    else
+    {
+        TTabRecordLink<TKey, TData>* node = new TTabRecordLink<TKey, TData>(*_node);
+        pFirst = node;
 
-		TTabRecordLink<TKey, TData>* iter = _node->pNext;
-		TTabRecordLink<TKey, TData>* prev = pFirst;
+        TTabRecordLink<TKey, TData>* iter = _node->pNext;
+        TTabRecordLink<TKey, TData>* prev = pFirst;
 
-		while (iter)
-		{
-			TTabRecordLink<TKey, TData>* tmp = new TTabRecordLink<TKey, TData>(*iter);
-			prev->pNext = tmp;
-			prev = tmp;
-			iter = iter->pNext;
-		}
+        while (iter)
+        {
+            TTabRecordLink<TKey, TData>* tmp = new TTabRecordLink<TKey, TData>(*iter);
+            prev->pNext = tmp;
+            prev = tmp;
+            iter = iter->pNext;
+        }
 
-		pCurrent = pFirst;
-		pNext = pCurrent->pNext;
-	}
+        pCurrent = pFirst;
+        pNext = pCurrent->pNext;
+    }
 };
 
 template<typename TKey, class TData>
 TTabRecordList<TKey, TData>::~TTabRecordList()
 {
-	this->Reset();
-	while (!this->IsEnded())
-	{
-		this->Next();
-		delete pPrev;
-	}
+    this->Reset();
+    while (!this->IsEnded())
+    {
+        this->Next();
+        delete pPrev;
+    }
 
-	delete pCurrent;
+    delete pCurrent;
 
-	pFirst = pNext = pPrev = pCurrent = nullptr;
+    pFirst = pNext = pPrev = pCurrent = nullptr;
 };
 //-----------------------------------------------------------------
 
 template<typename TKey, class TData>
 void TTabRecordList<TKey, TData>::Reset()
 {
-	pPrev = nullptr;
-	pCurrent = pFirst;
-	if (pFirst)
-		pNext = pCurrent->pNext;
-	else
-		pNext = nullptr;
+    pPrev = nullptr;
+    pCurrent = pFirst;
+    if (pFirst)
+        pNext = pCurrent->pNext;
+    else
+        pNext = nullptr;
 };
 
 template<typename TKey, class TData>
 void TTabRecordList<TKey, TData>::Next()
 {
-	pPrev = pCurrent;
-	pCurrent = pNext;
+    pPrev = pCurrent;
+    pCurrent = pNext;
 
-	if (pCurrent)
-		pNext = pCurrent->pNext;
-	else
-		pNext = nullptr;
+    if (pCurrent)
+        pNext = pCurrent->pNext;
+    else
+        pNext = nullptr;
 };
 
 template<typename TKey, class TData>
 bool TTabRecordList<TKey, TData>::IsEnded() const
 {
-	return (pCurrent == nullptr);
+    return (pCurrent == nullptr);
 };
 //-----------------------------------------------------------------
 
 template<typename TKey, class TData>
 TTabRecordLink<TKey, TData>* TTabRecordList<TKey, TData>::Search(TKey _key)
 {
-	TTabRecordLink<TKey, TData>* tmppCurrent = pCurrent;
-	TTabRecordLink<TKey, TData>* tmppNext = pNext;
-	TTabRecordLink<TKey, TData>* tmppPrev = pPrev;
+    TTabRecordLink<TKey, TData>* tmppCurrent = pCurrent;
+    TTabRecordLink<TKey, TData>* tmppNext = pNext;
+    TTabRecordLink<TKey, TData>* tmppPrev = pPrev;
 
-	this->Reset();
+    this->Reset();
 
-	while (!this->IsEnded())
-	{
-		if (_key == pCurrent->key)
-		{
-			TTabRecordLink<TKey, TData>* findNode = pCurrent;
-			pCurrent = tmppCurrent;
-			pNext = tmppNext;
-			pPrev = tmppPrev;
+    while (!this->IsEnded())
+    {
+        if (_key == pCurrent->key)
+        {
+            TTabRecordLink<TKey, TData>* findNode = pCurrent;
+            pCurrent = tmppCurrent;
+            pNext = tmppNext;
+            pPrev = tmppPrev;
 
-			return findNode;
-		}
+            return findNode;
+        }
 
-		this->Next();
-	}
+        this->Next();
+    }
 
-	pCurrent = tmppCurrent;
-	pNext = tmppNext;
-	pPrev = tmppPrev;
+    pCurrent = tmppCurrent;
+    pNext = tmppNext;
+    pPrev = tmppPrev;
 
-	return nullptr;
+    return nullptr;
 };
 
 template<typename TKey, class TData>
 void TTabRecordList<TKey, TData>::PushBegin(TKey _key, TData* _data)
 {
-	TTabRecordLink<TKey, TData>* newNode = new TTabRecordLink<TKey, TData>(_key, _data, pFirst);
+    TTabRecordLink<TKey, TData>* newNode = new TTabRecordLink<TKey, TData>(_key, _data, pFirst);
 
-	if (pCurrent == pFirst)
-		pPrev = newNode;
+    if (pCurrent == pFirst)
+        pPrev = newNode;
 
-	pFirst = newNode;
+    pFirst = newNode;
 };
 
 template<typename TKey, class TData>
 void TTabRecordList<TKey, TData>::PushEnd(TKey _key, TData* _data)
 {
-	TTabRecordLink<TKey, TData>* tmppCurrent = pCurrent;
-	TTabRecordLink<TKey, TData>* tmppNext = pNext;
-	TTabRecordLink<TKey, TData>* tmppPrev = pPrev;
+    TTabRecordLink<TKey, TData>* tmppCurrent = pCurrent;
+    TTabRecordLink<TKey, TData>* tmppNext = pNext;
+    TTabRecordLink<TKey, TData>* tmppPrev = pPrev;
 
-	this->Reset();
+    this->Reset();
 
-	while (pNext)
-		this->Next();
+    while (pNext)
+        this->Next();
 
-	TTabRecordLink<TKey, TData>* newNode = new TTabRecordLink<TKey, TData>(_key, _data);
+    TTabRecordLink<TKey, TData>* newNode = new TTabRecordLink<TKey, TData>(_key, _data);
 
-	if (!pFirst)
-		pFirst = newNode;
-	else
-		pCurrent->pNext = newNode;
+    if (!pFirst)
+        pFirst = newNode;
+    else
+        pCurrent->pNext = newNode;
 
-	if (tmppCurrent == pCurrent)
-		pNext = newNode;
-	else
-		pNext = tmppNext;
+    if (tmppCurrent == pCurrent)
+        pNext = newNode;
+    else
+        pNext = tmppNext;
 
-	pCurrent = tmppCurrent;
-	pPrev = tmppPrev;
+    pCurrent = tmppCurrent;
+    pPrev = tmppPrev;
 };
 
 template<typename TKey, class TData>
 void TTabRecordList<TKey, TData>::PushBefore(TKey _superKey, TKey _key, TData* _data)
 {
-	TTabRecordLink<TKey, TData>* tmppCurrent = pCurrent;
-	TTabRecordLink<TKey, TData>* tmppNext = pNext;
-	TTabRecordLink<TKey, TData>* tmppPrev = pPrev;
+    TTabRecordLink<TKey, TData>* tmppCurrent = pCurrent;
+    TTabRecordLink<TKey, TData>* tmppNext = pNext;
+    TTabRecordLink<TKey, TData>* tmppPrev = pPrev;
 
-	this->Reset();
+    this->Reset();
 
-	if ((this->IsEnded()) || (pFirst->key == _superKey))
-	{
-		this->PushBegin(_key, _data);
-		pCurrent = pFirst;
-		return;
-	}
+    if ((this->IsEnded()) || (pFirst->key == _superKey))
+    {
+        this->PushBegin(_key, _data);
+        pCurrent = pFirst;
+        return;
+    }
 
-	TTabRecordLink<TKey, TData>* nodeFind = Search(_superKey);
+    TTabRecordLink<TKey, TData>* nodeFind = Search(_superKey);
 
-	if (!nodeFind)
-	{
-		throw Exception("Key didn't find!");
-		return;
-	}
+    if (!nodeFind)
+    {
+        throw Exception("Key didn't find!");
+        return;
+    }
 
-	while (pCurrent != nodeFind)
-		this->Next();
+    while (pCurrent != nodeFind)
+        this->Next();
 
-	TTabRecordLink<TKey, TData>* newNode = new TTabRecordLink<TKey, TData>(_key, _data, pCurrent);
-	pPrev->pNext = newNode;
+    TTabRecordLink<TKey, TData>* newNode = new TTabRecordLink<TKey, TData>(_key, _data, pCurrent);
+    pPrev->pNext = newNode;
 
-	if (tmppCurrent == pPrev)
-		pNext = newNode;
-	else
-		pNext = tmppNext;
+    if (tmppCurrent == pPrev)
+        pNext = newNode;
+    else
+        pNext = tmppNext;
 
-	if (tmppCurrent == pCurrent)
-		pPrev = newNode;
-	else
-		pPrev = tmppPrev;
+    if (tmppCurrent == pCurrent)
+        pPrev = newNode;
+    else
+        pPrev = tmppPrev;
 
-	pCurrent = tmppCurrent;
+    pCurrent = tmppCurrent;
 };
 
 template<typename TKey, class TData>
 void TTabRecordList<TKey, TData>::PushAfter(TKey _superKey, TKey _key, TData* _data)
 {
-	TTabRecordLink<TKey, TData>* tmppCurrent = pCurrent;
-	TTabRecordLink<TKey, TData>* tmppNext = pNext;
-	TTabRecordLink<TKey, TData>* tmppPrev = pPrev;
+    TTabRecordLink<TKey, TData>* tmppCurrent = pCurrent;
+    TTabRecordLink<TKey, TData>* tmppNext = pNext;
+    TTabRecordLink<TKey, TData>* tmppPrev = pPrev;
 
-	this->Reset();
+    this->Reset();
 
-	TTabRecordLink<TKey, TData>* nodeFind = Search(_superKey);
+    TTabRecordLink<TKey, TData>* nodeFind = Search(_superKey);
 
-	if (!nodeFind)
-	{
-		throw Exception("Key didn't find!");
-		return;
-	}
+    if (!nodeFind)
+    {
+        throw Exception("Key didn't find!");
+        return;
+    }
 
-	while (pCurrent != nodeFind)
-		this->Next();
+    while (pCurrent != nodeFind)
+        this->Next();
 
-	TTabRecordLink<TKey, TData>* newNode = new TTabRecordLink<TKey, TData>(_key, _data, pNext);
-	pCurrent->pNext = newNode;
+    TTabRecordLink<TKey, TData>* newNode = new TTabRecordLink<TKey, TData>(_key, _data, pNext);
+    pCurrent->pNext = newNode;
 
-	if (tmppCurrent == pCurrent)
-		pNext = newNode;
-	else
-		pNext = tmppNext;
+    if (tmppCurrent == pCurrent)
+        pNext = newNode;
+    else
+        pNext = tmppNext;
 
-	if (tmppCurrent == pNext)
-		pPrev = newNode;
-	else
-		pPrev = tmppPrev;
+    if (tmppCurrent == pNext)
+        pPrev = newNode;
+    else
+        pPrev = tmppPrev;
 
-	pCurrent = tmppCurrent;
+    pCurrent = tmppCurrent;
 };
 
 template<typename TKey, class TData>
 void TTabRecordList<TKey, TData>::Delete(TKey _key)
 {
-	if (!pFirst)
-		throw Exception("List is empty!");
+    if (!pFirst)
+        throw Exception("List is empty!");
 
-	if (pFirst->key == _key)
-	{
-		if (pCurrent == pFirst)
-		{
-			pCurrent = pNext;
-			if (pNext)
-				pNext = pNext->pNext;
-			else
-				pNext = nullptr;
+    if (pFirst->key == _key)
+    {
+        if (pCurrent == pFirst)
+        {
+            pCurrent = pNext;
+            if (pNext)
+                pNext = pNext->pNext;
+            else
+                pNext = nullptr;
 
-			delete pFirst;
-			pFirst = pCurrent;
+            delete pFirst;
+            pFirst = pCurrent;
 
-			return;
-		}
+            return;
+        }
 
-		if (pCurrent == pFirst->pNext)
-		{
-			pPrev = nullptr;
+        if (pCurrent == pFirst->pNext)
+        {
+            pPrev = nullptr;
 
-			delete pFirst;
-			pFirst = pCurrent;
+            delete pFirst;
+            pFirst = pCurrent;
 
-			return;
-		}
+            return;
+        }
 
-		delete pFirst;
+        delete pFirst;
 
-		return;
-	}
+        return;
+    }
 
-	TTabRecordLink<TKey, TData>* tmppCurrent = pCurrent;
-	TTabRecordLink<TKey, TData>* tmppPrev = pPrev;
-	TTabRecordLink<TKey, TData>* tmppNext = pNext;
+    TTabRecordLink<TKey, TData>* tmppCurrent = pCurrent;
+    TTabRecordLink<TKey, TData>* tmppPrev = pPrev;
+    TTabRecordLink<TKey, TData>* tmppNext = pNext;
 
-	this->Reset();
+    this->Reset();
 
-	TTabRecordLink<TKey, TData>* nodeFind = Search(_key);
+    TTabRecordLink<TKey, TData>* nodeFind = Search(_key);
 
-	if (!nodeFind)
-	{
-		throw Exception("Key didn't find!");
-		return;
-	}
+    if (!nodeFind)
+    {
+        throw Exception("Key didn't find!");
+        return;
+    }
 
-	while (pCurrent != nodeFind)
-		this->Next();
+    while (pCurrent != nodeFind)
+        this->Next();
 
-	pPrev->pNext = pNext;
+    pPrev->pNext = pNext;
 
-	if (tmppCurrent == pCurrent)
-	{
-		pCurrent = tmppNext;
-		pNext = pCurrent->pNext;
-		delete nodeFind;
+    if (tmppCurrent == pCurrent)
+    {
+        pCurrent = tmppNext;
+        pNext = pCurrent->pNext;
+        delete nodeFind;
 
-		return;
-	}
+        return;
+    }
 
-	if (tmppCurrent == pPrev)
-	{
-		pCurrent = pPrev;
-		pPrev = tmppPrev;
-		pNext = pCurrent->pNext;
-		delete nodeFind;
+    if (tmppCurrent == pPrev)
+    {
+        pCurrent = pPrev;
+        pPrev = tmppPrev;
+        pNext = pCurrent->pNext;
+        delete nodeFind;
 
-		return;
-	}
+        return;
+    }
 
-	if (tmppCurrent == pNext)
-	{
-		pCurrent = pNext;
-		pNext = pCurrent->pNext;
-		delete nodeFind;
+    if (tmppCurrent == pNext)
+    {
+        pCurrent = pNext;
+        pNext = pCurrent->pNext;
+        delete nodeFind;
 
-		return;
-	}
+        return;
+    }
 
-	if (tmppCurrent)
-		pNext = tmppCurrent->pNext;
-	else
-		pNext = nullptr;
+    if (tmppCurrent)
+        pNext = tmppCurrent->pNext;
+    else
+        pNext = nullptr;
 
-	pCurrent = tmppCurrent;
-	delete nodeFind;
+    pCurrent = tmppCurrent;
+    delete nodeFind;
 
-	return;
+    return;
 };
 
 #endif

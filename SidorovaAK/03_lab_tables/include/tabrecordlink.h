@@ -9,18 +9,18 @@ template<typename TKey, class TData>
 class TTabRecordLink : public TTabRecord<TKey, TData>
 {
 protected:
-	TTabRecordLink* pNext;
+    TTabRecordLink* pNext;
 
 public:
-	TTabRecordLink(TKey _key = {}, TData* _data = nullptr, TTabRecordLink* _pNext = nullptr) :
-		TTabRecord<TKey, TData>(_key, _data), pNext(_pNext) {};
-	~TTabRecordLink() { pNext = nullptr; }
+    TTabRecordLink(TKey _key = {}, TData* _data = nullptr, TTabRecordLink* _pNext = nullptr) :
+        TTabRecord<TKey, TData>(_key, _data), pNext(_pNext) {};
+    ~TTabRecordLink() { pNext = nullptr; }
 
-	TTabRecordLink* GetNext() const { return pNext; }
+    TTabRecordLink* GetNext() const { return pNext; }
 
-	void SetNext(TTabRecordLink* _pNext) { pNext = _pNext; }
+    void SetNext(TTabRecordLink* _pNext) { pNext = _pNext; }
 
-	friend TTabRecordList<TKey, TData>;
+    friend TTabRecordList<TKey, TData>;
 };
 
 #endif
