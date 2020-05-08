@@ -4,6 +4,8 @@
 #include "binarytreetable.h"
 #include "tbalancenode.h"
 
+#include <queue>
+
 template<typename TKey, class TData>
 class TBalanceTreeTable : public TBinaryTreeTable<TKey, TData>
 {
@@ -14,7 +16,6 @@ public:
 	int InsBalanceTree(TBalanceNode<TKey, TData>** _node, const TKey _key, TData* _data = nullptr);
 	int LeftTreeBalancing(TBalanceNode<TKey, TData>** _node);
 	int RightTreeBalancing(TBalanceNode<TKey, TData>** _node);
-	int Remove(TBalanceNode<TKey, TData>** _node, const TKey _key);
 };
 //-----------------------------------------------
 
@@ -23,8 +24,8 @@ void TBalanceTreeTable<TKey, TData>::InsertRecord(const TKey _key, TData* _data)
 {
 	if (this->IsFull())
 		throw Exception("Balance Binary Tree Table is full!");
-	else 
-		InsBalanceTree((TBalanceNode<TKey, TData>**)(&(this->root)), _key, _data);
+	
+	InsBalanceTree((TBalanceNode<TKey, TData>**)(&(this->root)), _key, _data);
 };
 
 template<typename TKey, class TData>
@@ -32,8 +33,120 @@ void TBalanceTreeTable<TKey, TData>::RemoveRecord(const TKey _key)
 {
 	if (this->IsEmpty())
 		throw Exception("Balance Binary Tree Table is empty!");
-	else
-		Remove((TBalanceNode<TKey, TData>**)(&(this->root)), _key);
+
+	struct Balance
+	{
+		TBalanceNode<TKey, TData>** node;
+		bool branch; // 0 - left, 1 - right
+	};
+
+	bool flag = true;
+	stack<Balance> s;
+	TBalanceNode<TKey, TData>** node = (TBalanceNode<TKey, TData>**)&(this->root);
+	
+	while ((*node))
+	{
+		if ((*node)->GetKey() > _key)
+		{
+			s.push({ node, 0 });
+			node = (TBalanceNode<TKey, TData>**)&((*node)->pLeft);
+		}
+		else if ((*node)->GetKey() < _key)
+		{
+			s.push({ node, 1 });
+			node = (TBalanceNode<TKey, TData>**)&((*node)->pRight);
+		}
+		else
+		{
+			(this->dataCount)--;
+			
+			flag = false;
+			TBalanceNode<TKey, TData>* left = (TBalanceNode<TKey, TData>*)(*node)->pLeft;
+			TBalanceNode<TKey, TData>* right = (TBalanceNode<TKey, TData>*)(*node)->pRight;
+			int bal = (*node)->GetBalance();
+			
+
+			if (!left)
+			{
+				if(right)
+					right->pParent = (*node)->pParent;
+				
+				if ((*node)->pParent)
+					if ((*node) == (*node)->pParent->pLeft)
+						(*node)->pParent->pLeft = right;
+					else (*node)->pParent->pRight = right;
+				
+				delete (*node);
+				*node = right;
+			}
+			else if (!right)
+			{
+				left->pParent = (*node)->pParent;
+
+				if ((*node)->pParent)
+					if ((*node) == (*node)->pParent->pLeft)
+						(*node)->pParent->pLeft = left;
+					else (*node)->pParent->pRight = left;
+
+				delete (*node);
+				*node = left;
+			}
+			else if (!(right->pLeft))
+			{
+				right->pLeft = left;
+				left->pParent = right;
+
+				if ((*node) == (*node)->pParent->pLeft)
+					(*node)->pParent->pLeft = right;
+				else (*node)->pParent->pRight = right;
+
+				*node = right;
+				right->SetBalance(bal);
+				s.push({ node, 1 });
+			}
+			else
+			{
+				TBalanceNode<TKey, TData>** q = (TBalanceNode<TKey, TData>**)&(right->pLeft);
+				queue<TBalanceNode<TKey, TData>**> qu;
+				
+				while (((*q)->pLeft))
+				{
+					qu.push(q);
+					q = (TBalanceNode<TKey, TData>**)&((*q)->pLeft);
+				}
+				
+				(*node)->SetKey((*q)->GetKey());
+				(*node)->SetData((*q)->GetData());
+
+				if ((*q)->pRight)
+					(*q)->pRight->pParent = right;
+				right->pLeft = (*q)->pRight;
+				
+				delete(*q);
+
+				(*node)->SetBalance(bal);
+				s.push({ node, 1 });
+				s.push({ (TBalanceNode<TKey, TData>**)&((*node)->pRight), 0 });
+				
+				while (qu.size())
+				{
+					s.push({ qu.front(), 0 });
+					qu.pop();
+				}
+			}
+			break;
+		}
+	}
+
+	while (s.size() && (!flag))
+	{
+		Balance b = s.top();
+		s.pop();
+		if (b.branch)
+			flag = LeftTreeBalancing(b.node);
+		else
+			flag = RightTreeBalancing(b.node);
+	}
 };
 
 template<typename TKey, class TData>
@@ -121,8 +234,9 @@ int TBalanceTreeTable<TKey, TData>::LeftTreeBalancing(TBalanceNode<TKey, TData>*
 			else
 				(*_node)->SetBalance(0);
 			(*_node) = right;
-			(*_node)->SetBalance(0);
 		}
+
+		(*_node)->SetBalance(0);
 		height = 0;
 		break;
 	}
@@ -171,7 +285,6 @@ int TBalanceTreeTable<TKey, TData>::RightTreeBalancing(TBalanceNode<TKey, TData>
 			else
 				(*_node)->SetBalance(0);
 			(*_node) = left;
-			(*_node)->SetBalance(0);
 		}
 		else
 		{
@@ -181,43 +294,13 @@ int TBalanceTreeTable<TKey, TData>::RightTreeBalancing(TBalanceNode<TKey, TData>
 			right->pLeft = (*_node);
 			right->pParent = (*_node)->pParent;
 			(*_node)->pParent = right;
-			(*_node)->SetBalance(1);
+			(*_node)->SetBalance(0);
 			(*_node) = right;
 		}
+
+		(*_node)->SetBalance(0);
 		height = 0;
 		break;
-	}
-
-	return height;
-};
-
-template<typename TKey, class TData>
-int TBalanceTreeTable<TKey, TData>::Remove(TBalanceNode<TKey, TData>** _node, const TKey _key)
-{
-	int height = 0;
-
-	if (_key > (*_node)->GetKey())
-	{
-		if (Remove((TBalanceNode<TKey, TData>**)((*_node)->pRight), _key) == 1)
-			height = RightTreeBalancing(_node);
-	}
-	else if (_key < (*_node)->GetKey())
-	{
-		if (Remove((TBalanceNode<TKey, TData>**)((*_node)->pLeft), _key) == 1)
-			height = LeftTreeBalancing(_node);
-	}
-	else
-	{
-		if (!((*_node)->pLeft) && !((*_node)->pRight))
-		{
-			if ((*_node) == ((*_node)->pParent->pLeft))
-				(*_node)->pParent->pLeft = nullptr;
-			else (*_node)->pParent->pRight = nullptr;
-		}
-		//else if (((*_node)->pLeft) && !((*_node)->pRight))
-		//{
-
-		//}
 	}
 
 	return height;

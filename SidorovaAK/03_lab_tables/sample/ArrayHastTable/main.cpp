@@ -1,12 +1,12 @@
-#include "balancetreetable.h"
+#include "arrayhashtable.h"
 
 void Test_CreateEmptyTable()
 {
 	cout << "/*/ Test <Create empty Table> /*/" << endl << endl;
 
-	cout << "BalanceTree table:" << endl;
+	cout << "ArrayHash table:" << endl;
 
-	TBalanceTreeTable<string, int> table;
+	TArrayHashTable<string, int> table(7, 3);
 	cout << table << endl << endl;
 };
 
@@ -14,9 +14,9 @@ void Test_InsertRecords()
 {
 	cout << "/*/ Test <Insert records> /*/" << endl << endl;
 
-	cout << "BalanceTree table:" << endl;
+	cout << "ArrayHash table:" << endl;
 
-	TBalanceTreeTable<string, int> table;
+	TArrayHashTable<string, int> table(8, 3);
 	table.InsertRecord("First");
 	table.InsertRecord("Second");
 	table.InsertRecord("Third");
@@ -28,13 +28,13 @@ void Test_InsertRecords()
 	cout << table << endl << endl;
 };
 
-void Test_FindRecord()
+void Test_InsertRecordsInFullTable()
 {
-	cout << "/*/ Test <Find record> /*/" << endl << endl;
+	cout << "/*/ Test <Insert records> /*/" << endl << endl;
 
-	cout << "BalanceTree table:" << endl;
+	cout << "ArrayHash table:" << endl;
 
-	TBalanceTreeTable<string, int> table;
+	TArrayHashTable<string, int> table(8, 3);
 	table.InsertRecord("First");
 	table.InsertRecord("Second");
 	table.InsertRecord("Third");
@@ -45,17 +45,18 @@ void Test_FindRecord()
 	table.InsertRecord("Eighth");
 	cout << table << endl << endl;
 
-	cout << "Record <Sixth>: " << table.FindRecord("Sixth") << endl;
-	cout << "Record <Zero>: " << table.FindRecord("Zero") << endl << endl;
+	cout << "Table after inserting <Ninth>: " << endl;
+	table.InsertRecord("Ninth");
+	cout << table << endl << endl;
 };
 
-void Test_SearchMinAndMaxKeys()
+void Test_InsertRecordIsAlreadyInTable()
 {
-	cout << "/*/ Test <Search Min and Max keys> /*/" << endl << endl;
+	cout << "/*/ Test <Insert records> /*/" << endl << endl;
 
-	cout << "BalanceTree table:" << endl;
+	cout << "ArrayHash table:" << endl;
 
-	TBalanceTreeTable<string, int> table;
+	TArrayHashTable<string, int> table(9, 3);
 	table.InsertRecord("First");
 	table.InsertRecord("Second");
 	table.InsertRecord("Third");
@@ -66,17 +67,18 @@ void Test_SearchMinAndMaxKeys()
 	table.InsertRecord("Eighth");
 	cout << table << endl << endl;
 
-	cout << "Record with Min key: " << *table.SearchMinKey(table.GetRoot()) << endl;
-	cout << "Record with Max key: " << *table.SearchMaxKey(table.GetRoot()) << endl << endl;
+	cout << "Table after inserting <First>: " << endl;
+	table.InsertRecord("First");
+	cout << table << endl << endl;
 };
 
-void Test_SearchNextAndPrevRecords()
+void Test_FindRecords()
 {
-	cout << "/*/ Test <Search Next and Previous records for root> /*/" << endl << endl;
+	cout << "/*/ Test <Find records> /*/" << endl << endl;
 
-	cout << "BalanceTree table:" << endl;
+	cout << "ArrayHash table:" << endl;
 
-	TBalanceTreeTable<string, int> table;
+	TArrayHashTable<string, int> table(8, 3);
 	table.InsertRecord("First");
 	table.InsertRecord("Second");
 	table.InsertRecord("Third");
@@ -87,17 +89,17 @@ void Test_SearchNextAndPrevRecords()
 	table.InsertRecord("Eighth");
 	cout << table << endl << endl;
 
-	cout << "Next record for root: " << *table.SearchNext(table.GetRoot()) << endl;
-	cout << "Previous record for root: " << *table.SearchPrev(table.GetRoot()) << endl << endl;
+	cout << "Record <First>: " << table.FindRecord("First") << endl;
+	cout << "Record <Ninth>: " << table.FindRecord("Ninth") << endl;
 };
 
 void Test_RemoveRecords()
 {
-	cout << "/*/ Test <Remove Records> /*/" << endl << endl;
+	cout << "/*/ Test <Remove records> /*/" << endl << endl;
 
-	cout << "BalanceTree table:" << endl;
+	cout << "ArrayHash table:" << endl;
 
-	TBalanceTreeTable<string, int> table;
+	TArrayHashTable<string, int> table(8, 3);
 	table.InsertRecord("First");
 	table.InsertRecord("Second");
 	table.InsertRecord("Third");
@@ -108,37 +110,37 @@ void Test_RemoveRecords()
 	table.InsertRecord("Eighth");
 	cout << table << endl << endl;
 
-	cout << "BalanceTree table after removing <Third>: " << endl;
-	table.RemoveRecord("Third");
+	cout << "Table after removing <First>: " << endl;
+	table.RemoveRecord("First");
 	cout << table << endl << endl;
 
-	cout << "BalanceTree table after removing root: " << endl;
-	table.RemoveRecord(table.GetRoot()->GetKey());
+	cout << "Table after removing <Ninth>: " << endl;
+	table.RemoveRecord("Ninth");
 	cout << table << endl << endl;
 };
 
 void Test_RemoveRecordsInEmptyTable()
 {
-	cout << "/*/ Test <Remove Records in empty table> /*/" << endl << endl;
+	cout << "/*/ Test <Remove records in empty table> /*/" << endl << endl;
 
-	cout << "BalanceTree table:" << endl;
+	cout << "ArrayHash table:" << endl;
 
-	TBalanceTreeTable<string, int> table;
+	TArrayHashTable<string, int> table(8, 3);
 	table.InsertRecord("First");
 	cout << table << endl << endl;
 
-	cout << "BalanceTree table after removing <First>: " << endl;
+	cout << "Table after removing <First>: " << endl;
 	table.RemoveRecord("First");
 	cout << table << endl << endl;
 
-	cout << "BalanceTree table after removing <Zero>: " << endl;
-	table.RemoveRecord("Zero");
+	cout << "Table after removing <Ninth>: " << endl;
+	table.RemoveRecord("Ninth");
 	cout << table << endl << endl;
 };
 
 void main()
 {
-	cout << "##### BALANCE TREE TABLE #####" << endl << endl;
+	cout << "##### ARRAY HASH TREE TABLE #####" << endl << endl;
 
 	try
 	{
@@ -148,7 +150,7 @@ void main()
 	{
 		cout << "[ERROR] " << ex.what() << endl << endl;
 	}
-
+	
 	try
 	{
 		Test_InsertRecords();
@@ -160,7 +162,7 @@ void main()
 
 	try
 	{
-		Test_FindRecord();
+		Test_InsertRecordsInFullTable();
 	}
 	catch (const Exception& ex)
 	{
@@ -169,7 +171,7 @@ void main()
 
 	try
 	{
-		Test_SearchMinAndMaxKeys();
+		Test_InsertRecordIsAlreadyInTable();
 	}
 	catch (const Exception& ex)
 	{
@@ -178,7 +180,7 @@ void main()
 
 	try
 	{
-		Test_SearchNextAndPrevRecords();
+		Test_FindRecords();
 	}
 	catch (const Exception& ex)
 	{
@@ -198,7 +200,7 @@ void main()
 	{
 		Test_RemoveRecordsInEmptyTable();
 	}
-	catch (const Exception& ex)
+	catch (const Exception & ex)
 	{
 		cout << "[ERROR] " << ex.what() << endl << endl;
 	}

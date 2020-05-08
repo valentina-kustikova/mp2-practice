@@ -87,8 +87,8 @@ void Test_SearchNextAndPrevRecords()
 	table.InsertRecord("Eighth");
 	cout << table << endl << endl;
 
-	cout << "Next record: " << *table.SearchNext(table.GetRoot()) << endl;
-	cout << "Previous record: " << *table.SearchPrev(table.GetRoot()) << endl << endl;
+	cout << "Next record for root: " << *table.SearchNext(table.GetRoot()) << endl;
+	cout << "Previous record for root: " << *table.SearchPrev(table.GetRoot()) << endl << endl;
 };
 
 void Test_RemoveRecords()
@@ -144,7 +144,7 @@ void main()
 	{
 		Test_CreateEmptyTable();
 	}
-	catch (const Exception & ex)
+	catch (const Exception& ex)
 	{
 		cout << "[ERROR] " << ex.what() << endl << endl;
 	}
@@ -153,7 +153,7 @@ void main()
 	{
 		Test_InsertRecords();
 	}
-	catch (const Exception & ex)
+	catch (const Exception& ex)
 	{
 		cout << "[ERROR] " << ex.what() << endl << endl;
 	}
@@ -162,7 +162,7 @@ void main()
 	{
 		Test_FindRecord();
 	}
-	catch (const Exception & ex)
+	catch (const Exception& ex)
 	{
 		cout << "[ERROR] " << ex.what() << endl << endl;
 	}
@@ -171,7 +171,7 @@ void main()
 	{
 		Test_SearchMinAndMaxKeys();
 	}
-	catch (const Exception & ex)
+	catch (const Exception& ex)
 	{
 		cout << "[ERROR] " << ex.what() << endl << endl;
 	}
@@ -180,7 +180,7 @@ void main()
 	{
 		Test_SearchNextAndPrevRecords();
 	}
-	catch (const Exception & ex)
+	catch (const Exception& ex)
 	{
 		cout << "[ERROR] " << ex.what() << endl << endl;
 	}
@@ -189,7 +189,7 @@ void main()
 	{
 		Test_RemoveRecords();
 	}
-	catch (const Exception & ex)
+	catch (const Exception& ex)
 	{
 		cout << "[ERROR] " << ex.what() << endl << endl;
 	}
@@ -198,7 +198,7 @@ void main()
 	{
 		Test_RemoveRecordsInEmptyTable();
 	}
-	catch (const Exception & ex)
+	catch (const Exception& ex)
 	{
 		cout << "[ERROR] " << ex.what() << endl << endl;
 	}
