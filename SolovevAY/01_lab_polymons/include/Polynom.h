@@ -5,7 +5,7 @@ using namespace std;
 class Polynom
 {
 private:
-	static Polynom convert(const string& _expression);// ?? static ? ?????????? void
+	static Polynom convert(const string& _expression);
 
 protected:
 	TList<UINT, double> *monoms;
