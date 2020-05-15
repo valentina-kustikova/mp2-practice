@@ -9,21 +9,20 @@
 
 #define D 3
 
-void Dijkstra::Algorithm(const Graph& _graph, const int _start, vector<vector<int> >& _paths, float* _result)
+void Dijkstra::Algorithm(const Graph& _graph, const int _start, vector<vector<int> >& _paths, vector<float>& _result)
 {
     if (_start < 0 || _start >= _graph.GetVerticesCount())
-        throw exception("Incorrect start vertexex!");
-
+        throw exception("Incorrect start vertex");
     if (!_graph.IsConnected())
-        throw exception("Graph must be connect connected!");
+        throw exception("Graph must be connected");
 
-    int* vertexices = new int[_graph.GetVerticesCount()];
+    int* vertices = new int[_graph.GetVerticesCount()];
     Pair* pairs = new Pair[_graph.GetVerticesCount()];
 
     for (int i = 0; i < _graph.GetVerticesCount(); i++)
     {
         pairs[i].distance = numeric_limits<float>::infinity();
-        vertexices[i] = _start;
+        vertices[i] = _start;
         pairs[i].vertex = i;
     }
 
@@ -46,7 +45,7 @@ void Dijkstra::Algorithm(const Graph& _graph, const int _start, vector<vector<in
             if ((adjMatrix[idx] >= 0) && (mark.distance + adjMatrix[idx] < pairs[i].distance))
             {
                 pairs[i].distance = mark.distance + adjMatrix[idx];
-                vertexices[pairs[i].vertex] = mark.vertex;
+                vertices[pairs[i].vertex] = mark.vertex;
                 adjMatrix[idx] = adjMatrix[mark.vertex * _graph.GetVerticesCount() + pairs[i].vertex] = -1;
             }
         }
@@ -61,14 +60,14 @@ void Dijkstra::Algorithm(const Graph& _graph, const int _start, vector<vector<in
 
     for (int i = 0; i < _graph.GetVerticesCount(); i++)
     {
-        int v = vertexices[i];
+        int v = vertices[i];
         int count = 1;
         _paths[i].resize(_graph.GetVerticesCount() - 1);
 
         while (v != _start)
         {
             _paths[i][count - 1] = v;
-            v = vertexices[v];
+            v = vertices[v];
             count++;
         }
 
@@ -77,6 +76,6 @@ void Dijkstra::Algorithm(const Graph& _graph, const int _start, vector<vector<in
         reverse(_paths[i].begin(), _paths[i].end());
     }
 
-    delete[] vertexices;
+    delete[] vertices;
     delete[] pairs;
 };

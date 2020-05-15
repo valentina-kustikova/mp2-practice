@@ -40,3 +40,6 @@ RustamovAZ/lab2/sln/.vs/Lab2/v16/.suo
 *.pdb
 *.tlog
 RustamovAZ/lab2/sln/Lib/x64/Debug/Lib.vcxproj.FileListAbsolute.txt
+*.db-wal
+*.db-shm
+*.ilk

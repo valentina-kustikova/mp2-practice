@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <iostream>
+#include <exception>
 
 #include "TDHeap.h"
 #include "Edge.h"

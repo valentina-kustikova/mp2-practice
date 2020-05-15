@@ -12,7 +12,7 @@ Graph::Graph()
 Graph::Graph(int _size)
 {
     if (_size <= 0)
-        throw exception("Incorrect size of graph!");
+        throw exception("Incorrect number of vertices");
 
     countVertices = _size;
     weights = new float[countVertices * countVertices];
@@ -20,15 +20,15 @@ Graph::Graph(int _size)
     for (int i = 0; i < countVertices; i++)
         for (int j = 0; j < i; j++)
         {
-            weights[i * countVertices + j] = -1;
-            weights[j * countVertices + i] = -1;
+            weights[i * countVertices + j] = INT_MAX / 2;
+            weights[j * countVertices + i] = INT_MAX / 2;
         }
 };
 
 Graph::Graph(float* _vector, int _size)
 {
     if (_size <= 0)
-        throw exception("Incorrect size of graph");
+        throw exception("Incorrect number of vertices");
 
     if (_vector == nullptr)
         throw exception("Vector is empty");
@@ -76,6 +76,10 @@ void Graph::RandomGraph()
         for (int j = 0; j < i; j++)
         {
             weights[i * countVertices + j] = (int)(rand() % 12) - 1;
+            if (weights[i * countVertices + j] <= 0)
+            {
+                weights[i * countVertices + j] = INT_MAX/2;
+            }
             weights[j * countVertices + i] = weights[i * countVertices + j];
         }
 
@@ -155,10 +159,10 @@ istream& operator>>(istream& _in, Graph& _graph)
 {
     int countOfEdges = 0;
 
-    cout << "Input the count of vertices: ";
+    cout << "Input the number of vertices: ";
     _in >> _graph.countVertices;
     if (_graph.countVertices <= 0)
-        throw exception("Number of vertices must be positive");
+        throw exception("Incorrect number of vertices");
 
     _graph.weights = new float[_graph.countVertices * _graph.countVertices];
 
@@ -211,7 +215,10 @@ ostream& operator<<(ostream& _out, const Graph& _graph)
         for (int j = 0; j < i; j++)
             _out << "\t";
         for (int j = i; j < _graph.countVertices; j++)
-            _out << _graph.weights[j * _graph.countVertices + i] << "\t";
+            if (_graph.weights[j * _graph.countVertices + i] == INT_MAX / 2)
+                _out << "-" << "\t";
+            else
+                _out << _graph.weights[j * _graph.countVertices + i] << "\t";
         _out << endl;
     }
 

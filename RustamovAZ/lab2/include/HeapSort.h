@@ -22,7 +22,7 @@ void HeapSort<T>::Sort(T* _arr, int _size)
     if (_arr == nullptr || _size == 0)
         throw exception("Array is empty");
 
-    DHeap<T> heap(_size, _size, D, _arr);
+    TDHeap<T> heap(_arr, _size, D);
     heap.heapify();
 
     for (int i = 0; i < _size; i++)

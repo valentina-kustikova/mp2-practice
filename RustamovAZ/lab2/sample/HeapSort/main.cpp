@@ -2,11 +2,11 @@
 #include <iostream>
 #include <time.h>
 
-#include "heapsort.h"
+#include "HeapSort.h"
 
 using namespace std;
 
-void main()
+int main()
 {
     cout << "HeapSort Demo" << endl;
     srand((unsigned int)time(0));
@@ -42,6 +42,7 @@ void main()
             cout << elements[i] << " ";
 
         cout << endl;
+        delete[] elements;
     }
     catch (const exception& ex)
     {

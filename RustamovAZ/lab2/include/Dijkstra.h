@@ -8,7 +8,7 @@
 class Dijkstra
 {
 public:
-    static void Algorithm(const Graph& _graph, const int _start, vector<vector<int> >& _paths, float* _result); // .., start, paths, result
+    static void Algorithm(const Graph& _graph, const int _start, vector<vector<int> >& _paths, vector<float>& _result);
 };
 
 #endif

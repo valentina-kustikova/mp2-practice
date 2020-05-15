@@ -15,6 +15,7 @@ private:
     int maxSize;
     int size;
     T* keys;
+    int minChild(int _parent)const;
 public:
     TDHeap(const TDHeap<T>& temp) = default;
     TDHeap(T * _keys, int _size, int _base = 2);
@@ -22,8 +23,7 @@ public:
 
     int GetSize() const;
     T GetMin() const;
-
-    int minChild(int _parent)const;
+    
     void Push(const T _newkey);
     void transpose(int a, int b);
     void shiftUp(int _key);
@@ -59,7 +59,7 @@ T TDHeap<T>::GetMin() const
 template<typename T>
 inline int TDHeap<T>::minChild(int parentKey) const
 {
-    if ((parentKey <= 0) || (parentKey > maxSize))
+    if ((parentKey < 0) || (parentKey > maxSize))
         throw std::exception("Key is out of range");
     if (parentKey * base + 1 >= size)
         return (-1);
