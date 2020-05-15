@@ -1,6 +1,6 @@
 #pragma once
-#include "..\include\graph.h"
-#include "..\include\DHeap.h"
+#include "graph.h"
+#include "DHeap.h"
 
 class KruskalAlgorithm
 {

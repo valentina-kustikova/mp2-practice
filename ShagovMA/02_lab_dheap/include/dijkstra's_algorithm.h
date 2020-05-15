@@ -1,6 +1,6 @@
 #pragma once
-#include "..\include\graph.h"
-#include "..\include\DHeap.h"
+#include "graph.h"
+#include "DHeap.h"
 #include <vector>
 
 class DijkstrasAlgorithm
@@ -13,5 +13,9 @@ struct Pair
 {
 	int vertex;
 	float weight;
-	bool operator<(const Pair& pair);
+	bool operator<(const Pair& pair) const;
+	bool operator>(const Pair& pair) const;
+	bool operator<=(const Pair& pair) const;
+	bool operator>=(const Pair& pair) const;
+	bool operator==(const Pair& pair) const;
 };

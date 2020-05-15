@@ -1,17 +1,17 @@
-#include "..\include\graph.h"
+#include "graph.h"
 
-bool Edge::operator>(const Edge & edge)
+bool Edge::operator>(const Edge & edge) const
 {
 	return weight > edge.weight;
 }
 
-bool Edge::operator<(const Edge & edge)
+bool Edge::operator<(const Edge & edge) const
 {
 	return weight < edge.weight;
 }
 
-bool Edge::operator==(const Edge & edge)
-{
+bool Edge::operator==(const Edge & edge) const
+{ 
 	if ((n == edge.n) && (k == edge.k) || (n == edge.k) && (k == edge.n))
 	{
 		return true;
@@ -19,7 +19,7 @@ bool Edge::operator==(const Edge & edge)
 	return false;
 }
 
-bool Edge::loop_check()
+bool Edge::loop_check() const
 {
 	if (n == k)
 	{
@@ -27,53 +27,20 @@ bool Edge::loop_check()
 	}
 	return false;
 }
-
+ 
 Graph::Graph(Edge* _edges, int v_count, int e_count)
 {
 	if (_edges == nullptr)
 	{
 		throw "Edges were nullptr";
 	}
-	if (v_count <= 0)
+	if (v_count < 0)
 	{
 		throw "Vertex count <= 0";
 	}
-	if (e_count < 0)
+	if (e_count <= 0)
 	{
 		throw "Edges count < 0";
-	}
-	DividedSet set(v_count);
-	for (int j = 0; j < e_count; j++)
-	{
-		for (int i = j; i < e_count; i++)
-		{
-			if ((_edges[i] == _edges[j]) && (i != j))
-			{
-				throw "Multiple edges";
-			}
-		}
-		if (_edges[j].loop_check())
-		{
-			throw "There is loop";
-		}
-	}
-	for (int i = 0; i < v_count; i++)
-	{
-		set.createSingleton(i);
-	}
-	for (int i = 0; i < e_count; i++)
-	{
-		set.createUnitedSet(set.findSet(_edges[i].k), set.findSet(_edges[i].n));
-	}
-	for (int j = 0; j < v_count; j++)
-	{
-		for (int i = 0; i < v_count; i++)
-		{
-			if (set.set[i] != set.set[j])
-			{
-				throw "Graph is not connected";
-			}
-		}
 	}
 	vertex_count = v_count;
 	edges_count = e_count;
@@ -95,11 +62,67 @@ Graph::Graph(const Graph & graph)
 	}
 }
 
-bool Graph::vertexCheck(int i) const
+Graph::~Graph()
+{
+	delete[] edges;
+}
+
+const Graph & Graph::operator=(const Graph & graph)
+{
+	vertex_count = graph.vertex_count;
+	edges_count = graph.edges_count;
+	edges = new Edge[edges_count];
+	for (int i = 0; i < edges_count; i++)
+	{
+		edges[i] = graph.edges[i];
+	}
+	return *this;
+}
+
+bool Graph::IsGraphConnected() const
+{
+	DividedSet set(vertex_count);
+	for (int i = 0; i < vertex_count; i++)
+	{
+		set.createSingleton(i);
+	}
+	for (int i = 0; i < edges_count; i++)
+	{
+		set.createUnitedSet(set.findSet(edges[i].k), set.findSet(edges[i].n));
+	}
+	for (int j = 0; j < vertex_count; j++)
+	{
+		for (int i = 0; i < vertex_count; i++)
+		{
+			if (set.set[i] != set.set[j])
+			{
+				return false;
+			}
+		}
+	}
+	return true;
+}
+
+bool Graph::CheckMultipleEdges() const
 {
 	for (int j = 0; j < edges_count; j++)
 	{
-		if ((edges[j].n == i) || (edges[j].k == i))
+		for (int i = j; i < edges_count; i++)
+		{
+			if ((edges[i] == edges[j]) && (i != j))
+			{
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+bool Graph::CheckLoop() const
+{
+	for (int j = 0; j < edges_count; j++)
+	{
+		if (edges[j].loop_check())
 		{
 			return true;
 		}

@@ -13,20 +13,19 @@ class DHeap
 	void transpose(int i, int j);
 	int min(int first, int second) const;
 	int findMinChild(int i) const;
+	
+public:
+	DHeap<TData>(TData* elements_, int size_, int base_ = 2);
+
+	bool IsEmpty() const;
+
+	int getSize() const;
+	TData top();
+	TData popMin();
 	void popUp(int i);
 	void dipDown(int i);
 	void hilling();
-public:
-	DHeap<TData>(const DHeap<TData>& temp) = default;
-	DHeap<TData>(TData* elements_, int size_, int base_ = 2);
-	~DHeap<TData>() = default;
 
-	bool IsEmpty();
-
-	int getSize();
-	TData top();
-	TData popMin();
-	void sort();
 	friend std::ostream& operator<< (std::ostream &out, DHeap<TData> &heap)
 	{
 		if (heap.size == 0)
@@ -40,6 +39,8 @@ public:
 		out << "\n";
 		return out;
 	};
+
+	friend class HeapsortAlgorithm;
 };
 
 template<typename TData>
@@ -135,13 +136,13 @@ void DHeap<TData>::hilling()
 }
 
 template<typename TData>
-inline bool DHeap<TData>::IsEmpty()
+inline bool DHeap<TData>::IsEmpty() const
 {
 	return size == 0;
 }
 
 template<typename TData>
-inline int DHeap<TData>::getSize()
+inline int DHeap<TData>::getSize() const
 {
 	return size;
 }
@@ -160,16 +161,4 @@ TData DHeap<TData>::popMin()
 	size--;
 	dipDown(0);
 	return min;
-}
-
-template<typename TData>
-void DHeap<TData>::sort()
-{
-	while (size > 1)
-	{
-		transpose(0, size - 1);
-		size--;
-		dipDown(0);
-	}
-	size = max_size;
 }

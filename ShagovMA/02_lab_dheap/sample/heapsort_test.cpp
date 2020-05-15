@@ -1,4 +1,4 @@
-#include "..\include\kruskal's_algorithm.h"
+#include "Heapsort.h"
 #include <iostream>
 #include <time.h>
 
@@ -24,7 +24,7 @@ int main()
 		std::cout << "Attempt to output heap1(Elements):\n";
 		std::cout << heap1;
 		std::cout << "Attempt to sort heap1(Elements):\n";
-		heap1.sort();
+		HeapsortAlgorithm::heapsort(heap1);
 		std::cout << "Sorted heap1:" << std::endl;
 		std::cout << heap1;
 	}
@@ -32,4 +32,5 @@ int main()
 	{
 		std::cout << k << std::endl;
 	}
+	delete[] elements;
 }

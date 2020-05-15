@@ -70,7 +70,9 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>./../../include;$(IncludePath)</IncludePath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -120,6 +122,7 @@
     <ClInclude Include="..\..\include\dijkstra%27s_algorithm.h" />
     <ClInclude Include="..\..\include\divided_set.h" />
     <ClInclude Include="..\..\include\graph.h" />
+    <ClInclude Include="..\..\include\Heapsort.h" />
     <ClInclude Include="..\..\include\kruskal%27s_algorithm.h" />
   </ItemGroup>
   <ItemGroup>

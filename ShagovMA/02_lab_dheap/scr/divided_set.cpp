@@ -1,4 +1,4 @@
-#include "..\include\divided_set.h"
+#include "divided_set.h"
 
 DividedSet::DividedSet(int size)
 {
@@ -52,7 +52,7 @@ int DividedSet::findSet(int i)
 	return set[i];
 }
 
-bool DividedSet::operator!=(const DividedSet & _set)
+bool DividedSet::operator!=(const DividedSet & _set) const
 {
 	if (universe != _set.universe)
 	{
@@ -66,4 +66,9 @@ bool DividedSet::operator!=(const DividedSet & _set)
 		}
 	};
 	return false;
+}
+
+bool DividedSet::operator==(const DividedSet & _set) const
+{
+	return !(*this == _set);
 }

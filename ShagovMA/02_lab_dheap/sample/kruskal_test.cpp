@@ -1,4 +1,4 @@
-#include "..\include\kruskal's_algorithm.h"
+#include "kruskal's_algorithm.h"
 #include <iostream>
 #include <time.h>
 

@@ -8,8 +8,14 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "kruskal's_algorithm", "kruskal's_algorithm\kruskal's_algorithm.vcxproj", "{7265E62A-84FD-4CED-815A-73E70A9CAAA2}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dijkstra’s_algorithm", "dijkstra’s_algorithm\dijkstra’s_algorithm.vcxproj", "{D8C6A374-46B4-4DA1-BAFD-18C1027D1CE9}"
+	ProjectSection(ProjectDependencies) = postProject
+		{6F298244-CFC3-44A0-A005-317B3F7CF5AA} = {6F298244-CFC3-44A0-A005-317B3F7CF5AA}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "heapsort", "heapsort\heapsort.vcxproj", "{5E8808DC-C961-4A2E-BB6F-4A44FDAD9716}"
+	ProjectSection(ProjectDependencies) = postProject
+		{6F298244-CFC3-44A0-A005-317B3F7CF5AA} = {6F298244-CFC3-44A0-A005-317B3F7CF5AA}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

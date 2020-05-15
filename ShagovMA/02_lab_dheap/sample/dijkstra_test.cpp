@@ -1,4 +1,4 @@
-#include "..\include\dijkstra's_algorithm.h"
+#include "dijkstra's_algorithm.h"
 
 int main()
 {
@@ -78,7 +78,6 @@ int main()
 			for (int j = 0; j < paths[i].size() - 1; j++)
 			{
 				std::cout << paths[i][j] << "-";
-
 			}
 			std::cout << paths[i][paths[i].size() - 1];
 			std::cout << " distance: " << dist[i];

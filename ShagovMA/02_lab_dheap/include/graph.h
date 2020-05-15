@@ -8,8 +8,8 @@ struct Edge
 	int k;
 	float weight;
 
-	bool operator>(const Edge& edge);
-	bool operator<(const Edge& edge);
+	bool operator>(const Edge& edge) const;
+	bool operator<(const Edge& edge) const;
 	Edge() = default;
 	Edge(int _n, int _k, float _weight)
 	{
@@ -17,8 +17,8 @@ struct Edge
 		k = _k;
 		weight = _weight;
 	};
-	bool operator==(const Edge& edge);
-	bool loop_check();
+	bool operator==(const Edge& edge) const;
+	bool loop_check() const;
 };
 
 struct Graph
@@ -30,7 +30,14 @@ struct Graph
 	Graph() = default;
 	Graph(Edge* _edges, int v_count, int e_count);
 	Graph(const Graph& graph);
-	bool vertexCheck(int i) const;
+	~Graph();
+
+	const Graph& operator=(const Graph& graph);
+
 	friend std::istream& operator>> (std::istream &in, Graph &graph);
 	friend std::ostream& operator<< (std::ostream &out, Graph &graph);
+	
+	bool IsGraphConnected() const;
+	bool CheckMultipleEdges() const;
+	bool CheckLoop() const;
 };

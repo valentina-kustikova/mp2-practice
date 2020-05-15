@@ -1,15 +1,49 @@
-#include "..\include\dijkstra's_algorithm.h"
+#include "dijkstra's_algorithm.h"
 
-bool Pair::operator<(const Pair & pair)
+bool Pair::operator<(const Pair & pair) const
 {
 	return weight < pair.weight;
 }
 
+bool Pair::operator>(const Pair & pair) const
+{
+	return weight > pair.weight;
+}
+
+bool Pair::operator<=(const Pair & pair) const
+{
+	return weight <= pair.weight;
+}
+
+bool Pair::operator>=(const Pair & pair) const
+{
+	return weight >= pair.weight;
+}
+
+bool Pair::operator==(const Pair & pair) const
+{
+	return weight == pair.weight;
+}
+
+
 void DijkstrasAlgorithm::dijkstraAlgorithm(const Graph& graph, int vertex_start, std::vector<std::vector<int>>& path, float*& dist_graph)
 {
-	if (!graph.vertexCheck(vertex_start))
+	bool check = true;
+	for (int i = 0; i < graph.edges_count; i++)
+	{
+		if ((vertex_start == graph.edges[i].n) || (vertex_start == graph.edges[i].k))
+		{
+			check = false;
+			break;
+		}
+	}
+	if (check)
 	{
 		throw "Vertex_start not belong graph";
+	}
+	if (graph.CheckLoop() || graph.CheckMultipleEdges() || !graph.IsGraphConnected())
+	{
+		throw "Incorrect graph";
 	}
 	dist_graph = new float[graph.vertex_count];
 	int* up = new int[graph.vertex_count];
@@ -78,5 +112,7 @@ void DijkstrasAlgorithm::dijkstraAlgorithm(const Graph& graph, int vertex_start,
 		path[i].push_back(vertex_start);
 		std::reverse(path[i].begin(), path[i].end());
 	}
+	delete[] dist_mark;
+	delete[] up;
 }
 

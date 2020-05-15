@@ -1,9 +1,13 @@
-#include "..\include\kruskal's_algorithm.h"
-#include "..\include\DHeap.h"
-#include "..\include\divided_set.h"
+#include "kruskal's_algorithm.h"
+#include "DHeap.h"
+#include "divided_set.h"
 
 Graph KruskalAlgorithm::kruskalAlgorithm(const Graph & graph)
 {
+	if (graph.CheckLoop() || graph.CheckMultipleEdges() || !graph.IsGraphConnected())
+	{
+		throw "Incorrect graph";
+	}
 	DividedSet vertex(graph.vertex_count);
 	Graph result;
 	result.edges = new Edge[graph.vertex_count - 1];

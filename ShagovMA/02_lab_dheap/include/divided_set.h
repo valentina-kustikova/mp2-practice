@@ -3,7 +3,6 @@
 class DividedSet
 {
 	int universe;
-public:
 	int* set;
 public:
 	DividedSet(int size);
@@ -11,6 +10,9 @@ public:
 	void createSingleton(int i);
 	void createUnitedSet(int i, int j);
 	int findSet(int i);
-	bool operator!=(const DividedSet&);
+	bool operator!=(const DividedSet&) const;
+	bool operator==(const DividedSet&) const;
+
+	friend struct Graph;
 };
 

@@ -15,13 +15,13 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <Library Include="..\x64\Debug\my_lib.lib">
-      <Filter>Файлы заголовков</Filter>
-    </Library>
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="..\..\sample\dijkstra_test.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="..\x64\Debug\my_lib.lib">
+      <Filter>Файлы заголовков</Filter>
+    </Library>
   </ItemGroup>
 </Project>
