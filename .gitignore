@@ -30,3 +30,13 @@
 *.exe
 *.out
 *.app
+RustamovAZ/lab2/sln/.vs/Lab2/v16/.suo
+*.db
+*.opendb
+*.ipch
+*.log
+*.lastbuildstate
+*.idb
+*.pdb
+*.tlog
+RustamovAZ/lab2/sln/Lib/x64/Debug/Lib.vcxproj.FileListAbsolute.txt

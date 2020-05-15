@@ -1,31 +1,31 @@
-#include "TPair.h"
+#include "Pair.h"
 
-bool TPair::operator<(const TPair& other) const
+bool Pair::operator<(const Pair& other) const
 {
     return distance < other.distance;
 }
 
-bool TPair::operator<=(const TPair& other) const
+bool Pair::operator<=(const Pair& other) const
 {
     return distance <= other.distance;
 }
 
-bool TPair::operator>(const TPair& other) const
+bool Pair::operator>(const Pair& other) const
 {
     return distance > other.distance;
 }
 
-bool TPair::operator>=(const TPair& other) const
+bool Pair::operator>=(const Pair& other) const
 {
     return distance >= other.distance;
 }
 
-bool TPair::operator==(const TPair& other) const
+bool Pair::operator==(const Pair& other) const
 {
     return (vertex == other.vertex) && (distance == other.distance);
 }
 
-bool TPair::operator!=(const TPair& other) const
+bool Pair::operator!=(const Pair& other) const
 {
     return !(*this == other);
 }

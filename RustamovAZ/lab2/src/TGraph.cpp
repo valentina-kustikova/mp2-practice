@@ -1,178 +1,219 @@
-#include "../include/TGraph.h"
-#include <exception>
+#include "Graph.h"
+#include "SeparatedSet.h"
 
+using namespace std;
 
-TGraph::TGraph(int _verticesCount, int* _vertices)
+Graph::Graph()
 {
-    verticesCount = _verticesCount;
-    vertices = new int[verticesCount];
-    for (int i = 0; i < verticesCount; i++)
-        vertices[i] = _vertices[i];
-    edgesCount = _verticesCount * (_verticesCount - 1) / 2;
-    edges = new TEdge[edgesCount];
-    edgesCount = 0;
-}
+    countVertices = 0;
+    weights = nullptr;
+};
 
-TGraph::TGraph(int _verticesCount, int* _vertices, TEdge* _edges, int _edgesCount)
+Graph::Graph(int _size)
 {
-    verticesCount = _verticesCount;
-    vertices = new int[verticesCount];
-    for (int i = 0; i < verticesCount; i++)
-        vertices[i] = _vertices[i];
-    edgesCount = _edgesCount;
-    edges = new TEdge[edgesCount];
-    for (int j = 0; j < edgesCount; j++)
-        edges[j] = _edges[j];
-}
+    if (_size <= 0)
+        throw exception("Incorrect size of graph!");
 
-TGraph::TGraph(const TGraph& _graph)
-{
-    verticesCount = _graph.verticesCount;
-    edgesCount = _graph.edgesCount;
-    vertices = new int[verticesCount];
-    for (int i = 0; i < verticesCount; i++)
-        vertices[i] = _graph.vertices[i];
-    edges = new TEdge[edgesCount];
-    for (int j = 0; j < edgesCount; j++)
-        edges[j] = _graph.edges[j];
-}
+    countVertices = _size;
+    weights = new float[countVertices * countVertices];
 
-TGraph::~TGraph()
-{
-    delete[] vertices;
-    delete[] edges;
-}
-
-void TGraph::addNewEdge(const TEdge& _newEdge)
-{
-    int maxCountOfEdges = verticesCount * (verticesCount - 1) / 2;
-    if (edgesCount + 1 > maxCountOfEdges)
-        throw std::exception("Incorrect number of edges");
-    if (!isEdgeInGraph(_newEdge))
-        edges[edgesCount++] = _newEdge;
-}
-
-bool TGraph::isEdgeInGraph(const TEdge& _edge) const
-{
-    for (int i = 0; i < edgesCount; i++)
-        if (edges[i] == _edge)
-            return true;
-    return false;
-}
-
-bool TGraph::isGraphConnected() const
-{
-    if (numberOfComponents() < 1)
-        throw std::exception("Graph has no vertices");
-    if (numberOfComponents() == 1)
-        return true;
-    return false;
-}
-
-bool TGraph::isGraphDisconnected() const
-{
-    if (numberOfComponents() < 1)
-        throw std::exception("Graph has no vertices");
-    if (numberOfComponents() > 1)
-        return true;
-    return false;
-}
-
-std::ostream& operator<<(std::ostream& out, const TGraph& _graph)
-{
-    out << "Vertices: [ ";
-    for (int i = 0; i < _graph.verticesCount; i++)
-        out << _graph.vertices[i] << " ";
-    out << "]" << std::endl;
-    out << "Edges: [ ";
-    for (int i = 0; i < _graph.edgesCount; i++)
-        out << "(" << _graph.edges[i].startVertex << " " << _graph.edges[i].endVertex << ") ";
-    //<< " " << _graph.edges[i].weight << ") ";
-    out << "]" << std::endl;
-    return out;
-}
-
-int* TGraph::getAdjacencyMatrix() const
-{
-    int* adjacencyMatrix = new int[verticesCount * verticesCount];
-    for (int k = 0; k < verticesCount * verticesCount; k++)
-        adjacencyMatrix[k] = 0;
-
-    for (int i = 0; i < edgesCount; i++)
-    {
-        TEdge currentEdge = edges[i];
-        int startVertex = currentEdge.startVertex;
-        int endVertex = currentEdge.endVertex;
-        adjacencyMatrix[startVertex * verticesCount + endVertex] = currentEdge.weight;
-        adjacencyMatrix[endVertex * verticesCount + startVertex] = currentEdge.weight;
-    }
-
-    return adjacencyMatrix;
-}
-
-void TGraph::printAdjacencyMatrix() const
-{
-    int* adjacencyMatrix = getAdjacencyMatrix();
-
-    for (int i = 0; i < verticesCount; i++)
-    {
-        for (int j = 0; j < verticesCount; j++)
-            std::cout << adjacencyMatrix[i * verticesCount + j] << " ";
-        std::cout << std::endl;
-    }
-
-    delete[] adjacencyMatrix;
-}
-
-
-
-int TGraph::numberOfComponents() const
-{
-    int numberOfComponents = 0;
-    if (verticesCount == 0)
-        return numberOfComponents;
-    bool* isVertexPassed = new bool[verticesCount];
-    std::pair<int, int>* verticesWithIndexes = new std::pair<int, int>[verticesCount];
-    for (int i = 0; i < verticesCount; i++)
-    {
-        isVertexPassed[i] = false;
-        verticesWithIndexes[i].first = i;                //first - index
-        verticesWithIndexes[i].second = vertices[i];     //second - vertex
-    }
-
-    for (int i = 0; i < verticesCount; i++)
-    {
-        if (!isVertexPassed[i])
+    for (int i = 0; i < countVertices; i++)
+        for (int j = 0; j < i; j++)
         {
-            std::queue<std::pair<int, int>> qVertices;
-            qVertices.push(verticesWithIndexes[0]);
-            while (!qVertices.empty())
-            {
-                std::pair<int, int> vertexWithIndex(qVertices.front());
-                qVertices.pop();
-                isVertexPassed[vertexWithIndex.first] = true;
-                for (int i = 0; i < edgesCount; i++)
-                {
-                    if (edges[i].startVertex == vertexWithIndex.second)
-                        for (int j = 0; j < verticesCount; j++)
-                            if ((vertices[j] == edges[i].endVertex) && (!isVertexPassed[j]))
-                            {
-                                qVertices.push(std::pair<int, int>(j, vertices[j]));
-                                break;
-                            }
-                    if (edges[i].endVertex == vertexWithIndex.second)
-                        for (int j = 0; j < verticesCount; j++)
-                            if ((vertices[j] == edges[i].startVertex) && (!isVertexPassed[j]))
-                            {
-                                qVertices.push(std::pair<int, int>(j, vertices[j]));
-                                break;
-                            }
-                }
-            }
-            numberOfComponents++;
+            weights[i * countVertices + j] = -1;
+            weights[j * countVertices + i] = -1;
         }
-    }
-    return numberOfComponents;
-}
+};
 
-;
+Graph::Graph(float* _vector, int _size)
+{
+    if (_size <= 0)
+        throw exception("Incorrect size of graph");
+
+    if (_vector == nullptr)
+        throw exception("Vector is empty");
+
+    countVertices = _size;
+    weights = new float[countVertices * countVertices];
+
+    for (int i = 0; i < countVertices; i++)
+        for (int j = 0; j <= i; j++)
+        {
+            weights[i * countVertices + j] = _vector[i * countVertices + j];
+            weights[j * countVertices + i] = weights[i * countVertices + j];
+        }
+};
+
+Graph::Graph(const Graph& _graph)
+{
+    countVertices = _graph.countVertices;
+    weights = new float[countVertices * countVertices];
+
+    for (int i = 0; i < countVertices; i++)
+        for (int j = 0; j <= i; j++)
+        {
+            weights[i * countVertices + j] = _graph.weights[i * countVertices + j];
+            weights[j * countVertices + i] = weights[i * countVertices + j];
+        }
+};
+
+Graph::~Graph()
+{
+    countVertices = 0;
+    delete[] weights;
+};
+
+
+int Graph::GetVerticesCount() const
+{
+    return countVertices;
+};
+
+void Graph::RandomGraph()
+{
+    for (int i = 0; i < countVertices; i++)
+    {
+        for (int j = 0; j < i; j++)
+        {
+            weights[i * countVertices + j] = (int)(rand() % 12) - 1;
+            weights[j * countVertices + i] = weights[i * countVertices + j];
+        }
+
+        weights[i * countVertices + i] = -1;
+    }
+};
+
+void Graph::RandomConnectedGraph()
+{
+    for (int i = 0; i < countVertices; i++)
+    {
+        for (int j = 0; j < i; j++)
+        {
+            weights[i * countVertices + j] = (int)(rand() % 12);
+            weights[j * countVertices + i] = weights[i * countVertices + j];
+        }
+
+        weights[i * countVertices + i] = -1;
+    }
+};
+
+void Graph::ListOfEdges(Edge* _edges, int& countEdges) const
+{
+    countEdges = 0;
+
+    for (int i = 0; i < countVertices; i++)
+        for (int j = 0; j < i; j++)
+        {
+            if (this->weights[i * countVertices + j] >= 0)
+            {
+                Edge edge(i, j, this->weights[i * countVertices + j]);
+                _edges[countEdges++] = edge;
+            }
+        }
+};
+
+float* Graph::AdjacencyMatrix() const
+{
+    return weights;
+};
+
+bool Graph::IsConnected() const
+{
+    SeparatedSet vertices(countVertices);
+    for (int i = 0; i < countVertices; i++)
+        vertices.CreateSingleton(i);
+
+    Edge* listOfEdges = new Edge[countVertices * (countVertices - 1) / 2];
+    int countOfEdges = 0;
+
+    this->ListOfEdges(listOfEdges, countOfEdges);
+
+    if (countOfEdges == 0)
+        return false;
+
+    for (int i = 0; i < countOfEdges; i++)
+    {
+        Edge edge = listOfEdges[i];
+        int setStart = vertices.Definition(edge.startVertex);
+        int setEnd = vertices.Definition(edge.endVertex);
+
+        if (setStart != setEnd)
+            vertices.Unite(setStart, setEnd);
+    }
+
+    int v = vertices.Definition(0);
+
+    for (int i = 0; i < countVertices; i++)
+        if (v != vertices.Definition(i))
+            return false;
+
+    return true;
+};
+
+
+istream& operator>>(istream& _in, Graph& _graph)
+{
+    int countOfEdges = 0;
+
+    cout << "Input the count of vertices: ";
+    _in >> _graph.countVertices;
+    if (_graph.countVertices <= 0)
+        throw exception("Number of vertices must be positive");
+
+    _graph.weights = new float[_graph.countVertices * _graph.countVertices];
+
+    for (int i = 0; i < _graph.countVertices; i++)
+        for (int j = 0; j < _graph.countVertices; j++)
+            _graph.weights[i * _graph.countVertices + j] = -1;
+
+    cout << "Input the count of edges: ";
+    _in >> countOfEdges;
+
+    if ((countOfEdges > (_graph.countVertices * (_graph.countVertices - 1) / 2)) || (countOfEdges < 0))
+        throw exception("Incorrect number of edges");
+
+    for (int i = 0; i < countOfEdges; i++)
+    {
+        int v1, v2;
+
+        cout << endl << "Input the first vertex: ";
+        _in >> v1;
+        if ((v1 < 0) || (v1 >= _graph.countVertices))
+            throw exception("Incorrect name of vertex");
+
+        cout << "Input the secound vertex: ";
+        _in >> v2;
+        if ((v2 < 0) || (v2 >= _graph.countVertices))
+            throw exception("Incorrect name of vertex");
+
+        if (v1 == v2)
+            throw exception("First vertex is the second");
+
+        if (_graph.weights[v1 * _graph.countVertices + v2] > 0)
+            throw exception("This edge already exists");
+
+        cout << "Input the weight for edge: ";
+        _in >> _graph.weights[v1 * _graph.countVertices + v2];
+        if (_graph.weights[v1 * _graph.countVertices + v2] < 0)
+            throw exception("Incorrect weight of edge");
+        _graph.weights[v2 * _graph.countVertices + v1] = _graph.weights[v1 * _graph.countVertices + v2];
+    }
+
+    cout << endl;
+
+    return _in;
+};
+
+ostream& operator<<(ostream& _out, const Graph& _graph)
+{
+    for (int i = 0; i < _graph.countVertices; i++)
+    {
+        for (int j = 0; j < i; j++)
+            _out << "\t";
+        for (int j = i; j < _graph.countVertices; j++)
+            _out << _graph.weights[j * _graph.countVertices + i] << "\t";
+        _out << endl;
+    }
+
+    return _out;
+};

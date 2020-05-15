@@ -1,37 +1,50 @@
-#include "../../include/Algorithms.h"
-#include "iostream"
+#include <cmath>
+#include <iostream>
+#include <time.h>
 
-int main()
+#include "heapsort.h"
+
+using namespace std;
+
+void main()
 {
-    int maxSize = 10;
-    int size = 10;
-    int d = 2;
-    int* keys = new int[maxSize];
-    keys[0] = -1;
-    keys[1] = 8;
-    keys[2] = 0;
-    keys[3] = -4;
-    keys[4] = -2;
-    keys[5] = 5;
-    keys[6] = 4;
-    keys[7] = 1;
-    keys[8] = 2;
-    keys[9] = 7;
+    cout << "HeapSort Demo" << endl;
+    srand((unsigned int)time(0));
 
-    std::cout << "[ ";
-    for (int i = 0; i < size; i++)
-        std::cout << keys[i] << " ";
-    std::cout << "]" << std::endl;
+    try
+    {
+        float min, max;
+        int size = 0;
 
-    HeapSort::heapSort(size, keys);
+        cout << "Input the array size: ";
+        cin >> size;
+        if (size <= 0)
+            throw exception("Incorrect size");
 
-    std::cout << std::endl << "[ ";
-    for (int i = 0; i < size; i++)
-        std::cout << keys[i] << " ";
-    std::cout << "]" << std::endl;
+        cout << "Input the minimum: ";
+        cin >> min;
+        cout << "Input the maximum: ";
+        cin >> max;
+        if (min >= max)
+            throw exception("Incorrect borders");
 
-    std::cout << "//~~~~~~~~~~~~~~~~~~~~~~~~~~~//" << std::endl << std::endl;
+        cout << "Initial array: " << endl;
+        float* elements = new float[size];
+        for (int i = 0; i < size; i++)
+        {
+            elements[i] = (min * 10 + rand() % (int)(max * 10 - min * 10 + 1)) / 10;
+            cout << elements[i] << " ";
+        }
 
-    system("pause");
-    return 0;
+        cout << endl << "Sorted array: " << endl;
+        HeapSort<float>::Sort(elements, size);
+        for (int i = 0; i < size; i++)
+            cout << elements[i] << " ";
+
+        cout << endl;
+    }
+    catch (const exception& ex)
+    {
+        cout << "Error: " << ex.what() << endl << endl;
+    }
 }
