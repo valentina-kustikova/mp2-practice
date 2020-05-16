@@ -17,7 +17,6 @@ private:
 
     int MinChild(int a);
 public:
-   // TDHeap();
     TDHeap(int newMaxSize, int newD, T* newElements, int n);
     TDHeap(const TDHeap&);
     ~TDHeap();
@@ -36,19 +35,11 @@ public:
     friend ostream& operator<<(ostream& os, TDHeap& tmp);
 };
 
-/*template<class T>
-TDHeap<T>::TDHeap()
-{
-    max_size = 20;
-    size = 0;
-    d = 0;
-};*/
-
 template<class T>
 TDHeap<T>::TDHeap(int newMaxSize, int newD, T* newElements, int n)
 {
     if (n > newMaxSize)
-        throw Exception_errors(" Size is incorrect!")
+        throw Exception_errors(" Size is incorrect!");
 
     max_size = newMaxSize;
     d = newD;
@@ -79,10 +70,7 @@ TDHeap<T>::~TDHeap()
 template<class T>
 void TDHeap<T>::Swap(int a, int b)
 {
-    if ((a < 0) || (a >= n))
-        throw Exception_errors(" Index is incorrect!");
-
-    if ((b < 0) || (b >= n))
+    if ((a < 0) || (a > size) || (b < 0) || (b > size))
         throw Exception_errors(" Index is incorrect!");
 
     T tmp = elements[a];
@@ -93,7 +81,7 @@ void TDHeap<T>::Swap(int a, int b)
 template<class T>
 void TDHeap<T>::SiftUp(int a)
 {
-    if ((a < 0) || (a >= n))
+    if ((a < 0) || (a > size))
         throw Exception_errors(" Index is incorrect!");
 
     int parent = (a - 1) / d;
@@ -129,7 +117,7 @@ int TDHeap<T>::MinChild(int a)
 template<class T>
 void TDHeap<T>::SiftDown(int a)
 {
-    if ((a < 0) || (a >= n))
+    if ((a < 0) || (a > size))
         throw Exception_errors(" Index is incorrect!");
 
     int c = MinChild(a);
@@ -161,7 +149,7 @@ T TDHeap<T>::PopMin()
 template<class T>
 T TDHeap<T>::TopMin()
 {
-    return _min;
+    return elements[0];
 }
 
 template<class T>

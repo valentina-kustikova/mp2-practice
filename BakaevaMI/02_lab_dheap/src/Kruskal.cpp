@@ -1,7 +1,7 @@
 #include "Kruskal.h"
 #include "DHeap.h"
 
-void Kruskal::KruskalAlg(const Graph& graph, int* result)
+void Kruskal::KruskalAlg(const Graph& graph, vector<Edge>& result)
 {
     Set nodeSet(graph.GetSize());
 
@@ -40,7 +40,11 @@ void Kruskal::KruskalAlg(const Graph& graph, int* result)
         heapEdge.DeleteMin();
     }
 
-    TDHeap<Edge> ostavTree(edgeSetSize, 2, edgeSet, edgeSetSize);
-    for(int i = 0; i < edgeSetSize; i++)
-        result[i] = ;
+    result.resize(edgeSetSize);
+    for (int i = 0; i < edgeSetSize; i++)
+    {
+        result[i].begin = edgeSet[i].begin;
+        result[i].end = edgeSet[i].end;
+        result[i].weight = edgeSet[i].weight;
+    }
 };

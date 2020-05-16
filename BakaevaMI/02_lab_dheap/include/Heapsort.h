@@ -12,7 +12,7 @@ public:
 template<class T>
 void Heapsort<T>::HeapSort(T* a, int n)
 {
-    TDHeap<float> heap(n, 2, a, n);
+    TDHeap<T> heap(n, 3, a, n);
     heap.Hilling();
 
     for(int i = 0; i < n; i++)

@@ -41,7 +41,7 @@ void main()
 			cout << "\t W = " << res_dist[i] << endl;
 		};
 	}
-	catch (Exception_errors & e)
+	catch (const Exception_errors & e)
 	{
 		cerr << e.what() << endl;
 	}

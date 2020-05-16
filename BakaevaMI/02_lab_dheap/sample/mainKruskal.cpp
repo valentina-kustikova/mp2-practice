@@ -1,5 +1,6 @@
 #include "Kruskal.h" 
 #include "Exception.h"
+#include <vector>
 
 void main()
 {
@@ -10,16 +11,16 @@ void main()
     {
         cin >> gr;
 
-        TDHeap<Edge> ostavTree;
+        vector<Edge> ostavTree;
         Kruskal::KruskalAlg(gr, ostavTree);
 
         cout << "  Ostav Tree: ";
 
-        for (int i = 0; i < ostavTree.GetSize(); i++)
+        for (int i = 0; i < ostavTree.size(); i++)
         {
-            cout << endl << "  " << ostavTree.GetElements()[i].begin();
-            cout << " - " << ostavTree.GetElements()[i].end();
-            cout << " W = " << ostavTree.GetElements()[i].weight();
+            cout << endl << "  " << ostavTree[i].begin;
+            cout << " - " << ostavTree[i].end;
+            cout << " W = " << ostavTree[i].weight;
         }
     }
     catch (const Exception_errors & e)
