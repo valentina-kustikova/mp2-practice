@@ -9,14 +9,14 @@ using namespace std;
 class Graph
 {
 private:
-    int size;
+    int sizeVertex;
     int countEdges;
     Edge* edges;
 
 public:
     Graph();
     Graph(const Graph&);
-    Graph(int* matrix, int size);
+    Graph(int* matrix, int _sizeVertex);
     ~Graph();
 
     int GetSize() const;

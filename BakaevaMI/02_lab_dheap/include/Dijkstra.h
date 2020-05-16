@@ -8,7 +8,7 @@
 class Dijkstra
 {
 public:
-    static void DijkstraAlg(const Graph&, int, float*, vector<vector<int>>&);
+    static void DijkstraAlg(const Graph&, int, vector<int>&, vector<vector<int>>&);
 };
 
 #endif 

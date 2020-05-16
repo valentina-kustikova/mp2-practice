@@ -22,8 +22,10 @@ void main()
 			cout << endl;
 		} while ((start < 0) || (start > gr.GetSize()));
 
-		float* res_dist = new float[gr.GetSize()];
-		memset(res_dist, 0, sizeof(float) * gr.GetSize());
+		vector<int> res_dist; 
+		res_dist.resize(gr.GetSize());
+		for (int i = 0; i < gr.GetSize(); i++)
+			res_dist[i] = 0;
 
 		Dijkstra::DijkstraAlg(gr, start, res_dist, paths);
 

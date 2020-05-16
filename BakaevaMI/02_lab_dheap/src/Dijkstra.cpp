@@ -4,7 +4,7 @@
 #include <utility>
 #include <vector>
 
-void Dijkstra::DijkstraAlg(const Graph& gr, int start, float* res_dist, vector<vector<int>>& paths)
+void Dijkstra::DijkstraAlg(const Graph& gr, int start, vector<int>& res_dist, vector<vector<int>>& paths)
 {
     int* visited = new int[gr.GetSize()];
     Pair* dist = new Pair[gr.GetSize()];
@@ -26,8 +26,7 @@ void Dijkstra::DijkstraAlg(const Graph& gr, int start, float* res_dist, vector<v
 
     while(heapVisited.GetSize() != 0)
     {
-        Pair min = heapVisited.GetElements()[0];
-        heapVisited.DeleteMin();
+        Pair min = heapVisited.PopMin();
 
         for(int j = 0; j < gr.GetSize(); j++)
         {

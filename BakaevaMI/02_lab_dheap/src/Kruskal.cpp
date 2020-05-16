@@ -1,7 +1,7 @@
 #include "Kruskal.h"
 #include "DHeap.h"
 
-void Kruskal::KruskalAlg(const Graph& graph, TDHeap<Edge>& result)
+void Kruskal::KruskalAlg(const Graph& graph, int* result)
 {
     Set nodeSet(graph.GetSize());
 
@@ -22,13 +22,13 @@ void Kruskal::KruskalAlg(const Graph& graph, TDHeap<Edge>& result)
     while ((edgeSetSize != (graph.GetSize() - 1)) && (heapEdge.GetSize() != 0))
     {
         //Ребро с минимальным весом
-        Edge e = heapEdge.GetElements()[0];
+        Edge e = heapEdge.TopMin();
 
         //Поиск подмножества А, которому принадлежит начало ребра
-        int subsetA = nodeSet.Find(e.GetBegin());
+        int subsetA = nodeSet.Find(e.begin);
 
         //Поиск подмножества В, которому принадлежит конец ребра
-        int subsetB = nodeSet.Find(e.GetEnd());
+        int subsetB = nodeSet.Find(e.end);
 
         //Объединение А и В, кладем ребро е в edgeSet
         if (subsetA != subsetB)
@@ -41,5 +41,6 @@ void Kruskal::KruskalAlg(const Graph& graph, TDHeap<Edge>& result)
     }
 
     TDHeap<Edge> ostavTree(edgeSetSize, 2, edgeSet, edgeSetSize);
-    result = ostavTree;
+    for(int i = 0; i < edgeSetSize; i++)
+        result[i] = ;
 };

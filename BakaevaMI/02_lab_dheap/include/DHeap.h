@@ -1,6 +1,7 @@
 #ifndef _DHEAP_H_
 #define _DHEAP_H_
 #include "Edge.h"
+#include "Exception.h"
 #include <iostream>
 #include <math.h>
 using namespace std;
@@ -13,17 +14,20 @@ private:
     int size;
     int d;
     T* elements;
+
+    int MinChild(int a);
 public:
-    TDHeap();
+   // TDHeap();
     TDHeap(int newMaxSize, int newD, T* newElements, int n);
     TDHeap(const TDHeap&);
     ~TDHeap();
 
     void Swap(int a, int b);
-    int MinChild(int a);
     void SiftUp(int a);
     void SiftDown(int a);
     void DeleteMin();
+    T PopMin();
+    T TopMin();
     void Hilling();
     int GetSize() const;
     T* GetElements() const;
@@ -32,19 +36,19 @@ public:
     friend ostream& operator<<(ostream& os, TDHeap& tmp);
 };
 
-template<class T>
+/*template<class T>
 TDHeap<T>::TDHeap()
 {
     max_size = 20;
     size = 0;
     d = 0;
-};
+};*/
 
 template<class T>
 TDHeap<T>::TDHeap(int newMaxSize, int newD, T* newElements, int n)
 {
     if (n > newMaxSize)
-        return;
+        throw Exception_errors(" Size is incorrect!")
 
     max_size = newMaxSize;
     d = newD;
@@ -75,6 +79,12 @@ TDHeap<T>::~TDHeap()
 template<class T>
 void TDHeap<T>::Swap(int a, int b)
 {
+    if ((a < 0) || (a >= n))
+        throw Exception_errors(" Index is incorrect!");
+
+    if ((b < 0) || (b >= n))
+        throw Exception_errors(" Index is incorrect!");
+
     T tmp = elements[a];
     elements[a] = elements[b];
     elements[b] = tmp;
@@ -83,6 +93,9 @@ void TDHeap<T>::Swap(int a, int b)
 template<class T>
 void TDHeap<T>::SiftUp(int a)
 {
+    if ((a < 0) || (a >= n))
+        throw Exception_errors(" Index is incorrect!");
+
     int parent = (a - 1) / d;
     while (a > 0)
     {
@@ -116,6 +129,9 @@ int TDHeap<T>::MinChild(int a)
 template<class T>
 void TDHeap<T>::SiftDown(int a)
 {
+    if ((a < 0) || (a >= n))
+        throw Exception_errors(" Index is incorrect!");
+
     int c = MinChild(a);
     while ((c != -1) && (elements[c] < elements[a]))
     {
@@ -132,6 +148,21 @@ void TDHeap<T>::DeleteMin()
     size--;
     SiftDown(0);
 };
+
+template<class T>
+T TDHeap<T>::PopMin()
+{
+    T _min = elements[0];
+    DeleteMin();
+
+    return _min;
+}
+
+template<class T>
+T TDHeap<T>::TopMin()
+{
+    return _min;
+}
 
 template<class T>
 void TDHeap<T>::Hilling()

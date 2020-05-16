@@ -17,12 +17,12 @@ void main()
 
         for (int i = 0; i < ostavTree.GetSize(); i++)
         {
-            cout << endl << "  " << ostavTree.GetElements()[i].GetBegin();
-            cout << " - " << ostavTree.GetElements()[i].GetEnd();
-            cout << " W = " << ostavTree.GetElements()[i].GetWeight();
+            cout << endl << "  " << ostavTree.GetElements()[i].begin();
+            cout << " - " << ostavTree.GetElements()[i].end();
+            cout << " W = " << ostavTree.GetElements()[i].weight();
         }
     }
-    catch (Exception_errors & e)
+    catch (const Exception_errors & e)
     {
         cerr << e.what() << endl;
     }

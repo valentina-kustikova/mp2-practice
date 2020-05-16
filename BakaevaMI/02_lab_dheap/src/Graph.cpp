@@ -9,13 +9,13 @@ using namespace std;
 
 Graph::Graph()
 {
-    size = 0;
+    sizeVertex = 0;
     countEdges = 0;
 };
 
 Graph::Graph(const Graph& copy)
 {
-    size = copy.size;
+    sizeVertex = copy.sizeVertex;
     countEdges = copy.countEdges;
     edges = new Edge[countEdges];
     
@@ -27,14 +27,14 @@ Graph::Graph(const Graph& copy)
     }
 };
 
-Graph::Graph(int* matrix, int _size)
+Graph::Graph(int* matrix, int _sizeVertex)
 {
-    size = _size;
+    sizeVertex = _sizeVertex;
 
-    for(int i = 0; i < size; i++)
+    for(int i = 0; i < sizeVertex; i++)
         for (int j = 0; j < i; j++)
         {
-            if (matrix[i * size + j] == 1)
+            if (matrix[i * sizeVertex + j] == 1)
                 countEdges++;
         }
 
@@ -43,10 +43,10 @@ Graph::Graph(int* matrix, int _size)
 
     while (k != countEdges)
     {
-        for (int i = 0; i < size; i++)
+        for (int i = 0; i < sizeVertex; i++)
             for (int j = 0; j < i; j++)
             {
-                if (matrix[i * size + j] == 1)
+                if (matrix[i * sizeVertex + j] == 1)
                 {
                     edges[k].begin = i;
                     edges[k].end = j;
@@ -65,14 +65,14 @@ Graph::Graph(int* matrix, int _size)
 
 Graph::~Graph()
 {
-    size = 0;
+    sizeVertex = 0;
     countEdges = 0;
     delete[] edges;
 };
 
 int Graph::GetSize() const
 {
-    return size;
+    return sizeVertex;
 };
 
 Edge* Graph::GetEdges() const
@@ -93,7 +93,7 @@ void Graph::SetCountEdges(int a)
 bool Graph::IsConnected() const
 {
     //Создание списка смежности
-    vector<vector<int>> gr(size);
+    vector<vector<int>> gr(sizeVertex);
     for (int i = 0; i < countEdges; i++)
     {
         gr[edges[i].begin].push_back(edges[i].end);
@@ -101,7 +101,7 @@ bool Graph::IsConnected() const
     };
 
     int visitedV = 1;
-    vector<bool> visit(size);
+    vector<bool> visit(sizeVertex);
     visit[0] = true;
 
     queue<int> q;
@@ -122,7 +122,7 @@ bool Graph::IsConnected() const
         }
     }
 
-    for (int i = 0; i < size; i++)
+    for (int i = 0; i < sizeVertex; i++)
         if (visit[i] == false)
             return false;
     return true;
@@ -131,9 +131,9 @@ bool Graph::IsConnected() const
 istream& operator>>(istream& in, Graph& gr)
 {
     cout << "  Enter count of vertexes: ";
-    cin >> gr.size;
+    cin >> gr.sizeVertex;
 
-    if (gr.size <= 0)
+    if (gr.sizeVertex <= 0)
         throw Exception_errors("  Count of vertexes isn't correct! ");
 
     cout << "  Enter count of edges: ";
@@ -159,8 +159,8 @@ istream& operator>>(istream& in, Graph& gr)
             cout << " Weight = ";
             cin >> weight;
 
-        } while ((begin < 0) || (begin >= gr.size)
-            || (end < 0) || (end >= gr.size)
+        } while ((begin < 0) || (begin >= gr.sizeVertex)
+            || (end < 0) || (end >= gr.sizeVertex)
             || (weight < 0) || (begin == end));
 
         cout << endl;
@@ -176,12 +176,12 @@ istream& operator>>(istream& in, Graph& gr)
 
 float* Graph::GetWeightMatrix() const
 {
-    float* weight_m = new float[size * size];
+    float* weight_m = new float[sizeVertex * sizeVertex];
 
     for (int i = 0; i < countEdges; i++)
     {
-        weight_m[edges[i].begin + edges[i].end * size] = edges[i].weight;
-        weight_m[edges[i].begin * size + edges[i].end] = edges[i].weight;
+        weight_m[edges[i].begin + edges[i].end * sizeVertex] = edges[i].weight;
+        weight_m[edges[i].begin * sizeVertex + edges[i].end] = edges[i].weight;
     }
 
     return weight_m;
