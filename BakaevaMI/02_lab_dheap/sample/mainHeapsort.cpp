@@ -37,14 +37,14 @@ int main()
 		a[i] = (float)(rand() % rangeB + rangeA);
 	}
 
-	//Вывод нового массива
+	//Р’С‹РІРѕРґ РЅРѕРІРѕРіРѕ РјР°СЃСЃРёРІР°
 	for (int i = 0; i < sizeArr; i++)
 		cout << " " << a[i];
 
 	cout << endl; 
 	Heapsort<float>::HeapSort(a, sizeArr);
 	
-	//Вывод отсортированного массива
+	//Р’С‹РІРѕРґ РѕС‚СЃРѕСЂС‚РёСЂРѕРІР°РЅРЅРѕРіРѕ РјР°СЃСЃРёРІР°
 	for(int i = 0; i < sizeArr; i++)
 		cout << " " << a[i];
 
