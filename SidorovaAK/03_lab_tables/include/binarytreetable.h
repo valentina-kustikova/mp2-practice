@@ -33,15 +33,17 @@ public:
     virtual bool IsTabEnded() const override{ return this->currPos >= this->dataCount; }
 
     TTabRecord<TKey, TData>* FindRecord(const TKey _key) override;
-    void InsertRecord(TNode<TKey, TData>* _tnode);
     virtual void InsertRecord(const TKey _key, TData* _pData = nullptr) override;
-    void RemoveRecord(TNode<TKey, TData>* _tnode);
     virtual void RemoveRecord(const TKey _key) override;
 
     TNode<TKey, TData>* GetRoot() const { return root; }
     virtual TTabRecord<TKey, TData>* GetRecord() const override;
     virtual TKey GetKey() const override;
     virtual TData* GetData() const override;
+
+private:
+    void InsertRecord(TNode<TKey, TData>* _tnode);
+    void RemoveRecord(TNode<TKey, TData>* _tnode);
 };
 //---------------------------------------------------------
 

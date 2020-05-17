@@ -113,7 +113,7 @@ void Test_RemoveRecords()
     cout << table << endl << endl;
 
     cout << "BinaryTree table after removing root: " << endl;
-    table.RemoveRecord(table.GetRoot());
+    table.RemoveRecord(table.GetRoot()->GetKey());
     cout << table << endl << endl;
 };
 

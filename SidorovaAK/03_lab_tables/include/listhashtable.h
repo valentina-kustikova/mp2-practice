@@ -94,10 +94,7 @@ void TListHashTable<TKey, TData>::InsertRecord(const TKey _key, TData* _data)
     for (pRecs[k]->Reset(); !pRecs[k]->IsEnded(); pRecs[k]->Next())
     {
         if (pRecs[k]->GetCurrent()->GetKey() == _key)
-        {
-            pRecs[k]->GetCurrent()->SetData(_data);
-            return;
-        }
+            throw Exception("A record with this key is in the table.");
     }
 
     pRecs[k]->PushEnd(_key, _data);

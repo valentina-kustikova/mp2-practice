@@ -13,6 +13,7 @@ public:
     void InsertRecord(const TKey _key, TData* _data = nullptr) override;
     void RemoveRecord(const TKey _key) override;
 
+private:
     int InsBalanceTree(TBalanceNode<TKey, TData>** _node, const TKey _key, TData* _data = nullptr);
     int LeftTreeBalancing(TBalanceNode<TKey, TData>** _node);
     int RightTreeBalancing(TBalanceNode<TKey, TData>** _node);

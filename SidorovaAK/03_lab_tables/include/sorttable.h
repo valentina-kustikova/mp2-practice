@@ -187,37 +187,31 @@ TTabRecord<TKey, TData>* TSortTable<TKey, TData>::FindRecord(const TKey _key)
 template<typename TKey, class TData>
 void TSortTable<TKey, TData>::InsertRecord(const TKey _key, TData* _data)
 {
-    if (!this->IsFull())
-    {
-        TTabRecord<TKey, TData>* record = FindRecord(_key);
-        for (int i = this->dataCount; i > this->currPos; i--)
-            this->pRecs[i] = this->pRecs[i - 1];
-        this->pRecs[this->currPos] = new TTabRecord<TKey, TData>(_key, _data);
-        this->dataCount++;
-    }
-    else
+    if (this->IsFull())
         throw Exception("Table is full!");
+
+    TTabRecord<TKey, TData>* record = FindRecord(_key);
+    for (int i = this->dataCount; i > this->currPos; i--)
+        this->pRecs[i] = this->pRecs[i - 1];
+    this->pRecs[this->currPos] = new TTabRecord<TKey, TData>(_key, _data);
+    this->dataCount++;
 };
 
 template<typename TKey, class TData>
 void TSortTable<TKey, TData>::RemoveRecord(const TKey _key)
 {
-    if (!this->IsEmpty())
-    {
-        TTabRecord<TKey, TData>* record = FindRecord(_key);
+    if (this->IsEmpty())
+        throw Exception("The record with this key wasn't found in table!");
 
-        if (record)
-        {
-            delete this->pRecs[this->currPos];
+    TTabRecord<TKey, TData>* record = FindRecord(_key);
 
-            for (int i = this->currPos; i < this->dataCount - 1; i++)
-                this->pRecs[i] = this->pRecs[i + 1];
-
-            this->pRecs[--(this->dataCount)] = nullptr;
-        }
-        else
-            throw Exception("The record with this key wasn't found in table!");
-    }
+    if (!(this->FindRecord(_key)))
+        throw Exception("A record with this key is not in the table.");
+    
+    delete this->pRecs[this->currPos];
+    for (int i = this->currPos; i < this->dataCount - 1; i++)
+        this->pRecs[i] = this->pRecs[i + 1];
+    this->pRecs[--(this->dataCount)] = nullptr;
 };
 
 #endif

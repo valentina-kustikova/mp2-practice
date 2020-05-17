@@ -96,12 +96,7 @@ void TArrayHashTable<TKey, TData>::InsertRecord(const TKey _key, TData* _data)
         throw Exception("Table is full!");
 
     if (FindRecord(_key))
-    {
-        TTabRecord<TKey, TData>* record = FindRecord(_key);
-        record->SetData(_data);
-
-        return;
-    }
+        throw Exception("A record with this key is in the table.");
 
     if (freePos != -1)
     {
@@ -120,12 +115,12 @@ void TArrayHashTable<TKey, TData>::RemoveRecord(const TKey _key)
 
     TTabRecord<TKey, TData>* record = FindRecord(_key);
 
-    if (record)
-    {
-        delete pRecs[this->currPos];
-        pRecs[this->currPos] = pMark;
-        this->dataCount--;
-    }
+    if (!record)
+        throw Exception("A record with this key is not in the table.");
+
+    delete pRecs[this->currPos];
+    pRecs[this->currPos] = pMark;
+    this->dataCount--;
 };
 
 template<typename TKey, class TData>
