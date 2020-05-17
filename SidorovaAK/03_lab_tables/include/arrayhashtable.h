@@ -113,9 +113,7 @@ void TArrayHashTable<TKey, TData>::RemoveRecord(const TKey _key)
     if (this->IsEmpty())
         throw Exception("Table is empty!");
 
-    TTabRecord<TKey, TData>* record = FindRecord(_key);
-
-    if (!record)
+    if (!(this->FindRecord(_key)))
         throw Exception("A record with this key is not in the table.");
 
     delete pRecs[this->currPos];
