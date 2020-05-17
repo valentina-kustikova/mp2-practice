@@ -55,11 +55,4 @@ public:
         tmp.pol->pNext = pnext;
         return out;
     }
-    /*friend istream& operator>>(istream& in, TPolynom& tmp)
-    {
-        string st;
-        getline(in, st);
-        tmp = TPolynom(st);
-        return in;
-    }*/
 };
