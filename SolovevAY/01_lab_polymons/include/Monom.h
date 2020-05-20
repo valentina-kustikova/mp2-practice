@@ -11,6 +11,7 @@ using namespace std;
 template<>
 struct Monom
 {
+public:
 	UINT key;//degree
 	double koef;//koef
 	Monom* pNext;
@@ -24,13 +25,14 @@ struct Monom
 	bool operator!=(const Monom& _monom) const;
 	const Monom& operator=(const Monom& _monom);
 	Monom operator-() const;
+	Monom operator*(double);
 	Monom operator+(const Monom& _monom);
 	Monom operator-(const Monom& _monom);
 	Monom operator*(const Monom& _monom);
 	bool operator>(const Monom& _monom) const;
 	bool operator<(const Monom& _monom) const;
 
-	char znakmonoma();
+
 
 	friend istream& operator>>(istream& in, Monom& _monom);
 	friend ostream& operator<<(ostream& out, const Monom& _monom);
@@ -64,18 +66,9 @@ Monom::TNode(double _koef)
 
 Monom::TNode(const Monom& _monom)
 {
-	if (&_monom != nullptr)
-	{
-		key = _monom.key;
-		koef = _monom.koef;
-		pNext = nullptr;
-	}
-	else
-	{
-		key = 0;
-		koef = 0.0;
-		pNext = nullptr;
-	}
+	key = _monom.key;
+	koef = _monom.koef;
+	pNext = nullptr;
 }
 
 Monom::~TNode()
@@ -107,6 +100,13 @@ const Monom& Monom::operator=(const Monom& _monom)
 Monom Monom::operator-() const
 {
 	return Monom(this->key, this->koef*(-1));
+}
+
+Monom Monom::operator*(double _factor)
+{
+	Monom result(*this);
+	result.koef *= _factor;
+	return result;
 }
 
 
@@ -149,13 +149,6 @@ inline bool Monom::operator<(const Monom & _monom) const
 
 
 
-inline char Monom::znakmonoma()
-{
-	if (koef > 0)
-		return '+';
-	if (koef < 0)
-		return '-';
-}
 
 Monom Monom::convert(const string & _monom)
 {
@@ -303,7 +296,7 @@ istream & operator>>(istream & in, Monom & _monom)
 			else throw "bad";
 		}
 		s_monom = line.substr(start, end - start + 1);
-		_monom = Monom().convert(s_monom) * (44 - _sign);
+		_monom = Monom::convert(s_monom) * (44 - _sign);
 		break;
 	}
 
