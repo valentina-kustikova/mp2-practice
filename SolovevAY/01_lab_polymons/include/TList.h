@@ -29,7 +29,7 @@ public:
 	void InsertAfter(TKey _key, const TNode<TKey, TData>& _tnode);
 
 	void Remove(TKey _key);
-
+	TNode<TKey, TData>* Current();
 	void Reset();
 	void Next();
 
@@ -39,8 +39,6 @@ public:
 	TKey getCurrentNodeKey() const;
 	TData getCurrentNodeData() const;
 
-	//template <typename TKey, typename TData>
-	//friend std::ostream& operator<<(std::ostream& out, const TList<TKey, TData>& _tlist);
 };
 
 
@@ -237,6 +235,13 @@ void TList<TKey, TData>::Remove(TKey _key)
 		pNext = nullptr;
 }
 
+template<typename TKey, typename TData>
+TNode<TKey, TData> * TList<TKey, TData>::Current()
+{
+	return pCurrent;
+}
+
+
 template <typename TKey, typename TData>
 void TList<TKey, TData>::Reset()
 {
@@ -292,5 +297,4 @@ TData TList<TKey, TData>::getCurrentNodeData() const
 	}
 	return pCurrent->koef;
 }
-
 
