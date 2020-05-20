@@ -34,6 +34,7 @@ public:
     inline bool owns(const Iterator& iter) const;
     inline Iterator root() const;
     inline Iterator null() const;
+    inline Iterator notFound() const;
 
     Iterator find(const TKey& needle) const;
     Iterator findMax() const;
@@ -44,8 +45,6 @@ public:
     void insert(const TKey& key, TData* data = nullptr);
     void remove(const TKey& key);
     void remove(Iterator& iter);
-    
-    Iterator find__IterPowered(const TKey& needle) const; // experimental
 };
 
 template<typename TKey, typename TData>
@@ -165,17 +164,23 @@ inline _TBinaryTreeIter TBinaryTree<TKey, TData>::null() const
 }
 
 template<typename TKey, typename TData>
+inline _TBinaryTreeIter TBinaryTree<TKey, TData>::notFound() const
+{
+    return Iterator(this, nullptr);
+}
+
+template<typename TKey, typename TData>
 _TBinaryTreeIter TBinaryTree<TKey, TData>::find(const TKey& needle) const
 {
-    Node* current = root_;
-    while ((current != nullptr) && (current->key != needle))
+    Iterator iter = root();
+    while (iter.isAccessible() && iter.key() != needle)
     {
-        if (needle < current->key)
-            current = current->left;
+        if (needle < iter.key())
+            iter.toLeft();
         else
-            current = current->right;
+            iter.toRight();
     }
-    return makeIter(current);
+    return iter;
 }
 
 template<typename TKey, typename TData>
@@ -278,20 +283,6 @@ void TBinaryTree<TKey, TData>::remove(Iterator& iter)
     else
         delete z; // (?)
     iter.node = nullptr;
-}
-
-template<typename TKey, typename TData>
-_TBinaryTreeIter TBinaryTree<TKey, TData>::find__IterPowered(const TKey& needle) const
-{
-    Iterator iter = root();
-    while (iter.isAccessible() && iter.key() != needle)
-    {
-        if (needle < iter.key())
-            iter.toLeft();
-        else
-            iter.toRight();
-    }
-    return iter;
 }
 
 #endif

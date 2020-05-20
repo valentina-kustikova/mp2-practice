@@ -33,9 +33,6 @@
     <ClInclude Include="..\..\include\TTableEntry.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\TTableIterator.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\TPair.h">
       <Filter>include</Filter>
     </ClInclude>
@@ -46,6 +43,12 @@
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\EXCEPT.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\TTreeTable.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\TIterator.h">
       <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>

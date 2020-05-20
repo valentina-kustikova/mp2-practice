@@ -16,6 +16,7 @@ public:
     explicit TBinaryTreeNode(TKey key_, TData* data_ = nullptr, 
         TBinaryTreeNode* parent_ = nullptr, TBinaryTreeNode* left_ = nullptr, 
         TBinaryTreeNode* right_ = nullptr);
+    TKey getKey() const { return key; };
 };
 
 template<typename TKey, typename TData>

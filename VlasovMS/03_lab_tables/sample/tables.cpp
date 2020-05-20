@@ -2,6 +2,7 @@
 #include "TBinaryTree.h"
 #include "TAVLTree.h"
 #include "TOrderedTable.h"
+#include "TTreeTable.h"
 
 int main()
 {
@@ -10,8 +11,6 @@ int main()
     tree.insert(2);
     auto iter = tree.find(2);
     std::cout << iter.key();
-    auto iter2 = tree.find__IterPowered(2);
-    std::cout << iter2.key();
 
     TAVLTree<int, int> avl = TAVLTree<int, int>();
     auto iter3 = avl.root();
@@ -22,11 +21,15 @@ int main()
     table1.insert(2);
     table1.insert(1);
     table1.insert(4);
-    std::cout << table1.find(2).key();
+    std::cout << table1.find(2)()->getKey();
 
     table2.insert(2);
     table2.insert(1);
     table2.insert(4);
-    std::cout << table2.find(4).key();
+    std::cout << table2.find(4)()->getKey();
+    table2.remove(2);
+    std::cout << table2.find(4)()->getKey();
+
+    TTreeTable<int, int> table3;
     return 0;
 }

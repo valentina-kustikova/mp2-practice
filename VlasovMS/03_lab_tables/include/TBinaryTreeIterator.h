@@ -13,6 +13,7 @@ class TBinaryTreeIterator
 {
 protected:
     template<typename, typename> friend class TBinaryTree;
+    template<typename, typename> friend class TAVLTree;
     const Tree* owningTree;
     typename Tree::Node* node;
     TBinaryTreeIterator(const Tree* owningTree_, typename Tree::Node* node_);
@@ -38,7 +39,13 @@ public:
     typename Tree::Key key() const;
     typename Tree::Data*& data();
     typename Tree::Data* data() const;
-    TBinaryTreeIterator<Tree>& setKey(const typename Tree::Key& key_);
+
+    TBinaryTreeIterator<Tree>& operator++();
+    TBinaryTreeIterator<Tree>& operator++(int);
+    TBinaryTreeIterator<Tree>& operator--();
+    TBinaryTreeIterator<Tree>& operator--(int);
+    TBinaryTreeIterator<Tree> next() const;
+    TBinaryTreeIterator<Tree> prev() const;
 };
 
 template <typename Tree>
@@ -173,16 +180,51 @@ typename Tree::Data* TBinaryTreeIterator<Tree>::data() const
     return node->data;
 }
 
-template <typename Tree>
-TBinaryTreeIterator<Tree>& TBinaryTreeIterator<Tree>::setKey(const typename Tree::Key& key_)
+template<typename Tree>
+TBinaryTreeIterator<Tree>& TBinaryTreeIterator<Tree>::operator++()
 {
-    if (node == nullptr)
-        return *this; // throw ???
-    typename Tree::Data* data = node->data;
-    const_cast<Tree*>(owningTree)->remove(node->key);  // bedy  s
-    const_cast<Tree*>(owningTree)->insert(key_, data); // bashkoi
-    // TODO
+    if (hasOwner() && isAccessible())
+        node = owningTree->findNext(*this);
     return *this;
 }
+
+template<typename Tree>
+TBinaryTreeIterator<Tree>& TBinaryTreeIterator<Tree>::operator++(int)
+{
+    typename Tree::Node* oldNode = node;
+    if (hasOwner() && isAccessible())
+        node = owningTree->findNext(*this);
+    return TBinaryTreeIterator<Tree>(owningTree, oldNode);
+}
+
+template<typename Tree>
+TBinaryTreeIterator<Tree>& TBinaryTreeIterator<Tree>::operator--()
+{
+    if (hasOwner() && isAccessible())
+        node = owningTree->findPrev(*this);
+    return *this;
+}
+
+template<typename Tree>
+TBinaryTreeIterator<Tree>& TBinaryTreeIterator<Tree>::operator--(int)
+{
+    typename Tree::Node* oldNode = node;
+    if (hasOwner() && isAccessible())
+        node = owningTree->findPrev(*this);
+    return TBinaryTreeIterator<Tree>(owningTree, oldNode);
+}
+
+template<typename Tree>
+TBinaryTreeIterator<Tree> TBinaryTreeIterator<Tree>::next() const
+{
+    return owningTree->findNext(*this);
+}
+
+template<typename Tree>
+TBinaryTreeIterator<Tree> TBinaryTreeIterator<Tree>::prev() const
+{
+    return owningTree->findPrev(*this);
+}
+
 
 #endif

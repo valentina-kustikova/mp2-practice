@@ -30,10 +30,11 @@
     <ClInclude Include="..\..\include\TBinaryTree.h" />
     <ClInclude Include="..\..\include\TBinaryTreeIterator.h" />
     <ClInclude Include="..\..\include\TBinaryTreeNode.h" />
+    <ClInclude Include="..\..\include\TIterator.h" />
     <ClInclude Include="..\..\include\TOrderedTable.h" />
     <ClInclude Include="..\..\include\TPair.h" />
     <ClInclude Include="..\..\include\TTableEntry.h" />
-    <ClInclude Include="..\..\include\TTableIterator.h" />
+    <ClInclude Include="..\..\include\TTreeTable.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

@@ -19,14 +19,19 @@ protected:
     TBalanceFactor leftBalancing(Node* node);
     TBalanceFactor rightBalancing(Node* node);
 public:
-    TAVLTree();
+    TAVLTree() = default;
     TAVLTree(const TAVLTree& other);
     TAVLTree(TAVLTree&& other);
-    ~TAVLTree();
+    ~TAVLTree() = default;
 
+    using BaseType::find;
     void insert(const TKey& key, TData* data = nullptr);
     void remove(const TKey& key);
     void remove(Iterator& iter);
+
+    using BaseType::root;
+    using BaseType::null;
+    using BaseType::owns;
 };
 
 template<typename TKey, typename TData>
@@ -44,34 +49,43 @@ TBalanceFactor TAVLTree<TKey, TData>::rightBalancing(Node* node)
 }
 
 template<typename TKey, typename TData>
-TAVLTree<TKey, TData>::TAVLTree()
-    : BaseType()
-{
-}
-
-template<typename TKey, typename TData>
 TAVLTree<TKey, TData>::TAVLTree(const TAVLTree& other)
-    : BaseType()
+    : BaseType(other)
 {
     // TODO
 }
 
 template<typename TKey, typename TData>
 TAVLTree<TKey, TData>::TAVLTree(TAVLTree&& other)
-    : BaseType(other)
 {
-}
-
-template<typename TKey, typename TData>
-TAVLTree<TKey, TData>::~TAVLTree()
-{
-    // TODO
+    root_ = other.root_;
+    other.root_ = nullptr;
 }
 
 template<typename TKey, typename TData>
 void TAVLTree<TKey, TData>::insert(const TKey& key, TData* data)
 {
-    // TODO
+    Node* node = new Node(key, data);
+    if (root_ == nullptr)
+    {
+        root_ = node;
+        return;
+    }
+    Node* temp = root_;
+    Node* parent = nullptr;
+    while (temp != nullptr)
+    {
+        parent = temp;
+        if (node->key < temp->key)
+            temp = temp->left;
+        else
+            temp = temp->right;
+    }
+    node->parent = parent;
+    if (node->key < parent->key)
+        parent->left = node;
+    else
+        parent->right = node;
 }
 
 template<typename TKey, typename TData>

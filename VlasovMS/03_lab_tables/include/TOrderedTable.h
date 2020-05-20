@@ -1,7 +1,6 @@
 #ifndef _TORDEREDTABLE_H_
 #define _TORDEREDTABLE_H_
 #define _TOrderedTableIter typename TOrderedTable<TKey, TData>::Iterator
-#define _TOrderedTableEntry typename TOrderedTable<TKey, TData>::Entry
 
 #include "TArrayTable.h"
 
@@ -12,8 +11,8 @@ public:
     using BaseType = TArrayTable<TKey, TData>;
     using Key = TKey;
     using Data = TData;
+    using Entry = BaseType::Entry;
     using Iterator = BaseType::Iterator;
-    using Entry = TTableEntry<TKey, TData>;
     using Pair = BaseType::Pair;
 
 protected:
@@ -22,21 +21,20 @@ protected:
     using BaseType::capacity;
 
     void sort();
-    size_t getIndex(Iterator iter);
+    using BaseType::getIndex;
 
 public:
     TOrderedTable() = default;
     explicit TOrderedTable(size_t capacity_);
+    TOrderedTable(const BaseType& super);
     ~TOrderedTable() = default;
 
     using BaseType::full;
     using BaseType::empty;
     virtual Iterator find(const TKey& needle) const;
-    using BaseType::notFound;
 
     virtual void insert(const TKey& key, TData* data = nullptr);
     virtual void remove(const TKey& key);
-    virtual void remove(Iterator& iter);
 
     using BaseType::begin;
     using BaseType::end;
@@ -60,15 +58,19 @@ void TOrderedTable<TKey, TData>::sort()
 }
 
 template<typename TKey, typename TData>
-size_t TOrderedTable<TKey, TData>::getIndex(Iterator iter)
-{
-    return iter.entry - entries;
-}
-
-template<typename TKey, typename TData>
 TOrderedTable<TKey, TData>::TOrderedTable(size_t capacity_)
     : BaseType(capacity_)
 {
+}
+
+template<typename TKey, typename TData>
+TOrderedTable<TKey, TData>::TOrderedTable(const BaseType& super)
+    : entriesCount(super.entriesCount), capacity(super.capacity)
+{
+    entries = new Entry * [capacity];
+    for (size_t i = 0; i < entriesCount; i++)
+        entries[i] = new Entry(super.entries[i]);
+    sort();
 }
 
 template<typename TKey, typename TData>
@@ -87,7 +89,7 @@ _TOrderedTableIter TOrderedTable<TKey, TData>::find(const TKey& needle) const
         else
             left = middle + 1;
     }
-    return notFound();
+    return Iterator(nullptr);
 }
 
 template<typename TKey, typename TData>
@@ -96,9 +98,9 @@ void TOrderedTable<TKey, TData>::insert(const TKey& key, TData* data)
     if (full())
         throw FullError();
     auto nextOrdered = begin();
-    while ((nextOrdered != end()) && (nextOrdered.key() < key))
+    while ((nextOrdered != end()) && (nextOrdered()->getKey() < key))
     {
-        if (nextOrdered.key() == key)
+        if (nextOrdered()->getKey() == key)
             throw DuplicateError();
         nextOrdered++;
     }
@@ -114,15 +116,9 @@ template<typename TKey, typename TData>
 void TOrderedTable<TKey, TData>::remove(const TKey& key)
 {
     auto iter = find(key);
-    remove(iter);
-}
-
-template<typename TKey, typename TData>
-void TOrderedTable<TKey, TData>::remove(Iterator& iter)
-{
-    if (empty() || (iter == notFound()) || !iter.isAccessible())
+    if (!iter)
         throw NotFoundError();
-    int index = getIndex(iter);
+    size_t index = getIndex(iter);
     delete entries[index];
     for (size_t i = index + 1; i < entriesCount; i++)
         entries[i - 1] = entries[i];

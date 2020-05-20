@@ -2,7 +2,6 @@
 #define _TBASETABLE_H_
 
 #include "TTableEntry.h"
-#include "TTableIterator.h"
 #include "TPair.h"
 
 template <typename TKey, typename TData>
@@ -13,7 +12,6 @@ protected:
 public:
     using Key = TKey;
     using Data = TData;
-    using Iterator = TTableIterator<TBaseTable<TKey, TData>>;
     using Entry = TTableEntry<TKey, TData>;
     using Pair = TPair<TKey, TData>;
     TBaseTable();
@@ -21,10 +19,6 @@ public:
     inline size_t getEntriesCount() const;
     virtual bool empty() const;
     virtual bool full() const = 0;
-    virtual Iterator find(const TKey& needle) const = 0;
-    virtual void insert(const TKey& key, TData* data = nullptr) = 0;
-    virtual void remove(const TKey& key) = 0;
-    virtual void remove(Iterator& iter) = 0;
 };
 
 template<typename TKey, typename TData>
