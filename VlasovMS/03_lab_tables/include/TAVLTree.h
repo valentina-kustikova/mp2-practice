@@ -37,8 +37,48 @@ public:
 template<typename TKey, typename TData>
 TBalanceFactor TAVLTree<TKey, TData>::leftBalancing(Node* node)
 {
-    // TODO
-    return TBalanceFactor();
+    TBalanceFactor balance = 0;
+    switch (node->balance)
+    {
+    case 1:
+        Node* right = reinterpret_cast<Node*>(node->right);
+        if (right->balance == 1)
+        {
+            node->right = right->left;
+            right->left = node;
+            node->balance = 0;
+            node = right;
+        }
+        else
+        {
+            Node* left = reinterpret_cast<Node*>(right->left);
+            right->left = left->right;
+            left->right = right;
+            node->right = left->right;
+            left->left = node;
+            if (left->balance == -1)
+                node->balance = -1;
+            else
+                node->balance = 0;
+            if (left->balance == 1)
+                node->balance = 1;
+            else
+                node->balance = 0;
+            node = left;
+            node->balance = 0;
+        }
+        balance = 0;
+        break;
+    case 0:
+        node->balance = 1;
+        balance = 1;
+        break;
+    case -1:
+        node->balance = 0;
+        balance = 0;
+        break;
+    return balance;
+    }
 }
 
 template<typename TKey, typename TData>
