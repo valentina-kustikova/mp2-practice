@@ -51,5 +51,11 @@
     <ClInclude Include="..\..\include\TIterator.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\THashTable.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\TChain.h">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
