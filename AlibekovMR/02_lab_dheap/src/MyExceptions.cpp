@@ -1,4 +1,4 @@
-#include "..\include\MyExceptions.h"
+#include "MyExceptions.h"
 
 MyException::MyException()
 {

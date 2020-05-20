@@ -1,4 +1,4 @@
-#include "..\include\TGraph.h"
+#include "TGraph.h"
 
 TGraph::TGraph(int _verticesCount, int *_vertices)
 {

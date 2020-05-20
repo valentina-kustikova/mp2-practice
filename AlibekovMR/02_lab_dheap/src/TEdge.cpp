@@ -1,4 +1,4 @@
-#include "..\include\TEdge.h"
+#include "TEdge.h"
 
 TEdge::TEdge(const TEdge & _edge)
 {

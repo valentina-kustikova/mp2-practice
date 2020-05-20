@@ -32,6 +32,24 @@ public:
   ~ExceptionOutOfRange();
 };
 
+class ExceptionIncorrectSize : public MyException
+{
+public:
+  ExceptionIncorrectSize();
+  ExceptionIncorrectSize(const ExceptionIncorrectSize& _exception);
+  ExceptionIncorrectSize(int _line, const char* _file);
+  ~ExceptionIncorrectSize();
+};
+
+class ExceptionEmptyData : public MyException
+{
+public:
+  ExceptionEmptyData();
+  ExceptionEmptyData(const ExceptionEmptyData& _exception);
+  ExceptionEmptyData(int _line, const char* _file);
+  ~ExceptionEmptyData();
+};
+
 class ExceptionDisconnectedGraph : public MyException
 {
 public:

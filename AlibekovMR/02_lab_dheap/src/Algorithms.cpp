@@ -1,4 +1,4 @@
-#include "..\include\Algorithms.h"
+#include "Algorithms.h"
 #include "iostream"
 
 void HeapSort::heapSort(int _size, int _array[])

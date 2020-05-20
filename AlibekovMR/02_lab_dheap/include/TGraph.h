@@ -11,7 +11,7 @@ class TGraph
 {
 public:
   int* vertices;
-  int verticesCount;
+  int  verticesCount;
   TEdge* edges;
   int edgesCount;
 
