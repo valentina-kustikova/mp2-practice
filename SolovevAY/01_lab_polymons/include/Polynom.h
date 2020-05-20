@@ -4,8 +4,6 @@
 using namespace std;
 class Polynom
 {
-private:
-	static Polynom convert(const string& _expression);
 
 protected:
 	TList<UINT, double> *monoms;
@@ -25,10 +23,10 @@ public:
 
 	Polynom operator+(const Polynom& _polynom) const;
 	Polynom operator+(const Monom& _monom) const;
-
+	Polynom operator*(double) const;
 	Polynom operator-(const Polynom& _polynom) const;
 	Polynom operator-(const Monom& _monom) const;
-
+	Polynom operator+=(const Polynom& _polynom);
 	Polynom operator*(const Polynom& _polynom) const;
 	Polynom operator*(const Monom& _monom) const;
 
@@ -37,12 +35,19 @@ public:
 };
 
 
-Polynom Polynom::convert(const string& _expression)
+
+
+Polynom::Polynom()
+{
+	monoms = new TList<UINT, double>;
+}
+
+Polynom::Polynom(const string& _expression)
 {
 	string line = _expression;
 	Polynom result;
 	int lengthOfExpression = int(line.length());
-	result = result + (0.);
+
 
 	while (lengthOfExpression)
 	{
@@ -80,7 +85,7 @@ Polynom Polynom::convert(const string& _expression)
 		}
 
 		s_monom = line.substr(start_index, end_index - start_index + 1);
-		result = result + Monom().convert(s_monom) * (44 - _sign);
+		result = result + Monom::convert(s_monom) * (44 - _sign);
 
 		if (lengthOfExpression - end_index <= 0)
 			break;
@@ -88,18 +93,8 @@ Polynom Polynom::convert(const string& _expression)
 		line = line.substr(end_index, lengthOfExpression - end_index);
 		lengthOfExpression = int(line.length());
 	}
-	return result;
-}
+	monoms = new TList<UINT, double>(*result.monoms);
 
-Polynom::Polynom()
-{
-	monoms = new TList<UINT, double>;
-	monoms->InsertBegin(0, .0);
-}
-
-Polynom::Polynom(const string& _expression)
-{
-	*this = convert(_expression);
 }
 
 Polynom::Polynom(const TList<UINT, double>& _list)
@@ -150,7 +145,7 @@ bool Polynom::operator==(const Polynom & _polynom)
 {
 	_polynom.monoms->Reset();
 	monoms->Reset();
-	while (!_polynom.monoms->IsEnded())
+	while (!_polynom.monoms->IsEnded() && (!monoms->IsEnded()))
 	{
 		if (monoms->IsEnded()
 			|| (_polynom.monoms->getCurrentNodeKey() != monoms->getCurrentNodeKey())
@@ -164,12 +159,13 @@ bool Polynom::operator==(const Polynom & _polynom)
 		monoms->Next();
 	}
 
-	if (!monoms->IsEnded())
+	if (!monoms->IsEnded() || !_polynom.monoms->IsEnded())
 		return false;
 	monoms->Reset();
 	_polynom.monoms->Reset();
 	return true;
 }
+
 
 Polynom Polynom::operator-() const
 {
@@ -190,8 +186,7 @@ Polynom Polynom::operator+(const Monom& _monom) const
 	while ((currentKey > _monom.key) && (!result.monoms->IsEnded()))
 	{
 		result.monoms->Next();
-		if (!result.monoms->IsEnded())
-			currentKey = result.monoms->getCurrentNodeKey();
+		currentKey = result.monoms->getCurrentNodeKey();
 	}
 	if (currentKey > _monom.key)
 		result.monoms->InsertEnd(_monom.key, _monom.koef);
@@ -207,6 +202,23 @@ Polynom Polynom::operator+(const Monom& _monom) const
 	result.monoms->Reset();
 	return result;
 }
+
+inline Polynom Polynom::operator*(double temp) const
+{
+	if (!monoms)
+		return *this;
+	if (temp == 0)
+		return Polynom();
+	monoms->Reset();
+	Polynom result(*this);
+	while (!result.monoms->IsEnded())
+	{
+		result.monoms->Current()->koef *= temp;
+		result.monoms->Next();
+	}
+	return result;
+}
+
 Polynom Polynom::operator+(const Polynom& _polynom) const
 {
 	Polynom result;
@@ -269,21 +281,34 @@ Polynom Polynom::operator-(const Monom& _monom) const
 	return (Polynom(*this) + Monom(_monom.key, -_monom.koef));
 }
 
+inline Polynom Polynom::operator+=(const Polynom & _polynom)
+{
+	*this = *this + _polynom;
+	return *this;
+}
+
 Polynom Polynom::operator*(const Polynom & _polynom) const
 {
 	Polynom result;
+
 	Polynom polynomial(_polynom);
+
 	polynomial.monoms->Reset();
 	while (!polynomial.monoms->IsEnded())
 	{
 		double currentData = polynomial.monoms->getCurrentNodeData();
 		UINT currentKey = polynomial.monoms->getCurrentNodeKey();
 		Polynom tmp(Polynom(*this) * Monom(currentKey, currentData));
-		result = result + tmp;
+		result.monoms->InsertBegin(0, 0.);
+		tmp.monoms->InsertBegin(0, 0.);
+		result += tmp;
+
 		polynomial.monoms->Next();
 	}
+
 	return result;
 }
+
 
 Polynom Polynom::operator*(const Monom& _monom) const
 {
@@ -320,8 +345,6 @@ ostream& operator<<(ostream& out, const Polynom& _polynom)
 
 		Monom tmp(_polynom.monoms->getCurrentNodeKey(), _polynom.monoms->getCurrentNodeData());
 		out << " ";
-		if (tmp.znakmonoma() == '-')
-			out << "-";
 
 		if ((tmp.key == 0) || (abs(tmp.koef) != 1))
 			out << " " << abs(tmp.koef);
@@ -345,8 +368,7 @@ ostream& operator<<(ostream& out, const Polynom& _polynom)
 		while (!_polynom.monoms->IsEnded())
 		{
 			Monom tmp = Monom(_polynom.monoms->getCurrentNodeKey(), _polynom.monoms->getCurrentNodeData());
-			if (tmp.znakmonoma() == '+')
-				out << " +";
+
 			out << tmp;
 			_polynom.monoms->Next();
 		}
@@ -363,7 +385,7 @@ istream& operator>>(istream& in, Polynom& _polynom)
 
 	string line;
 	getline(in, line);
-	_polynom = Polynom::convert(line);
+	_polynom = Polynom(line);
 
 	return in;
 }
