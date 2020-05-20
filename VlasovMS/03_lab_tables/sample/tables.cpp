@@ -3,6 +3,7 @@
 #include "TAVLTree.h"
 #include "TOrderedTable.h"
 #include "TTreeTable.h"
+#include "THashTable.h"
 
 int main()
 {
@@ -31,5 +32,14 @@ int main()
     std::cout << table2.find(4)()->getKey();
 
     TTreeTable<int, int> table3;
+
+    THashTable<int, int> table4(16);
+    table4.insert(8);
+    table4.insert(3);
+    table4.insert(44);
+    std::cout << table4.find(3)->getKey();
+    table4.remove(44);
+    std::cout << table4.find(3)->getKey();
+
     return 0;
 }

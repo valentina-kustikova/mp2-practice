@@ -31,6 +31,7 @@
     <ClInclude Include="..\..\include\TBinaryTreeIterator.h" />
     <ClInclude Include="..\..\include\TBinaryTreeNode.h" />
     <ClInclude Include="..\..\include\TChain.h" />
+    <ClInclude Include="..\..\include\TChainNode.h" />
     <ClInclude Include="..\..\include\THashTable.h" />
     <ClInclude Include="..\..\include\TIterator.h" />
     <ClInclude Include="..\..\include\TOrderedTable.h" />

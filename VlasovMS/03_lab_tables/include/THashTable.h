@@ -15,7 +15,7 @@ public:
     using Key = TKey;
     using Data = TData;
     using Entry = TChainNode<TKey, TData>;
-    using Iterator = TIterator<Entry*>;
+    using Iterator = Entry*; // TODO
     using Pair = BaseType::Pair;
 
 protected:
@@ -35,9 +35,6 @@ public:
     virtual void insert(const TKey& key, TData* data = nullptr);
     virtual void remove(const TKey& key);
 
-    virtual Iterator begin() const;
-    virtual Iterator end() const;
-
     EXCEPT(DuplicateError, "There is an entry with given key in the table already.");
     EXCEPT(NotFoundError, "Given key not found.");
 };
@@ -55,7 +52,7 @@ THashTable<TKey, TData>::THashTable(size_t chainsCount_)
     if (chainsCount == 0)
         chains = nullptr;
     else
-        chains = new TChain<Tkey, TData>[chainsCount];
+        chains = new TChain<TKey, TData>[chainsCount];
 }
 
 template<typename TKey, typename TData>
@@ -74,7 +71,8 @@ bool THashTable<TKey, TData>::full() const
 template<typename TKey, typename TData>
 _THashTableIter THashTable<TKey, TData>::find(const TKey& needle) const
 {
-    for (auto i = chains[hash(key)].head; i != nullptr; i = i->next)
+    size_t index = hash(needle);
+    for (auto i = chains[index].head; i != nullptr; i = i->next)
         if (i->getKey() == needle)
             return Iterator(i);
     return Iterator(nullptr);
@@ -85,28 +83,18 @@ void THashTable<TKey, TData>::insert(const TKey& key, TData* data)
 {
     if (find(key))
         throw DuplicateError();
-    chains[hash(key)].add(key, data);
+    size_t index = hash(key);
+    chains[index].add(key, data);
     entriesCount++;
 }
 
 template<typename TKey, typename TData>
 void THashTable<TKey, TData>::remove(const TKey& key)
 {
-    if (!chains[hash(key)].remove(key))
+    size_t index = hash(key);
+    if (!chains[index].remove(key))
         throw NotFoundError();
     entriesCount--;
-}
-
-template<typename TKey, typename TData>
-_THashTableIter THashTable<TKey, TData>::begin() const
-{
-    return Iterator(entries);
-}
-
-template<typename TKey, typename TData>
-_THashTableIter THashTable<TKey, TData>::end() const
-{
-    return Iterator(entries + entriesCount);
 }
 
 #endif

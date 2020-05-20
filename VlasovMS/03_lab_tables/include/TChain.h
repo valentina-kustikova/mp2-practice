@@ -1,22 +1,7 @@
 #ifndef _TCHAIN_H_
 #define _TCHAIN_H_
 
-#include "TTableEntry.h"
-
-template<typename TKey, typename TData>
-class TChainNode : public TTableEntry<TKey, TData>
-{
-public:
-    using BaseType = TTableEntry<TKey, TData>;
-protected:
-    using BaseType::key;
-    TChainNode<TKey, TData>* next;
-public:
-    using BaseType::data;
-    using BaseType::getKey;
-    TChainNode(const TKey& key_, TData* data_ = nullptr, TChainNode* next_ = nullptr)
-        : BaseType(key_, data_), next(next_) {};
-};
+#include "TChainNode.h"
 
 template<typename TKey, typename TData>
 class TChain

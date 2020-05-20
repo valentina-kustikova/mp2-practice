@@ -2,11 +2,10 @@
 #define _TITERATOR_H_
 
 template <typename T>
-class TIterator
+class THIterator
 {
 protected:
-    template<typename, typename> friend class TArrayTable;
-    template<typename, typename> friend class TOrderedTable;
+    template<typename, typename> friend class THashTable;
     T* ptr;
 public:
     explicit TIterator(T* ptr_) : ptr(ptr_) {};
