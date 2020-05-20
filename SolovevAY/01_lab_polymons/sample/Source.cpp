@@ -6,16 +6,11 @@ using namespace std;
 
 int main()
 {
-	char a;
-	Monom monom;
-	Monom testmono1;
+
 	Polynom testpoly1;
-	Monom testmono2;
 	Polynom testpoly2;
 	Polynom result;
-	int choose = 0;
-	int choosemonom = 0;
-	int choosepolynom = 0;
+
 	try
 	{
 
@@ -29,6 +24,7 @@ int main()
 		cout << result << endl;
 		cout << "raznost polynomov" << endl;
 		result = testpoly1 - testpoly2;
+
 		cout << result << endl;
 		cout << "proizvedenie polynomov" << endl;
 		result = testpoly1 * testpoly2;
