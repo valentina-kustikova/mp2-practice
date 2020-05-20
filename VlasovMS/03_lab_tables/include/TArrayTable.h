@@ -3,10 +3,11 @@
 #define _TArrayTableIter typename TArrayTable<TKey, TData>::Iterator
 #define _TArrayTableEntry typename TArrayTable<TKey, TData>::Entry
 
+#include "EXCEPT.h"
 #include "TBaseTable.h"
 
 template <typename TKey, typename TData>
-class TArrayTable : public TBaseTable<TKey, TData> // templated inheritance
+class TArrayTable : public TBaseTable<TKey, TData>
 {
 public:
     using BaseType = TBaseTable<TKey, TData>;
@@ -17,7 +18,7 @@ public:
     using Pair = BaseType::Pair;
 
 protected:
-    using BaseType::entriesCount; // because inheritance is templated
+    using BaseType::entriesCount;
     size_t capacity;
     Entry** entries;
 
@@ -26,6 +27,7 @@ public:
     explicit TArrayTable(size_t capacity_);
     ~TArrayTable();
 
+    using BaseType::empty;
     bool full() const;
     virtual Iterator find(const TKey& needle) const;
 
@@ -39,6 +41,10 @@ public:
     virtual const Iterator begin() const;
     virtual const Iterator end() const;
     virtual const Iterator notFound() const;
+
+    EXCEPT(FullError, "Table is full.");
+    EXCEPT(DuplicateError, "There is an entry with given key in the table already.");
+    EXCEPT(NotFoundError, "Given key not found.");
 };
 
 template<typename TKey, typename TData>
@@ -84,19 +90,29 @@ _TArrayTableIter TArrayTable<TKey, TData>::find(const TKey& needle) const
 template<typename TKey, typename TData>
 void TArrayTable<TKey, TData>::insert(const TKey& key, TData* data)
 {
-    // TODO
+    if (full())
+        throw FullError();
+    if (find(key) != notFound())
+        throw DuplicateError();
+    entries[entriesCount++] = new Entry(key, data);
 }
 
 template<typename TKey, typename TData>
 void TArrayTable<TKey, TData>::remove(const TKey& key)
 {
-    // TODO
+    auto iter = find(key);
+    remove(iter);
 }
 
 template<typename TKey, typename TData>
 void TArrayTable<TKey, TData>::remove(Iterator& iter)
 {
-    // TODO
+    if (empty() || (iter == notFound()) || !iter.isAccessible())
+        throw NotFoundError();
+    int index = iter.entry - entries;
+    delete entries[index];
+    entries[index] = entries[entriesCount - 1];
+    entriesCount--;
 }
 
 template<typename TKey, typename TData>

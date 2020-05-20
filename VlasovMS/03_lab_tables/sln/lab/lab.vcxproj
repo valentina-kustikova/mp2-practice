@@ -22,6 +22,7 @@
     <ClCompile Include="..\..\sample\tables.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\include\EXCEPT.h" />
     <ClInclude Include="..\..\include\TArrayTable.h" />
     <ClInclude Include="..\..\include\TAVLTree.h" />
     <ClInclude Include="..\..\include\TAVLTreeNode.h" />

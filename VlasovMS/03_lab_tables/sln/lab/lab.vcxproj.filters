@@ -45,5 +45,8 @@
     <ClInclude Include="..\..\include\TOrderedTable.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\EXCEPT.h">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
