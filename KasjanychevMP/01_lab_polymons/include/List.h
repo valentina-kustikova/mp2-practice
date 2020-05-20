@@ -263,4 +263,4 @@ void TList<Tkey, TData>::Remove(Tkey _key) {
     pPrev = _pPrev;
     pCurr = _pCurr;
     pNext = _pNext;
-}#pragma once
+}

@@ -124,7 +124,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\sample\Main.cpp" />
-    <ClCompile Include="..\..\..\src\TMonom.cpp" />
+    <ClCompile Include="..\..\..\src\TMonom.cpp">
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\github\mp2-practice-1\KasjanychevMP\01_lab_polymons\include</AdditionalIncludeDirectories>
+    </ClCompile>
     <ClCompile Include="..\..\..\src\TPolynom.cpp" />
   </ItemGroup>
   <ItemGroup>
