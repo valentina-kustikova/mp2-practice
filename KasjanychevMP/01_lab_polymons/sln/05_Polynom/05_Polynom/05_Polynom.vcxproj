@@ -123,11 +123,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\sample\Main.cpp" />
+    <ClCompile Include="..\..\..\sample\Main.cpp">
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\github\mp2-practice-1\KasjanychevMP\01_lab_polymons\include</AdditionalIncludeDirectories>
+    </ClCompile>
     <ClCompile Include="..\..\..\src\TMonom.cpp">
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\github\mp2-practice-1\KasjanychevMP\01_lab_polymons\include</AdditionalIncludeDirectories>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\TPolynom.cpp" />
+    <ClCompile Include="..\..\..\src\TPolynom.cpp">
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\github\mp2-practice-1\KasjanychevMP\01_lab_polymons\include</AdditionalIncludeDirectories>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\include\List.h" />

@@ -10,9 +10,9 @@ typedef TNode<unsigned int, double> TMonom;
 class TPolynom {
 private:
     TList<unsigned int, double>* pol;
-    void InsertInSort(TMonom node);
-    bool IsDouble(string a);
-    void CheckLim(const TList<unsigned int, double>*)const;
+    //void InsertInSort(TMonom node);
+    //bool IsDouble(string a);
+    void CheckP(const TList<unsigned int, double>*)const;
 public:
     TPolynom();
     TPolynom(const TList<unsigned int, double>*);

@@ -6,12 +6,12 @@ template<class Tkey, class TData>
 class TNode {
 public:
     Tkey key;
-    TData* pData;
+    TData pData;
     TNode* pNext;
 
     TNode();
     TNode(const TNode&);
-    TNode(Tkey, TData*, TNode* _pNext = 0);
+    TNode(Tkey, TData, TNode* _pNext = 0);
     ~TNode();
 
     friend ostream& operator<<(ostream& out, TNode<Tkey, TData>& node) {
@@ -35,9 +35,9 @@ TNode<Tkey, TData>::TNode(const TNode& node) {
 }
 
 template<class Tkey, class TData>
-TNode<Tkey, TData>::TNode(Tkey _key, TData* _pData, TNode* _pNext) {
+TNode<Tkey, TData>::TNode(Tkey _key, TData _pData, TNode* _pNext) {
     key = _key;
-    pData = new TData(*_pData);
+    pData = _pData;
     pNext = _pNext;
 }
 
@@ -49,26 +49,31 @@ TNode<Tkey, TData>::~TNode() {
 
 template<class Tkey, class TData>
 class TList {
-private:
+public:
     TNode<Tkey, TData>* pFirst;
     TNode<Tkey, TData>* pPrev;
     TNode<Tkey, TData>* pCurr;
     TNode<Tkey, TData>* pNext;
-public:
+
     TList();
-    TList(const TList&);
+    TList(const TList<Tkey, TData>&);
     TList(TNode<Tkey, TData>* list);
     ~TList();
 
     void Next();
     void Reset();
     bool IsEnded() const;
-    void Back(Tkey _key, TData* pData);
+    void Back(const TNode<Tkey, TData>&);
     TNode<Tkey, TData>* Search(Tkey _key);
-    void Push(Tkey _key, TData* pData);
-    void InsertAfter(Tkey, TData*, Tkey);
-    void InsertBefore(Tkey, TData*, Tkey);
+    void Push(const TNode<Tkey, TData>&);
+    void InsertAfter(const TNode<Tkey, TData>&, Tkey key);
+    void InsertBefore(const TNode<Tkey, TData>&, Tkey key);
     void Remove(Tkey);
+
+    Tkey Get_pFirstKey() const;
+    Tkey Get_pCurKey() const;
+    TData Get_pCurData() const;
+    TNode<Tkey, TData>* GetpCur() const;
 
     friend ostream& operator<<(ostream& out, TList<Tkey, TData>& list) {
         list.Reset();
@@ -115,10 +120,15 @@ template <class Tkey, class TData>
 TList<Tkey, TData>::~TList() {
     Reset();
     while (!IsEnded()) {
-        delete pCurr->pData;
         Next();
+        delete pPrev;
     }
+
+    delete pCurr;
     pFirst = NULL;
+    pCurr = NULL;
+    pPrev = NULL;
+    pNext = NULL;
 }
 
 template <class Tkey, class TData>
@@ -143,9 +153,9 @@ void TList<Tkey, TData>::Reset() {
 }
 
 template <class Tkey, class TData>
-void TList<Tkey, TData>::Back(Tkey _key, TData * _pData) {
+void TList<Tkey, TData>::Back(const TNode<Tkey, TData>& tmp) {
     if (pFirst == NULL) {
-        pFirst = new TNode<Tkey, TData>(_key, _pData);
+        pFirst = new TNode<Tkey, TData>(tmp);
         pCurr = pFirst;
         return;
     }
@@ -153,7 +163,7 @@ void TList<Tkey, TData>::Back(Tkey _key, TData * _pData) {
     TNode<Tkey, TData>* _pCurr = pCurr;
     TNode<Tkey, TData>* _pNext = pNext;
     while (!IsEnded()) Next();
-    pCurr = new TNode<Tkey, TData>(_key, _pData);
+    pCurr = new TNode<Tkey, TData>(tmp);
     pPrev->pNext = pCurr;
     pPrev = _pPrev;
     pCurr = _pCurr;
@@ -172,14 +182,14 @@ TNode<Tkey, TData>* TList<Tkey, TData>::Search(Tkey _key) {
 }
 
 template <class Tkey, class TData>
-void TList<Tkey, TData>::Push(Tkey _key, TData * _pData) {
-    TNode<Tkey, TData>* tmp = new TNode<Tkey, TData>(_key, _pData, pFirst);
+void TList<Tkey, TData>::Push(const TNode<Tkey, TData>& _tmp) {
+    TNode<Tkey, TData>* tmp = new TNode<Tkey, TData>(_tmp.key, _tmp.pData, pFirst);
     if (pCurr == pFirst) pPrev = tmp;
     pFirst = tmp;
 }
 
 template <class Tkey, class TData>
-void TList<Tkey, TData>::InsertAfter(Tkey _key, TData * _pData, Tkey key1) {
+void TList<Tkey, TData>::InsertAfter(const TNode<Tkey, TData>& t, Tkey key1) {
     if (pFirst == NULL) throw "osh";
     TNode<Tkey, TData> * _pPrev = pPrev;
     TNode<Tkey, TData> * _pCurr = pCurr;
@@ -190,7 +200,7 @@ void TList<Tkey, TData>::InsertAfter(Tkey _key, TData * _pData, Tkey key1) {
         pNext = _pNext;
         return;
     }
-    TNode<Tkey, TData>* tmp = new TNode<Tkey, TData>(_key, _pData, pNext);
+    TNode<Tkey, TData>* tmp = new TNode<Tkey, TData>(t.key, t.pData, pNext);
     pCurr->pNext = tmp;
     pPrev = _pPrev;
     pCurr = _pCurr;
@@ -198,7 +208,7 @@ void TList<Tkey, TData>::InsertAfter(Tkey _key, TData * _pData, Tkey key1) {
 }
 
 template <class Tkey, class TData>
-void TList<Tkey, TData>::InsertBefore(Tkey _key, TData * _pData, Tkey key1) {
+void TList<Tkey, TData>::InsertBefore(const TNode<Tkey, TData>& t, Tkey key1) {
     if (pFirst == NULL) throw "osh";
     TNode<Tkey, TData> * _pPrev = pPrev;
     TNode<Tkey, TData> * _pCurr = pCurr;
@@ -210,7 +220,7 @@ void TList<Tkey, TData>::InsertBefore(Tkey _key, TData * _pData, Tkey key1) {
         return;
     }
     if (pFirst == pCurr) {
-        TNode<Tkey, TData>* tmp = new TNode<Tkey, TData>(_key, _pData, pFirst);
+        TNode<Tkey, TData>* tmp = new TNode<Tkey, TData>(t.key, t.pData, pFirst);
         if (_pCurr == pFirst) pPrev = tmp;
         else {
             pPrev = _pPrev;
@@ -220,7 +230,7 @@ void TList<Tkey, TData>::InsertBefore(Tkey _key, TData * _pData, Tkey key1) {
         pFirst = tmp;
         return;
     }
-    TNode<Tkey, TData>* tmp = new TNode<Tkey, TData>(_key, _pData, pCurr);
+    TNode<Tkey, TData>* tmp = new TNode<Tkey, TData>(t.key, t.pData, pCurr);
     pPrev->pNext = tmp;
     pPrev = _pPrev;
     pCurr = _pCurr;
@@ -263,4 +273,21 @@ void TList<Tkey, TData>::Remove(Tkey _key) {
     pPrev = _pPrev;
     pCurr = _pCurr;
     pNext = _pNext;
+}
+
+template<class Tkey, class TData>
+Tkey TList<Tkey, TData>::Get_pFirstKey() const {
+    return pFirst->key;
+}
+template<class Tkey, class TData>
+Tkey TList<Tkey, TData>::Get_pCurKey() const {
+    return pCurr->key;
+}
+template<class Tkey, class TData>
+TData TList<Tkey, TData>::Get_pCurData() const {
+    return *pCurr->pData;
+}
+template<class Tkey, class TData>
+TNode<Tkey, TData>* TList<Tkey, TData>::GetpCur() const {
+    return pCurr;
 }
