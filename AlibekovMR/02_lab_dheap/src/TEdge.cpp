@@ -97,11 +97,14 @@ std::istream& operator>>(std::istream& in, TEdge& _edge)
 {
   int _startVertex = -1;
   int _endVertex = -1;
+
   std::cout << "Enter start_vertex: ";
   in >> _startVertex;
   _edge.setStartVertex(_startVertex);
+
   std::cout << "Enter end_vertex: ";
   in >> _endVertex;
   _edge.setEndVertex(_endVertex);
+
   return in;
 };
