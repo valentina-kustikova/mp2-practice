@@ -29,6 +29,9 @@
     <ClInclude Include="..\..\include\TEdge.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\TWeightedEdge.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\Algorithms.cpp">
@@ -44,6 +47,9 @@
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\TEdge.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\TWeightedEdge.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>

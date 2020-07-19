@@ -7,18 +7,18 @@ TGraph::TGraph(int _verticesCount, int *_vertices)
   for (int i = 0; i < verticesCount; i++)
     vertices[i] = _vertices[i];
   edgesCount = _verticesCount * (_verticesCount - 1) / 2;
-  edges = new TEdge[edgesCount];
+  edges = new TWeightedEdge[edgesCount];
   edgesCount = 0;
 }
 
-TGraph::TGraph(int _verticesCount, int * _vertices, TEdge * _edges, int _edgesCount)
+TGraph::TGraph(int _verticesCount, int * _vertices, TWeightedEdge* _edges, int _edgesCount)
 {
   verticesCount = _verticesCount;
   vertices = new int[verticesCount];
   for (int i = 0; i < verticesCount; i++)
     vertices[i] = _vertices[i];
   edgesCount = _edgesCount;
-  edges = new TEdge[edgesCount];
+  edges = new TWeightedEdge[edgesCount];
   for (int j = 0; j < edgesCount; j++)
     edges[j] = _edges[j];
 }
@@ -30,7 +30,7 @@ TGraph::TGraph(const TGraph & _graph)
   vertices = new int[verticesCount];
   for (int i = 0; i < verticesCount; i++)
     vertices[i] = _graph.vertices[i];
-  edges = new TEdge[edgesCount];
+  edges = new TWeightedEdge[edgesCount];
   for (int j = 0; j < edgesCount; j++)
     edges[j] = _graph.edges[j];
 }
@@ -41,7 +41,7 @@ TGraph::~TGraph()
   delete[] edges;
 }
 
-void TGraph::addNewEdge(const TEdge & _newEdge)
+void TGraph::addNewEdge(const TWeightedEdge& _newEdge)
 {
   int maxCountOfEdges = verticesCount * (verticesCount - 1) / 2;
   if (edgesCount + 1 > maxCountOfEdges)
@@ -50,7 +50,7 @@ void TGraph::addNewEdge(const TEdge & _newEdge)
     edges[edgesCount++] = _newEdge;
 }
 
-bool TGraph::isEdgeInGraph(const TEdge & _edge) const
+bool TGraph::isEdgeInGraph(const TWeightedEdge& _edge) const
 {
   for (int i = 0; i < edgesCount; i++)
     if (edges[i] == _edge)
@@ -84,25 +84,26 @@ std::ostream & operator<<(std::ostream & out, const TGraph & _graph)
   out << "]" << std::endl;
   out << "Edges: [ ";
   for (int i = 0; i < _graph.edgesCount; i++)
-    out << "(" << _graph.edges[i].startVertex << " " << _graph.edges[i].endVertex << ") ";
+    out << _graph.edges[i] << " ";
+    //out << "(" << _graph.edges[i].startVertex << " " << _graph.edges[i].endVertex << ") ";
   //<< " " << _graph.edges[i].weight << ") ";
   out << "]" << std::endl;
   return out;
 }
 
-int* TGraph::getAdjacencyMatrix() const
+double* TGraph::getAdjacencyMatrix() const
 {
-  int* adjacencyMatrix = new int[verticesCount * verticesCount];
+  double* adjacencyMatrix = new double[verticesCount * verticesCount];
   for (int k = 0; k < verticesCount * verticesCount; k++)
     adjacencyMatrix[k] = 0;
 
   for (int i = 0; i < edgesCount; i++)
   {
-    TEdge currentEdge = edges[i];
-    int startVertex = currentEdge.startVertex;
-    int endVertex = currentEdge.endVertex;
-    adjacencyMatrix[startVertex * verticesCount + endVertex] = currentEdge.weight;
-    adjacencyMatrix[endVertex * verticesCount + startVertex] = currentEdge.weight;
+    TWeightedEdge currentEdge = edges[i];
+    int startVertex = currentEdge.getStartVertex();
+    int endVertex = currentEdge.getEndVertex();
+    adjacencyMatrix[startVertex * verticesCount + endVertex] = currentEdge.getWeight();
+    adjacencyMatrix[endVertex * verticesCount + startVertex] = currentEdge.getWeight();
   }
 
   return adjacencyMatrix;
@@ -110,7 +111,7 @@ int* TGraph::getAdjacencyMatrix() const
 
 void TGraph::printAdjacencyMatrix() const
 {
-  int* adjacencyMatrix = getAdjacencyMatrix();
+  double* adjacencyMatrix = getAdjacencyMatrix();
 
   for (int i = 0; i < verticesCount; i++)
   {
@@ -149,16 +150,16 @@ int TGraph::numberOfComponents() const
         isVertexPassed[vertexWithIndex.first] = true;
         for (int i = 0; i < edgesCount; i++)
         {
-          if (edges[i].startVertex == vertexWithIndex.second)
+          if (edges[i].getStartVertex() == vertexWithIndex.second)
             for (int j = 0; j < verticesCount; j++)
-              if ((vertices[j] == edges[i].endVertex) && (!isVertexPassed[j]))
+              if ((vertices[j] == edges[i].getEndVertex()) && (!isVertexPassed[j]))
               {
                 qVertices.push(std::pair<int, int>(j, vertices[j]));
                 break;
               }
-          if (edges[i].endVertex == vertexWithIndex.second)
+          if (edges[i].getEndVertex() == vertexWithIndex.second)
             for (int j = 0; j < verticesCount; j++)
-              if ((vertices[j] == edges[i].startVertex) && (!isVertexPassed[j]))
+              if ((vertices[j] == edges[i].getStartVertex()) && (!isVertexPassed[j]))
               {
                 qVertices.push(std::pair<int, int>(j, vertices[j]));
                 break;

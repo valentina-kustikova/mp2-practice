@@ -81,6 +81,32 @@ ExceptionIncorrectSize::~ExceptionIncorrectSize()
   line = -1;
 }
 
+ExceptionIncorrectVertex::ExceptionIncorrectVertex()
+{
+  str_what = "There is no such vertex in the graph!";
+  line = -1;
+  file = 0;
+}
+
+ExceptionIncorrectVertex::ExceptionIncorrectVertex(const ExceptionIncorrectVertex& _exception)
+{
+  str_what = _exception.what();
+  line = _exception.errorLine();
+  file = _exception.errorFile();
+}
+
+ExceptionIncorrectVertex::ExceptionIncorrectVertex(int _line, const char* _file)
+{
+  str_what = "There is no such vertex in the graph!";
+  line = _line;
+  file = _file;
+}
+
+ExceptionIncorrectVertex::~ExceptionIncorrectVertex()
+{
+  line = -1;
+}
+
 ExceptionEmptyData::ExceptionEmptyData()
 {
   str_what = "Empty data!";

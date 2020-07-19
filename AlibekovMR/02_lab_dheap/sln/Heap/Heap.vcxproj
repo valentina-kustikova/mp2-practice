@@ -123,6 +123,7 @@
     <ClCompile Include="..\..\src\TDisjointSet.cpp" />
     <ClCompile Include="..\..\src\TEdge.cpp" />
     <ClCompile Include="..\..\src\TGraph.cpp" />
+    <ClCompile Include="..\..\src\TWeightedEdge.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\Algorithms.h" />
@@ -131,6 +132,7 @@
     <ClInclude Include="..\..\include\TDisjointSet.h" />
     <ClInclude Include="..\..\include\TEdge.h" />
     <ClInclude Include="..\..\include\TGraph.h" />
+    <ClInclude Include="..\..\include\TWeightedEdge.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

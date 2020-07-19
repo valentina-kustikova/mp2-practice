@@ -2,7 +2,7 @@
 
 TDisjointSet::TDisjointSet(int _size)
 {
-  if (size <= 0)
+  if (_size <= 0)
     throw ExceptionIncorrectSize(__LINE__, __FILE__);
   size = _size;
   keys = new int[size];
@@ -12,9 +12,9 @@ TDisjointSet::TDisjointSet(int _size)
 
 TDisjointSet::TDisjointSet(int _size, int* _keys)
 {
-  if (size <= 0)
+  if (_size <= 0)
     throw ExceptionIncorrectSize(__LINE__, __FILE__);
-  if (keys == nullptr)
+  if (_keys == nullptr)
     throw ExceptionEmptyData(__LINE__, __FILE__);
   size = _size;
   keys = new int[size];
@@ -57,4 +57,4 @@ int TDisjointSet::find(int x) const
   if (x < 0 || x >= size)
     throw ExceptionOutOfRange(__LINE__, __FILE__);
   return keys[x];
-}
+};

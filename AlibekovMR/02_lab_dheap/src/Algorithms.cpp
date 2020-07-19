@@ -25,7 +25,7 @@ TGraph KruskalAlgorithm::kruskalAlgorithm(const TGraph& _graph)
   TDisjointSet vertices(verticesCount, _graph.vertices);
   for (int i = 0; i < verticesCount; i++)
     vertices.makeSet(i);
-  TDHeap<TEdge> edges(2, _graph.edgesCount, _graph.edgesCount, _graph.edges);
+  TDHeap<TWeightedEdge> edges(2, _graph.edgesCount, _graph.edgesCount, _graph.edges);
   TGraph resultTree(verticesCount, _graph.vertices);
 
   //std::cout << "[ ";
@@ -35,11 +35,12 @@ TGraph KruskalAlgorithm::kruskalAlgorithm(const TGraph& _graph)
 
   while (resultTree.edgesCount != verticesCount - 1)
   {
-    TEdge edgeWithMinWeight = edges.getRoot();
+    TWeightedEdge edgeWithMinWeight = edges.getRoot();
     edges.removeMinKey();
-    if (vertices.find(edgeWithMinWeight.startVertex) != vertices.find(edgeWithMinWeight.endVertex))
+    if (vertices.find(edgeWithMinWeight.getStartVertex()) 
+      != vertices.find(edgeWithMinWeight.getEndVertex()))
     {
-      vertices.unite(edgeWithMinWeight.startVertex, edgeWithMinWeight.endVertex);
+      vertices.unite(edgeWithMinWeight.getStartVertex(), edgeWithMinWeight.getEndVertex());
       resultTree.addNewEdge(edgeWithMinWeight);
     }
   }

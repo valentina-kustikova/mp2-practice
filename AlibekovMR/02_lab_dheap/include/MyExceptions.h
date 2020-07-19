@@ -41,6 +41,15 @@ public:
   ~ExceptionIncorrectSize();
 };
 
+class ExceptionIncorrectVertex : public MyException
+{
+public:
+  ExceptionIncorrectVertex();
+  ExceptionIncorrectVertex(const ExceptionIncorrectVertex& _exception);
+  ExceptionIncorrectVertex(int _line, const char* _file);
+  ~ExceptionIncorrectVertex();
+};
+
 class ExceptionEmptyData : public MyException
 {
 public:
