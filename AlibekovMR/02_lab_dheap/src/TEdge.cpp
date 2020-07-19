@@ -1,5 +1,17 @@
 #include "TEdge.h"
 
+TEdge::TEdge()
+{
+  setStartVertex(0);
+  setEndVertex(0);
+}
+
+TEdge::TEdge(int _startVertex, int _endVertex)
+{
+  setStartVertex(_startVertex);
+  setEndVertex(_endVertex);
+}
+
 TEdge::TEdge(const TEdge & _edge)
 {
   startVertex = _edge.startVertex;

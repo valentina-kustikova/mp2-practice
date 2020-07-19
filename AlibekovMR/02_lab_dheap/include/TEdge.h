@@ -11,9 +11,8 @@ private:
   int endVertex;
 
 public:
-  TEdge() :startVertex(0), endVertex(0) {};
-  TEdge(int _startVertex, int _endVertex)
-    : startVertex(_startVertex), endVertex(_endVertex) {};
+  TEdge();
+  TEdge(int _startVertex, int _endVertex);
   TEdge(const TEdge& _edge);
   ~TEdge() {};
 
