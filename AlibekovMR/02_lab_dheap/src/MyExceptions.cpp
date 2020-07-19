@@ -55,6 +55,58 @@ ExceptionOutOfRange::~ExceptionOutOfRange()
   line = -1;
 }
 
+ExceptionIncorrectSize::ExceptionIncorrectSize()
+{
+  str_what = "Incorrect size!";
+  line = -1;
+  file = 0;
+}
+
+ExceptionIncorrectSize::ExceptionIncorrectSize(const ExceptionIncorrectSize& _exception)
+{
+  str_what = _exception.what();
+  line = _exception.errorLine();
+  file = _exception.errorFile();
+}
+
+ExceptionIncorrectSize::ExceptionIncorrectSize(int _line, const char* _file)
+{
+  str_what = "Incorrect size!";
+  line = _line;
+  file = _file;
+}
+
+ExceptionIncorrectSize::~ExceptionIncorrectSize()
+{
+  line = -1;
+}
+
+ExceptionEmptyData::ExceptionEmptyData()
+{
+  str_what = "Empty data!";
+  line = -1;
+  file = 0;
+}
+
+ExceptionEmptyData::ExceptionEmptyData(const ExceptionEmptyData& _exception)
+{
+  str_what = _exception.what();
+  line = _exception.errorLine();
+  file = _exception.errorFile();
+}
+
+ExceptionEmptyData::ExceptionEmptyData(int _line, const char* _file)
+{
+  str_what = "Empty data!";
+  line = _line;
+  file = _file;
+}
+
+ExceptionEmptyData::~ExceptionEmptyData()
+{
+  line = -1;
+}
+
 ExceptionDisconnectedGraph::ExceptionDisconnectedGraph()
 {
   str_what = "Graph is disconnected!";
