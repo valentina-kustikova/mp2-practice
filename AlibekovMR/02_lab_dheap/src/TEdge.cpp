@@ -55,6 +55,17 @@ void TEdge::setEndVertex(int _endVertex)
   endVertex = _endVertex;
 }
 
+bool TEdge::isIncidental(int _vertex) const
+{
+  return (getStartVertex() == _vertex || getEndVertex() == _vertex);
+}
+
+bool TEdge::isAdjacent(TEdge& _edge) const
+{
+  return (_edge.isIncidental(getStartVertex())
+       || _edge.isIncidental(getEndVertex()));
+}
+
 const TEdge & TEdge::operator=(const TEdge & _edge)
 {
   if (*this == _edge)

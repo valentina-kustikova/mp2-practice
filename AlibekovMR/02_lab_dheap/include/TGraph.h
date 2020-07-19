@@ -3,7 +3,6 @@
 
 #include "TDisjointSet.h"
 #include "TWeightedEdge.h"
-#include "iostream"
 #include <queue>
 #include <utility> //temporarily (for pair)
 

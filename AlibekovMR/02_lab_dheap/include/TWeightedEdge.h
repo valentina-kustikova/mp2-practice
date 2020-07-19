@@ -22,7 +22,7 @@ public:
   bool operator!=(const TWeightedEdge& _edge);
 
   double getWeight() const;
-  void setWeight(double _weight);
+  void   setWeight(double _weight);
 
   const TWeightedEdge& operator=(const TWeightedEdge& _edge);
 

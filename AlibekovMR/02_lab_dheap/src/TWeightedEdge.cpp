@@ -2,23 +2,23 @@
 
 TWeightedEdge::TWeightedEdge()
 {
-  setWeight(.0);
   setStartVertex(0);
   setEndVertex(0);
+  setWeight(.0);
 }
 
 TWeightedEdge::TWeightedEdge(int _startVertex, int _endVertex, double _weight)
 {
-  setWeight(_weight);
   setStartVertex(_startVertex);
   setEndVertex(_endVertex);
+  setWeight(_weight);
 }
 
 TWeightedEdge::TWeightedEdge(const TWeightedEdge& _edge)
 {
-  setWeight(_edge.getWeight());
   setStartVertex(_edge.getStartVertex());
   setEndVertex(_edge.getEndVertex());
+  setWeight(_edge.getWeight());
 }
 
 bool TWeightedEdge::operator>(const TWeightedEdge& _edge)
