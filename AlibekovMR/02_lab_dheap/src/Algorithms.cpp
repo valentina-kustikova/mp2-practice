@@ -42,8 +42,8 @@ TGraph KruskalAlgorithm::kruskalAlgorithm(const TGraph& _graph)
     if (vertices.find(edgeWithMinWeight.getStartVertex())
      != vertices.find(edgeWithMinWeight.getEndVertex()))
     {
-      vertices.unite(edgeWithMinWeight.getStartVertex(), 
-                     edgeWithMinWeight.getEndVertex());
+      vertices.unite(vertices.find(edgeWithMinWeight.getStartVertex()),
+                     vertices.find(edgeWithMinWeight.getEndVertex()));
       edgesOfResultTree[currentCountEdgesOfResultTree++] = edgeWithMinWeight;
     }
   }
