@@ -76,6 +76,14 @@ bool TGraph::isGraphDisconnected() const
   return false;
 }
 
+bool TGraph::hasLoop() const
+{
+  for (int i = 0; i < edgesCount; i++)
+    if (edges[i].getStartVertex() == edges[i].getEndVertex())
+      return true;
+  return false;
+}
+
 std::ostream & operator<<(std::ostream & out, const TGraph & _graph)
 {
   out << "Vertices: [ ";

@@ -24,6 +24,8 @@ public:
   bool isGraphConnected() const;
   bool isGraphDisconnected() const;
 
+  bool hasLoop() const;
+
   double* getAdjacencyMatrix() const;
   void printAdjacencyMatrix() const;
   int numberOfComponents() const;

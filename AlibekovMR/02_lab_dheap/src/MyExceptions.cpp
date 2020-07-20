@@ -183,4 +183,30 @@ ExceptionGraphWithoutVertices::ExceptionGraphWithoutVertices(int _line, const ch
 ExceptionGraphWithoutVertices::~ExceptionGraphWithoutVertices()
 {
   line = -1;
+}
+
+ExceptionGraphWithLoop::ExceptionGraphWithLoop()
+{
+  str_what = "The graph has loop!";
+  line = -1;
+  file = 0;
+}
+
+ExceptionGraphWithLoop::ExceptionGraphWithLoop(const ExceptionGraphWithLoop& _exception)
+{
+  str_what = _exception.what();
+  line = _exception.errorLine();
+  file = _exception.errorFile();
+}
+
+ExceptionGraphWithLoop::ExceptionGraphWithLoop(int _line, const char* _file)
+{
+  str_what = "The graph has loop!";
+  line = _line;
+  file = _file;
+}
+
+ExceptionGraphWithLoop::~ExceptionGraphWithLoop()
+{
+  line = -1;
 };

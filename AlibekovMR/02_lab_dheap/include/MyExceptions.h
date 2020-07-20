@@ -77,4 +77,13 @@ public:
   ~ExceptionGraphWithoutVertices();
 };
 
+class ExceptionGraphWithLoop : public MyException
+{
+public:
+  ExceptionGraphWithLoop();
+  ExceptionGraphWithLoop(const ExceptionGraphWithLoop& _exception);
+  ExceptionGraphWithLoop(int _line, const char* _file);
+  ~ExceptionGraphWithLoop();
+};
+
 #endif // !__MY_EXCEPTIONS_H__

@@ -1,5 +1,4 @@
 #include "Algorithms.h"
-#include "iostream"
 
 void HeapSort::heapSort(int _size, int _array[])
 {
@@ -13,38 +12,44 @@ void HeapSort::heapSort(int _size, int _array[])
     _array[size - i - 1] = heap.getRoot();
     heap.removeMinKey();
   }
-}
+};
 
 TGraph KruskalAlgorithm::kruskalAlgorithm(const TGraph& _graph)
 {
+  const int base = 2;
+
   if (_graph.verticesCount < 1)
     throw ExceptionGraphWithoutVertices(__LINE__, __FILE__);
   if (_graph.isGraphDisconnected())
     throw ExceptionDisconnectedGraph(__LINE__, __FILE__);
+  if (_graph.hasLoop())
+    throw ExceptionGraphWithLoop(__LINE__, __FILE__);
 
   int verticesCount = _graph.verticesCount;
-  TDisjointSet vertices(verticesCount, _graph.vertices);
+  TDisjointSet vertices(verticesCount);
   for (int i = 0; i < verticesCount; i++)
     vertices.makeSet(i);
-  TDHeap<TWeightedEdge> edges(2, _graph.edgesCount, _graph.edgesCount, _graph.edges);
-  TGraph resultTree(verticesCount, _graph.vertices);
 
-  //std::cout << "[ ";
-  //for (int i = 0; i < edges.size; i++)
-  //  std::cout << "(" << edges.keys[i].startVertex << " " << edges.keys[i].endVertex << " " << edges.keys[i].weight << ") ";
-  //std::cout << "]";
+  TWeightedEdge* edgesOfResultTree = new TWeightedEdge[verticesCount - 1];
+  int currentCountEdgesOfResultTree = 0;
 
-  while (resultTree.edgesCount != verticesCount - 1)
+  TDHeap<TWeightedEdge> edges(base, _graph.edgesCount, _graph.edgesCount, _graph.edges);
+
+  while (currentCountEdgesOfResultTree != verticesCount - 1)
   {
     TWeightedEdge edgeWithMinWeight = edges.getRoot();
     edges.removeMinKey();
-    if (vertices.find(edgeWithMinWeight.getStartVertex()) 
-      != vertices.find(edgeWithMinWeight.getEndVertex()))
+    if (vertices.find(edgeWithMinWeight.getStartVertex())
+     != vertices.find(edgeWithMinWeight.getEndVertex()))
     {
-      vertices.unite(edgeWithMinWeight.getStartVertex(), edgeWithMinWeight.getEndVertex());
-      resultTree.addNewEdge(edgeWithMinWeight);
+      vertices.unite(edgeWithMinWeight.getStartVertex(), 
+                     edgeWithMinWeight.getEndVertex());
+      edgesOfResultTree[currentCountEdgesOfResultTree++] = edgeWithMinWeight;
     }
   }
 
+  TGraph resultTree(verticesCount, _graph.vertices, edgesOfResultTree, verticesCount - 1);
+
+  delete[] edgesOfResultTree;
   return resultTree;
-}
+};
