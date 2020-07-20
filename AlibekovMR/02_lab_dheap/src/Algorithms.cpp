@@ -48,7 +48,7 @@ TGraph KruskalAlgorithm::kruskalAlgorithm(const TGraph& _graph)
     }
   }
 
-  TGraph resultTree(verticesCount, _graph.vertices, edgesOfResultTree, verticesCount - 1);
+  TGraph resultTree(verticesCount, edgesOfResultTree, verticesCount - 1);
 
   delete[] edgesOfResultTree;
   return resultTree;

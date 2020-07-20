@@ -4,9 +4,6 @@
 int main()
 {
   int verticesCount_1 = 7;
-  int *vertices_1 = new int[verticesCount_1];
-  for (int i = 0; i < verticesCount_1; i++)
-    vertices_1[i] = i;
   int edgesCount_1 = 12;
   TWeightedEdge edges_1[12] = 
   { 
@@ -24,7 +21,7 @@ int main()
     TWeightedEdge(6, 6, 9)
   };
 
-  TGraph graph_1(verticesCount_1, vertices_1, edges_1, edgesCount_1);
+  TGraph graph_1(verticesCount_1, edges_1, edgesCount_1);
   std::cout << graph_1 << std::endl;
   std::cout << "//--------------------------------//" << std::endl;
   graph_1.printAdjacencyMatrix();
@@ -46,9 +43,6 @@ int main()
   }
 
   int verticesCount_2 = 6;
-  int *vertices_2 = new int[verticesCount_2];
-  for (int i = 0; i < verticesCount_2; i++)
-    vertices_2[i] = i;
   int edgesCount_2 = 11;
   TWeightedEdge edges_2[11] = 
   { 
@@ -65,7 +59,7 @@ int main()
     TWeightedEdge(3, 4, 4)
   };
 
-  TGraph graph_2(verticesCount_2, vertices_2, edges_2, edgesCount_2);
+  TGraph graph_2(verticesCount_2, edges_2, edgesCount_2);
   std::cout << std::endl << graph_2 << std::endl;
   std::cout << "//--------------------------------//" << std::endl;
   graph_2.printAdjacencyMatrix();
@@ -86,8 +80,6 @@ int main()
   }
 
   std::cout << "//~~~~~~~~~~~~~~~~~~~~~~~~~~~//" << std::endl << std::endl;
-  delete[] vertices_1;
-  delete[] vertices_2;
   system("pause");
   return 0;
 }

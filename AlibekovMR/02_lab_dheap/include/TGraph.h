@@ -3,19 +3,16 @@
 
 #include "TDisjointSet.h"
 #include "TWeightedEdge.h"
-#include <queue>
-#include <utility> //temporarily (for pair)
 
 class TGraph
 {
 public:
-  int* vertices;
   int  verticesCount;
   TWeightedEdge* edges;
   int edgesCount;
 
-  TGraph(int _verticesCount, int *_vertices);
-  TGraph(int _verticesCount, int *_vertices, TWeightedEdge* _edges, int _edgesCount);
+  TGraph(int _verticesCount);
+  TGraph(int _verticesCount, TWeightedEdge* _edges, int _edgesCount);
   TGraph(const TGraph& _graph);
   ~TGraph();
 

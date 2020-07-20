@@ -1,22 +1,16 @@
 #include "TGraph.h"
 
-TGraph::TGraph(int _verticesCount, int *_vertices)
+TGraph::TGraph(int _verticesCount)
 {
   verticesCount = _verticesCount;
-  vertices = new int[verticesCount];
-  for (int i = 0; i < verticesCount; i++)
-    vertices[i] = _vertices[i];
   edgesCount = _verticesCount * (_verticesCount - 1) / 2;
   edges = new TWeightedEdge[edgesCount];
   edgesCount = 0;
 }
 
-TGraph::TGraph(int _verticesCount, int * _vertices, TWeightedEdge* _edges, int _edgesCount)
+TGraph::TGraph(int _verticesCount, TWeightedEdge* _edges, int _edgesCount)
 {
   verticesCount = _verticesCount;
-  vertices = new int[verticesCount];
-  for (int i = 0; i < verticesCount; i++)
-    vertices[i] = _vertices[i];
   edgesCount = _edgesCount;
   edges = new TWeightedEdge[edgesCount];
   for (int j = 0; j < edgesCount; j++)
@@ -27,9 +21,6 @@ TGraph::TGraph(const TGraph & _graph)
 {
   verticesCount = _graph.verticesCount;
   edgesCount = _graph.edgesCount;
-  vertices = new int[verticesCount];
-  for (int i = 0; i < verticesCount; i++)
-    vertices[i] = _graph.vertices[i];
   edges = new TWeightedEdge[edgesCount];
   for (int j = 0; j < edgesCount; j++)
     edges[j] = _graph.edges[j];
@@ -37,7 +28,6 @@ TGraph::TGraph(const TGraph & _graph)
 
 TGraph::~TGraph()
 {
-  delete[] vertices;
   delete[] edges;
 }
 
@@ -88,7 +78,7 @@ std::ostream & operator<<(std::ostream & out, const TGraph & _graph)
 {
   out << "Vertices: [ ";
   for (int i = 0; i < _graph.verticesCount; i++)
-    out << _graph.vertices[i] << " ";
+    out << i << " ";
   out << "]" << std::endl;
   out << "Edges: [ ";
   for (int i = 0; i < _graph.edgesCount; i++)
