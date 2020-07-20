@@ -1,9 +1,9 @@
 #include "Algorithms.h"
 #include <time.h>
 
-//------------------------------------ Test (classic) -----------------------------------//
+//------------------------------------ Test (example) -----------------------------------//
 
-void _tCTestMain()
+void _tETestMain()
 {
   int maxSize = 10;
   int size = 10;
@@ -19,6 +19,7 @@ void _tCTestMain()
   keys[8] =  2;
   keys[9] =  7;
 
+  std::cout << std::endl;
   std::cout << "   Keys: " << std::endl;
   std::cout << "[ ";
   for (int i = 0; i < size; i++)
@@ -55,6 +56,7 @@ void _tRATestMain()
 
   srand((unsigned int)time(0));
 
+  std::cout << std::endl;
   std::cout << "Enter count of elements: ";
   std::cin >> _size;
   while (_size < 0)
@@ -119,6 +121,7 @@ void _tUITestMain()
 {
   int _size;
 
+  std::cout << std::endl;
   std::cout << "Enter count of elements: ";
   std::cin >> _size;
   while (_size < 0)
@@ -166,17 +169,40 @@ void _tUITestMain()
 
 int main()
 {
-  _tCTestMain();
-  std::cout << "//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//";
-  std::cout << std::endl << std::endl;
-
-  _tRATestMain();
-  std::cout << "//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//";
-  std::cout << std::endl << std::endl;
-
-  _tUITestMain();
-  std::cout << "//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//";
-  std::cout << std::endl << std::endl;
+  bool isItAll = false;
+  do
+  {
+    std::cout << "Choose kind of test: " << std::endl;
+    std::cout << "  0 - \"Example\"     1 - \"Random array\"     2 - \"User input\"" << std::endl;
+    int choice = 0;
+    std::cin >> choice;
+    std::cin.ignore();
+    switch (choice)
+    {
+    case 0:
+      std::cout << "//-------------------------- Test (example) -------------------------//";
+      _tETestMain();
+      std::cout << "//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//";
+      std::cout << std::endl << std::endl;
+      break;
+    case 1:
+      std::cout << "//----------------------- Test (random array) -----------------------//";
+      _tRATestMain();
+      std::cout << "//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//";
+      std::cout << std::endl << std::endl;
+      break;
+    case 2: 
+      std::cout << "//------------------------ Test (user input) ------------------------//";
+      _tUITestMain();
+      std::cout << "//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//";
+      std::cout << std::endl << std::endl;
+      break;
+    }
+    std::cout << "Do you want to exit?" << std::endl;
+    std::cout << "  1 - Yes     0 - No" << std::endl << std::endl;
+    std::cin >> isItAll;
+    std::cin.ignore();
+  } while (!isItAll);
 
   system("pause");
   return 0;
