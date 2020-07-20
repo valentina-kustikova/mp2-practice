@@ -133,81 +133,24 @@ void TGraph::printAdjacencyMatrix() const
 
 int TGraph::numberOfComponents() const
 {
-  int numberOfComponents = 0;
-  if (verticesCount == 0)
-    return numberOfComponents;
-  bool *isVertexPassed = new bool[verticesCount];
-  std::pair<int, int> *verticesWithIndexes = new std::pair<int, int>[verticesCount];
-  for (int i = 0; i < verticesCount; i++)
-  {
-    isVertexPassed[i] = false;
-    verticesWithIndexes[i].first = i;                //first - index
-    verticesWithIndexes[i].second = vertices[i];     //second - vertex
-  }
-  
-  for (int i = 0; i < verticesCount; i++)
-  {
-    if (!isVertexPassed[i])
-    {
-      std::queue<std::pair<int, int>> qVertices;
-      qVertices.push(verticesWithIndexes[0]);
-      while (!qVertices.empty())
-      {
-        std::pair<int, int> vertexWithIndex(qVertices.front());
-        qVertices.pop();
-        isVertexPassed[vertexWithIndex.first] = true;
-        for (int i = 0; i < edgesCount; i++)
-        {
-          if (edges[i].getStartVertex() == vertexWithIndex.second)
-            for (int j = 0; j < verticesCount; j++)
-              if ((vertices[j] == edges[i].getEndVertex()) && (!isVertexPassed[j]))
-              {
-                qVertices.push(std::pair<int, int>(j, vertices[j]));
-                break;
-              }
-          if (edges[i].getEndVertex() == vertexWithIndex.second)
-            for (int j = 0; j < verticesCount; j++)
-              if ((vertices[j] == edges[i].getStartVertex()) && (!isVertexPassed[j]))
-              {
-                qVertices.push(std::pair<int, int>(j, vertices[j]));
-                break;
-              }
-        }
-      }
-      numberOfComponents++;
-    }
-  }
-  return numberOfComponents;
+  if (verticesCount == 0) return 0;
+  if (edgesCount == 0) return verticesCount;
 
-  /*std::queue<int> qVertices;
-  std::queue<int> verticesIndexes;
-  qVertices.push(vertices[0]);
-  verticesIndexes.push(0);
-  while (!qVertices.empty())
+  int numberOfComponents = verticesCount;
+  TDisjointSet components(verticesCount);
+  for (int i = 0; i < verticesCount; i++)
+    components.makeSet(i);
+
+  for (int i = 0; i < edgesCount; i++)
   {
-    int vertex = qVertices.front();
-    int vertexIndex = verticesIndexes.front();
-    qVertices.pop();
-    verticesIndexes.pop();
-    isVertexPassed[vertexIndex] = true;
-    for (int i = 0; i < edgesCount; i++)
+    if (components.find(edges[i].getStartVertex())
+     != components.find(edges[i].getEndVertex()))
     {
-      if (edges[i].startVertex == vertex)
-        for (int j = 0; j < verticesCount; j++)
-          if ((vertices[j] == edges[i].endVertex) && (!isVertexPassed[j]))
-          {
-            qVertices.push(vertex);
-            verticesIndexes.push(j);
-            break;
-          }
-      if (edges[i].endVertex == vertex)
-        for (int j = 0; j < verticesCount; j++)
-          if ((vertices[j] == edges[i].startVertex) && (!isVertexPassed[j]))
-          {
-            qVertices.push(vertex);
-            verticesIndexes.push(j);
-            break;
-          }
+      components.unite(components.find(edges[i].getStartVertex()),
+                       components.find(edges[i].getEndVertex()));
+      numberOfComponents--;
     }
-  }*/
+  }
+
+  return numberOfComponents;
 };
