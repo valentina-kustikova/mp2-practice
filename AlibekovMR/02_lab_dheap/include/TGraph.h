@@ -7,28 +7,31 @@
 class TGraph
 {
 public:
-  int  verticesCount;
-  TWeightedEdge* edges;
+  int verticesCount;
   int edgesCount;
+  TWeightedEdge* edges;
 
-  TGraph(int _verticesCount);
-  TGraph(int _verticesCount, TWeightedEdge* _edges, int _edgesCount);
+  explicit TGraph(int _verticesCount);
+  TGraph(int _verticesCount, int _edgesCount, TWeightedEdge* _edges);
+  TGraph(int _verticesCount, double* AdjacencyMatrix);
   TGraph(const TGraph& _graph);
   ~TGraph();
 
-  void addNewEdge(const TWeightedEdge& _newEdge);
-  bool isEdgeInGraph(const TWeightedEdge& _edge) const;
-  bool isGraphConnected() const;
-  bool isGraphDisconnected() const;
-
+  bool isConnected() const;
+  bool isDisconnected() const;
   bool hasLoop() const;
+
+  int numberOfComponents() const;
 
   double* getAdjacencyMatrix() const;
   void printAdjacencyMatrix() const;
-  int numberOfComponents() const;
+
+  TGraph generateRandomGraph(int _verticesCount, int _min, int _max);
+  TGraph generateRandomConnectedGraph(int _verticesCount, int _min, int _max);
+  TGraph generateRandomConnectedGraphWithoutLoops(int _verticesCount, int _min, int _max);
 
   friend std::ostream& operator<<(std::ostream& out, const TGraph& _graph);
-
+  friend std::istream& operator>>(std::istream& in, TGraph& _graph);
 };
 
 #endif // !__TGRAPH__H__

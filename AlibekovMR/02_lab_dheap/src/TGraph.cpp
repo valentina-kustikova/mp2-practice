@@ -8,7 +8,7 @@ TGraph::TGraph(int _verticesCount)
   edgesCount = 0;
 }
 
-TGraph::TGraph(int _verticesCount, TWeightedEdge* _edges, int _edgesCount)
+TGraph::TGraph(int _verticesCount, int _edgesCount, TWeightedEdge* _edges)
 {
   verticesCount = _verticesCount;
   edgesCount = _edgesCount;
@@ -31,24 +31,7 @@ TGraph::~TGraph()
   delete[] edges;
 }
 
-void TGraph::addNewEdge(const TWeightedEdge& _newEdge)
-{
-  int maxCountOfEdges = verticesCount * (verticesCount - 1) / 2;
-  if (edgesCount + 1 > maxCountOfEdges)
-    throw ExceptionOutOfRange(__LINE__, __FILE__);
-  if (!isEdgeInGraph(_newEdge))
-    edges[edgesCount++] = _newEdge;
-}
-
-bool TGraph::isEdgeInGraph(const TWeightedEdge& _edge) const
-{
-  for (int i = 0; i < edgesCount; i++)
-    if (edges[i] == _edge)
-      return true;
-  return false;
-}
-
-bool TGraph::isGraphConnected() const
+bool TGraph::isConnected() const
 {
   if (numberOfComponents() < 1)
     throw ExceptionGraphWithoutVertices(__LINE__, __FILE__);
@@ -57,7 +40,7 @@ bool TGraph::isGraphConnected() const
   return false;
 }
 
-bool TGraph::isGraphDisconnected() const
+bool TGraph::isDisconnected() const
 {
   if (numberOfComponents() < 1)
     throw ExceptionGraphWithoutVertices(__LINE__, __FILE__);
@@ -72,21 +55,6 @@ bool TGraph::hasLoop() const
     if (edges[i].getStartVertex() == edges[i].getEndVertex())
       return true;
   return false;
-}
-
-std::ostream & operator<<(std::ostream & out, const TGraph & _graph)
-{
-  out << "Vertices: [ ";
-  for (int i = 0; i < _graph.verticesCount; i++)
-    out << i << " ";
-  out << "]" << std::endl;
-  out << "Edges: [ ";
-  for (int i = 0; i < _graph.edgesCount; i++)
-    out << _graph.edges[i] << " ";
-    //out << "(" << _graph.edges[i].startVertex << " " << _graph.edges[i].endVertex << ") ";
-  //<< " " << _graph.edges[i].weight << ") ";
-  out << "]" << std::endl;
-  return out;
 }
 
 double* TGraph::getAdjacencyMatrix() const
@@ -143,4 +111,17 @@ int TGraph::numberOfComponents() const
   }
 
   return numberOfComponents;
+}
+
+std::ostream& operator<<(std::ostream& out, const TGraph& _graph)
+{
+  out << "Vertices: [ ";
+  for (int i = 0; i < _graph.verticesCount; i++)
+    out << i << " ";
+  out << "]" << std::endl;
+  out << "Edges: [ ";
+  for (int i = 0; i < _graph.edgesCount; i++)
+    out << _graph.edges[i] << " ";
+  out << "]" << std::endl;
+  return out;
 };
