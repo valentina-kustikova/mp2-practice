@@ -173,6 +173,27 @@ TGraph TGraph::generateRandomDigraph(int _verticesCount, int _min, int _max)
   return resultGraph;
 }
 
+TGraph TGraph::generateRandomUndirectedGraph(int _verticesCount, int _min, int _max)
+{
+  if (_verticesCount < 0)
+    throw ExceptionIncorrectCountOfVertices(__LINE__, __FILE__);
+
+  if (_min > _max)
+    throw ExceptionIncorrectValueBoundaries(__LINE__, __FILE__);
+
+  double* adjacencyMatrix = new double[_verticesCount * _verticesCount];
+
+  for (int i = 0; i < _verticesCount; i++)
+    for (int j = 0; j < _verticesCount; j++)
+      adjacencyMatrix[i * _verticesCount + j]
+        = (j < i) ? 0 : (_max - _min + 1) / (double)RAND_MAX * rand() + _min;
+
+  TGraph resultGraph(_verticesCount, adjacencyMatrix);
+  delete[] adjacencyMatrix;
+
+  return resultGraph;
+}
+
 int TGraph::numberOfComponents() const
 {
   if (verticesCount == 0) return 0;
