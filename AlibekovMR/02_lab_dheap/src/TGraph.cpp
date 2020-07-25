@@ -89,6 +89,23 @@ bool TGraph::isDisconnected() const
   return false;
 }
 
+bool TGraph::isDirected() const
+{
+  return !isDirected();
+}
+
+bool TGraph::isUndirected() const
+{
+  for (int i = 0; i < edgesCount - 1; i++)
+    for (int j = i + 1; j < edgesCount; j++)
+    {
+      if ((edges[i].getEndVertex()   == edges[j].getStartVertex())
+       && (edges[i].getStartVertex() == edges[j].getEndVertex()))
+        return false;
+    }
+  return true;
+}
+
 bool TGraph::hasLoop() const
 {
   for (int i = 0; i < edgesCount; i++)
