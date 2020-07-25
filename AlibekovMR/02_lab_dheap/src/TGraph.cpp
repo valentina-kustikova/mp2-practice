@@ -2,22 +2,37 @@
 
 TGraph::TGraph(int _verticesCount)
 {
+  if (_verticesCount < 0)
+    throw ExceptionIncorrectCountOfVertices(__LINE__, __FILE__);
   verticesCount = _verticesCount;
-  edgesCount = _verticesCount * (_verticesCount - 1) / 2;
-  edges = new TWeightedEdge[edgesCount];
   edgesCount = 0;
+  edges = nullptr;
 }
 
 TGraph::TGraph(int _verticesCount, int _edgesCount, TWeightedEdge* _edges)
 {
+  if (_verticesCount < 0)
+    throw ExceptionIncorrectCountOfVertices(__LINE__, __FILE__);
+  if ((_edgesCount < 0) || (_edgesCount > _verticesCount * _verticesCount))
+    throw ExceptionIncorrectCountOfEdges(__LINE__, __FILE__);
+
   verticesCount = _verticesCount;
   edgesCount = _edgesCount;
   edges = new TWeightedEdge[edgesCount];
-  for (int j = 0; j < edgesCount; j++)
-    edges[j] = _edges[j];
+
+  for (int i = 0; i < edgesCount; i++)
+  {
+    if ((_edges[i].getStartVertex() >= _verticesCount)
+     || (_edges[i].getEndVertex()   >= _verticesCount))
+    {
+      delete[] edges;
+      throw ExceptionIncorrectVertex(__LINE__, __FILE__);
+    }
+    edges[i] = _edges[i];
+  }
 }
 
-TGraph::TGraph(const TGraph & _graph)
+TGraph::TGraph(const TGraph& _graph)
 {
   verticesCount = _graph.verticesCount;
   edgesCount = _graph.edgesCount;
