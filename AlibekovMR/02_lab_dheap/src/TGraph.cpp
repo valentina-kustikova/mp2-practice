@@ -32,6 +32,31 @@ TGraph::TGraph(int _verticesCount, int _edgesCount, TWeightedEdge* _edges)
   }
 }
 
+TGraph::TGraph(int _verticesCount, double* _adjacencyMatrix)
+{
+  if (_verticesCount < 0)
+    throw ExceptionIncorrectCountOfVertices(__LINE__, __FILE__);
+
+  verticesCount = _verticesCount;
+  edgesCount = 0;
+
+  for (int i = 0; i < _verticesCount * _verticesCount; i++)
+    if (_adjacencyMatrix[i] != 0)
+      edgesCount++;
+
+  edges = new TWeightedEdge[edgesCount];
+
+  for (int i = 0, currIdx = 0; i < _verticesCount * _verticesCount; i++)
+  {
+    if (_adjacencyMatrix[i] != 0)
+    {
+      edges[currIdx].setStartVertex(i % _verticesCount);
+      edges[currIdx].setEndVertex(i / _verticesCount);
+      edges[currIdx++].setWeight(_adjacencyMatrix[i]);
+    }
+  }
+}
+
 TGraph::TGraph(const TGraph& _graph)
 {
   verticesCount = _graph.verticesCount;
