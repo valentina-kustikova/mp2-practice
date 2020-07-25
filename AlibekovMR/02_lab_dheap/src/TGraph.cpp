@@ -149,6 +149,30 @@ void TGraph::printAdjacencyMatrix() const
   delete[] adjacencyMatrix;
 }
 
+TGraph TGraph::generateRandomDigraph(int _verticesCount, int _min, int _max)
+{
+  if (_verticesCount < 0)
+    throw ExceptionIncorrectCountOfVertices(__LINE__, __FILE__);
+
+  if (_min > _max)
+    throw ExceptionIncorrectValueBoundaries(__LINE__, __FILE__);
+
+  double* adjacencyMatrix = new double[_verticesCount * _verticesCount];
+
+  for (int i = 0; i < _verticesCount * _verticesCount; i++)
+  {
+    if (rand() / (double)RAND_MAX < .5)
+      adjacencyMatrix[i] = 0;
+    else 
+      adjacencyMatrix[i] = (_max - _min + 1) / (double)RAND_MAX * rand() + _min;
+  }
+
+  TGraph resultGraph(_verticesCount, adjacencyMatrix);
+  delete[] adjacencyMatrix;
+
+  return resultGraph;
+}
+
 int TGraph::numberOfComponents() const
 {
   if (verticesCount == 0) return 0;
