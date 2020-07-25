@@ -13,9 +13,9 @@ protected:
 
 public:
   MyException();
-  MyException(int _line, const char *_file);
+  MyException(int _line, const char* _file);
   MyException(const MyException& _exception);
-  MyException(const char* message, int _line, const char *_file);
+  MyException(const char* message, int _line, const char* _file);
   ~MyException();
 
   virtual const char* what() const { return str_what ? str_what : s_e; }
@@ -39,6 +39,33 @@ public:
   ExceptionIncorrectSize(const ExceptionIncorrectSize& _exception);
   ExceptionIncorrectSize(int _line, const char* _file);
   ~ExceptionIncorrectSize();
+};
+
+class ExceptionIncorrectCountOfVertices : public MyException
+{
+public:
+  ExceptionIncorrectCountOfVertices();
+  ExceptionIncorrectCountOfVertices(const ExceptionIncorrectCountOfVertices& _exception);
+  ExceptionIncorrectCountOfVertices(int _line, const char* _file);
+  ~ExceptionIncorrectCountOfVertices();
+};
+
+class ExceptionIncorrectCountOfEdges : public MyException
+{
+public:
+  ExceptionIncorrectCountOfEdges();
+  ExceptionIncorrectCountOfEdges(const ExceptionIncorrectCountOfEdges& _exception);
+  ExceptionIncorrectCountOfEdges(int _line, const char* _file);
+  ~ExceptionIncorrectCountOfEdges();
+};
+
+class ExceptionIncorrectValueBoundaries : public MyException
+{
+public:
+  ExceptionIncorrectValueBoundaries();
+  ExceptionIncorrectValueBoundaries(const ExceptionIncorrectValueBoundaries& _exception);
+  ExceptionIncorrectValueBoundaries(int _line, const char* _file);
+  ~ExceptionIncorrectValueBoundaries();
 };
 
 class ExceptionIncorrectVertex : public MyException

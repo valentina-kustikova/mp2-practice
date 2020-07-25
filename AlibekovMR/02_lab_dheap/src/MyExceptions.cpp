@@ -7,7 +7,7 @@ MyException::MyException()
   file = 0;
 }
 
-MyException::MyException(int _line, const char *_file)
+MyException::MyException(int _line, const char* _file)
 {
   str_what = 0;
   line = _line;
@@ -19,7 +19,7 @@ MyException::MyException(const MyException& _exception)
   line(_exception.errorLine()),
   file(_exception.errorFile()) {}
 
-MyException::MyException(const char* message, int _line, const char *_file)
+MyException::MyException(const char* message, int _line, const char* _file)
   : str_what(message),
   line(_line),
   file(_file) {}
@@ -45,8 +45,8 @@ ExceptionOutOfRange::ExceptionOutOfRange(const ExceptionOutOfRange& _exception)
 
 ExceptionOutOfRange::ExceptionOutOfRange(int _line, const char* _file)
 {
-  str_what = "Index out of bounds!"; 
-  line = _line; 
+  str_what = "Index out of bounds!";
+  line = _line;
   file = _file;
 }
 
@@ -77,6 +77,87 @@ ExceptionIncorrectSize::ExceptionIncorrectSize(int _line, const char* _file)
 }
 
 ExceptionIncorrectSize::~ExceptionIncorrectSize()
+{
+  line = -1;
+}
+
+ExceptionIncorrectCountOfVertices::ExceptionIncorrectCountOfVertices()
+{
+  str_what = "Incorrect count of vertices!";
+  line = -1;
+  file = 0;
+}
+
+ExceptionIncorrectCountOfVertices::ExceptionIncorrectCountOfVertices
+(const ExceptionIncorrectCountOfVertices& _exception)
+{
+  str_what = _exception.what();
+  line = _exception.errorLine();
+  file = _exception.errorFile();
+}
+
+ExceptionIncorrectCountOfVertices::ExceptionIncorrectCountOfVertices(int _line, const char* _file)
+{
+  str_what = "Incorrect count of vertices!";
+  line = _line;
+  file = _file;
+}
+
+ExceptionIncorrectCountOfVertices::~ExceptionIncorrectCountOfVertices()
+{
+  line = -1;
+}
+
+ExceptionIncorrectCountOfEdges::ExceptionIncorrectCountOfEdges()
+{
+  str_what = "Incorrect count of edges!";
+  line = -1;
+  file = 0;
+}
+
+ExceptionIncorrectCountOfEdges::ExceptionIncorrectCountOfEdges
+(const ExceptionIncorrectCountOfEdges& _exception)
+{
+  str_what = _exception.what();
+  line = _exception.errorLine();
+  file = _exception.errorFile();
+}
+
+ExceptionIncorrectCountOfEdges::ExceptionIncorrectCountOfEdges(int _line, const char* _file)
+{
+  str_what = "Incorrect count of edges!";
+  line = _line;
+  file = _file;
+}
+
+ExceptionIncorrectCountOfEdges::~ExceptionIncorrectCountOfEdges()
+{
+  line = -1;
+}
+
+ExceptionIncorrectValueBoundaries::ExceptionIncorrectValueBoundaries()
+{
+  str_what = "Incorrect value boundaries!";
+  line = -1;
+  file = 0;
+}
+
+ExceptionIncorrectValueBoundaries::ExceptionIncorrectValueBoundaries
+(const ExceptionIncorrectValueBoundaries& _exception)
+{
+  str_what = _exception.what();
+  line = _exception.errorLine();
+  file = _exception.errorFile();
+}
+
+ExceptionIncorrectValueBoundaries::ExceptionIncorrectValueBoundaries(int _line, const char* _file)
+{
+  str_what = "Incorrect value boundaries!";
+  line = _line;
+  file = _file;
+}
+
+ExceptionIncorrectValueBoundaries::~ExceptionIncorrectValueBoundaries()
 {
   line = -1;
 }
