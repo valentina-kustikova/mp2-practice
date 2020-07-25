@@ -91,7 +91,7 @@ bool TGraph::isDisconnected() const
 
 bool TGraph::isDirected() const
 {
-  return !isDirected();
+  return !isUndirected();
 }
 
 bool TGraph::isUndirected() const
@@ -120,13 +120,16 @@ double* TGraph::getAdjacencyMatrix() const
   for (int k = 0; k < verticesCount * verticesCount; k++)
     adjacencyMatrix[k] = 0;
 
+  bool isUndirectedGraph = this->isUndirected();
+
   for (int i = 0; i < edgesCount; i++)
   {
     TWeightedEdge currentEdge = edges[i];
     int startVertex = currentEdge.getStartVertex();
     int endVertex = currentEdge.getEndVertex();
-    adjacencyMatrix[startVertex * verticesCount + endVertex] = currentEdge.getWeight();
-    adjacencyMatrix[endVertex * verticesCount + startVertex] = currentEdge.getWeight();
+    adjacencyMatrix[startVertex * verticesCount + endVertex]   = currentEdge.getWeight();
+    if (isUndirectedGraph)
+      adjacencyMatrix[endVertex * verticesCount + startVertex] = currentEdge.getWeight();
   }
 
   return adjacencyMatrix;
