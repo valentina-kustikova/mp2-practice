@@ -3,6 +3,7 @@
 void HeapSort::heapSort(int _size, int _array[])
 {
   const int base = 2;
+
   if (_size < 0)
     throw ExceptionOutOfRange(__LINE__, __FILE__);
   int size = _size;
@@ -20,7 +21,7 @@ TGraph KruskalAlgorithm::kruskalAlgorithm(const TGraph& _graph)
 
   if (_graph.verticesCount < 1)
     throw ExceptionGraphWithoutVertices(__LINE__, __FILE__);
-  if (_graph.isGraphDisconnected())
+  if (_graph.isDisconnected())
     throw ExceptionDisconnectedGraph(__LINE__, __FILE__);
   if (_graph.hasLoop())
     throw ExceptionGraphWithLoop(__LINE__, __FILE__);
@@ -48,7 +49,7 @@ TGraph KruskalAlgorithm::kruskalAlgorithm(const TGraph& _graph)
     }
   }
 
-  TGraph resultTree(verticesCount, edgesOfResultTree, verticesCount - 1);
+  TGraph resultTree(verticesCount, verticesCount - 1, edgesOfResultTree);
 
   delete[] edgesOfResultTree;
   return resultTree;
