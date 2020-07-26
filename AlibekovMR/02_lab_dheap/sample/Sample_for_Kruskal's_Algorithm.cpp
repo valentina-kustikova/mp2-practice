@@ -1,7 +1,9 @@
 #include "Algorithms.h"
-#include "iostream"
+#include <time.h>
 
-int main()
+//------------------------------------ Test (example) -----------------------------------//
+
+void _tETestMain()
 {
   int verticesCount_1 = 7;
   int edgesCount_1 = 12;
@@ -21,19 +23,21 @@ int main()
     TWeightedEdge(6, 6, 9)
   };
 
-  TGraph graph_1(verticesCount_1, edges_1, edgesCount_1);
+  TGraph graph_1(verticesCount_1, edgesCount_1, edges_1);
+  std::cout << std::endl << "  Graph #1: " << std::endl;
   std::cout << graph_1 << std::endl;
-  std::cout << "//--------------------------------//" << std::endl;
+  std::cout << "  --------- adjacency matrix of graph #1 -----------  " << std::endl;
   graph_1.printAdjacencyMatrix();
-  std::cout << "//--------------------------------//" << std::endl;
-  std::cout << "// Number of components graph_1: " << graph_1.numberOfComponents() << std::endl;
-  std::cout << "//--------------------------------//" << std::endl;
+  std::cout << std::endl;
 
   try
   {
     TGraph spanningTree = KruskalAlgorithm::kruskalAlgorithm(graph_1);
-    std::cout << spanningTree;
+    std::cout << "  Spanning tree of graph #1: " << std::endl;
+    std::cout << spanningTree << std::endl << std::endl;
+    std::cout << "  --------- adjacency matrix of spanning tree of graph #1 -----------  " << std::endl;
     spanningTree.printAdjacencyMatrix();
+    std::cout << std::endl;
   }
   catch (MyException const & e)
   {
@@ -59,18 +63,21 @@ int main()
     TWeightedEdge(3, 4, 4)
   };
 
-  TGraph graph_2(verticesCount_2, edges_2, edgesCount_2);
+  TGraph graph_2(verticesCount_2, edgesCount_2, edges_2);
+  std::cout << std::endl << std::endl << "  Graph #2: ";
   std::cout << std::endl << graph_2 << std::endl;
-  std::cout << "//--------------------------------//" << std::endl;
+  std::cout << "  --------- adjacency matrix of graph #2 -----------  " << std::endl;
   graph_2.printAdjacencyMatrix();
-  std::cout << "//--------------------------------//" << std::endl;
-  std::cout << "// Number of components graph_2: " << graph_2.numberOfComponents() << std::endl;
-  std::cout << "//--------------------------------//" << std::endl;
+  std::cout << std::endl;
+
   try
   {
     TGraph spanningTree = KruskalAlgorithm::kruskalAlgorithm(graph_2);
-    std::cout << spanningTree;
+    std::cout << "  Spanning tree of graph #2: " << std::endl;
+    std::cout << spanningTree << std::endl;
+    std::cout << "  --------- adjacency matrix of spanning tree of graph #2 -----------  " << std::endl;
     spanningTree.printAdjacencyMatrix();
+    std::cout << std::endl;
   }
   catch (MyException const & e)
   {
@@ -78,8 +85,138 @@ int main()
     std::cout << "errorLine: " << e.errorLine() << std::endl;
     std::cout << "errorFile: " << e.errorFile() << std::endl;
   }
+}
 
-  std::cout << "//~~~~~~~~~~~~~~~~~~~~~~~~~~~//" << std::endl << std::endl;
+//--------------------------------- Test (random graphs) --------------------------------//
+
+void _tRGTestMain()
+{
+  int _min;
+  int _max;
+  int _verticesCount;
+
+  srand((unsigned int)time(0));
+
+  std::cout << std::endl;
+  std::cout << "Enter count of vertices: ";
+  std::cin >> _verticesCount;
+  while (_verticesCount < 0)
+  {
+    std::cout << std::endl;
+    std::cout << "Count of vertices must be > 0!" << std::endl;
+    std::cout << "Enter count of vertices: ";
+    std::cin >> _verticesCount;
+  };
+
+  std::cout << std::endl;
+  std::cout << "Enter left border value: ";
+  std::cin >> _min;
+  std::cout << "Enter right border value: ";
+  std::cin >> _max;
+
+  while (_min > _max)
+  {
+    std::cout << std::endl;
+    std::cout << "Left border value must be < right border value!" << std::endl;
+    std::cout << "Enter left border value: ";
+    std::cin >> _min;
+    std::cout << "Enter right border value: ";
+    std::cin >> _max;
+  };
+
+  try
+  {
+    TGraph graph = TGraph::generateRandomConnectedGraphWithoutLoops(_verticesCount, _min, _max);
+    std::cout << std::endl << std::endl << "  Random connected graph without loops: ";
+    std::cout << std::endl << graph << std::endl;
+    std::cout << "  --------- adjacency matrix of random graph -----------  " << std::endl;
+    graph.printAdjacencyMatrix();
+    std::cout << std::endl;
+
+    TGraph spanningTree = KruskalAlgorithm::kruskalAlgorithm(graph);
+    std::cout << "  Spanning tree of random graph: " << std::endl;
+    std::cout << spanningTree << std::endl;
+    std::cout << "  --------- adjacency matrix of spanning tree -----------  " << std::endl;
+    spanningTree.printAdjacencyMatrix();
+    std::cout << std::endl;
+  }
+  catch (ExceptionOutOfRange const& e)
+  {
+    std::cout << "Error: " << e.what() << std::endl;
+    std::cout << "errorLine: " << e.errorLine() << std::endl;
+    std::cout << "errorFile: " << e.errorFile() << std::endl;
+  }
+}
+
+//----------------------------------- Test (user input) ---------------------------------//
+
+void _tUITestMain()
+{
+  try
+  {
+    TGraph graph(5);
+    std::cin >> graph;
+
+    std::cout << std::endl << "  Graph: ";
+    std::cout << std::endl << graph << std::endl;
+    std::cout << "  --------- adjacency matrix of graph -----------  " << std::endl;
+    graph.printAdjacencyMatrix();
+    std::cout << std::endl;
+
+    TGraph spanningTree = KruskalAlgorithm::kruskalAlgorithm(graph);
+    std::cout << "  Spanning tree of graph: " << std::endl;
+    std::cout << spanningTree << std::endl;
+    std::cout << "  --------- adjacency matrix of spanning tree -----------  " << std::endl;
+    spanningTree.printAdjacencyMatrix();
+    std::cout << std::endl;
+  }
+  catch (ExceptionOutOfRange const& e)
+  {
+    std::cout << "Error: " << e.what() << std::endl;
+    std::cout << "errorLine: " << e.errorLine() << std::endl;
+    std::cout << "errorFile: " << e.errorFile() << std::endl;
+  }
+}
+
+//----------------------------------------- Main ----------------------------------------//
+
+int main()
+{
+  bool isItAll = false;
+  do
+  {
+    std::cout << "Choose mode of test: " << std::endl;
+    std::cout << "  0 - \"Example\"     1 - \"Random graphs\"     2 - \"User input\"" << std::endl;
+    int mode = 0;
+    std::cin >> mode;
+    std::cin.ignore();
+    switch (mode)
+    {
+    case 0:
+      std::cout << "//-------------------------- Test (example) -------------------------//";
+      _tETestMain();
+      std::cout << "//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//";
+      std::cout << std::endl << std::endl;
+      break;
+    case 1:
+      std::cout << "//---------------------- Test (random graphs) -----------------------//";
+      _tRGTestMain();
+      std::cout << "//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//";
+      std::cout << std::endl << std::endl;
+      break;
+    case 2:
+      std::cout << "//------------------------ Test (user input) ------------------------//";
+      _tUITestMain();
+      std::cout << "//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//";
+      std::cout << std::endl << std::endl;
+      break;
+    }
+    std::cout << "Do you want to exit?" << std::endl;
+    std::cout << "  1 - Yes     0 - No" << std::endl << std::endl;
+    std::cin >> isItAll;
+    std::cin.ignore();
+  } while (!isItAll);
+
   system("pause");
   return 0;
 }
