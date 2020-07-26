@@ -353,4 +353,24 @@ std::ostream& operator<<(std::ostream& out, const TGraph& _graph)
     out << _graph.edges[i] << " ";
   out << "]" << std::endl;
   return out;
+}
+
+std::istream& operator>>(std::istream& in, TGraph& _graph)
+{
+  int _verticesCount;
+  int _edgesCount;
+  TWeightedEdge* _edges;
+
+  std::cout << "Enter count of vertices: ";
+  in >> _verticesCount;
+  std::cout << "Enter count of edges: ";
+  in >> _edgesCount;
+
+  _edges = new TWeightedEdge[_edgesCount];
+  for (int i = 0; i < _edgesCount; i++)
+    in >> _edges[i];
+
+  _graph = TGraph(_verticesCount, _edgesCount, _edges);
+  delete[] _edges;
+  return in;
 };
