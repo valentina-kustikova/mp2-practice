@@ -256,6 +256,68 @@ TGraph TGraph::generateRandomConnectedGraph(int _verticesCount, int _min, int _m
   return resultGraph;
 }
 
+TGraph TGraph::generateRandomConnectedGraphWithoutLoops(int _verticesCount, int _min, int _max)
+{
+  if (_verticesCount < 0)
+    throw ExceptionIncorrectCountOfVertices(__LINE__, __FILE__);
+
+  if (_min > _max)
+    throw ExceptionIncorrectValueBoundaries(__LINE__, __FILE__);
+
+  double* adjacencyMatrix = new double[_verticesCount * _verticesCount];
+  for (int i = 0; i < _verticesCount * _verticesCount; i++)
+    adjacencyMatrix[i] = 0;
+
+  int _minEdgesCount = _verticesCount - 1;
+  int _maxEdgesCount = _verticesCount * (_verticesCount - 1) / 2;
+  int edgesCount = (_maxEdgesCount - _minEdgesCount) / (double)RAND_MAX * rand() + _minEdgesCount;
+
+  int* path = new int[_verticesCount];
+  for (int i = 0; i < _verticesCount; i++)
+    path[i] = i;
+  for (int i = _verticesCount - 1; i >= 0; i--)
+  {
+    int j = i / (double)RAND_MAX * rand();
+    int tmp = path[i];
+    path[i] = path[j];
+    path[j] = tmp;
+  }
+
+  for (int j = 0; j < _verticesCount - 1; j++)
+  {
+    int idx;
+    if (path[j] <= path[j + 1])
+      idx = path[j] * _verticesCount + path[j + 1];
+    else
+      idx = path[j + 1] * _verticesCount + path[j];
+    adjacencyMatrix[idx] = (_max - _min + 1) / (double)RAND_MAX * rand() + _min;
+  }
+  delete[] path;
+
+  int* indexes = new int[_maxEdgesCount - _minEdgesCount];
+  for (int i = 0, j = 0; i < _verticesCount * _verticesCount; i++)
+  {
+    if ((i / _verticesCount < i % _verticesCount) && (adjacencyMatrix[i] == 0))
+      indexes[j++] = i;
+  }
+
+  for (int i = _maxEdgesCount - _minEdgesCount - 1; i >= _maxEdgesCount - edgesCount; i--)
+  {
+    int j = i / (double)RAND_MAX * rand();
+    int tmp = indexes[i];
+    indexes[i] = indexes[j];
+    indexes[j] = tmp;
+
+    adjacencyMatrix[indexes[i]] = (_max - _min + 1) / (double)RAND_MAX * rand() + _min;
+  }
+  delete[] indexes;
+
+  TGraph resultGraph(_verticesCount, adjacencyMatrix);
+  delete[] adjacencyMatrix;
+
+  return resultGraph;
+}
+
 int TGraph::numberOfComponents() const
 {
   if (verticesCount == 0) return 0;
