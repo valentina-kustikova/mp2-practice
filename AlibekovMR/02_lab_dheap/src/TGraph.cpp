@@ -318,6 +318,53 @@ TGraph TGraph::generateRandomConnectedGraphWithoutLoops(int _verticesCount, int 
   return resultGraph;
 }
 
+bool TGraph::operator==(const TGraph& _graph) const
+{
+  if ((verticesCount != _graph.verticesCount)
+      || (edgesCount != _graph.edgesCount))
+    return false;
+
+  for (int i = 0; i < edgesCount; i++)
+    if (edges[i] != _graph.edges[i])
+      return false;
+
+  return true;
+}
+
+bool TGraph::operator!=(const TGraph& _graph) const
+{
+  return !(*this == _graph);
+  /*
+  if ((verticesCount != _graph.verticesCount)
+      || (edgesCount != _graph.edgesCount))
+    return true;
+
+  for (int i = 0; i < edgesCount; i++)
+    if (edges[i] != _graph.edges[i])
+      return true;
+
+  return false;
+  */
+}
+
+const TGraph& TGraph::operator=(const TGraph& _graph)
+{
+  if (*this == _graph)
+    return *this;
+
+  verticesCount = _graph.verticesCount;
+  edgesCount = _graph.edgesCount;
+
+  if (!edges)
+    delete[] edges;
+  edges = new TWeightedEdge[edgesCount];
+
+  for (int i = 0; i < edgesCount; i++)
+    edges[i] = _graph.edges[i];
+
+  return *this;
+}
+
 int TGraph::numberOfComponents() const
 {
   if (verticesCount == 0) return 0;
@@ -367,8 +414,14 @@ std::istream& operator>>(std::istream& in, TGraph& _graph)
   in >> _edgesCount;
 
   _edges = new TWeightedEdge[_edgesCount];
+  std::cout << std::endl;
+
   for (int i = 0; i < _edgesCount; i++)
+  {
+    std::cout << " -----| Edge #" << i << " |----- " << std::endl;
     in >> _edges[i];
+    std::cout << std::endl;
+  }
 
   _graph = TGraph(_verticesCount, _edgesCount, _edges);
   delete[] _edges;

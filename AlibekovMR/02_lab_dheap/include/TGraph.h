@@ -26,12 +26,17 @@ public:
   int numberOfComponents() const;
 
   double* getAdjacencyMatrix() const;
-  void printAdjacencyMatrix()  const;
+  void  printAdjacencyMatrix() const;
 
   static TGraph generateRandomDigraph(int _verticesCount, int _min, int _max);
   static TGraph generateRandomUndirectedGraph(int _verticesCount, int _min, int _max);
   static TGraph generateRandomConnectedGraph(int _verticesCount, int _min, int _max);
   static TGraph generateRandomConnectedGraphWithoutLoops(int _verticesCount, int _min, int _max);
+
+  bool operator==(const TGraph& _graph) const;
+  bool operator!=(const TGraph& _graph) const;
+
+  const TGraph& operator=(const TGraph& _graph);
 
   friend std::ostream& operator<<(std::ostream& out, const TGraph& _graph);
   friend std::istream& operator>>(std::istream& in, TGraph& _graph);
