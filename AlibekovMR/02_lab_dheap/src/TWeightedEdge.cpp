@@ -21,34 +21,34 @@ TWeightedEdge::TWeightedEdge(const TWeightedEdge& _edge)
   setWeight(_edge.getWeight());
 }
 
-bool TWeightedEdge::operator>(const TWeightedEdge& _edge)
+bool TWeightedEdge::operator>(const TWeightedEdge& _edge) const
 {
   return (getWeight() > _edge.getWeight());
 }
 
-bool TWeightedEdge::operator<(const TWeightedEdge& _edge)
+bool TWeightedEdge::operator<(const TWeightedEdge& _edge) const
 {
   return (getWeight() < _edge.getWeight());
 }
 
-bool TWeightedEdge::operator>=(const TWeightedEdge& _edge)
+bool TWeightedEdge::operator>=(const TWeightedEdge& _edge) const
 {
   return (getWeight() >= _edge.getWeight());
 }
 
-bool TWeightedEdge::operator<=(const TWeightedEdge& _edge)
+bool TWeightedEdge::operator<=(const TWeightedEdge& _edge) const
 {
   return (getWeight() <= _edge.getWeight());
 }
 
-bool TWeightedEdge::operator==(const TWeightedEdge& _edge)
+bool TWeightedEdge::operator==(const TWeightedEdge& _edge) const
 {
   return (getWeight() == _edge.getWeight()
     && getEndVertex() == _edge.getEndVertex()
   && getStartVertex() == _edge.getStartVertex());
 }
 
-bool TWeightedEdge::operator!=(const TWeightedEdge& _edge)
+bool TWeightedEdge::operator!=(const TWeightedEdge& _edge) const
 {
   return !(*this == _edge);
   /*

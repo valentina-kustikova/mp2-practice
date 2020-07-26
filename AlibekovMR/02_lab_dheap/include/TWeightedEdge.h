@@ -14,12 +14,12 @@ public:
   TWeightedEdge(const TWeightedEdge& _edge);
   ~TWeightedEdge() {};
 
-  bool operator>(const TWeightedEdge& _edge);
-  bool operator<(const TWeightedEdge& _edge);
-  bool operator>=(const TWeightedEdge& _edge);
-  bool operator<=(const TWeightedEdge& _edge);
-  bool operator==(const TWeightedEdge& _edge);
-  bool operator!=(const TWeightedEdge& _edge);
+  bool operator> (const TWeightedEdge& _edge) const;
+  bool operator< (const TWeightedEdge& _edge) const;
+  bool operator>=(const TWeightedEdge& _edge) const;
+  bool operator<=(const TWeightedEdge& _edge) const;
+  bool operator==(const TWeightedEdge& _edge) const;
+  bool operator!=(const TWeightedEdge& _edge) const;
 
   double getWeight() const;
   void   setWeight(double _weight);
