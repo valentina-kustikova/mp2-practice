@@ -408,6 +408,7 @@ std::istream& operator>>(std::istream& in, TGraph& _graph)
   int _edgesCount;
   TWeightedEdge* _edges;
 
+  std::cout << std::endl;
   std::cout << "Enter count of vertices: ";
   in >> _verticesCount;
   std::cout << "Enter count of edges: ";

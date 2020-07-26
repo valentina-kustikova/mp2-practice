@@ -172,12 +172,12 @@ int main()
   bool isItAll = false;
   do
   {
-    std::cout << "Choose kind of test: " << std::endl;
+    std::cout << "Choose mode of test: " << std::endl;
     std::cout << "  0 - \"Example\"     1 - \"Random array\"     2 - \"User input\"" << std::endl;
-    int choice = 0;
-    std::cin >> choice;
+    int mode = 0;
+    std::cin >> mode;
     std::cin.ignore();
-    switch (choice)
+    switch (mode)
     {
     case 0:
       std::cout << "//-------------------------- Test (example) -------------------------//";
