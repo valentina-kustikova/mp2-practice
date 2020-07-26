@@ -194,6 +194,50 @@ TGraph TGraph::generateRandomUndirectedGraph(int _verticesCount, int _min, int _
   return resultGraph;
 }
 
+TGraph TGraph::generateRandomConnectedGraph(int _verticesCount, int _min, int _max)
+{
+  if (_verticesCount < 0)
+    throw ExceptionIncorrectCountOfVertices(__LINE__, __FILE__);
+
+  if (_min > _max)
+    throw ExceptionIncorrectValueBoundaries(__LINE__, __FILE__);
+
+  double* adjacencyMatrix = new double[_verticesCount * _verticesCount];
+  for (int i = 0; i < _verticesCount * _verticesCount; i++)
+    adjacencyMatrix[i] = 0;
+
+  int _minEdgesCount = _verticesCount - 1;
+  int _maxEdgesCount = _verticesCount * (_verticesCount + 1) / 2;
+  int edgesCount = (_maxEdgesCount - _minEdgesCount) / (double)RAND_MAX * rand() + _minEdgesCount;
+
+  // Define: path_edges_count is PEC,
+  //   additional_edges_count is AEC,
+  //       random_edges_count is REC,
+  //        total_edges_count is TEC,
+  //            indexes_count is IC.
+  // Let: G = (V, E), |V| = n, |E| = REC = TEC = PEC + AEC.
+  //      n - 1 <= REC <= n * (n + 1) / 2
+  // TODO: create edges for random path (PEC = n - 1)
+  //       (random path in graph is actually 
+  //        a random permutation of graph's vertices (V),
+  //        so this problem can be solved 
+  //        by using Fisher-Yates shuffle 
+  //        (an algorithm for generating a random permutation)).
+  //  TODO: add additional edges to E (AEC = REC - PEC = REC - [n - 1])
+  //        until the total number of edges (PEC + AEC) is REC.
+  //        Additional edges must have 0 in adjacency matrix,
+  //        so at first create array of indexes of elements with 0 
+  //        in adjacency matrix. (IC = [n * (n + 1) / 2] - [n - 1])
+  //        Secondly, shuffle this array by using Fisher-Yates shuffle.
+  //        The last AEC elements of this array (AEC = REC - PEC = REC - n + 1)
+  //        are the indexes of additional edges in adjacency matrix.
+
+  TGraph resultGraph(_verticesCount, adjacencyMatrix);
+  delete[] adjacencyMatrix;
+
+  return resultGraph;
+}
+
 int TGraph::numberOfComponents() const
 {
   if (verticesCount == 0) return 0;
