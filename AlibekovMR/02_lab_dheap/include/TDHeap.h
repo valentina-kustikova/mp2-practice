@@ -22,6 +22,10 @@ public:
   void siftDown(int _key);
   void removeMinKey();
   void heapify();
+
+  bool isEmpty() const;
+  bool isFull()  const;
+
   T getRoot();
 
 private:
@@ -109,6 +113,18 @@ void TDHeap<T>::heapify()
 {
   for (int i = size - 1; i >= 0; i--)
     siftDown(i);
+}
+
+template<typename T>
+inline bool TDHeap<T>::isEmpty() const
+{
+  return (size == 0);
+}
+
+template<typename T>
+inline bool TDHeap<T>::isFull() const
+{
+  return (size == maxSize);
 }
 
 template<typename T>
