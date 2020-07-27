@@ -17,4 +17,10 @@ public:
   static TGraph kruskalAlgorithm(const TGraph& _graph);
 };
 
+static class DijkstraAlgorithm
+{
+public:
+  static TDistances dijkstraAlgorithm(const TGraph& _graph, const int _startVertex);
+};
+
 #endif // !__ALGORITHMS__H__
