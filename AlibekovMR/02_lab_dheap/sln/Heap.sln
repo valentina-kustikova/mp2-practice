@@ -1,13 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.438
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30320.27
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Heap", "Heap\Heap.vcxproj", "{3C8B03E3-EBFA-4DCF-821D-C4845CD21AD2}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Sample_for_HeapSort", "sample\Sample_for_HeapSort\Sample_for_HeapSort.vcxproj", "{0EAD52A6-B538-4735-94B7-97B0941D85D6}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Sample_for_Kruskal's_Algorithm", "sample\Sample_for_Kruskal's_Algorithm\Sample_for_Kruskal's_Algorithm.vcxproj", "{595ED603-2A30-4C9B-AF40-1FAA752C46F5}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Sample_for_Dijkstra's_Algorithm", "sample\Sample_for_Dijkstra's_Algorithm\Sample_for_Dijkstra's_Algorithm.vcxproj", "{71D202E7-D0D9-47A2-8C69-E6066190988E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,6 +43,14 @@ Global
 		{595ED603-2A30-4C9B-AF40-1FAA752C46F5}.Release|x64.Build.0 = Release|x64
 		{595ED603-2A30-4C9B-AF40-1FAA752C46F5}.Release|x86.ActiveCfg = Release|Win32
 		{595ED603-2A30-4C9B-AF40-1FAA752C46F5}.Release|x86.Build.0 = Release|Win32
+		{71D202E7-D0D9-47A2-8C69-E6066190988E}.Debug|x64.ActiveCfg = Debug|x64
+		{71D202E7-D0D9-47A2-8C69-E6066190988E}.Debug|x64.Build.0 = Debug|x64
+		{71D202E7-D0D9-47A2-8C69-E6066190988E}.Debug|x86.ActiveCfg = Debug|Win32
+		{71D202E7-D0D9-47A2-8C69-E6066190988E}.Debug|x86.Build.0 = Debug|Win32
+		{71D202E7-D0D9-47A2-8C69-E6066190988E}.Release|x64.ActiveCfg = Release|x64
+		{71D202E7-D0D9-47A2-8C69-E6066190988E}.Release|x64.Build.0 = Release|x64
+		{71D202E7-D0D9-47A2-8C69-E6066190988E}.Release|x86.ActiveCfg = Release|Win32
+		{71D202E7-D0D9-47A2-8C69-E6066190988E}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
