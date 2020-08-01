@@ -88,7 +88,7 @@ void _tRATestMain()
     keys[i] = (_max - _min + 1) / (double)RAND_MAX * rand() + _min;
 
   std::cout << std::endl << "   Random keys (array with random elements" 
-    << "between left border value = " << _min
+    << " between left border value = " << _min
     << " and right border value = " << _max << "): " << std::endl;
   std::cout << "[ ";
   for (int i = 0; i < _size; i++)
