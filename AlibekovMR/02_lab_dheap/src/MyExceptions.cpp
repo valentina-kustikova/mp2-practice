@@ -294,7 +294,7 @@ ExceptionGraphWithLoop::~ExceptionGraphWithLoop()
 
 ExceptionGraphWithNegativeWeights::ExceptionGraphWithNegativeWeights()
 {
-  str_what = "The graph has vertex with negative weight!";
+  str_what = "The graph has vertex (vertices) with negative weight!";
   line = -1;
   file = 0;
 }
@@ -308,7 +308,7 @@ ExceptionGraphWithNegativeWeights::ExceptionGraphWithNegativeWeights(const Excep
 
 ExceptionGraphWithNegativeWeights::ExceptionGraphWithNegativeWeights(int _line, const char* _file)
 {
-  str_what = "The graph has vertex with negative weight!";
+  str_what = "The graph has vertex (vertices) with negative weight!";
   line = _line;
   file = _file;
 }

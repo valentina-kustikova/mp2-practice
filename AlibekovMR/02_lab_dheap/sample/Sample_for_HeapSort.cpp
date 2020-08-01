@@ -170,6 +170,7 @@ void _tUITestMain()
 int main()
 {
   bool isItAll = false;
+  std::cout << "--------------------------|| HeapSort Algorithm ||-------------------------" << std::endl;
   do
   {
     std::cout << "Choose mode of test: " << std::endl;
