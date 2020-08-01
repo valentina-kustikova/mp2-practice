@@ -15,6 +15,7 @@ public:
 public:
   TDHeap(int _d, int _maxSize);
   TDHeap(int _d, int _maxSize, int _size, T * _keys);
+  TDHeap(const TDHeap<T>& _heap);
   ~TDHeap();
 
   void transpose(int a, int b);
@@ -40,25 +41,32 @@ TDHeap<T>::TDHeap(int _d, int _maxSize)
   d = _d;
   maxSize = _maxSize;
   size = 0;
-  keys = new T[maxSize];
+  keys = nullptr;
 }
 
 template<typename T>
-TDHeap<T>::TDHeap(int _d, int _maxSize, int _size, T * _keys)
+TDHeap<T>::TDHeap(int _d, int _maxSize, int _size, T* _keys)
 {
   d = _d;
   maxSize = _maxSize;
   size = _size;
-  keys = new T[maxSize];
-  for (int i = 0; i < size; i++)
-    keys[i] = _keys[i];
+  keys = _keys;
   heapify();
+}
+
+template<typename T>
+TDHeap<T>::TDHeap(const TDHeap<T>& _heap)
+{
+  d = _heap.d;
+  maxSize = _heap.maxSize;
+  size = _heap.size;
+  keys = _heap.keys;
 }
 
 template<typename T>
 TDHeap<T>::~TDHeap()
 {
-  delete[] keys;
+  keys = nullptr;
   maxSize = 0;
   size = 0;
 }
