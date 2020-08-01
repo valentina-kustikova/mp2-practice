@@ -6,14 +6,13 @@
 template<typename T>
 class TDHeap
 {
-public:
+private:
   int d;
   int maxSize;
   int size;
   T* keys;
 
 public:
-  TDHeap(int _d, int _maxSize);
   TDHeap(int _d, int _maxSize, int _size, T * _keys);
   TDHeap(const TDHeap<T>& _heap);
   ~TDHeap();
@@ -23,6 +22,8 @@ public:
   void siftDown(int _key);
   void removeMinKey();
   void heapify();
+
+  int getSize() const;
 
   bool isEmpty() const;
   bool isFull()  const;
@@ -34,15 +35,6 @@ private:
 };
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
-
-template<typename T>
-TDHeap<T>::TDHeap(int _d, int _maxSize)
-{
-  d = _d;
-  maxSize = _maxSize;
-  size = 0;
-  keys = nullptr;
-}
 
 template<typename T>
 TDHeap<T>::TDHeap(int _d, int _maxSize, int _size, T* _keys)
@@ -121,6 +113,12 @@ void TDHeap<T>::heapify()
 {
   for (int i = size - 1; i >= 0; i--)
     siftDown(i);
+}
+
+template<typename T>
+inline int TDHeap<T>::getSize() const
+{
+  return size;
 }
 
 template<typename T>
