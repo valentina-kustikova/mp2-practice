@@ -27,7 +27,7 @@ MyException::MyException(const char* message, int _line, const char* _file)
 MyException::~MyException()
 {
   line = -1;
-}
+};
 
 ExceptionOutOfRange::ExceptionOutOfRange()
 {
@@ -53,7 +53,7 @@ ExceptionOutOfRange::ExceptionOutOfRange(int _line, const char* _file)
 ExceptionOutOfRange::~ExceptionOutOfRange()
 {
   line = -1;
-}
+};
 
 ExceptionIncorrectSize::ExceptionIncorrectSize()
 {
@@ -79,7 +79,7 @@ ExceptionIncorrectSize::ExceptionIncorrectSize(int _line, const char* _file)
 ExceptionIncorrectSize::~ExceptionIncorrectSize()
 {
   line = -1;
-}
+};
 
 ExceptionIncorrectCountOfVertices::ExceptionIncorrectCountOfVertices()
 {
@@ -106,7 +106,7 @@ ExceptionIncorrectCountOfVertices::ExceptionIncorrectCountOfVertices(int _line, 
 ExceptionIncorrectCountOfVertices::~ExceptionIncorrectCountOfVertices()
 {
   line = -1;
-}
+};
 
 ExceptionIncorrectCountOfEdges::ExceptionIncorrectCountOfEdges()
 {
@@ -133,7 +133,7 @@ ExceptionIncorrectCountOfEdges::ExceptionIncorrectCountOfEdges(int _line, const 
 ExceptionIncorrectCountOfEdges::~ExceptionIncorrectCountOfEdges()
 {
   line = -1;
-}
+};
 
 ExceptionIncorrectValueBoundaries::ExceptionIncorrectValueBoundaries()
 {
@@ -160,7 +160,7 @@ ExceptionIncorrectValueBoundaries::ExceptionIncorrectValueBoundaries(int _line, 
 ExceptionIncorrectValueBoundaries::~ExceptionIncorrectValueBoundaries()
 {
   line = -1;
-}
+};
 
 ExceptionIncorrectVertex::ExceptionIncorrectVertex()
 {
@@ -186,7 +186,7 @@ ExceptionIncorrectVertex::ExceptionIncorrectVertex(int _line, const char* _file)
 ExceptionIncorrectVertex::~ExceptionIncorrectVertex()
 {
   line = -1;
-}
+};
 
 ExceptionEmptyData::ExceptionEmptyData()
 {
@@ -212,7 +212,7 @@ ExceptionEmptyData::ExceptionEmptyData(int _line, const char* _file)
 ExceptionEmptyData::~ExceptionEmptyData()
 {
   line = -1;
-}
+};
 
 ExceptionDisconnectedGraph::ExceptionDisconnectedGraph()
 {
@@ -238,7 +238,7 @@ ExceptionDisconnectedGraph::ExceptionDisconnectedGraph(int _line, const char* _f
 ExceptionDisconnectedGraph::~ExceptionDisconnectedGraph()
 {
   line = -1;
-}
+};
 
 ExceptionGraphWithoutVertices::ExceptionGraphWithoutVertices()
 {
@@ -264,7 +264,7 @@ ExceptionGraphWithoutVertices::ExceptionGraphWithoutVertices(int _line, const ch
 ExceptionGraphWithoutVertices::~ExceptionGraphWithoutVertices()
 {
   line = -1;
-}
+};
 
 ExceptionGraphWithLoop::ExceptionGraphWithLoop()
 {
@@ -288,6 +288,32 @@ ExceptionGraphWithLoop::ExceptionGraphWithLoop(int _line, const char* _file)
 }
 
 ExceptionGraphWithLoop::~ExceptionGraphWithLoop()
+{
+  line = -1;
+};
+
+ExceptionGraphWithNegativeWeights::ExceptionGraphWithNegativeWeights()
+{
+  str_what = "The graph has vertex with negative weight!";
+  line = -1;
+  file = 0;
+}
+
+ExceptionGraphWithNegativeWeights::ExceptionGraphWithNegativeWeights(const ExceptionGraphWithNegativeWeights& _exception)
+{
+  str_what = _exception.what();
+  line = _exception.errorLine();
+  file = _exception.errorFile();
+}
+
+ExceptionGraphWithNegativeWeights::ExceptionGraphWithNegativeWeights(int _line, const char* _file)
+{
+  str_what = "The graph has vertex with negative weight!";
+  line = _line;
+  file = _file;
+}
+
+ExceptionGraphWithNegativeWeights::~ExceptionGraphWithNegativeWeights()
 {
   line = -1;
 };

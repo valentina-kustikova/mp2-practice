@@ -113,4 +113,13 @@ public:
   ~ExceptionGraphWithLoop();
 };
 
+class ExceptionGraphWithNegativeWeights : public MyException
+{
+public:
+  ExceptionGraphWithNegativeWeights();
+  ExceptionGraphWithNegativeWeights(const ExceptionGraphWithNegativeWeights& _exception);
+  ExceptionGraphWithNegativeWeights(int _line, const char* _file);
+  ~ExceptionGraphWithNegativeWeights();
+};
+
 #endif // !__MY_EXCEPTIONS_H__
