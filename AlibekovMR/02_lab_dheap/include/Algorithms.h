@@ -4,6 +4,8 @@
 #include "TDHeap.h"
 #include "TDisjointSet.h"
 #include "TGraph.h"
+#include "TPair.h"
+#include "TDistances.h"
 
 static class HeapSort
 {
