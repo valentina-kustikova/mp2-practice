@@ -20,8 +20,10 @@ TGraph KruskalAlgorithm::kruskalAlgorithm(const TGraph& _graph)
 
   if (_graph.verticesCount < 1)
     throw ExceptionGraphWithoutVertices(__LINE__, __FILE__);
+
   if (_graph.isDisconnected())
     throw ExceptionDisconnectedGraph(__LINE__, __FILE__);
+
   if (_graph.hasLoop())
     throw ExceptionGraphWithLoop(__LINE__, __FILE__);
 
@@ -52,4 +54,82 @@ TGraph KruskalAlgorithm::kruskalAlgorithm(const TGraph& _graph)
 
   delete[] edgesOfResultTree;
   return resultTree;
+};
+
+TDistances DijkstraAlgorithm::dijkstraAlgorithm(const TGraph& _graph, const int _startVertex)
+{
+  const int base = 2;
+
+  if (_graph.verticesCount < 0)
+    throw ExceptionGraphWithoutVertices(__LINE__, __FILE__);
+
+  if ((_startVertex < 0) || (_startVertex > _graph.verticesCount))
+    throw ExceptionIncorrectVertex(__LINE__, __FILE__);
+
+  if (_graph.isDisconnected())
+    throw ExceptionDisconnectedGraph(__LINE__, __FILE__);
+
+  if (_graph.hasLoop())
+    throw ExceptionGraphWithLoop(__LINE__, __FILE__);
+
+  for (int i = 0; i < _graph.edgesCount; i++)
+    if (_graph.edges[i].getWeight() < 0)
+      throw ExceptionGraphWithNegativeWeights(__LINE__, __FILE__);
+
+  int verticesCount = _graph.verticesCount;
+  int edgesCount    = _graph.edgesCount;
+
+  TPair* pairs = new TPair[verticesCount];
+  double* dist = new double[verticesCount];
+  int* up = new int[verticesCount];
+
+  for (int i = 0; i < verticesCount; i++)
+  {
+    pairs[i].setDistance(DBL_MAX);
+    pairs[i].setVertex(i);
+    up[i] = _startVertex;
+  }
+  pairs[_startVertex].setDistance(0);
+
+  TDHeap<TPair> marksQueue(base, verticesCount, verticesCount, pairs);
+
+  while (marksQueue.getSize() != 0)
+  {
+    TPair mark = marksQueue.getRoot();
+    TPair* adjacentVertices = new TPair[verticesCount - 1];
+    int adjacentVerticesCount = 0;
+
+    for (int i = 0; i < edgesCount; i++)
+      if (_graph.edges[i].isIncidental(mark.getVertex()))
+        adjacentVertices[adjacentVerticesCount++] = TPair((_graph.edges[i].getStartVertex() == mark.getVertex()) ?
+          _graph.edges[i].getEndVertex() : _graph.edges[i].getStartVertex(), _graph.edges[i].getWeight());
+
+    for (int i = 0; i < adjacentVerticesCount; i++)
+    {
+      int idx = -1;
+      while (idx < verticesCount)
+        if (adjacentVertices[i].getVertex() == pairs[++idx].getVertex())
+          break;
+
+      if (mark.getDistance() + adjacentVertices[i].getDistance() < pairs[idx].getDistance())
+      {
+        pairs[idx].setDistance(mark.getDistance() + adjacentVertices[i].getDistance());
+        up[adjacentVertices[i].getVertex()] = mark.getVertex();
+      }
+    }
+    dist[mark.getVertex()] = mark.getDistance();
+
+    marksQueue.removeMinKey();
+    marksQueue.heapify();
+
+    delete[] adjacentVertices;
+  }
+
+  TDistances result(_startVertex, verticesCount, dist, up);
+
+  delete[] dist;
+  delete[] up;
+  delete[] pairs;
+
+  return result;
 };
