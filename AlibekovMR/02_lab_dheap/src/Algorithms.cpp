@@ -18,7 +18,10 @@ TGraph KruskalAlgorithm::kruskalAlgorithm(const TGraph& _graph)
 {
   const int base = 2;
 
-  if (_graph.verticesCount < 1)
+  int verticesCount = _graph.getVerticesCount();
+  int    edgesCount = _graph.getEdgesCount();
+
+  if (verticesCount < 1)
     throw ExceptionGraphWithoutVertices(__LINE__, __FILE__);
 
   if (_graph.isDisconnected())
@@ -27,7 +30,6 @@ TGraph KruskalAlgorithm::kruskalAlgorithm(const TGraph& _graph)
   if (_graph.hasLoop())
     throw ExceptionGraphWithLoop(__LINE__, __FILE__);
 
-  int verticesCount = _graph.verticesCount;
   TDisjointSet vertices(verticesCount);
   for (int i = 0; i < verticesCount; i++)
     vertices.makeSet(i);
@@ -35,7 +37,7 @@ TGraph KruskalAlgorithm::kruskalAlgorithm(const TGraph& _graph)
   TWeightedEdge* edgesOfResultTree = new TWeightedEdge[verticesCount - 1];
   int currentCountEdgesOfResultTree = 0;
 
-  TDHeap<TWeightedEdge> edges(base, _graph.edgesCount, _graph.edgesCount, _graph.edges);
+  TDHeap<TWeightedEdge> edges(base, edgesCount, edgesCount, _graph.getEdges());
 
   while (currentCountEdgesOfResultTree != verticesCount - 1)
   {
@@ -60,10 +62,14 @@ TDistances DijkstraAlgorithm::dijkstraAlgorithm(const TGraph& _graph, const int 
 {
   const int base = 2;
 
-  if (_graph.verticesCount < 0)
+  TWeightedEdge* edges = _graph.getEdges();
+  int    edgesCount    = _graph.getEdgesCount();
+  int verticesCount    = _graph.getVerticesCount();
+
+  if (verticesCount < 0)
     throw ExceptionGraphWithoutVertices(__LINE__, __FILE__);
 
-  if ((_startVertex < 0) || (_startVertex > _graph.verticesCount))
+  if ((_startVertex < 0) || (_startVertex > verticesCount))
     throw ExceptionIncorrectVertex(__LINE__, __FILE__);
 
   if (_graph.isDisconnected())
@@ -72,12 +78,9 @@ TDistances DijkstraAlgorithm::dijkstraAlgorithm(const TGraph& _graph, const int 
   if (_graph.hasLoop())
     throw ExceptionGraphWithLoop(__LINE__, __FILE__);
 
-  for (int i = 0; i < _graph.edgesCount; i++)
-    if (_graph.edges[i].getWeight() < 0)
+  for (int i = 0; i < edgesCount; i++)
+    if (edges[i].getWeight() < 0)
       throw ExceptionGraphWithNegativeWeights(__LINE__, __FILE__);
-
-  int verticesCount = _graph.verticesCount;
-  int edgesCount    = _graph.edgesCount;
 
   TPair* pairs = new TPair[verticesCount];
   double* dist = new double[verticesCount];
@@ -100,9 +103,9 @@ TDistances DijkstraAlgorithm::dijkstraAlgorithm(const TGraph& _graph, const int 
     int adjacentVerticesCount = 0;
 
     for (int i = 0; i < edgesCount; i++)
-      if (_graph.edges[i].isIncidental(mark.getVertex()))
-        adjacentVertices[adjacentVerticesCount++] = TPair((_graph.edges[i].getStartVertex() == mark.getVertex()) ?
-          _graph.edges[i].getEndVertex() : _graph.edges[i].getStartVertex(), _graph.edges[i].getWeight());
+      if (edges[i].isIncidental(mark.getVertex()))
+        adjacentVertices[adjacentVerticesCount++] = TPair((edges[i].getStartVertex() == mark.getVertex()) ?
+          edges[i].getEndVertex() : edges[i].getStartVertex(), edges[i].getWeight());
 
     for (int i = 0; i < adjacentVerticesCount; i++)
     {

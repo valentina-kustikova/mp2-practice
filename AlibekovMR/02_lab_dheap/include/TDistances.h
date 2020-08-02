@@ -5,7 +5,7 @@
 
 class TDistances
 {
-public:
+private:
   int startVertex;
   int verticesCount;
   double* dist;

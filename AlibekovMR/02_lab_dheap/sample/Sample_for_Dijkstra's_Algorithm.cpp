@@ -212,7 +212,7 @@ void _tUITestMain()
     std::cout << std::endl;
     std::cout << "Enter start vertex for Dijkstra's algorithm: ";
     std::cin >> startVertex;
-    while ((startVertex < 0) || (startVertex >= graph.verticesCount))
+    while ((startVertex < 0) || (startVertex >= graph.getVerticesCount()))
     {
       std::cout << std::endl;
       std::cout << "Start vertex must be >= 0 and < count of vertices!" << std::endl;

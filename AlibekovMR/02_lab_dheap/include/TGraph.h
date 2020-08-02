@@ -6,16 +6,21 @@
 
 class TGraph
 {
-public:
+private:
   int verticesCount;
   int edgesCount;
   TWeightedEdge* edges;
 
+public:
   explicit TGraph(int _verticesCount);
   TGraph(int _verticesCount, int _edgesCount, TWeightedEdge* _edges);
   TGraph(int _verticesCount, double* _adjacencyMatrix);
   TGraph(const TGraph& _graph);
   ~TGraph();
+
+  int getVerticesCount()    const;
+  int getEdgesCount()       const;
+  TWeightedEdge* getEdges() const;
 
   bool isConnected()    const;
   bool isDisconnected() const;

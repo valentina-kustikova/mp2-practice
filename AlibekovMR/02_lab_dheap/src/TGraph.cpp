@@ -71,6 +71,21 @@ TGraph::~TGraph()
   delete[] edges;
 }
 
+int TGraph::getVerticesCount() const
+{
+    return verticesCount;
+}
+
+int TGraph::getEdgesCount() const
+{
+  return edgesCount;
+}
+
+TWeightedEdge* TGraph::getEdges() const
+{
+  return edges;
+}
+
 bool TGraph::isConnected() const
 {
   if (numberOfComponents() < 1)

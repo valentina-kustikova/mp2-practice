@@ -5,6 +5,7 @@
 
 class TDisjointSet
 {
+private:
   int  size;
   int* keys;
 
