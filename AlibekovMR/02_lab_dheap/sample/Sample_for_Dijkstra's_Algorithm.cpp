@@ -37,6 +37,7 @@ void _tETestMain()
   try
   {
     TDistances distances = DijkstraAlgorithm::dijkstraAlgorithm(graph_1, startVertex);
+    std::cout << "  -------------------- result ----------------------  " << std::endl;
     std::cout << std::endl << distances << std::endl;
   }
   catch (MyException const& e)
@@ -75,6 +76,7 @@ void _tETestMain()
   try
   {
     TDistances distances = DijkstraAlgorithm::dijkstraAlgorithm(graph_2, startVertex);
+    std::cout << "  -------------------- result ----------------------  " << std::endl;
     std::cout << std::endl << distances << std::endl;
   }
   catch (MyException const& e)
@@ -113,6 +115,7 @@ void _tETestMain()
   try
   {
     TDistances distances = DijkstraAlgorithm::dijkstraAlgorithm(graph_3, startVertex);
+    std::cout << "  -------------------- result ----------------------  " << std::endl;
     std::cout << std::endl << distances << std::endl;
   }
   catch (MyException const& e)
@@ -182,6 +185,7 @@ void _tRGTestMain()
     std::cout << std::endl;
 
     TDistances distances = DijkstraAlgorithm::dijkstraAlgorithm(graph, _startVertex);
+    std::cout << "  -------------------- result ----------------------  " << std::endl;
     std::cout << std::endl << distances << std::endl;
   }
   catch (MyException const& e)
@@ -221,6 +225,7 @@ void _tUITestMain()
     };
 
     TDistances distances = DijkstraAlgorithm::dijkstraAlgorithm(graph, startVertex);
+    std::cout << "  -------------------- result ----------------------  " << std::endl;
     std::cout << std::endl << distances << std::endl;
   }
   catch (MyException const& e)

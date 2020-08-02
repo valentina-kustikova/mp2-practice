@@ -20,8 +20,10 @@ public:
   bool operator!=(const TDistances& _distances) const;
 
   const TDistances& operator=(const TDistances& _distances);
-
+  
   friend std::ostream& operator<<(std::ostream& out, const TDistances& _distances);
+
+  void printPaths() const;
 };
 
 #endif // !__TDISTANCES_H__

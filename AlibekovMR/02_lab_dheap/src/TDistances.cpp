@@ -92,6 +92,38 @@ const TDistances& TDistances::operator=(const TDistances& _distances)
   return *this;
 }
 
+void TDistances::printPaths() const
+{
+  int* paths = new int[verticesCount * verticesCount];
+  for (int i = 0; i < verticesCount * verticesCount; i++)
+    paths[i] = -1;
+
+  for (int i = 0; i < verticesCount; i++)
+  {
+    if (i == startVertex) continue;
+    int idx = i * verticesCount + (verticesCount - 1);
+    for (int vertex = i; vertex != startVertex; vertex = up[vertex])
+      paths[idx--] = vertex;
+    paths[idx] = startVertex;
+  }
+
+  for (int i = 0; i < verticesCount; i++)
+  {
+    if (i == startVertex) continue;
+    std::cout << "distance(" << startVertex << ", " << i << ") = " << dist[i] << " || ";
+    std::cout << "{" << startVertex << "}-->";
+    for (int j = 0; j < verticesCount - 1; j++)
+    {
+      int vertex = paths[i * verticesCount + j];
+      if ((vertex >= 0) && (vertex != startVertex))
+        std::cout << "[" << vertex << "]-->";
+    }
+    std::cout << "{" << i << "}" << std::endl;
+  }
+
+  delete[] paths;
+}
+
 std::ostream& operator<<(std::ostream& out, const TDistances& _distances)
 {
   out << "Start vertex: " << _distances.startVertex << std::endl;
@@ -105,7 +137,9 @@ std::ostream& operator<<(std::ostream& out, const TDistances& _distances)
   out << "Up: [ ";
   for (int i = 0; i < _distances.verticesCount; i++)
     out << _distances.up[i] << " ";
-  out << "]" << std::endl;
+  out << "]" << std::endl << std::endl;
+
+  _distances.printPaths();
 
   return out;
 }
