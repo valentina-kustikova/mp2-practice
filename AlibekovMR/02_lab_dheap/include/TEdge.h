@@ -1,0 +1,37 @@
+#ifndef __TEDGE_H__
+#define __TEDGE_H__
+
+#include "MyExceptions.h"
+#include "iostream"
+
+class TEdge
+{
+private:
+  int startVertex;
+  int endVertex;
+
+public:
+  TEdge();
+  TEdge(int _startVertex, int _endVertex);
+  TEdge(const TEdge& _edge);
+  ~TEdge() {};
+
+  bool operator==(const TEdge& _edge) const;
+  bool operator!=(const TEdge& _edge) const;
+
+  const TEdge& operator=(const TEdge& _edge);
+
+  int getStartVertex() const;
+  int getEndVertex()   const;
+
+  void setStartVertex(int _startVertex);
+  void   setEndVertex(int _endVertex);
+
+  bool isIncidental(int _vertex) const;
+  bool isAdjacent(TEdge& _edge)  const;
+
+  friend std::ostream& operator<<(std::ostream& out, const TEdge& _edge);
+  friend std::istream& operator>>(std::istream& in, TEdge& _edge);
+};
+
+#endif // !__TEDGE_H__
