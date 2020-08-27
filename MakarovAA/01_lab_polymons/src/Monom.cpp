@@ -1,4 +1,4 @@
-#include "..\include\Monom.h"
+#include "Monom.h"
 
 Monom::TNode(unsigned int iKey, double iData) : key(iKey), pNext(nullptr), data(iData)
 {
@@ -61,32 +61,32 @@ Monom Monom::operator * (const double c)
 	return Monom(key, data * c);
 }
 
-bool Monom::operator > (const Monom& monom)
+bool Monom::operator > (const Monom& monom) const
 {
 	return key > monom.key;
 }
 
-bool Monom::operator < (const Monom& monom)
+bool Monom::operator < (const Monom& monom) const
 {
 	return key < monom.key;
 }
 
-bool Monom::operator >= (const Monom& monom)
+bool Monom::operator >= (const Monom& monom) const
 {
 	return key >= monom.key;
 }
 
-bool Monom::operator <= (const Monom& monom)
+bool Monom::operator <= (const Monom& monom) const
 {
 	return key <= monom.key;
 }
 
-bool Monom::operator == (const Monom& monom)
+bool Monom::operator == (const Monom& monom) const
 {
 	return (key == monom.key && data == monom.data);
 }
 
-bool Monom::operator != (const Monom& monom)
+bool Monom::operator != (const Monom& monom) const
 {
 	return (key == monom.key && data != monom.data);
 }

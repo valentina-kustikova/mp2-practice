@@ -33,10 +33,10 @@ struct Monom
 
 	Monom operator * (const double);
 
-	bool operator > (const Monom& monom);
-	bool operator >= (const Monom& monom);
-	bool operator < (const Monom& monom);
-	bool operator <= (const Monom& monom);
-	bool operator == (const Monom& monom);
-	bool operator != (const Monom& monom);
+	bool operator > (const Monom& monom) const;
+	bool operator >= (const Monom& monom) const;
+	bool operator < (const Monom& monom) const;
+	bool operator <= (const Monom& monom) const;
+	bool operator == (const Monom& monom) const;
+	bool operator != (const Monom& monom) const;
 };

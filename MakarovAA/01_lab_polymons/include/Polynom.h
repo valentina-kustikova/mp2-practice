@@ -25,7 +25,7 @@ private:
 public:
 	Polynom();
 	Polynom(TList<unsigned int, double>&);
-	Polynom(std::string&);
+	Polynom(const std::string&);
 	Polynom(const Polynom&);
 	~Polynom();
 
