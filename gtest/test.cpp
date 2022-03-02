@@ -412,7 +412,7 @@ TEST(Polinoms, test_del_Elem_with_all) {
 	B = A;
 	B -= d;
 	B.podobnyi();
-	B.showList2();
+	//B.showList2();
 
 
 	it1 = A.begin();
@@ -421,7 +421,7 @@ TEST(Polinoms, test_del_Elem_with_all) {
 	it1++;
 	A.delElem(*it1);
 	
-	A.showList2();
+	//A.showList2();
 	
 	EXPECT_EQ(A, B);
 
@@ -740,3 +740,602 @@ TEST(Polinoms, test_differentir_Z) {
 	//B.showList2();
 	EXPECT_EQ(A, B);
 }
+
+TEST(Polinoms, test_operator_equals_1){
+	Monom a(6, 2, 3, 4);
+	Monom b(-5, 7, 10, 22);
+	Monom c(10, 5, 6, 7);
+	Polinoms A;
+	A.addLast(a);
+	A.addLast(b);
+	A.addLast(c);
+	Polinoms B = A;
+	//cout << (*it1);
+	if (B == A) SUCCEED();
+	else FAIL();
+}
+TEST(Polinoms, test_operator_equals_2){
+	Monom a(6.4, 2, 3, 4);
+	Monom b(-5.5, -7, -70, 22);
+	Monom c(10, 5, 6, 7);
+	Polinoms A;
+	A.addLast(a);
+	A.addLast(b);
+	A.addLast(c);
+	Polinoms B = A;
+	//cout << (*it1);
+	if (B == A) SUCCEED();
+	else FAIL();
+}
+TEST(Polinoms, test_operator_equals_3) {
+	Monom a(6.4, 2, 3, 4);
+	Monom b(-5.5, -7, -70, 22);
+	Monom c(10, 5, 6, 7);
+	Polinoms A;
+	A.addLast(a);
+	A.addLast(b);
+	A.addLast(c);
+	Polinoms B = A;
+	Polinoms C(A);
+	//cout << (*it1);
+	if (B == C) SUCCEED();
+	else FAIL();
+}
+
+TEST(Polinoms, test_operator_plus_with_equals_monom_1) {
+	Monom a(6.4, 2, 3, 4);
+	Monom b(-5.5, -7, -70, 22);
+	Monom c(10, 5, 6, 7);
+	Polinoms A;
+	A.addLast(a);
+	A.addLast(b);
+	A.addLast(c);
+	Polinoms B;
+	B += a;
+	B += b;
+	B += c;
+	//B.showList2();
+	//cout << (*it1);
+	if (B == A) SUCCEED();
+	else FAIL();
+}
+TEST(Polinoms, test_operator_plus_with_equals_monom_2) {
+	Monom a(6.4, 2, 3, 4);
+	Monom b(-5.5, -7, -70, 22);
+	Monom c(10, 5, 6, 7);
+	Polinoms A;
+	A.addLast(a);
+	A.addLast(b);
+	A.addLast(c);
+	Polinoms B(A);
+	B += a;
+	A += a;
+	//B.showList2();
+	//cout << (*it1);
+	if (B == A) SUCCEED();
+	else FAIL();
+}
+TEST(Polinoms, test_operator_minus_with_equals_monom_1) {
+	Monom a(6.4, 2, 3, 4);
+	Monom b(-5.5, -7, -70, 22);
+	Monom c(10, 5, 6, 7);
+	Polinoms A;
+	A.addLast(a);
+	A.addLast(b);
+	A.addLast(c);
+	Polinoms B(A);
+	B -= a;
+	A -= a;
+	//B.showList2();
+	//cout << (*it1);
+	if (B == A) SUCCEED();
+	else FAIL();
+}
+TEST(Polinoms, test_operator_minus_with_equals_monom_2) {
+	Monom a(-6.4, 2, 3, 4);
+	Monom b(-5.5, -7, -70, 22);
+	Monom c(-10, 5, 6, 7);
+	Polinoms A;
+	A.addLast(a);
+	A.addLast(b);
+	A.addLast(c);
+	Polinoms B;
+	B -= a;
+	B -= b;
+	B -= c;
+	//B.showList2();
+	A *= -1;
+	//A.showList2();
+	//B.showList2();
+	//cout << (*it1);
+	if (B == A) SUCCEED();
+	else FAIL();
+}
+TEST(Polinoms, test_operator_plus_monom_1) {
+	Monom a(-6.4, 2, 3, 4);
+	Monom b(-5.5, -7, -70, 22);
+	Monom c(-10, 5, 6, 7);
+	Polinoms A;
+	A.addLast(a);
+	A.addLast(b);
+	A.addLast(c);
+	Polinoms B;
+	B = A + a;
+	Polinoms C(A);
+	C += a;
+	//B.showList2();
+	//A.showList2();
+	//B.showList2();
+	//cout << (*it1);
+	if (B == C) SUCCEED();
+	else FAIL();
+}
+TEST(Polinoms, test_operator_plus_monom_2) {
+	Monom a(-6.4, 2, 3, 4);
+	Monom b(-5.5, -7, -70, 22);
+	Monom c(-10, 5, 6, 7);
+	Polinoms A;
+	A.addLast(a);
+	A.addLast(b);
+	A.addLast(c);
+	Polinoms B;
+	B = A + a;
+	B += b;
+	B += c;
+	Polinoms C(A);
+	C *= 2;
+	//B.showList2();
+	//A.showList2();
+	//B.showList2();
+	//cout << (*it1);
+	if (B == C) SUCCEED();
+	else FAIL();
+}
+TEST(Polinoms, test_operator_minus_monom_1) {
+	Monom a(-6.4, 2, 3, 4);
+	Monom b(-5.5, -7, -70, 22);
+	Monom c(-10, 5, 6, 7);
+	Polinoms A;
+	A.addLast(a);
+	A.addLast(b);
+	A.addLast(c);
+	Polinoms B;
+	B = A - a;
+	Polinoms C(A);
+	C -= a;
+	//B.showList2();
+	//A.showList2();
+	//B.showList2();
+	//cout << (*it1);
+	if (B == C) SUCCEED();
+	else FAIL();
+}
+TEST(Polinoms, test_operator_minus_monom_2) {
+	Monom a(-6.4, 2, 3, 4);
+	Monom b(-5.5, -7, -70, 22);
+	Monom c(-10, 5, 6, 7);
+	Polinoms A;
+	A.addLast(a);
+	A.addLast(b);
+	A.addLast(c);
+	Polinoms B;
+	B = A - a;
+	B -= b;
+	B += c;
+	B.podobnyi();
+	Polinoms C;
+	C += c;
+	C += c;
+	B.showList2();
+	C.showList2();
+	//B.showList2();
+	//cout << (*it1);
+	if (B == C) SUCCEED();
+	else FAIL();
+}
+TEST(Polinoms, test_operator_multiply_monom_1) {
+	Monom a(-6.4, 2, 3, 4);
+	Monom b(-5.5, -7, -70, 22);
+	Monom c(-10, 5, 6, 7);
+	Polinoms A;
+	A.addLast(a);
+	A.addLast(b);
+	A.addLast(c);
+	Polinoms B;
+	B = A * a;
+	//B.podobnyi();
+	Polinoms C;
+	C.str_to_poly("64x^7y^9z^11+35.2x^-5y^-67z^26+40.96x^4y^6z^8");
+	//B.showList2();
+	//C.showList2();
+	//B.showList2();
+	//cout << (*it1);
+	if (B == C) SUCCEED();
+	else FAIL();
+}
+TEST(Polinoms, test_operator_multiply_monom_2) {
+	Monom a(0, 2, 3, 4);
+	Monom b(-5.5, -7, -70, 22);
+	Monom c(-10, 5, 6, 7);
+	Polinoms A;
+	A.addLast(a);
+	A.addLast(b);
+	A.addLast(c);
+	Polinoms B;
+	B = A * a;
+	B.podobnyi();
+	Polinoms C;
+	C.str_to_poly("0");
+	B.showList2();
+	C.showList2();
+	//B.showList2();
+	//cout << (*it1);
+	if (B == C) SUCCEED();
+	else FAIL();
+}
+TEST(Polinoms, test_operator_multiply_with_equal_monom_1) {
+	Monom a(-6.4, 2, 3, 4);
+	Monom b(-5.5, -7, -70, 22);
+	Monom c(-10, 5, 6, 7);
+	Polinoms A;
+	A.addLast(a);
+	A.addLast(b);
+	A.addLast(c);
+	Polinoms B(A);
+	B *= a;
+	B -= a;
+	//B.podobnyi();
+	Polinoms C;
+	C.str_to_poly("64x^7y^9z^11+35.2x^-5y^-67z^26+40.96x^4y^6z^8");
+	C -= a;
+	//B.showList2();
+	//C.showList2();
+	//B.showList2();
+	//cout << (*it1);
+	if (B == C) SUCCEED();
+	else FAIL();
+}
+TEST(Polinoms, test_operator_multiply_with_equal_monom_2) {
+	Monom a(-6.4, 2, 3, 4);
+	Monom b(-5.5, -7, -70, 22);
+	Monom c(-10, 5, 6, 7);
+	Polinoms A;
+	A.addLast(a);
+	A.addLast(b);
+	A.addLast(c);
+	Polinoms B(A);
+	B *= a;
+	//B.podobnyi();
+	Polinoms C;
+	C.str_to_poly("64x^7y^9z^11+35.2x^-5y^-67z^26+40.96x^4y^6z^8");
+	//B.showList2();
+	//C.showList2();
+	//B.showList2();
+	//cout << (*it1);
+	if (B == C) SUCCEED();
+	else FAIL();
+}
+
+TEST(Polinoms, test_operator_sum_scalar_1) {
+	Monom a(-234.555, 2, 3, 4);
+	Monom b(5100, -7, -70, 22);
+	Monom c(-0.5, 1233, 6, 7);
+	Polinoms A;
+	A.addLast(a);
+	A.addLast(b);
+	A.addLast(c);
+	Polinoms B(A);
+	B += 1000;
+	//B.podobnyi();
+	Polinoms C;
+	C.str_to_poly("1000x^0y^0z^0-0.5x^1233y^6z^7+5100x^-7y^-70z^22-234.555x^2y^3z^4");
+	//B.showList2();
+	C.showList2();
+	//B.showList2();
+	//cout << (*it1);
+	if (B == C) SUCCEED();
+	else FAIL();
+}
+TEST(Polinoms, test_operator_sum_scalar_2) {
+	Monom a(-234.555, 2, 3, 4);
+	Monom b(5100, -7, -70, 22);
+	Monom c(-0.5, 1233, 6, 7);
+	Polinoms A;
+	A.addLast(a);
+	A.addLast(b);
+	A.addLast(c);
+	Polinoms B(A);
+	B = A + 1000;
+	//B.podobnyi();
+	Polinoms C;
+	C.str_to_poly("1000x^0y^0z^0 -0.5x^1233y^6z^7+5100x^-7y^-70z^22 -234.555x^2y^3z^4");
+	//B.showList2();
+	//C.showList2();
+	//B.showList2();
+	//cout << (*it1);
+	if (B == C) SUCCEED();
+	else FAIL();
+}
+TEST(Polinoms, test_operator_minus_scalar_1) {
+	Monom a(-234.555, 2, 3, 4);
+	Monom b(5100, -7, -70, 22);
+	Monom c(-0.5, 1233, 6, 7);
+	Polinoms A;
+	A.addLast(a);
+	A.addLast(b);
+	A.addLast(c);
+	Polinoms B(A);
+	B = A - 1000;
+	//B.podobnyi();
+	Polinoms C;
+	C.str_to_poly("-1000x^0y^0z^0 -0.5x^1233y^6z^7+5100x^-7y^-70z^22 -234.555x^2y^3z^4");
+	//B.showList2();
+	//C.showList2();
+	//B.showList2();
+	//cout << (*it1);
+	if (B == C) SUCCEED();
+	else FAIL();
+}
+TEST(Polinoms, test_operator_minus_scalar_2) {
+	Monom a(-234.555, 2, 3, 4);
+	Monom b(5100, -7, -70, 22);
+	Monom c(-0.5, 1233, 6, 7);
+	Polinoms A;
+	A.addLast(a);
+	A.addLast(b);
+	A.addLast(c);
+	Polinoms B(A);
+	B -= 1000;
+	B += 500;
+	//B.podobnyi();
+	Polinoms C;
+	C.str_to_poly("-500x^0y^0z^0 -0.5x^1233y^6z^7+5100x^-7y^-70z^22 -234.555x^2y^3z^4");
+	//B.showList2();
+	//C.showList2();
+	//B.showList2();
+	//cout << (*it1);
+	if (B == C) SUCCEED();
+	else FAIL();
+}
+TEST(Polinoms, test_operator_multiply_scalar_1) {
+	Monom a(-234.555, 2, 3, 4);
+	Monom b(5100, -7, -70, 22);
+	Monom c(-0.5, 1233, 6, 7);
+	Polinoms A;
+	A.addLast(a);
+	A.addLast(b);
+	A.addLast(c);
+	Polinoms B(A);
+	B *= 100;
+	B *= 0.01;
+	//B.podobnyi();
+	Polinoms C;
+	C.str_to_poly("-0.5x^1233y^6z^7+5100x^-7y^-70z^22 -234.555x^2y^3z^4");
+	//B.showList2();
+	//C.showList2();
+	//B.showList2();
+	//cout << (*it1);
+	if (B == C) SUCCEED();
+	else FAIL();
+}
+TEST(Polinoms, test_operator_multiply_scalar_2) {
+	Monom a(-234.555, 2, 3, 4);
+	Monom b(5100, -7, -70, 22);
+	Monom c(-0.5, 1233, 6, 7);
+	Polinoms A;
+	A.addLast(a);
+	A.addLast(b);
+	A.addLast(c);
+	Polinoms B(A);
+	B *= 100;
+	//B.podobnyi();
+	Polinoms C;
+	C.str_to_poly("-50x^1233y^6z^7+510000x^-7y^-70z^22 -23455.5x^2y^3z^4");
+	//B.showList2();
+	//C.showList2();
+	//B.showList2();
+	//cout << (*it1);
+	if (B == C) SUCCEED();
+	else FAIL();
+}
+TEST(Polinoms, test_operator_multiply_scalar_3) {
+	Monom a(-234.555, 2, 3, 4);
+	Monom b(5100, -7, -70, 22);
+	Monom c(-0.5, 1233, 6, 7);
+	Polinoms A;
+	A.addLast(a);
+	A.addLast(b);
+	A.addLast(c);
+	Polinoms B(A);
+	B *= 0.001;
+	//B.podobnyi();
+	Polinoms C;
+	C.str_to_poly("-0.0005x^1233y^6z^7+5.1x^-7y^-70z^22 -0.234555x^2y^3z^4");
+	//B.showList2();
+	//C.showList2();
+	//B.showList2();
+	//cout << (*it1);
+	if (B == C) SUCCEED();
+	else FAIL();
+}
+TEST(Polinoms, test_operator_multiply_scalar_4) {
+	Monom a(-234.555, 2, 3, 4);
+	Monom b(5100, -7, -70, 22);
+	Monom c(-0.5, 1233, 6, 7);
+	Polinoms A;
+	A.addLast(a);
+	A.addLast(b);
+	A.addLast(c);
+	Polinoms B;
+	B = A* 0.001;
+	//B.podobnyi();
+	Polinoms C;
+	C.str_to_poly("-0.0005x^1233y^6z^7+5.1x^-7y^-70z^22 -0.234555x^2y^3z^4");
+	//B.showList2();
+	//C.showList2();
+	//B.showList2();
+	//cout << (*it1);
+	if (B == C) SUCCEED();
+	else FAIL();
+}
+
+TEST(Polinoms, test_operator_polinoms_with_polinoms_1) {
+	Polinoms A;
+	A.str_to_poly("10x^2");
+	Polinoms B;
+	B.str_to_poly("20x^2");
+	A += B;
+	Polinoms C;
+	C.str_to_poly("30x^2");
+	if (A == C) SUCCEED();
+	else FAIL();
+}
+TEST(Polinoms, test_operator_polinoms_with_polinoms_2) {
+	Polinoms A;
+	A.str_to_poly("10x^2y^2");
+	Polinoms B;
+	B.str_to_poly("20x^2");
+	A += B;
+	Polinoms C;
+	C.str_to_poly("20x^2+10x^2y^2");
+	if (A == C) SUCCEED();
+	else FAIL();
+}
+TEST(Polinoms, test_operator_polinoms_with_polinoms_3) {
+	Polinoms A;
+	A.str_to_poly("10x^2y^2+z^2");
+	Polinoms B;
+	B.str_to_poly("20x^2");
+	A -= B;
+	Polinoms C;
+	C.str_to_poly("-20x^2+10x^2y^2+z^2");
+	if (A == C) SUCCEED();
+	else FAIL();
+}
+TEST(Polinoms, test_operator_polinoms_with_polinoms_4) {
+	Polinoms A;
+	A.str_to_poly("10x^2");
+	Polinoms B;
+	B.str_to_poly("20x^2");
+	A -= B;
+	Polinoms C;
+	C.str_to_poly("-10x^2");
+	if (A == C) SUCCEED();
+	else FAIL();
+}
+TEST(Polinoms, test_operator_polinoms_with_polinoms_5) {
+	Polinoms A;
+	A.str_to_poly("10x^2y^2+z^2");
+	Polinoms B;
+	B.str_to_poly("20x^2");
+	A -= B;
+	Polinoms C;
+	C.str_to_poly("-20x^2+10x^2y^2+z^2");
+	if (A == C) SUCCEED();
+	else FAIL();
+}
+TEST(Polinoms, test_operator_polinoms_with_polinoms_6) {
+	Polinoms A;
+	A.str_to_poly("1000");
+	Polinoms B;
+	B.str_to_poly("20x^2");
+	A -= B;
+	Polinoms C;
+	C.str_to_poly("-20x^2+1000x^0y^0z^0");
+	if (A == C) SUCCEED();
+	else FAIL();
+}
+TEST(Polinoms, test_operator_polinoms_with_polinoms_7) {
+	Polinoms A;
+	A.str_to_poly("1000");
+	Polinoms B;
+	B.str_to_poly("20x^2");
+	A = B+A;
+	Polinoms C;
+	C.str_to_poly("20x^2+1000x^0y^0z^0");
+	if (A == C) SUCCEED();
+	else FAIL();
+}
+TEST(Polinoms, test_operator_polinoms_with_polinoms_8) {
+	Polinoms A;
+	A.str_to_poly("1000");
+	Polinoms B;
+	B.str_to_poly("20x^2");
+	Polinoms D;
+	D.str_to_poly("99z^2-99y^2+99x^2");
+	A = B + D;
+	Polinoms C;
+	C.str_to_poly("99z^2-99y^2+119x^2");
+	if (A == C) SUCCEED();
+	else FAIL();
+}
+TEST(Polinoms, test_operator_polinoms_with_polinoms_9)
+{
+	Polinoms A;
+	A.str_to_poly("1000");
+	Polinoms B;
+	B.str_to_poly("20x^2");
+	Polinoms D;
+	D.str_to_poly("99z^2-99y^2+99x^2");
+	A = D - B;
+	A *= -1;
+	Polinoms C;
+	//A.showList2();
+	C.str_to_poly("-99z^2+99y^2-79x^2"); 
+	if (A == C) SUCCEED();
+	else FAIL();
+}
+///
+/// Переписать код или
+/// вставить защиту от дурака
+/// (прописать в правилах программы, что надо вычитать полиномы с меньшим количеством мономов)
+///
+TEST(Polinoms, test_operator_polinoms_with_polinoms_10)
+{
+	Polinoms A;
+	A.str_to_poly("10");
+	Polinoms B;
+	B.str_to_poly("2x^2");
+	Polinoms D;
+	D.str_to_poly("9z^2-9y^2+9x^2");
+	A = D * B;
+	Polinoms C;
+	//A.showList2();
+	C.str_to_poly("18x^4y^0z^0 -18x^2y^2z^0+18x^2y^0z^2");
+	//C.showList2();
+	if (A == C) SUCCEED();
+	else FAIL();
+}
+TEST(Polinoms, test_operator_polinoms_with_polinoms_11)
+{
+	Polinoms A;
+	A.str_to_poly("10");
+	Polinoms B;
+	B.str_to_poly("2x^2");
+	Polinoms D;
+	D.str_to_poly("9z^2-9y^2+9x^2");
+	D= D * A;
+	Polinoms C;
+	//D.showList2();
+	C.str_to_poly("90x^2y^0z^0 -90x^0y^2z^0+90x^0y^0z^2");
+	//C.showList2();
+	if (C == D) SUCCEED();
+	else FAIL();
+}
+/*
+TEST(Polinoms, test_operator_polinoms_with_polinoms_12)
+{
+	Polinoms A;
+	A.str_to_poly("0");
+	Polinoms B;
+	B.str_to_poly("2x^2");
+	Polinoms D;
+	D.str_to_poly("9z^2-9y^2+9x^2");
+	D = D * A;
+	Polinoms C;
+	D.showList2();
+	C.str_to_poly("0x^2y^0z^0 -0x^0y^2z^0+0x^0y^0z^2");
+	C.showList2();
+	if (C == D) SUCCEED();
+	else FAIL();
+}*///тест ломает всё ибо умножение не работает как задуманно. 

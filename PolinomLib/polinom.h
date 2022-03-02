@@ -60,18 +60,21 @@ public:
 	
 	//Действия с полиномами
 	Polinoms& operator=(const Polinoms& poly);//++
-	Polinoms& operator+=(const Monom& monom);//
-	Polinoms& operator-=(const Monom& monom);//
-	Polinoms  operator+(const Monom& monom) const;//
-	Polinoms  operator-(const Monom& monom) const;//
-	Polinoms  operator*(const Monom& monom) const;//
-	Polinoms& operator*=(const Monom& monom);//
-	Polinoms& operator+=(double scalar);//
-	Polinoms& operator-=(double scalar);//
-	Polinoms operator+(double scalar) const;//
-	Polinoms operator-(double scalar) const;//
-	Polinoms operator*(double scalar) const;//
-	Polinoms& operator*=(double scalar);//
+
+	Polinoms& operator+=(const Monom& monom);//++
+	Polinoms& operator-=(const Monom& monom);//++
+	Polinoms  operator+(const Monom& monom) const;//++
+	Polinoms  operator-(const Monom& monom) const;//++
+	Polinoms  operator*(const Monom& monom) const;//++
+	Polinoms& operator*=(const Monom& monom);//++
+
+	Polinoms& operator+=(double scalar);//++
+	Polinoms& operator-=(double scalar);//++
+	Polinoms operator+(double scalar) const;//++
+	Polinoms operator-(double scalar) const;//++
+	Polinoms operator*(double scalar) const;//++
+	Polinoms& operator*=(double scalar);//++
+
 	Polinoms& operator+=(const Polinoms& poly);//
 	Polinoms& operator-=(const Polinoms& poly);//
 	Polinoms operator+(const Polinoms& poly) const;//

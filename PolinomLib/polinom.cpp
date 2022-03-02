@@ -368,12 +368,15 @@ void Polinoms::addNow(const Monom& monom, Monom& ptr)
 
 void Polinoms::showList() const
 {
-   
+    cout.setf(ios::fixed);  // вывод в фиксированном формате 
+    cout.precision(3);
         if (head) {
             Monom* buf = head;
             while (buf) {
                 if ((buf!= head))
-                std::cout << buf->coef << "x^" << buf->degx << "y^" << buf->degy << "z^" << buf->degz <<" ";
+                    if (buf->coef>0) std::cout <<"+" << buf->coef << "x^" << buf->degx << "y^" << buf->degy << "z^" << buf->degz;
+                    if (buf->coef < 0) std::cout << buf->coef << "x^" << buf->degx << "y^" << buf->degy << "z^" << buf->degz;
+
                 buf = buf->next;
             }
             std::cout <<endl;
@@ -397,14 +400,19 @@ void Polinoms::showList2() const
 }
 void Polinoms::showList3() const
 {
+    cout.setf(ios::fixed);  // вывод в фиксированном формате 
+    cout.precision(3);
     if (head) {
         Monom* buf = head;
         while (buf) {
             if ((buf != head))
-            std::cout << buf->coef << "x^" << buf->degx << "y^" << buf->degy << "z^" << buf->degz << " ";
+                if (buf->coef > 0) std::cout << "+" << buf->coef << "x^" << buf->degx << "y^" << buf->degy << "z^" << buf->degz;
+            if (buf->coef < 0) std::cout << buf->coef << "x^" << buf->degx << "y^" << buf->degy << "z^" << buf->degz;
+
             buf = buf->next;
         }
-
+        if (head->next==NULL) std::cout << 0 << "x^" << 0 << "y^" << 0 << "z^" << 0;
+       // std::cout << endl;
     }
     else std::cout << "List is empty " << endl;
 }
@@ -637,11 +645,18 @@ Polinoms Polinoms::operator-(const Monom& monom) const
 Polinoms Polinoms::operator*(const Monom& monom) const
 {
     Polinoms res;
-
-    if (monom.degx == 0|| monom.degy == 0|| monom.degz == 0 || abs(monom.coef) < 1e-10)
+    /*
+    if ((monom.degx == 0 && monom.degy == 0 && monom.degz == 0))
+    { 
         res *= (monom.coef);
+        return res;
+    }
+    else if (abs(monom.coef) < 1e-10) {
+        res *= 0;
+        return res;
+    }
     else
-    {
+    {*/
         Monom* pThis = head->next;
         Monom* pRes = res.head;
 
@@ -652,14 +667,14 @@ Polinoms Polinoms::operator*(const Monom& monom) const
             pRes = pRes->next;
         }
        
-    }
-
+   // }
+    //res.podobnyi();
     return res;
 }
 
 Polinoms& Polinoms::operator*=(const Monom& monom)
 {
-    if (monom.degx == 0 || monom.degy == 0 || monom.degz == 0 || abs(monom.coef) < 1e-10)
+    if ((monom.degx == 0 && monom.degy == 0 && monom.degz == 0) || abs(monom.coef) < 1e-10)
         operator*=(monom.coef);
     else
     {
@@ -725,35 +740,23 @@ Polinoms Polinoms::operator*(double scalar) const
 
 Polinoms& Polinoms::operator*=(double scalar)
 {
-    head->coef *= scalar;
-    if (abs(scalar) < 1e-10)
-    {
-        Monom* p = head->next;
-        Monom* q = head->next;
-        while (p)
-        {
-            q = p->next;
-            delete p;
-            p = q;
-        }
-        head->next = head;
-    }
-    else
-    {
+    
+    
+    
         Monom* pThis = head->next;
         while (pThis)
         {
             pThis->coef *= scalar;
             pThis = pThis->next;
         }
-    }
+        
     return *this;
 }
 
 Polinoms& Polinoms::operator+=(const Polinoms& poly)
 {
 
-    head->coef += poly.head->coef;
+   // head->coef += poly.head->coef;
     Monom* pThis = head;
     Monom* pPoly = poly.head->next;
 
@@ -896,15 +899,17 @@ Polinoms Polinoms::operator-(const Polinoms& poly) const
 Polinoms Polinoms::operator*(const Polinoms& poly) const
 {
     Polinoms res;
+    Polinoms tmp;
     Monom* pThis = head->next;
-    Monom* pPoly = poly.head->next;
-
+ 
     while (pThis)
     {
-        res += poly * (*pThis);
+        tmp = poly * *pThis;
+        res =res + tmp;
+       // res.showList2();
         pThis = pThis->next;
     }
-
+  //  res.podobnyi();
     return res;
 }
 
@@ -914,7 +919,7 @@ bool Polinoms::operator==(const Polinoms& poly) const
     Monom* pPoly = poly.head;
     do
     {
-        if (*pThis != *pPoly)
+        if ((abs((((pThis->coef)*100)/100)- (((pPoly->coef) * 100) / 100))> (1.0e-10))||(pThis->degx != pPoly->degx)||(pThis->degy != pPoly->degy)|| (pThis->degz != pPoly->degz))
             return false;
         pThis = pThis->next;
         pPoly = pPoly->next;
