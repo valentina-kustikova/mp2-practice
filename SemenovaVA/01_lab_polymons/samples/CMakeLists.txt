@@ -1,19 +1,16 @@
-# Set target name
-set(target ${01_LAB_POLYNOMS_SAMPLE})
+# Get all cpp-files in the current directory
+file(GLOB samples_list RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} *.cpp)
 
-# Get list of header and source files
-FILE(GLOB hdrs "*.h")
-FILE(GLOB srcs "*.cpp")
 
-# Add an executable to be built from the source
-# files listed in the command invocation
-ADD_EXECUTABLE(${target} ${srcs} ${hdrs})
+foreach(sample_filename ${samples_list})
+  # Get file name without extension
+  get_filename_component(sample ${sample_filename} NAME_WE)
 
-# Add a dependency between top-level targets
-ADD_DEPENDENCIES(${target} ${01_LAB_POLYNOMS_LIBRARY})
-
-# Link a target to given libraries
-TARGET_LINK_LIBRARIES(${target} ${01_LAB_POLYNOMS_LIBRARY})
-
-# Specify include directories to use when compiling a target
-TARGET_INCLUDE_DIRECTORIES(${target} PRIVATE ${01_LAB_POLYNOMS_INCLUDE})
+  # Add and configure executable file to be produced
+  add_executable(${sample} ${sample_filename})
+  target_link_libraries(${sample} ${MP2_LIBRARY})
+  set_target_properties(${sample} PROPERTIES
+    OUTPUT_NAME "${sample}"
+    PROJECT_LABEL "${sample}"
+    RUNTIME_OUTPUT_DIRECTORY "../")
+endforeach()
