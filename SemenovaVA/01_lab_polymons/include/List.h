@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include <iostream>
 
 // Звено
@@ -31,13 +31,21 @@ class List
   // Методы 
   void InsertAfter(Node<TData>* N, TData Data);
   void InsertToTail(TData Data);
+  void InsertToHead(const TData& Data);
   void Clean(); 
+  void Delete(Node<TData>* N);
+  void Delete(Node<TData>* start, Node<TData>* finish);
+  void Inverse(); // инвертировать список
+  void Merge(const Node<TData>* start, const List<TData>& l); // добавить список2 после итератора
+  Node<TData>* Search(const TData& d);
+  TData ViewHead() { return head->data; }
+  int GetSize(); // узнать число звеньев в списке
+  //Операции с указателем на текущий элемент
   Node<TData>* GetIT() const { return it; } 
   void SetNext() { it = it->next; }
   void Reset() { it = head->next; } 
   void End() { it = head; }
-  bool IsEnd() const { return it == head; } 
-  void Delete(Node<TData>* N);
+  bool IsEnd() const { return it == head; }
   // Перегрузка операций
   List<TData>& operator=(const List<TData>& L2);
   bool operator==(const List<TData>& L) const;
@@ -88,30 +96,25 @@ List<TData>& List<TData>::operator=(const List<TData>& L2)
 }
 template<class TData>
 bool List<TData>::operator==(const List<TData>& L) const
-{
-	bool flag = true;
-	if (this != &L)
-	{
-		Node<TData>* temp1 = head->next;
-		Node<TData>* temp2 = L.head->next;
-
-		while (temp1 != head && temp2 != L.head && temp1->data == temp2->data)
-		{
-			temp1 = temp1->next;
-			temp2 = temp2->next;
-		}
-		if (temp1 != head || temp2 != L.head)
-			flag = false;
+{ bool flag = true;
+  if (this != &L)
+  {	Node<TData>* temp1 = head->next;
+	Node<TData>* temp2 = L.head->next;
+	while (temp1 != head && temp2 != L.head && temp1->data == temp2->data)
+	{ temp1 = temp1->next;
+	  temp2 = temp2->next;
 	}
+	if (temp1 != head || temp2 != L.head)
+	{ flag = false;}
+  }
 	return flag;
 }
 // Методы 
 template <class TData>
 void List<TData>::InsertAfter(Node<TData>* N, TData Data)
-{
-	Node<TData>* temp = N->next;
-	N->next = new Node<TData>(Data);
-	N->next->next = temp;
+{ Node<TData>* temp = N->next;
+  N->next = new Node<TData>(Data);
+  N->next->next = temp;
 }
 template <class TData>
 void List<TData>::Delete(Node<TData>* N)
@@ -123,14 +126,29 @@ void List<TData>::Delete(Node<TData>* N)
   delete N;
 }
 template <class TData>
+void List<TData>::Delete(Node<TData>* start, Node<TData>* finish)
+{ it = head;
+  while (it->next != start)
+  { SetNext();}
+  while (it->next != finish)
+  {   Delete(it->next);}
+}
+template <class TData>
+void List<TData>::InsertToHead(const TData& d)
+{ Node<TData>* tmp;
+  it = head;
+  while ( it->next != head)
+  {SetNext();}
+  head = new Node(d, head);
+  it->next = head;
+}
+template <class TData>
 void List<TData>::InsertToTail(TData Data)
 { Node<TData>* tmp;
   it = head;
-  while ((it->next->data > Data) && it->next != head)
+  while ( it->next != head)
   {SetNext();}
-  tmp = it->next;
-  it->next = new Node<TData>(Data);
-  it->next->next = tmp;
+  it->next = new Node<TData>(Data, head);
 }
 template <class TData>
 void List<TData>::Clean()
@@ -142,4 +160,46 @@ void List<TData>::Clean()
 	it2 = tmp;
   }
   head->next = head;
+}
+template <class TData>
+int List<TData>::GetSize()
+{ int r;
+  it = head;
+  while ( it->next != head)
+  {SetNext(); r++;}
+  return r;
+}
+template <class TData>
+void List<TData>::Inverse()
+{ Node<TData>* A = NULL;
+  Node<TData>* n1;
+  it = head;
+  while (it->next != head)
+  { n1 = it->next;
+	it->next = A;
+	A = it;
+	it = n1;
+   }
+  head = A;
+}
+template <class TData>
+Node<TData>* List<TData>::Search(const TData& d) 
+{ it = head;
+  while (it->next != head || it->next->data!=d)
+  { SetNext(); r++;}
+  if (it->data == d) { return it; }
+  else { return NULL; }
+}
+template <class TData>
+void List<TData>::Merge(const Node<TData>* start, const List<TData>& l)
+{ l.it = l.head;
+  it = start;
+  Node<TData> tmp;
+  while (l.it->next != l.head)
+  { tmp.data= l.it->data;
+    InsertAfter(it, tmp);
+    SetNext();
+	l.SetNext();
+   }
+	
 }
