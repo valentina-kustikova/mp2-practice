@@ -1323,20 +1323,75 @@ TEST(Polinom, test_operator_polinoms_with_polinoms_11)
 	if (C == D) SUCCEED();
 	else FAIL();
 }
-/*
-TEST(Polinom, test_operator_polinoms_with_polinoms_12)
-{
-	Polinom A;
-	A.str_to_poly("0");
-	Polinom B;
-	B.str_to_poly("2x^2");
-	Polinom D;
-	D.str_to_poly("9z^2-9y^2+9x^2");
-	D = D * A;
-	Polinom C;
-	D.showList2();
-	C.str_to_poly("0x^2y^0z^0 -0x^0y^2z^0+0x^0y^0z^2");
-	C.showList2();
-	if (C == D) SUCCEED();
+
+TEST(Polinom, test_main_test_01) {
+
+	Polinom Q;
+	Q.str_to_poly("3x^5y^2z^5 - 5x^4y^3z^3 + 7x^3y^5z");
+	Polinom P;
+	P.str_to_poly("4x^3y^2z^6 - 6x^2yz^8");
+	Polinom PQ;
+	PQ = Q + P;
+	Polinom Test;
+	Test.str_to_poly("3x^5y^2z^5 - 5x^4y^3z^3 + 7x^3y^5z + 4x^3y^2z^6 - 6x^2yz^8");
+	if (PQ == Test) SUCCEED();
 	else FAIL();
-}*///тест ломает всё ибо умножение не работает как задуманно. 
+}
+
+TEST(Polinom, test_main_test_02) {
+
+	Polinom Q;
+	Q.str_to_poly("3x^5y^2z^5 - 5x^4y^3z^3 + 7x^3y^5z");
+	Polinom P;
+	P.str_to_poly("-3x^5y^2z^5 + 5x^4y^3z^3 - 7x^3y^5z");
+	Polinom PQ;
+	PQ = Q + P;
+	Polinom Test;
+	Test.str_to_poly("0");
+	if (PQ == Test) SUCCEED();
+	else FAIL();
+}
+
+TEST(Polinom, test_main_test_03) {
+
+	Polinom Q;
+	Q.str_to_poly("3x^5y^2z^5 - 5x^4y^3z^3 + 7x^3y^5z");
+	Polinom P;
+	P.str_to_poly("4x^7y^2z^6 - 6x^6yz^8");
+	Polinom PQ;
+	PQ = Q + P;
+	Polinom Test;
+	Test.str_to_poly("3x^5y^2z^5 - 5x^4y^3z^3 + 7x^3y^5z + 4x^7y^2z^6 - 6x^6yz^8");
+	if (PQ == Test) SUCCEED();
+	else FAIL();
+}
+
+TEST(Polinom, test_main_test_04) {
+
+	Polinom Q;
+	Q.str_to_poly("3x^5y^2z^5 - 5x^4y^3z^3 + 7x^3y^5z");
+	Polinom P;
+	P.str_to_poly("4x^5y^2z^5 + 5x^4y^3z^3");
+	Polinom PQ;
+	PQ = Q + P;
+	Polinom Test;
+	Test.str_to_poly("7x^3y^5z+7x^5y^2z^5");
+	if (PQ == Test) SUCCEED();
+	else FAIL();
+}
+
+TEST(Polinom, test_main_test_05) {
+
+	Polinom Q;
+	Q.str_to_poly("3x^5y^2z^5 - 5x^4y^3z^3 + 7x^7y^5z");
+	Polinom P;
+	P.str_to_poly("4x^6y^2z^6 - 6x^2y^3z^8");
+	Polinom PQ;
+	PQ = Q + P;
+	//PQ.showList();
+	Polinom Test;
+	Test.str_to_poly("+3.000x^5y^2z^5-5.000x^4y^3z^3+7.000x^7y^5z^1+4.000x^6y^2z^6-6.000x^2y^3z^8");
+	//Test.showList();
+	if (PQ == Test) SUCCEED();
+	else FAIL();
+}

@@ -38,7 +38,7 @@ int  main()
 	Polinom A;
 	string STR;
 	A.str_to_poly("0.5x^2z^7+20x^4");
-	A.showList2();
+	//A.showList2();
 	Polinom B;
 	B.str_to_poly("0.5x^2z^7");
 	Polinom RES;
