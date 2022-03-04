@@ -1,4 +1,0 @@
-﻿  test.cpp
-C:\Users\ermol\source\repos\Laba4\gtest\test.cpp(76,2): warning C4003: недостаточно аргументов для вызова макроса, подобного функции, "ASSERT_NO_THROW"
-C:\Users\ermol\source\repos\Laba4\gtest\test.cpp(76,2): warning C4003: недостаточно аргументов для вызова макроса, подобного функции, "GTEST_SUPPRESS_UNREACHABLE_CODE_WARNING_BELOW_"
-  gtest.vcxproj -> C:\Users\ermol\source\repos\Laba4\Debug\gtest.exe
