@@ -787,6 +787,7 @@ std::ostream& operator<<(std::ostream& out, const Polinom& polinom)
 
             buf = buf->next;
         }
+        if (polinom.head->next == NULL) out << 0 << "x^" << 0 << "y^" << 0 << "z^" << 0;
         out << endl;
     }
     else out << "List is empty " << endl;
