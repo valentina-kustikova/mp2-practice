@@ -774,3 +774,21 @@ bool Polinom::operator==(const Polinom& poly) const
     return true;
 }
 
+std::ostream& operator<<(std::ostream& out, const Polinom& polinom)
+{
+    cout.setf(ios::fixed);  // вывод в фиксированном формате 
+    cout.precision(3);
+    if (polinom.head) {
+        Node* buf = polinom.head;
+        while (buf) {
+            if ((buf != polinom.head))
+                if (buf->data.coef > 0) out << "+" << buf->data.coef << "x^" << buf->data.degx << "y^" << buf->data.degy << "z^" << buf->data.degz;
+            if (buf->data.coef < 0) out << buf->data.coef << "x^" << buf->data.degx << "y^" << buf->data.degy << "z^" << buf->data.degz;
+
+            buf = buf->next;
+        }
+        out << endl;
+    }
+    else out << "List is empty " << endl;
+    return out;
+}

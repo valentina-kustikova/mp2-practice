@@ -37,6 +37,7 @@ public:
 	Polinom operator-(const Polinom& poly) const;
 	Polinom operator*(const Polinom& poly) const;
 	bool operator==(const Polinom& poly) const;
+	friend std::ostream& operator<< (std::ostream& out, const Polinom& polinom);
 	//Отдельные функции только для полиномов
 	void podobnyi();//++
 	void differents(int t);//++

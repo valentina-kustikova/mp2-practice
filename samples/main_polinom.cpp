@@ -121,17 +121,18 @@ int  main()
 			} while ((d1 > 3) || (d1 < 1));
 			if (d1 == 1) {
 				cout << "Полином А:";
-				A.showList();
+				cout << A;
+				//cout<<A;
 			}
 			if (d1 == 2) {
 				cout << "Полином B:";
-				B.showList();
+				cout<<B;
 			}
 			if (d1 == 3) {
 				if (S1 == 0) cout << "Нечего выводить, сначала посчитайте что-нибудь!" << endl;
 				else {
 					cout << "Полином SAVE:";
-					SAVE.showList();
+					cout<<SAVE;
 				}
 			}
 			break;
@@ -141,14 +142,14 @@ int  main()
 			if (N1 == 0) {
 				cout << "____________________WARNING___________________" << endl;
 				cout << "Полином A задан готовым примером" << endl;
-				cout << "A="; A.showList();
+				cout << "A="; cout<<A;
 				cout << "______________________________________________" << endl;
 
 			}
 			if (N2 == 0) {
 				cout << "____________________WARNING___________________" << endl;
 				cout << "Полином B задан готовым примером" << endl;
-				cout << "B="; B.showList();
+				cout << "B="; cout<<B;
 				cout << "______________________________________________" << endl;
 
 			}
@@ -171,7 +172,7 @@ int  main()
 				RES.podobnyi();
 				S1 = 1;
 				cout << "A+B="; A.showList3(); B.showList3(); cout << "="; RES.showList3(); cout << "\n";
-				//A.showList();
+				//cout<<A;
 			}
 			if (d2 == 2)
 			{
@@ -228,14 +229,14 @@ int  main()
 			if (N1 == 0) {
 				cout << "____________________WARNING___________________" << endl;
 				cout << "Полином A задан готовым примером" << endl;
-				cout << "A="; A.showList();
+				cout << "A="; cout<<A;
 				cout << "______________________________________________" << endl;
 
 			}
 			if (N2 == 0) {
 				cout << "____________________WARNING___________________" << endl;
 				cout << "Полином B задан готовым примером" << endl;
-				cout << "B="; B.showList();
+				cout << "B="; cout<<B;
 				cout << "______________________________________________" << endl;
 
 			}
@@ -254,8 +255,8 @@ int  main()
 			cout << "_____________________________________WARNING___________________________________" << endl;
 			cout << "Учитывайте количество мономов в полиномах" << endl;
 			cout << "Количество мономов в уменьшаемом должно быть >= Количеству мономов в вычитаемом" << endl;
-			cout << "A="; A.showList();
-			cout << "B="; A.showList();
+			cout << "A="; cout<<A;
+			cout << "B="; cout<<A;
 			cout << "_______________________________________________________________________________" << endl;
 			if (d2 == 1)
 			{
@@ -265,7 +266,7 @@ int  main()
 				S1 = 1;
 
 				cout << "A-B="; A.showList3(); cout << "-("; B.showList3(); cout << ")="; RES.showList3(); cout << "\n";
-				//A.showList();
+				//cout<<A;
 			}
 			if (d2 == 2)
 			{
@@ -275,7 +276,7 @@ int  main()
 				S1 = 1;
 
 				cout << "B-A="; B.showList3(); cout << "-("; A.showList3(); cout << ")="; RES.showList3(); cout << "\n";
-				//A.showList();
+				//cout<<A;
 			}
 			if (d2 == 3)
 			{
@@ -332,14 +333,14 @@ int  main()
 			if (N1 == 0) {
 				cout << "____________________WARNING___________________" << endl;
 				cout << "Полином A задан готовым примером" << endl;
-				cout << "A="; A.showList();
+				cout << "A="; cout<<A;
 				cout << "______________________________________________" << endl;
 
 			}
 			if (N2 == 0) {
 				cout << "____________________WARNING___________________" << endl;
 				cout << "Полином B задан готовым примером" << endl;
-				cout << "B="; B.showList();
+				cout << "B="; cout<<B;
 				cout << "______________________________________________" << endl;
 
 			}
@@ -363,7 +364,7 @@ int  main()
 				S1 = 1;
 
 				cout << "A*B="; A.showList3(); cout << "*("; B.showList3(); cout << ")="; RES.showList3(); cout << "\n";
-				//A.showList();
+				//cout<<A;
 			}
 			if (d2 == 2)
 			{
