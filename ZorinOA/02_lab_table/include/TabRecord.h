@@ -6,50 +6,49 @@ class TabRecord
 {
 protected:
 	TKey key;
-	TData* p_value;
+    TData data;
 public:
-	TabRecord()
-		:p_value(nullptr) {}
-	TabRecord(TKey _key, TData* _value)
-		:key(_key), p_value(_value) {}
+	TabRecord() {}
+    TabRecord(TKey _key, TData _data)
+        :key(_key), data(_data) {}
 	~TabRecord() {}
 	TabRecord& operator=(const TabRecord& tr)
 	{
 		key = tr.key;
-		p_value = tr.p_value;
+        data = tr.data;
 		return *this;
 	}
 	void SetKey(TKey _key)
 	{
 		key = _key;
 	}
-	TKey GetKey()
+    TKey GetKey() const
 	{
 		return key;
 	}
-	void SetValuePtr(TData* ptr)
+    void SetData(TData _data)
 	{
-		p_value = ptr;
+        data = _data;
 	}
-	TData* GetValuePtr()
+    TData& GetData()
 	{
-		return p_value;
+        return data;
 	}
-	bool operator==(const TabRecord& tr)
+    bool operator==(const TabRecord& tr) const
 	{
 		return key == tr.key;
 	}
-	bool operator<(const TabRecord& tr)
+    bool operator<(const TabRecord& tr) const
 	{
 		return key < tr.key;
 	}
-	bool operator>(const TabRecord& tr)
+    bool operator>(const TabRecord& tr) const
 	{
 		return key > tr.key;
 	}
-	void Print()
+    void Print() const
 	{
-		std::cout << key << " - " << *p_value << std::endl;
+        std::cout << key << " - " << data << std::endl;
 	}
 };
 

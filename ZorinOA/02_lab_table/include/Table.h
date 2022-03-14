@@ -22,8 +22,8 @@ public:
 	virtual bool isFull() const = 0;
 	//virtual TKey GetKey()const = 0;
 	//virtual TData* GetValuePtr() const = 0;
-	virtual TData* Find(TKey k) = 0;
-	virtual void Insert(TKey k, TData* ptr) = 0;
-	virtual void Delete(TKey k) = 0;
+    virtual TData* Find(const TKey& k) = 0;
+    virtual void Insert(const TKey& k, const TData& d) = 0;
+    virtual void Delete(const TKey& k) = 0;
 };
 

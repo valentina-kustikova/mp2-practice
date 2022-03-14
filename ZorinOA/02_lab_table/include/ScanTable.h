@@ -5,25 +5,25 @@ template <class TKey, class TData>
 class ScanTable : public ArrayTable<TKey, TData>
 {
 public:
-    ScanTable(int size = 25) : ArrayTable<TKey, TData>(size) {}
-	virtual TData* Find(TKey k) 
+    ScanTable(int size = MAX_SIZE) : ArrayTable<TKey, TData>(size) {}
+    virtual TData* Find(const TKey& k)
 	{
 		for (int i = 0; i < this->DataCount; i++)
 		{
 			if (this->Recs[i].GetKey() == k)
-				return this->Recs[i].GetValuePtr();
+                return &(this->Recs[i].GetData());
 		}
-		return nullptr;
+        return nullptr;
 	}
-	virtual void Insert(TKey k, TData* ptr)
+    virtual void Insert(const TKey& k, const TData& d)
 	{
         if (this->DataCount < this->TabSize)
 		{
-			this->Recs[this->DataCount] = TabRecord<TKey, TData>(k, ptr);
+            this->Recs[this->DataCount] = TabRecord<TKey, TData>(k, d);
 			this->DataCount++;
 		}
 	}
-	virtual void Delete(TKey k)
+    virtual void Delete(const TKey& k)
 	{
 		for (int i = 0; i < this->DataCount; i++)
 		{

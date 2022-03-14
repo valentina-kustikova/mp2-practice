@@ -2,6 +2,8 @@
 #include "Table.h"
 #include "TabRecord.h"
 
+#define MAX_SIZE 25
+
 template<class TKey, class TData>
 class ArrayTable : public Table<TKey, TData>
 {
@@ -9,10 +11,15 @@ protected:
 	TabRecord<TKey, TData>* Recs;
 	int TabSize;
 public:
-	ArrayTable(int size = 25)
+	ArrayTable(int size = MAX_SIZE)
 	{
-		Recs = new TabRecord<TKey, TData>[size];
-		TabSize = size;
+		if (size > 0 && size < MAX_SIZE)
+		{
+			Recs = new TabRecord<TKey, TData>[size];
+			TabSize = size;
+		}
+		else
+			throw "Wrong size!!!";
 	}
 	virtual ~ArrayTable()
 	{
@@ -56,8 +63,8 @@ public:
 	{
 		return TabSize;
 	}
-	virtual TData* Find(TKey k) = 0;
-	virtual void Insert(TKey k, TData* ptr) = 0;
-	virtual void Delete(TKey k) = 0;
+    virtual TData* Find(const TKey& k) = 0;
+    virtual void Insert(const TKey& k, const TData& d) = 0;
+    virtual void Delete(const TKey& k) = 0;
 	
 };
