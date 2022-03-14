@@ -44,7 +44,7 @@ List::~List()
 
 List::List()
 {
-    //head=NULL;
+    
     head = new Node(999.0, 999, 999, 999, nullptr);
 
 }
@@ -52,7 +52,7 @@ List::List()
 List::List(const List& poly)
 {
     head = new Node(999.0, 999, 999, 999, nullptr);
-    //head = new Node(poly.head->data.coef, poly.head->data.degx, poly.head->data.degy, poly.head->data.degz);
+    
 
     Node* p = head;
     Node* q = poly.head->next;
@@ -88,7 +88,7 @@ List& List::operator=(const List& poly)
             p = p->next;
             q = q->next;
         }
-        // p->next = head;
+        
     }
     return *this;
 }
@@ -117,7 +117,7 @@ void List::addFirst(const Node& monom)
             head->next = buf;
         }
     }
-} //ÈÇÌÅÍÈÒÜ ×ÒÎÁ ÑÊËÀÄÛÂÀË ÊÎÝÔÛ ++
+} 
 
 void List::addLast(const Node& monom)
 {
@@ -161,7 +161,7 @@ void List::addLast(const Node& monom)
 
         }
     }
-} //ÈÇÌÅÍÈÒÜ ×ÒÎÁ ÑÊËÀÄÛÂÀË ÊÎÝÔÛ++
+} 
 
 void List::addNow(const Node& monom, Node& ptr)
 {
@@ -180,17 +180,8 @@ void List::delFirst()
     Node* buf1 = head->next;
     buf2->next = buf1->next;
     delete buf1;
-    /*    while (buf2) {
-            buf1 = buf2;
-            buf2 = buf2->next;
-            if (buf2->next == NULL) {
-                delete buf2;
-                buf1->next = NULL;
-                break;
-            }
-        }
-        */
-} //ÈÇÌÅÍÈÒÜ ×ÒÎÁ ÍÅ ÒÐÎÃÀË ÃÎËÎÂÓ++
+   
+} 
 
 void List::delLast()
 {
@@ -203,7 +194,7 @@ void List::delLast()
         }
         buf = buf->next;
     }
-} //ÈÇÌÅÍÈÒÜ ×ÒÎÁ ÍÅ ÒÐÎÃÀË ÃÎËÎÂÓ++
+} 
 
 void List::delElem(Node& ptr)
 {
@@ -212,13 +203,13 @@ void List::delElem(Node& ptr)
     while (buf) {
         if (*buf->next == ptr) {
             buf->next = ptr.next;
-            //ptr=*buf2.next;
+           
             break;
         }
         buf = buf->next;
 
     }
-    //ptr.next = buf;
+    
 }
 
 List::Iterator List::begin()

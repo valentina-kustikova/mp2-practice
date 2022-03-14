@@ -136,7 +136,7 @@ void Polinom::parser(const std::string& input)
                     state = 3;
                 else if (std::isdigit(current) || current == '.') {
                     state = 5;
-                    //lexema.append(1, current);
+                    
                 }
                 else
                     throw "Wrong symbol";
@@ -257,7 +257,7 @@ void Polinom::converter()
 
 void Polinom::showList() const
 {
-    cout.setf(ios::fixed);  // вывод в фиксированном формате 
+    cout.setf(ios::fixed);  // РІС‹РІРѕРґ РІ С„РёРєСЃРёСЂРѕРІР°РЅРЅРѕРј С„РѕСЂРјР°С‚Рµ 
     cout.precision(3);
     if (head) {
         Node* buf = head;
@@ -289,7 +289,7 @@ void Polinom::showList2() const
 }
 void Polinom::showList3() const
 {
-    cout.setf(ios::fixed);  // вывод в фиксированном формате 
+    cout.setf(ios::fixed);  // РІС‹РІРѕРґ РІ С„РёРєСЃРёСЂРѕРІР°РЅРЅРѕРј С„РѕСЂРјР°С‚Рµ 
     cout.precision(3);
     if (head) {
         Node* buf = head;
@@ -488,18 +488,7 @@ Polinom Polinom::operator-(const Node& monom) const
 Polinom Polinom::operator*(const Node& monom) const
 {
     Polinom res;
-    /*
-    if ((monom.data.degx == 0 && monom.data.degy == 0 && monom.data.degz == 0))
-    {
-        res *= (monom.data.coef);
-        return res;
-    }
-    else if (abs(monom.data.coef) < 1e-10) {
-        res *= 0;
-        return res;
-    }
-    else
-    {*/
+    
     Node* pThis = head->next;
     Node* pRes = res.head;
 
@@ -510,8 +499,7 @@ Polinom Polinom::operator*(const Node& monom) const
         pRes = pRes->next;
     }
 
-    // }
-     //res.podobnyi();
+    
     return res;
 }
 
@@ -599,7 +587,7 @@ Polinom& Polinom::operator*=(double scalar)
 Polinom& Polinom::operator+=(const Polinom& poly)
 {
 
-    // head->data.coef += poly.head->data.coef;
+   
     Node* pThis = head;
     Node* pPoly = poly.head->next;
 
@@ -681,8 +669,7 @@ Polinom& Polinom::operator-=(const Polinom& poly)
         }
         else
         {
-            //Node* pThis = head;
-           // Node* pPoly = poly.head->next;
+            
             while ((pThis))
             {
                 while ((pPoly))
@@ -749,10 +736,10 @@ Polinom Polinom::operator*(const Polinom& poly) const
     {
         tmp = poly * *pThis;
         res = res + tmp;
-        // res.showList2();
+       
         pThis = pThis->next;
     }
-    //  res.podobnyi();
+    
     return res;
 }
 
@@ -776,7 +763,7 @@ bool Polinom::operator==(const Polinom& poly) const
 
 std::ostream& operator<<(std::ostream& out, const Polinom& polinom)
 {
-    cout.setf(ios::fixed);  // вывод в фиксированном формате 
+    cout.setf(ios::fixed);  // РІС‹РІРѕРґ РІ С„РёРєСЃРёСЂРѕРІР°РЅРЅРѕРј С„РѕСЂРјР°С‚Рµ 
     cout.precision(3);
     if (polinom.head) {
         Node* buf = polinom.head;
