@@ -30,3 +30,10 @@
 *.exe
 *.out
 *.app
+
+# mein
+\out
+\sln
+\build-02_lab_table-Desktop_Qt_6_2_3_MinGW_64_bit-Debug
+
+
