@@ -1,4 +1,5 @@
 #pragma once
+#define MAX_SIZE 25
 
 template <class TKey, class TData>
 class Table
@@ -20,8 +21,6 @@ public:
 		return DataCount == 0;
 	}
 	virtual bool isFull() const = 0;
-	//virtual TKey GetKey()const = 0;
-	//virtual TData* GetValuePtr() const = 0;
     virtual TData* Find(const TKey& k) = 0;
     virtual void Insert(const TKey& k, const TData& d) = 0;
     virtual void Delete(const TKey& k) = 0;

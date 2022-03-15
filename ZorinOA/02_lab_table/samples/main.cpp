@@ -5,32 +5,25 @@
 
 using namespace std;
 
+
+
+unsigned long HashFunc(const string& s, unsigned long p)
+{
+	unsigned long Res = s[0];
+	for (int i = 1; i < s.length(); i++)
+	{
+		Res += s[i] * p;
+		p *= p;
+	}
+	return Res;
+}
+
 int main()
 {
-	ScanTable<string, int> T(5);
-    int s = 6;
-    int f = 5;
+	unsigned long tmp = HashFunc("5x^2y^7 + 4x^3 + 5y", 17);
+	tmp %= 25;
+	cout << tmp << endl;
 
-
-	T.Insert("six", s);
-	T.Insert("six", s);
-	T.Insert("six", s);
-	T.Insert("six", s);
-	T.Insert("six", s);
-    T.Delete("six");
-    T.Insert("five", f);
-    int* tmp = T.Find("five");
-
-    cout << *tmp << endl;
-
-    SortTable<string, int> S(5);
-    S.Insert("b", 2);
-    S.Insert("z", 10);
-    S.Insert("e", 5);
-    S.Insert("f", 9);
-    S.Delete("b");
-    tmp = S.Find("f");
-    cout << *tmp << endl;
 
 	return 0;
 }

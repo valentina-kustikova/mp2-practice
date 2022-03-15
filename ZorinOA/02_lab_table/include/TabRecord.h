@@ -8,9 +8,18 @@ protected:
 	TKey key;
     TData data;
 public:
-	TabRecord() {}
+	TabRecord() 
+	{
+		key = TKey();
+		data = TData();
+	}
     TabRecord(TKey _key, TData _data)
         :key(_key), data(_data) {}
+	TabRecord(TKey _key)
+		:key(_key) 
+	{
+		data = TData();
+	}
 	~TabRecord() {}
 	TabRecord& operator=(const TabRecord& tr)
 	{

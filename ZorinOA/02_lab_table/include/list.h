@@ -150,4 +150,15 @@ public:
 
 		head = p;
 	}
+	Node<TData>* Search(const TData& d)
+	{
+		Node<TData>* p = head;
+		while (p != nullptr)
+		{
+			if (p->data == d)
+				return p;
+			p = p->next;
+		}
+		return nullptr;
+	}
 };

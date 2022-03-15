@@ -2,8 +2,6 @@
 #include "Table.h"
 #include "TabRecord.h"
 
-#define MAX_SIZE 25
-
 template<class TKey, class TData>
 class ArrayTable : public Table<TKey, TData>
 {
