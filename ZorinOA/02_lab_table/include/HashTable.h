@@ -1,38 +1,30 @@
 #pragma once
+#include <string>
+#include <functional>
 #include "Table.h"
 #include "TabRecord.h"
 #include "list.h"
 
 template <class TKey, class TData>
-class HashTable : public Table<TKey, TData>
+class ListHashTable : public Table<TKey, TData>
 {
 protected:
 	List<TabRecord<TKey, TData>>* ListsRecs;
 	int TabSize;
-	virtual unsigned long HashFunc(const TKey& k)
-	{
-		unsigned long Res = k[0];
-		unsigned long p = 17;
-		for (int i = 1; i < k.size(); i++)
-		{
-			Res += k[i] * p;
-			p *= p;
-		}
-		return Res;
-	}
+	virtual unsigned long HashFunc(const TKey& k) = 0;
 public:
-	HashTable(int size = MAX_SIZE)
+	ListHashTable(int size = MAX_SIZE)
 	{
 		if (size <= 0 || size > MAX_SIZE)
 			throw "Wrong size!!";
 		TabSize = size;
 		ListsRecs = new List<TabRecord<TKey, TData>>[TabSize];
 	}
-	virtual ~HashTable()
+	virtual ~ListHashTable()
 	{
 		delete[] ListsRecs;
 	}
-	HashTable(const HashTable& ht)
+	ListHashTable(const ListHashTable& ht)
 	{
 		TabSize = ht.TabSize;
 		ListsRecs = new List<TabRecord<TKey, TData>>[TabSize];
@@ -41,7 +33,7 @@ public:
 			ListsRecs[i] = ht.ListsRecs[i];
 		}
 	}
-	HashTable& operator=(const HashTable& ht)
+	ListHashTable& operator=(const ListHashTable& ht)
 	{
 		if (this != &ht)
 		{
@@ -90,4 +82,47 @@ public:
 			DataCount--;
 		}
 	}
+	
+	friend std::ostream& operator<<(std::ostream& os, const ListHashTable& ht)
+	{
+		for (int i = 0; i < ht.TabSize; i++)
+		{
+			if (!(ht.ListsRecs[i].isEmpty()))
+				os << ht.ListsRecs[i] << endl;
+		}
+		return os;
+	}
+};
+
+template <class TKey, class TData>
+class HashTable : public ListHashTable<TKey, TData>
+{
+protected:
+	virtual unsigned long HashFunc(const TKey& k) override
+	{
+		return std::hash<TKey>{}(k);
+	}
+public:
+	HashTable(int size = MAX_SIZE)
+		: ListHashTable(size) {}
+};
+
+template<class TData>
+class HashTable<std::string, TData> : public ListHashTable<std::string, TData>
+{
+protected:
+	virtual unsigned long HashFunc(const std::string& k) override
+	{
+		unsigned long Res = k[0];
+		unsigned long p = 17;
+		for (int i = 1; i < k.length(); i++)
+		{
+			Res += k[i] * p;
+			p *= p;
+		}
+		return Res;
+	}
+public:
+	HashTable(int size = MAX_SIZE)
+		: ListHashTable(size) {}
 };

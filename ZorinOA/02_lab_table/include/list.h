@@ -22,6 +22,7 @@ struct Node
 template <class TData>
 class List
 {
+protected:
 	Node<TData>* head;
 public:
 	List()
@@ -121,6 +122,7 @@ public:
 		{
 			head = head->next;
 			delete prev;
+			return;
 		}
 
 		while (prev->next != nullptr)
@@ -160,5 +162,20 @@ public:
 			p = p->next;
 		}
 		return nullptr;
+	}
+
+	friend std::ostream& operator<<(std::ostream& os, const List& l)
+	{
+		if (!l.isEmpty())
+		{
+			os << l.head->data;
+			Node<TData>* p = l.head->next;
+			while (p != nullptr)
+			{
+				os << " - " << p->data;
+				p = p->next;
+			}
+		}
+		return os;
 	}
 };

@@ -55,9 +55,11 @@ public:
 	{
 		return key > tr.key;
 	}
-    void Print() const
+
+	friend std::ostream& operator<<(std::ostream& os, const TabRecord& tr)
 	{
-        std::cout << key << " - " << data << std::endl;
+		os << "|\t" << tr.key << "\t:\t " << tr.data << "\t|";
+		return os;
 	}
 };
 
