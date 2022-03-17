@@ -1,0 +1,4 @@
+﻿  polinom.cpp
+C:\Game\Proga\mp2-practice\ShipilovAY\01_lab_polymons\include\list.h(1,13): warning C4081: требуется "newline"; обнаружен ";"
+C:\Game\Proga\mp2-practice\ShipilovAY\01_lab_polymons\include\node.h(1,13): warning C4081: требуется "newline"; обнаружен ";"
+  polynoms.vcxproj -> C:\Game\Proga\mp2-practice\ShipilovAY\01_lab_polymons\sln\lib\Debug\polynoms.lib

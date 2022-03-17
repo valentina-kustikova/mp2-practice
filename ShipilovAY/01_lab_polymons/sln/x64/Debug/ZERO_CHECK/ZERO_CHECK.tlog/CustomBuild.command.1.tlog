@@ -1,0 +1,10 @@
+^C:\GAME\PROGA\MP2-PRACTICE\SHIPILOVAY\01_LAB_POLYMONS\SLN\CMAKEFILES\F650BCB0F6AA4EAC11E8482B2A2A84C0\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Game/Proga/mp2-practice/ShipilovAY/01_lab_polymons -BC:/Game/Proga/mp2-practice/ShipilovAY/01_lab_polymons/sln --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file C:/Game/Proga/mp2-practice/ShipilovAY/01_lab_polymons/sln/polynoms.sln
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

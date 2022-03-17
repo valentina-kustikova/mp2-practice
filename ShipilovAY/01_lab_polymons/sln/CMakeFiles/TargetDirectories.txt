@@ -1,0 +1,6 @@
+C:/Game/Proga/mp2-practice/ShipilovAY/01_lab_polymons/sln/CMakeFiles/ALL_BUILD.dir
+C:/Game/Proga/mp2-practice/ShipilovAY/01_lab_polymons/sln/CMakeFiles/ZERO_CHECK.dir
+C:/Game/Proga/mp2-practice/ShipilovAY/01_lab_polymons/sln/gtest/CMakeFiles/gtest.dir
+C:/Game/Proga/mp2-practice/ShipilovAY/01_lab_polymons/sln/src/CMakeFiles/polynoms.dir
+C:/Game/Proga/mp2-practice/ShipilovAY/01_lab_polymons/sln/tests/CMakeFiles/polynoms_test.dir
+C:/Game/Proga/mp2-practice/ShipilovAY/01_lab_polymons/sln/samples/CMakeFiles/polynoms_sample.dir
