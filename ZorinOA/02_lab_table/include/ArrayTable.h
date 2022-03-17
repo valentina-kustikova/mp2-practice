@@ -64,5 +64,12 @@ public:
     virtual TData* Find(const TKey& k) = 0;
     virtual void Insert(const TKey& k, const TData& d) = 0;
     virtual void Delete(const TKey& k) = 0;
-	
+	friend std::ostream& operator<<(std::ostream& os, const ArrayTable& at)
+	{
+		for (int i = 0; i < at.DataCount; i++)
+		{
+			os << at.Recs[i] << std::endl;
+		}
+		return os;
+	}
 };

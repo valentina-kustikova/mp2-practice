@@ -41,7 +41,35 @@ struct Monom
 	}
 	friend std::ostream& operator<<(std::ostream& os, const Monom& m)
 	{
-		os << m.cf << "x^" << m.deg / 100 << "y^" << (m.deg % 100) / 10 << "z^" << m.deg % 10 << std::endl;
+		if (std::abs(m.cf) > 1e-10)
+		{
+			//std::cout.setf(std::ios::fixed); 
+			//std::cout.precision(3);
+			int deg_x = m.deg / 100;
+			int deg_y = m.deg % 100 / 10;
+			int deg_z = m.deg % 10;
+
+			if (m.cf > 0)
+				os << "+ " << m.cf;
+			else
+				os << "- " << -m.cf;
+
+			if (deg_x != 0)
+				if (deg_x == 1)
+					os << "x";
+				else
+					os << "x^" << deg_x;
+			if (deg_y != 0)
+				if (deg_y == 1)
+					os << "y";
+				else
+					os << "y^" << deg_y;
+			if (deg_z != 0)
+				if (deg_z == 1)
+					os << "z";
+				else
+					os << "z^" << deg_z;
+		}
 		return os;
 	}
 };

@@ -18,6 +18,22 @@ bool check_err_add_deg(int deg1, int deg2)
 	return false;
 }
 
+Polinom::Polinom()
+	:MonomList()
+{
+
+}
+
+Polinom::Polinom(const std::string& input)
+	:MonomList()
+{
+	parser(input);
+	if (isCorrect())
+		converter();
+	else
+		throw "Error!";
+}
+
 Polinom& Polinom::operator+=(const Monom& monom)
 {
 	Insert(monom);
@@ -426,14 +442,14 @@ bool Polinom::operator==(const Polinom& poly) const
 	return true;
 }
 
-void Polinom::str_to_poly(const std::string& input)
-{
-	parser(input);
-	if (isCorrect())
-		converter();
-	else
-        throw "Error!";
-}
+//void Polinom::str_to_poly(const std::string& input)
+//{
+//	parser(input);
+//	if (isCorrect())
+//		converter();
+//	else
+//        throw "Error!";
+//}
 
 void Polinom::parser(const std::string& input)
 {
@@ -683,4 +699,17 @@ void Polinom::Print() const
 	}
 	std::cout << Tail->cf;
 	std::cout << std::endl;
+}
+
+std::ostream& operator<<(std::ostream& os, const Polinom& poly)
+{
+	Monom* p = poly.Tail->next;
+
+	while (p != poly.Tail)
+	{
+		os << *p << " ";
+		p = p->next;
+	}
+	os << *poly.Tail;
+	return os;
 }

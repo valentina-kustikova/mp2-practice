@@ -88,7 +88,7 @@ public:
 		for (int i = 0; i < ht.TabSize; i++)
 		{
 			if (!(ht.ListsRecs[i].isEmpty()))
-				os << ht.ListsRecs[i] << endl;
+				os << ht.ListsRecs[i] << std::endl;
 		}
 		return os;
 	}

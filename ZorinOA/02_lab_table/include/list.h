@@ -163,6 +163,21 @@ public:
 		}
 		return nullptr;
 	}
+	void Clear()
+	{
+		if (!isEmpty())
+		{
+			Node<TData>* p;
+			while (head->next != nullptr)
+			{
+				p = head->next;
+				head->next = p->next;
+				delete p;
+			}
+			delete head;
+			head = nullptr;
+		}
+	}
 
 	friend std::ostream& operator<<(std::ostream& os, const List& l)
 	{

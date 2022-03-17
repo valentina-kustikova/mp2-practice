@@ -46,3 +46,12 @@ TEST(List, delete_correct)
 	L.Delete('b');
 	EXPECT_EQ(nullptr, L.Search('b'));
 }
+
+TEST(List, can_clear)
+{
+	List<char> L;
+	L.InsertToHead('a');
+	L.InsertToHead('b');
+	L.InsertToHead('c');
+	ASSERT_NO_THROW(L.Clear());
+}

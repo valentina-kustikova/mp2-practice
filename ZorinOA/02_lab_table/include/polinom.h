@@ -4,6 +4,7 @@
 // Умножение полиномов
 #pragma once
 #include "monom.h"
+#include <iostream>
 #include <vector>
 #include <string>
 
@@ -19,6 +20,8 @@ class Polinom :
 	void converter();
 
 public:
+	Polinom();
+	Polinom(const std::string& input);
 	Polinom& operator+=(const Monom& monom);
 	Polinom& operator-=(const Monom& monom);
 	Polinom operator+(const Monom& monom) const;
@@ -38,6 +41,7 @@ public:
 	Polinom operator*(const Polinom& poly) const;
 	double operator()(double x, double y, double z) const;
 	bool operator==(const Polinom& poly) const;
-	void str_to_poly(const std::string& _input);
+	//void str_to_poly(const std::string& input);
 	void Print() const;
+	friend std::ostream& operator<<(std::ostream& os, const Polinom& poly);
 };

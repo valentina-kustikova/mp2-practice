@@ -18,7 +18,8 @@ TEST(Monom, cant_create_Monom_with_negative_deg)
 	ASSERT_ANY_THROW(Monom m(5, -111));
 }
 
-TEST(MonomList, can_create_MonomList) {
+TEST(MonomList, can_create_MonomList) 
+{
 	EXPECT_NO_THROW(MonomList M);
 }
 
@@ -68,11 +69,9 @@ TEST(MonomList, assigment_new_memory) {
 
 TEST(Polinom, add_less_deg_monom)
 {
-	Polinom A, B;
+	Polinom A("x^2 + 1"), B("x^2 + 5x + 1");;
 	Monom m(5, 100);
 
-	A.str_to_poly("x^2 + 1");
-	B.str_to_poly("x^2 + 5x + 1");
 	A += m;
 
 	EXPECT_EQ(B, A);
@@ -80,11 +79,9 @@ TEST(Polinom, add_less_deg_monom)
 
 TEST(Polinom, add_gr_deg_monom)
 {
-	Polinom A, B;
+	Polinom A("5x + 1"), B("x^2 + 5x + 1");
 	Monom m(1, 200);
 
-	A.str_to_poly("5x + 1");
-	B.str_to_poly("x^2 + 5x + 1");
 	A += m;
 
 	EXPECT_EQ(B, A);
@@ -92,11 +89,9 @@ TEST(Polinom, add_gr_deg_monom)
 
 TEST(Polinom, add_eq_deg_monom)
 {
-	Polinom A, B;
+	Polinom A("x^2 + 5x + 1"), B("2x^2 + 5x + 1");
 	Monom m(1, 200);
 
-	A.str_to_poly("x^2 + 5x + 1");
-	B.str_to_poly("2x^2 + 5x + 1");
 	A += m;
 
 	EXPECT_EQ(B, A);
@@ -104,11 +99,9 @@ TEST(Polinom, add_eq_deg_monom)
 
 TEST(Polinom, sub_less_deg_monom)
 {
-	Polinom A, B;
+	Polinom A("x^2 + 1"), B("x^2 - 5x + 1");
 	Monom m(5, 100);
 
-	A.str_to_poly("x^2 + 1");
-	B.str_to_poly("x^2 - 5x + 1");
 	A -= m;
 
 	EXPECT_EQ(B, A);
@@ -116,11 +109,9 @@ TEST(Polinom, sub_less_deg_monom)
 
 TEST(Polinom, sub_gr_deg_monom)
 {
-	Polinom A, B;
+	Polinom A("5x + 1"), B("-x^2 + 5x + 1");
 	Monom m(1, 200);
 
-	A.str_to_poly("5x + 1");
-	B.str_to_poly("-x^2 + 5x + 1");
 	A -= m;
 
 	EXPECT_EQ(B, A);
@@ -128,11 +119,9 @@ TEST(Polinom, sub_gr_deg_monom)
 
 TEST(Polinom, sub_eq_deg_monom)
 {
-	Polinom A, B;
+	Polinom A("x^2 + 5x + 1"), B("5x + 1");
 	Monom m(1, 200);
 
-	A.str_to_poly("x^2 + 5x + 1");
-	B.str_to_poly("5x + 1");
 	A -= m;
 
 	EXPECT_EQ(B, A);
@@ -140,11 +129,9 @@ TEST(Polinom, sub_eq_deg_monom)
 
 TEST(Polinom, mult_zero_cf_monom)
 {
-	Polinom A, B;
+	Polinom A("x^3 + y^5 - 10z + 1"), B("0");
 	Monom m = 0;
 
-	A.str_to_poly("x^3 + y^5 - 10z + 1");
-	B.str_to_poly("0");
 	A *= m;
 
 	EXPECT_EQ(B, A);
@@ -152,21 +139,17 @@ TEST(Polinom, mult_zero_cf_monom)
 
 TEST(Polinom, throw_mult_big_digree_monom)
 {
-	Polinom A;
+	Polinom A("x^5+5");
 	Monom m(5, 555);
-
-	A.str_to_poly("x^5+5");
 
 	ASSERT_ANY_THROW(A * m);
 }
 
 TEST(Polinom, mult_monom)
 {
-	Polinom A, B;
+	Polinom A("x^5 - 5y^3 + 1.5z^5 + 1"), B("4x^6y^2z^3 - 20x^1y^5z^3 + 6x^1y^2z^8 + 4x^1y^2z^3");
 	Monom m(4, 123);
 
-	A.str_to_poly("x^5 - 5y^3 + 1.5z^5 + 1");
-	B.str_to_poly("4x^6y^2z^3 - 20x^1y^5z^3 + 6x^1y^2z^8 + 4x^1y^2z^3");
 	A = A * m;
 
 	EXPECT_EQ(B, A);
@@ -174,9 +157,7 @@ TEST(Polinom, mult_monom)
 
 TEST(Polinom, add_scalar)
 {
-	Polinom A, B;
-	A.str_to_poly("x^2 + 1");
-	B.str_to_poly("x^2 + 6.1");
+	Polinom A("x^2 + 1"), B("x^2 + 6.1");
 
 	A += 5.1;
 
@@ -185,9 +166,7 @@ TEST(Polinom, add_scalar)
 
 TEST(Polinom, sub_scalar)
 {
-	Polinom A, B;
-	A.str_to_poly("x^2 + 1");
-	B.str_to_poly("x^2 - 4.1");
+	Polinom A("x^2 + 1"), B("x^2 - 4.1");
 
 	A -= 5.1;
 
@@ -196,10 +175,8 @@ TEST(Polinom, sub_scalar)
 
 TEST(Polinom, mult_zero)
 {
-	Polinom A, B;
+	Polinom A("x^3 + y^5 - 10z + 1"), B("0");
 
-	A.str_to_poly("x^3 + y^5 - 10z + 1");
-	B.str_to_poly("0");
 	A *= 0.0;
 
 	EXPECT_EQ(B, A);
@@ -207,84 +184,56 @@ TEST(Polinom, mult_zero)
 
 TEST(Polinom, add_poly_eq_deg)
 {
-	Polinom A, B, res;
-
-	A.str_to_poly("5.43x^5y^4z^3 + 3.21x^3y^2z^1 - 1.23x^3 - 10.1");
-	B.str_to_poly("5.43x^5y^4z^3 + 3.21x^3y^2z^1 - 1.23x^3 - 10.1");
-	res.str_to_poly("10.86x^5y^4z^3 + 6.42x^3y^2z^1 - 2.46x^3 - 20.2");
+	Polinom A("5.43x^5y^4z^3 + 3.21x^3y^2z^1 - 1.23x^3 - 10.1"), B("5.43x^5y^4z^3 + 3.21x^3y^2z^1 - 1.23x^3 - 10.1"), res("10.86x^5y^4z^3 + 6.42x^3y^2z^1 - 2.46x^3 - 20.2");
 
 	EXPECT_EQ(res, A + B);
 }
 
 TEST(Polinom, add_poly_ne_deg)
 {
-	Polinom A, B, res;
-
-	A.str_to_poly("y^9 + y^7 + y^5 + 5");
-	B.str_to_poly("y^8 + y^6 + y^4 + y");
-	res.str_to_poly("y^8 + y^6 + y^4 + y + y^9 + y^7 + y^5 + 5");
+	Polinom A("y^9 + y^7 + y^5 + 5"), B("y^8 + y^6 + y^4 + y"), res("y^8 + y^6 + y^4 + y + y^9 + y^7 + y^5 + 5");
 
 	EXPECT_EQ(res, A + B);
 }
 
 TEST(Polinom, sub_poly_eq_deg)
 {
-	Polinom A, B, res;
-
-	A.str_to_poly("5.43x^5y^4z^3 + 3.21x^3y^2z^1 - 1.23x^3 - 10.1");
-	B.str_to_poly("4.43x^5y^4z^3 + 3.21x^3y^2z^1 - .23x^3 - 20.2");
-	res.str_to_poly("1x^5y^4z^3 - x^3 + 10.1");
+	Polinom A("5.43x^5y^4z^3 + 3.21x^3y^2z^1 - 1.23x^3 - 10.1"), B("4.43x^5y^4z^3 + 3.21x^3y^2z^1 - .23x^3 - 20.2"), res("1x^5y^4z^3 - x^3 + 10.1");
 
 	EXPECT_EQ(res, A - B);
 }
 
 TEST(Polinom, sub_poly_ne_deg)
 {
-	Polinom A, B, res;
-
-	A.str_to_poly("y^9 + y^7 + y^5 + 5");
-	B.str_to_poly("y^8 + y^6 + y^4 + y");
-	res.str_to_poly("-y^8 - y^6 - y^4 - y + y^9 + y^7 + y^5 + 5");
+	Polinom A("y^9 + y^7 + y^5 + 5"), B("y^8 + y^6 + y^4 + y"), res("-y^8 - y^6 - y^4 - y + y^9 + y^7 + y^5 + 5");
 
 	EXPECT_EQ(res, A - B);
 }
 
 TEST(Polinom, mult_poly1)
 {
-	Polinom A, B, res;
-
-	A.str_to_poly("x^3y^2z - x^4z^2");
-	B.str_to_poly("x^3y^2z + x^4z^2");
-	res.str_to_poly("x^6y^4z^2 - x^8z^4");
+	Polinom A("x^3y^2z - x^4z^2"), B("x^3y^2z + x^4z^2"), res("x^6y^4z^2 - x^8z^4");
 
 	EXPECT_EQ(res, A * B);
 }
 
 TEST(Polinom, mult_poly2)
 {
-	Polinom A, B, res;
-
-	A.str_to_poly("z");
-	B.str_to_poly("z");
-	res.str_to_poly("z^2");
+	Polinom A("z"), B("z"), res("z^2");
 
 	EXPECT_EQ(res, A * B);
 }
 
 TEST(Polinom, cant_mult_poly_with_big_deg)
 {
-	Polinom A, B;
-
-	A.str_to_poly("z^5");
-	B.str_to_poly("z^5");
+	Polinom A("z^5"), B("z^5");
 
 	ASSERT_ANY_THROW(A * B);
 }
 
 TEST(Polinom, calculate_in_point_correct)
 {
-	Polinom A;
-	A.str_to_poly("2.1x^5y^7 - 5.3z^9");
+	Polinom A("2.1x^5y^7 - 5.3z^9");
 	double res = A(1.2, 3.3, 0.9);
 
 	EXPECT_DOUBLE_EQ(22268.094717399301, res);
@@ -294,65 +243,48 @@ TEST(Polinom, calculate_in_point_correct)
 
 TEST(PolinomInput, throw_two_or_more_points)
 {
-	Polinom A;
-
-	ASSERT_ANY_THROW(A.str_to_poly("3.1x^5 + 4.5.1y"));
+	ASSERT_ANY_THROW(Polinom A("3.1x^5 + 4.5.1y"));
 }
 
 TEST(PolinomInput, no_throw_correct_points)
 {
-	Polinom A;
-
-	ASSERT_NO_THROW(A.str_to_poly("3.1x + 4.2x + 5.1xyz + .23"));
+	ASSERT_NO_THROW(Polinom A("3.1x + 4.2x + 5.1xyz + .23"));
 }
 
 TEST(PolinomInput, throw_two_or_more_variables)
 {
-	Polinom A;
-
-	ASSERT_ANY_THROW(A.str_to_poly("x^5y + yz + zz"));
+	ASSERT_ANY_THROW(Polinom A("x^5y + yz + zz"));
 }
 
 TEST(PolinomInput, throw_two_or_more_operation_signs)
 {
-	Polinom A;
-
-	ASSERT_ANY_THROW(A.str_to_poly("x + - y"));
+	ASSERT_ANY_THROW(Polinom A("x + - y"));
 }
 
 TEST(PolinomInput, no_throw_first_operation_sign)
 {
-	Polinom A;
-
-	ASSERT_NO_THROW(A.str_to_poly("+ x + y"));
+	ASSERT_NO_THROW(Polinom A("+ x + y"));
 }
 
 TEST(PolinomInput, throw_big_degree)
 {
-	Polinom A;
-
-	ASSERT_ANY_THROW(A.str_to_poly("x^5yz^10 + 1"));
+	ASSERT_ANY_THROW(Polinom A("x^5yz^10 + 1"));
 }
 
 TEST(PolinomInput, throw_negative_degree)
 {
-	Polinom A;
-
-	ASSERT_ANY_THROW(A.str_to_poly("x^-5yz + 1"));
+	ASSERT_ANY_THROW(Polinom A("x^-5yz + 1"));
 }
 
 TEST(PolinomInput, throw_wrong_symbols)
 {
-	Polinom A;
-
-	ASSERT_ANY_THROW(A.str_to_poly("xyz + 1 + M"));
+	ASSERT_ANY_THROW(Polinom A("xyz + 1 + M"));
 }
 
 TEST(PolinomInput, correct_input_only_scalar)
 {
-	Polinom A, B;
+	Polinom A("5.1"), B;
 
-	A.str_to_poly("5.1");
 	B += 5.1;
 
 	EXPECT_EQ(B, A);
@@ -360,9 +292,7 @@ TEST(PolinomInput, correct_input_only_scalar)
 
 TEST(PolinomInput, correct_input_only_one_variable)
 {
-	Polinom A, B;
-
-	A.str_to_poly("y^5");
+	Polinom A("y^5"), B;
 	B += Monom(1, 50);
 
 	EXPECT_EQ(B, A);
@@ -370,9 +300,7 @@ TEST(PolinomInput, correct_input_only_one_variable)
 
 TEST(PolinomInput, correct_input_variables_with_first_degree)
 {
-	Polinom A, B;
-
-	A.str_to_poly("1+xyz");
+	Polinom A("1+xyz"), B;
 	B += 1;
 	B += Monom(1, 111);
 
@@ -381,9 +309,8 @@ TEST(PolinomInput, correct_input_variables_with_first_degree)
 
 TEST(PolinomInput, correct_input_variables_with_zero_degree)
 {
-	Polinom A, B;
+	Polinom A("1+xyz+x^0y^5z^0"), B;
 
-	A.str_to_poly("1+xyz+x^0y^5z^0");
 	B += 1;
 	B += Monom(1, 111);
 	B += Monom(1, 50);
@@ -393,9 +320,7 @@ TEST(PolinomInput, correct_input_variables_with_zero_degree)
 
 TEST(PolinomInput, correct_input_monoms_with_same_degree)
 {
-	Polinom A, B;
-
-	A.str_to_poly("1 + xyz + x^1y^1z^1 + 10.1 - 0.7xyz");
+	Polinom A("1 + xyz + x^1y^1z^1 + 10.1 - 0.7xyz"), B;
 	B += 11.1;
 	B += Monom(1.3, 111);
 
@@ -404,9 +329,8 @@ TEST(PolinomInput, correct_input_monoms_with_same_degree)
 
 TEST(PolinomInput, correct_input_monom_with_zero_cf)
 {
-	Polinom A, B;
+	Polinom A("1 + xyz - x^1y^1z^1 + 10.1"), B;
 
-	A.str_to_poly("1 + xyz - x^1y^1z^1 + 10.1");
 	B += 11.1;
 
 	EXPECT_EQ(B, A);
