@@ -393,6 +393,21 @@ Polinom Polinom::operator*(const Polinom& poly) const
 	return res;
 }
 
+double Polinom::operator()(double x, double y, double z) const
+{
+	Monom* p = Tail->next;
+	double Res = Tail->cf;
+
+	while (p != Tail)
+	{
+		int deg = p->deg;
+		Res += p->cf * pow(x, deg / 100) * pow(y, deg % 100 / 10) * pow(z, deg % 10);
+		p = p->next;
+	}
+
+	return Res;
+}
+
 bool Polinom::operator==(const Polinom& poly) const
 {
 	Monom* pThis = Tail;

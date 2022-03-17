@@ -281,6 +281,17 @@ TEST(Polinom, cant_mult_poly_with_big_deg)
 	ASSERT_ANY_THROW(A * B);
 }
 
+TEST(Polinom, calculate_in_point_correct)
+{
+	Polinom A;
+	A.str_to_poly("2.1x^5y^7 - 5.3z^9");
+	double res = A(1.2, 3.3, 0.9);
+
+	EXPECT_DOUBLE_EQ(22268.094717399301, res);
+}
+
+
+
 TEST(PolinomInput, throw_two_or_more_points)
 {
 	Polinom A;

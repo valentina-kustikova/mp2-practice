@@ -36,6 +36,7 @@ public:
 	Polinom operator+(const Polinom& poly) const;
 	Polinom operator-(const Polinom& poly) const;
 	Polinom operator*(const Polinom& poly) const;
+	double operator()(double x, double y, double z) const;
 	bool operator==(const Polinom& poly) const;
 	void str_to_poly(const std::string& _input);
 	void Print() const;
