@@ -1,0 +1,6 @@
+C:/Projects/mp2-practice/BoyarintsevAE/01_lab_polymons/sln/CMakeFiles/ALL_BUILD.dir
+C:/Projects/mp2-practice/BoyarintsevAE/01_lab_polymons/sln/CMakeFiles/ZERO_CHECK.dir
+C:/Projects/mp2-practice/BoyarintsevAE/01_lab_polymons/sln/gtest/CMakeFiles/gtest.dir
+C:/Projects/mp2-practice/BoyarintsevAE/01_lab_polymons/sln/src/CMakeFiles/polynoms.dir
+C:/Projects/mp2-practice/BoyarintsevAE/01_lab_polymons/sln/tests/CMakeFiles/polynoms_test.dir
+C:/Projects/mp2-practice/BoyarintsevAE/01_lab_polymons/sln/samples/CMakeFiles/polynoms_sample.dir
