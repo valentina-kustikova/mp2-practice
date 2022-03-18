@@ -12,8 +12,7 @@ class Polynom
 
 private:
 	int pos = 0;
-	Monom fictitious{ 999,-1,-1,-1 };//фиктивное звено
-	List<Monom> monoms{fictitious};
+	List<Monom> monoms;
 
 public:
 	Polynom();
@@ -21,9 +20,10 @@ public:
 	Lexema lexem(const std::string& polynomStr);
 
 	void parser(const std::string& polynomStr);
-	Polynom& cancellation();
+	void cancellation();
 
 	bool operator==(const Polynom& _Polynom) const;
+	bool operator!=(const Polynom& _Polynom) const;
 
 	Polynom operator+(const Polynom& _Polynom) const;
 	Polynom operator-(const Polynom& _polynom) const;

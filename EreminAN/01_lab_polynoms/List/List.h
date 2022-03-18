@@ -13,7 +13,12 @@ public:
 	T data;
 	Node<T>* next;
 
-	Node(T d = 0, Node<T>* n = nullptr)
+	Node(Node<T>* n = nullptr)
+	{
+		next = n;
+	}
+
+	Node(T d, Node<T>* n = nullptr)
 	{
 		data = d; next = n;
 	}
@@ -30,23 +35,22 @@ template<typename T>
 class List
 {
 	Node<T>* head;
-	Node<T>* first;
 public:
-	List(const T& d);
+	List();
 	List(const List& list2);
 	List& operator=(const List& list2);
 	~List();
-	bool isEmpty() const { return (first == nullptr); }
-	T ViewHead() { return first->data; }
+	bool isEmpty() const { return (head->next == nullptr); }
+	T ViewHead() { return head->next->data; }
 
-	void InsertToHead(const T& d);  // вставить элемент d первым
-	void InsertToTail(const T& d); // вставить элемент d последним
+	void InsertToHead(const T& d);      // вставить элемент d первым
+	void InsertToTail(const T& d);     // вставить элемент d последним
 	void InsertAfter(Node<T>* node, const T& d); // вставить элемент d после звена node
-	void Delete(const T& d);      // удалить звено со значением data = d
-	Node<T>* Search(const T& d); // найти указатель на звено со значением data = d
-	void Clean();               // удалить все звенья
-	int GetSize() const;       // узнать число звеньев в списке
-	Node<T>* GetHead() const; // получить указатель на первое звено списка
+	void Delete(const T& d);         // удалить звено со значением data = d
+	Node<T>* Search(const T& d);    // найти указатель на звено со значением data = d
+	void Clean();                  // удалить все звенья
+	int GetSize() const;          // узнать число звеньев в списке
+	Node<T>* GetHead() const;    // получить указатель на первое звено списка
 	friend ostream& operator<<(ostream& os, const List<T>& l);
 
 	Node<T>* returnFictitiousNode() { return head }//для проверки, что фиктивное звено действительно есть и оно такое, какое было создано. 
@@ -55,7 +59,8 @@ public:
 template<typename T>
 ostream& operator<<(ostream& os, const List<T>& l)
 {
-	Node* tmp = l.first;
+	Node* tmp = l.head;
+	tmp = tmp->next;
 	while (tmp)
 	{
 		cout << tmp->data << ' ';
@@ -65,33 +70,24 @@ ostream& operator<<(ostream& os, const List<T>& l)
 }
 
 template<typename T>
-List<T>::List(const T& d)
+List<T>::List()
 {
-	head = new Node<T>(d, nullptr);
-	first = nullptr;
+	head = new Node<T>(nullptr);
 }
 
 template<typename T>
 List<T>::List(const List& list2)
 {
-	if (!list2.isEmpty())
-	{
-		head = new Node<T>(list2.head->data, list2.head->next);
-		first = new Node<T>(list2.first->data, list2.first->next);
-		Node<T>* tmp1 = first;
-		Node<T>* tmp2 = list2.first->next;
+	head = new Node<T>(nullptr);
 
-		while (tmp2 != nullptr)
-		{
-			tmp1->next = new Node<T>(tmp2->data);
-			tmp1 = tmp1->next;
-			tmp2 = tmp2->next;
-		}
-	}
-	else
+	Node<T>* tmp1 = head;
+	Node<T>* tmp2 = list2.head->next;
+
+	while (tmp2 != nullptr)
 	{
-		head = new Node<T>(list2.head->data, list2.head->next);
-		first = nullptr;
+		tmp1->next = new Node<T>(tmp2->data);
+		tmp1 = tmp1->next;
+		tmp2 = tmp2->next;
 	}
 }
 
@@ -100,22 +96,20 @@ List<T>& List<T>::operator=(const List& list2)
 {
 	if (this != &list2)
 	{
-		Node<T>* p = first, * q = first;
+		Node<T>* p = head->next, * q = head->next;
 		while (q != nullptr)
 		{
 			q = p->next;
 			delete p;
 			p = q;
 		}
-
 		if (list2.isEmpty())
-			first = nullptr;
+			head->next = nullptr;
 		else
 		{
-			first = new Node<T>
-				(list2.first->data);
-			p = first;
-			q = list2.first->next;
+			head->next = new Node<T>(list2.head->next->data);
+			p = head->next;
+			q = list2.head->next->next;
 			while (q != nullptr)
 			{
 				p->next = new Node<T>(q->data);
@@ -124,7 +118,6 @@ List<T>& List<T>::operator=(const List& list2)
 			}
 		}
 	}
-
 	return *this;
 }
 
@@ -132,7 +125,7 @@ template<typename T>
 List<T>::~List()
 {
 	Node<T>* tmp1, * tmp2;
-	tmp1 = first;
+	tmp1 = head->next;
 	tmp2 = tmp1;
 	while (tmp2 != nullptr)
 	{
@@ -146,35 +139,20 @@ List<T>::~List()
 template<typename T>
 void List<T>::InsertToHead(const T& d)// вставить элемент d первым
 {
-	if (isEmpty())
-	{
-		first = new Node<T>(d, nullptr);
-		head->next = first;
-	}
-	else
-	{
-		first = new Node<T>(d, first);
-	}
+	Node<T>* p = new Node<T>(d, head->next);
+	head->next = p;
 }
 
 template<typename T>
 void List<T>::InsertToTail(const T& d)// вставить элемент d последним
 {
-	if (isEmpty())
+	Node<T>* p = new Node<T>(d, nullptr);
+	Node<T>* tmp = head;
+	while (tmp->next != nullptr)
 	{
-		first = new Node<T>(d, nullptr);
-		head->next = first;
+		tmp = tmp->next;
 	}
-	else
-	{
-		Node<T>* p = new Node<T>(d, nullptr);
-		Node<T>* tmp = first;
-		while (tmp->next != nullptr)
-		{
-			tmp = tmp->next;
-		}
-		tmp->next = p;
-	}
+	tmp->next = p;
 }
 
 template<typename T>
@@ -196,17 +174,16 @@ template<typename T>
 void List<T>::Delete(const T& d)// удалить звено со значением data = d
 {
 	Node<T>* del;
-	Node<T>* tmp = first;
-	if (first != nullptr)
+	Node<T>* tmp = head->next;
+	if (tmp != nullptr)
 	{
-		if (first->data == d)
+		if (tmp->data == d)
 		{
 			del = tmp->next;
-			delete first;
-			first = del;
+			delete head->next;
+			head->next = del;
 		}
-		else
-		{
+		else {
 			while (tmp->next)
 			{
 				if (tmp->next->data == d)
@@ -228,7 +205,7 @@ void List<T>::Delete(const T& d)// удалить звено со значением data = d
 template<typename T>
 Node<T>* List<T>::Search(const T& d)// найти указатель на звено со значением data = d
 {
-	Node<T>* tmp = first;
+	Node<T>* tmp = head->next;
 	while (tmp != nullptr)
 	{
 		if (tmp->data == d)
@@ -247,21 +224,19 @@ void List<T>::Clean()// удалить все звенья
 	if (isEmpty())
 		return;
 
-	while (first->next != nullptr)
+	while (head->next != nullptr)
 	{
-		tmp = first->next;
-		first->next = tmp->next; // head->next->next;
+		tmp = head->next;
+		head->next = tmp->next; // head->next->next;
 		delete tmp;
 	}
-	delete first;
-	first = nullptr;
 }
 
 template<typename T>
 int List<T>::GetSize() const// узнать число звеньев в списке
 {
 	int k = 0;
-	Node<T>* tmp = first;
+	Node<T>* tmp = head->next;
 	while (tmp != nullptr)
 	{
 		k++;
@@ -273,7 +248,7 @@ int List<T>::GetSize() const// узнать число звеньев в списке
 template<typename T>
 Node<T>* List<T>::GetHead() const// получить указатель на первое звено списка
 {
-	return first;
+	return head->next;
 }
 
 

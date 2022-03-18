@@ -49,23 +49,23 @@ TEST(Polynom, can_create_Polynom)
 	ASSERT_NO_THROW(Polynom p);
 }
 ///////////////////////////////////////////////////////////
-TEST(Polynom, can_create_Polynom_with_initial_parameters_1)
+TEST(Polynom, can_create_Polynom_with_start_parameters_1)
 {
 	ASSERT_NO_THROW(Polynom p("2xyz"));
 }
 
-TEST(Polynom, can_create_Polynom_with_initial_parameters_2)
+TEST(Polynom, can_create_Polynom_with_start_parameters_2)
 {
-	ASSERT_NO_THROW(Polynom p("2zyx"));
+	ASSERT_NO_THROW(Polynom p("2zyx+5"));
 }
 
-TEST(Polynom, can_create_Polynom_with_initial_parameters_3)
+TEST(Polynom, can_create_Polynom_with_start_parameters_3)
 {
-	ASSERT_NO_THROW(Polynom p("2xz"));
+	ASSERT_NO_THROW(Polynom p("2x^2z+0"));
 }
 
 
-TEST(Polynom, can_create_Polynom_with_initial_parameters_4)
+TEST(Polynom, can_create_Polynom_with_start_parameters_4)
 {
 	ASSERT_NO_THROW(Polynom p("2x^5y^4z+3x^2"));
 }
@@ -174,6 +174,13 @@ TEST(Polynom, parser_and_lexem_any_throw_test_3)
 	ASSERT_ANY_THROW(P.parser("2x^5+/3x^4 -2.6 x^3+x^2$$+x- 8.6"));
 }
 ///////////////////////////////////////////////////////////
+TEST(Polynom, equality_operator_0)
+{
+	Polynom P("2x^2yz^3");
+	Polynom Q("2x^2z^3y");
+	ASSERT_EQ(Q, P);
+}
+
 TEST(Polynom, equality_operator_1)
 {
 	Polynom P("2x^2yz^3+5x^3z^5y");
@@ -190,9 +197,23 @@ TEST(Polynom, equality_operator_2)
 
 TEST(Polynom, equality_operator_3)
 {
+	Polynom P("2xy+5zx^2");
+	Polynom Q("2xy+5zx^3");
+	ASSERT_NE(Q, P);
+}
+
+TEST(Polynom, equality_operator_4)
+{
 	Polynom P("2xyz+6xz^5y-8.6z");
 	Polynom Q("-8.6z+2xyz+6xz^5y");
 	ASSERT_EQ(Q, P);
+}
+
+TEST(Polynom, equality_operator_5)
+{
+	Polynom P("2xyz+6xz^5y-8.6z");
+	Polynom Q("-8.6z+2xyz+4xz^5y+5");
+	ASSERT_NE(Q, P);
 }
 ///////////////////////////////////////////////////////////
 TEST(Polynom, function_cancellation_no_throw_1)
@@ -210,7 +231,7 @@ TEST(Polynom, function_cancellation_no_throw_2)
 TEST(Polynom, function_cancellation_1)
 {
 	Polynom P("2x^2yz+5x^2zy");
-	P = P.cancellation();
+	P.cancellation();
 	Polynom Q("7x^2zy");
 	ASSERT_EQ(Q, P);
 }
@@ -218,7 +239,7 @@ TEST(Polynom, function_cancellation_1)
 TEST(Polynom, function_cancellation_2)
 {
 	Polynom P("2xyz+yzx+xzy+5+1");
-	P = P.cancellation();
+	P.cancellation();
 	Polynom Q("4xyz+6");
 	ASSERT_EQ(Q, P);
 }
@@ -226,7 +247,7 @@ TEST(Polynom, function_cancellation_2)
 TEST(Polynom, function_cancellation_3)
 {
 	Polynom P("x^2yz+zyx^2+1+1+1+1+xy+yx+xy+x^3yz^5");
-	P = P.cancellation();
+	P.cancellation();
 	Polynom Q("x^3yz^5+2x^2zy+3xy+4");
 	ASSERT_EQ(Q, P);
 }
@@ -282,6 +303,15 @@ TEST(Polynom, addition_operation_zero_2)
 {
 	Polynom Q("2xyz");
 	Polynom P("2x-2x");
+	Q.cancellation();
+	Polynom Res("2xyz");
+	ASSERT_EQ(Res, P + Q);
+}
+
+TEST(Polynom, addition_operation_zero_3)
+{
+	Polynom Q("2xyz");
+	Polynom P("0");
 	Q.cancellation();
 	Polynom Res("2xyz");
 	ASSERT_EQ(Res, P + Q);
@@ -345,6 +375,15 @@ TEST(Polynom, minus_operation_zero_2)
 	Polynom Res("-2xy^2");
 	ASSERT_EQ(Res, Q-P);
 }
+
+TEST(Polynom, minus_operation_zero_3)
+{
+	Polynom P("2xy^2");
+	Polynom Q("0");
+	Q.cancellation();
+	Polynom Res("-2xy^2");
+	ASSERT_EQ(Res, Q - P);
+}
 ///////////////////////////////////////////////////////////
 TEST(Polynom, multi_operation_no_throw_1)
 {
@@ -383,6 +422,15 @@ TEST(Polynom, multi_operation_3)
 	Polynom Q("4x^7y^2z^6-6x^6yz^8");
 	Polynom Res("12x^12y^4z^11-18x^11y^3z^13-20x^11y^5z^9+30x^10y^4z^11+28x^10y^7z^7-42x^9y^6z^9");
 	ASSERT_EQ(Res, P * Q);
+}
+
+TEST(Polynom, minus_operation_zero_4)
+{
+	Polynom P("2xy^2");
+	Polynom Q("0");
+	Q.cancellation();
+	Polynom Res("0");
+	ASSERT_EQ(Res, Q*P);
 }
 ///////////////////////////////////////////////////////////
 TEST(Polynom, addition_const_operation_no_throw_1)
@@ -473,3 +521,8 @@ TEST(Polynom, multi_const_operation_3)
 	ASSERT_EQ(Res, P * (0));
 }
 ///////////////////////////////////////////////////////////
+TEST(Polynom, cout)
+{
+	Polynom P("5xy-1x^2yz-z-xyz+1x^1y^3z+7x^3y^5z");
+	cout << P << endl;
+}

@@ -1,10 +1,12 @@
 #pragma once
 #include "Polynom.h"
 #include <iostream>
-Polynom::Polynom() {}
+Polynom::Polynom() {
+}
 
 Polynom::Polynom(const std::string& polynomStr)
 {
+	Monom fictitious(999, -1, -1, -1);
 	parser(polynomStr);
 }
 
@@ -320,66 +322,59 @@ Polynom Polynom::operator*(const Polynom& _polynom) const
 
 
 
-Polynom& Polynom::cancellation()//подобные слагаемые;
+void Polynom::cancellation()//подобные слагаемые;
 {
-	if (this->monoms.GetSize() != 0)
+	if (this->monoms.GetSize() == 0)
 	{
-		int index = 0;
-		Polynom Res;
-		Res.monoms.Clean();
-		Node<Monom>* tmpPol;
-		tmpPol = this->monoms.GetHead();
-		Node<Monom>* tmpPoltwo = tmpPol;
-		tmpPoltwo = tmpPoltwo->next;
-		while (tmpPol)
+		return;
+	}
+	int index = 0;
+	Polynom Res;
+	Res.monoms.Clean();
+	Node<Monom>* tmpPol;
+	tmpPol = this->monoms.GetHead();
+	Node<Monom>* tmpPoltwo = tmpPol;
+	tmpPoltwo = tmpPoltwo->next;
+	while (tmpPol)
+	{
+		while (tmpPoltwo)
 		{
-			while (tmpPoltwo)
+			if (tmpPol->data.degreeEq(tmpPoltwo->data))//если совпало, складываем и добовл€ем в конец. ƒва старых удалить. ¬ернуть индексы(tmpPol) на голову.-> затем все сначала;
 			{
-				if (tmpPol->data.degreeEq(tmpPoltwo->data))//если совпало, складываем и добовл€ем в конец. ƒва старых удалить. ¬ернуть индексы(tmpPol) на голову.-> затем все сначала;
-				{
-					index = 1;
-					this->monoms.InsertToTail(tmpPol->data + tmpPoltwo->data);
-					this->monoms.Delete(tmpPol->data);
-					this->monoms.Delete(tmpPoltwo->data);
-					tmpPol = this->monoms.GetHead();
-					tmpPoltwo = tmpPol;
-					tmpPoltwo = tmpPoltwo->next;
-				}
-				else//ѕерейти к слюдующему, если он есть;
-				{
-					if (this->monoms.GetSize() > 1)
-						tmpPoltwo = tmpPoltwo->next;
-					else tmpPoltwo = nullptr;
-					index = 0;
-				}
-			}
-			if (index == 0)// ≈сли первый элемент не нашел пару, записать его в ответ;
-			{
-				if (tmpPol->data.coeff() != 0)//убираем нули
-					Res.monoms.InsertToTail(tmpPol->data);
+				index = 1;
+				this->monoms.InsertToTail(tmpPol->data + tmpPoltwo->data);
 				this->monoms.Delete(tmpPol->data);
+				this->monoms.Delete(tmpPoltwo->data);
 				tmpPol = this->monoms.GetHead();
 				tmpPoltwo = tmpPol;
-
-				if (this->monoms.GetSize() > 0)//Ќичего двигать не нужно, если осталось 0 элементов;
-					tmpPoltwo = tmpPoltwo->next;
+				tmpPoltwo = tmpPoltwo->next;
 			}
-			else index = 0;
+			else//ѕерейти к слюдующему, если он есть;
+			{
+				if (this->monoms.GetSize() > 1)
+					tmpPoltwo = tmpPoltwo->next;
+				else tmpPoltwo = nullptr;
+				index = 0;
+			}
 		}
-		tmpPol = this->monoms.GetHead();
-		if (this->monoms.GetSize() > 0)
-			if (tmpPol->data.coeff() != 0)
+		if (index == 0)// ≈сли первый элемент не нашел пару, записать его в ответ;
+		{
+			if (tmpPol->data.coeff() != 0)//убираем нули
 				Res.monoms.InsertToTail(tmpPol->data);
+			this->monoms.Delete(tmpPol->data);
+			tmpPol = this->monoms.GetHead();
+			tmpPoltwo = tmpPol;
 
-		//if (Res.monoms.GetSize() == 0)
-		//{
-		//	Monom m(0, 0, 0, 0);
-		//	Res.monoms.InsertToTail(m);
-		//}
-		*this = Res;
-		return *this;
+			if (this->monoms.GetSize() > 0)//Ќичего двигать не нужно, если осталось 0 элементов;
+				tmpPoltwo = tmpPoltwo->next;
+		}
+		else index = 0;
 	}
-	else return *this;
+	tmpPol = this->monoms.GetHead();
+	if (this->monoms.GetSize() > 0)
+		if (tmpPol->data.coeff() != 0)
+			Res.monoms.InsertToTail(tmpPol->data);
+	*this=Res;
 }
 
 
@@ -406,20 +401,6 @@ Polynom Polynom::operator+(const double& _Num) const
 Polynom Polynom::operator-(const double& _Num) const
 {
 	return *this + (-1) * _Num;
-	//Polynom pol = *this;
-	//Node<Monom>* tmpPol = this->monoms.GetHead();
-	//while (tmpPol)
-	//{
-	//	if (tmpPol->data.degree() == 0)
-	//	{
-	//		tmpPol->data = (tmpPol->data - _Num);
-	//		return *this;
-	//	}
-	//	tmpPol = tmpPol->next;
-	//}
-	//Monom monom(_Num, 0, 0, 0);
-	//pol.monoms.InsertToTail(monom);
-	//return pol;
 }
 
 Polynom Polynom::operator*(const double& _Num) const
@@ -447,8 +428,8 @@ bool Polynom::operator==(const Polynom& _Polynom) const
 	Polynom PolCooyOne = *this;
 	Polynom PolCooyOTwo = _Polynom;
 
-	PolCooyOne = PolCooyOne.cancellation();
-	PolCooyOTwo = PolCooyOTwo.cancellation();
+	PolCooyOne.cancellation();
+	PolCooyOTwo.cancellation();
 
 	if (PolCooyOne.monoms.GetSize() == PolCooyOTwo.monoms.GetSize())
 	{
@@ -475,6 +456,12 @@ bool Polynom::operator==(const Polynom& _Polynom) const
 	else return 0;
 }
 
+bool Polynom::operator!=(const Polynom& _Polynom) const
+{
+	if (*this == _Polynom)
+		return 0;
+	else return 1;
+}
 
 
 

@@ -44,7 +44,11 @@ private:
 	int degreeY;
 	int degreeZ;
 public:
-	Monom() {};
+	Monom() { coefficient = 0;
+	degreeX = 0;
+	degreeY = 0;
+	degreeZ = 0;
+	};
 	Monom(double coeff, int degX, int degY, int degZ);
 	Monom(const Monom& m);
 
@@ -69,18 +73,37 @@ public:
 	{
 		if (l.degreeX != 0)
 		{
-			if (l.coefficient != 1)
+			if (l.coefficient != 1 && l.coefficient != -1)
 				if (l.degreeX != 1)
 					out << l.coefficient << "x" << "^" << l.degreeX;
 				else out << l.coefficient << "x";
 			else
 			{
-				if (l.degreeX != 1)
-					out << "x" << "^" << l.degreeX;
-				else out << "x";
+				if(l.coefficient != -1)
+				{
+					if (l.degreeX != 1)
+						out << "x" << "^" << l.degreeX;
+					else out << "x";
+				}
+				else
+				{
+					if (l.degreeX != 1)
+						out << "-x" << "^" << l.degreeX;
+					else out << "-x";
+				}
 			}
 		}
-		else out << l.coefficient;
+		else 
+		{ if(l.coefficient != 1 && l.coefficient != -1)
+			out << l.coefficient; 
+		else
+		{
+			if (l.coefficient == -1)
+			{
+				out << "-";
+			}
+		}
+		}
 		if (l.degreeY != 0)
 		{
 			if (l.degreeY != 1)

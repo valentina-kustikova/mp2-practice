@@ -14,24 +14,24 @@ TEST(Node, can_create_node_copy)
 
 TEST(List, can_create_list)
 {
-	ASSERT_NO_THROW(List<double> l(0.0));
+	//ASSERT_NO_THROW(List<double> l);
 }
 
 TEST(List, new_list_is_empty)
 {
-	List<double> l(0.0);
+	List<double> l;
 	EXPECT_EQ(true, l.isEmpty());
 }
 
 TEST(List, can_add_elem_to_empty_list)
 {
-	List<double> l(0.0);
+	List<double> l;
 	ASSERT_NO_THROW(l.InsertToHead(4));
 }
 
 TEST(List, can_add_elem_to_notempty_list)
 {
-	List<int> l(0);
+	List<int> l;
 	l.InsertToHead(4);
 	l.InsertToHead(5);
 	EXPECT_EQ(5, l.ViewHead());
@@ -39,14 +39,14 @@ TEST(List, can_add_elem_to_notempty_list)
 
 TEST(List, can_add_to_tail_1)
 {
-	List<int> l(0);
+	List<int> l;
 	l.InsertToTail(4);
 	EXPECT_EQ(4, l.ViewHead());
 }
 
 TEST(List, can_add_to_tail_2)
 {
-	List<int> l(0);
+	List<int> l;
 	l.InsertToTail(4);
 	l.InsertToTail(5);
 	l.InsertToTail(6);
@@ -55,13 +55,13 @@ TEST(List, can_add_to_tail_2)
 
 TEST(List, can_clean_empty_list)
 {
-	List<int> l(0);
+	List<int> l;
 	ASSERT_NO_THROW(l.Clean());
 }
 
 TEST(List, can_clean2)
 {
-	List<int> l(0);
+	List<int> l;
 	l.InsertToTail(4);
 	l.Clean();
 	EXPECT_EQ(true, l.isEmpty());
@@ -69,7 +69,7 @@ TEST(List, can_clean2)
 
 TEST(List, can_clean3)
 {
-	List<int> l(0);
+	List<int> l;
 	l.InsertToTail(4);
 	l.InsertToTail(5);
 	l.InsertToTail(6);
@@ -79,7 +79,7 @@ TEST(List, can_clean3)
 
 TEST(List, can_delete1)
 {
-	List<int> l(0);
+	List<int> l;
 	l.InsertToTail(4);
 	l.InsertToTail(5);
 	l.InsertToTail(6);
@@ -93,7 +93,7 @@ TEST(List, can_delete1)
 
 TEST(List, can_delete2)
 {
-	List<int> l(0);
+	List<int> l;
 	l.InsertToTail(4);
 	l.InsertToTail(5);
 	l.InsertToTail(6);
@@ -106,7 +106,7 @@ TEST(List, can_delete2)
 
 TEST(List, can_delete3)
 {
-	List<int> l(0);
+	List<int> l;
 	l.InsertToTail(4);
 	l.InsertToTail(5);
 	l.InsertToTail(6);
@@ -120,7 +120,8 @@ class EmptyList : public testing::Test
 protected:
 	List<int> l;
 public:
-	EmptyList() : l(0) {};
+	EmptyList() {};
+	~EmptyList() {};
 };
 TEST_F(EmptyList, new_list_is_empty)
 {
@@ -147,7 +148,7 @@ TEST_F(EmptyList, size_of_empty_list_copy_is_correct)
 
 TEST_F(EmptyList, can_assign_two_empty_lists)
 {
-	List<int> l2(0);
+	List<int> l2;
 	ASSERT_NO_THROW(l = l2);
 }
 TEST_F(EmptyList, can_assign_empty_list_to_itself)
@@ -156,7 +157,7 @@ TEST_F(EmptyList, can_assign_empty_list_to_itself)
 }
 TEST_F(EmptyList, assign_two_empty_lists_is_correct)
 {
-	List<int> l2(0);
+	List<int> l2;
 	l = l2;
 	EXPECT_EQ(NULL, l.GetHead());
 }
@@ -211,7 +212,7 @@ class ThreeNodesList : public testing::Test
 protected:
 	List<int> l;
 public:
-	ThreeNodesList() : l(0)
+	ThreeNodesList()
 	{
 		l.InsertToTail(1);
 		l.InsertToTail(2);
@@ -359,14 +360,14 @@ TEST_F(ThreeNodesList, can_assign_not_empty_list_to_itself)
 }
 TEST_F(ThreeNodesList, can_assign_two_not_empty_lists)
 {
-	List<int> l2(0);
+	List<int> l2;
 	l2.InsertToTail(22);
 	l2.InsertToTail(33);
 	ASSERT_NO_THROW(l = l2);
 }
 TEST_F(ThreeNodesList, list_after_assign_has_its_own_memory)
 {
-	List<int> l2(0);
+	List<int> l2;
 	l2.InsertToTail(22);
 	l2.InsertToTail(33);
 	l = l2;
@@ -375,7 +376,7 @@ TEST_F(ThreeNodesList, list_after_assign_has_its_own_memory)
 }
 TEST_F(ThreeNodesList, can_assign_two_not_empty_lists_of_eq_size)
 {
-	List<int> l2(0);
+	List<int> l2;
 	l2.InsertToTail(11);
 	l2.InsertToTail(22);
 	l2.InsertToTail(33);
@@ -392,7 +393,7 @@ protected:
 	List<int> l2;
 	List<int> z;
 public:
-	TwoListsTest() : l(0), l2(0), z(0)
+	TwoListsTest()
 	{
 		l.InsertToTail(1);
 		l.InsertToTail(2);
@@ -418,4 +419,3 @@ TEST_F(TwoListsTest, assign_list_to_empty_is_correct)
 	l = z;
 	EXPECT_EQ(NULL, l.GetHead());
 }
-
