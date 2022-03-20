@@ -1,3 +1,0 @@
-﻿  main.cpp
-C:\Projects\mp2-practice\BoyarintsevAE\01_lab_polymons\include\monom.h(140): warning C4715: TList::Search: значение возвращается не при всех путях выполнения
-  polynoms_sample.vcxproj -> C:\Projects\mp2-practice\BoyarintsevAE\01_lab_polymons\sln\bin\polynoms_sample.exe
