@@ -1,6 +1,5 @@
 #pragma once
 #include "ArrayTable.h"
-#include "SortTable.h"
 
 template <class TKey, class TData>
 class ScanTable : public ArrayTable<TKey, TData>

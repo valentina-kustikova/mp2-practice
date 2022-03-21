@@ -20,6 +20,7 @@ public:
 	{
 		return DataCount == 0;
 	}
+	virtual void Clear() = 0;
 	virtual bool isFull() const = 0;
     virtual TData* Find(const TKey& k) = 0;
     virtual void Insert(const TKey& k, const TData& d) = 0;

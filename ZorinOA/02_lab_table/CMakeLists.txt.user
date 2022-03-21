@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 6.0.2, 2022-03-14T20:08:25. -->
+<!-- Written by QtCreator 6.0.2, 2022-03-21T15:13:16. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -68,6 +68,21 @@
     <value type="bool" key="AutoTest.Framework.QtTest">true</value>
    </valuemap>
    <valuemap type="QVariantMap" key="AutoTest.CheckStates">
+    <value type="Qt::CheckState" key="1@C:/Users/kento/source/repos/oleg-w570/mp2-practice/ZorinOA/02_lab_table/tests/test_hashtable.cpp:HashTable">Checked</value>
+    <value type="Qt::CheckState" key="1@C:/Users/kento/source/repos/oleg-w570/mp2-practice/ZorinOA/02_lab_table/tests/test_hashtable.cpp:can_create_HashTable_with_positive_size">Checked</value>
+    <value type="Qt::CheckState" key="1@C:/Users/kento/source/repos/oleg-w570/mp2-practice/ZorinOA/02_lab_table/tests/test_hashtable.cpp:cant_create_HashTable_with_size_gr_than_MAX">Checked</value>
+    <value type="Qt::CheckState" key="1@C:/Users/kento/source/repos/oleg-w570/mp2-practice/ZorinOA/02_lab_table/tests/test_hashtable.cpp:cant_create_HashTable_with_size_less_zero">Checked</value>
+    <value type="Qt::CheckState" key="1@C:/Users/kento/source/repos/oleg-w570/mp2-practice/ZorinOA/02_lab_table/tests/test_hashtable.cpp:clear_correct">Checked</value>
+    <value type="Qt::CheckState" key="1@C:/Users/kento/source/repos/oleg-w570/mp2-practice/ZorinOA/02_lab_table/tests/test_hashtable.cpp:delete_correct">Checked</value>
+    <value type="Qt::CheckState" key="1@C:/Users/kento/source/repos/oleg-w570/mp2-practice/ZorinOA/02_lab_table/tests/test_hashtable.cpp:insert_correct">Checked</value>
+    <value type="Qt::CheckState" key="1@C:/Users/kento/source/repos/oleg-w570/mp2-practice/ZorinOA/02_lab_table/tests/test_list.cpp:List">Checked</value>
+    <value type="Qt::CheckState" key="1@C:/Users/kento/source/repos/oleg-w570/mp2-practice/ZorinOA/02_lab_table/tests/test_list.cpp:can_clear">Checked</value>
+    <value type="Qt::CheckState" key="1@C:/Users/kento/source/repos/oleg-w570/mp2-practice/ZorinOA/02_lab_table/tests/test_list.cpp:can_copy_list">Checked</value>
+    <value type="Qt::CheckState" key="1@C:/Users/kento/source/repos/oleg-w570/mp2-practice/ZorinOA/02_lab_table/tests/test_list.cpp:can_copy_list_by_operator">Checked</value>
+    <value type="Qt::CheckState" key="1@C:/Users/kento/source/repos/oleg-w570/mp2-practice/ZorinOA/02_lab_table/tests/test_list.cpp:can_create_empty_list">Checked</value>
+    <value type="Qt::CheckState" key="1@C:/Users/kento/source/repos/oleg-w570/mp2-practice/ZorinOA/02_lab_table/tests/test_list.cpp:delete_correct">Checked</value>
+    <value type="Qt::CheckState" key="1@C:/Users/kento/source/repos/oleg-w570/mp2-practice/ZorinOA/02_lab_table/tests/test_list.cpp:delete_head_correct">Checked</value>
+    <value type="Qt::CheckState" key="1@C:/Users/kento/source/repos/oleg-w570/mp2-practice/ZorinOA/02_lab_table/tests/test_list.cpp:insert_to_head_correct">Checked</value>
     <value type="Qt::CheckState" key="1@C:/Users/kento/source/repos/oleg-w570/mp2-practice/ZorinOA/02_lab_table/tests/test_polinom.cpp:Monom">Checked</value>
     <value type="Qt::CheckState" key="1@C:/Users/kento/source/repos/oleg-w570/mp2-practice/ZorinOA/02_lab_table/tests/test_polinom.cpp:MonomList">Checked</value>
     <value type="Qt::CheckState" key="1@C:/Users/kento/source/repos/oleg-w570/mp2-practice/ZorinOA/02_lab_table/tests/test_polinom.cpp:Polinom">Checked</value>
@@ -79,6 +94,7 @@
     <value type="Qt::CheckState" key="1@C:/Users/kento/source/repos/oleg-w570/mp2-practice/ZorinOA/02_lab_table/tests/test_polinom.cpp:add_poly_ne_deg">Checked</value>
     <value type="Qt::CheckState" key="1@C:/Users/kento/source/repos/oleg-w570/mp2-practice/ZorinOA/02_lab_table/tests/test_polinom.cpp:add_scalar">Checked</value>
     <value type="Qt::CheckState" key="1@C:/Users/kento/source/repos/oleg-w570/mp2-practice/ZorinOA/02_lab_table/tests/test_polinom.cpp:assigment_new_memory">Checked</value>
+    <value type="Qt::CheckState" key="1@C:/Users/kento/source/repos/oleg-w570/mp2-practice/ZorinOA/02_lab_table/tests/test_polinom.cpp:calculate_in_point_correct">Checked</value>
     <value type="Qt::CheckState" key="1@C:/Users/kento/source/repos/oleg-w570/mp2-practice/ZorinOA/02_lab_table/tests/test_polinom.cpp:can_create_MonomList">Checked</value>
     <value type="Qt::CheckState" key="1@C:/Users/kento/source/repos/oleg-w570/mp2-practice/ZorinOA/02_lab_table/tests/test_polinom.cpp:can_create_Monom_with_possitive_deg_less_999">Checked</value>
     <value type="Qt::CheckState" key="1@C:/Users/kento/source/repos/oleg-w570/mp2-practice/ZorinOA/02_lab_table/tests/test_polinom.cpp:cant_create_Monom_with_negative_deg">Checked</value>
@@ -112,6 +128,23 @@
     <value type="Qt::CheckState" key="1@C:/Users/kento/source/repos/oleg-w570/mp2-practice/ZorinOA/02_lab_table/tests/test_polinom.cpp:throw_two_or_more_points">Checked</value>
     <value type="Qt::CheckState" key="1@C:/Users/kento/source/repos/oleg-w570/mp2-practice/ZorinOA/02_lab_table/tests/test_polinom.cpp:throw_two_or_more_variables">Checked</value>
     <value type="Qt::CheckState" key="1@C:/Users/kento/source/repos/oleg-w570/mp2-practice/ZorinOA/02_lab_table/tests/test_polinom.cpp:throw_wrong_symbols">Checked</value>
+    <value type="Qt::CheckState" key="1@C:/Users/kento/source/repos/oleg-w570/mp2-practice/ZorinOA/02_lab_table/tests/test_scantable.cpp:ScanTable">Checked</value>
+    <value type="Qt::CheckState" key="1@C:/Users/kento/source/repos/oleg-w570/mp2-practice/ZorinOA/02_lab_table/tests/test_scantable.cpp:can_create_ScanTable_with_positive_length">Checked</value>
+    <value type="Qt::CheckState" key="1@C:/Users/kento/source/repos/oleg-w570/mp2-practice/ZorinOA/02_lab_table/tests/test_scantable.cpp:cant_create_ScanTable_with_size_gr_than_MAX">Checked</value>
+    <value type="Qt::CheckState" key="1@C:/Users/kento/source/repos/oleg-w570/mp2-practice/ZorinOA/02_lab_table/tests/test_scantable.cpp:clear_correct">Checked</value>
+    <value type="Qt::CheckState" key="1@C:/Users/kento/source/repos/oleg-w570/mp2-practice/ZorinOA/02_lab_table/tests/test_scantable.cpp:delete_correct">Checked</value>
+    <value type="Qt::CheckState" key="1@C:/Users/kento/source/repos/oleg-w570/mp2-practice/ZorinOA/02_lab_table/tests/test_scantable.cpp:find_is_correct">Checked</value>
+    <value type="Qt::CheckState" key="1@C:/Users/kento/source/repos/oleg-w570/mp2-practice/ZorinOA/02_lab_table/tests/test_scantable.cpp:insert_correct">Checked</value>
+    <value type="Qt::CheckState" key="1@C:/Users/kento/source/repos/oleg-w570/mp2-practice/ZorinOA/02_lab_table/tests/test_scantable.cpp:not_find_is_nullptr">Checked</value>
+    <value type="Qt::CheckState" key="1@C:/Users/kento/source/repos/oleg-w570/mp2-practice/ZorinOA/02_lab_table/tests/test_sorttable.cpp:SortTable">Checked</value>
+    <value type="Qt::CheckState" key="1@C:/Users/kento/source/repos/oleg-w570/mp2-practice/ZorinOA/02_lab_table/tests/test_sorttable.cpp:can_create_SortTable_with_positive_size">Checked</value>
+    <value type="Qt::CheckState" key="1@C:/Users/kento/source/repos/oleg-w570/mp2-practice/ZorinOA/02_lab_table/tests/test_sorttable.cpp:cant_create_ScanTable_with_size_gr_than_MAX">Checked</value>
+    <value type="Qt::CheckState" key="1@C:/Users/kento/source/repos/oleg-w570/mp2-practice/ZorinOA/02_lab_table/tests/test_sorttable.cpp:cant_create_SortTable_with_size_less_zero">Checked</value>
+    <value type="Qt::CheckState" key="1@C:/Users/kento/source/repos/oleg-w570/mp2-practice/ZorinOA/02_lab_table/tests/test_sorttable.cpp:clear_correct">Checked</value>
+    <value type="Qt::CheckState" key="1@C:/Users/kento/source/repos/oleg-w570/mp2-practice/ZorinOA/02_lab_table/tests/test_sorttable.cpp:delete_correct">Checked</value>
+    <value type="Qt::CheckState" key="1@C:/Users/kento/source/repos/oleg-w570/mp2-practice/ZorinOA/02_lab_table/tests/test_sorttable.cpp:find_is_correct">Checked</value>
+    <value type="Qt::CheckState" key="1@C:/Users/kento/source/repos/oleg-w570/mp2-practice/ZorinOA/02_lab_table/tests/test_sorttable.cpp:insert_correct">Checked</value>
+    <value type="Qt::CheckState" key="1@C:/Users/kento/source/repos/oleg-w570/mp2-practice/ZorinOA/02_lab_table/tests/test_sorttable.cpp:not_find_is_nullptr">Checked</value>
    </valuemap>
    <value type="int" key="AutoTest.RunAfterBuild">0</value>
    <value type="bool" key="AutoTest.UseGlobal">true</value>

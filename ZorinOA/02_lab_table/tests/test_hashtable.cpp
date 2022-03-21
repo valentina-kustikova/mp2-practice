@@ -40,3 +40,17 @@ TEST(HashTable, delete_correct)
 	H.Delete("third");
 	EXPECT_EQ(nullptr, H.Find("third"));
 }
+
+TEST(HashTable, clear_correct)
+{
+	HashTable<char, int> S(8);
+	S.Insert('a', 1);
+	S.Insert('c', 3);
+	S.Insert('b', 2);
+	S.Insert('d', 4);
+	S.Insert('f', 6);
+	S.Insert('e', 5);
+	S.Insert('g', 7);
+	S.Clear();
+	EXPECT_EQ(true, S.isEmpty());
+}

@@ -5,6 +5,7 @@
 #pragma once
 #include "monom.h"
 #include <iostream>
+#include <cmath>
 #include <vector>
 #include <string>
 

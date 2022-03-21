@@ -1,12 +1,30 @@
 #pragma once
-#include "ArrayTable.h"
 #include "ScanTable.h"
 
 template <class TKey, class TData>
-class SortTable : public ArrayTable<TKey, TData>
+class SortTable : public ScanTable<TKey, TData>
 {
+protected:
+    void SortData()
+    {
+        for (int i = 0; i < this->DataCount - 2; i++)
+        {
+            int min = i;
+            for (int j = i + 1; j < this->DataCount - 1; j++)
+            {
+                if (this->Recs[j] < this->Recs[min])
+                    min = j;
+            }
+            std::swap(this->Recs[i], this->Recs[min]);
+        }
+    }
 public:
-    SortTable(int size = MAX_SIZE) : ArrayTable<TKey, TData>(size) {}
+    SortTable(int size = MAX_SIZE) : ScanTable<TKey, TData>(size) {}
+    SortTable(const ScanTable<TKey, TData>& st)
+        : ScanTable<TKey, TData> (st)
+    {
+        SortData();
+    }
     virtual TData* Find(const TKey& k)
     {
         int left = 0;
@@ -58,7 +76,7 @@ public:
                 this->Recs[i] = this->Recs[i-1];
             }
             this->Recs[r] = TabRecord<TKey, TData>(k, d);
-            DataCount++;
+            this->DataCount++;
         }
     }
     virtual void Delete(const TKey& k)

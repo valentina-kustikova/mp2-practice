@@ -1,4 +1,4 @@
-#include "polinom.h"
+#include "..\include\polinom.h"
 
 bool check_err_add_deg(int deg1, int deg2)
 {
@@ -398,7 +398,6 @@ Polinom Polinom::operator*(const Polinom& poly) const
 {
 	Polinom res;
 	Monom* pThis = Tail;
-	Monom* pPoly = poly.Tail;
 
 	do
 	{
@@ -417,7 +416,7 @@ double Polinom::operator()(double x, double y, double z) const
 	while (p != Tail)
 	{
 		int deg = p->deg;
-		Res += p->cf * pow(x, deg / 100) * pow(y, deg % 100 / 10) * pow(z, deg % 10);
+        Res += p->cf * pow(x, deg / 100) * pow(y, deg % 100 / 10) * pow(z, deg % 10);
 		p = p->next;
 	}
 

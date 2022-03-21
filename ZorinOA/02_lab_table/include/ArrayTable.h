@@ -61,6 +61,10 @@ public:
 	{
 		return TabSize;
 	}
+	virtual void Clear()
+	{
+		this->DataCount = 0;
+	}
     virtual TData* Find(const TKey& k) = 0;
     virtual void Insert(const TKey& k, const TData& d) = 0;
     virtual void Delete(const TKey& k) = 0;

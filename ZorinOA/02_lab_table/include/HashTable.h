@@ -52,34 +52,43 @@ public:
 	}
 	virtual bool isFull() const
 	{
-		return DataCount >= TabSize;
+        return this->DataCount >= TabSize;
+	}
+	virtual void Clear()
+	{
+		if (!(this->isEmpty()))
+		{
+			this->DataCount = 0;
+			for (int i = 0; i < TabSize; i++)
+			{
+				ListsRecs[i].Clear();
+			}
+		}
 	}
 	virtual void Insert(const TKey& k, const TData& d)
 	{
 		int idx = HashFunc(k) % TabSize;
 		ListsRecs[idx].InsertToHead(TabRecord<TKey, TData>(k, d));
-		DataCount++;
+        this->DataCount++;
 	}
 	virtual TData* Find(const TKey& k)
 	{
-		if (!isEmpty())
+        if (!(this->isEmpty()))
 		{
 			int idx = HashFunc(k) % TabSize;
 			Node<TabRecord<TKey, TData>>* tmp = ListsRecs[idx].Search(TabRecord<TKey, TData>(k));
-			if (tmp == nullptr)
-				return nullptr;
-			else
+            if (tmp != nullptr)
 				return &(tmp->data.GetData());
 		}
-
+        return nullptr;
 	}
 	virtual void Delete(const TKey& k)
 	{
-		if (!isEmpty())
+        if (!(this->isEmpty()))
 		{
 			int idx = HashFunc(k) % TabSize;
 			ListsRecs[idx].Delete(TabRecord<TKey, TData>(k));
-			DataCount--;
+            this->DataCount--;
 		}
 	}
 	
@@ -104,7 +113,7 @@ protected:
 	}
 public:
 	HashTable(int size = MAX_SIZE)
-		: ListHashTable(size) {}
+        :ListHashTable<TKey, TData>(size) {}
 };
 
 template<class TData>
@@ -124,5 +133,5 @@ protected:
 	}
 public:
 	HashTable(int size = MAX_SIZE)
-		: ListHashTable(size) {}
+        : ListHashTable<std::string, TData>(size) {}
 };

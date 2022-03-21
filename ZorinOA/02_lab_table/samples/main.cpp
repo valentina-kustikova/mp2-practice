@@ -17,15 +17,8 @@ int main()
 	H.Insert("sixth", Polinom("1.2 + 45 - 3.4y^1x^5"));
 	H.Insert("seventh", Polinom("2.3x^2y^3z^7 + 3.2"));
 	cout << H << endl;
-	/*List<string> L;
-	L.InsertToHead("first");
-	L.InsertToHead("second");
-	L.InsertToHead("third");
-	L.InsertToHead("fourth");
-	cout << L << endl;*/
-	//Polinom A("3.1x^5y^4z^2 - 3z^5 + 6.333y^2 - 2x + 2x");
-	//cout << A << endl;
-	SortTable<string, Polinom> T(10);
+
+    ScanTable<string, Polinom> T(10);
 	T.Insert("first", Polinom("3x"));
 	T.Insert("second", Polinom("2y^5"));
 	T.Insert("third", Polinom("12.3z^3"));
@@ -34,5 +27,9 @@ int main()
 	T.Insert("sixth", Polinom("1.2 + 45 - 3.4y^1x^5"));
 	T.Insert("seventh", Polinom("2.3x^2y^3z^7 + 3.2"));
 	cout << T << endl;
+
+    SortTable S(T);
+    cout << S << endl;
+    cout << sizeof(S) << endl << sizeof(T) << endl << sizeof(H) << endl;
 	return 0;
 }

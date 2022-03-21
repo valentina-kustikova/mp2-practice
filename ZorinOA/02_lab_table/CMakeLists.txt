@@ -1,4 +1,4 @@
-CMAKE_MINIMUM_REQUIRED(VERSION 2.8.12)
+cmake_minimum_required(VERSION 3.5)
 
 # Auxiluary info about the project
 set(PROJECT_NAME)
@@ -32,6 +32,7 @@ add_subdirectory(gtest)
 add_subdirectory(src)
 add_subdirectory(tests)
 add_subdirectory(samples)
+#add_subdirectory(qt_sample)
 
 # Report
 message(STATUS "")
