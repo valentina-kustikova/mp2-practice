@@ -1,0 +1,11 @@
+﻿  Building Custom Rule C:/Users/Admin/mp2-practice/OrlyukVS/01_lab_polynom/src/CMakeLists.txt
+  list.cpp
+  monom.cpp
+C:\Users\Admin\mp2-practice\OrlyukVS\01_lab_polynom\src\monom.cpp(4,31): error C2572: TMonom::TMonom: переопределение аргумента по умолчанию: параметр 1
+C:\Users\Admin\mp2-practice\OrlyukVS\01_lab_polynom\include\monom.h(8): message : см. объявление "TMonom::TMonom"
+C:\Users\Admin\mp2-practice\OrlyukVS\01_lab_polynom\src\monom.cpp(4,56): error C2572: TMonom::TMonom: переопределение аргумента по умолчанию: параметр 2
+C:\Users\Admin\mp2-practice\OrlyukVS\01_lab_polynom\include\monom.h(8): message : см. объявление "TMonom::TMonom"
+  polinom.cpp
+C:\Users\Admin\mp2-practice\OrlyukVS\01_lab_polynom\src\polinom.cpp(77,36): warning C4267: =: преобразование из "size_t" в "int"; возможна потеря данных
+C:\Users\Admin\mp2-practice\OrlyukVS\01_lab_polynom\src\polinom.cpp(280,11): error C2082: переопределение формального параметра "pm"
+  Создание кода...

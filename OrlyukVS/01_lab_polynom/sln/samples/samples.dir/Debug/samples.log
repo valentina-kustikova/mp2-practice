@@ -1,0 +1,11 @@
+﻿main_polinom.obj : error LNK2019: ссылка на неразрешенный внешний символ "public: __cdecl TList<class TMonom>::~TList<class TMonom>(void)" (??1?$TList@VTMonom@@@@QEAA@XZ) в функции "public: __cdecl TPolinom::~TPolinom(void)" (??1TPolinom@@QEAA@XZ).
+main_polinom.obj : error LNK2019: ссылка на неразрешенный внешний символ "public: __cdecl TPolinom::TPolinom(void)" (??0TPolinom@@QEAA@XZ) в функции main.
+main_polinom.obj : error LNK2019: ссылка на неразрешенный внешний символ "public: __cdecl TPolinom::TPolinom(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >)" (??0TPolinom@@QEAA@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z) в функции main.
+main_polinom.obj : error LNK2019: ссылка на неразрешенный внешний символ "public: double __cdecl TPolinom::calculation(void)" (?calculation@TPolinom@@QEAANXZ) в функции main.
+main_polinom.obj : error LNK2019: ссылка на неразрешенный внешний символ "public: class TPolinom & __cdecl TPolinom::operator=(class TPolinom const &)" (??4TPolinom@@QEAAAEAV0@AEBV0@@Z) в функции main.
+main_polinom.obj : error LNK2019: ссылка на неразрешенный внешний символ "public: class TPolinom __cdecl TPolinom::operator-(class TPolinom const &)const " (??GTPolinom@@QEBA?AV0@AEBV0@@Z) в функции main.
+main_polinom.obj : error LNK2019: ссылка на неразрешенный внешний символ "public: class TPolinom __cdecl TPolinom::operator+(class TPolinom const &)const " (??HTPolinom@@QEBA?AV0@AEBV0@@Z) в функции main.
+main_polinom.obj : error LNK2019: ссылка на неразрешенный внешний символ "public: class TPolinom __cdecl TPolinom::operator*(class TPolinom const &)const " (??DTPolinom@@QEBA?AV0@AEBV0@@Z) в функции main.
+main_polinom.obj : error LNK2019: ссылка на неразрешенный внешний символ "public: class TPolinom __cdecl TPolinom::operator*(double)const " (??DTPolinom@@QEBA?AV0@N@Z) в функции main.
+main_polinom.obj : error LNK2019: ссылка на неразрешенный внешний символ "class std::basic_ostream<char,struct std::char_traits<char> > & __cdecl operator<<(class std::basic_ostream<char,struct std::char_traits<char> > &,class TPolinom const &)" (??6@YAAEAV?$basic_ostream@DU?$char_traits@D@std@@@std@@AEAV01@AEBVTPolinom@@@Z) в функции main.
+C:\Users\Admin\mp2-practice\OrlyukVS\01_lab_polynom\sln\samples\Debug\samples.exe : fatal error LNK1120: неразрешенных внешних элементов: 10
