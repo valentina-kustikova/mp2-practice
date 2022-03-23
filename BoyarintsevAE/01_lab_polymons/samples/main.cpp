@@ -1,31 +1,73 @@
 #include <iostream>
+#include <conio.h>
 #include "polinom.h"
 #include "monom.h"
 
+void menu()
+{
+	cout << "Main menu: " << endl;
+	cout << "----------------------" << endl;
+	cout << "1. Enter polinom " << endl;
+	cout << "2. Print polinom " << endl;
+	cout << "3. Addition " << endl;
+	cout << "4. Subtraction " << endl;
+	cout << "5. Multiplication " << endl;
+	cout << "6. Substitute x,y,z" << endl;
+	cout << "----------------------" << endl;
+
+	cout << "0. Exit " << endl;
+
+
+
+
+}
+
+
 int main()
 {
-	/*std::cout << "START" << std::endl;
-	TNode *node = new TNode;
-	node->data = new TMonom(1, 101);
-	node->pNext = nullptr;
-	std::cout << "FINISH" << std::endl;
-	return 0;*/
+	//menu();
+
+	string st;
+	string st1;
+	char key = 0;
+
+	while (key != 13)
+	{
+
 	
+		cout << "Enter first polinom: " << endl;
+		cin >> st;
+		TPolinom a(st);
+		cout << "First = " << a << endl;
 
 
-	TList lst;
-	//TNode* node;
+		cout << "Enter second polinom: " << endl;
+		cin >> st1;
+		TPolinom b(st1);
+		cout << "Second = " << b << endl;
+
+
+		TPolinom result;
+
+		cout << "----------------------" << endl;
+		result = a + b;
+		cout << "Addition: " << result <<endl;
 	
-	lst.InsertToHead(10); //0
-	lst.InsertToTail(15); //1
-	lst.InsertToTail(28); //2
+		result = a - b;
+		cout << "Subtraction: " << result << endl;
 
-	//lst.InsertBefore(5, 28);
+		result = a * b;
+		cout << "Multiplication:" << result << endl;
 
-	lst.Search(15);
+		cout << "----------------------" << endl;
 
-	lst.Print();
-	
+
+
+		key = _getch();
+	}
+
+
+
 
 
 

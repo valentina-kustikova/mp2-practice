@@ -6,6 +6,7 @@ TMonom::TMonom(double coeff, int degree)
     this->degree = degree;
 }
 
+
 TMonom & TMonom::operator=(const TMonom & monom)
 {
     if (*this != monom)
@@ -16,28 +17,26 @@ TMonom & TMonom::operator=(const TMonom & monom)
     return *this;
 }
 
-int TMonom::operator==(const TMonom & monom) const
+
+bool TMonom::operator==(const TMonom & monom) const
 {
-    return (this->degree == monom.degree);
+    return ((this->degree == monom.degree) && (this->coeff == monom.coeff));
 }
 
-int TMonom::operator!=(const TMonom & monom) const
+
+bool TMonom::operator!=(const TMonom & monom) const
 {
-    return (this->degree != monom.degree);
+    return ((this->degree != monom.degree) && (this->coeff != monom.coeff));
 }
 
-int TMonom::operator<(const TMonom & monom) const
+
+bool TMonom::operator<(const TMonom & monom) const
 {
     return (this->degree < monom.degree);
 }
 
-int TMonom::operator>(const TMonom & monom) const
+
+bool TMonom::operator>(const TMonom & monom) const
 {
     return (this->degree > monom.degree);
-}
-
-TData * TMonom::Copy()
-{
-    TData* data = new TMonom(this->coeff, this->degree);
-    return data;
 }

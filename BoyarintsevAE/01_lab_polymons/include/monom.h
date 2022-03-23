@@ -3,153 +3,167 @@
 
 using namespace std;
 
-struct TData
-{
-	int key;
-	TData() { 
-		key = 0;
-	};
-	
-	TData(const int key)
-	{
-		this->key = key;
-	};
-
-	friend ostream& operator<<(ostream& out, const TData& data) {
-		out << data.key;
-		return out;
-
-	};
-
-	friend istream& operator>>(istream& in, TData& data) {
-		in >> data.key;
-		return in;
-	};
-
-
-
-};
+template <typename T>
 
 struct TNode
 {
-	TData data;
-	TNode* pNext;
+	T data;
+	TNode<T>* pNext;
 
 	TNode() {
 		this->pNext = nullptr;
 	};
-	TNode(const TData& data)
+	TNode(T data)
 	{
 		this->data = data;
 		this->pNext = nullptr;
 
 	};
 
-	TNode(const TData& data, TNode* const pNext)
+	TNode(T data, TNode<T>* pNext)
 	{
 		this->data = data;
 		this->pNext = pNext;
 
 	};
 
-	TNode(const TNode& node)
+	TNode(TNode<T>& node)
 	{
 		this->data = node.data;
 		this->pNext = nullptr;
 	
 	};
+	
+	bool operator!=(const TNode<T>& node)
+	{
+		return !(*this == node);
+
+	}
+
+	bool operator==(const TNode<T>& node)
+	{
+		return ((data = node.data && pNext = node.pNext));
+	
+	}
+
+	bool operator<(const TNode<T>& node)
+	{
+		return data < node.data;
+	}
+
+	bool operator> (const TNode<T>& node)
+	{
+		return data > node.data;
+	}
 
 };
 
-class TList : TData
+template <typename T>
+
+class TList
 {
 private:
-	TNode* pFirst;
-	TNode* pCurr;
-	TNode* pPrev;
-	TNode* pNext;
+	TNode<T>* pFirst;
+	TNode<T>* pCurr;
 
 public:
 	TList();
-	TList(TNode* pFirst);
-	TList(const TList& list);
+	TList(TNode<T>* pFirst);
+	TList(const TList<T>& list);
 
 	~TList();
+
+	TList<T>& operator=(const TList<T>& list);
 	
-	//Operations
-	TNode* Search(const TData& data);
-	void InsertToHead(const TData& data);
-	void InsertToTail(const TData& data);
-	void InsertBefore(const TData& data, const TData& before_data);
-	void InsertAfter(const TData& data, const TData& after_data);
-	void Remove(const TData& data);
-	void Sort();
+	//Inserts
+	void InsertToHead(T data);
+	void InsertToTail(T data);
+	void InsertAfter(T data, TNode<T>* after_data);
 
-	//Navigation
-	void Next();
+	//Removes
+	void RemoveHead();
+	void RemoveTail();
+	
+	TNode<T>* getpCurr() const 
+	{
+		return pCurr;
+	};
+
+	void Next()
+	{
+		pCurr = pCurr->pNext;
+	}
+	
+	bool operator==(const TList& list) const;
+	bool operator!=(const TList& list) const;
+
+	//User's help
 	void Reset();
-	bool isEmpty() const;
-	bool isEnded() const;
-
+	bool isEnd() const;
 	void Print();
-
+	void Clean();
 };
 
-TList::TList()
+template <typename T>
+TList<T>::TList()
 {
-	this->pFirst = nullptr;
-	this->pCurr = nullptr;
-	this->pPrev = nullptr;
-	this->pNext = nullptr;
+	this->pFirst = NULL;
+	this->pCurr = NULL;
 }
 
-TList::TList(TNode* pFirst)
+template <typename T>
+TList<T>::TList(TNode<T>* pFirst)
 {
 	this->pFirst = pFirst;
 	this->pCurr = this->pFirst;
-	this->pPrev = nullptr;
-	this->pNext = this->pFirst->pNext;
 }
 
-TList::TList(const TList& list)
+template <typename T>
+TList<T>::TList(const TList<T>& list)
 {
 	this->pFirst = list.pFirst;
 	this->pCurr = list.pCurr;
-	this->pPrev = list.pPrev;
-	this->pNext = list.pNext;
 }
 
-TList::~TList()
+template <typename T>
+TList<T>::~TList()
 {   
-
+	Clean();
+	delete pFirst;
 }
 
-TNode* TList::Search(const TData& data)
+template<typename T>
+TList<T>& TList<T>::operator=(const TList<T>& list)
 {
-	int counter = 0;
-	pCurr = this->pFirst;
-	while (pCurr != nullptr)
+	Clean();
+	
+	TNode<T>* temp1 = pFirst;
+	TNode<T>* temp2 = list.pFirst;
+
+	while (temp2->pNext != list.pFirst)
 	{
-		if (counter == data.key)
-		{
-			return new TNode(pCurr->data);	
-		}
-		pCurr = pCurr->pNext;
-		counter++;
+		temp2 = temp2->pNext;
+		temp1->pNext = new TNode<T>(temp2->data);
+		temp1 = temp1->pNext;
 	}
+	temp1->pNext = pFirst;
+	pCurr = pFirst;
+	return *this;
 }
 
-void TList::InsertToHead(const TData& data)
+template <typename T>
+void TList<T>::InsertToHead(T data)
 {
-	pCurr = new TNode(data, pFirst);
+	pCurr = new TNode<T>(data, pFirst);
 	pFirst = pCurr;
 }
 
-void TList::InsertToTail(const TData& data)
+template <typename T>
+void TList<T>::InsertToTail(T data)
 {
 	if (pFirst == nullptr)
 	{
-		pFirst = new TNode(data);
+		InsertToHead(data);
 	}
 	else
 	{
@@ -159,78 +173,115 @@ void TList::InsertToTail(const TData& data)
 		{
 			pCurr = pCurr->pNext;
 		}
-		pCurr->pNext = new TNode(data);
+		pCurr->pNext = new TNode<T>(data);
 	}
 }
 
-void TList::InsertBefore(const TData& data, const TData& before_data)
+
+template <typename T>
+void TList<T>::InsertAfter(T data, TNode<T>* after_data)
 {
-	
-	TNode* tmp = Search(before_data);
-	pCurr->pNext = new TNode(data);
-
-	
-	//if (pPrev == nullptr)
-	//{
-	//	InsertToHead(data);
-	//}
-	//else
-	//{
-	//	pPrev = this->pFirst;
-	//	while (pPrev->pNext != pCurr)
-	//	{
-	//		pPrev = pPrev->pNext;
-	//	}
-	//	
-	//	pCurr = new TNode(data, pPrev->pNext);
-	//	pPrev->pNext = pCurr;
-	//}
-
-
+	TNode<T>* temp = after_data->pNext;
+	after_data->pNext = new TNode<T>(data);
+	after_data->pNext->pNext = temp;
 }
 
-void TList::InsertAfter(const TData& data, const TData& after_data)
+template <typename T>
+void TList<T>::RemoveHead()
 {
-	throw exception("Function not implemented");
+	pCurr = pFirst;
+	pFirst = pFirst->pNext;
+	delete pCurr;
 }
 
-void TList::Remove(const TData& data)
+template <typename T>
+void TList<T>::RemoveTail()
 {
-	throw exception("Function not implemented");
-}
-
-void TList::Sort()
-{
-	throw exception("Function not implemented");
-}
-
-void TList::Next()
-{
-	throw exception("Function not implemented");
-}
-
-void TList::Reset()
-{
-	while (pFirst != nullptr)
+	if (pFirst == nullptr)
 	{
-		pCurr = pFirst;
-		pFirst = pFirst->pNext;
+		RemoveHead();
+	}
+	else
+	{
+		pCurr = this->pFirst;
 
-		delete pCurr;
+		while (pCurr->pNext->pNext != nullptr)
+		{
+			pCurr = pCurr->pNext;
+		}
+		
+		TNode<T>* rem = pCurr->pNext;
+
+		pCurr->pNext = rem->pNext;
+
+
+		delete rem;
 	}
 }
 
-bool TList::isEmpty() const
+
+template<typename T>
+bool TList<T>::operator==(const TList& list) const
 {
-	throw exception("Function not implemented");
+	bool temp = true;
+
+	if (this != &list)
+	{
+		TNode<T>* first = pFirst->pNext;
+		TNode<T>* second = list.pFirst->pNext;
+
+		while (first != pFirst && second != list.pFirst && first->data == second->data)
+		{
+			first = first->pNext;
+			second = second->pNext;
+		}
+
+		if (first != pFirst || second != list.pFirst)
+		{
+			temp = false;
+		}
+
+	}
+	return temp;
 }
 
-bool TList::isEnded() const
+template<typename T>
+inline bool TList<T>::operator!=(const TList& list) const
 {
-	throw exception("Function not implemented");
+	bool temp = false;
+	if (this != &list)
+	{
+		TNode<T>* first = pFirst->pNext;
+		TNode<T>* second = list.pFirst->pNext;
+
+		while (first != pFirst && second != list.pFirst && first->data != second->data)
+		{
+			first = first->pNext;
+			second = second->pNext;
+		}
+
+		if (first != pFirst || second != list.pFirst)
+		{
+			temp = true;
+		}
+	}
+	return temp;
 }
 
-void TList::Print()
+template<typename T>
+void TList<T>::Reset()
+{
+	pCurr = pFirst->pNext;
+}
+
+template<typename T>
+bool TList<T>::isEnd() const
+{
+	return pCurr == pFirst;
+}
+
+template <typename T>
+void TList<T>::Print()
 {
 	if (pFirst != nullptr)
 	{
@@ -243,26 +294,34 @@ void TList::Print()
 	}
 	else
 	{
-		cout << "All Clear" << endl;
+		cout << "All Clean" << endl;
 	}
 
 }
 
+template<typename T>
+void TList<T>::Clean()
+{
+	while (pFirst != nullptr)
+	{
+		RemoveHead();
+	}
+}
 
-class TMonom: public TData
+
+class TMonom
 {
 public:
 	double coeff;
 	int degree;
-public:
-	TMonom(double coeff, int degree);
+
+	TMonom(double coeff = 0, int degree = 0);
 	
 	TMonom& operator=(const TMonom& monom);
 	
-	int operator==(const TMonom& monom) const;
-	int operator!=(const TMonom& monom) const;
-	int operator<(const TMonom& monom) const;
-	int operator>(const TMonom& monom) const;
-	
-	virtual TData* Copy(); // создание копии
+	bool operator==(const TMonom& monom) const;
+	bool operator!=(const TMonom& monom) const;
+	bool operator<(const TMonom& monom) const;
+	bool operator>(const TMonom& monom) const;
+
 };
