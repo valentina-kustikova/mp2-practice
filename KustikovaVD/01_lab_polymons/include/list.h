@@ -3,19 +3,16 @@
 #include "data.h"
 #include "node.h"
 
-class TList
+class TList : public TNode
 {
 private:
-    TNode* pFirst;
-    TNode* pStop; // nullptr дл€ лин. односв€зного списка и pHead дл€ цикл. с головой
-    TNode* pCurr;
-    TNode* pNext;
-    TNode* pPrev;
+    TNode* pFirst; //голова 
+    TNode* pCurr; //указатель на текущее звено
 
 public:
     //  онструкторы
     TList();
-    TList(TNode* pFirst);
+    TList(TNode* pFirst) : pFirst(pFirst) {};
     TList(const TList& list);
     // ƒеструктор
     ~TList();
@@ -42,3 +39,7 @@ public:
     // —лужебные методы
     // ...
 };
+TList::TList(const TList& list) //конструктор копировани€ 
+{
+
+}
