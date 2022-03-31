@@ -3,7 +3,7 @@
 #include "data.h"
 #include "node.h"
 
-class TList : public TNode
+class TList 
 {
 private:
     TNode* pFirst; //голова 

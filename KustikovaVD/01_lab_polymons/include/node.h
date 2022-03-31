@@ -2,7 +2,7 @@
 
 #include "data.h"
 
-class TNode : public TData
+class TNode
 {
 public:
     TData data;
@@ -14,12 +14,12 @@ public:
     TNode(const TNode& node) { data = node.data; pNext = nullptr; }; //конструтор копирования
     ~TNode();;
 //перегрузки операций 
-    bool operator < (const TNode& N) const
-    { return (dgr_x < N.dgr_x && dgr_y < N.dgr_y && dgr_z < N.dgr_z && cfc < N.cfc);}
-    bool operator > (const TNode& N) const
-    { return (dgr_x > N.dgr_x&& dgr_y > N.dgr_y&& dgr_z > N.dgr_z&& cfc > N.cfc);}
-    bool operator == (const TNode& N) const
-    { return (dgr_x == N.dgr_x && dgr_y == N.dgr_y && dgr_z == N.dgr_x && cfc == N.cfc && pNext == N.pNext); }
+    bool operator < (const TNode& N) const { return( data < N.data ); }
+   
+    bool operator > (const TNode& N) const { return (data > N.data); }
+   
+    bool operator == (const TNode& N) const { return (data == N.data); }
+    
     bool operator != (const TNode& N) const
     { return !(*this == N); }
 };
