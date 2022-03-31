@@ -179,6 +179,48 @@ public:
 		}
 	}
 
+	class Iterator
+	{
+		Node<TData>* p;
+	public:
+		Iterator(Node<TData>* _p = nullptr)
+		{
+			p = _p;
+		}
+		Iterator& operator++()
+		{
+			p = p->next;
+			return *this;
+		}
+		TData& operator*()
+		{
+			return p->data;
+		}
+		bool operator==(const Iterator& it)
+		{
+			return p == it.p;
+		}
+		bool operator!=(const Iterator& it)
+		{
+			return p != it.p;
+		}
+	};
+	Iterator begin()
+	{
+		List::Iterator it(head);
+		return it;
+	}
+	Iterator end()
+	{
+		/*Node<TData>* p = head;
+		while (p->next != nullptr)
+		{
+			p = p->next;
+		}*/
+		List::Iterator it(nullptr);
+		return it;
+	}
+
 	friend std::ostream& operator<<(std::ostream& os, const List& l)
 	{
 		if (!l.isEmpty())

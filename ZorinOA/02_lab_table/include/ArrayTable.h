@@ -68,6 +68,53 @@ public:
     virtual TData* Find(const TKey& k) = 0;
     virtual void Insert(const TKey& k, const TData& d) = 0;
     virtual void Delete(const TKey& k) = 0;
+
+	class Iterator
+	{
+		TabRecord<TKey, TData>* CurrPos;
+	public:
+		Iterator(TabRecord<TKey, TData>* pos = nullptr)
+		{
+			CurrPos = pos;
+		}
+		TabRecord<TKey, TData>& operator*()
+		{
+			return *CurrPos;
+		}
+		Iterator& operator++()
+		{
+			CurrPos++;
+			return *this;
+		}
+		bool operator<(const Iterator& it)
+		{
+			return CurrPos < it.CurrPos;
+		}
+		bool operator>(const Iterator& it)
+		{
+			return CurrPos > it.CurrPos;
+		}
+		bool operator==(const Iterator& it)
+		{
+			return CurrPos == it.CurrPos;
+		}
+		bool operator!=(const Iterator& it)
+		{
+			return CurrPos != it.CurrPos;
+		}
+
+	};
+	Iterator begin()
+	{
+		ArrayTable::Iterator it(Recs);
+		return it;
+	}
+	Iterator end()
+	{
+		ArrayTable::Iterator it(Recs + this->DataCount);
+		return it;
+	}
+
 	friend std::ostream& operator<<(std::ostream& os, const ArrayTable& at)
 	{
 		for (int i = 0; i < at.DataCount; i++)

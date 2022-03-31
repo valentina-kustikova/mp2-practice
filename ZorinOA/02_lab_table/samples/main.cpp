@@ -28,8 +28,9 @@ int main()
 	T.Insert("seventh", Polinom("2.3x^2y^3z^7 + 3.2"));
 	cout << T << endl;
 
-    SortTable S(T);
+    SortTable<string, Polinom> S(T);
+    S.Insert("eighth", Polinom("z^2 - z"));
     cout << S << endl;
-    cout << sizeof(S) << endl << sizeof(T) << endl << sizeof(H) << endl;
+
 	return 0;
 }
