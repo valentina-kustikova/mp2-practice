@@ -40,7 +40,6 @@ public:
                 right = mid - 1;
             else
                 left = mid + 1;
-
         }
 
         return nullptr;
@@ -56,8 +55,7 @@ public:
                 int m = (l + r) >> 1;
                 if (this->Recs[m].GetKey() == k)
                 {
-                    l = m + 1;
-                    r = m;
+                    return;
                 }
                 else if (this->Recs[m].GetKey() > k)
                 {
@@ -81,10 +79,9 @@ public:
     }
     virtual void Delete(const TKey& k)
     {
-
         int l = 0, r = this->DataCount - 1, m = 0;
         bool find = false;
-        while (l < r || !find)
+        while (l <= r && !find)
         {
             m = (l + r) >> 1;
             if (this->Recs[m].GetKey() == k)

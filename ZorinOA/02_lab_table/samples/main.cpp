@@ -32,5 +32,11 @@ int main()
     S.Insert("eighth", Polinom("z^2 - z"));
     cout << S << endl;
 
+	Polinom res = Polinom("32") * Polinom("3");
+	cout << res << endl;
+
+
+
+
 	return 0;
 }

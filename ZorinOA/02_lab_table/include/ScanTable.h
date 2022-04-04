@@ -17,11 +17,15 @@ public:
 	}
     virtual void Insert(const TKey& k, const TData& d)
 	{
-        if (this->DataCount < this->TabSize)
-		{
-            this->Recs[this->DataCount] = TabRecord<TKey, TData>(k, d);
-			this->DataCount++;
-		}
+        if (!this->isFull())
+        {
+            TData* tmp = Find(k);
+            if (tmp == nullptr)
+            {
+                this->Recs[this->DataCount] = TabRecord<TKey, TData>(k, d);
+                this->DataCount++;
+            }
+        }
 	}
     virtual void Delete(const TKey& k)
 	{

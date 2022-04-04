@@ -68,8 +68,12 @@ public:
 	virtual void Insert(const TKey& k, const TData& d)
 	{
 		int idx = HashFunc(k) % TabSize;
-		ListsRecs[idx].InsertToHead(TabRecord<TKey, TData>(k, d));
-        this->DataCount++;
+        Node<TabRecord<TKey, TData>>* tmp = ListsRecs[idx].Search(TabRecord<TKey, TData>(k));
+        if (tmp == nullptr)
+        {
+            ListsRecs[idx].InsertToHead(TabRecord<TKey, TData>(k, d));
+            this->DataCount++;
+        }
 	}
 	virtual TData* Find(const TKey& k)
 	{
@@ -182,7 +186,7 @@ protected:
 	{
 		unsigned long Res = k[0];
 		unsigned long p = 17;
-		for (int i = 1; i < k.length(); i++)
+        for (size_t i = 1; i < k.length(); i++)
 		{
 			Res += k[i] * p;
 			p *= p;

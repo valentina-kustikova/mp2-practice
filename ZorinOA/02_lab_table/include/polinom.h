@@ -22,6 +22,7 @@ class Polinom :
 
 public:
 	Polinom();
+    Polinom(const Polinom& poly);
 	Polinom(const std::string& input);
 	Polinom& operator+=(const Monom& monom);
 	Polinom& operator-=(const Monom& monom);

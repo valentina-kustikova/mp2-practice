@@ -24,14 +24,20 @@ Polinom::Polinom()
 
 }
 
+Polinom::Polinom(const Polinom &poly)
+    :MonomList(poly)
+{
+
+}
+
 Polinom::Polinom(const std::string& input)
 	:MonomList()
 {
-	parser(input);
-	if (isCorrect())
-		converter();
-	else
-		throw "Error!";
+    parser(input);
+    if (isCorrect())
+       converter();
+    else
+       throw "Error!";
 }
 
 Polinom& Polinom::operator+=(const Monom& monom)
@@ -62,7 +68,7 @@ Polinom Polinom::operator-(const Monom& monom) const
 
 Polinom Polinom::operator*(const Monom& monom) const
 {
-	Polinom res;
+    Polinom res(*this);
 
     if (monom.deg == 0 || std::abs(monom.cf) < 1e-10)
 		res *= (monom.cf);
@@ -441,18 +447,9 @@ bool Polinom::operator==(const Polinom& poly) const
 	return true;
 }
 
-//void Polinom::str_to_poly(const std::string& input)
-//{
-//	parser(input);
-//	if (isCorrect())
-//		converter();
-//	else
-//        throw "Error!";
-//}
 
 void Polinom::parser(const std::string& input)
 {
-	Lexs.clear();
 	int state = 0;
 	std::string lexema;
 
@@ -553,10 +550,10 @@ void Polinom::parser(const std::string& input)
 		}
 	}
 
-	if (state == 2 || state == 3 || state == 5)
-		Lexs.push_back(lexema);
-	else
+    if (state == 1 || state == 4)
         throw "Wrong symbol!";
+    else if (state == 2 || state == 3 || state == 5)
+        Lexs.push_back(lexema);
 }
 
 bool Polinom::check_vars() const
@@ -686,6 +683,7 @@ void Polinom::converter()
 
 		Insert(Monom(std::stod(cf), degree));
 	}
+    Lexs.clear();
 }
 
 void Polinom::Print() const

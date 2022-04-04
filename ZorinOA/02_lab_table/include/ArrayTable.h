@@ -11,13 +11,13 @@ protected:
 public:
 	ArrayTable(int size = MAX_SIZE)
 	{
-		if (size > 0 && size < MAX_SIZE)
+        if (size > 0 && size <= MAX_SIZE)
 		{
 			Recs = new TabRecord<TKey, TData>[size];
 			TabSize = size;
 		}
-		else
-			throw "Wrong size!!!";
+        else
+            throw "Wrong size!!!";
 	}
 	virtual ~ArrayTable()
 	{
@@ -86,6 +86,12 @@ public:
 			CurrPos++;
 			return *this;
 		}
+        Iterator operator+(int k)
+        {
+            Iterator it(*this);
+            it.CurrPos += k;
+            return it;
+        }
 		bool operator<(const Iterator& it)
 		{
 			return CurrPos < it.CurrPos;
@@ -104,12 +110,12 @@ public:
 		}
 
 	};
-	Iterator begin()
+    Iterator begin() const
 	{
 		ArrayTable::Iterator it(Recs);
 		return it;
 	}
-	Iterator end()
+    Iterator end() const
 	{
 		ArrayTable::Iterator it(Recs + this->DataCount);
 		return it;

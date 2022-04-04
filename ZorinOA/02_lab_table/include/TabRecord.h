@@ -58,7 +58,7 @@ public:
 
 	friend std::ostream& operator<<(std::ostream& os, const TabRecord& tr)
 	{
-		os << "|\t" << tr.key << "\t:\t " << tr.data << "\t|";
+        os << "key: " << tr.key << ", data:  " << tr.data;
 		return os;
 	}
 };
