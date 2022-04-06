@@ -15,5 +15,12 @@ public:
     {return (dgr_x > N.dgr_x && dgr_y > N.dgr_y && dgr_z > N.dgr_z && cfc > N.cfc); }
     bool operator == (const TData& N) const
     {return (dgr_x == N.dgr_x && dgr_y == N.dgr_y && dgr_z == N.dgr_z && cfc == N.cfc); }
+    bool operator != (const TData& N) const
+    {return (dgr_x != N.dgr_x && dgr_y != N.dgr_y && dgr_z != N.dgr_z && cfc != N.cfc); }
+    TData& operator = (const TData& N)
+    {
+        
+    }
+
 
 };
