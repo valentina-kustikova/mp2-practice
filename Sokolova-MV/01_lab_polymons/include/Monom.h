@@ -16,42 +16,37 @@ public:
 		coeff = _coeff;
 		degree = _degree;
 	}
-
 	bool operator==(const TMonom& m) const
 	{
 		return degree == m.degree;
 	}
-
-	bool operator>(const TMonom& m) 
+	bool operator>(const TMonom& m) const
 	{
-		if (degree > m.degree)
+		if (degree > m.degree) 
 			return true;
-		if (degree = m.degree)
+		if (degree == m.degree)
 		{
 			if (coeff > m.coeff) return true;
 			else false;
 		}
 		else return false;
 	}
-
-	bool operator<(const TMonom& m) 
+	bool operator<(const TMonom& m) const
 	{
 		if (degree < m.degree)
 			return true;
-		if (degree = m.degree)
+		if (degree == m.degree)
 		{
 			if (coeff < m.coeff) return true;
 			else false;
 		}
 		else return false;
 	}
-
 	TMonom operator*(const int& c)
 	{
 		coeff *= c;
 		return *this;
 	}
-
 	friend ostream& operator<<(ostream& os, const TMonom& m)
 	{
 		int x, y, z;
@@ -61,13 +56,12 @@ public:
 		os << m.coeff << "*x^" << x << "*y^" << y << "*z^" << z << " ";
 		return os;
 	}
-
 	friend istream& operator>>(istream& is, TMonom& m)
 	{
 		int x, y, z;
-		cout << "Ââåäèòå êîıôôèöèåíò\n";
+		cout << "Ğ’Ğ²ĞµĞ´Ğ¸Ñ‚Ğµ ĞºĞ¾ÑÑ„Ñ„Ğ¸Ñ†Ğ¸ĞµĞ½Ñ‚\n";
 		is >> m.coeff;
-		cout << "Ââåäèòå ñòåïåíè x, y, z \n";
+		cout << "Ğ’Ğ²ĞµĞ´Ğ¸Ñ‚Ğµ ÑÑ‚ĞµĞ¿ĞµĞ½Ğ¸ x, y, z \n";
 		is >> x >> y >> z;
 		m.degree = x * 100 + y * 10 + z;
 		return is;
