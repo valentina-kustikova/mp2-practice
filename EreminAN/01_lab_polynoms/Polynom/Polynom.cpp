@@ -374,7 +374,7 @@ void Polynom::cancellation()//подобные слагаемые;
 	if (this->monoms.GetSize() > 0)
 		if (tmpPol->data.coeff() != 0)
 			Res.monoms.InsertToTail(tmpPol->data);
-	*this=Res;
+	*this = Res;
 }
 
 

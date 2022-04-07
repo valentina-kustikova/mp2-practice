@@ -1,0 +1,2 @@
+C:\Users\Александр\Documents\GitHub\mp2-practice\EreminAN\01_lab_polynoms\sln\gtest\Debug\gtest.pdb
+C:\Users\Александр\Documents\GitHub\mp2-practice\EreminAN\01_lab_polynoms\sln\gtest\gtest.dir\Debug\gtest.pdb

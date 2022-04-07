@@ -1,0 +1,10 @@
+^C:\USERS\АЛЕКСАНДР\DOCUMENTS\GITHUB\MP2-PRACTICE\EREMINAN\01_LAB_POLYNOMS\TEST\CMAKELISTS.TXT
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/Александр/Documents/GitHub/mp2-practice/EreminAN/01_lab_polynoms -BC:/Users/Александр/Documents/GitHub/mp2-practice/EreminAN/01_lab_polynoms/sln --check-stamp-file C:/Users/Александр/Documents/GitHub/mp2-practice/EreminAN/01_lab_polynoms/sln/test/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

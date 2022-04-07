@@ -173,11 +173,6 @@ TEST_F(EmptyList, can_insert_to_tail_for_empty_list)
 	EXPECT_EQ(5, l.GetHead()->data);
 	EXPECT_EQ(NULL, l.GetHead()->next);
 }
-TEST_F(EmptyList, cant_insert_after_for_empty_list)
-{
-	Node<int>* p = l.GetHead();
-	ASSERT_ANY_THROW(l.InsertAfter(p, 5));
-}
 TEST_F(EmptyList, can_delete_from_empty_list)
 {
 	ASSERT_NO_THROW(l.Delete(5));

@@ -123,7 +123,7 @@ void main()
 		cout << "неверный номер меню" << endl;
 		throw "error";
 	}
-	Res = Res.cancellation();
+	Res.cancellation();
 	cout << "Результат:" << endl;
 	cout << Task << " = " << Res << endl;
 }

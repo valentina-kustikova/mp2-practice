@@ -523,6 +523,42 @@ TEST(Polynom, multi_const_operation_3)
 ///////////////////////////////////////////////////////////
 TEST(Polynom, cout)
 {
-	Polynom P("5xy-1x^2yz-z-xyz+1x^1y^3z+7x^3y^5z");
+	Polynom P("5+15+5xy-1x^2yz-z-xyz+1x^1y^3z+7x^3y^5z+5+9");
 	cout << P << endl;
+}
+////////////////////////////////////////////////////////
+TEST(Polynom, cout_1)
+{
+	Polynom P("1-x");
+	Polynom Q("1+x");
+	Polynom Res("1-x^2");
+	ASSERT_EQ(Res, P * Q);
+	cout << P * Q << endl;;
+}
+
+TEST(Polynom, cout_2)
+{
+	Polynom P("2-x");
+	Polynom Q("2+x");
+	Polynom Res("4-x^2");
+	ASSERT_EQ(Res, P * Q);
+	cout << P * Q << endl;;
+}
+
+TEST(Polynom, cout_3)
+{
+	Polynom P("x+y");
+	Polynom Q("x^2-xy+y^2");
+	Polynom Res("x^3+y^3");
+	ASSERT_EQ(Res, P * Q);
+	cout << P * Q << endl;;
+}
+
+TEST(Polynom, cout_4)
+{
+	Polynom P("x-y");
+	Polynom Q("x^2+xy+y^2");
+	Polynom Res("x^3-y^3");
+	ASSERT_EQ(Res, P * Q);
+	cout << P * Q << endl;;
 }
