@@ -54,9 +54,13 @@ void MainWindow::updateRes(const Polinom& poly)
 
 void MainWindow::on_pushButton_SUB_clicked()
 {
-    updatePolyStr();
-    Polinom res = Polinom(poly1_str) - Polinom(poly2_str);
-    updateRes(res);
+    try {
+        updatePolyStr();
+        Polinom res = Polinom(poly1_str) - Polinom(poly2_str);
+        updateRes(res);
+    }  catch (const std::exception& ex) {
+        statusBar()->showMessage(ex.what(), 3000);
+    }
 }
 
 
@@ -66,17 +70,21 @@ void MainWindow::on_pushButton_ADD_clicked()
         updatePolyStr();
         Polinom res = Polinom(poly1_str) + Polinom(poly2_str);
         updateRes(res);
-    }  catch (std::string& err) {
-        std::cout << err << std::endl;
+    }  catch (const std::exception& ex) {
+        statusBar()->showMessage(ex.what(), 3000);
     }
 }
 
 
 void MainWindow::on_pushButton_MULT_clicked()
 {
-    updatePolyStr();
-    Polinom res = Polinom(poly1_str) * Polinom(poly2_str);
-    updateRes(res);
+    try {
+        updatePolyStr();
+        Polinom res = Polinom(poly1_str) * Polinom(poly2_str);
+        updateRes(res);
+    }  catch (const std::exception& ex) {
+        statusBar()->showMessage(ex.what(), 3000);
+    }
 }
 
 
@@ -233,6 +241,8 @@ void MainWindow::on_select1Poly_clicked()
             poly1_str = tmp.str();
             ui->line1Poly->setText(QString::fromStdString(poly1_str));
         }
+        else
+            statusBar()->showMessage("Polynomial not find", 3000);
     }
     delete pSD;
 }
@@ -260,6 +270,8 @@ void MainWindow::on_select2Poly_clicked()
             poly2_str = tmp.str();
             ui->line2Poly->setText(QString::fromStdString(poly2_str));
         }
+        else
+            statusBar()->showMessage("Polynomial not find", 3000);
     }
     delete pSD;
 }
@@ -274,4 +286,5 @@ void MainWindow::on_pushButton_calculate_clicked()
     double value = Polinom(poly1_str)(x, y, z);
     ui->lineValue->setText(QString::number(value));
 }
+
 

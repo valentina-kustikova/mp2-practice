@@ -6,7 +6,7 @@
 #include <sstream>
 #include <string>
 #include <QMainWindow>
-#include <QInputDialog>
+#include <QStatusBar>
 #include "inputdialog.h"
 #include "deletedialog.h"
 #include "selectdialog.h"

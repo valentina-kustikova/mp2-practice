@@ -7,15 +7,11 @@
     <x>0</x>
     <y>0</y>
     <width>1121</width>
-    <height>526</height>
+    <height>606</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Tables of Poly</string>
-  </property>
-  <property name="windowIcon">
-   <iconset>
-    <normaloff>../../../Pictures/Wallpapers/L1JYHYMywOY.jpg</normaloff>../../../Pictures/Wallpapers/L1JYHYMywOY.jpg</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
@@ -81,7 +77,7 @@
         <item>
          <widget class="QTabWidget" name="tabWidget">
           <property name="currentIndex">
-           <number>0</number>
+           <number>1</number>
           </property>
           <property name="tabBarAutoHide">
            <bool>true</bool>
