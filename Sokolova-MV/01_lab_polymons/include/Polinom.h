@@ -9,6 +9,7 @@
 class TPolinom : public THeadList<TMonom>
 {
 public:
+
 	TPolinom()
 	{
 		TMonom m;
@@ -18,13 +19,29 @@ public:
 	{
 		insCurrent(m);
 	}
-	TPolinom(TPolinom& p)
+	TPolinom(const TPolinom& p)
+	{
+
+		auto pCurr = p.pFirst;
+		auto pPrev = p.pStop;
+		
+		for (; !(pCurr == p.pStop); )
+		{
+			insLast(pCurr->data);
+			pPrev = pCurr;
+			pCurr = pCurr->pNext;
+		}
+	}/**/
+	/*TPolinom(TPolinom& p)
 	{
 		for (p.reset(); !(p.isEnd()); p.goNext())
 		{
 			insLast(p.pCurr->data);
 		}
-	}
+	}/**/
+
+
+
 	void addMonom(TMonom& m)
 	{
 		{
@@ -46,7 +63,6 @@ public:
 			}
 		}
 	}
-
 	TPolinom operator*(const int& c)
 	{
 		TPolinom res(*this);
@@ -82,7 +98,7 @@ public:
 				z += m.degree % 10;
 				if (x >= 10 || y >= 10 || z >= 10)
 				{
-					throw("Выход за границу степени");
+					throw("Р’С‹С…РѕРґ Р·Р° РіСЂР°РЅРёС†Сѓ СЃС‚РµРїРµРЅРё");
 					break;
 				}
 				res.pCurr->data.degree = x * 100 + y * 10 + z;
@@ -127,51 +143,49 @@ public:
 		}
 		return *this;
 	}
-	bool operator==(TPolinom& p) //копии
+	bool operator==(const TPolinom& p) const 
 	{
-		p.reset();
-		reset();
-		while (!p.isEnd())
+		TPolinom res(p);
+		TPolinom pthis(*this);
+		res.reset();
+		pthis.reset();
+		while (!res.isEnd())
 		{
-			if ((getCurrdata() == p.getCurrdata()) == 0) return false;
-			p.goNext();
-			goNext();
+			if ((pthis.getCurrdata()==res.getCurrdata())==0) return false;
+			res.goNext();
+			pthis.goNext();
 		}
 		return true;
-	}/**/
-
-
-
-
-
+	}
 	TPolinom operator-(TMonom& p) { return (*this + p * (-1.0)); }
 	TPolinom operator-(TPolinom& p) { return (*this + p * (-1.0)); }
-	TPolinom operator+(TPolinom& res)//копии
+	TPolinom operator+(const TPolinom& p) const
 	{
-		TPolinom p(*this);
+		TPolinom pthis(*this);
+		TPolinom res(p);
 		res.reset();
-		p.reset();
-		while (!p.isEnd())
+		pthis.reset();
+		while (!pthis.isEnd())
 		{
-			if (res.pCurr->data.degree > p.pCurr->data.degree)
+			if (res.pCurr->data.degree > pthis.pCurr->data.degree)
 				res.goNext();
-			else if (res.pCurr->data.degree < p.pCurr->data.degree)
+			else if (res.pCurr->data.degree < pthis.pCurr->data.degree)
 			{
-				res.insCurrent(p.pCurr->data);
-				p.goNext();
+				res.insCurrent(pthis.pCurr->data);
+				pthis.goNext();
 			}
 			else
 			{
-				res.pCurr->data.coeff += p.pCurr->data.coeff;
+				res.pCurr->data.coeff += pthis.pCurr->data.coeff;
 				if (res.pCurr->data.coeff != 0)
 				{
 					res.goNext();
-					p.goNext();
+					pthis.goNext();
 				}
 				else
 				{
 					res.RemoveCurr();
-					p.goNext();
+					pthis.goNext();
 				}
 			}
 		}
@@ -275,7 +289,7 @@ public:
 			if (!degZ.empty()) _degZ = stoi(degZ);
 			if ((_degX > 9) || (_degY > 9) || (_degZ > 9))
 			{
-				throw("Выход за границу степени");
+				throw("Р’С‹С…РѕРґ Р·Р° РіСЂР°РЅРёС†Сѓ СЃС‚РµРїРµРЅРё");
 				break;
 			}
 			int d = _degX * 100 + _degY * 10 + _degZ;
@@ -284,6 +298,6 @@ public:
 		}
 	}
 
-
+	
 };
 
