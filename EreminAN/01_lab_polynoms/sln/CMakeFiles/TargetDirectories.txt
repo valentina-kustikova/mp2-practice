@@ -1,8 +1,0 @@
-C:/Users/Александр/Documents/GitHub/mp2-practice/EreminAN/01_lab_polynoms/sln/CMakeFiles/ALL_BUILD.dir
-C:/Users/Александр/Documents/GitHub/mp2-practice/EreminAN/01_lab_polynoms/sln/CMakeFiles/ZERO_CHECK.dir
-C:/Users/Александр/Documents/GitHub/mp2-practice/EreminAN/01_lab_polynoms/sln/List/CMakeFiles/List.dir
-C:/Users/Александр/Documents/GitHub/mp2-practice/EreminAN/01_lab_polynoms/sln/Monom/CMakeFiles/Monom.dir
-C:/Users/Александр/Documents/GitHub/mp2-practice/EreminAN/01_lab_polynoms/sln/Polynom/CMakeFiles/Polynom.dir
-C:/Users/Александр/Documents/GitHub/mp2-practice/EreminAN/01_lab_polynoms/sln/main/CMakeFiles/Application.dir
-C:/Users/Александр/Documents/GitHub/mp2-practice/EreminAN/01_lab_polynoms/sln/gtest/CMakeFiles/gtest.dir
-C:/Users/Александр/Documents/GitHub/mp2-practice/EreminAN/01_lab_polynoms/sln/test/CMakeFiles/AllTests.dir

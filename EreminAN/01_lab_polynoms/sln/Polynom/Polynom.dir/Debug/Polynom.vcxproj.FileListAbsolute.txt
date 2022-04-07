@@ -1,2 +1,0 @@
-C:\Users\Александр\Documents\GitHub\mp2-practice\EreminAN\01_lab_polynoms\sln\Polynom\Debug\Polynom.pdb
-C:\Users\Александр\Documents\GitHub\mp2-practice\EreminAN\01_lab_polynoms\sln\Polynom\Polynom.dir\Debug\Polynom.pdb
