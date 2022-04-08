@@ -1,5 +1,4 @@
 #pragma once
-#define MAX_SIZE 25
 
 template <class TKey, class TData>
 class Table

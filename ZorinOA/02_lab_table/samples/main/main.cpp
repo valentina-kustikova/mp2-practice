@@ -8,7 +8,7 @@ using namespace std;
 
 int main()
 {
-	HashTable<string, Polinom> H(10);
+	/*HashTable<string, Polinom> H(10);
 	H.Insert("first", Polinom("3x"));
 	H.Insert("second", Polinom("2y^5"));
 	H.Insert("third", Polinom("12.3z^3"));
@@ -30,10 +30,10 @@ int main()
 
     SortTable<string, Polinom> S(T);
     S.Insert("eighth", Polinom("z^2 - z"));
-    cout << S << endl;
+    cout << S << endl;*/
 
-	Polinom res = Polinom("32") * Polinom("3");
-	cout << res << endl;
+	Polinom a("-x-x");
+	cout << a << endl;
 
 
 

@@ -7,10 +7,10 @@ TEST(ScanTable, can_create_ScanTable_with_positive_length)
 	ASSERT_NO_THROW(ScanTable T(5));
 }
 
-TEST(ScanTable, cant_create_ScanTable_with_size_gr_than_MAX)
+TEST(ScanTable, cant_create_ScanTable_with_size_less_zero)
 {
-	using ScanTable = ScanTable<char, int>;
-	ASSERT_ANY_THROW(ScanTable T(MAX_SIZE + 1));
+    using ScanTable = ScanTable<char, int>;
+    ASSERT_ANY_THROW(ScanTable S(-5));
 }
 
 TEST(ScanTable, find_is_correct)
@@ -25,7 +25,6 @@ TEST(ScanTable, find_is_correct)
 	S.Insert('g', 7);
 	int* tmp = S.Find('b');
 	EXPECT_EQ(2, *tmp);
-
 }
 
 TEST(ScanTable, not_find_is_nullptr)
@@ -56,19 +55,22 @@ TEST(ScanTable, insert_correct)
 	EXPECT_NE(nullptr, S.Find('x'));
 }
 
-//TEST(ScanTable, cant_insert_when_mem_full)
-//{
-//	ScanTable<char, int> S(8);
-//	S.Insert('a', 1);
-//	S.Insert('c', 3);
-//	S.Insert('b', 2);
-//	S.Insert('d', 4);
-//	S.Insert('f', 6);
-//	S.Insert('e', 5);
-//	S.Insert('g', 7);
-//	S.Insert('x', 100);
-//	EXPECT_NO_THROW('z', 0);
-//}
+TEST(ScanTable, no_throw_insert_when_tab_is_full)
+{
+    ScanTable<char,int> S(1);
+    S.Insert('a', 1);
+    ASSERT_NO_THROW(S.Insert('b', 2));
+}
+
+TEST(ScanTable, cant_insert_with_not_unique_key)
+{
+    ScanTable<char, int> S;
+    S.Insert('a', 1);
+    S.Insert('b', 2);
+    S.Insert('b', 3);
+    auto it = S.begin()+2;
+    EXPECT_NE(3, (*it).GetData());
+}
 
 TEST(ScanTable, delete_correct)
 {
@@ -82,6 +84,19 @@ TEST(ScanTable, delete_correct)
 	S.Insert('g', 7);
 	S.Delete('g');
 	EXPECT_EQ(nullptr, S.Find('g'));
+}
+
+TEST(ScanTable, no_throw_delete_when_no_key)
+{
+    ScanTable<char, int> S(8);
+    S.Insert('a', 1);
+    S.Insert('c', 3);
+    S.Insert('b', 2);
+    S.Insert('d', 4);
+    S.Insert('f', 6);
+    S.Insert('e', 5);
+    S.Insert('g', 7);
+    ASSERT_NO_THROW(S.Delete('z'));
 }
 
 TEST(ScanTable, clear_correct)

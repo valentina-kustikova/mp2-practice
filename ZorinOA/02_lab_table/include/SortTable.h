@@ -19,7 +19,7 @@ protected:
         }
     }
 public:
-    SortTable(int size = MAX_SIZE) : ScanTable<TKey, TData>(size) {}
+    SortTable(int size = 25) : ScanTable<TKey, TData>(size) {}
     SortTable(const ScanTable<TKey, TData>& st)
         : ScanTable<TKey, TData> (st)
     {

@@ -16,12 +16,6 @@ TEST(HashTable, cant_create_HashTable_with_size_less_zero)
 	ASSERT_ANY_THROW(HashTable S(-5));
 }
 
-TEST(HashTable, cant_create_HashTable_with_size_gr_than_MAX)
-{
-	using HashTable = HashTable<std::string, int>;
-	ASSERT_ANY_THROW(HashTable S(MAX_SIZE + 1));
-}
-
 TEST(HashTable, insert_correct)
 {
 	HashTable<std::string, int> H;
@@ -39,6 +33,19 @@ TEST(HashTable, delete_correct)
 	H.Insert("fifth", 5);
 	H.Delete("third");
 	EXPECT_EQ(nullptr, H.Find("third"));
+}
+
+TEST(HashTable, no_throw_delete_when_no_key)
+{
+    HashTable<std::string, int> S(8);
+    S.Insert("a", 1);
+    S.Insert("b", 3);
+    S.Insert("c", 2);
+    S.Insert("d", 4);
+    S.Insert("f", 6);
+    S.Insert("e", 5);
+    S.Insert("g", 7);
+    ASSERT_NO_THROW(S.Delete("z"));
 }
 
 TEST(HashTable, clear_correct)

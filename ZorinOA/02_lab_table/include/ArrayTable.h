@@ -9,9 +9,9 @@ protected:
 	TabRecord<TKey, TData>* Recs;
 	int TabSize;
 public:
-	ArrayTable(int size = MAX_SIZE)
+    ArrayTable(int size = 25)
 	{
-        if (size > 0 && size <= MAX_SIZE)
+        if (size > 0)
 		{
 			Recs = new TabRecord<TKey, TData>[size];
 			TabSize = size;

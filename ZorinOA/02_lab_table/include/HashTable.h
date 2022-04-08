@@ -13,9 +13,9 @@ protected:
 	int TabSize;
 	virtual unsigned long HashFunc(const TKey& k) = 0;
 public:
-	ListHashTable(int size = MAX_SIZE)
+    ListHashTable(int size = 25)
 	{
-		if (size <= 0 || size > MAX_SIZE)
+        if (size <= 0)
 			throw "Wrong size!!";
 		TabSize = size;
 		ListsRecs = new List<TabRecord<TKey, TData>>[TabSize];
@@ -174,7 +174,7 @@ protected:
 		return std::hash<TKey>{}(k);
 	}
 public:
-	HashTable(int size = MAX_SIZE)
+    HashTable(int size = 25)
         :ListHashTable<TKey, TData>(size) {}
 };
 
@@ -194,6 +194,6 @@ protected:
 		return Res;
 	}
 public:
-	HashTable(int size = MAX_SIZE)
+    HashTable(int size = 25)
         : ListHashTable<std::string, TData>(size) {}
 };

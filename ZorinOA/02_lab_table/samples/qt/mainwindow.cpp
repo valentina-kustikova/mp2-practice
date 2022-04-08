@@ -96,21 +96,21 @@ void MainWindow::on_lineKey_textChanged(const QString &arg1)
 
 void MainWindow::on_pushButton_toHash_clicked()
 {
-    H.Insert(key, Polinom(res_str));
+    H.Insert(key, res_str);
     updateHash();
 }
 
 
 void MainWindow::on_pushButton_toSort_clicked()
 {
-    S.Insert(key, Polinom(res_str));
+    S.Insert(key, res_str);
     updateSort();
 }
 
 
 void MainWindow::on_pushButton_toScan_clicked()
 {
-    T.Insert(key, Polinom(res_str));
+    T.Insert(key, res_str);
     updateScan();
 }
 
@@ -120,7 +120,11 @@ void MainWindow::on_pushButton_Hash_add_clicked()
     InputDialog* pID = new InputDialog;
     if (pID->exec() == QDialog::Accepted)
     {
-        H.Insert(pID->key().toStdString(), pID->poly().toStdString());
+        try {
+            H.Insert(pID->key().toStdString(), pID->poly().toStdString());
+        }  catch (const std::exception& ex) {
+            statusBar()->showMessage(ex.what(), 3000);
+        }
         updateHash();
     }
     delete pID;
@@ -151,7 +155,11 @@ void MainWindow::on_pushButton_Sort_add_clicked()
     InputDialog* pID = new InputDialog;
     if (pID->exec() == QDialog::Accepted)
     {
-        S.Insert(pID->key().toStdString(), pID->poly().toStdString());
+        try {
+            S.Insert(pID->key().toStdString(), pID->poly().toStdString());
+        }  catch (const std::exception& ex) {
+            statusBar()->showMessage(ex.what(), 3000);
+        }
         updateSort();
     }
     delete pID;
@@ -182,7 +190,11 @@ void MainWindow::on_pushButton_Scan_add_clicked()
     InputDialog* pID = new InputDialog;
     if (pID->exec() == QDialog::Accepted)
     {
-        T.Insert(pID->key().toStdString(), pID->poly().toStdString());
+        try {
+            T.Insert(pID->key().toStdString(), pID->poly().toStdString());
+        }  catch (const std::exception& ex) {
+            statusBar()->showMessage(ex.what(), 3000);
+        }
         updateScan();
     }
     delete pID;

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 6.0.2, 2022-04-07T23:43:31. -->
+<!-- Written by QtCreator 6.0.2, 2022-04-07T23:52:43. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -137,6 +137,7 @@
     <value type="Qt::CheckState" key="1@C:/Users/kento/source/repos/oleg-w570/mp2-practice/ZorinOA/02_lab_table/tests/test_scantable.cpp:insert_correct">Checked</value>
     <value type="Qt::CheckState" key="1@C:/Users/kento/source/repos/oleg-w570/mp2-practice/ZorinOA/02_lab_table/tests/test_scantable.cpp:not_find_is_nullptr">Checked</value>
     <value type="Qt::CheckState" key="1@C:/Users/kento/source/repos/oleg-w570/mp2-practice/ZorinOA/02_lab_table/tests/test_sorttable.cpp:SortTable">Checked</value>
+    <value type="Qt::CheckState" key="1@C:/Users/kento/source/repos/oleg-w570/mp2-practice/ZorinOA/02_lab_table/tests/test_sorttable.cpp:can_create_SortTable_with_extra_size">Checked</value>
     <value type="Qt::CheckState" key="1@C:/Users/kento/source/repos/oleg-w570/mp2-practice/ZorinOA/02_lab_table/tests/test_sorttable.cpp:can_create_SortTable_with_positive_size">Checked</value>
     <value type="Qt::CheckState" key="1@C:/Users/kento/source/repos/oleg-w570/mp2-practice/ZorinOA/02_lab_table/tests/test_sorttable.cpp:cant_create_ScanTable_with_size_gr_than_MAX">Checked</value>
     <value type="Qt::CheckState" key="1@C:/Users/kento/source/repos/oleg-w570/mp2-practice/ZorinOA/02_lab_table/tests/test_sorttable.cpp:cant_create_SortTable_with_size_less_zero">Checked</value>

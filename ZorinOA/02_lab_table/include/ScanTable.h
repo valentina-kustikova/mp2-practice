@@ -5,7 +5,7 @@ template <class TKey, class TData>
 class ScanTable : public ArrayTable<TKey, TData>
 {
 public:
-    ScanTable(int size = MAX_SIZE) : ArrayTable<TKey, TData>(size) {}
+    ScanTable(int size = 25) : ArrayTable<TKey, TData>(size) {}
     virtual TData* Find(const TKey& k)
 	{
 		for (int i = 0; i < this->DataCount; i++)

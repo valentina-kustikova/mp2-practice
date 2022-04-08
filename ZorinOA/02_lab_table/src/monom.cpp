@@ -75,7 +75,7 @@ void MonomList::Insert(const Monom& monom)
 		if (monom.deg == p->next->deg)
 		{
 			p->next->cf += monom.cf;
-			if (p->next->cf < 1e-10 && p->next != Tail)
+			if (abs(p->next->cf) < 1e-10 && p->next != Tail)
 			{
 				Monom* tmp = p->next;
 				p->next = tmp->next;
