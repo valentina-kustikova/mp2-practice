@@ -1,5 +1,5 @@
-﻿#pragma once
-/*template <typename TData, typename TKey>
+#pragma once
+template <typename TData, typename TKey>
 class TabRecord
 { public:
   TKey key;
@@ -15,4 +15,4 @@ class TabRecord
   TabRecord<TData,TKey>& operator=(const TabRecord<TData,TKey>& TabR)
   { data = new TData(*(TabR.data)); key = TabR.key; return *this; }
 };
-*/
+

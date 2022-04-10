@@ -1,17 +1,17 @@
-﻿#pragma once
+
 #include "Table.h"
 
 // Класса Хеш-таблица
 template <typename TData, typename TKey>
 class HashTable : public Table<TData,TKey>
-{ public:
-	
+{
+  public:
   char* mark;								// 0 пусто, 1 заполнена, -1 удалена
   int HashFunc(const TKey& key) const;
   int HashFunc2(int in) const;
   unsigned int step;
   // Конструкторы, деструктор	
-  HashTable(unsigned int n = 10, unsigned int step1 = 1);
+  //HashTable(unsigned int n = 10, unsigned int step1 = 1);
   HashTable(const HashTable<TData,TKey>& T1);
   ~HashTable();
   // Методы
@@ -20,7 +20,7 @@ class HashTable : public Table<TData,TKey>
   virtual TData* Search(const TKey Key);
   void SetNext();
   void Reset();
-  template <class TData> friend ostream& operator<<(ostream& os, const HashTable<TData,TKey>& T1)
+  friend ostream& operator<<(ostream& os, const HashTable<TData,TKey>& T1)
   { if (T1.dataCount)
 	{ for (int i = 0; i < T1.Size; i++)
       { if (T1.mark[i])
@@ -31,35 +31,35 @@ class HashTable : public Table<TData,TKey>
     { os << "\n\tTable is Empty\n" << endl;}
 	return os;
   }
+
+  HashTable(unsigned int n, unsigned int step1): Table<TData,TKey>(n)
+  {
+      step = step1;
+      mark = new char[n];
+      for (int i = 0; i < this->Size; i++)
+      {
+          mark[i] = 0;
+      }
+  }
 };
 
 // Pелизация функциий для класса Хеш-таблиц
 // Конструкторы, деструктор	
 template <typename TData, typename TKey>
-HashTable<TData, TKey>::HashTable(unsigned int n, unsigned int step1) : Table(n)
-{
-	step = step1;
-	mark = new char[n];
-	for (int i = 0; i < Size; i++)
-	{
-		mark[i] = 0;
-	}
-}
-template <typename TData, typename TKey>
 HashTable<TData, TKey>::HashTable(const HashTable<TData, TKey>& T1)
 {
-	Size = T1.Size;
+    this->Size = T1.Size;
 	step = T1.step;
-	dataCount = T1.dataCount;
-	ind = T1.ind;
-	rec = new TabRecord<TData, TKey>*[Size];
-	mark = new char[Size];
-	for (int i = 0; i < Size; i++)
+    this->dataCount = T1.dataCount;
+    this->ind = T1.ind;
+    this->rec = new TabRecord<TData, TKey>*[this->Size];
+    mark = new char[this->Size];
+    for (int i = 0; i < this->Size; i++)
 	{
 		mark[i] = T1.mark[i];
 		if (mark[i] == 1)
 		{
-			rec[i] = new TabRecord<TData, TKey>(*(T1.rec[i]));
+            this->rec[i] = new TabRecord<TData, TKey>(*(T1.rec[i]));
 		}
 	}
 }
@@ -77,22 +77,22 @@ int HashTable<TData, TKey>::HashFunc(const TKey& key) const
 	{
 		h = h + int(key[i]);
 	}
-	return h % Size;
+    return h % this->Size;
 }
 template <typename TData, typename TKey>
 int HashTable<TData, TKey>::HashFunc2(int in) const
 {
-	return (in + step) % Size;;
+    return (in + step) % this->Size;
 }
 template <typename TData, typename TKey>
 void HashTable<TData, TKey>::SetNext()
 {
-	if (!IsEmpty())
+    if (!this->IsEmpty())
 	{
 		do
 		{
-			ind = (ind + 1) % Size;
-		} while (mark[ind] != 1);
+            this->ind = (this->ind + 1) % this->Size;
+        } while (mark[this->ind] != 1);
 	}
 	else
 	{
@@ -102,45 +102,45 @@ void HashTable<TData, TKey>::SetNext()
 template <typename TData, typename TKey>
 void HashTable<TData, TKey>::Reset()
 {
-	if (dataCount)
+    if (this->dataCount)
 	{
-		ind = 0;
-		while (mark[ind] != 1)
+        this->ind = 0;
+        while (mark[this->ind] != 1)
 		{
-			ind++;
+            this->ind++;
 		}
 	}
 	else
 	{
-		ind = -1;
+        this->ind = -1;
 	}
 }
 template <typename TData, typename TKey>
 void HashTable<TData, TKey>::Insert(const TData data1, const TKey key1)
 {
-	if (IsFull())
+    if (this->IsFull())
 	{
 		throw 1;
 	} //Таблица переполнена
-	ind = HashFunc(key1);
-	if (mark[ind] != 1)
+    this->ind = HashFunc(key1);
+    if (mark[this->ind] != 1)
 	{
-		rec[ind] = new TabRecord<TData, TKey>(key1, data1);
-		dataCount++;
-		mark[ind] = 1;
+        this->rec[this->ind] = new TabRecord<TData, TKey>(key1, data1);
+        this->dataCount++;
+        mark[this->ind] = 1;
 	}
 	else
 	{
-		if (rec[ind]->GetKey() != key1)
+        if (this->rec[this->ind]->GetKey() != key1)
 		{
-			int i = ind;
-			while (mark[ind])
+            int i = this->ind;
+            while (mark[this->ind])
 			{
-				ind = HashFunc2(ind);
+                this->ind = HashFunc2(this->ind);
 			}
-			rec[ind] = new TabRecord<TData, TKey>(key1, data1);
-			dataCount++;
-			mark[ind] = 1;
+            this->rec[this->ind] = new TabRecord<TData, TKey>(key1, data1);
+            this->dataCount++;
+            mark[this->ind] = 1;
 		}
 		else
 		{
@@ -152,23 +152,23 @@ template <typename TData, typename TKey>
 TData* HashTable<TData, TKey>::Search(const TKey key1)
 {
 	Reset();
-	if (dataCount)
+    if (this->dataCount)
 	{
-		ind = HashFunc(key1);
-		int i = ind;
-		if (rec[ind]->GetKey() == key1)
+        this->ind = HashFunc(key1);
+        int i = this->ind;
+        if (this->rec[this->ind]->GetKey() == key1)
 		{
-			return rec[ind]->GetData();
+            return this->rec[this->ind]->GetData();
 		}
 		else
 		{
-			while (mark[ind] && ((ind + step) != i) && (rec[ind]->GetKey() != key1))
+            while (mark[this->ind] && ((this->ind + step) != i) && (this->rec[this->ind]->GetKey() != key1))
 			{
-				ind = HashFunc2(ind);
+                this->ind = HashFunc2(this->ind);
 			}
-			if (rec[ind]->GetKey() == key1)
+            if (this->rec[this->ind]->GetKey() == key1)
 			{
-				return rec[ind]->GetData();
+                return this->rec[this->ind]->GetData();
 			}
 			else
 			{
@@ -187,9 +187,9 @@ void HashTable<TData, TKey>::Delete(const TKey key1)
 	Reset();
 	if (Search(key1) != nullptr)
 	{
-		rec[ind] = new TabRecord<TData, TKey>;
-		mark[ind] = -1;
-		dataCount--;
+        this->rec[this->ind] = new TabRecord<TData, TKey>;
+        mark[this->ind] = -1;
+        this->dataCount--;
 	}
 	else
 	{

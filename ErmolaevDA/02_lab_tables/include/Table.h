@@ -1,40 +1,21 @@
-﻿#pragma once
+#pragma once
+#include "TabRecord.h"
 #include <iostream>
 using namespace std;
 
-template <typename TData, typename TKey>
-class TabRecord
-{
-public:
-	TKey key;
-	TData* data;
-	// Конструкторы, деструктор	
-	TabRecord(TKey k = {}, TData d = {}) { key = k; data = new TData(d); }
-	TabRecord(const TabRecord& T1) { key = T1.key; data = new TData(*(T1.data)); } // конструктор копирования
-	~TabRecord() { delete data; }
-	//Методы
-	TData* GetData() const { return data; }
-	TKey GetKey() const { return key; }
-	// Перегрузка операций
-	TabRecord<TData, TKey>& operator=(const TabRecord<TData, TKey>& TabR)
-	{
-		data = new TData(*(TabR.data)); key = TabR.key; return *this;
-	}
-};
-
 
 //Класс Таблица
-template <typename TData, typename TKey>
-class Table
+template <typename TData, typename TKey> class Table
 {
-  public:
+  protected:
   TabRecord<TData,TKey>** rec;
-  unsigned int Size;
-  unsigned int dataCount ;
+  int Size;
+  int dataCount ;
   int ind;
   // Конструкторы, деструктор	
   Table(unsigned int n = 10);
   virtual ~Table() { delete[] rec; }
+  public:
   // Методы 
   virtual void Insert(const TData Data, const TKey Key) = 0;
   virtual void Delete(const TKey Key) = 0;
@@ -114,3 +95,4 @@ TKey Table<TData, TKey>::GetKey() const
 		throw - 1;
 	} //Таблица пуста
 }
+

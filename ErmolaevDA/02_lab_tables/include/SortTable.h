@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include "ScanTable.h"
 #include "TabRecord.h"
 //Класс упорядоченные таблицы
@@ -23,25 +23,25 @@ class SortTable : public ScanTable<TData,TKey>
 template <typename TData, typename TKey>
 SortTable<TData, TKey>::SortTable(const SortTable<TData, TKey>& T1)
 {
-	Size = T1.Size;
-	ind = T1.ind;
-	dataCount = T1.dataCount;
-	rec = new TabRecord<TData, TKey>*[Size];
-	for (int i = 0; i < dataCount; i++)
+    this->Size = T1.Size;
+    this->ind = T1.ind;
+    this->dataCount = T1.dataCount;
+    this->rec = new TabRecord<TData, TKey>*[this->Size];
+    for (int i = 0; i < this->dataCount; i++)
 	{
-		rec[i] = new TabRecord<TData, TKey>(*(T1.rec[i]));
+        this->rec[i] = new TabRecord<TData, TKey>(*(T1.rec[i]));
 	}
 }
 template <typename TData, typename TKey>
 SortTable<TData, TKey>::SortTable(const ScanTable<TData, TKey>& T1) //Здесь было Scan
 {
-	Size = T1.Size;
-	dataCount = T1.dataCount;
-	ind = T1.ind;
-	rec = new TabRecord<TData, TKey>*[Size];
-	for (int i = 0; i < dataCount; i++)
+    this->Size = T1.Size;
+    this->dataCount = T1.dataCount;
+    this->ind = T1.ind;
+    this->rec = new TabRecord<TData, TKey>*[this->Size];
+    for (int i = 0; i < this->dataCount; i++)
 	{
-		rec[i] = T1.rec[i];
+        this->rec[i] = T1.rec[i];
 	}
 	SortData();
 }
@@ -49,42 +49,42 @@ SortTable<TData, TKey>::SortTable(const ScanTable<TData, TKey>& T1) //Здесь
 template <typename TData, typename TKey>
 void SortTable<TData, TKey>::Insert(const TData data, const TKey key)
 {
-	if (IsFull()) { throw 1; } //Таблица переполнена
+    if (this->IsFull()) { throw 1; } //Таблица переполнена
 	TabRecord<TData, TKey> R(key, data);
-	Reset();
-	while (!(IsEnd()) && key >= rec[ind]->GetKey())
+    this->Reset();
+    while (!(this->IsEnd()) && key >= this->rec[this->ind]->GetKey())
 	{
-		if (rec[ind]->GetKey() == key)
+        if (this->rec[this->ind]->GetKey() == key)
 		{
 			throw - 1;
 		} //Ключ уже есть в таблице
-		ind++;
+        this->ind++;
 	}
-	if (IsEmpty())
+    if (this->IsEmpty())
 	{
-		ind++;
+        this->ind++;
 	}
-	dataCount++;
-	for (int i = dataCount - 1; i > ind; i--)
+    this->dataCount++;
+    for (int i = this->dataCount - 1; i > this->ind; i--)
 	{
-		rec[i] = rec[i - 1];
+        this->rec[i] = this->rec[i - 1];
 	}
-	rec[ind] = new TabRecord<TData, TKey>(R);
-	Reset();
+    this->rec[this->ind] = new TabRecord<TData, TKey>(R);
+    this->Reset();
 }
 template <typename TData, typename TKey>
 TData* SortTable<TData, TKey>::Search(const TKey key)
 {
-	Reset();
+    this->Reset();
 	TData* tmp = nullptr;
-	if (!(IsEmpty()))
+    if (!(this->IsEmpty()))
 	{
-		int i = -1, j = dataCount;
+        int i = -1, j = this->dataCount;
 		int mid;
 		while (i < j - 1)
 		{
 			mid = (j + i) / 2;
-			if (key >= rec[mid]->GetKey())
+            if (key >= this->rec[mid]->GetKey())
 			{
 				i = mid;
 			}
@@ -93,10 +93,10 @@ TData* SortTable<TData, TKey>::Search(const TKey key)
 				j = mid;
 			}
 		}
-		if (key == rec[i]->GetKey())
+        if (key == this->rec[i]->GetKey())
 		{
-			ind = i;
-			tmp = rec[ind]->GetData();
+            this->ind = i;
+            tmp = this->rec[this->ind]->GetData();
 		}
 		else
 		{
@@ -112,32 +112,32 @@ TData* SortTable<TData, TKey>::Search(const TKey key)
 template <typename TData, typename TKey>
 void SortTable<TData, TKey>::Delete(const TKey key)
 {
-	Reset();
+    this->Reset();
 	if (Search(key) == nullptr)
 	{
 		throw 1;
 	} // элемента для удаления нет в таблице
 	else
 	{
-		if (dataCount > 1)
+        if (this->dataCount > 1)
 		{
-			dataCount--;
-			for (int i = ind; i < dataCount; i++)
+            this->dataCount--;
+            for (int i = this->ind; i < this->dataCount; i++)
 			{
-				rec[i] = rec[i + 1];
+                this->rec[i] = this->rec[i + 1];
 			}
-			Reset();
+            this->Reset();
 		}
 		else
 		{
-			dataCount = 0;
+            this->dataCount = 0;
 		}
 	}
 }
 template <typename TData, typename TKey>
 void SortTable<TData, TKey>::SortData()
 {
-	int i, j;
+
 	/*for (i = 0; i < dataCount; i++)
 	{ for (j = 0; j < dataCount; j++)
 	  { if (rec[i]->GetKey() < rec[j]->GetKey())
@@ -147,15 +147,15 @@ void SortTable<TData, TKey>::SortData()
 		}
 	  }
 	}*/
-	for (int i = 0; i < dataCount; i++) {
+    for (int i = 0; i < this->dataCount; i++) {
 		bool flag = true;
-		for (int j = 0; j < dataCount - (i + 1); j++) {
-			if (rec[j]->GetKey() < rec[j + 1]->GetKey()) {
+        for (int j = 0; j < this->dataCount - (i + 1); j++) {
+            if (this->rec[j]->GetKey() < this->rec[j + 1]->GetKey()) {
 				flag = false;
 				TabRecord<TData, TKey>* temp;
-				temp = rec[j];
-				rec[j] = rec[j + 1];
-				rec[j + 1] = temp;
+                temp = this->rec[j];
+                this->rec[j] = this->rec[j + 1];
+                this->rec[j + 1] = temp;
 			}
 		}
 		if (flag) {

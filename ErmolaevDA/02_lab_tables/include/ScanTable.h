@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include "Table.h" 
 
 //Класс Просматриваемых таблиц
@@ -21,51 +21,51 @@ class ScanTable : public Table<TData,TKey>
 template <typename TData, typename TKey>
 ScanTable<TData, TKey>::ScanTable(const ScanTable<TData, TKey>& T1)
 {
-    Size = T1.Size;
-    dataCount = T1.dataCount;
-    ind = T1.ind;
-    rec = new TabRecord<TData, TKey>*[Size];
-    for (int i = 0; i < dataCount; i++)
+    this->Size = T1.Size;
+    this->dataCount = T1.dataCount;
+    this->ind = T1.ind;
+    this->rec = new TabRecord<TData, TKey>*[this->Size];
+    for (int i = 0; i < this->dataCount; i++)
     {
-        rec[i] = new TabRecord<TData, TKey>(*(T1.rec[i]));
+        this->rec[i] = new TabRecord<TData, TKey>(*(T1.rec[i]));
     }
 }
 // Методы 
 template <typename TData, typename TKey>
 void ScanTable<TData, TKey>::Insert(const TData Data, const TKey Key)
 {
-    if (IsFull())
+    if (this->IsFull())
     {
         throw 1;
     } //Таблица переполнена
     TabRecord<TData, TKey> R(Key, Data);
-    Reset();
-    if ((IsEmpty()) || (Search(Key) == nullptr))
+    this->Reset();
+    if ((this->IsEmpty()) || (Search(Key) == nullptr))
     {
-        rec[dataCount] = new TabRecord<TData, TKey>(R);
-        dataCount++;
+        this->rec[this->dataCount] = new TabRecord<TData, TKey>(R);
+        this->dataCount++;
     }
     else
     {
         throw 1;
     } // Повторная вставка элемента
-    Reset();
+    this->Reset();
 }
 template <typename TData, typename TKey>
 TData* ScanTable<TData, TKey>::Search(const TKey Key)
 {
-    if (IsEmpty())
+    if (this->IsEmpty())
     {
         throw 1;
     } //таблица пуста 
-    Reset();
-    while (!(IsEnd()) && Key != rec[ind]->GetKey())
+    this->Reset();
+    while (!(this->IsEnd()) && Key != this->rec[this->ind]->GetKey())
     {
-        ind++;
+        this->ind++;
     }
-    if (!(IsEnd()))
+    if (!(this->IsEnd()))
     {
-        return rec[ind]->GetData();
+        return this->rec[this->ind]->GetData();
     }
     else
     {
@@ -81,10 +81,10 @@ void ScanTable<TData, TKey>::Delete(TKey Key)
     } // элемента для удаления нет в таблице
     else
     {
-        rec[ind] = new TabRecord<TData, TKey>(*rec[dataCount - 1]);
-        rec[dataCount - 1] = NULL;
-        dataCount = dataCount - 1;
-        ind = dataCount - 1;
+        this->rec[this->ind] = new TabRecord<TData, TKey>(*this->rec[this->dataCount - 1]);
+        this->rec[this->dataCount - 1] = NULL;
+        this->dataCount = this->dataCount - 1;
+        this->ind = this->dataCount - 1;
     }
 }
 
