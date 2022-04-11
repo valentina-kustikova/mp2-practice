@@ -37,7 +37,7 @@ Polinom::Polinom(const std::string& input)
     if (isCorrect())
        converter();
     else
-       throw std::exception("More than one point or one and the same variable");
+       throw std::runtime_error("More than one point or one and the same variable");
 }
 
 Polinom& Polinom::operator+=(const Monom& monom)
@@ -469,7 +469,7 @@ void Polinom::parser(const std::string& input)
 				else if (current == 'x' || current == 'y' || current == 'z')
 					state = 3;
 				else
-                    throw std::exception("Wrong symbols at the beginning");
+                    throw std::runtime_error("Wrong symbols at the beginning");
 				lexema.append(1, current);
 				break;
 			}
@@ -479,7 +479,7 @@ void Polinom::parser(const std::string& input)
 				else if (current == 'x' || current == 'y' || current == 'z')
 					state = 3;
 				else
-                    throw std::exception("Wrong symbols after sign");
+                    throw std::runtime_error("Wrong symbols after sign");
 
 				lexema.append(1, current);
 				break;
@@ -496,7 +496,7 @@ void Polinom::parser(const std::string& input)
 				else if (current == 'x' || current == 'y' || current == 'z')
 					state = 3;
 				else
-                    throw std::exception("Wrong symbols in place of the coefficient");
+                    throw std::runtime_error("Wrong symbols in place of the coefficient");
 
 				lexema.append(1, current);
 				break;
@@ -513,7 +513,7 @@ void Polinom::parser(const std::string& input)
 				else if (current == '^')
 					state = 4;
 				else
-                    throw std::exception("Wrong symbols after one of the variables");
+                    throw std::runtime_error("Wrong symbols after one of the variables");
 
 				lexema.append(1, current);
 				break;
@@ -525,7 +525,7 @@ void Polinom::parser(const std::string& input)
 					lexema.append(1, current);
 				}
 				else
-                    throw std::exception("Wrong symbols in place of degree");
+                    throw std::runtime_error("Wrong symbols in place of degree");
 
 				break;
 			}
@@ -539,7 +539,7 @@ void Polinom::parser(const std::string& input)
 				else if (current == 'x' || current == 'y' || current == 'z')
 					state = 3;
 				else
-                    throw std::exception("Wrong symbol after degree");
+                    throw std::runtime_error("Wrong symbol after degree");
 
 				lexema.append(1, current);
 				break;
@@ -551,7 +551,7 @@ void Polinom::parser(const std::string& input)
 	}
 
     if (state == 1 || state == 4)
-        throw std::exception("Missing characters");
+        throw std::runtime_error("Missing characters");
     else if (state == 2 || state == 3 || state == 5)
         Lexs.push_back(lexema);
 }
