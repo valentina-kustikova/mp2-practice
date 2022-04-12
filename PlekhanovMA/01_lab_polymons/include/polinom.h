@@ -2,26 +2,25 @@
 
 #include <iostream>
 #include "monom.h"
-#include "list.h"
+#include "headlist.h"
 #include <string>
 #include <vector>
 
-class TPolinom : TList
+class TPolinom
 {
 private:
-    TList polinom;
+    THeadList polinom;
     std::vector<std::string> strpolinom;
-
 public:
     TPolinom();
-    TPolinom(TList polinom);
+    TPolinom(std::string str);
     TPolinom(const TPolinom &a);
     ~TPolinom();
 
-    void Input(std::string& str); // ввод полинома
-    void StrToList(); // преобразование из строки в список
+    void Sort(); // сортировать полином
     void Similar(); // привести подобные
     void ClearPol(); // очистить полином
+    bool Check();
 
     // операции с полиномами
     TPolinom operator+(const TPolinom& a);
@@ -29,11 +28,12 @@ public:
     TPolinom operator-();
     TPolinom operator*(const TPolinom& a);
     TPolinom operator*(const double c);
+    TPolinom operator/(const double c);
     TPolinom& operator=(const TPolinom& a);
     int operator==(const TPolinom& a) const;
-    double Values(int x, int y, int z); // значение полинома с заданными значениями
+    double operator()(int x, int y, int z);
 
-    // вывод
+    // ввод/вывод
     friend std::ostream& operator<<(std::ostream& out,
         const TPolinom& polinom)
     {
@@ -44,7 +44,7 @@ public:
         else
         {
             TMonom* monomf = new TMonom;
-            monomf = P.polinom.GetMonom();
+            monomf->data = P.polinom.GetCurr()->data;
             if (monomf->data.coeff > 0)
                 out << monomf->data.coeff << "x^" << monomf->data.degx << "y^" << monomf->data.degy << "z^" << monomf->data.degz;
             else 
@@ -53,7 +53,7 @@ public:
             for (int i = 1; i < P.polinom.GetLenght(); i++)
             {
                 TMonom* monom = new TMonom;
-                monom = P.polinom.GetMonom();
+                monom->data = P.polinom.GetCurr()->data;
                 if (monom->data.coeff > 0)
                 out << " + " << monom->data.coeff << "x^" << monom->data.degx << "y^" << monom->data.degy << "z^" << monom->data.degz;
                 else
@@ -63,8 +63,4 @@ public:
         }
         return out;
     }
-
-    // служебные методы
-    std::vector<std::string> LookPolinom();
-    TPolinom Razd(const double c);
 };

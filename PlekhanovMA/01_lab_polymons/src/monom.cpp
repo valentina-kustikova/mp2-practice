@@ -7,7 +7,6 @@ TMonom::TMonom()
     data.degz = 0;
     data.coeff = 0;
     data.degree = 0;
-    pNext = nullptr;
 }
 
 TMonom::TMonom(TData Data)
@@ -17,7 +16,6 @@ TMonom::TMonom(TData Data)
     data.degz = Data.degz;
     data.degree = Data.degree;
     data.coeff = Data.coeff;
-    pNext = nullptr;
 }
 
 TMonom::TMonom(int Degx, int Degy, int Degz, double Coeff)
@@ -27,17 +25,6 @@ TMonom::TMonom(int Degx, int Degy, int Degz, double Coeff)
     data.degz = Degz;
     data.coeff = Coeff;
     data.degree = Degx * 100 + Degy * 10 + Degz;
-    pNext = nullptr;
-}
-
-TMonom::TMonom(int Degx, int Degy, int Degz, double Coeff, TMonom* PNext)
-{
-    data.degx = Degx;
-    data.degy = Degy;
-    data.degz = Degz;
-    data.coeff = Coeff;
-    data.degree = Degx * 100 + Degy * 10 + Degz;
-    pNext = PNext;
 }
 
 TMonom::TMonom(const TMonom& monom)
@@ -47,7 +34,6 @@ TMonom::TMonom(const TMonom& monom)
     data.degz = monom.data.degz;
     data.degree = monom.data.degree;
     data.coeff = monom.data.coeff;
-    pNext = monom.pNext;
 }
 
 TMonom::~TMonom()
@@ -64,7 +50,6 @@ TMonom & TMonom::operator=(const TMonom & monom)
         data.degx = monom.data.degx;
         data.degy = monom.data.degy;
         data.degz = monom.data.degz;
-        pNext = monom.pNext;
     }
     return *this;
 }

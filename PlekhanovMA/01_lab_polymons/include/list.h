@@ -1,31 +1,31 @@
 #pragma once
 
-#include "monom.h"
+#include "node.h"
 
 class TList
 {
-private:
-    TMonom* pFirst;// первый элемент списка
-    TMonom* pStop;// nullptr для лин. односвязного списка и pHead для цикл. с головой
-    TMonom* pCurr;// текущий элемент списка
-    TMonom* pNext;// следующий элемент списка от текущего
+protected:
+    TNode* pFirst;// первый элемент списка
+    TNode* pStop;// nullptr для лин. односвязного списка и pHead для цикл. с головой
+    TNode* pCurr;// текущий элемент списка
+    TNode* pNext;// следующий элемент списка от текущего
     int Size; // длина списка
 
 public:
     // Конструкторы
     TList();
-    TList(TMonom* pFirst);
+    TList(TNode* pFirst);
     TList(const TList& list);
     ~TList();
     
     // Операции над списком
-     TMonom* Search(TData const data);// поиск элемента списка
+     TNode* Search(TData const data);// поиск элемента списка
      void InsertToHead(TData const data);// вставить элемент в начало
      void InsertToTail(TData const data);// вставить элемент в конец
      void InsertAfter(TData const data, TData const after_data);// вставить элемент после данного
      void RemoveFirst();// удалить первый элемент
      void RemoveLast();// удалить последний элемент
-     void Remove(TMonom* monom);// удалить данный элемент
+     void Remove(TData curr_data);// удалить данный элемент
      int GetLenght() const;// получить длину списка
      void Clear(); // очистить список
 
@@ -38,8 +38,8 @@ public:
     // Служебные методы
      TList& operator =(const TList& list);
      int operator==(const TList list) const;
-     TMonom* GetMonom();
-     TMonom* GetNextMonom();
-     TMonom* GetFirstMonom();
-     TMonom* SearchSimilar(TData const data);
+     TNode* GetLast();
+     TNode* GetCurr();
+     TNode* GetNext();
+     TNode* GetFirst();
 };

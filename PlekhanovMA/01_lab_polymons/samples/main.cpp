@@ -24,18 +24,14 @@ int main()
 {
 	string str;
 	string str2;
-	TPolinom P;
-	TPolinom Q;
 	TPolinom C;
 	cout << "Input first polinom: ";
 	getline(cin, str, '\n');
-	P.Input(str);
-	P.StrToList();
+	TPolinom P(str);
 	P.Similar();
 	cout << "Input second polinom: ";
 	getline(cin, str2, '\n');
-	Q.Input(str2);
-	Q.StrToList();
+	TPolinom Q(str2);
 	Q.Similar();
 	Menu();
 	int sw, ch, x, y, z;
@@ -104,8 +100,8 @@ int main()
 			cout << "Input z: ";
 			cin >> z;
 			cin.ignore(32767, '\n');
-			res1 = P.Values(x, y, z);
-			res2 = Q.Values(x, y, z);
+			res1 = P(x, y, z);
+			res2 = Q(x, y, z);
 			cout << "First polinom result: " << res1 << endl;
 			cout << "Second polinom result: " << res2 << endl;
 			break;

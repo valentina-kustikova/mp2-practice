@@ -3,21 +3,18 @@
 TList::TList()
 {
 	this->pFirst = nullptr;
-	TMonom* monomstop = new TMonom(-1, -1, -1, 1000.0f);
-	this->pStop = monomstop;
-	this->pCurr = monomstop;
-	this->pNext = monomstop;
+	this->pStop = nullptr;
+	this->pCurr = nullptr;
+	this->pNext = nullptr;
 	this->Size = 0;
 }
 
-TList::TList(TMonom* pfirst)
+TList::TList(TNode* pfirst)
 {
 	this->pFirst = pfirst;
-	this->pFirst->pNext = this->pStop;
-	TMonom* monomstop = new TMonom(-1, -1, -1, 1000.0f);
-	this->pStop = monomstop;
+	this->pStop = nullptr;
 	this->pCurr = this->pFirst;
-	this->pNext = this->pStop;
+	this->pNext = nullptr;
 	this->Size = 1;
 }
 
@@ -35,36 +32,32 @@ TList::~TList()
 	
 }
 
-TMonom* TList::Search(TData const data)// поиск элемента в списке
+TNode* TList::Search(TData const data)// поиск элемента в списке
 {
-	TMonom* tempcurr = new TMonom;
+	TNode* tempcurr = new TNode;
 	tempcurr = pCurr;
-	TMonom* tempsearch = new TMonom;
+	TNode* tempsearch = new TNode;
 	if (this->pCurr->data != data)
 	{
-		while (this->pCurr->data != data)
+		while (tempcurr->data != data)
 		{
-			Next();
+			tempcurr = tempcurr->pNext;
 		}
-		tempsearch = pCurr;
+		tempsearch = tempcurr;
 	}
 	else
 		tempsearch = pCurr;
-	pCurr = tempcurr;
-	pNext = tempcurr->pNext;
 	return tempsearch;
 }
 
 void TList::InsertToHead(TData const data)// вставить элемент в начало
 {
-	TMonom* tempcurr = new TMonom;
+	TNode* tempcurr = new TNode;
 	tempcurr = pCurr;
 	if (IsEmpty() == 1)
 	{
-		TMonom* newfirst = new TMonom(data);
+		TNode* newfirst = new TNode(data);
 		this->pFirst = newfirst;
-		this->pStop->pNext = this->pFirst;
-		this->pFirst->pNext = this->pStop;
 		this->pCurr = this->pFirst;
 		this->pNext = this->pStop;
 		this->Size++;
@@ -73,8 +66,7 @@ void TList::InsertToHead(TData const data)// вставить элемент в начало
 	else
 	{
 		Reset();
-		TMonom* newfirst = new TMonom(data);
-		this->pStop->pNext = newfirst;
+		TNode* newfirst = new TNode(data);
 		newfirst->pNext = this->pFirst;
 		this->pFirst = newfirst;
 		this->pCurr = this->pFirst;
@@ -87,14 +79,13 @@ void TList::InsertToHead(TData const data)// вставить элемент в начало
 
 void TList::InsertToTail(TData const data)// вставить элемент в конец
 {
-	TMonom* tempcurr = new TMonom;
+	TNode* tempcurr = new TNode;
 	tempcurr = pCurr;
 	if (IsEmpty() == 1)
 	{
-		TMonom* newend = new TMonom(data);
+		TNode* newend = new TNode(data);
 		this->pFirst = newend;
 		this->pFirst->pNext = this->pStop;
-		this->pStop->pNext = this->pFirst;
 		this->pCurr = this->pFirst;
 		this->pNext = this->pStop;
 		this->Size++;
@@ -107,7 +98,7 @@ void TList::InsertToTail(TData const data)// вставить элемент в конец
 			while (IsEnded() == 0)
 				Next();
 		}
-		TMonom* newend = new TMonom(data);
+		TNode* newend = new TNode(data);
 		newend->pNext = this->pStop;
 		this->pCurr->pNext = newend;
 		this->pCurr = newend;
@@ -120,32 +111,38 @@ void TList::InsertToTail(TData const data)// вставить элемент в конец
 
 void TList::InsertAfter(TData const data, TData const after_data)// вставить элемент после данного
 {
-	TMonom* tempcurr = new TMonom;
+	TNode* tempcurr = new TNode;
 	tempcurr = pCurr;
-	TMonom* el = new TMonom(after_data);
-	if (pCurr->data != data)
+	TNode* el = new TNode(after_data);
+	if (data != pStop->data)
 	{
-		while (pCurr->data != data)
+		if (pCurr->data != data)
 		{
-			Next();
+			while (pCurr->data != data)
+			{
+				Next();
+			}
 		}
+		this->pCurr->pNext = el;
+		el->pNext = this->pNext;
+		this->pNext = el;
+		this->Size++;
 	}
-	this->pCurr->pNext = el;
-	el->pNext = this->pNext;
-	this->pNext = el;
-	this->Size++;
+	else
+	{
+		InsertToHead(el->data);
+	}
 	pCurr = tempcurr;
 	pNext = pCurr->pNext;
 }
 
 void TList::RemoveFirst()// удалить первый элемент
 {
-	TMonom* tempcurr = new TMonom;
+	TNode* tempcurr = new TNode;
 	tempcurr = pCurr;
 	if (GetLenght() > 1)
 	{
 		Reset();
-		this->pStop->pNext = this->pNext;
 		this->pCurr = this->pNext;
 		delete pFirst;
 		this->pFirst = this->pCurr;
@@ -166,7 +163,7 @@ void TList::RemoveFirst()// удалить первый элемент
 
 void TList::RemoveLast()// удалить последний элемент
 {
-	TMonom* tempcurr = new TMonom;
+	TNode* tempcurr = new TNode;
 	tempcurr = pCurr;
 	if (GetLenght() > 1)
 	{
@@ -185,42 +182,40 @@ void TList::RemoveLast()// удалить последний элемент
 	pNext = pCurr->pNext;
 }
 
-void TList::Remove(TMonom* monom)// удалить данный элемент
+void TList::Remove(TData curr_data)// удалить данный элемент
 {
-	TMonom* tempcurr = new TMonom;
-	if (pCurr != monom)
+	TNode* tempcurr = new TNode;
+	tempcurr = pCurr;
+	TNode* tempsearch = new TNode;
+	tempsearch = pCurr;
+	if (Size > 1 && curr_data != pFirst->data)
 	{
-		tempcurr = pCurr;
-	}
-	else
-	{
-		while (this->pNext->data != monom->data)
-			Next();
-		if (pCurr->data != pStop->data)
+		Reset();
+		if (pCurr->data != curr_data)
 		{
-			tempcurr = pCurr;
+			while (tempsearch->pNext->data != curr_data)
+				Next();
+			pCurr->pNext = pNext->pNext;
+			delete pNext;
+			pNext = pCurr->pNext;
+			Next();
+			Size--;
 		}
 		else
 		{
-			Next();
+			while (this->pNext->data != curr_data)
+				Next();
+			pCurr->pNext = pNext->pNext;
+			delete pNext;
+			pNext = pCurr->pNext;
 			Next();
 			tempcurr = pCurr;
-			while (this->pNext->data != monom->data)
-				Next();
+			Size--;
 		}
-		Next();
-	}
-	while (this->pNext->data != monom->data)
-		Next();
-	if (pCurr->data == pStop->data)
-	{
-		RemoveFirst();
 	}
 	else
 	{
-		this->pCurr->pNext = this->pNext->pNext;
-		delete pNext;
-		this->Size--;
+		RemoveFirst();
 	}
 	pCurr = tempcurr;
 	pNext = pCurr->pNext;
@@ -240,9 +235,7 @@ void TList::Clear()
 	}
 	delete pFirst;
 	pFirst = nullptr;
-	pStop->pNext = pStop;
 	pCurr = pStop;
-	pNext = pStop;
 	Size = 0;
 }
 
@@ -283,8 +276,8 @@ int TList::operator==(const TList list) const
 {
 	if (Size == list.Size)
 	{
-		TMonom* temp = new TMonom;
-		TMonom* temp2 = new TMonom;
+		TNode* temp = new TNode;
+		TNode* temp2 = new TNode;
 		temp = pFirst;
 		temp2 = list.pFirst;
 		if (temp->data != temp2->data)
@@ -310,59 +303,28 @@ TList& TList::operator =(const TList& list)
 	return *this;
 }
 
-TMonom* TList::GetFirstMonom()
+TNode* TList::GetFirst()
 {
 	return pFirst;
 }
 
-TMonom* TList::GetMonom()
+TNode* TList::GetLast()
+{
+	TNode* tempnode = new TNode;
+	tempnode = pCurr;
+	while (tempnode->pNext != pStop)
+	{
+		tempnode = tempnode->pNext;
+	}
+	return tempnode;
+}
+
+TNode* TList::GetCurr()
 {
 	return pCurr;
 }
 
-TMonom* TList::GetNextMonom()
+TNode* TList::GetNext()
 {
 	return pNext;
-}
-
-TMonom* TList::SearchSimilar(TData const data)// поиск подобного элемента в списке
-{
-	TMonom* nullmonom = new TMonom(-2, -2, -2, 0);
-	if (IsEmpty() == 0 && GetLenght() > 1)
-	{
-		TMonom* tempcurr = new TMonom;
-		tempcurr = pCurr;
-		TMonom* tempsearch = new TMonom;
-		TMonom* tempsimilar = new TMonom(data);
-		Reset();
-		if (pCurr->data != tempsimilar->data)
-		{
-			while (pCurr->data != tempsimilar->data)
-			{
-				Next();
-			}
-			tempsimilar = pCurr;
-		}
-		else
-			tempsimilar = pCurr;
-		Reset();
-		for(int i = 0; i < GetLenght(); i++)
-		{
-			if (pCurr->data.degree == tempsimilar->data.degree && pCurr != tempsimilar)
-			{
-				tempsearch = pCurr;
-				pCurr = tempcurr;
-				pNext = pCurr->pNext;
-				return tempsearch;
-			}
-			else
-				tempsearch = nullmonom;
-			Next();
-		}
-		pCurr = tempcurr;
-		pNext = pCurr->pNext;
-		return tempsearch;
-	}
-	else
-		return nullmonom;
 }
