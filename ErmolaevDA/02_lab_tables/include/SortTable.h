@@ -8,7 +8,7 @@ class SortTable : public ScanTable<TData,TKey>
   public:
   void SortData(); // метод сортировки записей по ключам
   // Конструкторы, деструктор	
-  SortTable(unsigned int n = 10) : ScanTable<TData,TKey>(n) {};
+  SortTable(unsigned int n = 100) : ScanTable<TData,TKey>(n) {};
   SortTable(const SortTable<TData,TKey>& T1);
   SortTable(const ScanTable<TData,TKey>& T1);
   ~SortTable() {};

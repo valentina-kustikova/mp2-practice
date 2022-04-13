@@ -7,7 +7,7 @@ class ScanTable : public Table<TData,TKey>
 { public: 
     
   // Конструкторы, деструктор	
-  ScanTable(unsigned int n = 10) : Table<TData,TKey>(n) {};
+  ScanTable(unsigned int n = 100) : Table<TData,TKey>(n) {};
   ScanTable(const ScanTable<TData,TKey>& T1);
   ~ScanTable() {};
   // Методы 

@@ -10,8 +10,8 @@ class HashTable : public Table<TData,TKey>
   int HashFunc(const TKey& key) const;
   int HashFunc2(int in) const;
   unsigned int step;
-  // Конструкторы, деструктор	
-  //HashTable(unsigned int n = 10, unsigned int step1 = 1);
+  // Конструкторы, деструктор
+  HashTable(unsigned int n = 100, int step1 = 1);
   HashTable(const HashTable<TData,TKey>& T1);
   ~HashTable();
   // Методы
@@ -24,27 +24,33 @@ class HashTable : public Table<TData,TKey>
   { if (T1.dataCount)
 	{ for (int i = 0; i < T1.Size; i++)
       { if (T1.mark[i])
-        {  os <<"\t"<< left << T1.rec[i]->GetKey() << "\t | " << *(T1.rec[i]->GetData()) << '\n';}
+        {  os <<"Key:"<< left << T1.rec[i]->GetKey() << " |Polinom: " << *(T1.rec[i]->GetData()) << '\n';}
 	  }
     }
 	else
     { os << "\n\tTable is Empty\n" << endl;}
 	return os;
   }
-
-  HashTable(unsigned int n, unsigned int step1): Table<TData,TKey>(n)
-  {
-      step = step1;
-      mark = new char[n];
-      for (int i = 0; i < this->Size; i++)
-      {
-          mark[i] = 0;
-      }
-  }
 };
 
 // Pелизация функциий для класса Хеш-таблиц
 // Конструкторы, деструктор	
+
+
+template <typename TData, typename TKey>
+HashTable<TData, TKey>::HashTable(unsigned int n, int step1): Table<TData,TKey>(n)
+{
+    step1 = step1;
+    mark = new char[n];
+    for (int i = 0; i < this->Size; i++)
+    {
+        mark[i] = 0;
+    }
+}
+
+
+
+
 template <typename TData, typename TKey>
 HashTable<TData, TKey>::HashTable(const HashTable<TData, TKey>& T1)
 {
@@ -73,7 +79,7 @@ template <typename TData, typename TKey>
 int HashTable<TData, TKey>::HashFunc(const TKey& key) const
 {
 	int h = 0;
-	for (int i = 0; i < key.length(); i++)
+    for (int i = 0; i < key.length(); i++)
 	{
 		h = h + int(key[i]);
 	}
@@ -184,7 +190,7 @@ TData* HashTable<TData, TKey>::Search(const TKey key1)
 template <typename TData, typename TKey>
 void HashTable<TData, TKey>::Delete(const TKey key1)
 {
-	Reset();
+    Reset();
 	if (Search(key1) != nullptr)
 	{
         this->rec[this->ind] = new TabRecord<TData, TKey>;

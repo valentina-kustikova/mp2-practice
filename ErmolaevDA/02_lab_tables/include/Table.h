@@ -13,7 +13,7 @@ template <typename TData, typename TKey> class Table
   int dataCount ;
   int ind;
   // Конструкторы, деструктор	
-  Table(unsigned int n = 10);
+  Table(unsigned int n = 100);
   virtual ~Table() { delete[] rec; }
   public:
   // Методы 
@@ -33,7 +33,7 @@ template <typename TData, typename TKey> class Table
   friend std::ostream& operator<< (std::ostream& os, const Table<TData,TKey>& Tab)
   { unsigned int i = 0;
 	while (i < Tab.dataCount)
-	{ os <<"\t"<< left << Tab.rec[i]->GetKey() << "\t | " << *(Tab.rec[i]->GetData()) << '\n';
+    { os <<"Key:"<< left << Tab.rec[i]->GetKey() << " |Polinom: " << *(Tab.rec[i]->GetData()) << '\n';
 	  i++;
 	}
 	if (Tab.dataCount == 0)
