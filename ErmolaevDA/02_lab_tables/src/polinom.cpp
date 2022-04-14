@@ -389,6 +389,33 @@ void Polinom::fulldiff()
     cout << ")dz\n";
 }
 
+/*Polinom& Polinom::operator=(const Polinom& poly)
+{
+    if (this != &poly)
+    {
+
+        Node* p = head->next;
+        Node* q = head->next;
+        while (p)
+        {
+            q = p->next;
+            delete p;
+            p = q;
+        }
+
+        q = poly.head->next;
+        p = head;
+        while (q)
+        {
+            p->next = new Node(q->data.coef, q->data.degx, q->data.degy, q->data.degz);
+            p = p->next;
+            q = q->next;
+        }
+        // p->next = head;
+    }
+    return *this;
+}*/
+
 Polinom& Polinom::operator+=(const Node& monom)
 {
     Node* pThis = head;
@@ -719,7 +746,7 @@ Polinom Polinom::operator*(const Polinom& poly) const
 double Polinom::operator()(double x, double y, double z) const
 {
     Node* p = head->next;
-    double Res1 = 0;
+    double Res1 = head->data.coef;
 
     while (p)
     {
