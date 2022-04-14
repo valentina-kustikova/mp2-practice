@@ -14,15 +14,6 @@ void ResultOutput(char op, TPolynom& p1, TPolynom& p2) {
 		cout << "Результат: " << p1 - p2 << endl;
 	}else cout << "Результат: " << p1 * p2 << endl;
 }
-int main1() {
-	string str = "x+x";
-	TPolynom p1(str);
-	TPolynom p2;
-	//p2.AddMonom(1, 1, 0, 0);
-	p2.AddMonom(1, 0, 0, 0);
-	cout << p1;
-	return 0;
-}
 
 int main()
 {

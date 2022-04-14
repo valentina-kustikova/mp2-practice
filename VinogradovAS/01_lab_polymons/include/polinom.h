@@ -9,13 +9,13 @@ using namespace std;
 class TPolynom : public THeadList<TMonom>
 {
 protected:
-	 
-	 
-public:
 	void Parser(const std::string& polyStr);
+	TPolynom(const TPolynom& other);
+public:
+	
 	TPolynom();
 	void AddMonom(TMonom m);
-	TPolynom(const TPolynom& other);
+	
 	TPolynom(const std::string& polyStr);
 	void AddMonom(double coeff, int x, int y, int z);
 	TPolynom& operator=(TPolynom& other);
@@ -34,7 +34,7 @@ public:
 	{ 
 		TNode<TMonom>* _pCurr = p.pFirst;
 
-		//string s = in;
+		
 		//Нулевой полином
 		if (_pCurr == p.pStop)
 		{

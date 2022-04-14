@@ -31,14 +31,14 @@ TPolynom::TPolynom(const std::string& polyStr)
 
 TPolynom& TPolynom::operator=(TPolynom& other)
 {
-	//Удаляем все звенья (кроме pHead)
+	
 	while (pFirst != pStop)
 	{
 		TNode<TMonom>* tmp = pFirst;
 		pFirst = pFirst->pNext;
 		delete tmp;
 	}
-	//Ставим все значения указателей обратно на pHead
+	
 	pFirst = pLast = pPrev = pCurr = pStop = pHead;
 	length = 0;
 
@@ -69,7 +69,7 @@ void  TPolynom::AddMonom(TMonom m)
 		InsCurr(m);
 		return;
 	}
-	//Мономы равны с точностью до коэф-та
+	
 	if (pCurr->value == m)
 	{
 		pCurr->value.coeff += m.coeff;
@@ -109,7 +109,7 @@ inline void TPolynom::Parser(const std::string& polyStr)
 				{
 					tm.x += 1;
 				}
-				//Моном имеет явную степень (не 1)
+				
 				else if (isdigit(polyStr[i + 1]))
 				{
 					size_t idx;
@@ -160,7 +160,7 @@ inline void TPolynom::Parser(const std::string& polyStr)
 					tm.z += 1;
 				}
 			}
-			//Переход к считыванию следующего монома
+			
 			else if (polyStr[i] == '+' || polyStr[i] == '-')
 			{
 				if (lastsgn == '-') tm.coeff *= (-1);

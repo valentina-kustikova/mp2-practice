@@ -24,7 +24,7 @@ struct TMonom
 
 	TMonom operator*(const TMonom& other);
 
-	//Выводит текущий моном без коэффициента и знака
+	
 	friend std::ostream& operator<<(std::ostream& os, TMonom& monom)
 	{
 		if (monom.x != 0)
@@ -50,40 +50,3 @@ struct TMonom
 };
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//#pragma once
-//
-//#include "data.h"
-//
-//class TMonom: public TData
-//{
-//public:
-//    double coeff;
-//    int degree;
-//public:
-//    TMonom(double coeff, int degree);
-//    
-//    TMonom& operator=(const TMonom& monom);
-//    
-//    int operator==(const TMonom& monom) const;
-//    int operator!=(const TMonom& monom) const;
-//    int operator<(const TMonom& monom) const;
-//    int operator>(const TMonom& monom) const;
-//    
-//    virtual TData* Copy(); // создание копии
-//};
