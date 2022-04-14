@@ -30,9 +30,6 @@ set(PROJECT_SOURCES
         include/SortTable.h
         src/monom.cpp
         src/polinom.cpp
-        choose.h
-        choose.cpp
-        choose.ui
         ${TS_FILES}
 )
 

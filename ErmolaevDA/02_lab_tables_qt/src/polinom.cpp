@@ -746,7 +746,7 @@ Polinom Polinom::operator*(const Polinom& poly) const
 double Polinom::operator()(double x, double y, double z) const
 {
     Node* p = head->next;
-    double Res1 =0.0;
+    double Res1 = head->data.coef;
 
     while (p)
     {

@@ -8,32 +8,38 @@ using namespace std;
 template <typename TData, typename TKey> class Table
 {
   protected:
-  TabRecord<TData,TKey>** rec;
-  int Size;
+  TabRecord<TData,TKey>** records;
+  int tabSize;
   int dataCount ;
-  int ind;
+  int currPos;
   // Конструкторы, деструктор	
   Table(unsigned int n = 100);
-  virtual ~Table() { delete[] rec; }
+  virtual ~Table() { delete[] records; }
   public:
-  // Методы 
-  virtual void Insert(const TData Data, const TKey Key) = 0;
-  virtual void Delete(const TKey Key) = 0;
-  virtual TData* Search(const TKey Key) = 0;
-  void Reset();
-  void SetNext();
-  bool IsEnd() const { return ind == dataCount  || ind == -1; }
-  bool IsFull() const { return dataCount  == Size; }
+  //информационные методы
+  bool IsFull() const { return dataCount  == tabSize; }
   bool IsEmpty() const { return dataCount  == 0; }
   int GetCount() const { return dataCount; }
-  int GetSize() const { return Size; }
+  int GetSize() const { return tabSize; }
+
+  // операции над таблицами
+  virtual void InsertRecord(const TData Data, const TKey Key) = 0;
+  virtual void RemoveRecord(const TKey Key) = 0;
+  virtual TData* FindRecord(const TKey Key) = 0;
+
+  //навигация по таблицу
+  void Reset();
+  void SetNext();
+  bool IsTabEnded() const { return currPos == dataCount  || currPos == -1; }
+
+  //доступ к текущей записи таблицы
   TData* GetData() const; // для текущего элемента
   TKey GetKey() const;  // для текущего элемента
 
   friend std::ostream& operator<< (std::ostream& os, const Table<TData,TKey>& Tab)
   { unsigned int i = 0;
 	while (i < Tab.dataCount)
-    { os <<"Key:"<< left << Tab.rec[i]->GetKey() << " |Polinom: " << *(Tab.rec[i]->GetData()) << '\n';
+    { os <<"Key:"<< left << Tab.records[i]->GetKey() << " |Polinom: " << *(Tab.records[i]->GetData()) << '\n';
 	  i++;
 	}
 	if (Tab.dataCount == 0)
@@ -46,10 +52,10 @@ template <typename TData, typename TKey> class Table
 template <typename TData, typename TKey>
 Table<TData, TKey>::Table(unsigned int n)
 {
-	Size = n;
+	tabSize = n;
 	dataCount = 0;
-	ind = -1;
-	rec = new TabRecord<TData, TKey>*[Size];
+	currPos = -1;
+	records = new TabRecord<TData, TKey>*[tabSize];
 }
 // Методы 
 template <typename TData, typename TKey>
@@ -57,26 +63,26 @@ void Table<TData, TKey>::Reset()
 {
 	if (dataCount > 0)
 	{
-		ind = 0;
+		currPos = 0;
 	}
 	else
 	{
-		ind = -1;
+		currPos = -1;
 	}
 }
 template <typename TData, typename TKey>
 void Table<TData, TKey>::SetNext()
 {
-	if (ind != -1) { ind++; }
+	if (currPos != -1) { currPos++; }
 	else { throw - 1; } //Таблица пуста
-	if (IsEnd()) { Reset(); }
+	if (IsTabEnded()) { Reset(); }
 }
 template <typename TData, typename TKey>
 TData* Table<TData, TKey>::GetData() const
 {
 	if (!IsEmpty())
 	{
-		return rec[ind]->GetData();
+		return records[currPos]->GetData();
 	}
 	else
 	{
@@ -88,7 +94,7 @@ TKey Table<TData, TKey>::GetKey() const
 {
 	if (!IsEmpty())
 	{
-		return rec[ind]->GetKey();
+		return records[currPos]->GetKey();
 	}
 	else
 	{
