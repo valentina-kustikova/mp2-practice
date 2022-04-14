@@ -50,12 +50,12 @@ void MainWindow::on_pushButton_released()
     ui->textBrowser->append("Помещение полинома A в выбранную таблицу...");
     A.str_to_poly(strig.toStdString());
     if (strig2!=nullptr){
-    HS.Insert(A,strig2.toStdString());
+    HS.InsertRecord(A,strig2.toStdString());
     updateHash();
     }
     else{
         i++;
-        HS.Insert(A,to_string(i));
+        HS.InsertRecord(A,to_string(i));
         updateHash();
     }
      }
@@ -75,12 +75,12 @@ void MainWindow::on_pushButton_released()
     ui->textBrowser->append("Помещение полинома A в выбранную таблицу...");
     A.str_to_poly(strig.toStdString());
     if (strig2!=nullptr){
-    SR.Insert(A,strig2.toStdString());
+    SR.InsertRecord(A,strig2.toStdString());
     updateSort();
     }
     else{
         j++;
-        SR.Insert(A,to_string(j));
+        SR.InsertRecord(A,to_string(j));
         updateSort();
     }
      }
@@ -101,12 +101,12 @@ void MainWindow::on_pushButton_released()
     ui->textBrowser->append("Помещение полинома A в выбранную таблицу...");
     A.str_to_poly(strig.toStdString());
     if (strig2!=nullptr){
-    ST.Insert(A,strig2.toStdString());
+    ST.InsertRecord(A,strig2.toStdString());
     updateScan();
     }
     else{
         k++;
-        ST.Insert(A,to_string(k));
+        ST.InsertRecord(A,to_string(k));
         updateScan();
     }
      }
@@ -133,12 +133,12 @@ void MainWindow::on_pushButton_2_released()
     ui->textBrowser->append("Помещение полинома B в выбранную таблицу...");
     B.str_to_poly(strig.toStdString());
     if (strig2!=nullptr){
-    HS.Insert(B,strig2.toStdString());
+    HS.InsertRecord(B,strig2.toStdString());
     updateHash();
     }
     else{
         i++;
-        HS.Insert(B,to_string(i));
+        HS.InsertRecord(B,to_string(i));
         updateHash();
     }
      }
@@ -158,12 +158,12 @@ void MainWindow::on_pushButton_2_released()
     ui->textBrowser->append("Помещение полинома B в выбранную таблицу...");
     B.str_to_poly(strig.toStdString());
     if (strig2!=nullptr){
-    SR.Insert(B,strig2.toStdString());
+    SR.InsertRecord(B,strig2.toStdString());
     updateSort();
     }
     else{
         j++;
-        SR.Insert(B,to_string(j));
+        SR.InsertRecord(B,to_string(j));
         updateSort();
     }
      }
@@ -184,12 +184,12 @@ void MainWindow::on_pushButton_2_released()
     ui->textBrowser->append("Помещение полинома B в выбранную таблицу...");
     B.str_to_poly(strig.toStdString());
     if (strig2!=nullptr){
-    ST.Insert(B,strig2.toStdString());
+    ST.InsertRecord(B,strig2.toStdString());
     updateScan();
     }
     else{
         k++;
-        ST.Insert(B,to_string(k));
+        ST.InsertRecord(B,to_string(k));
         updateScan();
     }
      }
@@ -216,7 +216,7 @@ void MainWindow::on_pushButton_4_released()
     ui->textBrowser->append("Удаление полинома A из выбранной таблицы...");
 
     if (strig2!=nullptr){
-    HS.Delete(strig2.toStdString());
+    HS.RemoveRecord(strig2.toStdString());
     updateHash();
     }
     else{
@@ -238,7 +238,7 @@ void MainWindow::on_pushButton_4_released()
     ui->textBrowser->append("Удаление полинома A из выбранной таблицы...");
 
     if (strig2!=nullptr){
-    SR.Delete(strig2.toStdString());
+    SR.RemoveRecord(strig2.toStdString());
     updateSort();
     }
     else{
@@ -260,7 +260,7 @@ void MainWindow::on_pushButton_4_released()
     ui->textBrowser->append("Удаление полинома A из выбранной таблицы...");
 
     if (strig2!=nullptr){
-    ST.Delete(strig2.toStdString());
+    ST.RemoveRecord(strig2.toStdString());
     updateScan();
     }
     else{
@@ -289,7 +289,7 @@ void MainWindow::on_pushButton_5_released()
     ui->textBrowser->append("Удаление полинома B из выбранной таблицы...");
 
     if (strig2!=nullptr){
-    HS.Delete(strig2.toStdString());
+    HS.RemoveRecord(strig2.toStdString());
     updateHash();
     }
     else{
@@ -311,7 +311,7 @@ void MainWindow::on_pushButton_5_released()
     ui->textBrowser->append("Удаление полинома B из выбранной таблицы...");
 
     if (strig2!=nullptr){
-    SR.Delete(strig2.toStdString());
+    SR.RemoveRecord(strig2.toStdString());
     updateSort();
     }
     else{
@@ -333,7 +333,7 @@ void MainWindow::on_pushButton_5_released()
     ui->textBrowser->append("Удаление полинома B из выбранной таблицы...");
 
     if (strig2!=nullptr){
-    ST.Delete(strig2.toStdString());
+    ST.RemoveRecord(strig2.toStdString());
     updateScan();
     }
     else{
@@ -405,12 +405,12 @@ void MainWindow::on_pushButton_3_released()
     ui->textBrowser->append("Помещение полинома AB в выбранную таблицу...");
     //AB.str_to_poly(strig.toStdString());
     if (strig2!=nullptr){
-    HS.Insert(AB,strig2.toStdString());
+    HS.InsertRecord(AB,strig2.toStdString());
     updateHash();
     }
     else{
         i++;
-        HS.Insert(AB,to_string(i));
+        HS.InsertRecord(AB,to_string(i));
         updateHash();
     }
      }
@@ -430,12 +430,12 @@ void MainWindow::on_pushButton_3_released()
     ui->textBrowser->append("Помещение полинома AB в выбранную таблицу...");
     //AB.str_to_poly(strig.toStdString());
     if (strig2!=nullptr){
-    SR.Insert(AB,strig2.toStdString());
+    SR.InsertRecord(AB,strig2.toStdString());
     updateSort();
     }
     else{
         j++;
-        SR.Insert(AB,to_string(j));
+        SR.InsertRecord(AB,to_string(j));
         updateSort();
     }
      }
@@ -456,12 +456,12 @@ void MainWindow::on_pushButton_3_released()
     ui->textBrowser->append("Помещение полинома AB в выбранную таблицу...");
     //AB.str_to_poly(strig.toStdString());
     if (strig2!=nullptr){
-    ST.Insert(AB,strig2.toStdString());
+    ST.InsertRecord(AB,strig2.toStdString());
     updateScan();
     }
     else{
         k++;
-        ST.Insert(AB,to_string(k));
+        ST.InsertRecord(AB,to_string(k));
         updateScan();
     }
      }
@@ -488,7 +488,7 @@ void MainWindow::on_pushButton_6_released()
     ui->textBrowser->append("Удаление полинома AB из выбранной таблицы...");
 
     if (strig2!=nullptr){
-    HS.Delete(strig2.toStdString());
+    HS.RemoveRecord(strig2.toStdString());
     updateHash();
     }
     else{
@@ -510,7 +510,7 @@ void MainWindow::on_pushButton_6_released()
     ui->textBrowser->append("Удаление полинома AB из выбранной таблицы...");
 
     if (strig2!=nullptr){
-    SR.Delete(strig2.toStdString());
+    SR.RemoveRecord(strig2.toStdString());
     updateSort();
     }
     else{
@@ -532,7 +532,7 @@ void MainWindow::on_pushButton_6_released()
     ui->textBrowser->append("Удаление полинома AB из выбранной таблицы...");
 
     if (strig2!=nullptr){
-    ST.Delete(strig2.toStdString());
+    ST.RemoveRecord(strig2.toStdString());
     updateScan();
     }
     else{
