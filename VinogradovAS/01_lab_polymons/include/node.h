@@ -7,4 +7,5 @@ struct TNode
 {
 	T value;
 	TNode<T>* pNext;
+	
 };

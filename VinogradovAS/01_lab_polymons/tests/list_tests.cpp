@@ -20,7 +20,6 @@ TEST(TList, NotEmptyListIsNotEmpty)
 	t.InsFirst(10);
 
 	ASSERT_TRUE(!t.IsEmpty());
-	ASSERT_TRUE(t.IsNotEmpty());
 }
 
 TEST(TList, CanInsertFirstElement)

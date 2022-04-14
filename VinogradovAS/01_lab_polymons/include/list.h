@@ -15,20 +15,18 @@ protected:
 	TNode<T>* pPrev; //предыдущий
 	TNode<T>* pCurr;//текущий
 	////pStop будет равен указателю на голову, чтобы не иметь
-    //проблем при переходе от лин. списка к кольцевому
+	//проблем при переходе от лин. списка к кольцевому
 	TNode<T>* pStop;
-	
 	int length;
 
-	virtual void Print(std::ostream& os) const;
-
 public:
+
 	TList();
 	virtual ~TList();
 
 	bool IsEmpty();
-	bool IsNotEmpty();
-
+	TNode<T>* GetFirst(){ return pFirst };
+	TNode<T>* GetEnd(){ return pStop };
 	//Добавление элемента в начало списка
 	virtual void InsFirst(T element);
 	//Добавление элемента в конец списка
@@ -42,40 +40,31 @@ public:
 	void DelCurr();
 
 	//Получение текущего элемента списка
-	T GetCurr();
+	T GetCurr() const;
 
 	//Возврат итератора в исходное состояние
 	void Reset();
 	//Перевод итератора далее
 	void GoNext();
 	//Проверка на достижение итератором конца списка
-	bool IsEnd();
-	bool IsNotEnd();
+	bool IsEnd() const; 
 
-	std::string ToStr() const;
+	std::string ToStr() const; 
 
-	friend std::ostream& operator<<(
-		std::ostream& os,
-		TList<T>& l)
+	friend std::ostream& operator<<(std::ostream& os,TList<T>& l)
 	{
-		l.Print(os);
+		os << "[ ";
+		TNode<T>* t = l.pFirst;
+
+		while (t != l.pStop)
+		{
+			os << t->value << " ";
+			t = t->pNext;
+		}
+		os << "]";
 		return os;
 	}
 };
-
-template <class T>
-void TList<T>::Print(std::ostream& os) const
-{
-	os << "[ ";
-	TNode<T>* t = pFirst;
-
-	while (t != pStop)
-	{
-		os << t->value << " ";
-		t = t->pNext;
-	}
-	os << "]";
-}
 
 template <class T>
 TList<T>::TList()
@@ -102,11 +91,7 @@ bool TList<T>::IsEmpty()
 	return pFirst == pStop;
 }
 
-template <class T>
-bool TList<T>::IsNotEmpty()
-{
-	return pFirst != pStop;
-}
+
 
 template <class T>
 void TList<T>::InsFirst(T element)
@@ -199,7 +184,7 @@ void TList<T>::DelCurr()
 }
 
 template <class T>
-T TList<T>::GetCurr()
+T TList<T>::GetCurr() const
 {
 	if (pCurr == pStop)
 		throw "Не могу дать первый элемент";
@@ -221,21 +206,17 @@ void TList<T>::GoNext()
 }
 
 template <class T>
-bool TList<T>::IsEnd()
+bool TList<T>::IsEnd() const
 {
 	return pCurr == pStop;
 }
 
-template <class T>
-bool TList<T>::IsNotEnd()
-{
-	return pCurr != pStop;
-}
+
 
 template <class T>
 std::string TList<T>::ToStr() const
 {
 	std::stringstream ss;
-	Print(ss);
+//	Print(ss);
 	return ss.str();
 }

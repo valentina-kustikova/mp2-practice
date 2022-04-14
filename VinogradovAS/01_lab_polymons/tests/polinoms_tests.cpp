@@ -4,13 +4,12 @@
 #include "headlist.h"
 #include "monom.h"
 
-
 TEST(TPolynom, CanCreateNewPolynom)
 {
 	ASSERT_NO_THROW(TPolynom t);
 }
 
-TEST(TPolynom, CanCreatePolynomFromString)
+TEST(testPolynom, CanCreatePolynomFromString)
 {
 	TPolynom t("2xyz+0.5xz");
 
@@ -19,12 +18,6 @@ TEST(TPolynom, CanCreatePolynomFromString)
 	correct.AddMonom(0.5, 1, 0, 1);
 
 	EXPECT_EQ(t, correct);
-}
-
-TEST(TPolynom, NewCreatedPolynomIsZero)
-{
-	TPolynom t;
-	ASSERT_EQ(t.ToStr(), "0");
 }
 
 TEST(TPolynom, CanCreateCopiedPolynom)
@@ -56,7 +49,7 @@ TEST(TPolynom, CanAssignPolynomToItself)
 	EXPECT_EQ(t.ToStr(), t.ToStr());
 }
 
-TEST(TPolynom, CanAddMonomToPolynom)
+TEST(testPolynom, CanAddMonomToPolynom)
 {
 	TPolynom t;
 	ASSERT_NO_THROW(t.AddMonom(1, 1, 1, 1));
@@ -66,12 +59,13 @@ TEST(TPolynom, CanAddMonomToPolynom)
 TEST(TPolynom, CanAddPolynomToPolynom_1)
 {
 	TPolynom t1;
-	t1.AddMonom(1, 1, 0, 0);
-	t1.AddMonom(1, 0, 0, 0);
+	t1.AddMonom(3, 5, 2, 5);
+	t1.AddMonom(-5, 4, 3, 3);
+	t1.AddMonom(7, 3, 5, 1);
 
 	TPolynom t2;
-	t2.AddMonom(-1, 1, 0, 0);
-	t2.AddMonom(-1, 0, 0, 0);
+	t2.AddMonom(4, 3, 2, 6);
+	t2.AddMonom(-6, 2, 1, 8);
 
 	std::cout << "\t     t1 = " << t1 << '\n';
 	std::cout << "\t     t2 = " << t2 << '\n';
@@ -89,11 +83,13 @@ TEST(TPolynom, CanAddPolynomToPolynom_1)
 TEST(TPolynom, CanAddPolynomToPolynom_2)
 {
 	TPolynom t1;
-	t1.AddMonom(1, 1, 0, 0);
-	t1.AddMonom(1, 0, 0, 0);
+	t1.AddMonom(3, 5, 2, 5);
+	t1.AddMonom(-5, 4, 3, 3);
+	t1.AddMonom(7, 3, 5, 1);
 
 	TPolynom t2;
-	t2.AddMonom(-1, 1, 0, 0);
+	t2.AddMonom(4, 7, 2, 6);
+	t2.AddMonom(-6, 2, 1, 8);
 
 	std::cout << "\t     t1 = " << t1 << '\n';
 	std::cout << "\t     t2 = " << t2 << '\n';
@@ -112,11 +108,13 @@ TEST(TPolynom, CanAddPolynomToPolynom_2)
 TEST(TPolynom, CanAddPolynomToPolynom_3)
 {
 	TPolynom t1;
-	t1.AddMonom(1, 1, 0, 0);
-	t1.AddMonom(1, 0, 0, 0);
+	t1.AddMonom(3, 5, 2, 5);
+	t1.AddMonom(-5, 4, 3, 3);
+	t1.AddMonom(7, 3, 5, 1);
 
 	TPolynom t2;
-	t2.AddMonom(-1, 0, 0, 0);
+	t2.AddMonom(4, 5, 2, 5);
+	t2.AddMonom(5, 4, 3, 3);
 
 	std::cout << "\t     t1 = " << t1 << '\n';
 	std::cout << "\t     t2 = " << t2 << '\n';
@@ -135,14 +133,13 @@ TEST(TPolynom, CanAddPolynomToPolynom_3)
 TEST(TPolynom, CanAddPolynomToPolynom_4)
 {
 	TPolynom t1;
-	t1.AddMonom(1, 0, 1, 1);
-	t1.AddMonom(2, 1, 0, 1);
-	t1.AddMonom(3, 1, 1, 1);
+	t1.AddMonom(3, 5, 2, 5);
+	t1.AddMonom(-5, 4, 3, 3);
+	t1.AddMonom(7, 7, 5, 1);
 
 	TPolynom t2;
-	t2.AddMonom(1, 0, 1, 1);
-	t2.AddMonom(-2, 1, 0, 1);
-	t2.AddMonom(3, 1, 1, 1);
+	t2.AddMonom(4, 6, 2, 6);
+	t2.AddMonom(-6, 2, 1, 8);
 
 	std::cout << "\t     t1 = " << t1 << '\n';
 	std::cout << "\t     t2 = " << t2 << '\n';
@@ -162,13 +159,14 @@ TEST(TPolynom, CanAddPolynomToPolynom_4)
 TEST(TPolynom, CanAddPolynomToPolynom_5)
 {
 	TPolynom t1;
-	t1.AddMonom(1, 2, 2, 2);
-	t1.AddMonom(3, 0, 0, 2);
+	t1.AddMonom(3, 5, 2, 5);
+	t1.AddMonom(-5, 4, 3, 3);
+	t1.AddMonom(7, 7, 5, 1);
 
 	TPolynom t2;
-	t2.AddMonom(1, 2, 2, 1);
-	t2.AddMonom(-2, 0, 0, 2);
-	t2.AddMonom(1, 0, 0, 1);
+	t2.AddMonom(-3, 5, 2, 5);
+	t2.AddMonom(5, 4, 3, 3);
+	t2.AddMonom(-7, 7, 5, 1);
 
 	std::cout << "\t     t1 = " << t1 << '\n';
 	std::cout << "\t     t2 = " << t2 << '\n';
