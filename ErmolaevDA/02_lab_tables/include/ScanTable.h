@@ -14,6 +14,19 @@ class ScanTable : public Table<TData,TKey>
   virtual void InsertRecord(const TData Data, const TKey Key);
   virtual TData* FindRecord(const TKey Key);
   virtual void RemoveRecord(const TKey Key);
+
+  friend std::ostream& operator<< (std::ostream& os, const ScanTable<TData, TKey>& Tab)
+  {
+      unsigned int i = 0;
+      while (i < Tab.dataCount)
+      {
+          os << "Key:" << left << Tab.records[i]->GetKey() << " |Polinom: " << *(Tab.records[i]->GetData()) << '\n';
+          i++;
+      }
+      if (Tab.dataCount == 0)
+          os << "\n\tTable is Empty\n";
+      return os;
+  }
 }; 
 
 // Pелизация функциий для класса росматриваемых таблиц
@@ -67,29 +80,33 @@ void ScanTable<TData, TKey>::InsertRecord(const TData Data, const TKey Key)
 template <typename TData, typename TKey>
 TData* ScanTable<TData, TKey>::FindRecord(const TKey Key)
 {
-    try {
-        if (this->IsEmpty())
+        if (!this->IsEmpty())
         {
-            throw "ScanTable is empty, no element";
-        } //таблица пуста 
-        this->Reset();
-        while (!(this->IsTabEnded()) && Key != this->records[this->currPos]->GetKey())
-        {
-            this->currPos++;
+            this->Reset();
+            while (!(this->IsTabEnded()) && Key != this->records[this->currPos]->GetKey())
+            {
+                this->currPos++;
+            }
+            if (!(this->IsTabEnded()))
+            {
+                return this->records[this->currPos]->GetData();
+            }
+            else
+            {
+                return nullptr;
+            }
         }
-        if (!(this->IsTabEnded()))
-        {
-            return this->records[this->currPos]->GetData();
-        }
-        else
-        {
+        else{
             return nullptr;
+            try {
+                throw "ScanTable is empty, no element";
+            }
+            catch (const char* exception)
+            {
+                std::cerr << "Error: " << exception << '\n';
+            }
         }
-    }
-    catch (const char* exception)
-    {
-        std::cerr << "Error: " << exception << '\n';
-    }
+   // this->Reset();
 }
 template <typename TData, typename TKey>
 void ScanTable<TData, TKey>::RemoveRecord(TKey Key)
@@ -111,6 +128,6 @@ void ScanTable<TData, TKey>::RemoveRecord(TKey Key)
     {
         std::cerr << "Error: " << exception << '\n';
     }
-
+    this->Reset();
 }
 

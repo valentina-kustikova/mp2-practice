@@ -73,9 +73,14 @@ void Table<TData, TKey>::Reset()
 template <typename TData, typename TKey>
 void Table<TData, TKey>::SetNext()
 {
-	if (currPos != -1) { currPos++; }
-	else { throw - 1; } //Таблица пуста
-	if (IsTabEnded()) { Reset(); }
+	try {
+		if (currPos != -1) { currPos++; }
+		else { throw "Table Table is Empty, cannot use SetNext"; } //Таблица пуста
+		if (IsTabEnded()) { Reset(); }
+	}
+	catch (const char* exception) {
+		std::cerr << "Error: " << exception << '\n';
+	}
 }
 template <typename TData, typename TKey>
 TData* Table<TData, TKey>::GetData() const

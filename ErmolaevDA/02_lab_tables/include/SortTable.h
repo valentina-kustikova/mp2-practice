@@ -49,40 +49,47 @@ SortTable<TData, TKey>::SortTable(const ScanTable<TData, TKey>& T1) //Здесь
 template <typename TData, typename TKey>
 void SortTable<TData, TKey>::InsertRecord(const TData data, const TKey key)
 {
+	bool flag = 0;
 	try {
 		if (this->IsFull()) { throw "The SortTable is full, so InsertRecord cannot be executed"; } //Таблица переполнена
+		else {
+			TabRecord<TData, TKey> R(key, data);
+			this->Reset();
+			while (!(this->IsTabEnded()) && key >= this->records[this->currPos]->GetKey())
+			{
+
+				if (this->records[this->currPos]->GetKey() == key)
+				{
+					flag = 1;
+					//throw "This key is already in the SortTable, so InsertRecord cannot be executed";
+					break;
+				} //Ключ уже есть в таблице
+				this->currPos++;
+			}
+			if (flag == 1) {
+				throw "This key is already in the SortTable, so InsertRecord cannot be executed";
+			}
+			else {
+				if (this->IsEmpty())
+				{
+					this->currPos++;
+				}
+				this->dataCount++;
+				for (int i = this->dataCount - 1; i > this->currPos; i--)
+				{
+					this->records[i] = this->records[i - 1];
+				}
+				this->records[this->currPos] = new TabRecord<TData, TKey>(R);
+			}
+		}
+		
 	}
 	catch (const char* exception)
 	{
 		std::cerr << "Error: " << exception << '\n';
+		return;
 	}
-	TabRecord<TData, TKey> R(key, data);
-    this->Reset();
-    while (!(this->IsTabEnded()) && key >= this->records[this->currPos]->GetKey())
-	{
-		try {
-			if (this->records[this->currPos]->GetKey() == key)
-			{
-				throw "This key is already in the SortTable, so InsertRecord cannot be executed";
-			} //Ключ уже есть в таблице
-		}
-		catch (const char* exception)
-		{
-			std::cerr << "Error: " << exception << '\n';
-		}
-		this->currPos++;
-	}
-    if (this->IsEmpty())
-	{
-        this->currPos++;
-	}
-    this->dataCount++;
-    for (int i = this->dataCount - 1; i > this->currPos; i--)
-	{
-        this->records[i] = this->records[i - 1];
-	}
-    this->records[this->currPos] = new TabRecord<TData, TKey>(R);
-    this->Reset();
+    //this->Reset();
 }
 template <typename TData, typename TKey>
 TData* SortTable<TData, TKey>::FindRecord(const TKey key)
