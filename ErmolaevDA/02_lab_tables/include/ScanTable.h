@@ -34,12 +34,19 @@ ScanTable<TData, TKey>::ScanTable(const ScanTable<TData, TKey>& T1)
 template <typename TData, typename TKey>
 void ScanTable<TData, TKey>::InsertRecord(const TData Data, const TKey Key)
 {
-    if (this->IsFull())
-    {
-        throw 1;
-    } //Таблица переполнена
+    try {
+        if (this->IsFull())
+        {
+            throw "ScanTable is full, InsertRecord cannot be executed";
+        } //Таблица переполнена
+    }
+    catch (const char* exception) {
+        std::cerr << "Error: " << exception << '\n';
+    }
     TabRecord<TData, TKey> R(Key, Data);
     this->Reset();
+    try
+    {
     if ((this->IsEmpty()) || (FindRecord(Key) == nullptr))
     {
         this->records[this->dataCount] = new TabRecord<TData, TKey>(R);
@@ -47,44 +54,63 @@ void ScanTable<TData, TKey>::InsertRecord(const TData Data, const TKey Key)
     }
     else
     {
-        throw 1;
+        throw "The ScanTable is full or there is already an element with the given key";
     } // Повторная вставка элемента
+    }
+    catch (const char* exception)
+    {
+    std::cerr << "Error: " << exception << '\n';
+    }
+
     this->Reset();
-}
+    }
 template <typename TData, typename TKey>
 TData* ScanTable<TData, TKey>::FindRecord(const TKey Key)
 {
-    if (this->IsEmpty())
-    {
-        throw 1;
-    } //таблица пуста 
-    this->Reset();
-    while (!(this->IsTabEnded()) && Key != this->records[this->currPos]->GetKey())
-    {
-        this->currPos++;
+    try {
+        if (this->IsEmpty())
+        {
+            throw "ScanTable is empty, no element";
+        } //таблица пуста 
+        this->Reset();
+        while (!(this->IsTabEnded()) && Key != this->records[this->currPos]->GetKey())
+        {
+            this->currPos++;
+        }
+        if (!(this->IsTabEnded()))
+        {
+            return this->records[this->currPos]->GetData();
+        }
+        else
+        {
+            return nullptr;
+        }
     }
-    if (!(this->IsTabEnded()))
+    catch (const char* exception)
     {
-        return this->records[this->currPos]->GetData();
-    }
-    else
-    {
-        return nullptr;
+        std::cerr << "Error: " << exception << '\n';
     }
 }
 template <typename TData, typename TKey>
 void ScanTable<TData, TKey>::RemoveRecord(TKey Key)
 {
-    if (FindRecord(Key) == nullptr)
-    {
-        throw 1;
-    } // элемента для удаления нет в таблице
-    else
-    {
-        this->records[this->currPos] = new TabRecord<TData, TKey>(*this->records[this->dataCount - 1]);
-        this->records[this->dataCount - 1] = NULL;
-        this->dataCount = this->dataCount - 1;
-        this->currPos = this->dataCount - 1;
+    try {
+        if (FindRecord(Key) == nullptr)
+        {
+            throw "There is no element to delete for the given key in ScanTable";
+        } // элемента для удаления нет в таблице
+        else
+        {
+            this->records[this->currPos] = new TabRecord<TData, TKey>(*this->records[this->dataCount - 1]);
+            this->records[this->dataCount - 1] = NULL;
+            this->dataCount = this->dataCount - 1;
+            this->currPos = this->dataCount - 1;
+        }
     }
+    catch (const char* exception)
+    {
+        std::cerr << "Error: " << exception << '\n';
+    }
+
 }
 

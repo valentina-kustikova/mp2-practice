@@ -49,16 +49,28 @@ SortTable<TData, TKey>::SortTable(const ScanTable<TData, TKey>& T1) //Здесь
 template <typename TData, typename TKey>
 void SortTable<TData, TKey>::InsertRecord(const TData data, const TKey key)
 {
-    if (this->IsFull()) { throw 1; } //Таблица переполнена
+	try {
+		if (this->IsFull()) { throw "The SortTable is full, so InsertRecord cannot be executed"; } //Таблица переполнена
+	}
+	catch (const char* exception)
+	{
+		std::cerr << "Error: " << exception << '\n';
+	}
 	TabRecord<TData, TKey> R(key, data);
     this->Reset();
     while (!(this->IsTabEnded()) && key >= this->records[this->currPos]->GetKey())
 	{
-        if (this->records[this->currPos]->GetKey() == key)
+		try {
+			if (this->records[this->currPos]->GetKey() == key)
+			{
+				throw "This key is already in the SortTable, so InsertRecord cannot be executed";
+			} //Ключ уже есть в таблице
+		}
+		catch (const char* exception)
 		{
-			throw - 1;
-		} //Ключ уже есть в таблице
-        this->currPos++;
+			std::cerr << "Error: " << exception << '\n';
+		}
+		this->currPos++;
 	}
     if (this->IsEmpty())
 	{
@@ -77,35 +89,41 @@ TData* SortTable<TData, TKey>::FindRecord(const TKey key)
 {
     this->Reset();
 	TData* tmp = nullptr;
-    if (!(this->IsEmpty()))
-	{
-        int i = -1, j = this->dataCount;
-		int mid;
-		while (i < j - 1)
+	try {
+		if (!(this->IsEmpty()))
 		{
-			mid = (j + i) / 2;
-            if (key >= this->records[mid]->GetKey())
+			int i = -1, j = this->dataCount;
+			int mid;
+			while (i < j - 1)
 			{
-				i = mid;
+				mid = (j + i) / 2;
+				if (key >= this->records[mid]->GetKey())
+				{
+					i = mid;
+				}
+				else
+				{
+					j = mid;
+				}
+			}
+			if (key == this->records[i]->GetKey())
+			{
+				this->currPos = i;
+				tmp = this->records[this->currPos]->GetData();
 			}
 			else
 			{
-				j = mid;
+				return nullptr;
 			}
-		}
-        if (key == this->records[i]->GetKey())
-		{
-            this->currPos = i;
-            tmp = this->records[this->currPos]->GetData();
 		}
 		else
 		{
-			return nullptr;
+			throw "SortTable is empty, FindRecord cannot be executed";
 		}
 	}
-	else
+	catch (const char* exception)
 	{
-		throw 1;
+		std::cerr << "Error: " << exception << '\n';
 	}
 	return tmp;
 }
@@ -113,25 +131,31 @@ template <typename TData, typename TKey>
 void SortTable<TData, TKey>::RemoveRecord(const TKey key)
 {
     this->Reset();
-	if (FindRecord(key) == nullptr)
-	{
-		throw 1;
-	} // элемента для удаления нет в таблице
-	else
-	{
-        if (this->dataCount > 1)
+	try {
+		if (FindRecord(key) == nullptr)
 		{
-            this->dataCount--;
-            for (int i = this->currPos; i < this->dataCount; i++)
-			{
-                this->records[i] = this->records[i + 1];
-			}
-            this->Reset();
-		}
+			throw "There is no element to delete in the SortTable, you cannot execute RemoveRecord";
+		} // элемента для удаления нет в таблице
 		else
 		{
-            this->dataCount = 0;
+			if (this->dataCount > 1)
+			{
+				this->dataCount--;
+				for (int i = this->currPos; i < this->dataCount; i++)
+				{
+					this->records[i] = this->records[i + 1];
+				}
+				this->Reset();
+			}
+			else
+			{
+				this->dataCount = 0;
+			}
 		}
+	}
+	catch(const char* exception)
+	{
+		std::cerr << "Error: " << exception << '\n';
 	}
 }
 template <typename TData, typename TKey>

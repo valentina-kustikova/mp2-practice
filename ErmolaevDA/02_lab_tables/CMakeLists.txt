@@ -19,7 +19,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEAS
 # Set target names for libraries and executables
 set(02_LAB_TABLES_LIBRARY ${PROJECT_NAME})
 set(02_LAB_TABLES_SAMPLE "${PROJECT_NAME}_sample")
-#set(02_LAB_TABLES_QT "${PROJECT_NAME}_lab_qt")
+set(02_LAB_TABLES_QT "${PROJECT_NAME}_lab_qt")
 set(02_LAB_TABLES_TESTS "${PROJECT_NAME}_test")
 
 # Set additional include directories

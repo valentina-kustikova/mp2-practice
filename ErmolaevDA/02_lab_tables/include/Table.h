@@ -79,26 +79,36 @@ void Table<TData, TKey>::SetNext()
 }
 template <typename TData, typename TKey>
 TData* Table<TData, TKey>::GetData() const
-{
-	if (!IsEmpty())
-	{
-		return records[currPos]->GetData();
+{	
+	try {
+		if (!IsEmpty())
+		{
+			return records[currPos]->GetData();
+		}
+		else
+		{
+			throw "Table Table is Empty, cannot block GetData";
+		} //Таблица пуста
 	}
-	else
-	{
-		throw - 1;
-	} //Таблица пуста
+	catch(const char* exception){
+		std::cerr << "Error: " << exception << '\n';
+	}
 }
 template <typename TData, typename TKey>
 TKey Table<TData, TKey>::GetKey() const
 {
-	if (!IsEmpty())
-	{
-		return records[currPos]->GetKey();
+	try {
+		if (!IsEmpty())
+		{
+			return records[currPos]->GetKey();
+		}
+		else
+		{
+			throw "Table Table Is Empty, Cannot GetKey";
+		} //Таблица пуста
 	}
-	else
-	{
-		throw - 1;
-	} //Таблица пуста
+	catch (const char* exception) {
+		std::cerr << "Error: " << exception << '\n';
+	}
 }
 

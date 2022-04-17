@@ -124,34 +124,38 @@ void HashTable<TData, TKey>::Reset()
 template <typename TData, typename TKey>
 void HashTable<TData, TKey>::InsertRecord(const TData data1, const TKey key1)
 {
-    if (this->IsFull())
-	{
-		throw 1;
-	} //Таблица переполнена
-    this->currPos = HashFunc(key1);
-    if (freePos[this->currPos] != 1)
-	{
-        this->records[this->currPos] = new TabRecord<TData, TKey>(key1, data1);
-        this->dataCount++;
-        freePos[this->currPos] = 1;
-	}
-	else
-	{
-        if (this->records[this->currPos]->GetKey() != key1)
+	try {
+		if (this->IsFull())
 		{
-            int i = this->currPos;
-            while (freePos[this->currPos])
-			{
-                this->currPos = HashFunc2(this->currPos);
-			}
-            this->records[this->currPos] = new TabRecord<TData, TKey>(key1, data1);
-            this->dataCount++;
-            freePos[this->currPos] = 1;
+			throw 1;
+		} //Таблица переполнена
+		this->currPos = HashFunc(key1);
+		if (freePos[this->currPos] != 1)
+		{
+			this->records[this->currPos] = new TabRecord<TData, TKey>(key1, data1);
+			this->dataCount++;
+			freePos[this->currPos] = 1;
 		}
 		else
 		{
-			throw 1;
+			if (this->records[this->currPos]->GetKey() != key1)
+			{
+				int i = this->currPos;
+				while (freePos[this->currPos])
+				{
+					this->currPos = HashFunc2(this->currPos);
+				}
+				this->records[this->currPos] = new TabRecord<TData, TKey>(key1, data1);
+				this->dataCount++;
+				freePos[this->currPos] = 1;
+			}
+			else
+			{
+				throw 1;
+			}
 		}
+	}
+	catch (int a) {
 	}
 }
 template <typename TData, typename TKey>
