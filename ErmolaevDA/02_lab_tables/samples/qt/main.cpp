@@ -1,5 +1,4 @@
 #include "mainwindow.h"
-#include "choose.h"
 #include <string>
 using namespace std;
 #include <QApplication>

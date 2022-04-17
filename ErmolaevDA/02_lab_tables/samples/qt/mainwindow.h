@@ -3,10 +3,10 @@
 #include <QMainWindow>
 #include <sstream>
 #include <string>
-#include "include/HashTable.h"
-#include "include/SortTable.h"
-#include "include/ScanTable.h"
-#include "include/polinom.h"
+#include "HashTable.h"
+#include "SortTable.h"
+#include "ScanTable.h"
+#include "polinom.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; class choose; }
@@ -37,10 +37,6 @@ private slots:
     void on_pushButton_6_released();
 
     void on_pushButton_8_released();
-
-    void on_pushButton_9_released();
-
-    void on_pushButton_10_released();
 
 private:
     void updateHash();

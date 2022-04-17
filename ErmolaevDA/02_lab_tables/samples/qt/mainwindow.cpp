@@ -1,8 +1,6 @@
 #include "mainwindow.h"
 #include <string>
-#include "choose.h"
-#include "ui_choose.h"
-#include "lab_02_autogen/include/ui_mainwindow.h"
+#include "ui_mainwindow.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -564,21 +562,5 @@ void MainWindow::on_pushButton_8_released()
     ui->textBrowser_5->setText(QString::number(RAS(stx.toDouble(),sty.toDouble(),stz.toDouble()),'f',10));
     ui->textBrowser_6->append("Готово!");
     }
-}
-
-
-void MainWindow::on_pushButton_9_released()
-{
-    Choose wind;
-        wind.setModal(true);
-        wind.exec();
-}
-
-
-void MainWindow::on_pushButton_10_released()
-{
-    Choose wind;
-        wind.setModal(true);
-        wind.exec();
 }
 
