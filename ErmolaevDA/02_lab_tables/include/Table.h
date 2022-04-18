@@ -93,6 +93,7 @@ TData* Table<TData, TKey>::GetData() const
 		else
 		{
 			throw "Table Table is Empty, cannot block GetData";
+
 		} //Таблица пуста
 	}
 	catch(const char* exception){

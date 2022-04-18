@@ -6,7 +6,7 @@ template <typename TData, typename TKey>
 class HashTable : public Table<TData,TKey>
 {
 protected:
-	TData a;
+  TData a;
   int* freePos;								// 0 пусто, 1 заполнена, -1 удалена
   int HashFunc(const TKey& key) const;
   int HashFunc2(int pos) const;
@@ -20,6 +20,7 @@ public:
   virtual void InsertRecord(const TData Data, const TKey Key);
   virtual void RemoveRecord(const TKey Key) ;
   virtual TData* FindRecord(const TKey Key);
+
   void SetNext();
   void Reset();
 
