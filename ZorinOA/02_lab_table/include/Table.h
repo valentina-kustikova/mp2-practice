@@ -7,10 +7,8 @@ protected:
 	int DataCount;
 public:
 	Table()
-	{
-		DataCount = 0;
-	}
-	virtual ~Table() {};
+		:DataCount(0) {}
+    virtual ~Table() {};
 	int GetDataCount() const
 	{
 		return DataCount;
@@ -24,5 +22,20 @@ public:
     virtual TData* Find(const TKey& k) = 0;
     virtual void Insert(const TKey& k, const TData& d) = 0;
     virtual void Delete(const TKey& k) = 0;
+
+	virtual void Reset() = 0;
+	virtual bool isEnd() const = 0;
+	virtual void goNext() = 0;
+	virtual TKey getKey() const = 0;
+	virtual TData* getData() const = 0;
+
+	friend std::ostream& operator<<(std::ostream& os, Table& t)
+	{
+		for (t.Reset(); !t.isEnd(); t.goNext())
+		{
+			os << "key: " << t.getKey() << ", data: " << *(t.getData()) << std::endl;
+		}
+		return os;
+	}
 };
 

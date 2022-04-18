@@ -2,7 +2,10 @@ cmake_minimum_required(VERSION 3.5)
 
 # Auxiluary info about the project
 set(PROJECT_NAME)
-PROJECT(${PROJECT_NAME} tables)
+PROJECT(${PROJECT_NAME} tables LANGUAGES CXX)
+
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Set configuration type (Debug or Release)
 set(CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE STRING "Configs" FORCE)

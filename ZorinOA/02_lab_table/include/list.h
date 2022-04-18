@@ -115,26 +115,29 @@ public:
 	}
 	void Delete(const TData& d)
 	{
-		Node<TData>* prev = head;
-		Node<TData>* tmp;
-
-		if (head->data == d)
+		if (!isEmpty())
 		{
-			head = head->next;
-			delete prev;
-			return;
-		}
+			Node<TData>* prev = head;
+			Node<TData>* tmp;
 
-		while (prev->next != nullptr)
-		{
-			if (prev->next->data == d)
+			if (head->data == d)
 			{
-				tmp = prev->next;
-				prev->next = prev->next->next;
-				delete tmp;
+				head = head->next;
+				delete prev;
+				return;
 			}
-			else
-				prev = prev->next;
+
+			while (prev->next != nullptr)
+			{
+				if (prev->next->data == d)
+				{
+					tmp = prev->next;
+					prev->next = prev->next->next;
+					delete tmp;
+				}
+				else
+					prev = prev->next;
+			}
 		}
 	}
 	void Inverse()
@@ -192,31 +195,26 @@ public:
 			p = p->next;
 			return *this;
 		}
-		TData& operator*()
+		TData& operator*() const
 		{
 			return p->data;
 		}
-		bool operator==(const Iterator& it)
+		bool operator==(const Iterator& it) const
 		{
 			return p == it.p;
 		}
-		bool operator!=(const Iterator& it)
+		bool operator!=(const Iterator& it) const
 		{
 			return p != it.p;
 		}
 	};
-	Iterator begin()
+	Iterator begin() const
 	{
 		List::Iterator it(head);
 		return it;
 	}
-	Iterator end()
+	Iterator end() const
 	{
-		/*Node<TData>* p = head;
-		while (p->next != nullptr)
-		{
-			p = p->next;
-		}*/
 		List::Iterator it(nullptr);
 		return it;
 	}

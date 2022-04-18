@@ -11,14 +11,16 @@ class ListHashTable : public Table<TKey, TData>
 protected:
 	List<TabRecord<TKey, TData>>* ListsRecs;
 	int TabSize;
+	int CurrList;
+	typename List<TabRecord<TKey, TData>>::Iterator CurrPos;
 	virtual unsigned long HashFunc(const TKey& k) = 0;
 public:
-    ListHashTable(int size = 25)
+	ListHashTable(int size = 25)
 	{
-        if (size <= 0)
-			throw "Wrong size!!";
 		TabSize = size;
+		CurrList = 0;
 		ListsRecs = new List<TabRecord<TKey, TData>>[TabSize];
+		CurrPos = ListsRecs[CurrList].begin();
 	}
 	virtual ~ListHashTable()
 	{
@@ -27,6 +29,8 @@ public:
 	ListHashTable(const ListHashTable& ht)
 	{
 		TabSize = ht.TabSize;
+		CurrList = ht.CurrList;
+		CurrPos = ListsRecs[CurrList].begin();
 		ListsRecs = new List<TabRecord<TKey, TData>>[TabSize];
 		for (int i = 0; i < TabSize; i++)
 		{
@@ -35,68 +39,108 @@ public:
 	}
 	ListHashTable& operator=(const ListHashTable& ht)
 	{
-		if (this != &ht)
+		DataCount = ht.DataCount;
+		CurrList = ht.CurrList;
+		if (TabSize != ht.TabSize)
 		{
-			if (TabSize != ht.TabSize)
-			{
-				delete[] ListsRecs;
-				TabSize = ht.TabSize;
-				ListsRecs = new List<TabRecord<TKey, TData>>[TabSize];
-			}
-			for (int i = 0; i < TabSize; i++)
-			{
-				ListsRecs[i] = ht.ListsRecs[i];
-			}
+			delete[] ListsRecs;
+			TabSize = ht.TabSize;
+			ListsRecs = new List<TabRecord<TKey, TData>>[TabSize];
 		}
+		for (int i = 0; i < TabSize; i++)
+		{
+			ListsRecs[i] = ht.ListsRecs[i];
+		}
+		CurrPos = ListsRecs[CurrList].begin();
 		return *this;
 	}
 	virtual bool isFull() const
 	{
-        return this->DataCount >= TabSize;
+		return this->DataCount >= TabSize;
 	}
 	virtual void Clear()
 	{
 		if (!(this->isEmpty()))
 		{
-			this->DataCount = 0;
+			DataCount = 0;
+			CurrList = 0;
 			for (int i = 0; i < TabSize; i++)
 			{
 				ListsRecs[i].Clear();
 			}
-		}
-	}
-	virtual void Insert(const TKey& k, const TData& d)
-	{
-		int idx = HashFunc(k) % TabSize;
-        Node<TabRecord<TKey, TData>>* tmp = ListsRecs[idx].Search(TabRecord<TKey, TData>(k));
-        if (tmp == nullptr)
-        {
-            ListsRecs[idx].InsertToHead(TabRecord<TKey, TData>(k, d));
-            this->DataCount++;
-        }
-	}
-	virtual TData* Find(const TKey& k)
-	{
-        if (!(this->isEmpty()))
-		{
-			int idx = HashFunc(k) % TabSize;
-			Node<TabRecord<TKey, TData>>* tmp = ListsRecs[idx].Search(TabRecord<TKey, TData>(k));
-            if (tmp != nullptr)
-				return &(tmp->data.GetData());
-		}
-        return nullptr;
-	}
-	virtual void Delete(const TKey& k)
-	{
-        if (!(this->isEmpty()))
-		{
-			int idx = HashFunc(k) % TabSize;
-			ListsRecs[idx].Delete(TabRecord<TKey, TData>(k));
-            this->DataCount--;
+			CurrPos = ListsRecs[CurrList].begin();
 		}
 	}
 
-	class Iterator
+	virtual void Reset()
+	{
+		CurrList = 0;
+		CurrPos = ListsRecs[CurrList].begin();
+		while (CurrList < TabSize - 1 && CurrPos == ListsRecs[CurrList].end())
+		{
+			CurrList++;
+			CurrPos = ListsRecs[CurrList].begin();
+		}
+	}
+	virtual bool isEnd() const
+	{
+		return CurrList == TabSize-1 && CurrPos == ListsRecs[CurrList].end();
+	}
+	virtual void goNext()
+	{
+		if (!isEnd())
+		{
+			++CurrPos;
+			while (CurrList < TabSize-1 && CurrPos == ListsRecs[CurrList].end())
+			{
+				CurrList++;
+				CurrPos = ListsRecs[CurrList].begin();
+			}
+		}
+	}
+	virtual TKey getKey() const
+	{
+		return (*CurrPos).GetKey();
+	}
+	virtual TData* getData() const
+	{
+		return (*CurrPos).GetData();
+	}
+
+	virtual TData* Find(const TKey& k)
+	{
+		int idx = HashFunc(k) % TabSize;
+		CurrList = idx;
+		CurrPos = ListsRecs[CurrList].begin();
+		if (!(this->isEmpty()))
+		{
+			Node<TabRecord<TKey, TData>>* tmp = ListsRecs[idx].Search(TabRecord<TKey, TData>(k));
+			if (tmp != nullptr)
+				return tmp->data.GetData();
+		}
+		return nullptr;
+	}
+	virtual void Insert(const TKey& k, const TData& d)
+	{
+		if (!isFull())
+		{
+			if (Find(k) == nullptr)
+			{
+				ListsRecs[CurrList].InsertToHead(TabRecord<TKey, TData>(k, d));
+				DataCount++;
+			}
+		}
+	}
+	virtual void Delete(const TKey& k)
+	{
+		if (Find(k) != nullptr)
+		{
+			ListsRecs[CurrList].Delete(TabRecord<TKey, TData>(k));
+			DataCount--;
+		}
+	}
+
+	/*class Iterator
 	{
 		List< TabRecord<TKey, TData> >* CurrList;
 		List< TabRecord<TKey, TData> >* LastList;
@@ -162,7 +206,7 @@ public:
 			os << *it << std::endl;
 		}
 		return os;
-	}
+	}*/
 };
 
 template <class TKey, class TData>
@@ -185,7 +229,7 @@ protected:
 	virtual unsigned long HashFunc(const std::string& k) override
 	{
 		unsigned long Res = k[0];
-		unsigned long p = 17;
+        unsigned long p = 38;
         for (size_t i = 1; i < k.length(); i++)
 		{
 			Res += k[i] * p;

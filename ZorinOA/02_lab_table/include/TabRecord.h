@@ -6,40 +6,30 @@ class TabRecord
 {
 protected:
 	TKey key;
-    TData data;
+    TData* data;
 public:
-	TabRecord() 
+	TabRecord(const TKey& _key = ())
+		:key(_key), data(nullptr) {}
+	TabRecord(const TKey& _key, const TData& _data)
+		:key(_key), data(new TData(_data)) {}
+	TabRecord(const TabRecord& tr)
+		:key(tr.key), data(new TData(*(tr.data))) {}
+	~TabRecord()
 	{
-		key = TKey();
-		data = TData();
+		delete data;
 	}
-    TabRecord(TKey _key, TData _data)
-        :key(_key), data(_data) {}
-	TabRecord(TKey _key)
-		:key(_key) 
-	{
-		data = TData();
-	}
-	~TabRecord() {}
 	TabRecord& operator=(const TabRecord& tr)
 	{
 		key = tr.key;
-        data = tr.data;
+		delete data;
+		data = new TData(*(tr.data));
 		return *this;
-	}
-	void SetKey(TKey _key)
-	{
-		key = _key;
 	}
     TKey GetKey() const
 	{
 		return key;
 	}
-    void SetData(TData _data)
-	{
-        data = _data;
-	}
-    TData& GetData()
+    TData* GetData() const
 	{
         return data;
 	}
@@ -58,7 +48,7 @@ public:
 
 	friend std::ostream& operator<<(std::ostream& os, const TabRecord& tr)
 	{
-        os << "key: " << tr.key << ", data:  " << tr.data;
+        os << "key: " << tr.key << ", data:  " << *(tr.data);
 		return os;
 	}
 };

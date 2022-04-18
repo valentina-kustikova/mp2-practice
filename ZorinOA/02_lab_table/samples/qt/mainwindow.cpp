@@ -291,12 +291,17 @@ void MainWindow::on_select2Poly_clicked()
 
 void MainWindow::on_pushButton_calculate_clicked()
 {
-    poly1_str = ui->line1Poly->text().toStdString();
-    double x = ui->lineX->text().toDouble();
-    double y = ui->lineY->text().toDouble();
-    double z = ui->lineZ->text().toDouble();
-    double value = Polinom(poly1_str)(x, y, z);
-    ui->lineValue->setText(QString::number(value));
+    try {
+        poly1_str = ui->line1Poly->text().toStdString();
+        double x = ui->lineX->text().toDouble();
+        double y = ui->lineY->text().toDouble();
+        double z = ui->lineZ->text().toDouble();
+        double value = Polinom(poly1_str)(x, y, z);
+        ui->lineValue->setText(QString::number(value));
+    }
+    catch (const std::exception& ex) {
+        statusBar()->showMessage(ex.what());
+    }
 }
 
 

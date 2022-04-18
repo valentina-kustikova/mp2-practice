@@ -69,8 +69,7 @@ TEST(SortTable, cant_insert_with_not_unique_key)
     S.Insert('a', 1);
     S.Insert('b', 2);
     S.Insert('b', 3);
-    auto it = S.begin()+2;
-    EXPECT_NE(3, (*it).GetData());
+    EXPECT_NE(3, *S.getData());
 }
 
 TEST(SortTable, delete_correct)

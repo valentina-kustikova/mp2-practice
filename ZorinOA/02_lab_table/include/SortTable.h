@@ -7,12 +7,12 @@ class SortTable : public ScanTable<TKey, TData>
 protected:
     void SortData()
     {
-        for (int i = 0; i < this->DataCount - 2; i++)
+        for (int i = 0; i < this->DataCount - 1; i++)
         {
             int min = i;
-            for (int j = i + 1; j < this->DataCount - 1; j++)
+            for (int j = i + 1; j < this->DataCount; j++)
             {
-                if (this->Recs[j] < this->Recs[min])
+                if (*(Recs[j]) < *(Recs[min]))
                     min = j;
             }
             std::swap(this->Recs[i], this->Recs[min]);
@@ -28,80 +28,54 @@ public:
     virtual TData* Find(const TKey& k)
     {
         int left = 0;
-        int right = this->DataCount - 1;
+        int right = DataCount - 1;
+        int mid = 0;
 
         while (left <= right)
         {
-            int mid = (left + right) >> 1;
+            mid = (left + right) >> 1;
 
-            if (this->Recs[mid].GetKey() == k)
-                return &(this->Recs[mid].GetData());
-            if (this->Recs[mid].GetKey() > k)
+            if (Recs[mid]->GetKey() == k)
+            {
+                left = mid + 1;
+                right = mid;
+            }
+            else if (Recs[mid]->GetKey() > k)
                 right = mid - 1;
             else
                 left = mid + 1;
         }
+        if (right < 0 || Recs[right]->GetKey() < k)
+            right++;
+        CurrPos = right;
 
-        return nullptr;
+        if (right < DataCount && Recs[mid]->GetKey() == k)
+            return Recs[mid]->GetData();
+        else
+            return nullptr;
     }
     virtual void Insert(const TKey& k, const TData& d)
     {
-        if (!this->isFull())
+        if (!isFull())
         {
-            int l = 0, r = this->DataCount - 1;
-
-            while (l <= r)
-            {
-                int m = (l + r) >> 1;
-                if (this->Recs[m].GetKey() == k)
-                {
-                    return;
-                }
-                else if (this->Recs[m].GetKey() > k)
-                {
-                    r = m - 1;
-                }
-                else
-                {
-                    l = m + 1;
-                }
-            }
-            if (r < 0 || this->Recs[r].GetKey() < k)
-                r++;
-
-            for (int i = this->DataCount; i > r; i--)
-            {
-                this->Recs[i] = this->Recs[i-1];
-            }
-            this->Recs[r] = TabRecord<TKey, TData>(k, d);
-            this->DataCount++;
+           if (Find(k) == nullptr)
+           {
+               for (int i = DataCount; i > CurrPos; i--)
+                   Recs[i] = Recs[i - 1];
+               Recs[CurrPos] = new TabRecord<TKey, TData>(k, d);
+               DataCount++;
+           }
         }
     }
     virtual void Delete(const TKey& k)
     {
-        int l = 0, r = this->DataCount - 1, m = 0;
-        bool find = false;
-        while (l <= r && !find)
+        if (Find(k) != nullptr)
         {
-            m = (l + r) >> 1;
-            if (this->Recs[m].GetKey() == k)
-            {
-                find = true;
-            }
-            else if (this->Recs[m].GetKey() > k)
-                r = m - 1;
-            else
-                l = m + 1;
-        }
+            delete Recs[CurrPos];
+            for (int i = CurrPos; i < DataCount-1; i++)
+                Recs[i] = Recs[i + 1];
 
-        if (find)
-        {
-            this->DataCount--;
-            for (int i = m; i < this->DataCount; i++)
-            {
-                this->Recs[i] = this->Recs[i+1];
-            }
-
+            Recs[--DataCount] = nullptr;
         }
     }
 };

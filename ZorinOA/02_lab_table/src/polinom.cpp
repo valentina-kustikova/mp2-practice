@@ -80,7 +80,7 @@ Polinom Polinom::operator*(const Monom& monom) const
 		while (pThis != Tail)
 		{
 			if (check_err_add_deg(pThis->deg, monom.deg))
-                throw "Wrong degree!";
+                throw std::runtime_error("Exponent was exceeded during multiplication");
 			pRes->next = new Monom(pThis->cf * monom.cf, pThis->deg + monom.deg, res.Tail);
 			pThis = pThis->next;
 			pRes = pRes->next;
@@ -103,7 +103,7 @@ Polinom& Polinom::operator*=(const Monom& monom)
 		while (pThis != Tail)
 		{
 			if (check_err_add_deg(pThis->deg, monom.deg))
-                throw "Wrong degree!";
+                throw std::runtime_error("Exponent was exceeded during multiplication");
 			pThis->cf *= monom.cf;
 			pThis->deg += monom.deg;
 			pThis = pThis->next;

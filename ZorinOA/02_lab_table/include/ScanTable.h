@@ -8,10 +8,13 @@ public:
     ScanTable(int size = 25) : ArrayTable<TKey, TData>(size) {}
     virtual TData* Find(const TKey& k)
 	{
-		for (int i = 0; i < this->DataCount; i++)
+		for (int i = 0; i < DataCount; i++)
 		{
-			if (this->Recs[i].GetKey() == k)
-                return &(this->Recs[i].GetData());
+			if (Recs[i]->GetKey() == k)
+			{
+				CurrPos = i;
+				return Recs[i]->GetData();
+			}	
 		}
         return nullptr;
 	}
@@ -22,20 +25,17 @@ public:
             TData* tmp = Find(k);
             if (tmp == nullptr)
             {
-                this->Recs[this->DataCount] = TabRecord<TKey, TData>(k, d);
+                this->Recs[this->DataCount] = new TabRecord<TKey, TData>(k, d);
                 this->DataCount++;
             }
         }
 	}
     virtual void Delete(const TKey& k)
 	{
-		for (int i = 0; i < this->DataCount; i++)
+		if (Find(k) != nullptr)
 		{
-			if (this->Recs[i].GetKey() == k)
-			{
-				this->Recs[i] = this->Recs[--this->DataCount];
-				return;
-			}
+			delete Recs[CurrPos];
+			Recs[CurrPos] = Recs[--DataCount];
 		}
 	}
 };

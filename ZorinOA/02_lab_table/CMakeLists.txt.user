@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 7.0.0, 2022-04-11T12:39:23. -->
+<!-- Written by QtCreator 7.0.0, 2022-04-17T14:31:57. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -87,6 +87,11 @@
     <value type="Qt::CheckState" key="1@C:/Users/kento/source/repos/oleg-w570/mp2-practice/ZorinOA/02_lab_table/tests/test_polinom.cpp:MonomList">Checked</value>
     <value type="Qt::CheckState" key="1@C:/Users/kento/source/repos/oleg-w570/mp2-practice/ZorinOA/02_lab_table/tests/test_polinom.cpp:Polinom">Checked</value>
     <value type="Qt::CheckState" key="1@C:/Users/kento/source/repos/oleg-w570/mp2-practice/ZorinOA/02_lab_table/tests/test_polinom.cpp:PolinomInput">Checked</value>
+    <value type="Qt::CheckState" key="1@C:/Users/kento/source/repos/oleg-w570/mp2-practice/ZorinOA/02_lab_table/tests/test_polinom.cpp:add1">Checked</value>
+    <value type="Qt::CheckState" key="1@C:/Users/kento/source/repos/oleg-w570/mp2-practice/ZorinOA/02_lab_table/tests/test_polinom.cpp:add2">Checked</value>
+    <value type="Qt::CheckState" key="1@C:/Users/kento/source/repos/oleg-w570/mp2-practice/ZorinOA/02_lab_table/tests/test_polinom.cpp:add3">Checked</value>
+    <value type="Qt::CheckState" key="1@C:/Users/kento/source/repos/oleg-w570/mp2-practice/ZorinOA/02_lab_table/tests/test_polinom.cpp:add4">Checked</value>
+    <value type="Qt::CheckState" key="1@C:/Users/kento/source/repos/oleg-w570/mp2-practice/ZorinOA/02_lab_table/tests/test_polinom.cpp:add5">Checked</value>
     <value type="Qt::CheckState" key="1@C:/Users/kento/source/repos/oleg-w570/mp2-practice/ZorinOA/02_lab_table/tests/test_polinom.cpp:add_eq_deg_monom">Checked</value>
     <value type="Qt::CheckState" key="1@C:/Users/kento/source/repos/oleg-w570/mp2-practice/ZorinOA/02_lab_table/tests/test_polinom.cpp:add_gr_deg_monom">Checked</value>
     <value type="Qt::CheckState" key="1@C:/Users/kento/source/repos/oleg-w570/mp2-practice/ZorinOA/02_lab_table/tests/test_polinom.cpp:add_less_deg_monom">Checked</value>
@@ -180,7 +185,7 @@
    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">Desktop Qt 6.3.0 MSVC2019 64bit</value>
    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">Desktop Qt 6.3.0 MSVC2019 64bit</value>
    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">qt.qt6.630.win64_msvc2019_64_kit</value>
-   <value type="qlonglong" key="ProjectExplorer.Target.ActiveBuildConfiguration">3</value>
+   <value type="qlonglong" key="ProjectExplorer.Target.ActiveBuildConfiguration">1</value>
    <value type="qlonglong" key="ProjectExplorer.Target.ActiveDeployConfiguration">0</value>
    <value type="qlonglong" key="ProjectExplorer.Target.ActiveRunConfiguration">0</value>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.BuildConfiguration.0">
@@ -234,10 +239,10 @@
     <value type="QString" key="CMake.Initial.Parameters">-DCMAKE_GENERATOR:STRING=Ninja
 -DCMAKE_BUILD_TYPE:STRING=Release
 -DCMAKE_PROJECT_INCLUDE_BEFORE:PATH=%{IDE:ResourcePath}/package-manager/auto-setup.cmake
--DQT_QMAKE_EXECUTABLE:STRING=%{Qt:qmakeExecutable}
--DCMAKE_PREFIX_PATH:STRING=%{Qt:QT_INSTALL_PREFIX}
--DCMAKE_C_COMPILER:STRING=%{Compiler:Executable:C}
--DCMAKE_CXX_COMPILER:STRING=%{Compiler:Executable:Cxx}</value>
+-DQT_QMAKE_EXECUTABLE:FILEPATH=%{Qt:qmakeExecutable}
+-DCMAKE_PREFIX_PATH:PATH=%{Qt:QT_INSTALL_PREFIX}
+-DCMAKE_C_COMPILER:FILEPATH=%{Compiler:Executable:C}
+-DCMAKE_CXX_COMPILER:FILEPATH=%{Compiler:Executable:Cxx}</value>
     <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">C:/Users/kento/source/repos/oleg-w570/mp2-practice/ZorinOA/02_lab_table/sln/qt</value>
     <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.0">
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
@@ -394,7 +399,7 @@
     <value type="bool" key="RunConfiguration.UseLibrarySearchPath">true</value>
     <value type="bool" key="RunConfiguration.UseQmlDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory.default">C:/Users/kento/source/repos/oleg-w570/mp2-practice/ZorinOA/build-02_lab_table-Desktop_Qt_6_3_0_MSVC2019_64bit-MinSizeRel/samples/qt</value>
+    <value type="QString" key="RunConfiguration.WorkingDirectory.default">C:/Users/kento/source/repos/oleg-w570/mp2-practice/ZorinOA/02_lab_table/sln/qt/bin</value>
    </valuemap>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.RunConfiguration.1">
     <value type="bool" key="Analyzer.Perf.Settings.UseGlobalSettings">true</value>
@@ -411,7 +416,7 @@
     <value type="bool" key="RunConfiguration.UseLibrarySearchPath">true</value>
     <value type="bool" key="RunConfiguration.UseQmlDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory.default">C:/Users/kento/source/repos/oleg-w570/mp2-practice/ZorinOA/build-02_lab_table-Desktop_Qt_6_3_0_MSVC2019_64bit-MinSizeRel/samples/main</value>
+    <value type="QString" key="RunConfiguration.WorkingDirectory.default">C:/Users/kento/source/repos/oleg-w570/mp2-practice/ZorinOA/02_lab_table/sln/qt/bin</value>
    </valuemap>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.RunConfiguration.2">
     <value type="bool" key="Analyzer.Perf.Settings.UseGlobalSettings">true</value>
@@ -428,7 +433,7 @@
     <value type="bool" key="RunConfiguration.UseLibrarySearchPath">true</value>
     <value type="bool" key="RunConfiguration.UseQmlDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory.default">C:/Users/kento/source/repos/oleg-w570/mp2-practice/ZorinOA/build-02_lab_table-Desktop_Qt_6_3_0_MSVC2019_64bit-MinSizeRel/tests</value>
+    <value type="QString" key="RunConfiguration.WorkingDirectory.default">C:/Users/kento/source/repos/oleg-w570/mp2-practice/ZorinOA/02_lab_table/sln/qt/bin</value>
    </valuemap>
    <value type="qlonglong" key="ProjectExplorer.Target.RunConfigurationCount">3</value>
   </valuemap>

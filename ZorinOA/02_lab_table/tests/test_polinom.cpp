@@ -335,3 +335,48 @@ TEST(PolinomInput, correct_input_monom_with_zero_cf)
 
 	EXPECT_EQ(B, A);
 }
+
+TEST(Polinom, add1)
+{
+    Polinom P("3x^5y^2z^5 - 5x^4y^3z^3 + 7x^3y^5z");
+    Polinom Q("4x^3y^2z^6 - 6x^2yz^8");
+    Polinom res("3x^5y^2z^5 - 5x^4y^3z^3 + 7x^3y^5z + 4x^3y^2z^6 - 6x^2yz^8");
+    EXPECT_EQ(res, P+Q);
+}
+
+TEST(Polinom, add2)
+{
+    Polinom P("3x^5y^2z^5 - 5x^4y^3z^3 + 7x^3y^5z");
+    Polinom Q("4x^7y^2z^6 - 6x^6yz^8");
+    Polinom res("4x^7y^2z^6 - 6x^6yz^8 + 3x^5y^2z^5 - 5x^4y^3z^3 + 7x^3y^5z");
+    EXPECT_EQ(res, P+Q);
+}
+
+TEST(Polinom, add3)
+{
+    Polinom P("3x^5y^2z^5 - 5x^4y^3z^3 + 7x^3y^5z");
+    Polinom Q("4x^5y^2z^5 + 5x^4y^3z^3");
+    Polinom res("7x^5y^2z^5 + 7x^3y^5z");
+    EXPECT_EQ(res, P+Q);
+}
+
+TEST(Polinom, add4)
+{
+    Polinom P("3x^5y^2z^5 - 5x^4y^3z^3 + 7x^7y^5z");
+    Polinom Q("4x^6y^2z^6 - 6x^2yz^8");
+    Polinom res("7x^7y^5z + 4x^6y^2z^6 + 3x^5y^2z^5 - 5x^4y^3z^3 - 6x^2yz^8");
+    EXPECT_EQ(res, P+Q);
+}
+
+TEST(Polinom, add5)
+{
+    Polinom P("3x^5y^2z^5 - 5x^4y^3z^3 + 7x^7y^5z");
+    Polinom Q("-3x^5y^2z^5 + 5x^4y^3z^3 - 7x^7y^5z");
+    Polinom res("0");
+    EXPECT_EQ(res, P+Q);
+}
+
+
+
+
+
