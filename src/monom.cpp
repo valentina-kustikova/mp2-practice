@@ -1,33 +1,17 @@
 #include "monom.h"
 
-Monom::Monom()
+Monom::Monom(const double c, const int d)
 {
-	coeff = 0;
-	degree = 1003;
+	coeff = c;
+	degree = d;
 }
-Monom::Monom(double _coeff, unsigned int _degree)
-{
-	coeff = _coeff;
-	degree = _degree;
-}
-const Monom& Monom::operator=(const Monom& m)
+
+Monom::Monom(const Monom& m)
 {
 	coeff = m.coeff;
 	degree = m.degree;
-	return *this;
 }
-bool Monom::operator==(const Monom& m) const
-{
-	return  degree == m.degree;
-}
-bool Monom::operator!=(const Monom& m) const
-{
-	return !(*this == m);
-}
-bool Monom::operator<(const Monom& m) const
-{
-	return degree < m.degree;
-}
+
 Monom& Monom::operator+(const Monom& m)
 {
 	coeff = coeff + m.coeff;
@@ -43,4 +27,31 @@ Monom& Monom::operator*(const Monom& m)
 	coeff = coeff * m.coeff;
 	degree = degree + m.degree;
 	return *this;
+}
+
+bool Monom::operator<(const Monom& m) const
+{
+	return (degree < m.degree);
+}
+
+bool Monom::operator>(const Monom& m) const
+{
+	return (degree > m.degree);
+}
+
+const Monom& Monom::operator=(const Monom& m)
+{
+	coeff = m.coeff;
+	degree = m.degree;
+	return *this;
+}
+
+bool Monom::operator==(const Monom& m) const
+{
+	return ((degree == m.degree) && (coeff == m.coeff));
+}
+
+bool Monom::operator!=(const Monom& m) const
+{
+	return !(*this == m);
 }

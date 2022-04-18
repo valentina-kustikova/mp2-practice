@@ -1,229 +1,267 @@
-﻿#include "polinom.h"
-#include "list.h"
+#include "polinom.h"
 
-Polinom::Polinom(const string& str)
+using namespace std;
+
+Polinom::Polinom(const Polinom& p)
 {
-	s = str;
-	int f = 0, v = 0;
-	unsigned int i = 0;//итерация
-	int j = 0, st = 0;
-	unsigned int k;
-	double x = 1; //коэффициент
-	Monom tmp;
+	list = p.list;
+}
 
-	while (i < s.size())
+List<Monom> Polinom::similar(List<Monom>& m)
+{
+	List<Monom> l;
+	l.Reset();
+	m.Reset();
+	Node<Monom> monom(m.GetCurr().coeff);
+	List<Monom> y(m);
+	while (!m.isEnd())
 	{
-		string s1;
-
-		if (s[i] == '-')
+		monom.data.degree = m.GetCurr().degree;
+		y.Next();
+		if (m.GetCurr().degree == y.GetCurr().degree) 
+			monom.data.coeff += y.GetCurr().coeff;
+		else
 		{
-			x = -1;
-			i++;
-		}
-		char a[20];
-		j = 0;
-		while ((i < s.size()) && (s[i] != '+') && (s[i] != '-'))
-		{
-			a[j] = s[i];
-			j++;
-			i++;
-			v++;
-		}
-		if (v != 0)
-		{
-			i--;
-			s1 = a;
-			s1.erase(j);
-			k = 0;
-			while (k < s1.length())
+			if (monom.data.coeff)
 			{
-				if (isdigit(s1[k]) != 0)
-				{
-					char c[10];
-					string cs;
-					while (((isdigit(s1[k]) != 0) || (s1[k] == '.')) && (k < s1.length()))
-					{
-						c[k] = s1[k];
-						k++;
-						if (k >= s1.size()) break;
-					}
-					cs = c;
-					cs.erase(k);
-					x *= stod(cs);
-				}
-				if (k >= s1.size()) break;
-				char p[1];
-
-				if (s1[k] == 'x')
-				{
-					if ((k + 1) >= s1.size()) 
-					{
-						st += 100;
-						k++;
-						if (k >= s1.size()) break;
-					}
-					if (s1[k + 1] == '^')
-					{
-						p[0] = s1[k + 2];
-						st += atoi(p) * 100;
-						k += 3;
-						if (k >= s1.size()) break;
-					}
-					else
-					{
-						st += 100;
-						k++;
-						if (k >= s1.size()) break;
-					}
-				}
-
-				if (s1[k] == 'y')
-				{
-					if ((k + 1) >= s1.size()) 
-					{
-						st += 10;
-						k++;
-						if (k >= s1.size()) break;
-					}
-					if (s1[k + 1] == '^')
-					{
-						p[0] = s1[k + 2];
-						st += atoi(p) * 10;
-						k += 3;
-						if (k >= s1.size()) break;
-					}
-					else
-					{
-						st += 10;
-						k++;
-						if (k >= s1.size()) break;
-					}
-				}
-
-				if (s1[k] == 'z')
-				{
-					if ((k + 1) >= s1.size()) 
-					{
-						st += 1;
-						k++;
-						if (k >= s1.size()) break;
-					}
-					if (s1[k + 1] == '^')
-					{
-						p[0] = s1[k + 2];
-						st += atoi(p);
-						k += 3;
-						if (k >= s1.size()) break;
-					}
-					else
-					{
-						st += 1;
-						k++;
-						if (k >= s1.size()) break;
-					}
-				}
+				l.InsertToTail(monom.data);
+				l.Next();
 			}
-			tmp.SetCoeff(x);
-			tmp.SetDegree(st);
-			monoms.InsertToTail(tmp);
-			st = 0;
-			x = 1;
+			monom.data.coeff = y.GetCurr().coeff;
 		}
-		v = 0;
-		i++;
+		m.Next();
 	}
+	return l;
 }
-Polinom::Polinom(const Polinom& p1)
+
+Polinom::Polinom(string s)
 {
-	s = p1.s;
-	monoms = p1.monoms;
-}
-Polinom Polinom::operator+(const Polinom& p1)
-{
-	Polinom tmp(p1);
-	Polinom Res;
-	Node<Monom>* m1;
-	Node<Monom>* m2;
-	Monom val;
-	monoms.Reset();
-	m1 = monoms.GetNext();
-	while (!monoms.IsEnded()) 
+	List<Monom> res;
+	while (s.length())
 	{
-		val = monoms.GetValue();
-		Res.monoms.Insert(val);
-		m1 = monoms.GetNext();
+		string str;
+		Monom m;
+		int p = 1;
+		while (p < s.length() && s[p] != '+' && s[p] != '-') 
+			p++;
+		str = s.substr(0, p);
+		s.erase(0, p);
+		p = 0;
+		while (str[p] != 'x' && str[p] != 'y' && str[p] != 'z' && p < str.length())
+			p++;
+
+		string c = str.substr(0, p);
+		if (c == "+" || c.length() == 0)
+			m.coeff = 1;
+		else
+			if (c == "-")
+				m.coeff = -1;
+			else
+				m.coeff = stod(c);
+
+		str.erase(0, p); 
+		str += ' ';
+		int a[3] = { 100,10,1 };
+		for (int i = 0; i < 3; i++)
+		{
+			p = str.find((char)(120 + i));
+			if (p > -1)
+			{
+				if (str[p + 1] != '^')
+					str.insert(p + 1, "^1");
+				m.degree += a[i] * stoi(str.substr(p + 2, 1));   
+				str.erase(p, 3);
+			}
+		}
+		list.InsertInOrder(m);
 	}
-	tmp.monoms.Reset();
-	m2 = tmp.monoms.GetNext();
-	while (!tmp.monoms.IsEnded()) 
-	{
-		val = tmp.monoms.GetValue();
-		Res.monoms.Insert(val);
-		m2 = tmp.monoms.GetNext();
-	}
-	return Res;
+	list = similar(list);
 }
-Polinom Polinom::operator-(const Polinom& p1)
+
+Polinom Polinom::operator+(const Polinom& p) const
 {
 	Polinom res;
-
-	Polinom tmp(p1);
-	tmp = tmp * (-1);
-	res = *this + tmp;
-
+	Polinom pol1 = *this;
+	Polinom pol2 = p;
+	res.list.Reset();
+	pol1.list.Reset();
+	pol2.list.Reset();
+	while (!pol1.list.isEnd() && !pol2.list.isEnd())
+	{
+		if (pol1.list.GetCurr() < pol2.list.GetCurr())
+		{
+			res.list.InsertToTail(pol1.list.GetCurr());
+			pol1.list.Next();
+			res.list.Next();
+		}
+		else if (pol1.list.GetCurr() > pol2.list.GetCurr()) 
+		{
+			res.list.InsertToTail(pol2.list.GetCurr());
+			pol2.list.Next();
+			res.list.Next();
+		}
+		else
+		{
+			double c = pol1.list.GetCurr().coeff + pol2.list.GetCurr().coeff;
+			if (c)
+			{
+				res.list.InsertToTail(Monom(c, pol1.list.GetCurr().degree));
+				res.list.Next();
+			}
+			pol1.list.Next();
+			pol2.list.Next();
+		}
+	}
+	while (!pol1.list.isEnd())
+	{
+		res.list.InsertToTail(pol1.list.GetCurr());
+		pol1.list.Next();
+		res.list.Next();
+	}
+	while (!pol2.list.isEnd())
+	{
+		res.list.InsertToTail(pol2.list.GetCurr());
+		pol2.list.Next();
+		res.list.Next();
+	}
 	return res;
 }
-Polinom Polinom::operator*(const Polinom& p1)
+
+Polinom Polinom::operator*(const double k) const
 {
-	Polinom tmp(p1);
-	Polinom Res;
-	Monom MAX(1, 999);
-	Node<Monom>* m1;
-	Node<Monom>* m2;
-	monoms.Reset();
-	m1 = monoms.GetNext();
-	tmp.monoms.Reset();
-	m2 = tmp.monoms.GetNext();
-	while (!monoms.IsEnded()) 
+	Polinom res;
+	res = *this;
+	res.list.Reset();
+	while (!res.list.isEnd())
 	{
-		while (!tmp.monoms.IsEnded()) 
+		res.list.GetCurr().coeff *= k;
+		res.list.Next();
+	}
+	return res;
+}
+
+Polinom Polinom::operator*(const Polinom& p) const
+{
+	Polinom res;
+	Polinom pol = *this;
+	Polinom pol2 = p;
+	pol.list.Reset();
+	pol2.list.Reset();
+	while (!pol.list.isEnd())
+	{
+		double pol_coeff = pol.list.GetCurr().coeff;
+		int pol_degree = pol.list.GetCurr().degree;
+		Polinom pol3(p);
+		pol3.list.Reset();
+		while (!pol3.list.isEnd())
 		{
-			Monom rm = monoms.GetValue() * tmp.monoms.GetValue();
-			if (rm < MAX) 
+			int pol3_degree = pol3.list.GetCurr().degree;
+			if ((pol3_degree % 10 + pol_degree % 10) < 10 && (pol3_degree / 10 % 10 + pol_degree / 10 % 10) < 10 && (pol3_degree / 100 + pol_degree / 100) < 10)
 			{
-				Res.monoms.Insert(rm);
+				pol3.list.GetCurr().degree += pol_degree;
+				pol3.list.GetCurr().coeff *= pol_coeff;
 			}
-			m2 = tmp.monoms.GetNext();
+			else
+				throw "Error.";
+			pol3.list.Next();
 		}
-		m1 = monoms.GetNext();
-		m2 = tmp.monoms.GetNext();
+		res = res + pol3;
+		pol.list.Next();
 	}
-	return Res;
+	return res;
 }
 
-Polinom Polinom::operator*(const double d)
+Polinom operator*(const double k, const Polinom& p)
 {
-	Node<Monom>* tmp;
-	monoms.Reset();
-	tmp = monoms.GetNext();
-	while (!monoms.IsEnded())
+	return p * k;
+}
+
+Polinom Polinom::operator-(const Polinom& p) const
+{
+	return *this + p * (-1);
+}
+
+Polinom Polinom::operator-() const
+{
+	return (-1) * (*this);
+}
+
+const Polinom& Polinom::operator=(const Polinom& p)
+{
+	list = p.list;
+	return *this;
+}
+
+bool Polinom::operator==(const Polinom& p) const
+{
+	return list == p.list;
+}
+
+bool Polinom::operator!=(const Polinom& p) const
+{
+	return list != p.list;
+}
+
+inline double Polinom::operator()(double x, double y, double z)
+{
+	double res = 0.0;
+	this->list.Reset();
+	while (!this->list.isEnd())
 	{
-		tmp->data = tmp->data * d;
-		tmp = monoms.GetNext();
+		res += this->list.GetCurr().coeff * pow(x, this->list.GetCurr().degree / 100) * pow(y, this->list.GetCurr().degree / 10 % 10) * pow(z, this->list.GetCurr().degree % 10);
+		this->list.Next();
 	}
-	return *this;
-}
-const Polinom& Polinom::operator=(const Polinom& p1)
-{
-	if (this != &p1) {
-		s = p1.s;
-		monoms = p1.monoms;
-	}
-	return *this;
+	return res;
 }
 
-ostream& operator<<(ostream& ostr, const Polinom& pm)
+ostream& operator<<(ostream& out, const Polinom& pol)
 {
-	cout << pm.monoms << endl;
-	return ostr;
+	Polinom p = pol;
+	p.list.Reset();
+	while (!p.list.isEnd())
+	{
+		Monom temp = p.list.GetCurr();
+		if (temp.coeff > 0)
+		{
+			out << "+";
+			if (temp.coeff == 1 && temp.degree == 0)
+				out << "1";
+			else
+				if (temp.coeff != 1)
+					out << temp.coeff;
+		}
+		else
+			out << temp.coeff; 
+		int a = temp.degree / 100; 
+		if (a > 1)
+			out << "x^" << a;
+		else
+			if (a == 1)
+				out << "x";
+		a = temp.degree / 10 % 10;
+		if (a > 1)
+			out << "y^" << a;
+		else
+			if (a == 1)
+				out << "y";
+		a = temp.degree % 10;
+		if (a > 1)
+			out << "z^" << a;
+		else
+			if (a == 1)
+				out << "z";
+		p.list.Next();
+	}
+	return out;
 }
+
+istream& operator>>(istream& in, Polinom& pol)
+{
+	string s;
+	in >> s;
+	//getline(in, s);
+	pol = Polinom(s);
+
+	return in;
+};
+

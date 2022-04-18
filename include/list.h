@@ -1,57 +1,53 @@
-п»ї#pragma once
-#include "monom.h"
-#include <string>
-#include <cstdlib>
-#include  <cctype>
+#pragma once
+#include "node.h"
 #include <iostream>
 
 using namespace std;
 
-template <class T>
-struct Node //Р·РІРµРЅРѕ С†РёРєР»РёС‡РµСЃРєРѕРіРѕ СЃРїРёСЃРєР° СЃ РіРѕР»РѕРІРѕР№
+template<class T>
+class List
 {
-	T data;
-	Node* next;
-public:
-	Node(); // РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ
-	Node(T val, Node* n);//РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ, РїСЂРёРЅРёРјР°СЋС‰РёР№ РЅР° РІС…РѕРґ Р·РЅР°С‡РµРЅРёСЏ
-	~Node() {};//РґРµСЃС‚СЂСѓРєС‚РѕСЂ
-	Node(const Node<T>& node2);// РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РєРѕРїРёСЂРѕРІР°РЅРёСЏ
-	bool operator==(const Node<T>& node2) const;//СЃСЂР°РІРЅРµРЅРёРµ ==
-	bool operator!=(const Node<T>& node2) const { return !(*this == node2); }; //СЃСЂР°РІРЅРµРЅРёРµ !=
-};
+protected:
 
-template <class T>
-struct List //РѕРґРЅРѕСЃРІСЏР·РЅС‹Р№ Р»РёРЅРµР№РЅС‹Р№ СЃРїРёСЃРѕРє
-{
-private:
-	Node<T>* head; //СѓРєР°Р·Р°С‚РµР»СЊ РЅР° РіРѕР»РѕРІСѓ
-	Node<T>* current; // СѓРєР°Р·Р°С‚РµР»СЊ РЅР° СЃР»РµРґСѓСЋС‰РµРµ Р·РІРµРЅРѕ СЃРїРёСЃРєР°
-public:
-	List(); // РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ
-	List(const List<T>& l1);//РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РєРѕРїРёСЂРѕРІР°РЅРёСЏ
-	~List();//РґРµСЃС‚СЂСѓРєС‚РѕСЂ
+	Node<T>* head;//указатель на голову
+	Node<T>* curr;//указатель на текущее звено списка 
 
-	void Clean();//РѕС‡РёСЃС‚РёС‚СЊ СЃРїРёСЃРѕРє
-	T& GetValue() { return current->data; } //РІРѕР·РІСЂР°С‰Р°РµС‚ Р·РЅР°С‡РµРЅРёСЏ С‚РµРєСѓС‰РµРіРѕ СЌР»РµРјРµРЅС‚Р° СЃРїРёСЃРєР°
-	List<T>& operator=(const List<T>& l1);//РїСЂРёСЃРІР°РёРІР°РЅРёРµ
-	void Reset() { current = head; }//СѓРєР°Р·Р°С‚РµР»СЊ РЅР° РЅР°С‡Р°Р»Рµ СЃРїРёСЃРєР°
-	bool IsEnded() const;
-	Node<T>* GetNext() { return current = current->next; }//РІРѕР·РІСЂР°С‰Р°РµС‚ СЃР»РµРґСѓСЋС‰РёР№ СЌР»РµРјРµРЅС‚ СЃРїРёСЃРєР°
-	void InsertToTail(const T& d); //РІСЃС‚Р°РІРєР° РІ РєРѕРЅРµС†
-	void Insert(const T& d); //РІСЃС‚Р°РІРєР° РІ СЃРїРёСЃРѕРє
-	void Delete(const T& d); //СѓРґР°Р»РµРЅРёРµ Р·РІРµРЅР°
+public:
+
+	List(); //конструктор по умолчанию
+	List(const List<T>& l); //конструктор копирования
+	~List(); //деструктор
+
+	Node<T>* Search(const T& elem);//поиск элемента
+	void InsertToHead(const T& elem); //вставка в начало
+	void InsertInOrder(const T& elem);//вставка в упорядоченный список
+	void InsertToTail(const T& elem); //вставка в конец
+	void InsertAfter(Node<T>* temp1, const T& elem);//вставка после элемента
+	void Delete(const T& elem); //удаление звена
+	void Clean(); //очистить список
+
+	void Reset() { curr = head->next; } //переход в начало списка
+	void Next() { curr = curr->next; } //переход к следующему звену
+	bool isEnd() const { return curr == head; }//проверка на конец списка
+	bool isEmpty() const { return (head->next == head); }//проверка на пустоту
+	T& GetCurr() const { return curr->data; } //получение данных 
+	T Head() { return head->next->data; };//данные начала списка
+	Node<T>* GetHead() { return head->next; }; //получение начала списка
+
+	const List<T>& operator=(const List<T>& l); //присваивание
+	bool operator==(const List<T>& l) const; //операция ==
+	bool operator!=(const List<T>& l) const; //операция !=
 
 	friend std::ostream& operator<<(std::ostream& os, const List<T>& l)
 	{
 		List<T> list(l);
 		list.Reset();
-		Node<T>* tmp = list.GetNext();
-		while (!list.IsEnded())
+		Node<T>* tmp = list.Next();
+		while (!list.isEnd())
 		{
 			cout << tmp->data;
-			tmp = list.GetNext();
-			if (!list.IsEnded())
+			tmp = list.Next();
+			if (!list.isEnd())
 				cout << "+";
 		}
 		cout << endl;
@@ -60,200 +56,193 @@ public:
 };
 
 template <class T>
-Node<T>::Node()
-{
-	next = NULL;
-}
-
-template <class T>
-Node<T>::Node(T val, Node* n)
-{
-	data = val;
-	next = n;
-}
-
-template <class T>
-Node<T>::Node(const Node<T>& node2)
-{
-	if (this != &node2) 
-	{
-		data = node2.data;
-		next = node2.next;
-	}
-}
-
-template <class T>
-bool Node<T>::operator==(const Node<T>& node2) const
-{
-	if (data != node2.data)
-		return false;
-	else return true;
-}
-
-
-template <class T>
 List<T>::List()
 {
 	head = new Node<T>;
 	head->next = head;
-	current = head;
+	curr = head;
 }
 
 template <class T>
-List<T>::List(const List<T>& l1)
+List<T>::List(const List<T>& l)
 {
-	if (l1.head->next != l1.head)
+	head = new Node<T>;
+	Node<T>* A = l.head;
+	Node<T>* B = head;
+	if (A->next == l.head)
 	{
-		head = new Node<T>;
-		current = head;
-		Node<T>* tmp2 = l1.head->next;
-		while (tmp2 != l1.head)
-		{
-			current->next = new Node<T>(tmp2->data, tmp2->next);
-			current = current->next;
-			tmp2 = tmp2->next;
-		}
-		current->next = head;
-	}
-	else 
-	{
-		head = new Node<T>;
 		head->next = head;
-		current = head;
+		return;
 	}
+	while (A->next != l.head)
+	{
+		A = A->next;
+		B->next = new Node<T>(A->data);
+		B = B->next;
+	}
+	B->next = head;
+	curr = head->next;
 }
 
 template <class T>
 List<T>::~List()
 {
-	current = head->next;
-	Node<T>* tmp2 = current;
-	if (head->next != head)
+	Clean();
+	delete head;
+}
+
+template <class T>
+Node<T>* List<T>::Search(const T& elem)
+{
+	Node<T>* tmp = head->next;
+	while (tmp != nullptr)
 	{
-		while (tmp2 != head)
+		if (tmp->data == elem)
 		{
-			tmp2 = current->next;
-			delete current;
-			current = tmp2;
+			return tmp;
 		}
-		delete current;
+		tmp = tmp->next;
+	}
+	return nullptr;
+}
+
+template <class T>
+void List<T>::InsertToHead(const T& elem)
+{
+	Node<T>* node = new Node<T>(elem, head->next);
+	head->next = node;
+}
+
+template <class T>
+void List<T>::InsertInOrder(const T& elem)
+{
+	if (isEmpty())
+	{
+		head->next = new Node<T>(elem);
+		head->next->next = head;
 	}
 	else
-		delete head;
+	{
+		Node<T>* tmp = new Node<T>(elem);
+		Node<T>* curr = head;
+
+		while ((*(curr->next) < *tmp) && curr->next != head)
+			curr = curr->next;
+		Node<T>* tmp2 = curr->next;
+		curr->next = tmp;
+		curr->next->next = tmp2;
+	}
+}
+
+template<class T>
+inline void List<T>::InsertToTail(const T& elem)
+{
+	Reset();
+	while (curr->next != head)
+	{
+		Next();
+	}
+	Node<T>* tmp = curr->next;
+	curr->next = new Node<T>(elem);
+	curr->next->next = tmp;
 }
 
 template <class T>
-bool List<T>::IsEnded() const
+void List<T>::InsertAfter(Node<T>* temp1, const T& elem)
 {
-	if (current == head)
-		return true;
-	else return false;
-}
-
-template <class T>
-void List<T>::InsertToTail(const T& d)
-{
-	current = head;
-	if (head->next == head)
-		head->next = new Node<T>(d, head);
+	if (head == NULL)
+		throw "List is empty";
 	else
 	{
-		while (current->next != head)
-		{
-			current = current->next;
-		}
-		current->next = new Node<T>(d, head);
+		Node<T>* temp = temp1->next;
+		temp1->next = new Node<T>(elem, temp);
 	}
 }
 
 template <class T>
-void List<T>::Insert(const T& d)
+void List<T>::Delete(const T& elem)
 {
-	Node<T>* tmp;
-	tmp = head;
-	current = head->next;
-	if (head->next == head)
-		head->next = new Node<T>(d, head);
-	else
+	Node<T>* del;
+	Node<T>* tmp = head->next;
+	if (tmp != nullptr)
 	{
-		while (current->data < d)
+		if (tmp->data == elem)
 		{
-			tmp = tmp->next;
-			current = current->next;
-		}
-		if (current->data == d)
-		{
-			current->data = current->data + d;
+			del = tmp->next;
+			delete head->next;
+			head->next = del;
 		}
 		else
 		{
-			tmp->next = new Node<T>(d, current);
-		}
-	}
-}
-
-template <class T>
-void List<T>::Delete(const T& d)
-{
-	Node<T>* prev = head;
-	current = head->next;
-	if (current != head)
-	{
-		while ((current != head) && (current->data != d))
-		{
-			prev = current;
-			current = current->next;
-		}
-		if (current != head)
-		{
-			prev->next = current->next;
-			delete current;
-		}
-	}
-}
-
-
-template <class T>
-List<T>& List<T>::operator=(const List<T>& l1)
-{
-	if (this != &l1) 
-	{
-		Clean();
-		if (l1.head->next == l1.head) 
-		{
-			return *this;
-		}
-		else 
-		{
-			Node<T>* tmp2 = l1.head->next;
-			current = head;
-			while (tmp2 != l1.head)
+			while (tmp->next)
 			{
-				current->next = new Node<T>(tmp2->data, tmp2->next);
-				current = current->next;
-				tmp2 = tmp2->next;
+				if (tmp->next->data == elem)
+				{
+					del = tmp->next;
+					break;
+				}
+				tmp = tmp->next;
 			}
-			current->next = head;
+			if (tmp->next)
+			{
+				tmp->next = del->next;
+				delete del;
+			}
 		}
 	}
-	return *this;
 }
 
 template <class T>
 void List<T>::Clean()
 {
-	current = head->next;
-	Node<T>* tmp2 = current;
-	if (head->next != head)
+	Node<T>* curr = head->next;
+	while (curr != head)
 	{
-		while (!IsEnded())
-		{
-			tmp2 = GetNext();
-			delete current;
-			current = tmp2;
-		}
-		head->next = head;
-		current = head;
+		Node<T>* tmp = curr->next;
+		delete curr;
+		curr = tmp;
 	}
-	else return;
+	head->next = head;
+}
+
+template <class T>
+const List<T>& List<T>::operator=(const List<T>& l)
+{
+	Clean();
+	Node<T>* tmp = l.head;
+	Node<T>* tmp2 = head;
+	while (tmp->next != l.head)
+	{
+		tmp = tmp->next;
+		tmp2->next = new Node<T>(tmp->data);
+		tmp2 = tmp2->next;
+	}
+	tmp2->next = head;
+	curr = head->next;
+	return *this;
+}
+
+template<class T>
+bool List<T>::operator==(const List<T>& l) const
+{
+	bool k = true;
+	if (this != &l)
+	{
+		Node<T>* tmp = l.head->next;
+		Node<T>* tmp2 = head->next;
+		while (tmp->data == tmp2->data && tmp2 != head && tmp != l.head)
+		{
+			tmp = tmp->next;
+			tmp2 = tmp2->next;
+		}
+		if (tmp != l.head || tmp2 != head)
+			k = false;
+	}
+	return k;
+}
+
+template<class T>
+inline bool List<T>::operator!=(const List<T>& l) const
+{
+	return !(*this == l);
 }

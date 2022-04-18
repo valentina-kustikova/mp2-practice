@@ -1,27 +1,33 @@
 #pragma once
 
-#include <iostream>
-#include "monom.h"
 #include "list.h"
+#include"monom.h"
+#include <algorithm>
+#include <iostream>
+#include <string>
 
-using namespace std;
-
-class Polinom 
+class Polinom
 {
-	string s;//исходная строка
-	List<Monom> monoms;//список мономов
+private:
+	List<Monom> list;//список мономов
+	List<Monom> similar(List<Monom>& m);//приведение подобных
 public:
-	Polinom() {};//конструктор по умолчанию
-	~Polinom() {};//деструктор
-	Polinom(const string& str);//конструктор преобразования в полином из строки
-	Polinom(const Polinom& p1);//конструктор копирования
 
-	//перегрузка операторов
-	Polinom operator+(const Polinom& p1);
-	Polinom operator*(const Polinom& p1);
-	Polinom operator*(const double d);
-	Polinom operator-(const Polinom& p1);
-	const Polinom& operator=(const Polinom& p1);
+	Polinom(const Polinom& p); //конструктор копирования
+	Polinom(const string s = "");//конструктор преобразования строки в полином
 
-	friend std::ostream& operator<<(std::ostream& ostr, const Polinom& pm);
+	Polinom operator+(const Polinom& p) const; //сложение полиномов
+	Polinom operator*(const Polinom& p) const; //умножение полиномов
+	Polinom operator*(const double k) const; //умножение полинома на константу
+	Polinom operator-(const Polinom& p) const;// вычитание полиномов
+	Polinom operator-() const;//унарный минус
+	friend Polinom operator*(const double k, const Polinom& p); //умножение полинома на константу с другой стороны
+
+	const Polinom& operator=(const Polinom& p);//присваивание
+	bool operator==(const Polinom& p) const;//==
+	bool operator!=(const Polinom& p) const;//!=
+	double operator() (double x, double y, double z);//()
+
+	friend ostream& operator<<(ostream& out, const Polinom& pol);//вывод
+	friend istream& operator>>(istream& in, Polinom& p);//ввод
 };
