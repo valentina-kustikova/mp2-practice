@@ -597,7 +597,7 @@ void MainWindow::on_pushButton_3_released()
 
     }
 
-    if((ui->comboBox_2->currentText())== "All Tables")
+    if((ui->comboBox_4->currentText())== "All Tables")
     {
     ui->textBrowser->append("Выбраны все таблицы для полинома B");
      QString strig = ui->textEdit_3->toPlainText().trimmed();
@@ -709,7 +709,7 @@ void MainWindow::on_pushButton_6_released()
 
     }
 
-    if((ui->comboBox->currentText())== "All Tables")
+    if((ui->comboBox_4->currentText())== "All Tables")
     {
     ui->textBrowser->append("Выбраны все таблицы для полинома AB");
      QString strig = ui->textEdit_3->toPlainText().trimmed();
