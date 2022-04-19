@@ -16,6 +16,9 @@ InputDialog::~InputDialog()
 
 QString InputDialog::key() const
 {
+    QString key = ui->lineKey->text();
+    if (key.isEmpty())
+        return ui->linePoly->text();
     return ui->lineKey->text();
 }
 

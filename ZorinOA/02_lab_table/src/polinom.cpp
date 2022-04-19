@@ -68,10 +68,13 @@ Polinom Polinom::operator-(const Monom& monom) const
 
 Polinom Polinom::operator*(const Monom& monom) const
 {
-    Polinom res(*this);
+	Polinom res;//(*this);
 
-    if (monom.deg == 0 || std::abs(monom.cf) < 1e-10)
+	if (monom.deg == 0 || std::abs(monom.cf) < 1e-10)
+	{
+		res = *this;
 		res *= (monom.cf);
+	}
 	else
 	{
 		Monom* pThis = Tail->next;
@@ -686,17 +689,6 @@ void Polinom::converter()
     Lexs.clear();
 }
 
-void Polinom::Print() const
-{
-	Monom* p = Tail->next;
-	while (p != Tail)
-	{
-		std::cout << p->cf << "x^" << p->deg / 100 << "y^" << (p->deg % 100) / 10 << "z^" << p->deg % 10 << " + ";
-		p = p->next;
-	}
-	std::cout << Tail->cf;
-	std::cout << std::endl;
-}
 
 std::ostream& operator<<(std::ostream& os, const Polinom& poly)
 {

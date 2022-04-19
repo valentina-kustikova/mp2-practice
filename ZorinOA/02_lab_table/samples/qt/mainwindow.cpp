@@ -305,3 +305,53 @@ void MainWindow::on_pushButton_calculate_clicked()
 }
 
 
+
+void MainWindow::on_addToAll_clicked()
+{
+    InputDialog* pID = new InputDialog;
+    if (pID->exec() == QDialog::Accepted)
+    {
+        try {
+            std::string _key = pID->key().toStdString();
+            Polinom _poly(pID->poly().toStdString());
+            H.Insert(_key, _poly);
+            T.Insert(_key, _poly);
+            S.Insert(_key, _poly);
+        }  catch (const std::exception& ex) {
+            statusBar()->showMessage(ex.what(), 3000);
+        }
+        updateHash();
+        updateSort();
+        updateScan();
+    }
+    delete pID;
+}
+
+
+void MainWindow::on_delFromAll_clicked()
+{
+    DeleteDialog* pDD = new DeleteDialog;
+    if (pDD->exec() == QDialog::Accepted)
+    {
+        std::string _key = pDD->key().toStdString();
+        H.Delete(_key);
+        T.Delete(_key);
+        S.Delete(_key);
+        updateHash();
+        updateSort();
+        updateScan();
+    }
+    delete pDD;
+}
+
+
+void MainWindow::on_ClearAll_clicked()
+{
+    H.Clear();
+    S.Clear();
+    T.Clear();
+    updateHash();
+    updateSort();
+    updateScan();
+}
+

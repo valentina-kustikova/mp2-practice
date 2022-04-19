@@ -376,7 +376,34 @@ TEST(Polinom, add5)
     EXPECT_EQ(res, P+Q);
 }
 
+TEST(Polinom, mult1)
+{
+	Polinom P("1-x");
+	Polinom Q("1+x");
+	Polinom res("1-x^2");
+	EXPECT_EQ(res, P * Q);
+}
 
+TEST(Polinom, mult2)
+{
+	Polinom P("x-1");
+	Polinom Q("1+x");
+	Polinom res("1-x^2");
+	EXPECT_EQ(res, P * Q);
+}
 
+TEST(Polinom, mult3)
+{
+	Polinom P("1-x");
+	Polinom Q("1+x");
+	Polinom res("1-x^2");
+	EXPECT_EQ(res, Q*P);
+}
 
-
+TEST(Polinom, mult4)
+{
+	Polinom P("x-1");
+	Polinom Q("1+x");
+	Polinom res("1-x^2");
+	EXPECT_EQ(res, Q*P);
+}

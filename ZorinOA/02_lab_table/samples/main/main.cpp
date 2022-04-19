@@ -42,10 +42,7 @@ int main()
 	HT.Insert("21", Polinom(""));
 	HT.Insert("212", Polinom(""));
 	HT.Delete("211");
-
 	cout << HT << endl;
-
-
 
 
 	return 0;

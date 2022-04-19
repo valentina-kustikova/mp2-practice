@@ -64,6 +64,12 @@ private slots:
 
     void on_pushButton_calculate_clicked();
 
+    void on_addToAll_clicked();
+
+    void on_delFromAll_clicked();
+
+    void on_ClearAll_clicked();
+
 private:
     HashTable<std::string, Polinom> H;
     SortTable<std::string, Polinom> S;
