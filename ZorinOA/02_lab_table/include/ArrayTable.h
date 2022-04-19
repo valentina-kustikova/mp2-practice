@@ -18,25 +18,25 @@ public:
 	}
 	virtual ~ArrayTable()
 	{
-		for (int i = 0; i < DataCount; i++)
+        for (int i = 0; i < this->DataCount; i++)
 			delete Recs[i];
 
 		delete[] Recs;
 	}
 	ArrayTable(const ArrayTable& at)
 	{
-		DataCount = at.DataCount;
+        this->DataCount = at.DataCount;
 		TabSize = at.TabSize;
 		CurrPos = at.CurrPos;
 		Recs = new TabRecord<TKey, TData>*[TabSize];
-		for (int i = 0; i < DataCount; i++)
+        for (int i = 0; i < this->DataCount; i++)
 		{
 			Recs[i] = new TabRecord<TKey, TData>(*(at.Recs[i]));
 		}
 	}
 	ArrayTable& operator=(const ArrayTable& at)
 	{
-		for (int i = 0; i < DataCount; i++)
+        for (int i = 0; i < this->DataCount; i++)
 		{
 			delete Recs[i];
 		}
@@ -46,9 +46,9 @@ public:
 			TabSize = at.TabSize;
 			Recs = new TabRecord<TKey, TData>*[TabSize];
 		}
-		DataCount = at.DataCount;
+        this->DataCount = at.DataCount;
 		CurrPos = at.CurrPos;
-		for (int i = 0; i < DataCount; i++)
+        for (int i = 0; i < this->DataCount; i++)
 		{
 			Recs[i] = new TabRecord<TKey, TData>(*(at.Recs[i]));
 		}
@@ -64,21 +64,21 @@ public:
 	}
 	virtual void Clear()
 	{
-		for (int i = 0; i < DataCount; i++)
+        for (int i = 0; i < this->DataCount; i++)
 		{
 			delete Recs[i];
 		}
-		DataCount = 0;
+        this->DataCount = 0;
 		CurrPos = -1;
 	}
 
 	virtual void Reset()
 	{
-		CurrPos = DataCount > 0 ? 0 : -1;
+        CurrPos = this->DataCount > 0 ? 0 : -1;
 	}
 	virtual bool isEnd() const
 	{
-		return CurrPos >= DataCount || CurrPos == -1;
+        return CurrPos >= this->DataCount || CurrPos == -1;
 	}
 	virtual void goNext()
 	{

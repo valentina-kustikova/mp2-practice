@@ -8,12 +8,12 @@ public:
     ScanTable(int size = 25) : ArrayTable<TKey, TData>(size) {}
     virtual TData* Find(const TKey& k)
 	{
-		for (int i = 0; i < DataCount; i++)
+        for (int i = 0; i < this->DataCount; i++)
 		{
-			if (Recs[i]->GetKey() == k)
+            if (this->Recs[i]->GetKey() == k)
 			{
-				CurrPos = i;
-				return Recs[i]->GetData();
+                this->CurrPos = i;
+                return this->Recs[i]->GetData();
 			}	
 		}
         return nullptr;
@@ -34,8 +34,8 @@ public:
 	{
 		if (Find(k) != nullptr)
 		{
-			delete Recs[CurrPos];
-			Recs[CurrPos] = Recs[--DataCount];
+            delete this->Recs[this->CurrPos];
+            this->Recs[this->CurrPos] = this->Recs[--this->DataCount];
 		}
 	}
 };

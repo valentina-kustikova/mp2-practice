@@ -39,7 +39,7 @@ public:
 	}
 	ListHashTable& operator=(const ListHashTable& ht)
 	{
-		DataCount = ht.DataCount;
+        this->DataCount = ht.DataCount;
 		CurrList = ht.CurrList;
 		if (TabSize != ht.TabSize)
 		{
@@ -62,7 +62,7 @@ public:
 	{
 		if (!(this->isEmpty()))
 		{
-			DataCount = 0;
+            this->DataCount = 0;
 			CurrList = 0;
 			for (int i = 0; i < TabSize; i++)
 			{
@@ -127,7 +127,7 @@ public:
 			if (Find(k) == nullptr)
 			{
 				ListsRecs[CurrList].InsertToHead(TabRecord<TKey, TData>(k, d));
-				DataCount++;
+                this->DataCount++;
 			}
 		}
 	}
@@ -136,7 +136,7 @@ public:
 		if (Find(k) != nullptr)
 		{
 			ListsRecs[CurrList].Delete(TabRecord<TKey, TData>(k));
-			DataCount--;
+            this->DataCount--;
 		}
 	}
 
