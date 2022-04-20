@@ -13,6 +13,73 @@ TEST(SortTable, cant_create_SortTable_with_size_less_zero)
 	ASSERT_ANY_THROW(SortTable S(-5));
 }
 
+TEST(SortTable, can_copy_empty_table)
+{
+	using SortTable = SortTable<char, int>;
+	SortTable A;
+	ASSERT_NO_THROW(SortTable B(A));
+}
+
+TEST(SortTable, cant_goNext_empty_table)
+{
+	SortTable<char, int> A;
+	ASSERT_NO_THROW(A.goNext());
+}
+
+TEST(SortTable, empty_table_getKey_is_default_value)
+{
+	SortTable<char, int> A;
+	EXPECT_EQ(char(), A.getKey());
+}
+
+TEST(SortTable, empty_table_getData_is_nullptr)
+{
+	SortTable<char, int> A;
+	EXPECT_EQ(nullptr, A.getData());
+}
+
+TEST(SortTable, empty_table_isEnd_correct)
+{
+	SortTable<char, int> A;
+	EXPECT_EQ(true, A.isEnd());
+}
+
+TEST(SortTable, getKey_correct)
+{
+	SortTable<char, int> A;
+	A.Insert('a', 1);
+	A.Reset();
+	EXPECT_EQ('a', A.getKey());
+}
+
+TEST(SortTable, getData_correct)
+{
+	SortTable<char, int> A;
+	A.Insert('a', 1);
+	A.Reset();
+	EXPECT_EQ(1, *A.getData());
+}
+
+TEST(SortTable, empty_after_delete)
+{
+	SortTable<char, int> A;
+	A.Insert('a', 1);
+	A.Delete('a');
+	EXPECT_TRUE(A.isEmpty());
+}
+
+TEST(SortTable, correct_insert_after_delete)
+{
+	SortTable<char, int> A;
+	A.Insert('a', 1);
+	A.Insert('b', 2);
+	A.Insert('c', 3);
+	A.Delete('b');
+	A.Insert('b', 100);
+	A.Reset(); A.goNext();
+	EXPECT_EQ(100, *A.getData());
+}
+
 TEST(SortTable, find_is_correct)
 {
 	SortTable<char, int> S(8);

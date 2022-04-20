@@ -15,6 +15,8 @@ public:
 		Recs = new TabRecord<TKey, TData>*[size];
 		TabSize = size;
 		CurrPos = -1;
+		for (int i = 0; i < TabSize; i++)
+			Recs[i] = nullptr;
 	}
 	virtual ~ArrayTable()
 	{
@@ -74,7 +76,7 @@ public:
 
 	virtual void Reset()
 	{
-        CurrPos = this->DataCount > 0 ? 0 : -1;
+        CurrPos = (this->DataCount > 0) ? 0 : -1;
 	}
 	virtual bool isEnd() const
 	{

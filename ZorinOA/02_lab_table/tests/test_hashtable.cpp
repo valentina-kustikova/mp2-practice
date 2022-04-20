@@ -16,6 +16,77 @@ TEST(HashTable, cant_create_HashTable_with_size_less_zero)
 	ASSERT_ANY_THROW(HashTable S(-5));
 }
 
+TEST(HashTable, can_copy_empty_table)
+{
+	using HashTable = HashTable<char, int>;
+	HashTable A;
+	ASSERT_NO_THROW(HashTable B(A));
+}
+
+TEST(HashTable, cant_goNext_empty_table)
+{
+	HashTable<char, int> A;
+	A.Reset();
+	ASSERT_NO_THROW(A.goNext());
+}
+
+TEST(HashTable, empty_table_getKey_is_default_value)
+{
+	HashTable<char, int> A;
+	A.Reset();
+	EXPECT_EQ(char(), A.getKey());
+}
+
+TEST(HashTable, empty_table_getData_is_nullptr)
+{
+	HashTable<char, int> A;
+	A.Reset();
+	EXPECT_EQ(nullptr, A.getData());
+}
+
+TEST(HashTable, empty_table_isEnd_correct)
+{
+	HashTable<char, int> A;
+	A.Reset();
+	EXPECT_EQ(true, A.isEnd());
+}
+
+TEST(HashTable, getKey_correct)
+{
+	HashTable<char, int> A;
+	A.Insert('a', 1);
+	A.Reset();
+	EXPECT_EQ('a', A.getKey());
+}
+
+TEST(HashTable, getData_correct)
+{
+	HashTable<char, int> A;
+	A.Insert('a', 1);
+	A.Reset();
+	EXPECT_EQ(1, *A.getData());
+}
+
+TEST(HashTable, empty_after_delete)
+{
+	HashTable<char, int> A;
+	A.Insert('a', 1);
+	A.Delete('a');
+	EXPECT_TRUE(A.isEmpty());
+}
+
+TEST(HashTable, correct_insert_after_delete)
+{
+	HashTable<char, int> A;
+	A.Insert('a', 1);
+	A.Insert('b', 2);
+	A.Insert('c', 3);
+	A.Delete('b');
+	A.Insert('b', 100);
+	A.Reset(); A.goNext(); A.goNext();
+	EXPECT_EQ(100, *A.getData());
+}
+
 TEST(HashTable, insert_correct)
 {
 	HashTable<std::string, int> H;

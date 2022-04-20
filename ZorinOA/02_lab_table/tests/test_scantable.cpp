@@ -13,6 +13,73 @@ TEST(ScanTable, cant_create_ScanTable_with_size_less_zero)
     ASSERT_ANY_THROW(ScanTable S(-5));
 }
 
+TEST(ScanTable, can_copy_empty_table)
+{
+	using ScanTable = ScanTable<char, int>;
+	ScanTable A;
+	ASSERT_NO_THROW(ScanTable B(A));
+}
+
+TEST(ScanTable, cant_goNext_empty_table)
+{
+	ScanTable<char, int> A;
+	ASSERT_NO_THROW(A.goNext());
+}
+
+TEST(ScanTable, empty_table_getKey_is_default_value)
+{
+	ScanTable<char, int> A;
+	EXPECT_EQ(char(), A.getKey());
+}
+
+TEST(ScanTable, empty_table_getData_is_nullptr)
+{
+	ScanTable<char, int> A;
+	EXPECT_EQ(nullptr, A.getData());
+}
+
+TEST(ScanTable, empty_table_isEnd_correct)
+{
+	ScanTable<char, int> A;
+	EXPECT_EQ(true, A.isEnd());
+}
+
+TEST(ScanTable, getKey_correct)
+{
+	ScanTable<char, int> A;
+	A.Insert('a', 1);
+	A.Reset();
+	EXPECT_EQ('a', A.getKey());
+}
+
+TEST(ScanTable, getData_correct)
+{
+	ScanTable<char, int> A;
+	A.Insert('a', 1);
+	A.Reset();
+	EXPECT_EQ(1, *A.getData());
+}
+
+TEST(ScanTable, empty_after_delete)
+{
+	ScanTable<char, int> A;
+	A.Insert('a', 1);
+	A.Delete('a');
+	EXPECT_TRUE(A.isEmpty());
+}
+
+TEST(ScanTable, correct_insert_after_delete)
+{
+	ScanTable<char, int> A;
+	A.Insert('a', 1);
+	A.Insert('b', 2);
+	A.Insert('c', 3);
+	A.Delete('b');
+	A.Insert('b', 100);
+	A.Reset(); A.goNext(); A.goNext();
+	EXPECT_EQ(100, *A.getData());
+}
+
 TEST(ScanTable, find_is_correct)
 {
 	ScanTable<char, int> S(8);

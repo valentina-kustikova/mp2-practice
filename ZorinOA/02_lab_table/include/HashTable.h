@@ -30,12 +30,12 @@ public:
 	{
 		TabSize = ht.TabSize;
 		CurrList = ht.CurrList;
-		CurrPos = ListsRecs[CurrList].begin();
 		ListsRecs = new List<TabRecord<TKey, TData>>[TabSize];
 		for (int i = 0; i < TabSize; i++)
 		{
 			ListsRecs[i] = ht.ListsRecs[i];
 		}
+		CurrPos = ListsRecs[CurrList].begin();
 	}
 	ListHashTable& operator=(const ListHashTable& ht)
 	{
@@ -100,11 +100,11 @@ public:
 	}
 	virtual TKey getKey() const
 	{
-		return (*CurrPos).GetKey();
+		return (this->DataCount > 0) ? (*CurrPos).GetKey() : TKey();
 	}
 	virtual TData* getData() const
 	{
-		return (*CurrPos).GetData();
+		return (this->DataCount > 0) ? (*CurrPos).GetData() : nullptr;
 	}
 
 	virtual TData* Find(const TKey& k)
