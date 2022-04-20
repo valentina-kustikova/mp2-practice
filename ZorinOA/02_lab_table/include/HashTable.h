@@ -56,7 +56,10 @@ public:
 	}
 	virtual bool isFull() const
 	{
-		return this->DataCount >= TabSize;
+		TabRecord<TKey, TData>* pTab = new TabRecord<TKey, TData>;
+		bool tmp = (pTab == nullptr);
+		delete pTab;
+		return tmp;
 	}
 	virtual void Clear()
 	{
