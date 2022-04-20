@@ -27,6 +27,7 @@ class ScanTable : public Table<TData,TKey>
           os << "\n\tTable is Empty\n";
       return os;
   }
+  friend class Table<TData, TKey>;
 }; 
 
 // Pелизация функциий для класса росматриваемых таблиц

@@ -7,7 +7,8 @@ using namespace std;
 //Класс Таблица
 template <typename TData, typename TKey> class Table
 {
-  protected:
+//protected
+  public:
   TabRecord<TData,TKey>** records;
   int tabSize;
   int dataCount ;
@@ -15,7 +16,7 @@ template <typename TData, typename TKey> class Table
   // Конструкторы, деструктор	
   Table(unsigned int n = 100);
   virtual ~Table() { delete[] records; }
-  public:
+  //public:
   //информационные методы
   bool IsFull() const { return dataCount  == tabSize; }
   bool IsEmpty() const { return dataCount  == 0; }

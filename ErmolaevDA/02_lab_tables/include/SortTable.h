@@ -16,6 +16,7 @@ class SortTable : public ScanTable<TData,TKey>
   virtual void InsertRecord(const TData data, const TKey key);
   virtual TData* FindRecord(const TKey key);
   virtual void RemoveRecord(const TKey key);
+
 };
 
 // Pелизация функциий для класса упорядоченных таблиц
