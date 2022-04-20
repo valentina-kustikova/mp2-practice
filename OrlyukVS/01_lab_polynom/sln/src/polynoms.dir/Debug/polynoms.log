@@ -1,0 +1,24 @@
+﻿  polinom.cpp
+C:\Users\Admin\mp2-practice\OrlyukVS\01_lab_polynom\include\list.h(34,1): warning C4227: устаревший элемент: пропуск квалификаторов для ссылки
+C:\Users\Admin\mp2-practice\OrlyukVS\01_lab_polynom\include\list.h(51): message : выполняется компиляция ссылки на экземпляр класс шаблон функции "TList<TData>"
+C:\Users\Admin\mp2-practice\OrlyukVS\01_lab_polynom\include\list.h(70): warning C5037: "TNode<TData>::TNode": внешнее определение члена шаблона класса не может иметь аргументы по умолчанию
+C:\Users\Admin\mp2-practice\OrlyukVS\01_lab_polynom\include\list.h(247,1): warning C4227: устаревший элемент: пропуск квалификаторов для ссылки
+C:\Users\Admin\mp2-practice\OrlyukVS\01_lab_polynom\src\polinom.cpp(92,25): warning C4267: =: преобразование из "size_t" в "int"; возможна потеря данных
+C:\Users\Admin\mp2-practice\OrlyukVS\01_lab_polynom\include\list.h(210,16): warning C4101: n: неиспользованная локальная переменная
+C:\Users\Admin\mp2-practice\OrlyukVS\01_lab_polynom\include\list.h(209): message : во время компиляции функции-члена класс шаблон "void TList<TData>::Remove(TNode<TData> *)"
+          with
+          [
+              TData=TMonom
+          ]
+C:\Users\Admin\mp2-practice\OrlyukVS\01_lab_polynom\src\polinom.cpp(183): message : выполняется компиляция ссылки на экземпляр шаблон функции "void TList<TData>::Remove(TNode<TData> *)"
+          with
+          [
+              TData=TMonom
+          ]
+C:\Users\Admin\mp2-practice\OrlyukVS\01_lab_polynom\include\headlist.h(7): message : выполняется компиляция ссылки на экземпляр класс шаблон функции "TList<TData>"
+          with
+          [
+              TData=TMonom
+          ]
+C:\Users\Admin\mp2-practice\OrlyukVS\01_lab_polynom\include\polinom.h(13): message : выполняется компиляция ссылки на экземпляр класс шаблон функции "THeadList<TMonom>"
+  polynoms.vcxproj -> C:\Users\Admin\mp2-practice\OrlyukVS\01_lab_polynom\sln\lib\Debug\polynoms.lib

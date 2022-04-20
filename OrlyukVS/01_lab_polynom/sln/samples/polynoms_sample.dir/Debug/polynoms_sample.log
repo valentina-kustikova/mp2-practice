@@ -1,0 +1,6 @@
+﻿  main.cpp
+C:\Users\Admin\mp2-practice\OrlyukVS\01_lab_polynom\include\list.h(34,1): warning C4227: устаревший элемент: пропуск квалификаторов для ссылки
+C:\Users\Admin\mp2-practice\OrlyukVS\01_lab_polynom\include\list.h(51): message : выполняется компиляция ссылки на экземпляр класс шаблон функции "TList<TData>"
+C:\Users\Admin\mp2-practice\OrlyukVS\01_lab_polynom\include\list.h(70): warning C5037: "TNode<TData>::TNode": внешнее определение члена шаблона класса не может иметь аргументы по умолчанию
+C:\Users\Admin\mp2-practice\OrlyukVS\01_lab_polynom\include\list.h(247,1): warning C4227: устаревший элемент: пропуск квалификаторов для ссылки
+  polynoms_sample.vcxproj -> C:\Users\Admin\mp2-practice\OrlyukVS\01_lab_polynom\sln\bin\polynoms_sample.exe

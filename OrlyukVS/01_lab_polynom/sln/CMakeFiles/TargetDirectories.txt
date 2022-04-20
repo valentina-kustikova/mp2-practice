@@ -1,0 +1,6 @@
+C:/Users/Admin/mp2-practice/OrlyukVS/01_lab_polynom/sln/CMakeFiles/ALL_BUILD.dir
+C:/Users/Admin/mp2-practice/OrlyukVS/01_lab_polynom/sln/CMakeFiles/ZERO_CHECK.dir
+C:/Users/Admin/mp2-practice/OrlyukVS/01_lab_polynom/sln/gtest/CMakeFiles/gtest.dir
+C:/Users/Admin/mp2-practice/OrlyukVS/01_lab_polynom/sln/src/CMakeFiles/polynoms.dir
+C:/Users/Admin/mp2-practice/OrlyukVS/01_lab_polynom/sln/tests/CMakeFiles/polynoms_test.dir
+C:/Users/Admin/mp2-practice/OrlyukVS/01_lab_polynom/sln/samples/CMakeFiles/polynoms_sample.dir

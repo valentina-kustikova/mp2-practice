@@ -1,18 +1,29 @@
 #include <iostream>
 #include "polinom.h"
-#include "monom.h"
-#include "list.h"
-#include <string>
-#include <cmath>
 
 using namespace std;
 
-TPolinom::TPolinom()//создание фиктивного звена
+TPolinom::TPolinom()
 {
 	TMonom temp;
 	temp.coef = 0.0;
 	temp.deg = -1;
-	listmonoms.InsertToTail(temp);
+	listmonoms.InsertToHead(temp);
+}
+
+TPolinom::TPolinom(int n, int m[][1])
+{
+	TMonom temp;
+	temp.coef = 0.0;
+	temp.deg = -1;
+	listmonoms.InsertToHead(temp);
+
+	for (int i = 0; i < n; i++)
+	{
+		temp.coef = m[i][0];
+		temp.deg = m[i][1];
+		*this = *this + temp;
+	}
 }
 
 TPolinom::TPolinom(const TPolinom& pol)
@@ -20,16 +31,16 @@ TPolinom::TPolinom(const TPolinom& pol)
 	listmonoms = pol.listmonoms;
 }
 
-TList<TMonom> TPolinom::unions(TList<TMonom>& m)
+THeadList<TMonom> TPolinom::unions(THeadList<TMonom>& m)
 {
-	TList<TMonom> res;//результат
+	THeadList<TMonom> res;
 	res.Reset();
 	m.Reset();
-	TNode<TMonom> mon(m.GetCur()->data.coef);
+	TNode<TMonom> mon(m.GetCur()->data);
 	while (!m.IsEnded())
 	{
-		mon.data.deg = m.GetCur()->data.deg;//копируем свернутую степень
-		if (m.GetCur()->data.deg == m.GetCur()->pNext->data.deg && (m.GetCur()->pNext->data.coef || m.GetCur()->pNext->data.deg))
+		mon.data.deg = m.GetCur()->data.deg;
+		if (m.GetCur()->data.deg == m.GetCur()->pNext->data.deg)
 			mon.data.coef += m.GetCur()->pNext->data.coef;
 		else
 		{
@@ -47,6 +58,8 @@ TList<TMonom> TPolinom::unions(TList<TMonom>& m)
 
 TPolinom::TPolinom(string str)
 {
+	if (str.length() == 0)
+		return;
 	char a[] = { 'x', 'y', 'z' };
 	int d[3] = { 100,10,1 };
 	while (str.length())
@@ -56,18 +69,19 @@ TPolinom::TPolinom(string str)
 		int pos = 1;
 		while (pos < str.length() && str[pos] != '+' && str[pos] != '-')
 			pos++;
-		part = str.substr(0, pos);//берем с нулевой позиции pos эл-тов
-		str.erase(0, pos);//”дал€ем элементы в диапазоне
+		part = str.substr(0, pos);
+		str.erase(0, pos);
 		pos = 0;
 		while (part[pos] != 'x' && part[pos] != 'y' && part[pos] != 'z' && pos < part.length())
 			pos++;
 
 		string coef = part.substr(0, pos);
+		string deg;
 		if (coef == "+" || coef.length() == 0)
 			temp.coef = 1;
 		else if (coef == "-")
 			temp.coef = -1;
-		else temp.coef = stod(coef);//преобразование строки в число
+		else temp.coef = stod(coef);
 
 
 		part.erase(0, pos);
@@ -80,7 +94,7 @@ TPolinom::TPolinom(string str)
 			{
 				if (part[pos + 1] != '^')
 					part.insert(pos + 1, "^1");
-				temp.deg += d[i] * stoi(part.substr(pos + 2, 1));// преобразуем последовательность элементов  в целое число.
+				temp.deg += d[i] * stoi(part.substr(pos + 2, 1));
 				part.erase(pos, 3);
 			}
 		}
@@ -98,7 +112,7 @@ double TPolinom::calculation()
 	int a;
 	cout << "¬ведите значени€ переменных x y z" << endl;
 	cin >> x >> y >> z;
-	TList<TMonom> p = listmonoms;
+	THeadList<TMonom> p = listmonoms;
 	p.Reset();
 	p.Next();
 	while (!p.IsEnded())
@@ -116,6 +130,11 @@ TPolinom& TPolinom::operator=(const TPolinom& pol)
 	return *this;
 }
 
+bool TPolinom::operator==(const TPolinom& pol) const
+{
+	return listmonoms == pol.listmonoms;
+}
+
 TPolinom TPolinom::operator-(const TPolinom& pol) const
 {
 	return (*this + pol * (-1));
@@ -124,6 +143,54 @@ TPolinom TPolinom::operator-(const TPolinom& pol) const
 TPolinom TPolinom::operator-() const
 {
 	return ((*this) * (-1));
+}
+
+TPolinom TPolinom::operator+(const TMonom& mon) const
+{
+	TPolinom pol;
+	TNode<TMonom>* monom;
+	pol.listmonoms = listmonoms;
+	pol.listmonoms.Reset();
+	monom = pol.listmonoms.GetCur();
+	pol.listmonoms.Next();
+	while (!pol.listmonoms.IsEnded())
+	{
+		if (pol.listmonoms.GetCur()->data.deg > mon.deg)
+		{
+			monom = pol.listmonoms.GetCur();
+			pol.listmonoms.Next();
+		}
+		else
+		{
+			if ((pol.listmonoms.GetCur()->data.deg < mon.deg))
+			{
+				if (mon.coef != 0)
+				{
+					pol.listmonoms.Insert(mon);
+					pol.listmonoms.IsEnded();
+				}
+			}
+			else
+			{
+				double cf = pol.listmonoms.GetCur()->data.coef + mon.coef;
+				if (cf)
+				{
+					pol.listmonoms.GetCur()->data.coef = cf;
+					pol.listmonoms.IsEnded();
+				}
+				else
+				{
+					pol.listmonoms.Remove(pol.listmonoms.GetCur());
+					pol.listmonoms.IsEnded();
+				}
+			}
+		}
+	}
+	if (mon.coef != 0)
+	{
+		pol.listmonoms.Insert(mon);
+	}
+	return pol;
 }
 
 TPolinom TPolinom::operator+(const TPolinom& pol) const
@@ -139,7 +206,7 @@ TPolinom TPolinom::operator+(const TPolinom& pol) const
 
 	while (!pthis.listmonoms.IsEnded() && !p.listmonoms.IsEnded())
 	{
-		if (pthis.listmonoms.GetCur()->data > p.listmonoms.GetCur()->data)//дл€ упор€дочивани€
+		if (pthis.listmonoms.GetCur()->data > p.listmonoms.GetCur()->data)
 		{
 			res.listmonoms.InsertToTail(p.listmonoms.GetCur()->data);
 			p.listmonoms.Next();
@@ -199,7 +266,7 @@ TPolinom TPolinom::operator*(const TPolinom& pol) const
 		while (!temp.listmonoms.IsEnded())
 		{
 			int temp_deg = temp.listmonoms.GetCur()->data.deg;
-			if ((temp_deg % 10 + pthis_deg % 10) < 10 && (temp_deg / 10 % 10 + pthis_deg / 10 % 10) < 10 && (temp_deg / 100 + pthis_deg / 100) < 10)//остаток от делени€
+			if ((temp_deg % 10 + pthis_deg % 10) < 10 && (temp_deg % 100 / 10 + pthis_deg % 100/ 10) < 10 && (temp_deg / 100 + pthis_deg / 100) < 10)
 			{
 				temp.listmonoms.GetCur()->data.deg += pthis_deg;
 				temp.listmonoms.GetCur()->data.coef *= pthis_coef;
@@ -276,23 +343,23 @@ ostream& operator<<(ostream& ostr, const TPolinom& pm)
 	return ostr;
 }
 
-istream& operator>>(istream& in, TPolinom& pm)
+istream& operator>>(istream& istr, TPolinom& pm)
 {
-	string pm;
-	cout << "\t";
-	in >> pm;
-	pm = TPolinom(pm);
-	return in;
+	string str;
+	istr >> str;
+	pm = TPolinom(str);
+	return istr;
 }
 
-
-
-
-
-
-
-
-
-
-
-
+double TPolinom::operator()(double x, double y, double z)
+{
+	THeadList<TMonom> pol;
+	double res = 0.0;
+	pol.Reset();
+	while (!pol.IsEnded())
+	{
+		res += (pol.GetCur()->data.coef) * pow(x, (pol.GetCur()->data.deg) / 100) * pow(y, (pol.GetCur()->data.deg) % 100 / 10) * pow(z, (pol.GetCur()->data.deg) % 10);
+		pol.Next();
+	}
+	return res;
+}
