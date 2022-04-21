@@ -8,8 +8,8 @@ protected:
 	TKey key;
     TData* data;
 public:
-    TabRecord(const TKey& _key = {})
-		:key(_key), data(nullptr) {}
+    TabRecord(const TKey& _key = {}, TData* _data = nullptr)
+		:key(_key), data(_data) {}
 	TabRecord(const TKey& _key, const TData& _data)
 		:key(_key), data(new TData(_data)) {}
 	TabRecord(const TabRecord& tr)

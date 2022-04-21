@@ -56,10 +56,18 @@ public:
 	}
 	virtual bool isFull() const
 	{
-		TabRecord<TKey, TData>* pTab = new TabRecord<TKey, TData>;
-		bool tmp = (pTab == nullptr);
-		delete pTab;
-		return tmp;
+		try
+		{
+			TabRecord<TKey, TData>* pTab = new TabRecord<TKey, TData>;
+			bool tmp = (pTab == nullptr);
+			delete pTab;
+			return tmp;
+		}
+		catch (const std::exception& ex)
+		{
+			std::cerr << ex.what() << std::endl;
+			return true;
+		}
 	}
 	virtual void Clear()
 	{
@@ -123,7 +131,7 @@ public:
 		}
 		return nullptr;
 	}
-	virtual void Insert(const TKey& k, const TData& d)
+    virtual bool Insert(const TKey& k, const TData& d)
 	{
 		if (!isFull())
 		{
@@ -131,16 +139,22 @@ public:
 			{
 				ListsRecs[CurrList].InsertToHead(TabRecord<TKey, TData>(k, d));
                 this->DataCount++;
+                return true;
 			}
+            else
+                return false;
 		}
 	}
-	virtual void Delete(const TKey& k)
+    virtual bool Delete(const TKey& k)
 	{
 		if (Find(k) != nullptr)
 		{
 			ListsRecs[CurrList].Delete(TabRecord<TKey, TData>(k));
             this->DataCount--;
+            return true;
 		}
+        else
+            return false;
 	}
 
 	/*class Iterator
@@ -218,7 +232,7 @@ class HashTable : public ListHashTable<TKey, TData>
 protected:
 	virtual unsigned long HashFunc(const TKey& k) override
 	{
-		return std::hash<TKey>{}(k);
+        return static_cast<unsigned int>(std::hash<TKey>{}(k));
 	}
 public:
     HashTable(int size = 25)

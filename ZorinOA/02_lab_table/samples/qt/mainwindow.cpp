@@ -121,7 +121,9 @@ void MainWindow::on_pushButton_Hash_add_clicked()
     if (pID->exec() == QDialog::Accepted)
     {
         try {
-            H.Insert(pID->key().toStdString(), pID->poly().toStdString());
+            bool tmp = H.Insert(pID->key().toStdString(), pID->poly().toStdString());
+            if (!tmp)
+                QMessageBox::warning(this, "Warning!", "A record with this key already exists in the HashTable, insertion is not possible.");
         }  catch (const std::exception& ex) {
             statusBar()->showMessage(ex.what(), 3000);
         }
@@ -136,7 +138,8 @@ void MainWindow::on_pushButton_Hash_del_clicked()
     DeleteDialog* pDD = new DeleteDialog;
     if (pDD->exec() == QDialog::Accepted)
     {
-        H.Delete(pDD->key().toStdString());
+        if(!(H.Delete(pDD->key().toStdString())))
+            QMessageBox::warning(this, "Warning!", "Polynomial with such key is not find in HashTable, there is nothing to delete.");
         updateHash();
     }
     delete pDD;
@@ -156,7 +159,9 @@ void MainWindow::on_pushButton_Sort_add_clicked()
     if (pID->exec() == QDialog::Accepted)
     {
         try {
-            S.Insert(pID->key().toStdString(), pID->poly().toStdString());
+            bool tmp = S.Insert(pID->key().toStdString(), pID->poly().toStdString());
+            if (!tmp)
+                QMessageBox::warning(this, "Warning!", "A record with this key already exists in the SortTable, insertion is not possible.");
         }  catch (const std::exception& ex) {
             statusBar()->showMessage(ex.what(), 3000);
         }
@@ -171,7 +176,8 @@ void MainWindow::on_pushButton_Sort_del_clicked()
     DeleteDialog* pDD = new DeleteDialog;
     if (pDD->exec() == QDialog::Accepted)
     {
-        S.Delete(pDD->key().toStdString());
+        if(!(S.Delete(pDD->key().toStdString())))
+            QMessageBox::warning(this, "Warning!", "Polynomial with such key is not find in SortTable, there is nothing to delete.");
         updateSort();
     }
     delete pDD;
@@ -191,7 +197,9 @@ void MainWindow::on_pushButton_Scan_add_clicked()
     if (pID->exec() == QDialog::Accepted)
     {
         try {
-            T.Insert(pID->key().toStdString(), pID->poly().toStdString());
+            bool tmp = T.Insert(pID->key().toStdString(), pID->poly().toStdString());
+            if (!tmp)
+                QMessageBox::warning(this, "Warning!", "A record with this key already exists in the ScanTable, insertion is not possible.");
         }  catch (const std::exception& ex) {
             statusBar()->showMessage(ex.what(), 3000);
         }
@@ -206,7 +214,8 @@ void MainWindow::on_pushButton_Scan_del_clicked()
     DeleteDialog* pDD = new DeleteDialog;
     if (pDD->exec() == QDialog::Accepted)
     {
-        T.Delete(pDD->key().toStdString());
+        if(!(T.Delete(pDD->key().toStdString())))
+            QMessageBox::warning(this, "Warning!", "Polynomial with such key is not find in ScanTable, there is nothing to delete.");
         updateScan();
     }
     delete pDD;
@@ -254,7 +263,7 @@ void MainWindow::on_select1Poly_clicked()
             ui->line1Poly->setText(QString::fromStdString(poly1_str));
         }
         else
-            statusBar()->showMessage("Polynomial not find", 3000);
+            QMessageBox::warning(this, "Warning!", "Polynomial with such key is not find.");
     }
     delete pSD;
 }
@@ -283,7 +292,7 @@ void MainWindow::on_select2Poly_clicked()
             ui->line2Poly->setText(QString::fromStdString(poly2_str));
         }
         else
-            statusBar()->showMessage("Polynomial not find", 3000);
+            QMessageBox::warning(this, "Warning!", "Polynomial with such key is not find.");
     }
     delete pSD;
 }
@@ -314,9 +323,15 @@ void MainWindow::on_addToAll_clicked()
         try {
             std::string _key = pID->key().toStdString();
             Polinom _poly(pID->poly().toStdString());
-            H.Insert(_key, _poly);
-            T.Insert(_key, _poly);
-            S.Insert(_key, _poly);
+            bool tmp1 = H.Insert(_key, _poly);
+            bool tmp2 = T.Insert(_key, _poly);
+            bool tmp3 = S.Insert(_key, _poly);
+            if (!tmp1)
+                QMessageBox::warning(this, "Warning!", "A record with this key already exists in the HashTable, insertion is not possible.");
+            if (!tmp2)
+                QMessageBox::warning(this, "Warning!", "A record with this key already exists in the ScanTable, insertion is not possible.");
+            if (!tmp3)
+                QMessageBox::warning(this, "Warning!", "A record with this key already exists in the SortTable, insertion is not possible.");
         }  catch (const std::exception& ex) {
             statusBar()->showMessage(ex.what(), 3000);
         }
@@ -334,9 +349,12 @@ void MainWindow::on_delFromAll_clicked()
     if (pDD->exec() == QDialog::Accepted)
     {
         std::string _key = pDD->key().toStdString();
-        H.Delete(_key);
-        T.Delete(_key);
-        S.Delete(_key);
+        bool bH = H.Delete(_key);
+        bool bT = T.Delete(_key);
+        bool bS = S.Delete(_key);
+        if(!bH) QMessageBox::warning(this, "Attention!","Record with such key is not found in the HashTable, there is nothing to delete.");
+        if(!bT) QMessageBox::warning(this, "Attention!","Record with such key is not found in the ScanTable, there is nothing to delete.");
+        if(!bS) QMessageBox::warning(this, "Attention!","Record with such key is not found in the SortTable, there is nothing to delete.");
         updateHash();
         updateSort();
         updateScan();

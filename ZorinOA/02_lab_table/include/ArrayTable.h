@@ -97,8 +97,8 @@ public:
 	}
 
     virtual TData* Find(const TKey& k) = 0;
-    virtual void Insert(const TKey& k, const TData& d) = 0;
-    virtual void Delete(const TKey& k) = 0;
+    virtual bool Insert(const TKey& k, const TData& d) = 0;
+    virtual bool Delete(const TKey& k) = 0;
 
 	/*class Iterator
 	{

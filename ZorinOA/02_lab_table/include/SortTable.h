@@ -54,7 +54,7 @@ public:
         else
             return nullptr;
     }
-    virtual void Insert(const TKey& k, const TData& d)
+    virtual bool Insert(const TKey& k, const TData& d)
     {
         if (!this->isFull())
         {
@@ -64,10 +64,13 @@ public:
                    this->Recs[i] = this->Recs[i - 1];
                this->Recs[this->CurrPos] = new TabRecord<TKey, TData>(k, d);
                this->DataCount++;
+               return true;
            }
+           else
+               return false;
         }
     }
-    virtual void Delete(const TKey& k)
+    virtual bool Delete(const TKey& k)
     {
         if (Find(k) != nullptr)
         {
@@ -76,6 +79,9 @@ public:
                 this->Recs[i] = this->Recs[i + 1];
 
             this->Recs[--this->DataCount] = nullptr;
+            return true;
         }
+        else
+            return false;
     }
 };
