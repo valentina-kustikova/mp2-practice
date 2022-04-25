@@ -14,6 +14,7 @@ class ScanTable : public Table<TData,TKey>
   virtual void InsertRecord(const TData Data, const TKey Key);
   virtual TData* FindRecord(const TKey Key);
   virtual void RemoveRecord(const TKey Key);
+  virtual void Clear();
 
   friend std::ostream& operator<< (std::ostream& os, const ScanTable<TData, TKey>& Tab)
   {
@@ -130,5 +131,21 @@ void ScanTable<TData, TKey>::RemoveRecord(TKey Key)
         std::cerr << "Error: " << exception << '\n';
     }
     this->Reset();
+}
+
+template<typename TData, typename TKey>
+inline void ScanTable<TData, TKey>::Clear()
+{
+    if (!this->IsEmpty())
+    {
+        this->Reset();
+        while (!(this->IsTabEnded()))
+        {
+            this->records[this->currPos] = nullptr;
+            this->currPos++;
+        }
+        this->dataCount = 0;
+       
+    }
 }
 

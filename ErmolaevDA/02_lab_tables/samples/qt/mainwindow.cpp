@@ -19,18 +19,21 @@ void MainWindow::updateHash()
     std::stringstream tmp;
     tmp << HS;
     ui->textBrowser_2->setText(QString::fromStdString(tmp.str()));
+    ui->textBrowser_10->setText(QString::fromStdString(tmp.str()));
 }
 void MainWindow::updateSort()
 {
     std::stringstream tmp;
     tmp << SR;
     ui->textBrowser_3->setText(QString::fromStdString(tmp.str()));
+    ui->textBrowser_11->setText(QString::fromStdString(tmp.str()));
 }
 void MainWindow::updateScan()
 {
     std::stringstream tmp;
     tmp << ST;
     ui->textBrowser_4->setText(QString::fromStdString(tmp.str()));
+    ui->textBrowser_12->setText(QString::fromStdString(tmp.str()));
 }
 
 void MainWindow::on_pushButton_released()
@@ -739,20 +742,215 @@ void MainWindow::on_pushButton_6_released()
 
 void MainWindow::on_pushButton_8_released()
 {
+    SaT.str_to_poly("0");
+    SaT*=0;
     ui->textBrowser_6->append("Действие №"+QString::number(R)+"_____________________________________________");
     R++;
-    Polinom RAS;
+    //Polinom RAS;
     QString stx = ui->textEdit_7->toPlainText().trimmed();
     QString sty = ui->textEdit_8->toPlainText().trimmed();
     QString stz = ui->textEdit_9->toPlainText().trimmed();
     QString stPol = ui->textEdit_10->toPlainText().trimmed();
+
     if ((stx==nullptr)||(sty==nullptr)||(stz==nullptr)||(stPol==nullptr))  ui->textBrowser_6->append("Нехватка данных для расчёта полинома");
     else{
     ui->textBrowser_6->append("Расчёт полинома...");
-    RAS.str_to_poly(stPol.toStdString());
+    if (SaT==RAS){
+    RAS.str_to_poly(stPol.toStdString());}
+
     RAS(stx.toDouble(),sty.toDouble(),stz.toDouble());
+    ras=RAS(stx.toDouble(),sty.toDouble(),stz.toDouble());
     ui->textBrowser_5->setText(QString::number(RAS(stx.toDouble(),sty.toDouble(),stz.toDouble()),'f',10));
     ui->textBrowser_6->append("Готово!");
+    RAS*=0;
     }
+}
+
+
+void MainWindow::on_pushButton_11_released()
+{
+ ST.Clear();
+ updateScan();
+}
+
+
+void MainWindow::on_pushButton_10_released()
+{
+    SR.Clear();
+    updateSort();
+}
+
+
+void MainWindow::on_pushButton_9_released()
+{
+    HS.Clear();
+    updateHash();
+}
+
+
+void MainWindow::on_pushButton_15_released()
+{
+    ui->textBrowser_6->append("Действие №"+QString::number(R)+"_____________________________________________");
+    R++;
+    RAS*=0;
+    std::stringstream tmp;
+    if((ui->comboBox_5->currentText())== "Scan Table")
+    {
+    ui->textBrowser_6->append("Выбрана Scan таблица для поиска расчитываемого полинома");
+
+     QString strig = ui->textEdit_11->toPlainText().trimmed();
+    // QString strig2 = ui->textEdit_6->toPlainText().trimmed();
+     if (strig!=nullptr)
+     {
+    ui->textBrowser_6->append("Помещение полинома для расчёта в нужное поле...");
+    Polinom R(*ST.FindRecord(strig.toStdString()));
+    RAS+=R;
+    tmp << RAS;
+    ui->textEdit_10->setText(QString::fromStdString(tmp.str()));
+    //ui->textEdit_10->append(RAS)
+    //if (strig2!=nullptr){
+    //ST.RemoveRecord(strig2.toStdString());
+    //updateScan();
+    ui->textBrowser_6->append("Полином размещён, можете сосчитать его с заданными параметрами!");
+    }
+    else
+     {
+          ui->textBrowser_6->append("Ключ для полинома не задан в нужное поле");
+     }
+}
+    if((ui->comboBox_5->currentText())== "Hash Table")
+    {
+    ui->textBrowser_6->append("Выбрана Hash таблица для поиска расчитываемого полинома");
+
+     QString strig = ui->textEdit_11->toPlainText().trimmed();
+    // QString strig2 = ui->textEdit_6->toPlainText().trimmed();
+     if (strig!=nullptr)
+     {
+    ui->textBrowser_6->append("Помещение полинома для расчёта в нужное поле...");
+    Polinom R(*HS.FindRecord(strig.toStdString()));
+    RAS+=R;
+    tmp << RAS;
+    ui->textEdit_10->setText(QString::fromStdString(tmp.str()));
+    //ui->textEdit_10->append(RAS)
+    //if (strig2!=nullptr){
+    //ST.RemoveRecord(strig2.toStdString());
+    //updateScan();
+    ui->textBrowser_6->append("Полином размещён, можете сосчитать его с заданными параметрами!");
+    }
+    else
+     {
+          ui->textBrowser_6->append("Ключ для полинома не задан в нужное поле");
+     }
+}
+    if((ui->comboBox_5->currentText())== "Sort Table")
+    {
+    ui->textBrowser_6->append("Выбрана Sort таблица для поиска расчитываемого полинома");
+
+     QString strig = ui->textEdit_11->toPlainText().trimmed();
+    // QString strig2 = ui->textEdit_6->toPlainText().trimmed();
+     if (strig!=nullptr)
+     {
+    ui->textBrowser_6->append("Помещение полинома для расчёта в нужное поле...");
+    Polinom R(*SR.FindRecord(strig.toStdString()));
+    RAS+=R;
+    tmp << RAS;
+    ui->textEdit_10->setText(QString::fromStdString(tmp.str()));
+    //ui->textEdit_10->append(RAS)
+    //if (strig2!=nullptr){
+    //ST.RemoveRecord(strig2.toStdString());
+    //updateScan();
+    ui->textBrowser_6->append("Полином размещён, можете сосчитать его с заданными параметрами!");
+    }
+    else
+     {
+          ui->textBrowser_6->append("Ключ для полинома не задан в нужное поле");
+     }
+}
+}
+
+
+void MainWindow::on_pushButton_16_released()
+{
+    ui->textBrowser_6->append("Действие №"+QString::number(R)+"_____________________________________________");
+    R++;
+    Polinom e;
+    e.str_to_poly(to_string(ras));
+    std::stringstream tmp;
+    if((ui->comboBox_6->currentText())== "Scan Table")
+    {
+    ui->textBrowser_6->append("Выбрана Scan таблица для вставки расчитываемого полинома");
+
+     QString strig = ui->textEdit_12->toPlainText().trimmed();
+    // QString strig2 = ui->textEdit_6->toPlainText().trimmed();
+     if (strig!=nullptr)
+     {
+    ui->textBrowser_6->append("Помещение полинома для расчёта в нужную таблицу...");
+    ST.InsertRecord(e,strig.toStdString());
+    updateScan();
+    ui->textBrowser_6->append("Полином размещён в таблице!");
+    }
+    else
+     {
+          ui->textBrowser_6->append("Ключ для полинома не задан в нужное поле");
+     }
+}
+    if((ui->comboBox_6->currentText())== "Hash Table")
+    {
+    ui->textBrowser_6->append("Выбрана Hash таблица для вставки расчитываемого полинома");
+
+     QString strig = ui->textEdit_12->toPlainText().trimmed();
+    // QString strig2 = ui->textEdit_6->toPlainText().trimmed();
+     if (strig!=nullptr)
+     {
+    ui->textBrowser_6->append("Помещение полинома для расчёта в нужную таблицу...");
+    HS.InsertRecord(e,strig.toStdString());
+    updateHash();
+    ui->textBrowser_6->append("Полином размещён в таблице!");
+    }
+    else
+     {
+          ui->textBrowser_6->append("Ключ для полинома не задан в нужное поле");
+     }
+}
+    if((ui->comboBox_6->currentText())== "Sort Table")
+    {
+    ui->textBrowser_6->append("Выбрана Sort таблица для вставки расчитываемого полинома");
+
+     QString strig = ui->textEdit_12->toPlainText().trimmed();
+    // QString strig2 = ui->textEdit_6->toPlainText().trimmed();
+     if (strig!=nullptr)
+     {
+    ui->textBrowser_6->append("Помещение полинома для расчёта в нужную таблицу...");
+    SR.InsertRecord(e,strig.toStdString());
+    updateSort();
+    ui->textBrowser_6->append("Полином размещён в таблице!");
+    }
+    else
+     {
+          ui->textBrowser_6->append("Ключ для полинома не задан в нужное поле");
+     }
+}
+    if((ui->comboBox_6->currentText())== "All Tables")
+    {
+    ui->textBrowser_6->append("Выбраны все таблицы для вставки расчитываемого полинома");
+
+     QString strig = ui->textEdit_12->toPlainText().trimmed();
+    // QString strig2 = ui->textEdit_6->toPlainText().trimmed();
+     if (strig!=nullptr)
+     {
+    ui->textBrowser_6->append("Помещение полинома для расчёта в нужную таблицу...");
+    SR.InsertRecord(e,strig.toStdString());
+    updateSort();
+    HS.InsertRecord(e,strig.toStdString());
+    updateHash();
+    ST.InsertRecord(e,strig.toStdString());
+    updateScan();
+    ui->textBrowser_6->append("Полином размещён в таблице!");
+    }
+    else
+     {
+          ui->textBrowser_6->append("Ключ для полинома не задан в нужное поле");
+     }
+}
 }
 

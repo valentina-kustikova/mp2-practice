@@ -11,7 +11,7 @@
 class Polinom :
 	public List
 {
-	std::vector<std::string> Lexs;
+	//std::vector<std::string> Lexs;
 
 	void parser(const std::string& input);
 	bool check_vars() const;
@@ -20,6 +20,7 @@ class Polinom :
 	void converter();
 
 public:
+	std::vector<std::string> Lexs;
 	Polinom& operator+=(const Node& monom);
 	Polinom& operator-=(const Node& monom);
 	Polinom operator+(const Node& monom) const;

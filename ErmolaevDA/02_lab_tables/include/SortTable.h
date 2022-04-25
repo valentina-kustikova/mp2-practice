@@ -16,6 +16,7 @@ class SortTable : public ScanTable<TData,TKey>
   virtual void InsertRecord(const TData data, const TKey key);
   virtual TData* FindRecord(const TKey key);
   virtual void RemoveRecord(const TKey key);
+  virtual void Clear();
 
 };
 
@@ -164,6 +165,21 @@ void SortTable<TData, TKey>::RemoveRecord(const TKey key)
 	catch(const char* exception)
 	{
 		std::cerr << "Error: " << exception << '\n';
+	}
+}
+template<typename TData, typename TKey>
+inline void SortTable<TData, TKey>::Clear()
+{
+	if (!this->IsEmpty())
+	{
+		this->Reset();
+		while (!(this->IsTabEnded()))
+		{
+			this->records[this->currPos] = nullptr;
+			this->currPos++;
+		}
+		this->dataCount = 0;
+
 	}
 }
 template <typename TData, typename TKey>

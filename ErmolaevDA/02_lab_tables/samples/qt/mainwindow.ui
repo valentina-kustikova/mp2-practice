@@ -24,7 +24,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="Table">
      <attribute name="title">
@@ -255,6 +255,13 @@
         </widget>
        </item>
        <item>
+        <widget class="QPushButton" name="pushButton_9">
+         <property name="text">
+          <string>очистить таблицу Hash Table</string>
+         </property>
+        </widget>
+       </item>
+       <item>
         <widget class="QTextBrowser" name="textBrowser_2"/>
        </item>
        <item>
@@ -265,12 +272,26 @@
         </widget>
        </item>
        <item>
+        <widget class="QPushButton" name="pushButton_10">
+         <property name="text">
+          <string>очистить таблицу Sort Table</string>
+         </property>
+        </widget>
+       </item>
+       <item>
         <widget class="QTextBrowser" name="textBrowser_3"/>
        </item>
        <item>
         <widget class="QLabel" name="label_9">
          <property name="text">
           <string>Scan Table</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushButton_11">
+         <property name="text">
+          <string>очистить таблицу Scan Table</string>
          </property>
         </widget>
        </item>
@@ -570,9 +591,9 @@
      <widget class="QGroupBox" name="groupBox">
       <property name="geometry">
        <rect>
-        <x>10</x>
+        <x>0</x>
         <y>10</y>
-        <width>631</width>
+        <width>601</width>
         <height>211</height>
        </rect>
       </property>
@@ -621,7 +642,7 @@
       <widget class="QPushButton" name="pushButton_8">
        <property name="geometry">
         <rect>
-         <x>530</x>
+         <x>520</x>
          <y>30</y>
          <width>75</width>
          <height>24</height>
@@ -713,7 +734,7 @@
        <rect>
         <x>10</x>
         <y>270</y>
-        <width>631</width>
+        <width>591</width>
         <height>192</height>
        </rect>
       </property>
@@ -730,6 +751,245 @@
       <property name="text">
        <string>Log программы</string>
       </property>
+     </widget>
+     <widget class="QWidget" name="layoutWidget_5">
+      <property name="geometry">
+       <rect>
+        <x>890</x>
+        <y>10</y>
+        <width>401</width>
+        <height>541</height>
+       </rect>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_3">
+       <item>
+        <widget class="QLabel" name="label_22">
+         <property name="text">
+          <string>Hash Table</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QTextBrowser" name="textBrowser_10"/>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_23">
+         <property name="text">
+          <string>Sort Table</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QTextBrowser" name="textBrowser_11"/>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_24">
+         <property name="text">
+          <string>Scan Table</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QTextBrowser" name="textBrowser_12"/>
+       </item>
+      </layout>
+     </widget>
+     <widget class="Line" name="line">
+      <property name="geometry">
+       <rect>
+        <x>870</x>
+        <y>10</y>
+        <width>20</width>
+        <height>541</height>
+       </rect>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+     </widget>
+     <widget class="Line" name="line_6">
+      <property name="geometry">
+       <rect>
+        <x>610</x>
+        <y>10</y>
+        <width>20</width>
+        <height>541</height>
+       </rect>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+     </widget>
+     <widget class="QGroupBox" name="groupBox_2">
+      <property name="geometry">
+       <rect>
+        <x>630</x>
+        <y>10</y>
+        <width>241</width>
+        <height>101</height>
+       </rect>
+      </property>
+      <property name="title">
+       <string>Выбор полинома из таблицы</string>
+      </property>
+      <widget class="QComboBox" name="comboBox_5">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>20</y>
+         <width>86</width>
+         <height>22</height>
+        </rect>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Выбор в какую таблицу&lt;br/&gt;будет добавлен Полином.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <item>
+        <property name="text">
+         <string>Hash Table</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Sort Table</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Scan Table</string>
+        </property>
+       </item>
+      </widget>
+      <widget class="QPushButton" name="pushButton_15">
+       <property name="geometry">
+        <rect>
+         <x>100</x>
+         <y>20</y>
+         <width>121</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Добавит полином &lt;br/&gt;в выбранную таблицу &lt;br/&gt;(справа)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="whatsThis">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="text">
+        <string>Отправить в расчёт</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_25">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>60</y>
+         <width>91</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Ключ</string>
+       </property>
+      </widget>
+      <widget class="QTextEdit" name="textEdit_11">
+       <property name="geometry">
+        <rect>
+         <x>50</x>
+         <y>60</y>
+         <width>171</width>
+         <height>31</height>
+        </rect>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QGroupBox" name="groupBox_3">
+      <property name="geometry">
+       <rect>
+        <x>630</x>
+        <y>120</y>
+        <width>241</width>
+        <height>101</height>
+       </rect>
+      </property>
+      <property name="title">
+       <string>Выбор полинома из расчёта</string>
+      </property>
+      <widget class="QComboBox" name="comboBox_6">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>20</y>
+         <width>86</width>
+         <height>22</height>
+        </rect>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Выбор в какую таблицу&lt;br/&gt;будет добавлен Полином.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <item>
+        <property name="text">
+         <string>Hash Table</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Sort Table</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Scan Table</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>All Tables</string>
+        </property>
+       </item>
+      </widget>
+      <widget class="QPushButton" name="pushButton_16">
+       <property name="geometry">
+        <rect>
+         <x>100</x>
+         <y>20</y>
+         <width>131</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Добавит полином &lt;br/&gt;в выбранную таблицу &lt;br/&gt;(справа)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="whatsThis">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="text">
+        <string>Отправить в  таблицу</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_26">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>60</y>
+         <width>91</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Ключ</string>
+       </property>
+      </widget>
+      <widget class="QTextEdit" name="textEdit_12">
+       <property name="geometry">
+        <rect>
+         <x>50</x>
+         <y>60</y>
+         <width>171</width>
+         <height>31</height>
+        </rect>
+       </property>
+      </widget>
      </widget>
     </widget>
    </widget>

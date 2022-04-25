@@ -27,7 +27,7 @@ template <typename TData, typename TKey> class Table
   virtual void InsertRecord(const TData Data, const TKey Key) = 0;
   virtual void RemoveRecord(const TKey Key) = 0;
   virtual TData* FindRecord(const TKey Key) = 0;
-
+  virtual void Clear() =0;
   //навигация по таблицу
   void Reset();
   void SetNext();
@@ -47,6 +47,7 @@ template <typename TData, typename TKey> class Table
 	os << "\n\tTable is Empty\n";
 	return os;
   }
+  friend TabRecord<TData, TKey>;
 };
 
 
@@ -89,7 +90,7 @@ TData* Table<TData, TKey>::GetData() const
 	try {
 		if (!IsEmpty())
 		{
-			return records[currPos]->GetData();
+			return records[currPos]->data; //GetData();
 		}
 		else
 		{

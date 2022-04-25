@@ -38,6 +38,16 @@ private slots:
 
     void on_pushButton_8_released();
 
+    void on_pushButton_11_released();
+
+    void on_pushButton_10_released();
+
+    void on_pushButton_9_released();
+
+    void on_pushButton_15_released();
+
+    void on_pushButton_16_released();
+
 private:
     void updateHash();
     void updateSort();
@@ -45,7 +55,9 @@ private:
     int S=0;
     int R=0;
     Polinom AB;
-    Polinom START;
+    Polinom SaT;
+    Polinom RAS;
+    double ras;
     int i=0;
     //Polinom A;
     HashTable<Polinom,std::string> HS;
