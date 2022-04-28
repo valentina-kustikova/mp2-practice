@@ -4,38 +4,38 @@
 Node::Node(double _coef, int _degx, int _degy, int _degz, Node* _next)
 {
 
-	data.degx = _degx;
-	data.degy = _degy;
-	data.degz = _degz;
+    data.degx = _degx;
+    data.degy = _degy;
+    data.degz = _degz;
 
-	data.coef = _coef;
-	next = _next;
+    data.coef = _coef;
+    next = _next;
 }
 
 Node::Node(const Node& monom2)
 {
-	data.degx = monom2.data.degx;
-	data.degy = monom2.data.degy;
-	data.degz = monom2.data.degz;
-	data.coef = monom2.data.coef;
-	next = monom2.next;
+    data.degx = monom2.data.degx;
+    data.degy = monom2.data.degy;
+    data.degz = monom2.data.degz;
+    data.coef = monom2.data.coef;
+    next = monom2.next;
 }
 
 
 bool Node::operator==(const Node& m) const
 {
-	return ((data.coef)-(m.data.coef) < 1e-10) && (data.degx == m.data.degx) && (data.degy == m.data.degy) && (data.degz == m.data.degz);
+    return ((data.coef)-(m.data.coef) < 1e-10) && (data.degx == m.data.degx) && (data.degy == m.data.degy) && (data.degz == m.data.degz);
 }
 
 bool Node::operator!=(const Node& m) const
 {
-	return ((data.coef)-(m.data.coef) > 1e-10) || (data.degx != m.data.degx) || (data.degy != m.data.degy) || (data.degz != m.data.degz);
+    return ((data.coef)-(m.data.coef) > 1e-10) || (data.degx != m.data.degx) || (data.degy != m.data.degy) || (data.degz != m.data.degz);
 }
 
 std::ostream& operator<<(std::ostream& os, const Node& m)
 {
-	os << m.data.coef << "x^" << m.data.degx << "y^" << m.data.degy << "z^" << m.data.degz << std::endl;
-	return os;
+    os << m.data.coef << "x^" << m.data.degx << "y^" << m.data.degy << "z^" << m.data.degz << std::endl;
+    return os;
 }
 
 List::~List()
@@ -214,32 +214,32 @@ void List::delElem(Node& ptr)
 
 List::Iterator List::begin()
 {
-	return List::Iterator(head);
+    return List::Iterator(head);
 }
 
 List::Iterator List::end()
 {
-	return List::Iterator(nullptr);
+    return List::Iterator(nullptr);
 }
 
 List::Iterator::Iterator(Node* _ptr)
-	:ptr(_ptr)
+    :ptr(_ptr)
 {
 }
 
 List::Iterator List::Iterator::operator++(int)
 {
-	ptr = ptr->next;
-	return *this;
+    ptr = ptr->next;
+    return *this;
 }
 
 List::Iterator& List::Iterator::operator++()
 {
-	ptr = ptr->next;
-	return *this;
+    ptr = ptr->next;
+    return *this;
 }
 
 Node& List::Iterator::operator*()
 {
-	return *ptr;
+    return *ptr;
 }

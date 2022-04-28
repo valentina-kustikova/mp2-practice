@@ -22,58 +22,29 @@ A.InsertRecord(5,"6");
 A.InsertRecord(4,"7");
 A.InsertRecord(3,"8");
 A.InsertRecord(200,"9");
-	cout<<A<<endl;
+    cout<<A<<endl;
 
-	//A.SortData();
-	//cout<<A;
-	cout << endl;
-	
+    //A.SortData();
+    //cout<<A;
+    cout << endl;
+    
 SortTable SS B(A);
 cout << B;
-	
+    
 cout << endl;
-	
-	SortTable ZZ Poltable;
+    
+    SortTable ZZ Poltable;
 
-	Polinom p1;
-	p1.str_to_poly("x+y");
-		Polinom p2;
-	p2.str_to_poly("2x+z^2");
-		Polinom p3;
-/*
-	HashTable ZZ Pol;
-
-Pol.InsertRecord(p1,"1");
-cout << Pol.dataCount<<endl;
-Pol.InsertRecord(p1, "2");
-cout << Pol.dataCount << endl;
-
-Pol.InsertRecord(p1, "3");
-cout << Pol.dataCount<<endl;
-Pol.RemoveRecord("2");
-cout << Pol.dataCount << endl;
-
-Pol.RemoveRecord("2");
-cout << Pol.dataCount << endl;
-
-Pol.RemoveRecord("2");
-cout << Pol.dataCount << endl;
-
-Pol.InsertRecord(p1,"4");
-cout << Pol.dataCount << endl;
-
-
-Pol.Reset();
-Pol.GetData();
-cout << Pol;
-*/
-
-
+    Polinom p1;
+    p1.str_to_poly("x+y");
+        Polinom p2;
+    p2.str_to_poly("2x+z^2");
+        Polinom p3;
 
 HashTable SS T1;
 for (int i = 0; i < 4; i++)
 {
-	T1.InsertRecord((i + 1) * 8 + (i * i) % 13, to_string(i + 1) + " record");
+    T1.InsertRecord((i + 1) * 8 + (i * i) % 13, to_string(i + 1) + " record");
 }
 T1.Reset();
 //T1.SetNext();
@@ -86,6 +57,6 @@ cout << T1;
 //T1.RemoveRecord("1 record");
 //T1.RemoveRecord("2 record");
 //cout << endl << T1;
-	return 0;
+    return 0;
 }
 
