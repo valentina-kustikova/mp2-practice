@@ -18,7 +18,7 @@ class Polinom :
 
 public:
 	Polinom();
-    Polinom(const Polinom& poly);
+	Polinom(const Polinom& poly);
 	Polinom(const std::string& input);
 	Polinom& operator+=(const Monom& monom);
 	Polinom& operator-=(const Monom& monom);
@@ -38,6 +38,6 @@ public:
 	Polinom operator-(const Polinom& poly) const;
 	Polinom operator*(const Polinom& poly) const;
 	double operator()(double x, double y, double z) const;
-    bool operator==(const Polinom& poly) const;
+	bool operator==(const Polinom& poly) const;
 	friend std::ostream& operator<<(std::ostream& os, const Polinom& poly);
 };

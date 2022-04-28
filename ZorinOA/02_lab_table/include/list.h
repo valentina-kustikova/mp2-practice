@@ -34,8 +34,8 @@ public:
 		if (!list2.isEmpty())
 		{
 			head = new Node<TData>(list2.head->data);
-            Node<TData>* tmp1 = head;
-            Node<TData>* tmp2 = list2.head->next;
+			Node<TData>* tmp1 = head;
+			Node<TData>* tmp2 = list2.head->next;
 
 			while (tmp2 != nullptr)
 			{

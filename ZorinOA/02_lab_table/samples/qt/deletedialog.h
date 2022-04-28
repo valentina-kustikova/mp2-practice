@@ -4,20 +4,20 @@
 #include <QDialog>
 
 namespace Ui {
-class DeleteDialog;
+	class DeleteDialog;
 }
 
 class DeleteDialog : public QDialog
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    explicit DeleteDialog(QWidget *parent = nullptr);
-    ~DeleteDialog();
-    QString key() const;
+	explicit DeleteDialog(QWidget* parent = nullptr);
+	~DeleteDialog();
+	QString key() const;
 
 private:
-    Ui::DeleteDialog *ui;
+	Ui::DeleteDialog* ui;
 };
 
 #endif // DELETEDIALOG_H

@@ -39,7 +39,7 @@ public:
 	}
 	ListHashTable& operator=(const ListHashTable& ht)
 	{
-        this->DataCount = ht.DataCount;
+		this->DataCount = ht.DataCount;
 		CurrList = ht.CurrList;
 		if (TabSize != ht.TabSize)
 		{
@@ -73,7 +73,7 @@ public:
 	{
 		if (!(this->isEmpty()))
 		{
-            this->DataCount = 0;
+			this->DataCount = 0;
 			CurrList = 0;
 			for (int i = 0; i < TabSize; i++)
 			{
@@ -95,14 +95,14 @@ public:
 	}
 	virtual bool isEnd() const
 	{
-		return CurrList == TabSize-1 && CurrPos == ListsRecs[CurrList].end();
+		return CurrList == TabSize - 1 && CurrPos == ListsRecs[CurrList].end();
 	}
 	virtual void goNext()
 	{
 		if (!isEnd())
 		{
 			++CurrPos;
-			while (CurrList < TabSize-1 && CurrPos == ListsRecs[CurrList].end())
+			while (CurrList < TabSize - 1 && CurrPos == ListsRecs[CurrList].end())
 			{
 				CurrList++;
 				CurrPos = ListsRecs[CurrList].begin();
@@ -131,30 +131,30 @@ public:
 		}
 		return nullptr;
 	}
-    virtual bool Insert(const TKey& k, const TData& d)
+	virtual bool Insert(const TKey& k, const TData& d)
 	{
 		if (!isFull())
 		{
 			if (Find(k) == nullptr)
 			{
 				ListsRecs[CurrList].InsertToHead(TabRecord<TKey, TData>(k, d));
-                this->DataCount++;
-                return true;
+				this->DataCount++;
+				return true;
 			}
-            else
-                return false;
+			else
+				return false;
 		}
 	}
-    virtual bool Delete(const TKey& k)
+	virtual bool Delete(const TKey& k)
 	{
 		if (Find(k) != nullptr)
 		{
 			ListsRecs[CurrList].Delete(TabRecord<TKey, TData>(k));
-            this->DataCount--;
-            return true;
+			this->DataCount--;
+			return true;
 		}
-        else
-            return false;
+		else
+			return false;
 	}
 
 	/*class Iterator
@@ -178,7 +178,7 @@ public:
 		{
 			CurrList = nullptr;
 			LastList = nullptr;
-            typename List< TabRecord<TKey, TData> >::Iterator it(nullptr);
+			typename List< TabRecord<TKey, TData> >::Iterator it(nullptr);
 			CurrPos = it;
 		}
 		TabRecord<TKey, TData>& operator*()
@@ -208,7 +208,6 @@ public:
 	{
 		ListHashTable::Iterator it(ListsRecs, TabSize);
 		return it;
-
 	}
 	Iterator end() const
 	{
@@ -232,11 +231,11 @@ class HashTable : public ListHashTable<TKey, TData>
 protected:
 	virtual unsigned long HashFunc(const TKey& k) override
 	{
-        return static_cast<unsigned int>(std::hash<TKey>{}(k));
+		return static_cast<unsigned int>(std::hash<TKey>{}(k));
 	}
 public:
-    HashTable(int size = 25)
-        :ListHashTable<TKey, TData>(size) {}
+	HashTable(int size = 25)
+		:ListHashTable<TKey, TData>(size) {}
 };
 
 template<class TData>
@@ -246,8 +245,8 @@ protected:
 	virtual unsigned long HashFunc(const std::string& k) override
 	{
 		unsigned long Res = k[0];
-        unsigned long p = 38;
-        for (size_t i = 1; i < k.length(); i++)
+		unsigned long p = 38;
+		for (size_t i = 1; i < k.length(); i++)
 		{
 			Res += k[i] * p;
 			p *= p;
@@ -255,6 +254,6 @@ protected:
 		return Res;
 	}
 public:
-    HashTable(int size = 25)
-        : ListHashTable<std::string, TData>(size) {}
+	HashTable(int size = 25)
+		: ListHashTable<std::string, TData>(size) {}
 };

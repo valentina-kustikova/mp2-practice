@@ -6,9 +6,9 @@ class TabRecord
 {
 protected:
 	TKey key;
-    TData* data;
+	TData* data;
 public:
-    TabRecord(const TKey& _key = {}, TData* _data = nullptr)
+	TabRecord(const TKey& _key = {}, TData* _data = nullptr)
 		:key(_key), data(_data) {}
 	TabRecord(const TKey& _key, const TData& _data)
 		:key(_key), data(new TData(_data)) {}
@@ -25,31 +25,30 @@ public:
 		data = new TData(*(tr.data));
 		return *this;
 	}
-    TKey GetKey() const
+	TKey GetKey() const
 	{
 		return key;
 	}
-    TData* GetData() const
+	TData* GetData() const
 	{
-        return data;
+		return data;
 	}
-    bool operator==(const TabRecord& tr) const
+	bool operator==(const TabRecord& tr) const
 	{
 		return key == tr.key;
 	}
-    bool operator<(const TabRecord& tr) const
+	bool operator<(const TabRecord& tr) const
 	{
 		return key < tr.key;
 	}
-    bool operator>(const TabRecord& tr) const
+	bool operator>(const TabRecord& tr) const
 	{
 		return key > tr.key;
 	}
 
 	friend std::ostream& operator<<(std::ostream& os, const TabRecord& tr)
 	{
-        os << "key: " << tr.key << ", data:  " << *(tr.data);
+		os << "key: " << tr.key << ", data:  " << *(tr.data);
 		return os;
 	}
 };
-

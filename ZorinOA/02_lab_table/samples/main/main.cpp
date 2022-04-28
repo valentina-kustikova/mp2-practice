@@ -21,7 +21,7 @@ int main()
 	H.Delete("seventh");
 	cout << H << endl;
 
-    ScanTable<string, Polinom> T(10);
+	ScanTable<string, Polinom> T(10);
 	T.Insert("first", Polinom("3x"));
 	T.Insert("second", Polinom("2y^5"));
 	T.Insert("third", Polinom("12.3z^3"));
@@ -31,11 +31,11 @@ int main()
 	T.Insert("seventh", Polinom("2.3x^2y^3z^7 + 3.2"));
 	cout << T << endl;
 
-    SortTable<string, Polinom> S(T);
-    S.Insert("eighth", Polinom("z^2 - z"));
+	SortTable<string, Polinom> S(T);
+	S.Insert("eighth", Polinom("z^2 - z"));
 	S.Delete("fifth");
 	S.Delete("seventh");
-    cout << S << endl;
+	cout << S << endl;
 
 	HashTable<string, Polinom> HT;
 	HT.Insert("", Polinom(""));
@@ -43,7 +43,6 @@ int main()
 	HT.Insert("212", Polinom(""));
 	HT.Delete("211");
 	cout << HT << endl;
-
 
 	return 0;
 }

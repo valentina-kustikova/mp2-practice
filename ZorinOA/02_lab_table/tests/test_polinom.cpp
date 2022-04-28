@@ -18,7 +18,7 @@ TEST(Monom, cant_create_Monom_with_negative_deg)
 	ASSERT_ANY_THROW(Monom m(5, -111));
 }
 
-TEST(MonomList, can_create_MonomList) 
+TEST(MonomList, can_create_MonomList)
 {
 	EXPECT_NO_THROW(MonomList M);
 }
@@ -239,8 +239,6 @@ TEST(Polinom, calculate_in_point_correct)
 	EXPECT_DOUBLE_EQ(22268.094717399301, res);
 }
 
-
-
 TEST(PolinomInput, throw_two_or_more_points)
 {
 	ASSERT_ANY_THROW(Polinom A("3.1x^5 + 4.5.1y"));
@@ -338,42 +336,42 @@ TEST(PolinomInput, correct_input_monom_with_zero_cf)
 
 TEST(Polinom, add1)
 {
-    Polinom P("3x^5y^2z^5 - 5x^4y^3z^3 + 7x^3y^5z");
-    Polinom Q("4x^3y^2z^6 - 6x^2yz^8");
-    Polinom res("3x^5y^2z^5 - 5x^4y^3z^3 + 7x^3y^5z + 4x^3y^2z^6 - 6x^2yz^8");
-    EXPECT_EQ(res, P+Q);
+	Polinom P("3x^5y^2z^5 - 5x^4y^3z^3 + 7x^3y^5z");
+	Polinom Q("4x^3y^2z^6 - 6x^2yz^8");
+	Polinom res("3x^5y^2z^5 - 5x^4y^3z^3 + 7x^3y^5z + 4x^3y^2z^6 - 6x^2yz^8");
+	EXPECT_EQ(res, P + Q);
 }
 
 TEST(Polinom, add2)
 {
-    Polinom P("3x^5y^2z^5 - 5x^4y^3z^3 + 7x^3y^5z");
-    Polinom Q("4x^7y^2z^6 - 6x^6yz^8");
-    Polinom res("4x^7y^2z^6 - 6x^6yz^8 + 3x^5y^2z^5 - 5x^4y^3z^3 + 7x^3y^5z");
-    EXPECT_EQ(res, P+Q);
+	Polinom P("3x^5y^2z^5 - 5x^4y^3z^3 + 7x^3y^5z");
+	Polinom Q("4x^7y^2z^6 - 6x^6yz^8");
+	Polinom res("4x^7y^2z^6 - 6x^6yz^8 + 3x^5y^2z^5 - 5x^4y^3z^3 + 7x^3y^5z");
+	EXPECT_EQ(res, P + Q);
 }
 
 TEST(Polinom, add3)
 {
-    Polinom P("3x^5y^2z^5 - 5x^4y^3z^3 + 7x^3y^5z");
-    Polinom Q("4x^5y^2z^5 + 5x^4y^3z^3");
-    Polinom res("7x^5y^2z^5 + 7x^3y^5z");
-    EXPECT_EQ(res, P+Q);
+	Polinom P("3x^5y^2z^5 - 5x^4y^3z^3 + 7x^3y^5z");
+	Polinom Q("4x^5y^2z^5 + 5x^4y^3z^3");
+	Polinom res("7x^5y^2z^5 + 7x^3y^5z");
+	EXPECT_EQ(res, P + Q);
 }
 
 TEST(Polinom, add4)
 {
-    Polinom P("3x^5y^2z^5 - 5x^4y^3z^3 + 7x^7y^5z");
-    Polinom Q("4x^6y^2z^6 - 6x^2yz^8");
-    Polinom res("7x^7y^5z + 4x^6y^2z^6 + 3x^5y^2z^5 - 5x^4y^3z^3 - 6x^2yz^8");
-    EXPECT_EQ(res, P+Q);
+	Polinom P("3x^5y^2z^5 - 5x^4y^3z^3 + 7x^7y^5z");
+	Polinom Q("4x^6y^2z^6 - 6x^2yz^8");
+	Polinom res("7x^7y^5z + 4x^6y^2z^6 + 3x^5y^2z^5 - 5x^4y^3z^3 - 6x^2yz^8");
+	EXPECT_EQ(res, P + Q);
 }
 
 TEST(Polinom, add5)
 {
-    Polinom P("3x^5y^2z^5 - 5x^4y^3z^3 + 7x^7y^5z");
-    Polinom Q("-3x^5y^2z^5 + 5x^4y^3z^3 - 7x^7y^5z");
-    Polinom res("0");
-    EXPECT_EQ(res, P+Q);
+	Polinom P("3x^5y^2z^5 - 5x^4y^3z^3 + 7x^7y^5z");
+	Polinom Q("-3x^5y^2z^5 + 5x^4y^3z^3 - 7x^7y^5z");
+	Polinom res("0");
+	EXPECT_EQ(res, P + Q);
 }
 
 TEST(Polinom, mult1)
@@ -397,7 +395,7 @@ TEST(Polinom, mult3)
 	Polinom P("1-x");
 	Polinom Q("1+x");
 	Polinom res("1-x^2");
-	EXPECT_EQ(res, Q*P);
+	EXPECT_EQ(res, Q * P);
 }
 
 TEST(Polinom, mult4)
@@ -405,5 +403,5 @@ TEST(Polinom, mult4)
 	Polinom P("x-1");
 	Polinom Q("1+x");
 	Polinom res("1-x^2");
-	EXPECT_EQ(res, Q*P);
+	EXPECT_EQ(res, Q * P);
 }

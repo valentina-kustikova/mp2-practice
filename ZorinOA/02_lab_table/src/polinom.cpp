@@ -21,23 +21,21 @@ bool check_err_add_deg(int deg1, int deg2)
 Polinom::Polinom()
 	:MonomList()
 {
-
 }
 
-Polinom::Polinom(const Polinom &poly)
-    :MonomList(poly)
+Polinom::Polinom(const Polinom& poly)
+	: MonomList(poly)
 {
-
 }
 
 Polinom::Polinom(const std::string& input)
-	:MonomList()
+	: MonomList()
 {
-    parser(input);
-    if (isCorrect())
-       converter();
-    else
-       throw std::runtime_error("More than one point or one and the same variable");
+	parser(input);
+	if (isCorrect())
+		converter();
+	else
+		throw std::runtime_error("More than one point or one and the same variable");
 }
 
 Polinom& Polinom::operator+=(const Monom& monom)
@@ -83,12 +81,12 @@ Polinom Polinom::operator*(const Monom& monom) const
 		while (pThis != Tail)
 		{
 			if (check_err_add_deg(pThis->deg, monom.deg))
-                throw std::runtime_error("Exponent was exceeded during multiplication");
+				throw std::runtime_error("Exponent was exceeded during multiplication");
 			pRes->next = new Monom(pThis->cf * monom.cf, pThis->deg + monom.deg, res.Tail);
 			pThis = pThis->next;
 			pRes = pRes->next;
 		}
-        if (std::abs(Tail->cf) > 1e-10)
+		if (std::abs(Tail->cf) > 1e-10)
 			pRes->next = new Monom(Tail->cf * monom.cf, Tail->deg + monom.deg, res.Tail);
 	}
 
@@ -97,7 +95,7 @@ Polinom Polinom::operator*(const Monom& monom) const
 
 Polinom& Polinom::operator*=(const Monom& monom)
 {
-    if (monom.deg == 0 || std::abs(monom.cf) < 1e-10)
+	if (monom.deg == 0 || std::abs(monom.cf) < 1e-10)
 		operator*=(monom.cf);
 	else
 	{
@@ -106,13 +104,13 @@ Polinom& Polinom::operator*=(const Monom& monom)
 		while (pThis != Tail)
 		{
 			if (check_err_add_deg(pThis->deg, monom.deg))
-                throw std::runtime_error("Exponent was exceeded during multiplication");
+				throw std::runtime_error("Exponent was exceeded during multiplication");
 			pThis->cf *= monom.cf;
 			pThis->deg += monom.deg;
 			pThis = pThis->next;
 		}
 
-        if (std::abs(Tail->cf) > 1e-10)
+		if (std::abs(Tail->cf) > 1e-10)
 		{
 			Tail->cf *= monom.cf;
 			Tail->deg += monom.deg;
@@ -154,7 +152,7 @@ Polinom Polinom::operator-(double scalar) const
 Polinom Polinom::operator*(double scalar) const
 {
 	Polinom res;
-    if (std::abs(scalar) > 1e-10)
+	if (std::abs(scalar) > 1e-10)
 	{
 		res.Tail->cf *= scalar;
 		Monom* pThis = Tail->next;
@@ -172,7 +170,7 @@ Polinom Polinom::operator*(double scalar) const
 Polinom& Polinom::operator*=(double scalar)
 {
 	Tail->cf *= scalar;
-    if (std::abs(scalar) < 1e-10)
+	if (std::abs(scalar) < 1e-10)
 	{
 		Monom* p = Tail->next;
 		Monom* q = Tail->next;
@@ -219,7 +217,7 @@ Polinom& Polinom::operator+=(const Polinom& poly)
 		else
 		{
 			pThis->next->cf += pPoly->cf;
-            if (std::abs(pThis->next->cf) < 1e-10)
+			if (std::abs(pThis->next->cf) < 1e-10)
 			{
 				Monom* tmp = pThis->next;
 				pThis->next = pThis->next->next;
@@ -277,7 +275,7 @@ Polinom& Polinom::operator-=(const Polinom& poly)
 			else
 			{
 				pThis->next->cf -= pPoly->cf;
-                if (std::abs(pThis->next->cf) < 1e-10)
+				if (std::abs(pThis->next->cf) < 1e-10)
 				{
 					Monom* tmp = pThis->next;
 					pThis->next = pThis->next->next;
@@ -324,7 +322,7 @@ Polinom Polinom::operator+(const Polinom& poly) const
 		}
 		else
 		{
-            if (std::abs(pPoly->cf + pThis->cf) > 1e-10)
+			if (std::abs(pPoly->cf + pThis->cf) > 1e-10)
 			{
 				pRes->next = new Monom(pPoly->cf + pThis->cf, pPoly->deg);
 				pRes = pRes->next;
@@ -376,7 +374,7 @@ Polinom Polinom::operator-(const Polinom& poly) const
 		}
 		else
 		{
-            if (std::abs(pThis->cf - pPoly->cf) > 1e-10)
+			if (std::abs(pThis->cf - pPoly->cf) > 1e-10)
 			{
 				pRes->next = new Monom(pThis->cf - pPoly->cf, pPoly->deg);
 				pRes = pRes->next;
@@ -425,7 +423,7 @@ double Polinom::operator()(double x, double y, double z) const
 	while (p != Tail)
 	{
 		int deg = p->deg;
-        Res += p->cf * pow(x, deg / 100) * pow(y, deg % 100 / 10) * pow(z, deg % 10);
+		Res += p->cf * pow(x, deg / 100) * pow(y, deg % 100 / 10) * pow(z, deg % 10);
 		p = p->next;
 	}
 
@@ -450,7 +448,6 @@ bool Polinom::operator==(const Polinom& poly) const
 	return true;
 }
 
-
 void Polinom::parser(const std::string& input)
 {
 	int state = 0;
@@ -472,7 +469,7 @@ void Polinom::parser(const std::string& input)
 				else if (current == 'x' || current == 'y' || current == 'z')
 					state = 3;
 				else
-                    throw std::runtime_error("Wrong symbols at the beginning");
+					throw std::runtime_error("Wrong symbols at the beginning");
 				lexema.append(1, current);
 				break;
 			}
@@ -482,7 +479,7 @@ void Polinom::parser(const std::string& input)
 				else if (current == 'x' || current == 'y' || current == 'z')
 					state = 3;
 				else
-                    throw std::runtime_error("Wrong symbols after sign");
+					throw std::runtime_error("Wrong symbols after sign");
 
 				lexema.append(1, current);
 				break;
@@ -499,7 +496,7 @@ void Polinom::parser(const std::string& input)
 				else if (current == 'x' || current == 'y' || current == 'z')
 					state = 3;
 				else
-                    throw std::runtime_error("Wrong symbols in place of the coefficient");
+					throw std::runtime_error("Wrong symbols in place of the coefficient");
 
 				lexema.append(1, current);
 				break;
@@ -516,7 +513,7 @@ void Polinom::parser(const std::string& input)
 				else if (current == '^')
 					state = 4;
 				else
-                    throw std::runtime_error("Wrong symbols after one of the variables");
+					throw std::runtime_error("Wrong symbols after one of the variables");
 
 				lexema.append(1, current);
 				break;
@@ -528,7 +525,7 @@ void Polinom::parser(const std::string& input)
 					lexema.append(1, current);
 				}
 				else
-                    throw std::runtime_error("Wrong symbols in place of degree");
+					throw std::runtime_error("Wrong symbols in place of degree");
 
 				break;
 			}
@@ -542,7 +539,7 @@ void Polinom::parser(const std::string& input)
 				else if (current == 'x' || current == 'y' || current == 'z')
 					state = 3;
 				else
-                    throw std::runtime_error("Wrong symbol after degree");
+					throw std::runtime_error("Wrong symbol after degree");
 
 				lexema.append(1, current);
 				break;
@@ -553,10 +550,10 @@ void Polinom::parser(const std::string& input)
 		}
 	}
 
-    if (state == 1 || state == 4)
-        throw std::runtime_error("Missing characters");
-    else if (state == 2 || state == 3 || state == 5)
-        Lexs.push_back(lexema);
+	if (state == 1 || state == 4)
+		throw std::runtime_error("Missing characters");
+	else if (state == 2 || state == 3 || state == 5)
+		Lexs.push_back(lexema);
 }
 
 bool Polinom::check_vars() const
@@ -686,9 +683,8 @@ void Polinom::converter()
 
 		Insert(Monom(std::stod(cf), degree));
 	}
-    Lexs.clear();
+	Lexs.clear();
 }
-
 
 std::ostream& operator<<(std::ostream& os, const Polinom& poly)
 {
