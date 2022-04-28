@@ -8,46 +8,46 @@ using namespace std;
 template <typename TData, typename TKey> class Table
 {
 //protected
- public:
- TabRecord<TData,TKey>** records;
- int tabSize;
- int dataCount ;
- int currPos;
- // Конструкторы, деструктор	
- Table(unsigned int n = 100);
- virtual ~Table() { delete[] records; }
- //public:
- //информационные методы
- bool IsFull() const { return dataCount == tabSize; }
- bool IsEmpty() const { return dataCount == 0; }
- int GetCount() const { return dataCount; }
- int GetSize() const { return tabSize; }
+  public:
+  TabRecord<TData,TKey>** records;
+  int tabSize;
+  int dataCount ;
+  int currPos;
+  // Конструкторы, деструктор	
+  Table(unsigned int n = 100);
+  virtual ~Table() { delete[] records; }
+  //public:
+  //информационные методы
+  bool IsFull() const { return dataCount  == tabSize; }
+  bool IsEmpty() const { return dataCount  == 0; }
+  int GetCount() const { return dataCount; }
+  int GetSize() const { return tabSize; }
 
- // операции над таблицами
- virtual void InsertRecord(const TData Data, const TKey Key) = 0;
- virtual void RemoveRecord(const TKey Key) = 0;
- virtual TData* FindRecord(const TKey Key) = 0;
- virtual void Clear() =0;
- //навигация по таблицу
- void Reset();
- void SetNext();
- bool IsTabEnded() const { return currPos == dataCount || currPos == -1; }
+  // операции над таблицами
+  virtual void InsertRecord(const TData Data, const TKey Key) = 0;
+  virtual void RemoveRecord(const TKey Key) = 0;
+  virtual TData* FindRecord(const TKey Key) = 0;
+  virtual void Clear() =0;
+  //навигация по таблицу
+  void Reset();
+  void SetNext();
+  bool IsTabEnded() const { return currPos == dataCount  || currPos == -1; }
 
- //доступ к текущей записи таблицы
- TData* GetData() const; // для текущего элемента
- TKey GetKey() const; // для текущего элемента
+  //доступ к текущей записи таблицы
+  TData* GetData() const; // для текущего элемента
+  TKey GetKey() const;  // для текущего элемента
 
- friend std::ostream& operator<< (std::ostream& os, const Table<TData,TKey>& Tab)
- { unsigned int i = 0;
+  friend std::ostream& operator<< (std::ostream& os, const Table<TData,TKey>& Tab)
+  { unsigned int i = 0;
 	while (i < Tab.dataCount)
-  { os <<"Key:"<< left << Tab.records[i]->GetKey() << " |Polinom: " << *(Tab.records[i]->GetData()) << '\n';
-	 i++;
+    { os <<"Key:"<< left << Tab.records[i]->GetKey() << " |Polinom: " << *(Tab.records[i]->GetData()) << '\n';
+	  i++;
 	}
 	if (Tab.dataCount == 0)
 	os << "\n\tTable is Empty\n";
 	return os;
- }
- friend TabRecord<TData, TKey>;
+  }
+  friend TabRecord<TData, TKey>;
 };
 
 

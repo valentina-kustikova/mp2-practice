@@ -5,18 +5,18 @@
 template <typename TData, typename TKey>
 class SortTable : public ScanTable<TData,TKey>
 { 
- public:
- void SortData(); // метод сортировки записей по ключам
- // Конструкторы, деструктор	
- SortTable(unsigned int n = 100) : ScanTable<TData,TKey>(n) {};
- SortTable(const SortTable<TData,TKey>& T1);
- SortTable(const ScanTable<TData,TKey>& T1);
- ~SortTable() {};
- // Методы 
- virtual void InsertRecord(const TData data, const TKey key);
- virtual TData* FindRecord(const TKey key);
- virtual void RemoveRecord(const TKey key);
- virtual void Clear();
+  public:
+  void SortData(); // метод сортировки записей по ключам
+  // Конструкторы, деструктор	
+  SortTable(unsigned int n = 100) : ScanTable<TData,TKey>(n) {};
+  SortTable(const SortTable<TData,TKey>& T1);
+  SortTable(const ScanTable<TData,TKey>& T1);
+  ~SortTable() {};
+  // Методы 
+  virtual void InsertRecord(const TData data, const TKey key);
+  virtual TData* FindRecord(const TKey key);
+  virtual void RemoveRecord(const TKey key);
+  virtual void Clear();
 
 };
 
@@ -25,25 +25,25 @@ class SortTable : public ScanTable<TData,TKey>
 template <typename TData, typename TKey>
 SortTable<TData, TKey>::SortTable(const SortTable<TData, TKey>& T1)
 {
- this->tabSize = T1.tabSize;
- this->currPos = T1.currPos;
- this->dataCount = T1.dataCount;
- this->records = new TabRecord<TData, TKey>*[this->tabSize];
- for (int i = 0; i < this->dataCount; i++)
+    this->tabSize = T1.tabSize;
+    this->currPos = T1.currPos;
+    this->dataCount = T1.dataCount;
+    this->records = new TabRecord<TData, TKey>*[this->tabSize];
+    for (int i = 0; i < this->dataCount; i++)
 	{
-  this->records[i] = new TabRecord<TData, TKey>(*(T1.records[i]));
+        this->records[i] = new TabRecord<TData, TKey>(*(T1.records[i]));
 	}
 }
 template <typename TData, typename TKey>
 SortTable<TData, TKey>::SortTable(const ScanTable<TData, TKey>& T1) //Здесь было Scan
 {
- this->tabSize = T1.tabSize;
- this->dataCount = T1.dataCount;
- this->currPos = T1.currPos;
- this->records = new TabRecord<TData, TKey>*[this->tabSize];
- for (int i = 0; i < this->dataCount; i++)
+    this->tabSize = T1.tabSize;
+    this->dataCount = T1.dataCount;
+    this->currPos = T1.currPos;
+    this->records = new TabRecord<TData, TKey>*[this->tabSize];
+    for (int i = 0; i < this->dataCount; i++)
 	{
-  this->records[i] = T1.records[i];
+        this->records[i] = T1.records[i];
 	}
 	SortData();
 }
@@ -91,12 +91,12 @@ void SortTable<TData, TKey>::InsertRecord(const TData data, const TKey key)
 		std::cerr << "Error: " << exception << '\n';
 		return;
 	}
- //this->Reset();
+    //this->Reset();
 }
 template <typename TData, typename TKey>
 TData* SortTable<TData, TKey>::FindRecord(const TKey key)
 {
- this->Reset();
+    this->Reset();
 	TData* tmp = nullptr;
 	try {
 		if (!(this->IsEmpty()))
@@ -139,7 +139,7 @@ TData* SortTable<TData, TKey>::FindRecord(const TKey key)
 template <typename TData, typename TKey>
 void SortTable<TData, TKey>::RemoveRecord(const TKey key)
 {
- this->Reset();
+    this->Reset();
 	try {
 		if (FindRecord(key) == nullptr)
 		{
@@ -185,15 +185,15 @@ inline void SortTable<TData, TKey>::Clear()
 template <typename TData, typename TKey>
 void SortTable<TData, TKey>::SortData()
 {
- for (int i = 0; i < this->dataCount; i++) {
+    for (int i = 0; i < this->dataCount; i++) {
 		bool flag = true;
-  for (int j = 0; j < this->dataCount - (i + 1); j++) {
-   if (this->records[j]->GetKey() < this->records[j + 1]->GetKey()) {
+        for (int j = 0; j < this->dataCount - (i + 1); j++) {
+            if (this->records[j]->GetKey() < this->records[j + 1]->GetKey()) {
 				flag = false;
 				TabRecord<TData, TKey>* temp;
-    temp = this->records[j];
-    this->records[j] = this->records[j + 1];
-    this->records[j + 1] = temp;
+                temp = this->records[j];
+                this->records[j] = this->records[j + 1];
+                this->records[j + 1] = temp;
 			}
 		}
 		if (flag) {
