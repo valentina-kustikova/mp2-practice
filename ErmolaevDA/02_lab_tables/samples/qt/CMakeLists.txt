@@ -1,0 +1,23 @@
+set(target ${02_LAB_TABLES_QT})
+
+set(CMAKE_PREFIX_PATH C:/Qt/6.3.0/msvc2019_64)
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
+set(CMAKE_AUTOUIC ON)
+
+find_package(Qt6 REQUIRED COMPONENTS Widgets)
+
+FILE(GLOB hdrs "*.h")
+FILE(GLOB srcs "*.cpp")
+FILE(GLOB uics "*.ui")
+FILE(GLOB ts "*.ts")
+
+ADD_EXECUTABLE(${target} ${uics} ${srcs} ${hdrs} ${ts})
+
+ADD_DEPENDENCIES(${target} ${02_LAB_TABLES_LIBRARY})
+
+TARGET_LINK_LIBRARIES(${target} PRIVATE Qt6::Widgets ${02_LAB_TABLES_LIBRARY})
+
+#TARGET_LINK_LIBRARIES(${target} PRIVATE Qt6::Widgets)
+
+TARGET_INCLUDE_DIRECTORIES(${target} PRIVATE ${02_LAB_TABLES_INCLUDE})
