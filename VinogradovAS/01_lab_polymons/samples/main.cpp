@@ -15,6 +15,14 @@ void ResultOutput(char op, TPolynom& p1, TPolynom& p2) {
 	}else cout << "Результат: " << p1 * p2 << endl;
 }
 
+int main1() {
+	TPolynom p1("x");
+	TPolynom p2("y");
+	p1 == p2;
+
+	return 0;
+}
+
 int main()
 {
 	setlocale(LC_ALL, "Russian");
