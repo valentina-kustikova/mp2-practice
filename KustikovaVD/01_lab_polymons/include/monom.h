@@ -2,15 +2,15 @@
 
 #include "data.h"
 
-class TMonom: public TData
+class TMonom:  public TData
 {
 public:
     double coeff;
     int degree;
 public:
-    TMonom(double coeff, int degree);
+    TMonom(double coeff, int degree) : coeff(coeff), degree(degree){};
     
-    TMonom& operator=(const TMonom& monom);
+    TMonom& operator=(const TMonom& monom) ;
     
     int operator==(const TMonom& monom) const;
     int operator!=(const TMonom& monom) const;

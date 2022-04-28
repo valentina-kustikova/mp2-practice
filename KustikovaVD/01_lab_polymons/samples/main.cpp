@@ -28,7 +28,7 @@ int main()
         {
         case 1:
         {
-            string A, B;
+            std::string A, B;
             cout << "\n\t¬ведите полином A:";
             cin >> A; 
             cout << "\n\t¬ведите полином B:";
@@ -59,7 +59,7 @@ int main()
     }
     
     TNode *node = new TNode;
-    node->data = new TMonom(1, 101);
+    //node->data = new TMonom(1, 101);
     node->pNext = nullptr;
     std::cout << "FINISH" << std::endl;
 	return 0;

@@ -1,22 +1,30 @@
 #pragma once
 
 #include "headlist.h"
-#include "monom.h"
+#include <iostream>
+#include "node.h"
+#include "list.h"
 #include <string>
+#include <vector>
+#include <headlist.h>
 
-class TPolinom
+
+
+class TPolinom : public THeadList
 {
-private:
-    THeadList* monoms;
-
-    // служебные методы
-    // ...
 public:
-    TPolinom();
-    TPolinom(const std::string& str);
+
+    THeadList* monoms;
+    
+    
+
+    TPolinom() {
+        THeadList* monoms = new THeadList;
+    };
+    /*TPolinom(const std::string& str);
     TPolinom(THeadList* const monoms);
     TPolinom(const TPolinom& polinom);
-    ~TPolinom();
+    ~TPolinom();*/
 
     // операции
     TPolinom operator+(const TPolinom& a);
