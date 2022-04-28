@@ -4,7 +4,7 @@ class TabRecord
 { public:
   TKey key;
   TData* data;
-  // Конструкторы, деструктор	
+  // Конструкторы, деструктор    
   TabRecord(TKey k = {}, TData d = {}) { key = k; data = new TData(d); }
   TabRecord(const TabRecord& T1) { key = T1.key; data = new TData(*(T1.data)); } // конструктор копирования
   ~TabRecord() { delete data; }

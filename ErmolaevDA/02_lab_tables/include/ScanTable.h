@@ -6,7 +6,7 @@ template <typename TData, typename TKey>
 class ScanTable : public Table<TData,TKey>
 { public: 
     
-  // Конструкторы, деструктор	
+  // Конструкторы, деструктор    
   ScanTable(unsigned int n = 100) : Table<TData,TKey>(n) {};
   ScanTable(const ScanTable<TData,TKey>& T1);
   ~ScanTable() {};
