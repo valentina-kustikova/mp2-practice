@@ -5,11 +5,10 @@ using namespace std;
 //Класс Запись
 template <typename TData, typename TKey>
 class TabRecord
-{
-protected:
+{ protected:
 	TKey key;
 	TData* data;
-public:
+  public:
 	// Конструкторы, деструктор	
 	TabRecord(TKey k = {}, TData d = {}) { key = k; data = new TData(d); }
 	TabRecord(const TabRecord& T1) { key = T1.key; data = new TData(*(T1.data)); } // конструктор копирования
@@ -17,6 +16,8 @@ public:
 	//Методы
 	TData* GetData() const { return data; }
 	TKey GetKey() const { return key; }
+	void SetKey(TKey k) { key = k; }
+	void SetData(TData* d) { delete data; data = d; }
 	// Перегрузка операций
 	TabRecord<TData, TKey>& operator=(const TabRecord<TData, TKey>& TabR)
 	{
