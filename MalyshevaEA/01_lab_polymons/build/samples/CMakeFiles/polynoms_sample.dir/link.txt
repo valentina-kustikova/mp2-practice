@@ -1,0 +1,1 @@
+/usr/bin/c++  -g  -rdynamic CMakeFiles/polynoms_sample.dir/main_polinom.cpp.o  -o ../bin/polynoms_sample  ../lib/libpolynoms.a 

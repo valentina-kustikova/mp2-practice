@@ -1,0 +1,32 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../include/list.h
+
+../include/monom.h
+iostream
+-
+
+../include/polinom.h
+monom.h
+../include/monom.h
+list.h
+../include/list.h
+iostream
+-
+cstdio
+-
+string
+-
+math.h
+-
+
+/home/elena/prog/mp2-practice/MalyshevaEA/01_lab_polymons/samples/main_polinom.cpp
+polinom.h
+/home/elena/prog/mp2-practice/MalyshevaEA/01_lab_polymons/samples/polinom.h
+

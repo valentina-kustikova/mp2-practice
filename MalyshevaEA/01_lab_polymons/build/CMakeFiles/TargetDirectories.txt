@@ -1,0 +1,14 @@
+/home/elena/prog/mp2-practice/MalyshevaEA/01_lab_polymons/build/CMakeFiles/rebuild_cache.dir
+/home/elena/prog/mp2-practice/MalyshevaEA/01_lab_polymons/build/CMakeFiles/edit_cache.dir
+/home/elena/prog/mp2-practice/MalyshevaEA/01_lab_polymons/build/gtest/CMakeFiles/rebuild_cache.dir
+/home/elena/prog/mp2-practice/MalyshevaEA/01_lab_polymons/build/gtest/CMakeFiles/edit_cache.dir
+/home/elena/prog/mp2-practice/MalyshevaEA/01_lab_polymons/build/gtest/CMakeFiles/gtest.dir
+/home/elena/prog/mp2-practice/MalyshevaEA/01_lab_polymons/build/src/CMakeFiles/rebuild_cache.dir
+/home/elena/prog/mp2-practice/MalyshevaEA/01_lab_polymons/build/src/CMakeFiles/edit_cache.dir
+/home/elena/prog/mp2-practice/MalyshevaEA/01_lab_polymons/build/src/CMakeFiles/polynoms.dir
+/home/elena/prog/mp2-practice/MalyshevaEA/01_lab_polymons/build/tests/CMakeFiles/edit_cache.dir
+/home/elena/prog/mp2-practice/MalyshevaEA/01_lab_polymons/build/tests/CMakeFiles/rebuild_cache.dir
+/home/elena/prog/mp2-practice/MalyshevaEA/01_lab_polymons/build/tests/CMakeFiles/polynoms_test.dir
+/home/elena/prog/mp2-practice/MalyshevaEA/01_lab_polymons/build/samples/CMakeFiles/rebuild_cache.dir
+/home/elena/prog/mp2-practice/MalyshevaEA/01_lab_polymons/build/samples/CMakeFiles/edit_cache.dir
+/home/elena/prog/mp2-practice/MalyshevaEA/01_lab_polymons/build/samples/CMakeFiles/polynoms_sample.dir
