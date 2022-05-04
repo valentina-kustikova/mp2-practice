@@ -15,9 +15,9 @@ protected:
 public:
 	THeadList()
 	{
-		pHead = new TNode<TData>(NULL);
+		pHead = new TNode<TData>(0);
 		pHead->pNext = pHead;
-		this->pCurr = this->pPrev = this->pLast = this->pFirst = this->pStop = pHead;
+		this->pCurr = this->pPrev = this->pLast = this->pFirst = this->pStop = this->pHead;
 		this->len = 0;
 	}
 	~THeadList()
@@ -33,12 +33,12 @@ public:
 	virtual void InsertToHead(const TData& data)
 	{
 		TList<TData>::InsertToHead(data);
-		pHead->pNext = this->pFirst;
+		this->pHead->pNext = this->pFirst;
 	}
 	virtual void RemoveFirst()
 	{
 		TList<TData>::RemoveFirst();
-		pHead->pNext = this->pFirst;
+		this->pHead->pNext = this->pFirst;
 	}
 
 	friend ostream& operator <<(ostream& os, THeadList<TData>& headList)
@@ -51,3 +51,4 @@ public:
 		return os;
 	}
 };
+

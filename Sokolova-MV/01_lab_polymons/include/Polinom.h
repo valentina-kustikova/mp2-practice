@@ -1,5 +1,4 @@
 #pragma once
-
 #include <iostream>
 #include <string>
 #include <algorithm>
@@ -7,267 +6,59 @@
 #include "Monom.h"
 
 
-class TPolinom : public THeadList<TMonom> {
+class TPolinom : public THeadList<TMonom>
+{
+private:
+	void addMonom(const TMonom& m);
+
 public:
 
-	TPolinom() {
-		TMonom m;
-		pHead->data = m;
-	}
-
-	TPolinom(TMonom& m) {
-		insCurrent(m);
-	}
-
-	TPolinom(const TPolinom& p) {
-
-		auto pCurr = p.pFirst;
-		auto pPrev = p.pStop;
-
-		for (; !(pCurr == p.pStop);) {
-			insLast(pCurr->data);
-			pPrev = pCurr;
-			pCurr = pCurr->pNext;
-		}
-	}
-
-	void addMonom(TMonom& m) {
-		{
-			for (reset(); !isEnd(); goNext()) {
-				if (m == pCurr->data) {
-					pCurr->data.coeff += m.coeff;
-					if (pCurr->data.coeff == 0) {
-						RemoveCurr();
-					}
-					break;
-				}
-				if (m > pCurr->data) {
-					insCurrent(m);
-					break;
+	TPolinom();
+	TPolinom(const int& m);
+	TPolinom(const TMonom& m);
+	TPolinom(const TPolinom& p);
+	TPolinom operator*(const double& c) const;
+	TPolinom operator*(const TMonom& m) const;
+	TPolinom operator*(const TPolinom& p) const;
+	TPolinom& operator=(const TPolinom& p);
+	bool operator==(const TPolinom& p) const;
+	bool operator==(const string& s) const;
+	TPolinom operator-(const TMonom& p) const;
+	TPolinom operator-(const TPolinom& p) const;
+	TPolinom operator+(const TPolinom& p) const;
+	/*TPolinom operator+(const TMonom& m) const;/**/
+	friend ostream& operator<<(ostream& os, TPolinom& p)
+	{
+		//if (p.pFirst->data.coeff == 0)
+		//	os << "0";
+		//else {
+			for (p.reset(); !p.isEnd(); p.goNext()) {
+				os << p.getCurrdata();
+				if (p.pCurr->pNext != p.pStop)
+				{
+					os << "+ ";
 				}
 			}
-			if (isEnd()) {
-				insLast(m);
+		//}
+			if (p.isEmpty())
+			{
+				os << 0;
 			}
-		}
-	}
-
-	TPolinom operator*(const int& c) {
-		TPolinom res(*this);
-		res.reset();
-		while (!res.isEnd()) {
-			if (c != 0) {
-				res.pCurr->data.coeff *= c;
-				res.goNext();
-			}
-			else {
-				res.RemoveCurr();
-			}
-		}
-		return res;
-	}
-
-	TPolinom operator*(const TMonom& m) {
-		TPolinom res(*this);
-		res.reset();
-		while (!res.isEnd()) {
-			if (m.coeff != 0) {
-				int x, y, z;
-				x = res.pCurr->data.degree / 100;
-				y = (res.pCurr->data.degree - x * 100) / 10;
-				z = res.pCurr->data.degree - x * 100 - y * 10;
-				res.pCurr->data.coeff *= m.coeff;
-				x += m.degree / 100;
-				y += (m.degree / 10) % 10;
-				z += m.degree % 10;
-				if (x >= 10 || y >= 10 || z >= 10) {
-					throw ("Р’С‹С…РѕРґ Р·Р° РіСЂР°РЅРёС†Сѓ СЃС‚РµРїРµРЅРё");
-					break;
-				}
-				res.pCurr->data.degree = x * 100 + y * 10 + z;
-			}
-			else {
-				res.RemoveCurr();
-			}
-			res.goNext();
-		}
-		return res;
-	}
-
-	TPolinom operator*(TPolinom& p) {
-		TPolinom tmp1(*this);
-		TPolinom res;
-		p.reset();
-		while (!p.isEnd()) {
-			tmp1.reset();
-			res = res + tmp1 * p.pCurr->data;
-			p.goNext();
-			if (!tmp1.isEnd()) {
-				p.reset();
-			}
-		}
-		return res;
-	}
-
-	TPolinom& operator=(const TPolinom& p) {
-		TPolinom tmp(p);
-		tmp.reset();
-		reset();
-		while (!isEnd()) {
-			RemoveCurr();
-			goNext();
-		}
-		while (!tmp.isEnd()) {
-			TMonom t = tmp.getCurrdata();
-			addMonom(t);
-			tmp.goNext();
-		}
-		return *this;
-	}
-
-	bool operator==(const TPolinom& p) const {
-		TPolinom res(p);
-		TPolinom pthis(*this);
-		res.reset();
-		pthis.reset();
-		while (!res.isEnd()) {
-			if ((pthis.getCurrdata() == res.getCurrdata()) == 0) return false;
-			res.goNext();
-			pthis.goNext();
-		}
-		return true;
-	}
-
-	TPolinom operator-(TMonom& p) {
-		TMonom tmp = p * (-1);
-		return (*this + tmp);
-	}
-
-	TPolinom operator-(TPolinom& p) { return (*this + p * (-1)); }
-
-	TPolinom operator+(const TPolinom& p) const {
-		TPolinom pthis(*this);
-		TPolinom res(p);
-		res.reset();
-		pthis.reset();
-		while (!pthis.isEnd()) {
-			if (res.pCurr->data.degree > pthis.pCurr->data.degree)
-				res.goNext();
-			else if (res.pCurr->data.degree < pthis.pCurr->data.degree) {
-				res.insCurrent(pthis.pCurr->data);
-				pthis.goNext();
-			}
-			else {
-				res.pCurr->data.coeff += pthis.pCurr->data.coeff;
-				if (res.pCurr->data.coeff != 0) {
-					res.goNext();
-					pthis.goNext();
-				}
-				else {
-					res.RemoveCurr();
-					pthis.goNext();
-				}
-			}
-		}
-		return res;
-	}
-
-	TPolinom operator+(TMonom& m) {
-		TPolinom res;
-		res.insCurrent(m);
-		res = *this + res;
-		return res;
-	}
-
-	friend ostream& operator<<(ostream& os, TPolinom& p) {
-		for (p.reset(); !p.isEnd(); p.goNext()) {
-			os << p.getCurrdata();
-			if (p.pCurr->pNext != p.pStop) {
-				os << "+ ";
-			}
-		}
 		os << "\n";
 		return os;
 	}
-
-	friend istream& operator>>(istream& in, TPolinom& P) {
+	friend istream& operator>>(istream& in, TPolinom& P)
+	{
 		string str;
 		in >> str;
 		P = TPolinom(str);
 		return in;
 	}
+	TPolinom(const string& str);
+	double operator() (double x, double y, double z);
 
-	TPolinom(string str) {
-		string p = str;
-		int i = 0;
-
-		while (i < str.length()) {
-			if (str[i] == ' ' || str[i] == '+') {
-				i++;
-				continue;
-			}
-			string coeff;
-			for (; isdigit(str[i]) || str[i] == ' ' || str[i] == ',' || str[i] == '-'; i++) {
-				if (str[i] == ' ') continue;
-				coeff.push_back(str[i]);
-			}
-			string degX;
-			if (str[i] == 'x') {
-				i += 1;
-				if (str[i] != '^') {
-					degX = "1";
-				}
-				else {
-					i += 1;
-					while (isdigit(str[i])) {
-						degX.push_back(str[i]);
-						i++;
-					}
-				}
-			}
-			string degY;
-			if (str[i] == 'y') {
-				i += 1;
-				if (str[i] != '^') {
-					degY = "1";
-				}
-				else {
-					i += 1;
-					while (isdigit(str[i])) {
-						degY.push_back(str[i]);
-						i++;
-					}
-				}
-			}
-			string degZ;
-			if (str[i] == 'z') {
-				i += 1;
-				if (str[i] != '^') {
-					degZ = "1";
-				}
-				else {
-					i += 1;
-					while (isdigit(str[i])) {
-						degZ.push_back(str[i]);
-						i++;
-					}
-				}
-			}
-			double _coeff = 1;
-			int _degX = 0, _degY = 0, _degZ = 0;
-			if (!coeff.empty()) _coeff = stod(coeff);
-			if (!degX.empty()) _degX = stoi(degX);
-			if (!degY.empty()) _degY = stoi(degY);
-			if (!degZ.empty()) _degZ = stoi(degZ);
-			if ((_degX > 9) || (_degY > 9) || (_degZ > 9)) {
-				throw ("Р’С‹С…РѕРґ Р·Р° РіСЂР°РЅРёС†Сѓ СЃС‚РµРїРµРЅРё");
-				break;
-			}
-			int d = _degX * 100 + _degY * 10 + _degZ;
-			TMonom m(_coeff, d);
-			addMonom(m);
-		}
-	}
-
-
+	//тесты из методички
+	//не хранить полиномы
+	//дубляж <</ string& (разбор строки выписать)+
 };
+

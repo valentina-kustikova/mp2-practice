@@ -6,13 +6,13 @@
 
 using namespace std;
 
-template<class TData>//СЂР°Р·Р±РёС‚СЊ
+template<class TData>//разбить
 class TNode
 {
 public:
 	TData data;
-	TNode* pNext;	
-	TNode(TData _data = NULL, TNode* _pNext = nullptr)//NULL СѓР±СЂР°С‚СЊ
+	TNode* pNext;
+	TNode(TData _data = nullptr, TNode* _pNext = nullptr)//NULL убрать
 	{
 		data = _data;
 		pNext = _pNext;
@@ -39,26 +39,31 @@ public:
 	}
 	~TList()
 	{
-		while (pFirst!= pStop)
+		while (pFirst != pStop)
 		{
 			TNode<TData>* del = pFirst;
-		    pFirst = pFirst->pNext;
+			pFirst = pFirst->pNext;
 			delete del;
 		}
 	}
+
 	int getLen() const { return len; }
-	TData getCurrdata() 
+
+	TData getCurrdata() const
 	{
 		if (pCurr != pStop)
 			return pCurr->data;
 		else
-			throw ("РЎРїРёСЃРѕРє РїСѓСЃС‚РѕР№");
+			throw ("Список пустой");
 	}
+
 	void setCurrdata(const TData& _data)
 	{
 		pCurr->data = _data;/**/
 	}
-	void InsertToHead(const TData& data)//const
+
+
+	void InsertToHead(const TData& data)
 	{
 		TNode<TData>* newFirst = new TNode<TData>(data, pFirst);
 		pCurr = newFirst;
@@ -70,21 +75,22 @@ public:
 			pLast->pNext = pStop;
 		}/**/
 	}
+
 	void insCurrent(const TData& data)
 	{
 		if (pCurr == pFirst) {
 			InsertToHead(data);
 		}
-		else if (pPrev == pLast){
+		else if (pPrev == pLast) {
 			insLast(data);
 		}
 		else {
-			TNode<TData>* node = new TNode<TData>(data,pCurr);
+			TNode<TData>* node = new TNode<TData>(data, pCurr);
 			pPrev->pNext = node;
 			pCurr = node;
 			len++;
 		}
-		
+
 	}
 	void insLast(const TData& data)
 	{
@@ -99,9 +105,10 @@ public:
 		}
 		len++;
 	}
+
 	void RemoveFirst()
 	{
-		if (pFirst != pStop){
+		if (pFirst != pStop) {
 			TNode<TData>* delNode = pFirst;
 			pFirst = pFirst->pNext;
 			pCurr = pFirst;
@@ -117,32 +124,41 @@ public:
 		if (pCurr != pStop)
 			if (pCurr == pFirst) {
 				RemoveFirst();
-			} else {
+			}
+			else {
 				TNode<TData>* delNode = pCurr;
 				pCurr = pCurr->pNext;
+				if (pPrev->pNext == pLast)
+					pLast = pPrev;
 				pPrev->pNext = pCurr;
 				delete delNode;
 				len--;
 			}
 	}
+
 	bool isEmpty()
 	{
 		return (len == 0);
 	}
+
 	void reset()
 	{
 		pCurr = pFirst;
 		pPrev = pStop;
 	}
+
 	void goNext()
 	{
 		pPrev = pCurr;
 		pCurr = pCurr->pNext;
 	}
+
+
 	bool isEnd()
 	{
 		return pCurr == pStop;
 	}
+
 	friend ostream& operator<<(ostream& os, TList<TData>& list)
 	{
 		for (list.reset(); !list.isEnd(); list.goNext())
