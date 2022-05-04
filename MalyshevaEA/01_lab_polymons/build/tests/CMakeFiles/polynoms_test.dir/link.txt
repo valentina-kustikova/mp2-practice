@@ -1,1 +1,0 @@
-/usr/bin/c++  -g  -rdynamic CMakeFiles/polynoms_test.dir/test_main.cpp.o CMakeFiles/polynoms_test.dir/test_polinom.cpp.o  -o ../bin/polynoms_test  ../lib/libgtest.a ../lib/libpolynoms.a -lpthread 
