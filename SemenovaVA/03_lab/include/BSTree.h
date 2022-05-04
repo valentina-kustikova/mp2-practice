@@ -1,27 +1,27 @@
-#pragma once 
+п»ї#pragma once 
 #include <iostream>
 #include <stack>
 #include "Table.h"
 using namespace std;
 
-// Класс Звено дерева
+// РљР»Р°СЃСЃ Р—РІРµРЅРѕ РґРµСЂРµРІР°
 template <typename TData, typename TKey>
 class TrNode : public TabRecord<TData, TKey>
 { public:
   TrNode* Left;
   TrNode* Right;
   TrNode* Parent;
-  // Конструкторы, деструктор	
+  // РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂС‹, РґРµСЃС‚СЂСѓРєС‚РѕСЂ		
   TrNode(TKey k = {}, TData d = {}, TrNode* P = nullptr, TrNode* R = nullptr, TrNode* L = nullptr):
 		TabRecord<TData, TKey>(k, d), Left(L), Right(R), Parent(P) {}
   TrNode(const TrNode& T1):
 		TabRecord<TData,TKey>(T1.key,T1.pData),Left(nullptr),Right(nullptr),Parent(nullptr) {}
   ~TrNode();
-  //Методы
-  TrNode* GetLeft() const { return Left};
-  TrNode* GetRight() const { return Right};
-  TrNode* GetParent()  const { return Parent};
-  // Перегрузка операций
+  //РњРµС‚РѕРґС‹
+  TrNode* GetLeft() const { return Left; }
+  TrNode* GetRight() const { return Right; }
+  TrNode* GetParent()  const { return Parent; }
+  //РџРµСЂРµРіСЂСѓР·РєР° РѕРїРµСЂР°С†РёР№
   TrNode<TData, TKey>& operator=(const TrNode<TData, TKey>& T1)
 	{
 		data = new TData(*(T1.data)); 
@@ -33,17 +33,17 @@ class TrNode : public TabRecord<TData, TKey>
 	}
 };
 
-// Класс Бинарное поисковое дерево
+// РљР»Р°СЃСЃ Р‘РёРЅР°СЂРЅРѕРµ РїРѕРёСЃРєРѕРІРѕРµ РґРµСЂРµРІРѕ
 template <typename TData, typename TKey>
 class BSTree
 { protected:
   TrNode<TData, TKey>* Root;
   public:
-  // Конструкторы, деструктор	
+  // РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂС‹, РґРµСЃС‚СЂСѓРєС‚РѕСЂ	
   BSTree(){Root = nullptr;}
   BSTree(TKey k, TData d) { Root = new TrNode<TData, TKey>(k, d); }
   ~BSTree();
-  //Методы
+  //РњРµС‚РѕРґС‹
   void Insert(TKey k, TData d);
   void Delete(TKey k);
   TrNode<TData, TKey>* Find(TKey k) const;
@@ -51,7 +51,7 @@ class BSTree
   TrNode<TData, TKey>* FindMin(TrNode<TData, TKey>* node) const;
   TrNode<TData, TKey>* FindNext(TrNode<TData, TKey>* node) const;
   TrNode<TData, TKey>* FindPrev(TrNode<TData, TKey>* node) const;
-  // Перегрузка операций
+  //РџРµСЂРµРіСЂСѓР·РєР° РѕРїРµСЂР°С†РёР№
   template<class TData> friend std::ostream& operator<< (std::ostream& os, const BSTree<TData, TKey>& T1)
   { stack<TrNode<TData, TKey>*> S1;
 	TrNode<TData, TKey>* n = T1.Root;
@@ -63,7 +63,8 @@ class BSTree
       else
 	  {	n = S1.top();
 		S1.pop();
-		os<< n->GetKey()<<" ";
+		os << n->GetKey()<<" ";
+		//if (n->GetParent() != nullptr) { os <<"P- "<< (*(n->GetParent())).GetKey() << endl; }
 		n = n->Right;
 	  }
 	}
@@ -71,7 +72,7 @@ class BSTree
   }
 };
 
-// Pелизация функциий для класса звено дерева
+// PРµР»РёР·Р°С†РёСЏ С„СѓРЅРєС†РёРёР№ РґР»СЏ РєР»Р°СЃСЃР° Р·РІРµРЅРѕ РґРµСЂРµРІР°
 template <typename TData, typename TKey>
 TrNode<TData, TKey>::~TrNode()
 {
@@ -83,8 +84,8 @@ TrNode<TData, TKey>::~TrNode()
 		delete Parent;
 }
 
-//Pелизация функциий для класса бинарное поисковое дерево
-// Конструкторы, деструктор	
+//PРµР»РёР·Р°С†РёСЏ С„СѓРЅРєС†РёРёР№ РґР»СЏ РєР»Р°СЃСЃР° Р±РёРЅР°СЂРЅРѕРµ РїРѕРёСЃРєРѕРІРѕРµ РґРµСЂРµРІРѕ
+// РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂС‹, РґРµСЃС‚СЂСѓРєС‚РѕСЂ	
 template <typename TData, typename TKey>
 BSTree<TData, TKey>::~BSTree()
 { stack<TrNode<TData, TKey>*> S1;
@@ -102,7 +103,7 @@ BSTree<TData, TKey>::~BSTree()
 	}
   }
   }
-//Методы
+//РњРµС‚РѕРґС‹
 template <typename TData, typename TKey>
 TrNode<TData, TKey>* BSTree<TData, TKey>::Find(const TKey k)  const
 { TrNode<TData, TKey>* tmp = Root;
@@ -207,3 +208,4 @@ void BSTree<TData, TKey>::Delete(TKey k)
 	z->SetData( y->GetData());
   }
 }
+
