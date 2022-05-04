@@ -1,43 +1,58 @@
-#include "monom.h"
+#include "Monom.h"
 
-TMonom::TMonom(double coeff, int degree)
+TMonom::TMonom(double _coeff, int _degree)
 {
-    this->coeff = coeff;
-    this->degree = degree;
+    if (_degree > 999) { throw 1; }
+    this->coeff = _coeff;
+    this->degree = _degree;
 }
-
-TMonom & TMonom::operator=(const TMonom & monom)
+TMonom & TMonom::operator=(const TMonom & m)
 {
-    if (*this != monom)
+    if (*this != m)
     {
-        this->coeff = monom.coeff;
-        this->degree = monom.degree;
+        this->coeff = m.coeff;
+        this->degree = m.degree;
     }
     return *this;
 }
-
-int TMonom::operator==(const TMonom & monom) const
+bool TMonom::operator==(const TMonom& m) const
 {
-    return (this->degree == monom.degree);
+    return this->degree == m.degree;
 }
-
-int TMonom::operator!=(const TMonom & monom) const
+bool TMonom::operator!=(const TMonom & m) const
 {
-    return (this->degree != monom.degree);
+    return (this->degree != m.degree);
 }
-
-int TMonom::operator<(const TMonom & monom) const
+bool TMonom::operator<(const TMonom & m) const
 {
-    return (this->degree < monom.degree);
+    if (this->degree < m.degree)
+        return true;
+    if (this->degree == m.degree)
+    {
+        if (this->coeff < m.coeff) return true;
+        else return false;
+    }
+    else return false;
 }
-
-int TMonom::operator>(const TMonom & monom) const
+bool TMonom::operator>(const TMonom & m) const
 {
-    return (this->degree > monom.degree);
+    if (this->degree > m.degree)
+        return true;
+    if (this->degree == m.degree)
+    {
+        if (coeff > m.coeff) return true;
+        else return false;
+    }
+    else return false;
 }
-
-TData * TMonom::Copy()
+/*TData * TMonom::Copy()
 {
     TData* data = new TMonom(this->coeff, this->degree);
     return data;
+}
+/**/
+TMonom TMonom::operator*(const int& c)
+{
+    coeff *= c;
+    return *this;
 }
