@@ -1,6 +1,6 @@
 #include "gtest.h"
 #include "Polinom.h"
-
+/*
 TEST(TMonom, can_create_empty_monom)
 {
 	ASSERT_NO_THROW(TMonom m);
@@ -50,3 +50,4 @@ TEST(TMonom, Mult_monom_and_const)
 	TMonom b(2, 123);
 	EXPECT_EQ(m, b);
 }
+/**/
