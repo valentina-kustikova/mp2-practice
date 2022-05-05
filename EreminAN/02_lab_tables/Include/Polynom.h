@@ -14,6 +14,7 @@ private:
 	int pos = 0;
 	List<Monom> monoms;
 
+
 public:
 	Polynom();
 	Polynom(const std::string& polynomStr);
@@ -21,9 +22,11 @@ public:
 
 	void parser(const std::string& polynomStr);
 	void cancellation();
+	bool isEmpty() const { return (monoms.isEmpty()); }
 
 	bool operator==(const Polynom& _Polynom) const;
 	bool operator!=(const Polynom& _Polynom) const;
+
 
 	Polynom operator+(const Polynom& _Polynom) const;
 	Polynom operator-(const Polynom& _polynom) const;
@@ -33,32 +36,33 @@ public:
 	Polynom operator-(const double& _Num) const;
 	Polynom operator*(const double& _Num) const;
 
+	std::string Pstring();
 
-	friend std::ostream& operator<< (std::ostream& out, const Polynom& _Pol)
+friend std::ostream& operator<< (std::ostream& out, const Polynom& _Pol)
+{
+	if (_Pol.monoms.GetSize() != 0)
 	{
-		if (_Pol.monoms.GetSize() != 0)
+		Node<Monom>* tmpPol = _Pol.monoms.GetHead();;
+		double coeff = 0;
+		int i = 0;
+		while (tmpPol)
 		{
-			Node<Monom>* tmpPol = _Pol.monoms.GetHead();;
-			double coeff = 0;
-			int i = 0;
-			while (tmpPol)
+			if (i != 0)
 			{
-				if (i != 0)
-				{
-					if (tmpPol->data.coeff() >= 0)
-						std::cout << "+";
-				}
-				std::cout << tmpPol->data;
-				tmpPol = tmpPol->next;
-				i++;
+				if (tmpPol->data.coeff() >= 0)
+					std::cout << "+";
 			}
-			return out;
+			std::cout << tmpPol->data;
+			tmpPol = tmpPol->next;
+			i++;
 		}
-		else
-		{
-			cout << 0;
-			return out;
-		}
+		return out;
 	}
+	else
+	{
+		cout << 0;
+		return out;
+	}
+}
 };
 

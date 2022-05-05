@@ -4,7 +4,7 @@
 // класс или структура Монома 
 
 #include <iostream>
-
+#include <string>
 
 //Обозначения для повышения читабельности кода;
 enum State
@@ -44,10 +44,11 @@ private:
 	int degreeY;
 	int degreeZ;
 public:
-	Monom() { coefficient = 0;
-	degreeX = 0;
-	degreeY = 0;
-	degreeZ = 0;
+	Monom() {
+		coefficient = 0;
+		degreeX = 0;
+		degreeY = 0;
+		degreeZ = 0;
 	};
 	Monom(double coeff, int degX, int degY, int degZ);
 	Monom(const Monom& m);
@@ -68,6 +69,8 @@ public:
 	Monom operator*(const double& _Num) const;
 	bool degreeEq(const Monom& _monom);
 
+	std::string Mstring();
+
 
 	friend std::ostream& operator<< (std::ostream& out, const Monom& l)
 	{
@@ -79,7 +82,7 @@ public:
 				else out << l.coefficient << "x";
 			else
 			{
-				if(l.coefficient != -1)
+				if (l.coefficient != -1)
 				{
 					if (l.degreeX != 1)
 						out << "x" << "^" << l.degreeX;
@@ -93,16 +96,17 @@ public:
 				}
 			}
 		}
-		else 
-		{ if(l.coefficient != 1 && l.coefficient != -1)
-			out << l.coefficient; 
 		else
 		{
-			if (l.coefficient == -1)
+			if ((l.coefficient != 1 && l.coefficient != -1) || (l.degreeX == 0 && l.degreeY == 0 && l.degreeZ == 0))
+				out << l.coefficient;
+			else
 			{
-				out << "-";
+				if (l.coefficient == -1)
+				{
+					out << "-";
+				}
 			}
-		}
 		}
 		if (l.degreeY != 0)
 		{
@@ -119,6 +123,10 @@ public:
 		return out;
 	}
 };
+
+
+
+
 
 
 class Lexema
