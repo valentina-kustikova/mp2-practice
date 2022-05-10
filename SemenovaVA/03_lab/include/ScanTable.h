@@ -14,6 +14,19 @@ public:
     virtual void Insert(const TData Data, const TKey Key);
     virtual TData* Search(const TKey Key);
     virtual void Delete(const TKey Key);
+    ScanTable<TData, TKey>& operator=(ScanTable<TData, TKey> T1)
+    {
+        rec = new TabRecord<TData, TKey>*[T1.Size];
+        Size = T1.Size;
+        ind = -1;
+        T1.Reset();
+        for (dataCount = 0; dataCount < T1.dataCount; dataCount++)
+        {
+            Insert(*(T1.GetData()), T1.GetKey());
+            T1.SetNext();
+        }
+        return *this;
+    }
 };
 
 // Pелизация функциий для класса росматриваемых таблиц

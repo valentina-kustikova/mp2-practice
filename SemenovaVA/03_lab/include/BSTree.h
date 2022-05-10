@@ -21,16 +21,6 @@ class TrNode : public TabRecord<TData, TKey>
   TrNode* GetLeft() const { return Left; }
   TrNode* GetRight() const { return Right; }
   TrNode* GetParent()  const { return Parent; }
-  //Перегрузка операций
-  TrNode<TData, TKey>& operator=(const TrNode<TData, TKey>& T1)
-	{
-		data = new TData(*(T1.data)); 
-		key = T1.key
-		Left = T1.Left;
-		Right = T1.Right;
-		Parent = T1.Parent;
-		return *this;
-	}
 };
 
 // Класс Бинарное поисковое дерево
@@ -44,13 +34,15 @@ class BSTree
   BSTree(TKey k, TData d) { Root = new TrNode<TData, TKey>(k, d); }
   ~BSTree();
   //Методы
-  void Insert(TKey k, TData d);
-  void Delete(TKey k);
   TrNode<TData, TKey>* Find(TKey k) const;
   TrNode<TData, TKey>* FindMax(TrNode<TData, TKey>* node) const;
   TrNode<TData, TKey>* FindMin(TrNode<TData, TKey>* node) const;
   TrNode<TData, TKey>* FindNext(TrNode<TData, TKey>* node) const;
   TrNode<TData, TKey>* FindPrev(TrNode<TData, TKey>* node) const;
+  void Insert(TKey k, TData d);
+  void Delete(TKey k);
+  TrNode<TData, TKey>* FindMax() const {return FindMax(Root); }
+  TrNode<TData, TKey>* FindMin() const { return FindMin(Root); }
   //Перегрузка операций
   template<class TData> friend std::ostream& operator<< (std::ostream& os, const BSTree<TData, TKey>& T1)
   { stack<TrNode<TData, TKey>*> S1;
@@ -63,12 +55,29 @@ class BSTree
       else
 	  {	n = S1.top();
 		S1.pop();
-		os << n->GetKey()<<" ";
+		os << "\t" << left << setw(15) << n->GetKey() << " | " << *(n->GetData()) << '\n';
+		//os << n->GetKey() << " ";
 		//if (n->GetParent() != nullptr) { os <<"P- "<< (*(n->GetParent())).GetKey() << endl; }
 		n = n->Right;
 	  }
 	}
 	return os;
+  }
+  BSTree<TData, TKey>& operator=(const BSTree<TData, TKey>& T1)
+  {
+	  Root = nullptr;
+	  TrNode<TData, TKey>* p1;
+	  if (T1.Root != nullptr)
+	  {
+		  p1 = T1.FindMin();
+		  Insert(p1->GetKey(), *(p1->GetData()));
+	  	  p1 = T1.FindNext(p1);
+	      if(p1!=nullptr)
+		  { Insert(p1->GetKey(), *(p1->GetData()));
+		     p1 = T1.A1->FindNext(p1);
+          }
+	  }
+	  return *this;
   }
 };
 
@@ -207,5 +216,8 @@ void BSTree<TData, TKey>::Delete(TKey k)
   { z->SetKey(y->GetKey());
 	z->SetData( y->GetData());
   }
+  //удаление корня, если это единственный узел
+  if(z==Root && z->Left==nullptr && z->Right==nullptr)
+  {Root=nullptr; }
 }
 

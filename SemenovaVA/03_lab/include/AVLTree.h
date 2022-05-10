@@ -15,7 +15,7 @@ class  TbNode : public TrNode<TData, TKey>
   //Методы
   int GetBalance() const { return balance; }
   void SetBalance(int bal) { balance = bal; }
-};
+ };
 
 //Класс АВЛ дерево
 template <typename TData, typename TKey>
@@ -31,15 +31,17 @@ class  AVLTree : public BSTree<TData, TKey>
   AVLTree() :BSTree<TData, TKey>() {}                                       
   //Методы
   void Insert(TKey k, TData d);                  
-  void Delete(TKey k);                             
+  void Delete(TKey k);
 };
 
 // Pелизация функциий для класса АВЛ дерево
 template <typename TData, typename TKey>
 void AVLTree<TData, TKey>::Insert(TKey k, TData d) 
-{ if(Find(k)!=nullptr)
-  {throw 1;}
-  Insert((PTBalanceNode&)Root, k, d); }
+{
+   if(Find(k)!=nullptr)
+  { throw 1; }
+  Insert((PTBalanceNode&)Root, k, d); 
+}
 template <typename TData, typename TKey>
 int AVLTree<TData, TKey>::Insert(PTBalanceNode& N1, TKey k, TData d) 
 { if (N1 == nullptr) 
@@ -81,8 +83,14 @@ int AVLTree<TData, TKey>::Delete(PTBalanceNode& N1, TKey k)
       return LeftBal(N1);
     }
     else
-    { BSTree::Delete(N1->GetKey());
-      return 0; }
+    { int h=0;
+      PTBalanceNode p1 = (PTBalanceNode)FindNext(N1);
+      if(N1->Right!=nullptr && N1->Left != nullptr)
+      {
+         h= LeftBal(p1);
+      }
+      BSTree::Delete(N1->GetKey());
+      return h; }
   }
 }
 template <typename TData, typename TKey>

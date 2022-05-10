@@ -1,7 +1,10 @@
 #include <gtest.h>
+#include <string>
 #include "BSTree.h"
 #include "AVLTree.h"
+#include "AVLTable.h"
 #define SS <int,int>
+#define FF <int,string>
 using namespace std;
 
 //Тесты для класса бинарное поисковое дерево
@@ -376,4 +379,222 @@ TEST(TBalanceTree, corect_Delete2_3)
    T1.Insert(30, 1);
    T1.Delete(9);
     EXPECT_EQ(nullptr, T1.Find(9));
+}
+
+//Тесты для класса таблиц на АВЛ деревьях
+TEST(AVLTable, can_create_table1)
+{
+    ASSERT_NO_THROW(AVLTable FF T2);
+}
+TEST(AVLTable, can_not_GetData_empty_table1)
+{
+    AVLTable FF  T1;
+    ASSERT_ANY_THROW(T1.GetData());
+}
+TEST(AVLTable, can_not_GetKey_empty_table1)
+{
+    AVLTable FF  T1;
+    ASSERT_ANY_THROW(T1.GetKey());
+}
+TEST(AVLTable, can_not_SetNext_empty_table1)
+{
+    AVLTable FF  T1;
+    ASSERT_ANY_THROW(T1.SetNext());
+}
+TEST(AVLTable, can_not_Delete_empty_table1)
+{
+    AVLTable FF  T1;
+    ASSERT_ANY_THROW(T1.Delete("one"));
+}
+TEST(AVLTable, can_not_Search_empty_table1)
+{
+    AVLTable FF  T1;
+    ASSERT_ANY_THROW(T1.Search("one"));
+}
+TEST(AVLTable, can_Insert_empty_table1)
+{
+    AVLTable FF  T1;
+    ASSERT_NO_THROW(T1.Insert(1, "one"));
+}
+TEST(AVLTable, Insert_correct_empty_table1)
+{
+    AVLTable FF  T1;
+    T1.Insert(1, "one");
+    EXPECT_EQ(1, T1.GetCount());
+    EXPECT_EQ(1, *(T1.Search("one")));
+}
+TEST(AVLTable, can_GetData1)
+{
+    AVLTable FF  T1;
+    for (int i = 0; i < 4; i++)
+    {
+        T1.Insert((i + 1) * 8 + (i * i) % 13, to_string(i + 1) + " record");
+    }
+    T1.Reset();
+    ASSERT_NO_THROW(*(T1.GetData()));
+}
+TEST(AVLTable, GetData_corect1)
+{
+    AVLTable FF  T1;
+    for (int i = 0; i < 4; i++)
+    {
+        T1.Insert((i + 1) * 8 + (i * i) % 13, to_string(i + 1) + " record");
+    }
+    T1.Reset();
+    EXPECT_EQ(8, *(T1.GetData()));
+}
+TEST(AVLTable, can_GetKey1)
+{
+    AVLTable FF  T1;
+    for (int i = 0; i < 4; i++)
+    {
+        T1.Insert((i + 1) * 8 + (i * i) % 13, to_string(i + 1) + " record");
+    }
+    T1.Reset();
+    ASSERT_NO_THROW(T1.GetKey());
+}
+TEST(AVLTable, GetKey_corect1)
+{
+    AVLTable FF  T1;
+    for (int i = 0; i < 4; i++)
+    {
+        T1.Insert((i + 1) * 8 + (i * i) % 13, to_string(i + 1) + " record");
+    }
+    T1.Reset();
+    EXPECT_EQ("1 record", T1.GetKey());
+}
+TEST(AVLTable, can_SetNext1)
+{
+    AVLTable FF  T1;
+    for (int i = 0; i < 4; i++)
+    {
+        T1.Insert((i + 1) * 8 + (i * i) % 13, to_string(i + 1) + " record");
+    }
+    T1.Reset();
+    ASSERT_NO_THROW(T1.SetNext());
+}
+TEST(AVLTable, SetNext_correct1)
+{
+    AVLTable FF  T1;
+    for (int i = 0; i < 4; i++)
+    {
+        T1.Insert((i + 1) * 8 + (i * i) % 13, to_string(i + 1) + " record");
+    }
+    T1.Reset();
+    T1.SetNext();
+    EXPECT_EQ(17, *(T1.GetData()));
+}
+TEST(AVLTable, corect_Delete1)
+{
+    AVLTable FF  T1;
+    for (int i = 0; i < 4; i++)
+    {
+        T1.Insert((i + 1) * 8 + (i * i) % 13, to_string(i + 1) + " record");
+    }
+    T1.Delete("2 record");
+    T1.Reset();
+    EXPECT_EQ(8, *(T1.GetData()));
+    T1.SetNext();
+    EXPECT_EQ(28, *(T1.GetData()));
+    T1.SetNext();
+    EXPECT_EQ(41, *(T1.GetData()));
+}
+TEST(AVLTable, empty_after_Delete1)
+{
+    AVLTable FF  T1;
+    for (int i = 0; i < 4; i++)
+    {
+        T1.Insert((i + 1) * 8 + (i * i) % 13, to_string(i + 1) + " record");
+    }
+    T1.Delete("1 record");
+    T1.Delete("2 record");
+    T1.Delete("3 record");
+    T1.Delete("4 record");
+    EXPECT_EQ(true, T1.IsEmpty());
+}
+TEST(AVLTable, corect_Insert1)
+{
+    AVLTable FF  T1;
+    for (int i = 0; i < 4; i++)
+    {
+        T1.Insert((i + 1) * 8 + (i * i) % 13, to_string(i + 1) + " record");    
+
+    }
+    T1.Insert(5, "5 record");
+    T1.Reset();
+    T1.SetNext();
+    T1.SetNext();
+    T1.SetNext();
+    T1.SetNext();
+    EXPECT_EQ(5, *(T1.GetData()));
+}
+TEST(AVLTable, corect_Insert_after_Delete1)
+{
+    AVLTable FF  T1;
+    for (int i = 0; i < 4; i++)
+    {
+        T1.Insert((i + 1) * 8 + (i * i) % 13, to_string(i + 1) + " record");
+    }
+    T1.Delete("1 record");
+    T1.Delete("2 record");
+    T1.Delete("3 record");
+    T1.Delete("4 record");
+    T1.Insert(0, "0");
+    T1.Reset();
+    EXPECT_EQ(0, *(T1.GetData()));
+
+   
+
+}
+TEST(AVLTable, corect_Search1)
+{
+    AVLTable FF  T1;
+    for (int i = 0; i < 4; i++)
+    {
+        T1.Insert((i + 1) * 8 + (i * i) % 13, to_string(i + 1) + " record");
+    }
+    EXPECT_EQ(17, *(T1.Search("2 record")));
+}
+TEST(AVLTable, can_not_Insert_record_wich_key_isnt_unique1)
+{
+    AVLTable FF  T1;
+    for (int i = 0; i < 4; i++)
+    {
+        T1.Insert((i + 1) * 8 + (i * i) % 13, to_string(i + 1) + " record");
+    }
+    ASSERT_ANY_THROW(T1.Insert(2, "2 record"));
+}
+TEST(AVLTable, can_copy_empty_table1)
+{
+    AVLTable FF  T1;
+    ASSERT_NO_THROW(AVLTable FF T2(T1));
+}
+TEST(AVLTable, can_copy_table1)
+{
+    AVLTable FF  T1;
+    for (int i = 0; i < 4; i++)
+    {
+        T1.Insert((i + 1) * 8 + (i * i) % 13, to_string(i + 1) + " record");
+    }
+    ASSERT_NO_THROW(AVLTable FF  A(T1));
+}
+TEST(AVLTable, copied_table_correct1)
+{
+    AVLTable FF T1;
+
+    for (int i = 0; i < 4; i++)
+    {
+        string s;
+        s = to_string(i + 1) + " record";
+        T1.Insert((i + 1) * 8 + (i * i) % 13, s);
+    }
+    AVLTable FF  A(T1);
+    A.Reset();
+    EXPECT_EQ(8, *(A.GetData()));
+    A.SetNext();
+    EXPECT_EQ(17, *(A.GetData()));
+    A.SetNext();
+    EXPECT_EQ(28, *(A.GetData()));
+    A.SetNext();
+    EXPECT_EQ(41, *(A.GetData()));
 }

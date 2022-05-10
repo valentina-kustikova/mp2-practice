@@ -1,6 +1,7 @@
 #include "ScanTable.h"
 #include "HashTable.h"
 #include "SortTable.h"
+#include "AVLTable.h"
 #include "Polynom.h"
 using namespace std;
 
@@ -14,8 +15,8 @@ void menu1()
 }
 void Choice(int a)
 {
-    cout << "\n\tSelect the table view :\n\t 1. Viewable tables\n\t 2. Ordered tables\n\t 3. Hash Tables";
-    if (a % 2 != 0) { cout << "\n\t 4. All tables"; }
+    cout << "\n\tSelect the table view :\n\t 1. Viewable tables\n\t 2. Ordered tables\n\t 3. Hash Tables\n\t 4. Table on AVL trees";
+    if (a % 2 != 0) { cout << "\n\t 5. All tables"; }
     cout << "\n\n\tInput: ";
 }
 Polynom Operation(Polynom P1, Polynom P2, int entry)
@@ -63,7 +64,7 @@ string Switch(Tab& A, int entry, string a = "")
     }
           A.Delete(Polynom(a).Re());
           return a;
-    case 3:   A = Tab();
+    case 3:  A = Tab();
         return "";
     case 4: {int entry2;
         system("cls");
@@ -120,6 +121,7 @@ int main()
     ScanTable <Polynom, string> A(n);
     SortTable <Polynom, string> B(n);
     HashTable <Polynom, string> C(n);
+    AVLTable <Polynom, string> D;
     while (entry != 0)
     {
         system("cls");
@@ -137,9 +139,12 @@ int main()
             case 1:  a = Switch(A, entry); break;
             case 2:  a = Switch(B, entry); break;
             case 3:  a = Switch(C, entry); break;
-            case 4:  a = Switch(A, entry);
+            case 4:  a = Switch(D, entry); break;
+
+            case 5:  a = Switch(A, entry);
                 a = Switch(B, entry, a);
                 a = Switch(C, entry, a);
+                a = Switch(D, entry, a);
                 break;
             }
             char c;

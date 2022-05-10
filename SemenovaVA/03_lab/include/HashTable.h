@@ -39,6 +39,24 @@ public:
 		}
 		return os;
 	}
+	HashTable<TData, TKey>& operator=(HashTable<TData, TKey> T1)
+	{
+		Size = T1.Size;
+		step = T1.step;
+		dataCount = T1.dataCount;
+		ind = T1.ind;
+		rec = new TabRecord<TData, TKey>*[Size];
+		mark = new char[Size];
+		for (int i = 0; i < Size; i++)
+		{
+			mark[i] = T1.mark[i];
+			if (mark[i] == 1)
+			{
+				rec[i] = new TabRecord<TData, TKey>(*(T1.rec[i]));
+			}
+		}
+		return *this;
+	}
 };
 
 // Pелизация функциий для класса Хеш-таблиц

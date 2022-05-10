@@ -1,4 +1,3 @@
-/*
 #include <gtest.h>
 #include <string>
 #include "ScanTable.h"
@@ -710,4 +709,3 @@ TEST(HashTable, can_not_Insert_record_wich_key_isnt_unique3)
     }
     ASSERT_ANY_THROW(T1.Insert(2, "2 record"));
 }
-*/
