@@ -1,5 +1,6 @@
 #include "Polynom.h"
 
+
 using namespace std;
 
 Polynom::Polynom(const Polynom& p)
@@ -150,6 +151,23 @@ Polynom Polynom::operator-() const
 	return (-1) * (*this);
 }
 
+inline double Polynom::operator()(double x, double y, double z)
+{
+	{
+		int pwX, pwY, pwZ;
+		double res = 0.0;
+		while (!this->list.End())
+		{
+			pwX = this->list.GetCurr().pw / 100;
+			pwY = this->list.GetCurr().pw % 100 / 10;
+			pwZ = this->list.GetCurr().pw % 10;
+			res += this->list.GetCurr().cf * pow(x, pwX) * pow(y, pwY) * pow(z, pwZ);
+			this->list.Change();
+		}
+		return res;
+	}
+}
+
 const Polynom& Polynom::operator=(const Polynom& p)
 {
 	list = p.list;
@@ -164,6 +182,50 @@ bool Polynom::operator==(const Polynom& p) const
 bool Polynom::operator!=(const Polynom& p) const
 {
 	return list != p.list;
+}
+
+void Polynom::Parser(string& s)
+{
+	CList<Monom> res;
+	while (s.length())
+	{
+		string str;
+		Monom m;
+		int p = 1;
+		while (p < s.length() && s[p] != '+' && s[p] != '-')
+			p++;
+		str = s.substr(0, p);
+		s.erase(0, p);
+		p = 0;
+		while (str[p] != 'x' && str[p] != 'y' && str[p] != 'z' && p < str.length())
+			p++;
+
+		string c = str.substr(0, p);
+		if (c == "+" || c.length() == 0)
+			m.cf = 1;
+		else
+			if (c == "-")
+				m.cf = -1;
+			else
+				m.cf = stod(c);
+
+		str.erase(0, p);
+		str += ' ';
+		int a[3] = { 100,10,1 };
+		for (int i = 0; i < 3; i++)
+		{
+			p = str.find((char)(120 + i));
+			if (p > -1)
+			{
+				if (str[p + 1] != '^')
+					str.insert(p + 1, "^1");
+				m.pw += a[i] * stoi(str.substr(p + 2, 1));
+				str.erase(p, 3);
+			}
+		}
+		list.InsertCList(m);
+	}
+	list = Bringing_Sim(list);
 }
 
 Polynom Polynom::operator*(const Polynom& p) const
@@ -242,3 +304,5 @@ ostream& operator<<(ostream& out, const Polynom& pol)
 	}
 	return out;
 }
+
+
