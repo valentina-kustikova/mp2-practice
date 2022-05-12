@@ -66,20 +66,6 @@ monom monom::operator+(const monom& m)
     return m1;}
 }
 
-/*bool monom::operator<(const monom& m)
-{
-    if (stx < m.stx) {return true;}
-    else if (stx == m.stx)
-    {
-        if (sty < m.sty) {return true;}
-        else if (sty == m.sty) 
-        {
-            if (stz < m.stz) {return true;}
-        }
-    }
-    else {return false;}
-}
-*/
 bool monom::operator>(const monom& m)
 {
     return (!operator<(m)) && (!operator==(m));

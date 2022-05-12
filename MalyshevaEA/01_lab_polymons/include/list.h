@@ -72,14 +72,6 @@ void headlist<T>::dlfront()
     head->pnext = list<T>::pfirst;
 }
 
-/*
-template <typename T>
-node<T>::node(T data = T(), node* pnext = nullptr)
-{
-    this->data = data;
-    this->pnext = pnext;
-}*/
-
 template <typename T>
 list<T>::list()
 {
@@ -107,7 +99,7 @@ void list<T>::pushback(T data)
 }
 
 template <typename T>
-T& list<T>::operator[](const int ind) const//добавила нонст
+T& list<T>::operator[](const int ind) const
 {
     int i1 = 0;
     node<T> *cur =  this->pfirst;
@@ -125,7 +117,6 @@ T& list<T>::operator[](const int ind) const//добавила нонст
 template <typename T>
 void list<T>::dlfront()
 {
-    //проверить равен 0 или нет
     if (pfirst != nullptr)
     {
     node<T> *tmp = pfirst;
@@ -210,9 +201,7 @@ bool list<T>::operator==(const list<T>& List) const
 	node<T>* tmp2 = List.pfirst;
 	bool b = true;
     int i = 0;
-    
-    /*if (((tmp->pnext != head) && (tmp2->pnext == List.head)) || ((tmp2->pnext != List.head) && (tmp->pnext == head)))
-		b = false;*/    
+       
     if(size > 0)
 	{while ((tmp->pnext != pfirst) && (tmp2->pnext != List.pfirst) && (b) && (i < size - 1))
 	{

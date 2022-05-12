@@ -11,8 +11,6 @@ using namespace std;
 
 class polinom
 {
-/*private:
-    list<monom> mon;*/
 public:
     headlist<monom> mon;
     void vod(const string& s);
@@ -22,14 +20,13 @@ public:
     polinom(const polinom& p);
     void privpodob();
     void ochered();
-    //polinom& operator=(const polinom& p) const; //
     bool operator==(const polinom& other) const;
-    polinom operator+(const polinom& p) const; //
-    polinom operator-(const polinom& p) const;//
-    polinom operator*(const polinom& p) const;//
-    polinom operator*(const monom& m) const;//
-	polinom operator*(const double a) const;//
-    double operator() (double x, double y, double z) const; //
+    polinom operator+(const polinom& p) const; 
+    polinom operator-(const polinom& p) const;
+    polinom operator*(const polinom& p) const;
+    polinom operator*(const monom& m) const;
+	polinom operator*(const double a) const;
+    double operator() (double x, double y, double z) const; 
 
     friend std::ostream& operator<<(std::ostream& os, polinom& p)
     {
@@ -40,7 +37,7 @@ public:
         }
         for (int i = 0; i < p.mon.getsize(); i++)
         { 
-            if ((p.mon[i].cf > 0) && (i != 0))//&& (i < p.mon.getsize() - 1) 
+            if ((p.mon[i].cf > 0) && (i != 0)) 
             {os << "+";}
             os << p.mon[i];
         }
