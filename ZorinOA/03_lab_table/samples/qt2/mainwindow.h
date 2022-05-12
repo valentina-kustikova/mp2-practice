@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 #include "HashTable.h"
 #include "SortTable.h"
+#include "AVLTreeTable.h"
 #include "polinom.h"
 #include <sstream>
 #include <string>
@@ -71,10 +72,19 @@ private slots:
 
 	void on_ClearAll_clicked();
 
+    void on_pushButton_Tree_add_clicked();
+
+    void on_pushButton_Tree_del_clicked();
+
+    void on_pushButton_Tree_clear_clicked();
+
+    void on_pushButton_toTree_clicked();
+
 private:
 	HashTable<std::string, Polinom> H;
 	SortTable<std::string, Polinom> S;
 	ScanTable<std::string, Polinom> T;
+    TreeTable<std::string, Polinom> A;
 	std::string poly1_str;
 	std::string poly2_str;
 	std::string res_str;
@@ -83,6 +93,7 @@ private:
 	void updateHash();
 	void updateSort();
 	void updateScan();
+    void updateTree();
 	void updatePolyStr();
 	void updateRes(const Polinom& poly);
 

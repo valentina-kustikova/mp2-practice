@@ -25,6 +25,8 @@ int SelectDialog::table_choise() const
 		return 1;
 	else if (ui->radioButtonSort->isChecked())
 		return 2;
-	else
+    else if (ui->radioButtonScan->isChecked())
 		return 3;
+    else
+        return 4;
 }

@@ -3,27 +3,27 @@
 #include <iostream>
 #include <string>
 
-struct Trunk
-{
-	Trunk* prev;
-	std::string str;
-
-	Trunk(Trunk* prev, std::string str)
-	{
-		this->prev = prev;
-		this->str = str;
-	}
-};
-
-// Helper function to print branches of the binary tree
-void showTrunks(Trunk* p)
-{
-	if (p != nullptr)
-	{
-		showTrunks(p->prev);
-		std::cout << p->str;
-	}
-}
+//struct Trunk
+//{
+//	Trunk* prev;
+//	std::string str;
+//
+//	Trunk(Trunk* prev, std::string str)
+//	{
+//		this->prev = prev;
+//		this->str = str;
+//	}
+//};
+//
+//// Helper function to print branches of the binary tree
+//void showTrunks(Trunk* p)
+//{
+//	if (p != nullptr)
+//	{
+//		showTrunks(p->prev);
+//		std::cout << p->str;
+//	}
+//}
 
 template <class TKey, class TData>
 struct TreeNode
@@ -97,21 +97,7 @@ protected:
 		}
 		return res;
 	}
-	TreeNode<TKey, TData>* FindNext(TreeNode<TKey, TData>* _node)
-	{
-		if (_node->right != nullptr)
-			return FindMin(_node->right);
-
-		TreeNode<TKey, TData>* res = _node->parent;
-		TreeNode<TKey, TData>* tmp = _node;
-		while (res != nullptr && tmp == res->right)
-		{
-			tmp = res;
-			res = res->parent;
-		}
-		return res;
-	}
-	void printTree(TreeNode<TKey, TData>* node, Trunk* prev, bool isLeft)
+	/*void printTree(TreeNode<TKey, TData>* node, Trunk* prev, bool isLeft)
 	{
 		if (node != nullptr)
 		{
@@ -146,7 +132,7 @@ protected:
 
 			printTree(node->left, trunk, false);
 		}
-	}
+	}*/
 public:
 	BSTree()
 		:root(nullptr) {}
@@ -277,9 +263,27 @@ public:
 			root = nullptr;
 		}
 	}
+	TreeNode<TKey, TData>* FindMin()
+	{
+		return FindMin(root);
+	}
+	TreeNode<TKey, TData>* FindNext(TreeNode<TKey, TData>* _node)
+	{
+		if (_node->right != nullptr)
+			return FindMin(_node->right);
 
-	void Print()
+		TreeNode<TKey, TData>* res = _node->parent;
+		TreeNode<TKey, TData>* tmp = _node;
+		while (res != nullptr && tmp == res->right)
+		{
+			tmp = res;
+			res = res->parent;
+		}
+		return res;
+	}
+
+	/*void Print()
 	{
 		printTree(root, nullptr, false);
-	}
+	}*/
 };

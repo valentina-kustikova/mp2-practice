@@ -1,13 +1,12 @@
 #include <iostream>
 #include <string>
-#include "BinarySearchTree.h"
-#include "AVLTree.h"
+#include "AVLTreeTable.h"
 
 using namespace std;
 
 int main()
 {
-	AVLTree<double, string> T;
+	TreeTable<double, string> T;
 	T.Insert(50, "");
 	T.Insert(70, "");
 	T.Insert(30, "");
@@ -34,14 +33,14 @@ int main()
 	T.Insert(53, "");
 	T.Insert(32, "");
 	T.Insert(54, "");
-	T.Print();
+	//T.Print();
 	
 	/*cout << endl << "After Delete: " << endl << endl;
 	T.Delete(60);
 	T.Delete(50);
 	T.Delete(56);
 	T.Print();*/
-	//cout << *T.Find(10) << endl;
+	cout << T << endl;
 
 	return 0;
 

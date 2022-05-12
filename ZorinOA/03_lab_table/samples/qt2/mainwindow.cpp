@@ -31,7 +31,14 @@ void MainWindow::updateScan()
 {
 	std::stringstream tmp;
 	tmp << T;
-	ui->tableScan->setText(QString::fromStdString(tmp.str()));
+    ui->tableScan->setText(QString::fromStdString(tmp.str()));
+}
+
+void MainWindow::updateTree()
+{
+    std::stringstream tmp;
+    tmp << A;
+    ui->tableTree->setText(QString::fromStdString(tmp.str()));
 }
 
 void MainWindow::updatePolyStr()
@@ -219,10 +226,12 @@ void MainWindow::on_pushButton_toAll_clicked()
 {
 	H.Insert(key, Polinom(res_str));
 	S.Insert(key, Polinom(res_str));
-	T.Insert(key, Polinom(res_str));
+    T.Insert(key, Polinom(res_str));
+    A.Insert(key, Polinom(res_str));
 	updateHash();
 	updateSort();
 	updateScan();
+    updateTree();
 }
 
 void MainWindow::on_select1Poly_clicked()
@@ -237,8 +246,10 @@ void MainWindow::on_select1Poly_clicked()
 			tmp_poly = H.Find(tmp_key);
 		else if (table_choise == 2)
 			tmp_poly = S.Find(tmp_key);
-		else
-			tmp_poly = T.Find(tmp_key);
+        else if (table_choise == 3)
+            tmp_poly = T.Find(tmp_key);
+        else
+            tmp_poly = A.Find(tmp_key);
 
 		if (tmp_poly != nullptr)
 		{
@@ -265,8 +276,10 @@ void MainWindow::on_select2Poly_clicked()
 			tmp_poly = H.Find(tmp_key);
 		else if (table_choise == 2)
 			tmp_poly = S.Find(tmp_key);
-		else
+        else if (table_choise == 3)
 			tmp_poly = T.Find(tmp_key);
+        else
+            tmp_poly = A.Find(tmp_key);
 
 		if (tmp_poly != nullptr)
 		{
@@ -307,12 +320,15 @@ void MainWindow::on_addToAll_clicked()
 			bool tmp1 = H.Insert(_key, _poly);
 			bool tmp2 = T.Insert(_key, _poly);
 			bool tmp3 = S.Insert(_key, _poly);
+            bool tmp4 = A.Insert(_key, _poly);
 			if (!tmp1)
 				QMessageBox::warning(this, "Warning!", "A record with this key already exists in the HashTable, insertion is not possible.");
 			if (!tmp2)
 				QMessageBox::warning(this, "Warning!", "A record with this key already exists in the ScanTable, insertion is not possible.");
 			if (!tmp3)
 				QMessageBox::warning(this, "Warning!", "A record with this key already exists in the SortTable, insertion is not possible.");
+            if (!tmp4)
+                QMessageBox::warning(this, "Warning!", "A record with this key already exists in the TreeTable, insertion is not possible.");
 		}
 		catch (const std::exception& ex) {
 			statusBar()->showMessage(ex.what(), 3000);
@@ -320,6 +336,7 @@ void MainWindow::on_addToAll_clicked()
 		updateHash();
 		updateSort();
 		updateScan();
+        updateTree();
 	}
 	delete pID;
 }
@@ -333,12 +350,15 @@ void MainWindow::on_delFromAll_clicked()
 		bool bH = H.Delete(_key);
 		bool bT = T.Delete(_key);
 		bool bS = S.Delete(_key);
+		bool bA = A.Delete(_key);
 		if (!bH) QMessageBox::warning(this, "Attention!", "Record with such key is not found in the HashTable, there is nothing to delete.");
 		if (!bT) QMessageBox::warning(this, "Attention!", "Record with such key is not found in the ScanTable, there is nothing to delete.");
 		if (!bS) QMessageBox::warning(this, "Attention!", "Record with such key is not found in the SortTable, there is nothing to delete.");
+		if (!bA) QMessageBox::warning(this, "Attention!", "Record with such key is not found in the TreeTable, there is nothing to delete.");
 		updateHash();
 		updateSort();
 		updateScan();
+		updateTree();
 	}
 	delete pDD;
 }
@@ -348,7 +368,54 @@ void MainWindow::on_ClearAll_clicked()
 	H.Clear();
 	S.Clear();
 	T.Clear();
+	A.Clear();
 	updateHash();
 	updateSort();
 	updateScan();
+	updateTree();
 }
+void MainWindow::on_pushButton_Tree_add_clicked()
+{
+    InputDialog* pID = new InputDialog;
+    if (pID->exec() == QDialog::Accepted)
+    {
+        try {
+            bool tmp = A.Insert(pID->key().toStdString(), pID->poly().toStdString());
+            if (!tmp)
+                QMessageBox::warning(this, "Warning!", "A record with this key already exists in the TreeTable, insertion is not possible.");
+        }
+        catch (const std::exception& ex) {
+            statusBar()->showMessage(ex.what(), 3000);
+        }
+        updateTree();
+    }
+    delete pID;
+}
+
+
+void MainWindow::on_pushButton_Tree_del_clicked()
+{
+    DeleteDialog* pDD = new DeleteDialog;
+    if (pDD->exec() == QDialog::Accepted)
+    {
+        if (!(A.Delete(pDD->key().toStdString())))
+            QMessageBox::warning(this, "Warning!", "Polynomial with such key is not find in TreeTable, there is nothing to delete.");
+        updateTree();
+    }
+    delete pDD;
+}
+
+
+void MainWindow::on_pushButton_Tree_clear_clicked()
+{
+    A.Clear();
+    updateTree();
+}
+
+
+void MainWindow::on_pushButton_toTree_clicked()
+{
+    A.Insert(key, res_str);
+    updateTree();
+}
+

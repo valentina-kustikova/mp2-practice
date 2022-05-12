@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1282</width>
-    <height>629</height>
+    <height>636</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -331,6 +331,13 @@
                 <widget class="QPushButton" name="pushButton_toAll">
                  <property name="text">
                   <string>All</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="0">
+                <widget class="QPushButton" name="pushButton_toTree">
+                 <property name="text">
+                  <string>Tree</string>
                  </property>
                 </widget>
                </item>

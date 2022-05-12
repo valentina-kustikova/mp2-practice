@@ -7,25 +7,25 @@ struct BalanceTreeNode : public TreeNode<TKey, TData>
 	int balance;
 
 	BalanceTreeNode()
-		:TreeNode(), balance(0) {}
+		:TreeNode<TKey, TData>(), balance(0) {}
 	BalanceTreeNode(TKey _key, TData _data, int _balance, BalanceTreeNode* p = nullptr, BalanceTreeNode* l = nullptr, BalanceTreeNode* r = nullptr)
-		:TreeNode(_key, _data, p, l, r), balance(_balance) {}
-	BalanceTreeNode(const TreeNode& tn)
-		:TreeNode(tn), balance(0) {}
+		:TreeNode<TKey, TData>(_key, _data, p, l, r), balance(_balance) {}
+	BalanceTreeNode(const TreeNode<TKey, TData>& tn)
+		:TreeNode<TKey, TData>(tn), balance(0) {}
 	BalanceTreeNode(const BalanceTreeNode& btn)
-		:TreeNode(btn), balance(btn.balance) {}
+		:TreeNode<TKey, TData>(btn), balance(btn.balance) {}
 
 	BalanceTreeNode*& Left()
 	{
-		return (BalanceTreeNode*&)left;
+		return (BalanceTreeNode*&)this->left;
 	}
 	BalanceTreeNode*& Right()
 	{
-		return (BalanceTreeNode*&)right;
+		return (BalanceTreeNode*&)this->right;
 	}
 	BalanceTreeNode*& Parent()
 	{
-		return (BalanceTreeNode*&)parent;
+		return (BalanceTreeNode*&)this->parent;
 	}
 };
 
@@ -57,7 +57,7 @@ protected:
 			y->left->parent = x;
 		y->parent = x->parent;
 		if (x->parent == nullptr)
-			root = y;
+			this->root = y;
 		else if (x == x->parent->left)
 			x->parent->left = y;
 		else
@@ -73,7 +73,7 @@ protected:
 			y->right->parent = x;
 		y->parent = x->parent;
 		if (x->parent == nullptr)
-			root = y;
+			this->root = y;
 		else if (x == x->parent->left)
 			x->parent->left = y;
 		else
@@ -167,7 +167,7 @@ protected:
 		}
 		return x;
 	}
-	void printTree(BalanceTreeNode<TKey, TData>* node, Trunk* prev, bool isLeft)
+	/*void printTree(BalanceTreeNode<TKey, TData>* node, Trunk* prev, bool isLeft)
 	{
 		if (node != nullptr)
 		{
@@ -202,11 +202,11 @@ protected:
 
 			printTree((BalanceTreeNode<TKey, TData>*)(node->left), trunk, false);
 		}
-	}
+	}*/
 public:
 	virtual bool Insert(const TKey& key, const TData& data) override
 	{
-		BalanceTreeNode<TKey, TData>** node = (BalanceTreeNode<TKey, TData>**)(&root);
+		BalanceTreeNode<TKey, TData>** node = (BalanceTreeNode<TKey, TData>**)(&this->root);
 		BalanceTreeNode<TKey, TData>* prev = nullptr;
 		while (*node)
 		{
@@ -235,10 +235,10 @@ public:
 	}
 	virtual bool Delete(const TKey& key) override
 	{
-		BalanceTreeNode<TKey, TData>* z = (BalanceTreeNode<TKey, TData>*)FindRec(key);
+		BalanceTreeNode<TKey, TData>* z = (BalanceTreeNode<TKey, TData>*)this->FindRec(key);
 		if (z != nullptr)
 		{
-			BalanceTreeNode<TKey, TData>* y = (z->left != nullptr && z->right != nullptr) ? (BalanceTreeNode<TKey, TData>*)FindNext(z) : z;
+			BalanceTreeNode<TKey, TData>* y = (z->left != nullptr && z->right != nullptr) ? (BalanceTreeNode<TKey, TData>*)this->FindNext(z) : z;
 			BalanceTreeNode<TKey, TData>* x = (y->left != nullptr) ? y->Left() : y->Right();
 			if (x != nullptr)
 				x->parent = y->parent;
@@ -262,7 +262,7 @@ public:
 					y->Parent()->Right() = x;
 			}
 			else
-				root = x;
+				this->root = x;
 
 			if (y != z)
 			{
@@ -278,8 +278,8 @@ public:
 			return false;
 	}
 
-	void Print()
+	/*void Print()
 	{
-		printTree((BalanceTreeNode<TKey, TData>*)(root), nullptr, false);
-	}
+		printTree((BalanceTreeNode<TKey, TData>*)(this->root), nullptr, false);
+	}*/
 };
