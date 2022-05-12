@@ -1,5 +1,5 @@
 #pragma once
-#include <cstddef>
+//#include <cstddef>
 
 
 template<class T>
@@ -11,7 +11,7 @@ public:
 	Node<T>* next;//указатель на следующий
 
 	Node(); //конструктор по умолчанию
-	Node(T d, Node<T>* _next = NULL); //конструктор с параметрами
+	Node(T d, Node<T>* _next = nullptr); //конструктор с параметрами
 	Node(const Node<T>& node);// конструктор копирования
 	~Node() {};//деструктор
 
@@ -25,7 +25,7 @@ public:
 template<class T>
 Node<T>::Node()
 {
-	next = NULL;
+	next = nullptr;
 }
 
 template<class T>

@@ -9,34 +9,36 @@ class List
 {
 protected:
 
-	Node<T>* head;//указатель на голову
-	Node<T>* curr;//указатель на текущее звено списка 
+	Node<T>* first;
+	Node<T>* curr;
 
 public:
 
-	List(); //конструктор по умолчанию
-	List(const List<T>& l); //конструктор копирования
-	~List(); //деструктор
+	List(); 
+	List(const List<T>& l); 
+	~List(); 
 
-	Node<T>* Search(const T& elem);//поиск элемента
-	void InsertToHead(const T& elem); //вставка в начало
-	void InsertInOrder(const T& elem);//вставка в упорядоченный список
-	void InsertToTail(const T& elem); //вставка в конец
-	void InsertAfter(Node<T>* temp1, const T& elem);//вставка после элемента
-	void Delete(const T& elem); //удаление звена
-	void Clean(); //очистить список
+	Node<T>* Search(const T& elem);
+	virtual void InsertToHead(const T& elem);
+	void InsertInOrder(const T& elem);
+	void InsertToTail(const T& elem); 
+	void InsertAfter(T* const d, T* const after_d);
+	void InsertBefore(T* const d, T* const before_d);
+	virtual void DeleteFirst();
+	void Delete(const T& elem); 
+	void Clean();
 
-	void Reset() { curr = head->next; } //переход в начало списка
-	void Next() { curr = curr->next; } //переход к следующему звену
-	bool isEnd() const { return curr == head; }//проверка на конец списка
-	bool isEmpty() const { return (head->next == head); }//проверка на пустоту
-	T& GetCurr() const { return curr->data; } //получение данных 
-	T Head() { return head->next->data; };//данные начала списка
-	Node<T>* GetHead() { return head->next; }; //получение начала списка
+	void Reset() { curr = first->next; }
+	void Next() { curr = curr->next; }
+	bool isEnd() const { return curr == first; }
+	bool isEmpty() const { return (first->next == first); }
+	T& GetCurr() const { return curr->data; }
+	T Head() { return first->next->data; };
+	Node<T>* GetHead() { return first->next; };
 
-	const List<T>& operator=(const List<T>& l); //присваивание
-	bool operator==(const List<T>& l) const; //операция ==
-	bool operator!=(const List<T>& l) const; //операция !=
+	const List<T>& operator=(const List<T>& l);
+	bool operator==(const List<T>& l) const; 
+	bool operator!=(const List<T>& l) const;
 
 	friend std::ostream& operator<<(std::ostream& os, const List<T>& l)
 	{
@@ -54,47 +56,43 @@ public:
 		return os;
 	};
 };
-
 template <class T>
 List<T>::List()
 {
-	head = new Node<T>;
-	head->next = head;
-	curr = head;
+	first = new Node<T>;
+	first->next = first;
+	curr = first;
 }
-
 template <class T>
 List<T>::List(const List<T>& l)
 {
-	head = new Node<T>;
-	Node<T>* A = l.head;
-	Node<T>* B = head;
-	if (A->next == l.head)
+	first = new Node<T>();
+	Node<T>* tmp1 = l.first;
+	Node<T>* tmp2 = first;
+	if (tmp1->next == l.first)
 	{
-		head->next = head;
+		first->next = first;
 		return;
 	}
-	while (A->next != l.head)
+	while (tmp1->next != l.first)
 	{
-		A = A->next;
-		B->next = new Node<T>(A->data);
-		B = B->next;
+		tmp1 = tmp1->next;
+		tmp2->next = new Node<T>(tmp1->data);
+		tmp2 = tmp2->next;
 	}
-	B->next = head;
-	curr = head->next;
+	tmp2->next = first;
+	curr = first->next;
 }
-
 template <class T>
 List<T>::~List()
 {
 	Clean();
-	delete head;
+	delete first;
 }
-
 template <class T>
 Node<T>* List<T>::Search(const T& elem)
 {
-	Node<T>* tmp = head->next;
+	Node<T>* tmp = first->next;
 	while (tmp != nullptr)
 	{
 		if (tmp->data == elem)
@@ -105,40 +103,37 @@ Node<T>* List<T>::Search(const T& elem)
 	}
 	return nullptr;
 }
-
 template <class T>
 void List<T>::InsertToHead(const T& elem)
 {
-	Node<T>* node = new Node<T>(elem, head->next);
-	head->next = node;
+	Node<T>* node = new Node<T>(elem, first->next);
+	first->next = node;
 }
-
 template <class T>
 void List<T>::InsertInOrder(const T& elem)
 {
 	if (isEmpty())
 	{
-		head->next = new Node<T>(elem);
-		head->next->next = head;
+		first->next = new Node<T>(elem);
+		first->next->next = first;
 	}
 	else
 	{
 		Node<T>* tmp = new Node<T>(elem);
-		Node<T>* curr = head;
+		Node<T>* curr = first;
 
-		while ((*(curr->next) < *tmp) && curr->next != head)
+		while ((*(curr->next) < *tmp) && curr->next != first)
 			curr = curr->next;
 		Node<T>* tmp2 = curr->next;
 		curr->next = tmp;
 		curr->next->next = tmp2;
 	}
 }
-
 template<class T>
 inline void List<T>::InsertToTail(const T& elem)
 {
 	Reset();
-	while (curr->next != head)
+	while (curr->next != first)
 	{
 		Next();
 	}
@@ -146,31 +141,48 @@ inline void List<T>::InsertToTail(const T& elem)
 	curr->next = new Node<T>(elem);
 	curr->next->next = tmp;
 }
-
 template <class T>
-void List<T>::InsertAfter(Node<T>* temp1, const T& elem)
+void List<T>::InsertAfter(T* const d, T* const after_d)
 {
-	if (head == NULL)
-		throw "List is empty";
-	else
+	Node<T>* elem = Search(d);
+	if (elem != NULL)
 	{
-		Node<T>* temp = temp1->next;
-		temp1->next = new Node<T>(elem, temp);
+		Node<T>* new_elem = new Node<T>(after_d, elem->next);
+		elem->next = new_elem;
 	}
 }
-
+template <class T>
+void List<T>::InsertBefore(T* const d, T* const before_d)
+{
+	Node<T>* elem = Search(d);
+	if (elem != NULL)
+	{
+		Node<T>* tmp = curr;
+		Node<T>* new_elem = new Node<T>(before_d, elem);
+		tmp->next = new_elem;
+	}
+}
+template <class T>
+void List<T>::DeleteFirst()
+{
+	if (first == nullptr)
+		throw "List is empty";
+	Node<T>* tmp = first;
+	tmp = first->next;
+	delete tmp;
+}
 template <class T>
 void List<T>::Delete(const T& elem)
 {
 	Node<T>* del;
-	Node<T>* tmp = head->next;
+	Node<T>* tmp = first->next;
 	if (tmp != nullptr)
 	{
 		if (tmp->data == elem)
 		{
 			del = tmp->next;
-			delete head->next;
-			head->next = del;
+			delete first->next;
+			first->next = del;
 		}
 		else
 		{
@@ -191,56 +203,52 @@ void List<T>::Delete(const T& elem)
 		}
 	}
 }
-
 template <class T>
 void List<T>::Clean()
 {
-	Node<T>* curr = head->next;
-	while (curr != head)
+	Node<T>* curr = first->next;
+	while (curr != first)
 	{
 		Node<T>* tmp = curr->next;
 		delete curr;
 		curr = tmp;
 	}
-	head->next = head;
+	first->next = first;
 }
-
 template <class T>
 const List<T>& List<T>::operator=(const List<T>& l)
 {
 	Clean();
-	Node<T>* tmp = l.head;
-	Node<T>* tmp2 = head;
-	while (tmp->next != l.head)
+	Node<T>* tmp = l.first;
+	Node<T>* tmp2 = first;
+	while (tmp->next != l.first)
 	{
 		tmp = tmp->next;
 		tmp2->next = new Node<T>(tmp->data);
 		tmp2 = tmp2->next;
 	}
-	tmp2->next = head;
-	curr = head->next;
+	tmp2->next = first;
+	curr = first->next;
 	return *this;
 }
-
 template<class T>
 bool List<T>::operator==(const List<T>& l) const
 {
 	bool k = true;
 	if (this != &l)
 	{
-		Node<T>* tmp = l.head->next;
-		Node<T>* tmp2 = head->next;
-		while (tmp->data == tmp2->data && tmp2 != head && tmp != l.head)
+		Node<T>* tmp = l.first->next;
+		Node<T>* tmp2 = first->next;
+		while (tmp->data == tmp2->data && tmp2 != first && tmp != l.first)
 		{
 			tmp = tmp->next;
 			tmp2 = tmp2->next;
 		}
-		if (tmp != l.head || tmp2 != head)
+		if (tmp != l.first || tmp2 != first)
 			k = false;
 	}
 	return k;
 }
-
 template<class T>
 inline bool List<T>::operator!=(const List<T>& l) const
 {
