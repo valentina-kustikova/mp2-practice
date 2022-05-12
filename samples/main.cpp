@@ -1,4 +1,4 @@
-#include "polinom.h"
+#include "polynom.h"
 
 using namespace std;
 
@@ -13,7 +13,7 @@ void main()
 	{
 		cout << "Введите первый полином. Необходимо использовать только переменные x, y, z." << endl;
 		cin >> s1;
-		Polinom P1(s1);
+		Polynom P1(s1);
 		cout << "Выберите операцию." << endl;
 		cout << "1) Сложение полиномов." << endl;
 		cout << "2) Вычитание полиномов." << endl;
@@ -26,7 +26,7 @@ void main()
 		{
 			cout << "Введите второй полином." << endl;
 			cin >> s2;
-			Polinom P2(s2);
+			Polynom P2(s2);
 			cout << "Результат:" << P1 + P2;
 			break;
 		}
@@ -34,7 +34,7 @@ void main()
 		{
 			cout << "Введите второй полином." << endl;
 			cin >> s2;
-			Polinom P2(s2);
+			Polynom P2(s2);
 			cout << "Результат:" << P1 - P2;
 			break;
 		}
@@ -42,7 +42,7 @@ void main()
 		{
 			cout << "Введите второй полином." << endl;
 			cin >> s2;
-			Polinom P2(s2);
+			Polynom P2(s2);
 			cout << "Результат:" << P1 * P2;
 			break;
 		}
