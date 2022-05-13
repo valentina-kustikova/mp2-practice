@@ -10,10 +10,15 @@ protected:
 	TreeNode<TKey, TData>* curr;
 public:
 	TreeTable()
-		:Table<TKey, TData>() {}
+		:Table<TKey, TData>(), curr(nullptr), Recs() {}
+	TreeTable(const TreeTable& T)
+		:Table(T), Recs(T.Recs), curr(nullptr) {}
+	virtual ~TreeTable() {}
 	virtual void Clear() override
 	{
 		Recs.Clear();
+		this->DataCount = 0;
+		Reset();
 	}
 	virtual bool isFull() const override
 	{
@@ -70,7 +75,8 @@ public:
 	}
 	virtual void goNext() override
 	{
-		curr = Recs.FindNext(curr);
+		if (!isEnd())
+			curr = Recs.FindNext(curr);
 	}
 	virtual TKey getKey() const override
 	{

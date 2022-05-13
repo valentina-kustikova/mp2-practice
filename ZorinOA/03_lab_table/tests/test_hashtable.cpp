@@ -100,11 +100,11 @@ TEST(HashTable, delete_correct)
 	H.Insert("third", 3);
 	H.Insert("fourth", 4);
 	H.Insert("fifth", 5);
-	H.Delete("third");
+	EXPECT_TRUE(H.Delete("third"));
 	EXPECT_EQ(nullptr, H.Find("third"));
 }
 
-TEST(HashTable, no_throw_delete_when_no_key)
+TEST(HashTable, delete_when_no_key)
 {
 	HashTable<std::string, int> S(8);
 	S.Insert("a", 1);
@@ -114,7 +114,7 @@ TEST(HashTable, no_throw_delete_when_no_key)
 	S.Insert("f", 6);
 	S.Insert("e", 5);
 	S.Insert("g", 7);
-	ASSERT_NO_THROW(S.Delete("z"));
+	EXPECT_FALSE(S.Delete("z"));
 }
 
 TEST(HashTable, clear_correct)

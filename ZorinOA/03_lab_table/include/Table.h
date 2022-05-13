@@ -9,6 +9,8 @@ protected:
 public:
 	Table()
 		:DataCount(0) {}
+	Table(const Table& T)
+		:DataCount(T.DataCount) {}
 	virtual ~Table() {};
 	int GetDataCount() const
 	{

@@ -52,7 +52,7 @@ class BSTree
 protected:
 	TreeNode<TKey, TData>* root;
 
-	TreeNode<TKey, TData>* FindRec(const TKey& key)
+	TreeNode<TKey, TData>* FindRec(const TKey& key) const
 	{
 		TreeNode<TKey, TData>* node = root;
 		while (node != nullptr && node->key != key)
@@ -64,7 +64,7 @@ protected:
 		}
 		return node;
 	}
-	TreeNode<TKey, TData>* FindMin(TreeNode<TKey, TData>* _node)
+	TreeNode<TKey, TData>* FindMin(TreeNode<TKey, TData>* _node) const
 	{
 		TreeNode<TKey, TData>* node = _node;
 		while (node->left != nullptr)
@@ -73,7 +73,7 @@ protected:
 		}
 		return node;
 	}
-	TreeNode<TKey, TData>* FindMax(TreeNode<TKey, TData>* _node)
+	TreeNode<TKey, TData>* FindMax(TreeNode<TKey, TData>* _node) const
 	{
 		TreeNode<TKey, TData>* node = _node;
 		while (node->right != nullptr)
@@ -83,7 +83,7 @@ protected:
 		//curr = &node;
 		return node;
 	}
-	TreeNode<TKey, TData>* FindPrev(TreeNode<TKey, TData>* _node)
+	TreeNode<TKey, TData>* FindPrev(TreeNode<TKey, TData>* _node) const
 	{
 		if (_node->left != nullptr)
 			return FindMax(_node->left);
@@ -141,7 +141,6 @@ public:
 		if (!tr.isEmpty())
 		{
 			TreeNode<TKey, TData>** cur = &root;
-			TreeNode<TKey, TData>* prev = nullptr;
 			TreeNode<TKey, TData>* node = tr.root;
 			std::stack< TreeNode<TKey, TData>** > st1;
 			std::stack< TreeNode<TKey, TData>* > st2;
@@ -152,7 +151,6 @@ public:
 				node = st2.top(); st2.pop();
 				cur = st1.top(); st1.pop();
 				*cur = new TreeNode<TKey, TData>*(*node);
-
 				if (node->parent != nullptr)
 				{
 					(*cur)->parent = FindRec(node->parent->key);
@@ -175,7 +173,7 @@ public:
 	{
 		Clear();
 	}
-	TData* Find(const TKey& key)
+	TData* Find(const TKey& key) const
 	{
 		TreeNode<TKey, TData>* tmp = FindRec(key);
 		if (tmp != nullptr)
@@ -233,7 +231,7 @@ public:
 		else
 			return false;
 	}
-	bool isEmpty()
+	bool isEmpty() const
 	{
 		return root == nullptr;
 	}
@@ -263,11 +261,11 @@ public:
 			root = nullptr;
 		}
 	}
-	TreeNode<TKey, TData>* FindMin()
+	TreeNode<TKey, TData>* FindMin() const
 	{
 		return FindMin(root);
 	}
-	TreeNode<TKey, TData>* FindNext(TreeNode<TKey, TData>* _node)
+	TreeNode<TKey, TData>* FindNext(TreeNode<TKey, TData>* _node) const
 	{
 		if (_node->right != nullptr)
 			return FindMin(_node->right);
