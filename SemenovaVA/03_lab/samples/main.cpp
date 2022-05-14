@@ -37,7 +37,7 @@ Polynom Operation(Polynom P1, Polynom P2, int entry)
         break;
     case 4: cout << "\n\tF2 - " << P2 << "\n\t4. Multiply two polynomials: "; P3 = P1 * P2; cout << P3;
         break;
-    case 5: cout << "\n\tCalculate the polynomial:" << P1.Ñalculate();
+    case 5: cout << "\n\tCalculate the polynomial:" << P1.Ğ¡alculate();
         break;
     }
     return P3;
@@ -48,7 +48,8 @@ string Switch(Tab& A, int entry, string a = "")
 {
     switch (entry)
     {
-    case 1:  if (a == "")
+    case 1: try
+    { if (a == "")
     {
         system("cls");
         cout << "\n\tEnter the polynomial to add.\n\n\tInput: ";
@@ -56,7 +57,14 @@ string Switch(Tab& A, int entry, string a = "")
     }
           A.Insert(Polynom(a), Polynom(a).Re());
           return a;
-    case 2:  if (a == "")
+    }
+            catch (...)
+          {
+              std::cout << "\t Insert is not possible\n";
+          }
+
+    case 2:  try
+    { if (a == "")
     {
         system("cls");
         cout << "\n\tEnter the polynomial to delete.\n\n\tInput: ";
@@ -64,9 +72,16 @@ string Switch(Tab& A, int entry, string a = "")
     }
           A.Delete(Polynom(a).Re());
           return a;
+    }
+             catch (...)
+          {
+              std::cout << "\t Delete is not possible\n";
+          }
+
     case 3:  A = Tab();
         return "";
-    case 4: {int entry2;
+    case 4: try
+    { int entry2;
         system("cls");
         menu1();
         cin >> entry2;
@@ -101,14 +116,18 @@ string Switch(Tab& A, int entry, string a = "")
             A.Insert(Polynom(B1), Polynom(B1).Re());
         }
         return "";
-        break; }
+        }
+        catch (...)
+        {
+            std::cout << "\t Operation is not possible\n";
+        }
+
     case 5:  if (!A.IsEmpty())
     {
         cout << "\n\tKey - Data:\n";
     }
           cout << A;
           return "";
-          break;
     }
 }
 
