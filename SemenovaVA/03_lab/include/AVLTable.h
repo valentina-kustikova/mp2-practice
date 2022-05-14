@@ -3,26 +3,25 @@
 #include"AVLTree.h"
 #define PTBalanceNode TbNode<TData,TKey>*
 
-//Класс таблиц на АВЛ деревьях
+//РљР»Р°СЃСЃ С‚Р°Р±Р»РёС† РЅР° РђР’Р› РґРµСЂРµРІСЊСЏС…
 template <typename TData, typename TKey>
 class AVLTable : public Table<TData, TKey>
 { private:
   AVLTree<TData, TKey>* A1;
   PTBalanceNode Cur;
   public:
-  // Конструкторы, деструктор	
+  // РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂС‹, РґРµСЃС‚СЂСѓРєС‚РѕСЂ	
   AVLTable() { A1 = new AVLTree<TData, TKey>; dataCount = 0; Cur=nullptr;}
-  AVLTable(const AVLTable<TData, TKey>& T1);
   ~AVLTable(){ delete A1; }
-  // Методы 
+  // РњРµС‚РѕРґС‹ 
   virtual void Insert(const TData Data, const TKey Key);
   virtual TData* Search(const TKey Key);
   virtual void Delete(const TKey Key);
   void Reset();
   void SetNext();
-  bool IsEnd() const { return Cur->GetKey() == (A1->FindMax())->GetKey(); }
-  TData* GetData() const; // для текущего элемента
-  TKey GetKey() const;  // для текущего элемента
+  bool IsEnd() const { return A1->IsEnd(); }
+  TData* GetData() const; // РґР»СЏ С‚РµРєСѓС‰РµРіРѕ СЌР»РµРјРµРЅС‚Р°
+  TKey GetKey() const;  // РґР»СЏ С‚РµРєСѓС‰РµРіРѕ СЌР»РµРјРµРЅС‚Р°
   template<class TData> friend std::ostream& operator<< (std::ostream& os, const AVLTable<TData, TKey>& Tab)
   {
       if (Tab.dataCount == 0)
@@ -37,32 +36,10 @@ class AVLTable : public Table<TData, TKey>
       dataCount = T1.dataCount;
       return *this;
   }
-
 };
 
-// Pелизация функциий для класса таблиц на АВЛ деревьях
-// Конструкторы
-template <typename TData, typename TKey>
-AVLTable<TData, TKey>::AVLTable(const AVLTable<TData, TKey>& T1)
-{
-    PTBalanceNode p1;
-    A1 = new AVLTree<TData, TKey>;
-    dataCount = 0;
-    if(T1.dataCount>0)
-    { p1 =(PTBalanceNode)T1.A1->FindMin();
-      A1->Insert(p1->GetKey(), *(p1->GetData())); 
-      dataCount++;
-    }
-      
-    for (int i = 1; i < T1.dataCount; i++)
-    {
-        p1 = (PTBalanceNode)T1.A1->FindNext(p1);
-        A1->Insert(p1->GetKey(),*( p1->GetData()));
-        dataCount++;
-    }
-    Cur = nullptr;
-}
-// Методы 
+// PРµР»РёР·Р°С†РёСЏ С„СѓРЅРєС†РёРёР№ РґР»СЏ РєР»Р°СЃСЃР° С‚Р°Р±Р»РёС† РЅР° РђР’Р› РґРµСЂРµРІСЊСЏС…
+// РњРµС‚РѕРґС‹ 
 template <typename TData, typename TKey>
 void AVLTable<TData, TKey>::Insert(const TData Data, const TKey Key)
 {
@@ -72,6 +49,8 @@ void AVLTable<TData, TKey>::Insert(const TData Data, const TKey Key)
 template <typename TData, typename TKey>
 TData* AVLTable<TData, TKey>::Search(const TKey Key)
 {
+    
+
     if (!IsEmpty())
     {
         return (A1->Find(Key))->GetData();
@@ -79,11 +58,13 @@ TData* AVLTable<TData, TKey>::Search(const TKey Key)
     else
     {
         throw - 1;
-    } //Таблица пуста
+    } //РўР°Р±Р»РёС†Р° РїСѓСЃС‚Р°
+
+
 }
 template <typename TData, typename TKey>
 void AVLTable<TData, TKey>::Delete(TKey Key)
-{
+{   
     if (!IsEmpty())
     {
         A1->Delete(Key);
@@ -92,36 +73,48 @@ void AVLTable<TData, TKey>::Delete(TKey Key)
     else
     {
         throw - 1;
-    } //Таблица пуста
+    } 
+    
+
 }
 template <typename TData, typename TKey>
 void AVLTable<TData, TKey>::Reset()
 {
-
+    
     if (!IsEmpty())
     {
-        Cur = (PTBalanceNode)A1->FindMin();
+        A1->Reset();
+        Cur =(PTBalanceNode)A1->GetCur();
     }
     else
     {
         throw - 1;
-    } //Таблица пуста
+    } //РўР°Р±Р»РёС†Р° РїСѓСЃС‚Р°
+   
+   
 }
 template <typename TData, typename TKey>
 void AVLTable<TData, TKey>::SetNext()
 {
+    
+
     if (!IsEmpty())
     {
-        Cur = (PTBalanceNode)A1->FindNext(Cur);
+        A1->SetNext();
+        Cur = (PTBalanceNode)A1->GetCur();
     }
     else
     {
         throw - 1;
-    } //Таблица пуста
+    } //РўР°Р±Р»РёС†Р° РїСѓСЃС‚Р°
+    
+    
 }
 template <typename TData, typename TKey>
 TData* AVLTable<TData, TKey>::GetData() const
 {
+    
+
     if (!IsEmpty())
     {
         return Cur->GetData();
@@ -129,11 +122,15 @@ TData* AVLTable<TData, TKey>::GetData() const
     else
     {
         throw - 1;
-    } //Таблица пуста
+    } //РўР°Р±Р»РёС†Р° РїСѓСЃС‚Р°
+
+
 }
 template <typename TData, typename TKey>
 TKey  AVLTable<TData, TKey>::GetKey() const
 {
+    
+
     if (!IsEmpty())
     {
         return Cur->GetKey();
@@ -141,5 +138,7 @@ TKey  AVLTable<TData, TKey>::GetKey() const
     else
     {
         throw - 1;
-    } //Таблица пуста
+    } //РўР°Р±Р»РёС†Р° РїСѓСЃС‚Р°
+   
+
 }
