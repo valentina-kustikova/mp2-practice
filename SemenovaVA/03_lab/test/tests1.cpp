@@ -7,7 +7,7 @@
 #define FF <int,string>
 using namespace std;
 
-//Тесты для класса бинарное поисковое дерево
+//РўРµСЃС‚С‹ РґР»СЏ РєР»Р°СЃСЃР° Р±РёРЅР°СЂРЅРѕРµ РїРѕРёСЃРєРѕРІРѕРµ РґРµСЂРµРІРѕ
 TEST(TBinaryTree, can_create_tree1)
 {
     ASSERT_NO_THROW(BSTree SS T2);
@@ -140,7 +140,7 @@ TEST(TBinaryTree, corect_SearchPrev1)
     EXPECT_EQ(7, (*T1.FindPrev(T1.Find(8))).GetKey());
 }
 
-//Тесты для класса сбалансированные АВЛ дерево
+//РўРµСЃС‚С‹ РґР»СЏ РєР»Р°СЃСЃР° СЃР±Р°Р»Р°РЅСЃРёСЂРѕРІР°РЅРЅС‹Рµ РђР’Р› РґРµСЂРµРІРѕ
 TEST(TBalanceTree, can_create_tree2)
 {
     ASSERT_NO_THROW(AVLTree SS T2);
@@ -275,31 +275,46 @@ TEST(TBalanceTree, corect_SearchPrev2)
 TEST(TBalanceTree, corect_Insert2_1)
 {
     AVLTree SS  T1;
-    //случай 1 - однократный RR поворот
+    //СЃР»СѓС‡Р°Р№ 1 - РѕРґРЅРѕРєСЂР°С‚РЅС‹Р№ RR РїРѕРІРѕСЂРѕС‚
     T1.Insert(4, 1);
     T1.Insert(1, 12);
     T1.Insert(8, 12);
     T1.Insert(6, 1);
     T1.Insert(10, 1);
     T1.Insert(12, 1);
-    EXPECT_EQ(12, (*T1.Find(12)).GetKey());
+    BSTree SS  TT1;
+    TT1.Insert(8, 1);
+    TT1.Insert(4, 12);
+    TT1.Insert(10, 12);
+    TT1.Insert(1, 1);
+    TT1.Insert(6, 1);
+    TT1.Insert(12, 1);
+    EXPECT_EQ(T1, TT1);
 }
 TEST(TBalanceTree, corect_Insert2_2)
 {
     AVLTree SS  T1;
-    // случай 1 - однократный LL поворот
+    // СЃР»СѓС‡Р°Р№ 1 - РѕРґРЅРѕРєСЂР°С‚РЅС‹Р№ LL РїРѕРІРѕСЂРѕС‚
    T1.Insert(20, 1);
    T1.Insert(17, 12);
    T1.Insert(22, 12);
    T1.Insert(11, 1);
    T1.Insert(18, 1);
    T1.Insert(7, 1);
-   EXPECT_EQ(7, (*T1.Find(7)).GetKey());
+   BSTree SS  TT1;
+   TT1.Insert(17, 1);
+   TT1.Insert(11, 1);
+   TT1.Insert(20, 1);
+   TT1.Insert(7, 1);
+   TT1.Insert(18, 1);
+   TT1.Insert(22, 1);
+   
+   EXPECT_EQ(T1, TT1);
 }
 TEST(TBalanceTree, corect_Insert2_3)
 {
     AVLTree SS  T1;
-    //случай 2 - двукратный LR поворот
+    //СЃР»СѓС‡Р°Р№ 2 - РґРІСѓРєСЂР°С‚РЅС‹Р№ LR РїРѕРІРѕСЂРѕС‚
     T1.Insert(11, 1);
     T1.Insert(7, 12);
     T1.Insert(20, 12);
@@ -314,24 +329,47 @@ TEST(TBalanceTree, corect_Insert2_3)
     T1.Insert(12, 1);
     T1.Insert(17, 1);
     T1.Insert(19, 1);
-    EXPECT_EQ(19, (*T1.Find(19)).GetKey());
+    BSTree SS  TT1;
+    TT1.Insert(11, 1);
+    TT1.Insert(7, 1);
+    TT1.Insert(17, 1);
+    TT1.Insert(5, 1);
+    TT1.Insert(9, 1);
+    TT1.Insert(15, 1);
+    TT1.Insert(20, 1);
+    TT1.Insert(3, 1);
+    TT1.Insert(6, 1);
+    TT1.Insert(8, 1);
+    TT1.Insert(10, 1);
+    TT1.Insert(12, 1);
+    TT1.Insert(19,1);
+    TT1.Insert(25, 1); 
+    EXPECT_EQ(T1, TT1);
 }
 TEST(TBalanceTree, corect_Insert2_4)
 {
     AVLTree SS  T1;
-    //случай 2 - двукратный RL поворот
+    //СЃР»СѓС‡Р°Р№ 2 - РґРІСѓРєСЂР°С‚РЅС‹Р№ RL РїРѕРІРѕСЂРѕС‚
     T1.Insert(15, 1);
     T1.Insert(5, 12);
     T1.Insert(25, 12);
     T1.Insert(4, 1);
     T1.Insert(7, 1);
     T1.Insert(1, 1);
-    EXPECT_EQ(1,(*T1.Find(1)).GetKey());
+    BSTree SS  TT1;
+    TT1.Insert(5, 1);
+    TT1.Insert(4, 1);
+    TT1.Insert(15, 1);
+    TT1.Insert(1, 1);
+    TT1.Insert(7, 1);
+    TT1.Insert(25, 1);
+
+    EXPECT_EQ(T1, TT1);
 }
 TEST(TBalanceTree, corect_Delete2_1)
 {
     AVLTree SS  T1;
-    //удаление 1
+    //СѓРґР°Р»РµРЅРёРµ 1
     T1.Insert(10, 1);
     T1.Insert(3, 12);
     T1.Insert(25, 12);
@@ -342,24 +380,40 @@ TEST(TBalanceTree, corect_Delete2_1)
     T1.Insert(20, 1);
     T1.Insert(35, 1);
     T1.Delete(1);
-    EXPECT_EQ(nullptr, T1.Find(1));
+    BSTree SS  TT1;
+    TT1.Insert(15, 1);
+    TT1.Insert(10, 1);
+    TT1.Insert(25, 1);
+    TT1.Insert(3, 1);
+    TT1.Insert(12, 1);
+    TT1.Insert(20, 1);
+    TT1.Insert(30, 1);
+    TT1.Insert(35, 1);
+
+
+    EXPECT_EQ(T1, TT1);
 }
 TEST(TBalanceTree, corect_Delete2_2)
 {
     AVLTree SS  T1;
-    //удаление 2
+    //СѓРґР°Р»РµРЅРёРµ 2
    T1.Insert(10, 1);
    T1.Insert(3, 12);
    T1.Insert(25, 12);
    T1.Insert(1, 1);
    T1.Insert(4, 1);
    T1.Delete(25);
-    EXPECT_EQ(nullptr, T1.Find(25));
+   BSTree SS  TT1;
+   TT1.Insert(4, 1);
+   TT1.Insert(3, 1);
+   TT1.Insert(10, 1);
+   TT1.Insert(1, 1);
+   EXPECT_EQ(T1, TT1);
 }
 TEST(TBalanceTree, corect_Delete2_3)
 {
     AVLTree SS  T1;
-   //удаление 3
+   //СѓРґР°Р»РµРЅРёРµ 3
    T1.Insert(11, 1);
    T1.Insert(7, 12);
    T1.Insert(20, 12);
@@ -378,10 +432,27 @@ TEST(TBalanceTree, corect_Delete2_3)
    T1.Insert(26, 1);
    T1.Insert(30, 1);
    T1.Delete(9);
-    EXPECT_EQ(nullptr, T1.Find(9));
+   BSTree SS  TT1;
+   TT1.Insert(11, 1);
+   TT1.Insert(7, 1);
+   TT1.Insert(20, 1);
+   TT1.Insert(5, 1);
+   TT1.Insert(10, 1);
+   TT1.Insert(15, 1);
+   TT1.Insert(25, 1);
+   TT1.Insert(3, 1);
+   TT1.Insert(6, 1);
+   TT1.Insert(8, 1);
+   TT1.Insert(12, 1);
+   TT1.Insert(17, 1);
+   TT1.Insert(23, 1);
+   TT1.Insert(27, 1);
+   TT1.Insert(26, 1);
+   TT1.Insert(30, 1);
+   EXPECT_EQ(T1, TT1);
 }
 
-//Тесты для класса таблиц на АВЛ деревьях
+//РўРµСЃС‚С‹ РґР»СЏ РєР»Р°СЃСЃР° С‚Р°Р±Р»РёС† РЅР° РђР’Р› РґРµСЂРµРІСЊСЏС…
 TEST(AVLTable, can_create_table1)
 {
     ASSERT_NO_THROW(AVLTable FF T2);
@@ -563,38 +634,4 @@ TEST(AVLTable, can_not_Insert_record_wich_key_isnt_unique1)
         T1.Insert((i + 1) * 8 + (i * i) % 13, to_string(i + 1) + " record");
     }
     ASSERT_ANY_THROW(T1.Insert(2, "2 record"));
-}
-TEST(AVLTable, can_copy_empty_table1)
-{
-    AVLTable FF  T1;
-    ASSERT_NO_THROW(AVLTable FF T2(T1));
-}
-TEST(AVLTable, can_copy_table1)
-{
-    AVLTable FF  T1;
-    for (int i = 0; i < 4; i++)
-    {
-        T1.Insert((i + 1) * 8 + (i * i) % 13, to_string(i + 1) + " record");
-    }
-    ASSERT_NO_THROW(AVLTable FF  A(T1));
-}
-TEST(AVLTable, copied_table_correct1)
-{
-    AVLTable FF T1;
-
-    for (int i = 0; i < 4; i++)
-    {
-        string s;
-        s = to_string(i + 1) + " record";
-        T1.Insert((i + 1) * 8 + (i * i) % 13, s);
-    }
-    AVLTable FF  A(T1);
-    A.Reset();
-    EXPECT_EQ(8, *(A.GetData()));
-    A.SetNext();
-    EXPECT_EQ(17, *(A.GetData()));
-    A.SetNext();
-    EXPECT_EQ(28, *(A.GetData()));
-    A.SetNext();
-    EXPECT_EQ(41, *(A.GetData()));
 }
