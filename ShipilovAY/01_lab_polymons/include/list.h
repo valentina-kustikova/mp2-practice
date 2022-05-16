@@ -1,57 +1,83 @@
-﻿#pragma once;
+﻿#pragma once
 #include "node.h"
+#include "ostream"
 
 template <typename T>
 class TList {
-private:
-	TNode <T> *head;
-	TNode <T> *current;
+protected:
+	TNode<T> *first;
+	TNode<T> *current;
 public:
 	TList();
-	TList(const TList <T> &);
+	explicit TList(TNode<T>* _node);
+	TList(const TList&);
 	~TList();
-	void Insert(const T _data);
-	void InsertInEnd(const T _data);
+	bool IsEmpty();
+	virtual void InsFirst(const T& _data);
+	void InsLast(const T& _data);
+	void InsAfter(const T& _data);
+	void InsertInEnd(const T& _data);
+	void Insert(const T& _data);
 	void Reset();
 	void Clean();
-	void Delete(const T & d);
+	void Delete(const T& d);
+	virtual void DelFirst();
+	void DelLast();
+	void DelAfter();
 	bool IsEnded() const;
+	TNode<T>* get_current() const;
 	
-	bool operator==(const TList<T>& List) const;
-	bool operator!=(const TList<T>& List) const { return !((*this) == List); }
-	TList<T>& operator=(const TList<T>& List);
+	bool operator==(const TList& List) const;
+	bool operator!=(const TList& List) const { return !((*this) == List); }
+	TList& operator=(const TList& List);
 	TNode<T>* GetNext();
 	TNode<T>* Search(const TNode<T>& d);
-	TNode<T>* GetCurrent() { return current; }
+	TNode<T>* GetCurrent() { return current; };
+	friend std::ostream& operator<<(std::ostream& os, TList<T>& l)
+	{
+		os << "[ ";
+		TNode<T>* temp = l.first;
+
+		while (temp != nullptr)
+		{
+			os << temp->data << " ";
+			temp = temp->pNext;
+		}
+		os << "]";
+		return os;
+	};
 };
 
 template <typename T>
 TList<T>::TList()
 {
-	head = new TNode<T>();
-	head->pNext = head;
-	current = head;
+	first = nullptr;
+	current = nullptr;
 };
 
+template<typename T>
+TList<T>::TList(TNode<T>* _node) {
+	if (_node) {
+		first = new TNode<T>(_node->data, _node->pNext);
+		current = first;
+	}
+}
+
 template <typename T>
-TList<T>::TList(const TList <T>& List)
+TList<T>::TList(const TList<T>& List)
 {
-	if (List.head->pNext != List.head)
+	TNode<T>* temp1 = first;
+	TNode<T>* temp2 = List.first;
+		
+	if (temp2 != nullptr) 
 	{
-		head = new TNode<T>(List.head->data);
-		TNode<T>* temp = head;
-		TNode<T>* temp2 = List.head->pNext;
-		while (temp2 != List.head)
-		{
-			temp->pNext = new TNode<T>(temp2->data, head);
-			temp = temp->pNext;
+		temp1 = new TNode<T>(temp2->data);
+		temp2 = temp2->pNext;
+		while (temp2 != nullptr) {
+			temp1->pNext = new TNode<T>(temp2->data);
+			temp1 = temp1->pNext;
 			temp2 = temp2->pNext;
 		}
-	}
-	else {
-		head = new TNode<T>(List.head->data);
-		current = head;
-		head->pNext = head;
 	}
 };
 
@@ -59,131 +85,247 @@ template<typename T>
 TList<T>::~TList()
 {
 	Clean();
-	delete head;
 };
 
-template <typename T>
-void TList<T>::Insert(const T _data)
+template <class T>
+bool TList<T>::IsEmpty()
 {
-	if (head->pNext == head)
-	{
-		TNode<T>* tmp = new TNode<T>(_data, head);
-		head->pNext = tmp;
+	return first == nullptr;
+}
+
+template <typename T>
+void TList<T>::InsFirst(const T& _data) {
+	if (first == nullptr) {
+		TNode<T>* tmp = new TNode<T>(_data, first);
+		first = tmp;
 	}
-	else
+	else {
+		first = new TNode<T>(_data, first);
+	}
+
+}
+
+template <typename T>
+void TList<T>::InsLast(const T& _data) {
+	TNode<T>* tmp = first;
+	if (tmp == current)
 	{
-		TNode<T>* prev = head;
-		TNode<T>* tmp = head->pNext;
-		while ((tmp != head) && (_data < tmp->data))
-		{
-			prev = tmp;
+		InsFirst(_data);
+	}
+	else {
+		while (tmp->pNext != current) {
 			tmp = tmp->pNext;
 		}
-		prev->pNext = new TNode<T>(_data, tmp);
+		tmp->pNext = new TNode<T>(_data, tmp->pNext);
+	}
+}
+
+template <typename T>
+void TList<T>::InsAfter(const T& _data) {
+	TNode<T>* tmp = first;
+	while (tmp != current) {
+		tmp = tmp->pNext;
+	}
+	tmp->pNext = new TNode<T>(_data, tmp->pNext);
+}
+
+template <typename T>
+void TList<T>::Insert(const T &_data)
+{
+	if (first == nullptr || _data >= first->data)
+	{
+		TNode<T> *tmp2 = new TNode<T>(_data, first);
+		first = tmp2;
+	}
+	else 
+	{
+		TNode<T> *tmp = first;
+		while (tmp->pNext != nullptr && _data < tmp->pNext->data)
+			tmp = tmp->pNext;
+		
+		TNode<T> *tmp2 = new TNode<T>(_data, tmp->pNext);
+		tmp->pNext = tmp2;
 	}
 };
 
 template <typename T>
-void TList<T>::InsertInEnd(const T _data)
+void TList<T>::InsertInEnd(const T &_data)
 {
-	TNode<T>* tmp = head;
-	while (tmp->pNext != head)
-		tmp = tmp->pNext;
-	tmp->pNext = new TNode<T>(_data, head);
+	if (first == nullptr)
+	{
+		TNode<T>* tmp = new TNode<T>(_data, first);
+		first = tmp;
+	}
+	else {
+		TNode<T>* tmp = first;
+		while (tmp->pNext != nullptr)
+			tmp = tmp->pNext;
+		tmp->pNext = new TNode<T>(_data, nullptr);
+	}
 };
 
 template <typename T>
 void TList<T>::Reset()
 {
-	current = head->pNext;
+	current = first;
 };
 
 template<typename T>
 void TList<T>::Clean()
 {
-	TNode<T>* temp = head->pNext;
-	TNode<T>* temp2 = head;
-	while (temp != head)
-	{
-		temp2 = temp->pNext;
-		delete temp;
-		temp = temp2;
+	if (first != nullptr) {
+		TNode<T>* tmp;
+		while (first->pNext != nullptr) {
+			tmp = first->pNext;
+			first->pNext = tmp->pNext; // head->next->next;
+			delete tmp;
+		}
+		delete first;
+		first = nullptr;
 	}
-
-	head->pNext = head;
 };
 
 template<typename T>
 void TList<T>::Delete(const T& d)
 {
-	TNode<T>* tmp = head;
-	TNode<T>* tmp2 = head->pNext;
-	if (tmp != tmp2)
-	{
-		while ((tmp2->pNext != head) && (tmp2->data != d))
-		{
-			tmp = tmp2;
-			tmp2 = tmp2->pNext;
+	if (first != nullptr) {
+		TNode<T>* prev = first;
+		TNode<T>* tmp;
+		bool find = false;
+
+
+		if (first->data == d) {
+			first = first->pNext;
+			delete prev;
+			find = true;
 		}
-		if (tmp2->data == d)
-		{
-			tmp->pNext = tmp2->pNext;
-			delete tmp2;
+
+		while (!find && (prev->pNext != nullptr)) {
+			if (prev->pNext->data == d) {
+
+				tmp = prev->pNext;
+				prev->pNext = prev->pNext->pNext; // tmp->next
+				delete tmp;
+				find = true;
+			}
+			else
+				prev = prev->pNext;
 		}
-		else throw "element not in the list";
 	}
-	else throw "element not in the list";
 };
+
+template <typename T>
+void TList<T>::DelFirst()
+{
+	if (first == nullptr)
+		throw "element not in the list";
+	TNode<T>* tmp = first;
+	first = first->pNext;
+	delete tmp;
+}
+
+template <typename T>
+void TList<T>::DelLast()
+{
+	if (current == nullptr)
+		throw "element not in the list";
+	if (current == first)
+	{
+		DelFirst();
+		current = first;
+	}
+	else
+	{
+	TNode<T>* tmp = current;
+	current = current->pNext;
+	delete tmp;
+	}
+}
+
+template <typename T>
+void TList<T>::DelAfter()
+{
+	if (current == nullptr)
+		throw "element not in the list";
+	if (current == first)
+	{
+		DelFirst();
+		current = first;
+	}
+	else
+	{
+		TNode<T>* tmp = current->pNext;
+		current = tmp->pNext;
+		delete tmp;
+	}
+}
 
 template<typename T>
 bool TList<T>::IsEnded() const
 {
-	return (current == head);
+	return (current == nullptr);
 };
 
 template<typename T>
 bool TList<T>::operator==(const TList<T>& List) const
 {
-	TNode<T>* temp = head;
-	TNode<T>* temp2 = List.head;
-	bool f = true;
-	if ((temp->pNext == head) && (temp2->pNext == List.head))
-		f = true;
-	else if (((temp->pNext != head) && (temp2->pNext == List.head)) || ((temp2->pNext != List.head) && (temp->pNext == head)))
-		f = false;
-	while ((temp->pNext != head) && (temp2->pNext != List.head) && (f))
+	TNode<T>* temp = first;
+	TNode<T>* temp2 = List.first;
+
+	while (temp != nullptr && temp2 != nullptr) 
 	{
 		if (temp->data != temp2->data)
-			f = false;
+			return false;
 		temp = temp->pNext;
 		temp2 = temp2->pNext;
 	}
-	return f;
+
+	if (temp != nullptr || temp2 != nullptr)
+		return false;
+
+	return true;
 };
 
 template<typename T>
 TList<T>& TList<T>::operator=(const TList<T>& List)
 {
-
 	if ((*this) != List)
 	{
-		Clean();
-		if (List.head->pNext != List.head)
+		if (List.first == nullptr)
+			return *this;
+
+		if (first == nullptr)
+			first = new TNode<T>();
+
+		TNode<T> *tmp1 = first;
+		TNode<T> *tmp2 = List.first;
+
+		tmp1->data = tmp2->data;
+		while (tmp1->pNext != nullptr && tmp2->pNext != nullptr) 
 		{
-			head = new TNode<T>(List.head->data);
-			TNode<T>* temp = head;
-			TNode<T>* temp2 = List.head->pNext;
-			while (temp2 != List.head)
+			tmp1 = tmp1->pNext;
+			tmp2 = tmp2->pNext;
+			tmp1->data = tmp2->data;
+		}
+
+		if (tmp1->pNext == nullptr) 
+		{
+			while (tmp2->pNext != nullptr) 
 			{
-				temp->pNext = new TNode<T>(temp2->data, head);
-				temp = temp->pNext;
-				temp2 = temp2->pNext;
+				tmp2 = tmp2->pNext;
+				tmp1->pNext = new TNode<T>(tmp2->data, nullptr);
+				tmp1 = tmp1->pNext;
 			}
 		}
-		else {
-			head = new TNode<T>(List.head->data);
-			current = head;
-			head->pNext = head;
+
+		else if (tmp2->pNext == nullptr) 
+		{
+			while (tmp1->pNext != nullptr) 
+			{
+				tmp2 = tmp1->pNext;
+				tmp1->pNext = tmp2->pNext;
+				delete tmp2;
+			}
 		}
 	}
 	return *this;
@@ -199,14 +341,14 @@ TNode<T>* TList<T>::GetNext()
 template <typename T>
 TNode<T>* TList<T>::Search(const TNode<T>& d)
 {
-	TNode<T>* tmp = head;
-	while ((tmp->pNext != head) && (tmp->pNext->data != d.data))
-	{
+	TNode<T>* tmp = first;
+	while (tmp != nullptr && tmp->data != d.data)
 		tmp = tmp->pNext;
-	}
-	if (tmp->pNext == head)
-	{
-		return nullptr;
-	}
-	return tmp->pNext;
+
+	return tmp;
 };
+
+template<typename T>
+TNode<T>* TList<T>::get_current() const {
+	return current;
+}
