@@ -1,4 +1,3 @@
-
 #include "monom.h"
 
 Monom::Monom(const Monom& _monom)
@@ -21,7 +20,7 @@ bool Monom::operator != (const Monom& _monom) const
 
 bool Monom::operator == (const Monom& _monom) const
 {
-	return stmonom == _monom.stmonom;
+	return stmonom == _monom.stmonom && coeff == _monom.coeff;
 }
 
 bool Monom::operator > (const Monom& _monom) const
@@ -29,9 +28,19 @@ bool Monom::operator > (const Monom& _monom) const
 	return stmonom > _monom.stmonom;
 }
 
+bool Monom::operator >= (const Monom &_monom) const
+{
+	return stmonom >= _monom.stmonom;
+}
+
 bool Monom::operator < (const Monom& _monom) const
 {
 	return stmonom < _monom.stmonom;
+}
+
+bool Monom::operator <= (const Monom &_monom) const
+{
+	return stmonom <= _monom.stmonom;
 }
 
 Monom Monom::operator+ (const Monom& _monom)
