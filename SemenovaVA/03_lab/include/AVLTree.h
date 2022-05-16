@@ -34,7 +34,7 @@ class  AVLTree : public BSTree<TData, TKey>
 template <typename TData, typename TKey>
 void AVLTree<TData, TKey>::Insert(TKey k, TData d) 
 { 
-if(Find(k)!=nullptr) { throw 1; } //повторная ввставка элемента 
+if(Find(k)!=nullptr) { throw std::exception("\tRe-insertion of the element is not possible\n"); } //повторная ввставка элемента 
    
 
   Insert((PTBalanceNode&)Root, k, d); 
@@ -67,7 +67,7 @@ template <typename TData, typename TKey>
 void AVLTree<TData, TKey>::Delete(TKey k)
 { 
 if(Find(k)==nullptr)
-  {throw 1;}
+  {throw std::exception("\tThe item being deleted is not in the table\n"); }
   Delete((PTBalanceNode&)Root, k); 
 
 }
