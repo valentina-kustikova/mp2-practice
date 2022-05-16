@@ -3,28 +3,6 @@
 #include <iostream>
 #include <string>
 
-//struct Trunk
-//{
-//	Trunk* prev;
-//	std::string str;
-//
-//	Trunk(Trunk* prev, std::string str)
-//	{
-//		this->prev = prev;
-//		this->str = str;
-//	}
-//};
-//
-//// Helper function to print branches of the binary tree
-//void showTrunks(Trunk* p)
-//{
-//	if (p != nullptr)
-//	{
-//		showTrunks(p->prev);
-//		std::cout << p->str;
-//	}
-//}
-
 template <class TKey, class TData>
 struct TreeNode
 {
@@ -80,7 +58,6 @@ protected:
 		{
 			node = node->right;
 		}
-		//curr = &node;
 		return node;
 	}
 	TreeNode<TKey, TData>* FindPrev(TreeNode<TKey, TData>* _node) const
@@ -97,42 +74,6 @@ protected:
 		}
 		return res;
 	}
-	/*void printTree(TreeNode<TKey, TData>* node, Trunk* prev, bool isLeft)
-	{
-		if (node != nullptr)
-		{
-			std::string prev_str = "    ";
-			Trunk* trunk = new Trunk(prev, prev_str);
-
-			printTree(node->right, trunk, true);
-
-			if (!prev)
-			{
-				trunk->str = "---";
-			}
-			else if (isLeft)
-			{
-				trunk->str = ".---";
-				prev_str = "   |";
-			}
-			else
-			{
-				trunk->str = "`---";
-				prev->str = prev_str;
-			}
-
-			showTrunks(trunk);
-			std::cout << *node << std::endl;
-
-			if (prev)
-			{
-				prev->str = prev_str;
-			}
-			trunk->str = "   |";
-
-			printTree(node->left, trunk, false);
-		}
-	}*/
 public:
 	BSTree()
 		:root(nullptr) {}
@@ -279,9 +220,4 @@ public:
 		}
 		return res;
 	}
-
-	/*void Print()
-	{
-		printTree(root, nullptr, false);
-	}*/
 };
