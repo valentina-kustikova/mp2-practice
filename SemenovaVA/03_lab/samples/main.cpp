@@ -58,10 +58,12 @@ string Switch(Tab& A, int entry, string a = "")
           A.Insert(Polynom(a), Polynom(a).Re());
           return a;
     }
-            catch (...)
-          {
-              std::cout << "\t Insert is not possible\n";
-          }
+            catch(exception & ex)
+
+            {
+              cout << ex.what();
+              return a;
+            }
 
     case 2:  try
     { if (a == "")
@@ -73,9 +75,10 @@ string Switch(Tab& A, int entry, string a = "")
           A.Delete(Polynom(a).Re());
           return a;
     }
-             catch (...)
+             catch (exception& ex)
           {
-              std::cout << "\t Delete is not possible\n";
+                 cout << ex.what();
+              return a;
           }
 
     case 3:  A = Tab();
@@ -117,9 +120,11 @@ string Switch(Tab& A, int entry, string a = "")
         }
         return "";
         }
-        catch (...)
+        catch (exception& ex)
         {
-            std::cout << "\t Operation is not possible\n";
+            cout << ex.what();
+            return a;
+
         }
 
     case 5:  if (!A.IsEmpty())
