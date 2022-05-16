@@ -4,7 +4,9 @@ class TNode {
 public:
 	T data;
 	TNode<T>* pNext;
-	TNode() {};
+	TNode() {
+		pNext = nullptr;
+	};
 	~TNode() {};
 	TNode(const T _data, TNode<T>* Node = nullptr) { data = _data; pNext = Node; }
 	TNode<T>& operator=(const TNode<T>& _TNode)
@@ -13,8 +15,12 @@ public:
 		pNext = _TNode.pNext;
 		return *this;
 	};
-	bool operator == (const TNode<T>& Node) const
+	bool operator==(const TNode<T>& Node) const
 	{
 		return *this->pNext == Node.pNext;
+	};
+	bool operator!=(const TNode<T>& Node) const
+	{
+		return !(*this == Node);
 	};
 };
