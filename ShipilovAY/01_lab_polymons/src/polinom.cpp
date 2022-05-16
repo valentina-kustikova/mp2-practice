@@ -12,7 +12,6 @@ TPolinom::TPolinom(const std::string& s)
 			string coeff = "";
 			double number = 0;
 			int i = 0, j = 1;
-			j = 1;
 			while (j < str.length() && str[j] != '+' && str[j] != '-')
 				j++;
 			monom = str.substr(0, j);
@@ -92,7 +91,7 @@ TPolinom::TPolinom(const std::string& s)
 			}
 			if ((temp.stmonom != 0 || temp.stmonom == 0) && temp.coeff != 0) {
 				TNode<Monom>* node = curmon.Search(temp);
-				if (node != NULL)
+				if (node != nullptr)
 				{
 					if (node->data.coeff + temp.coeff != 0)
 					{
@@ -122,7 +121,7 @@ TPolinom TPolinom::operator+ (const TPolinom & _polinom)
 	TPolinom copy_polinom(_polinom);
 	copy_polinom.curmon.Reset();
 	TPolinom res;
-	res.curmon.Reset();
+
 	while (!copy_polinom.curmon.IsEnded() && !(*this).curmon.IsEnded())
 	{
 		if (copy_polinom.curmon.GetCurrent()->data < (*this).curmon.GetCurrent()->data)
@@ -130,18 +129,18 @@ TPolinom TPolinom::operator+ (const TPolinom & _polinom)
 			res.curmon.InsertInEnd((*this).curmon.GetCurrent()->data);
 			(*this).curmon.GetNext();
 		}
-		else if (copy_polinom.curmon.GetCurrent()->data == (*this).curmon.GetCurrent()->data)
+		else if (copy_polinom.curmon.GetCurrent()->data > (*this).curmon.GetCurrent()->data)
+		{
+			res.curmon.InsertInEnd(copy_polinom.curmon.GetCurrent()->data);
+			copy_polinom.curmon.GetNext();
+		}
+		else
 		{
 			if ((*this).curmon.GetCurrent()->data.coeff + copy_polinom.curmon.GetCurrent()->data.coeff != 0.0)
 			{
 				res.curmon.InsertInEnd((*this).curmon.GetCurrent()->data + copy_polinom.curmon.GetCurrent()->data);
 			}
 			(*this).curmon.GetNext();
-			copy_polinom.curmon.GetNext();
-		}
-		else
-		{
-			res.curmon.InsertInEnd(copy_polinom.curmon.GetCurrent()->data);
 			copy_polinom.curmon.GetNext();
 		}
 	}
@@ -225,7 +224,7 @@ TPolinom operator* (double d, const TPolinom& p)
 	return res;
 };
 
-TPolinom& TPolinom::operator =(const TPolinom& _polinom)
+TPolinom& TPolinom::operator=(const TPolinom& _polinom)
 {
 	curmon = _polinom.curmon;
 	return *this;
@@ -286,4 +285,22 @@ ostream& operator<< (ostream& out, const TPolinom& _pol)
 	}
 	out << endl;
 	return out;
+}
+
+double TPolinom::operator()(double x, double y, double z)
+{
+	double res = 0;
+
+	for (this->curmon.GetNext(); !this->curmon.IsEnded(); this->curmon.GetNext())
+	{
+		if (this->curmon.GetCurrent()->data.coeff > 0)
+		{
+			res = res + (this->curmon.GetCurrent()->data.coeff) *
+				(pow(x, (this->curmon.GetCurrent()->data.stmonom / 100))) *
+				(pow(y, ((this->curmon.GetCurrent()->data.stmonom / 10) % 10))) *
+				(pow(z, ((this->curmon.GetCurrent()->data.stmonom) % 10)));
+		}
+
+	}
+	return res;
 }
