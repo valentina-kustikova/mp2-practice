@@ -8,6 +8,8 @@ struct Monom {
 	bool operator != (const Monom& _monom) const;
 	bool operator == (const Monom& _monom) const;
 	bool operator > (const Monom& _monom) const;
+	bool operator >= (const Monom& _monom) const;
 	bool operator < (const Monom& _monom) const;
+	bool operator <= (const Monom& _monom) const;
 	Monom operator+ (const Monom& _monom);
 };
