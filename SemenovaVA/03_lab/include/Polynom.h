@@ -11,7 +11,7 @@ class Monom
 {
 public:
 	double coeff;
-	unsigned int abc; //поменять тип данных
+	unsigned int abc; 
 	// конструкторы
 	Monom(double COEFF = 0, unsigned int ABC = 0);
 	// перегрузка операций
