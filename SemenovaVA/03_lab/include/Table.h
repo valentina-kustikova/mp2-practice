@@ -2,30 +2,30 @@
 #include <iostream>
 using namespace std;
 
-//Класс Запись
+//РљР»Р°СЃСЃ Р—Р°РїРёСЃСЊ
 template <typename TData, typename TKey>
 class TabRecord
 { protected:
 	TKey key;
 	TData* data;
   public:
-	// Конструкторы, деструктор	
+	// РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂС‹, РґРµСЃС‚СЂСѓРєС‚РѕСЂ	
 	TabRecord(TKey k = {}, TData d = {}) { key = k; data = new TData(d); }
-	TabRecord(const TabRecord& T1) { key = T1.key; data = new TData(*(T1.data)); } // конструктор копирования
+	TabRecord(const TabRecord& T1) { key = T1.key; data = new TData(*(T1.data)); } // РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РєРѕРїРёСЂРѕРІР°РЅРёСЏ
 	~TabRecord() { delete data; }
-	//Методы
+	//РњРµС‚РѕРґС‹
 	TData* GetData() const { return data; }
 	TKey GetKey() const { return key; }
 	void SetKey(TKey k) { key = k; }
 	void SetData(TData* d) { delete data; data = d; }
-	// Перегрузка операций
+	// РџРµСЂРµРіСЂСѓР·РєР° РѕРїРµСЂР°С†РёР№
 	TabRecord<TData, TKey>& operator=(const TabRecord<TData, TKey>& TabR)
 	{
 		data = new TData(*(TabR.data)); key = TabR.key; return *this;
 	}
 };
 
-//Класс Таблица
+//РљР»Р°СЃСЃ РўР°Р±Р»РёС†Р°
 template <typename TData, typename TKey>
 class Table
 {
@@ -35,10 +35,10 @@ protected:
 	unsigned int dataCount;
 	int ind;
 public:
-	// Конструкторы, деструктор	
+	// РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂС‹, РґРµСЃС‚СЂСѓРєС‚РѕСЂ	
 	Table(unsigned int n = 10);
 	virtual ~Table() { delete[] rec; }
-	// Методы 
+	// РњРµС‚РѕРґС‹ 
 	virtual void Insert(const TData Data, const TKey Key) = 0;
 	virtual void Delete(const TKey Key) = 0;
 	virtual TData* Search(const TKey Key) = 0;
@@ -49,8 +49,8 @@ public:
 	bool IsEmpty() const { return dataCount == 0; }
 	int GetCount() const { return dataCount; }
 	int GetSize() const { return Size; }
-	TData* GetData() const; // для текущего элемента
-	TKey GetKey() const;  // для текущего элемента
+	TData* GetData() const; // РґР»СЏ С‚РµРєСѓС‰РµРіРѕ СЌР»РµРјРµРЅС‚Р°
+	TKey GetKey() const;  // РґР»СЏ С‚РµРєСѓС‰РµРіРѕ СЌР»РµРјРµРЅС‚Р°
 	template<class TData> friend std::ostream& operator<< (std::ostream& os, const Table<TData, TKey>& Tab)
 	{
 		unsigned int i = 0;
@@ -65,8 +65,8 @@ public:
 	}
 };
 
-// Pелизация функциий для класса таблиц
-// Конструкторы, деструктор	
+// PРµР»РёР·Р°С†РёСЏ С„СѓРЅРєС†РёРёР№ РґР»СЏ РєР»Р°СЃСЃР° С‚Р°Р±Р»РёС†
+// РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂС‹, РґРµСЃС‚СЂСѓРєС‚РѕСЂ	
 template <typename TData, typename TKey>
 Table<TData, TKey>::Table(unsigned int n)
 {
@@ -75,7 +75,7 @@ Table<TData, TKey>::Table(unsigned int n)
 	ind = -1;
 	rec = new TabRecord<TData, TKey>*[Size];
 }
-// Методы 
+// РњРµС‚РѕРґС‹ 
 template <typename TData, typename TKey>
 void Table<TData, TKey>::Reset()
 {
@@ -92,7 +92,7 @@ template <typename TData, typename TKey>
 void Table<TData, TKey>::SetNext()
 {
 	if (ind != -1) { ind++; }
-	else { throw - 1; } //Таблица пуста
+	else { throw std::exception("\tSetNext is not possible\n"); } //РўР°Р±Р»РёС†Р° РїСѓСЃС‚Р°
 	if (IsEnd()) { Reset(); }
 }
 template <typename TData, typename TKey>
@@ -104,8 +104,8 @@ TData* Table<TData, TKey>::GetData() const
 	}
 	else
 	{
-		throw - 1;
-	} //Таблица пуста
+		throw std::exception("\tGetData is not possible\n");
+	} //РўР°Р±Р»РёС†Р° РїСѓСЃС‚Р°
 }
 template <typename TData, typename TKey>
 TKey Table<TData, TKey>::GetKey() const
@@ -116,6 +116,6 @@ TKey Table<TData, TKey>::GetKey() const
 	}
 	else
 	{
-		throw - 1;
-	} //Таблица пуста
+		throw std::exception("\tGetKey is not possible\n");
+	} //РўР°Р±Р»РёС†Р° РїСѓСЃС‚Р°
 }

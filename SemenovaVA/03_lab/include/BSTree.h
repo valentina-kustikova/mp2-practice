@@ -37,7 +37,7 @@ public:
 	TrNode<TData, TKey>* FindMin(TrNode<TData, TKey>* node) const;
 	TrNode<TData, TKey>* FindNext(TrNode<TData, TKey>* node) const;
 	TrNode<TData, TKey>* FindPrev(TrNode<TData, TKey>* node) const;
-	virtual void Insert(TKey k, TData d); //виртуальные
+	virtual void Insert(TKey k, TData d); 
 	virtual void Delete(TKey k);
 	//Навигация
 	void Reset() { if (Root != nullptr) { Cur = FindMin(Root); }}
@@ -189,7 +189,7 @@ TrNode<TData, TKey>* BSTree<TData, TKey>::FindPrev(TrNode<TData, TKey>* node) co
 template <typename TData, typename TKey>
 void BSTree<TData, TKey>::Insert(TKey k, TData d)
 { 
-	if(Find(k)!=nullptr) {throw std::exception("\tRe-insertion of the element is not possible\n");}	 //повторная вставка элемента 
+	if(Find(k)!=nullptr) {throw std::exception("\tRe-insertion of the element is not possible\n");}	 
   if (Root == nullptr)				 //вставка корня
   { Root = new TrNode<TData, TKey> (k, d);
 	return;
@@ -211,7 +211,7 @@ void BSTree<TData, TKey>::Insert(TKey k, TData d)
 template <typename TData, typename TKey>
 void BSTree<TData, TKey>::Delete(TKey k)
 { TrNode<TData, TKey>* z = Find(k);
-  if(Find(k)==nullptr){throw std::exception("\tThe item being deleted is not in the table\n");} // удаление не существующего элемента 
+  if(Find(k)==nullptr){throw std::exception("\tThe item being deleted is not in the table\n");} 
   TrNode<TData, TKey>* y = nullptr, * x = nullptr;
   if ((z->Left!=nullptr) && (z->Right!=nullptr)) // y - звено для обмена
   { y = FindNext(z);  } 

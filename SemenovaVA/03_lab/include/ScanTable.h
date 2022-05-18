@@ -1,16 +1,16 @@
 #pragma once
 #include "Table.h" 
 
-//Класс Просматриваемых таблиц
+//РљР»Р°СЃСЃ РџСЂРѕСЃРјР°С‚СЂРёРІР°РµРјС‹С… С‚Р°Р±Р»РёС†
 template <typename TData, typename TKey>
 class ScanTable : public Table<TData, TKey>
 {
 public:
-    // Конструкторы, деструктор	
+    // РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂС‹, РґРµСЃС‚СЂСѓРєС‚РѕСЂ	
     ScanTable(unsigned int n = 10) : Table<TData, TKey>(n) {};
     ScanTable(const ScanTable<TData, TKey>& T1);
     ~ScanTable() {};
-    // Методы 
+    // РњРµС‚РѕРґС‹ 
     virtual void Insert(const TData Data, const TKey Key);
     virtual TData* Search(const TKey Key);
     virtual void Delete(const TKey Key);
@@ -29,8 +29,8 @@ public:
     }
 };
 
-// Pелизация функциий для класса росматриваемых таблиц
-// Конструктор
+// PРµР»РёР·Р°С†РёСЏ С„СѓРЅРєС†РёРёР№ РґР»СЏ РєР»Р°СЃСЃР° СЂРѕСЃРјР°С‚СЂРёРІР°РµРјС‹С… С‚Р°Р±Р»РёС†
+// РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ
 template <typename TData, typename TKey>
 ScanTable<TData, TKey>::ScanTable(const ScanTable<TData, TKey>& T1)
 {
@@ -43,14 +43,14 @@ ScanTable<TData, TKey>::ScanTable(const ScanTable<TData, TKey>& T1)
         rec[i] = new TabRecord<TData, TKey>(*(T1.rec[i]));
     }
 }
-// Методы 
+// РњРµС‚РѕРґС‹ 
 template <typename TData, typename TKey>
 void ScanTable<TData, TKey>::Insert(const TData Data, const TKey Key)
 {
     if (IsFull())
     {
-        throw 1;
-    } //Таблица переполнена
+        throw std::exception("\tInsert is not possible\n");
+    } //РўР°Р±Р»РёС†Р° РїРµСЂРµРїРѕР»РЅРµРЅР°
     TabRecord<TData, TKey> R(Key, Data);
     Reset();
     if ((IsEmpty()) || (Search(Key) == nullptr))
@@ -60,8 +60,8 @@ void ScanTable<TData, TKey>::Insert(const TData Data, const TKey Key)
     }
     else
     {
-        throw 1;
-    } // Повторная вставка элемента
+        throw std::exception("\tInsert is not possible\n");
+    } // РџРѕРІС‚РѕСЂРЅР°СЏ РІСЃС‚Р°РІРєР° СЌР»РµРјРµРЅС‚Р°
     Reset();
 }
 template <typename TData, typename TKey>
@@ -69,8 +69,8 @@ TData* ScanTable<TData, TKey>::Search(const TKey Key)
 {
     if (IsEmpty())
     {
-        throw 1;
-    } //таблица пуста 
+        throw std::exception("\Search is not possible\n");
+    } //С‚Р°Р±Р»РёС†Р° РїСѓСЃС‚Р° 
     Reset();
     while (!(IsEnd()) && Key != rec[ind]->GetKey())
     {
@@ -90,8 +90,8 @@ void ScanTable<TData, TKey>::Delete(TKey Key)
 {
     if (Search(Key) == nullptr)
     {
-        throw 1;
-    } // элемента для удаления нет в таблице
+        throw  std::exception("\Delete is not possible\n");
+    } // СЌР»РµРјРµРЅС‚Р° РґР»СЏ СѓРґР°Р»РµРЅРёСЏ РЅРµС‚ РІ С‚Р°Р±Р»РёС†Рµ
     else
     {
         rec[ind] = new TabRecord<TData, TKey>(*rec[dataCount - 1]);

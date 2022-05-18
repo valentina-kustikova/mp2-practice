@@ -11,10 +11,10 @@ class Monom
 {
 public:
 	double coeff;
-	unsigned int abc; //поменять тип данных
-	// конструкторы
+	unsigned int abc; //РїРѕРјРµРЅСЏС‚СЊ С‚РёРї РґР°РЅРЅС‹С…
+	// РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂС‹
 	Monom(double COEFF = 0, unsigned int ABC = 0);
-	// перегрузка операций
+	// РїРµСЂРµРіСЂСѓР·РєР° РѕРїРµСЂР°С†РёР№
 	bool operator< (const Monom& m) const { return (abc < m.abc); }
 	bool operator> (const Monom& m) const { return (abc > m.abc); }
 	bool operator==(const Monom& m) const { return (abc == m.abc && coeff == m.coeff); }
@@ -27,16 +27,15 @@ class Polynom
 protected:
 	List<Monom> M1;
 public:
-	// Конструкторы
+	// РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂС‹
 	Polynom();
-	// Polynom(int n, const int m[][2]); 
 	Polynom(string S);
-	Polynom(const Polynom& P) : M1(P.M1) {};  // конструктор копирования
-	//Методы
+	Polynom(const Polynom& P) : M1(P.M1) {};  // РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РєРѕРїРёСЂРѕРІР°РЅРёСЏ
+	//РњРµС‚РѕРґС‹
 	void Clean();
-	double Сalculate();
+	double РЎalculate();
 	string Re() const;
-	// Перегрузка операций
+	// РџРµСЂРµРіСЂСѓР·РєР° РѕРїРµСЂР°С†РёР№
 	Polynom operator+(const Monom& monom) const;
 	Polynom operator+ (const Polynom& P) const;
 	Polynom operator- (const Polynom& P) const { return (*this + P * (-1.0)); }
@@ -45,44 +44,22 @@ public:
 	Polynom operator* (const Monom& monom) const;
 	bool operator== (const Polynom& POL) const { return M1 == POL.M1; }
 	bool operator!= (const Polynom& POL) const { return M1 != POL.M1; }
-	//Перегрузка ввода и вывода
+	//РџРµСЂРµРіСЂСѓР·РєР° РІРІРѕРґР° Рё РІС‹РІРѕРґР°
 	friend ostream& operator<< (ostream& os, const Polynom& P)
 	{
 		os << P.Re();
 		return os;
 	}
 	friend istream& operator>>(istream& in, Polynom& P)
-	{ // Ввод строкой
-		string S;
+	{ 	string S;
 		cout << "\t";
 		in >> S;
 		P = Polynom(S);
-		/*
-		// Последовательный ввод мономов
-		int n = 0, a, b, c, d;
-		cout << "\n\tSpecify  the number of monoms to be entered.\n\tInput: ";
-		in >> n; system("cls");
-		if(n!=0)
-		{cout << "\n\tEnter the following monomial of the polynomial: sequentially enter first the coefficient and then the degrees for the variables x,y,z. \n\t!!! Note that the degrees must be in the diopozone from 0 to 9 !!! \n\n\tInput: ";
-		in >> a >> b >> c >> d;
-		if ((b > 10)||(c >10)||(d>10)|| (b < 0) || (c < 0) || (d < 0)){ throw 1; }
-		Monom M(a, b * 100 + c * 10 + d);
-		P = P + M;
-		system("cls");}
-		for (int i = 1; i < n; i++)
-		{ cout  << "\n\t\tALREADY ENTERED: " << P << "\n\n\tEnter the following monomial of the polynomial : sequentially enter first the coefficientand then the degrees for the variables x, y, z. \n\t!!!Note that the degrees must be in the diopozone from 0 to 9 !!!\n\n\tInput: ";
-		  in >> a >> b >> c >> d;
-		  if ((b > 10) || (c > 10) || (d > 10) || (b < 0) || (c < 0) || (d < 0)) { throw 1; }
-		  Monom M2(a, b * 100 + c * 10 + d);
-		  P = P + M2;
-		  system("cls");
-		}
-		cout << "\n\t\t ENTERED: " << P;*/
 		return in;
 	}
 };
 
-// Pелизации для монома
+// PРµР»РёР·Р°С†РёРё РґР»СЏ РјРѕРЅРѕРјР°
 Monom::Monom(double COEFF, unsigned int ABC)
 {
 	if (ABC > 999) { throw 1; }
@@ -90,29 +67,13 @@ Monom::Monom(double COEFF, unsigned int ABC)
 	abc = ABC;
 }
 
-// Pелизации для полинома
+// PРµР»РёР·Р°С†РёРё РґР»СЏ РїРѕР»РёРЅРѕРјР°
 Polynom::Polynom()
-{ //создание фиктивного звена
-	Monom tmp;
+{ 	Monom tmp;
 	tmp.coeff = 0;
 	tmp.abc = -1;
 	M1.InsertToTail(tmp);
 }
-/*Polynom::Polynom(int n, const int M[][2])
-{ //создание фиктивного звена
-	Monom tmp;
-	tmp.coeff = 0;
-	tmp.abc = -1;
-	M1.InsertToTail(tmp);
-	//прибавление остальных мономов
-	for (int i = 0; i < n; i++)
-	{
-		if ((M[i][0] > 10) || (M[i][0] < 0)) { throw 1; }
-		tmp.coeff = M[i][0];
-		tmp.abc = M[i][1];
-		*this = *this + tmp;
-	}
-}*/
 Polynom::Polynom(string S)
 {
 	string M, P = S;
@@ -143,7 +104,7 @@ Polynom::Polynom(string S)
 				M.erase(0, 1);
 			}
 		}
-		if (isdigit(M[0])) //isdigit - если десятичное число
+		if (isdigit(M[0])) //isdigit - РµСЃР»Рё РґРµСЃСЏС‚РёС‡РЅРѕРµ С‡РёСЃР»Рѕ
 		{
 			k = 0;
 			while ((isdigit(M[k])) || (M[k] == '.'))
@@ -180,7 +141,7 @@ void Polynom::Clean()
 	tmp.abc = -1;
 	M1.InsertToTail(tmp);
 }
-double Polynom::Сalculate()
+double Polynom::РЎalculate()
 {
 	double res = 0, x, y, z;
 	int t;
@@ -188,7 +149,7 @@ double Polynom::Сalculate()
 	cin >> x >> y >> z;
 	List<Monom>  P2 = M1;
 	P2.Reset();
-	P2.SetNext(); // пропускаем фиктивное звено
+	P2.SetNext(); 
 
 	while (!P2.IsEnd())
 	{
@@ -209,23 +170,23 @@ string Polynom::Re() const
 	while (!(tmp.M1.IsEnd()))
 	{
 		Mon = tmp.M1.GetIT()->data;
-		if (Mon.data.coeff > 0 && tmp.M1.GetIT() != First) // вывод + между мономов
+		if (Mon.data.coeff > 0 && tmp.M1.GetIT() != First) // РІС‹РІРѕРґ + РјРµР¶РґСѓ РјРѕРЅРѕРјРѕРІ
 		{
 			S = S + "+";
 		}
-		if (Mon.data.coeff != 1 && Mon.data.coeff != -1 && Mon.data.coeff != 0) // вывод коэффицента
+		if (Mon.data.coeff != 1 && Mon.data.coeff != -1 && Mon.data.coeff != 0) // РІС‹РІРѕРґ РєРѕСЌС„С„РёС†РµРЅС‚Р°
 		{
 			std::stringstream ss; ss << Mon.data.coeff; S = S + ss.str(); if (Mon.data.abc != 0) { S = S + "*"; }
 		}
 		else
 		{
-			if (Mon.data.coeff == -1 && Mon.data.abc != 0) // вывод (-1)xyz
+			if (Mon.data.coeff == -1 && Mon.data.abc != 0) // РІС‹РІРѕРґ (-1)xyz
 			{
 				S = S + " - ";
 			}
 			else
 			{
-				if ((Mon.data.coeff == 1 || Mon.data.coeff == -1) && Mon.data.abc == 0) // вывод 1 и (-1)
+				if ((Mon.data.coeff == 1 || Mon.data.coeff == -1) && Mon.data.abc == 0) // РІС‹РІРѕРґ 1 Рё (-1)
 				{
 					std::stringstream ss; ss << Mon.data.coeff; S = S + ss.str();
 				}
@@ -254,20 +215,20 @@ Polynom Polynom::operator+(const Monom& MOL) const
 	Polynom P1;
 	Node <Monom>* T;
 	int f = 0;
-	P1.M1 = M1; // присваиваем текущий список
-	P1.M1.Reset(); // указатель на голову
+	P1.M1 = M1; // РїСЂРёСЃРІР°РёРІР°РµРј С‚РµРєСѓС‰РёР№ СЃРїРёСЃРѕРє
+	P1.M1.Reset(); // СѓРєР°Р·Р°С‚РµР»СЊ РЅР° РіРѕР»РѕРІСѓ
 	T = P1.M1.GetIT();
-	P1.M1.SetNext(); // пропускаем фиктивное звено
-	while (!P1.M1.IsEnd()) // пока списки не закончиличь идем
+	P1.M1.SetNext(); 
+	while (!P1.M1.IsEnd()) // РїРѕРєР° СЃРїРёСЃРєРё РЅРµ Р·Р°РєРѕРЅС‡РёР»РёС‡СЊ РёРґРµРј
 	{
-		if (P1.M1.GetIT()->data.abc > MOL.abc) //если степень больше, то идем дальше по списку
+		if (P1.M1.GetIT()->data.abc > MOL.abc) //РµСЃР»Рё СЃС‚РµРїРµРЅСЊ Р±РѕР»СЊС€Рµ, С‚Рѕ РёРґРµРј РґР°Р»СЊС€Рµ РїРѕ СЃРїРёСЃРєСѓ
 		{
 			T = P1.M1.GetIT();
 			P1.M1.SetNext();
 		}
 		else
 		{
-			if ((P1.M1.GetIT()->data.abc < MOL.abc)) // ecли степень меньше, то вставляем моном
+			if ((P1.M1.GetIT()->data.abc < MOL.abc)) // ecР»Рё СЃС‚РµРїРµРЅСЊ РјРµРЅСЊС€Рµ, С‚Рѕ РІСЃС‚Р°РІР»СЏРµРј РјРѕРЅРѕРј
 			{
 				if (MOL.coeff != 0)
 				{
@@ -276,10 +237,10 @@ Polynom Polynom::operator+(const Monom& MOL) const
 					f = 1;
 				}
 			}
-			else // случай равенства коэффицентов
+			else // СЃР»СѓС‡Р°Р№ СЂР°РІРµРЅСЃС‚РІР° РєРѕСЌС„С„РёС†РµРЅС‚РѕРІ
 			{
 				double cf = P1.M1.GetIT()->data.coeff + MOL.coeff;
-				if (cf) // ecли не ноль
+				if (cf) // ecР»Рё РЅРµ РЅРѕР»СЊ
 				{
 					P1.M1.GetIT()->data.coeff = cf;
 					P1.M1.End();
@@ -294,7 +255,7 @@ Polynom Polynom::operator+(const Monom& MOL) const
 			}
 		}
 	}
-	//если полином пуст или вставка в конец, то просто вставить звено
+	//РµСЃР»Рё РїРѕР»РёРЅРѕРј РїСѓСЃС‚ РёР»Рё РІСЃС‚Р°РІРєР° РІ РєРѕРЅРµС†, С‚Рѕ РїСЂРѕСЃС‚Рѕ РІСЃС‚Р°РІРёС‚СЊ Р·РІРµРЅРѕ
 	if ((f == 0) && (MOL.coeff != 0))
 	{
 		P1.M1.InsertAfter(T, MOL);
@@ -307,7 +268,7 @@ Polynom Polynom::operator+(const Polynom& POL) const
 	P1.M1 = M1;
 	List<Monom>  P2 = POL.M1;
 	P2.Reset();
-	P2.SetNext(); // пропускаем фиктивное звено
+	P2.SetNext();
 
 	while (!P2.IsEnd())
 	{
@@ -359,7 +320,7 @@ Polynom Polynom::operator* (const Monom& MOL) const
 		}
 		else
 		{
-			throw 1;
+			throw std::exception("\tCreating polynomials is not possible\n");
 		}
 	}
 	return res;
@@ -371,7 +332,7 @@ Polynom Polynom::operator*(const Polynom& POL) const
 	P1.M1 = M1;
 	List<Monom>  P2 = POL.M1;
 	P2.Reset();
-	P2.SetNext(); // пропускаем фиктивное звено
+	P2.SetNext(); 
 	while (!P2.IsEnd())
 	{
 		r = r + P1 * P2.GetIT()->data;

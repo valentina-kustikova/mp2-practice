@@ -1,21 +1,21 @@
 #pragma once
 #include "Table.h"
 
-// Класса Хеш-таблица
+// РљР»Р°СЃСЃР° РҐРµС€-С‚Р°Р±Р»РёС†Р°
 template <typename TData, typename TKey>
 class HashTable : public Table<TData, TKey>
 {
 protected:
-	char* mark;								// 0 пусто, 1 заполнена, -1 удалена
+	char* mark;								// 0 РїСѓСЃС‚Рѕ, 1 Р·Р°РїРѕР»РЅРµРЅР°, -1 СѓРґР°Р»РµРЅР°
 	int HashFunc(const TKey& key) const;
 	int HashFunc2(int in) const;
 	unsigned int step;
 public:
-	// Конструкторы, деструктор	
+	// РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂС‹, РґРµСЃС‚СЂСѓРєС‚РѕСЂ	
 	HashTable(unsigned int n = 10, unsigned int step1 = 1);
 	HashTable(const HashTable<TData, TKey>& T1);
 	~HashTable();
-	// Методы
+	// РњРµС‚РѕРґС‹
 	virtual void Insert(const TData Data, const TKey Key);
 	virtual void Delete(const TKey Key);
 	virtual TData* Search(const TKey Key);
@@ -59,8 +59,8 @@ public:
 	}
 };
 
-// Pелизация функциий для класса Хеш-таблиц
-// Конструкторы, деструктор	
+// PРµР»РёР·Р°С†РёСЏ С„СѓРЅРєС†РёРёР№ РґР»СЏ РєР»Р°СЃСЃР° РҐРµС€-С‚Р°Р±Р»РёС†
+// РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂС‹, РґРµСЃС‚СЂСѓРєС‚РѕСЂ	
 template <typename TData, typename TKey>
 HashTable<TData, TKey>::HashTable(unsigned int n, unsigned int step1) : Table(n)
 {
@@ -94,7 +94,7 @@ HashTable<TData, TKey>::~HashTable()
 {
 	delete[] mark;
 }
-// Методы 
+// РњРµС‚РѕРґС‹ 
 template <typename TData, typename TKey>
 int HashTable<TData, TKey>::HashFunc(const TKey& key) const
 {
@@ -146,8 +146,8 @@ void HashTable<TData, TKey>::Insert(const TData data1, const TKey key1)
 {
 	if (IsFull())
 	{
-		throw 1;
-	} //Таблица переполнена
+		throw  std::exception("\tInsertion of the element is not possible\n");
+	} 
 	ind = HashFunc(key1);
 	if (mark[ind] != 1)
 	{
@@ -170,7 +170,7 @@ void HashTable<TData, TKey>::Insert(const TData data1, const TKey key1)
 		}
 		else
 		{
-			throw 1;
+			throw std::exception("\tInsertion of the element is not possible\n");
 		}
 	}
 }
@@ -204,7 +204,7 @@ TData* HashTable<TData, TKey>::Search(const TKey key1)
 	}
 	else
 	{
-		throw 1;
+		throw std::exception("\Search is not possible\n");
 	}
 }
 template <typename TData, typename TKey>
@@ -219,6 +219,6 @@ void HashTable<TData, TKey>::Delete(const TKey key1)
 	}
 	else
 	{
-		throw 1;
+		throw std::exception("\Delete is not possible\n");;
 	}
 }

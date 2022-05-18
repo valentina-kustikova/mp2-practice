@@ -26,15 +26,15 @@ class  AVLTree : public BSTree<TData, TKey>
   // Конструкторы
   AVLTree() :BSTree<TData, TKey>() {}                                       
   //Методы
-  void Insert(TKey k, TData d);   //виртуальные               
-  void Delete(TKey k);
+  virtual void Insert(TKey k, TData d);
+  virtual void Delete(TKey k);
 };
 
 // Pелизация функциий для класса АВЛ дерево
 template <typename TData, typename TKey>
 void AVLTree<TData, TKey>::Insert(TKey k, TData d) 
 { 
-if(Find(k)!=nullptr) { throw std::exception("\tRe-insertion of the element is not possible\n"); } //повторная ввставка элемента 
+if(Find(k)!=nullptr) { throw std::exception("\tRe-insertion of the element is not possible\n"); } 
    
 
   Insert((PTBalanceNode&)Root, k, d); 
@@ -97,10 +97,10 @@ template <typename TData, typename TKey>
 int AVLTree<TData, TKey>::LeftBal(PTBalanceNode& N1) 
 { switch (N1->balance) 
   { case 1: N1->balance=0;   // в поддереве был перевес справа
-           break;                // устанавливается равновесие
+           break;            // устанавливается равновесие
     case 0: N1->balance=-1;  // в поддереве было равновесие
-            break;               // устанавливается перевес слева
-    case -1:                     // в поддереве был перевес слева - необходима балансировка
+            break;           // устанавливается перевес слева
+    case -1:                 // в поддереве был перевес слева - необходима балансировка
            PTBalanceNode p1;
            PTBalanceNode p2;
            PTBalanceNode p3;
@@ -152,9 +152,9 @@ template <typename TData, typename TKey>
 int AVLTree<TData, TKey>::RightBal(PTBalanceNode& N1) 
 { switch (N1->balance)
   { case -1: N1->balance=0;        // в поддереве был перевес слева
-             break;                    // устанавливается равновесие
+             break;                // устанавливается равновесие
     case 0:  N1->balance=1;        // в поддереве было равновесие
-             break;                    // устанавливается перевес справа
+             break;                // устанавливается перевес справа
     case 1:  // в поддереве был перевес справа - необходима балансировка
              PTBalanceNode p1;
              PTBalanceNode p2;

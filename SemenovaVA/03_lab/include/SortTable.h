@@ -1,18 +1,18 @@
 #include "Table.h"
 
-//Класс упорядоченные таблицы
+//РљР»Р°СЃСЃ СѓРїРѕСЂСЏРґРѕС‡РµРЅРЅС‹Рµ С‚Р°Р±Р»РёС†С‹
 template <typename TData, typename TKey>
 class SortTable : public ScanTable<TData, TKey>
 {
 protected:
-	void SortData(); // метод сортировки записей по ключам
+	void SortData(); // РјРµС‚РѕРґ СЃРѕСЂС‚РёСЂРѕРІРєРё Р·Р°РїРёСЃРµР№ РїРѕ РєР»СЋС‡Р°Рј
 public:
-	// Конструкторы, деструктор	
+	// РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂС‹, РґРµСЃС‚СЂСѓРєС‚РѕСЂ	
 	SortTable(unsigned int n = 10) : ScanTable<TData, TKey>(n) {};
 	SortTable(const SortTable<TData, TKey>& T1);
 	SortTable(const ScanTable<TData, TKey>& T1);
 	~SortTable() {};
-	// Методы 
+	// РњРµС‚РѕРґС‹ 
 	virtual void Insert(const TData data, const TKey key);
 	virtual TData* Search(const TKey key);
 	virtual void Delete(const TKey key);
@@ -31,8 +31,8 @@ public:
 	}
 };
 
-// Pелизация функциий для класса упорядоченных таблиц
-// Конструктор
+// PРµР»РёР·Р°С†РёСЏ С„СѓРЅРєС†РёРёР№ РґР»СЏ РєР»Р°СЃСЃР° СѓРїРѕСЂСЏРґРѕС‡РµРЅРЅС‹С… С‚Р°Р±Р»РёС†
+// РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ
 template <typename TData, typename TKey>
 SortTable<TData, TKey>::SortTable(const SortTable<TData, TKey>& T1)
 {
@@ -58,19 +58,19 @@ SortTable<TData, TKey>::SortTable(const ScanTable<TData, TKey>& T1)
 	}
 	SortData();
 }
-// Методы 
+// РњРµС‚РѕРґС‹ 
 template <typename TData, typename TKey>
 void SortTable<TData, TKey>::Insert(const TData data, const TKey key)
 {
-	if (IsFull()) { throw 1; } //Таблица переполнена
+	if (IsFull()) { throw std::exception("\Insert is not possible\n"); } //РўР°Р±Р»РёС†Р° РїРµСЂРµРїРѕР»РЅРµРЅР°
 	TabRecord<TData, TKey> R(key, data);
 	Reset();
 	while (!(IsEnd()) && key >= rec[ind]->GetKey())
 	{
 		if (rec[ind]->GetKey() == key)
 		{
-			throw - 1;
-		} //Ключ уже есть в таблице
+			throw std::exception("\Insert is not possible\n");
+		} //РљР»СЋС‡ СѓР¶Рµ РµСЃС‚СЊ РІ С‚Р°Р±Р»РёС†Рµ
 		ind++;
 	}
 	if (IsEmpty())
@@ -118,7 +118,7 @@ TData* SortTable<TData, TKey>::Search(const TKey key)
 	}
 	else
 	{
-		throw 1;
+		throw std::exception("\Search is not possible\n");
 	}
 	return tmp;
 }
@@ -128,8 +128,8 @@ void SortTable<TData, TKey>::Delete(const TKey key)
 	Reset();
 	if (Search(key) == nullptr)
 	{
-		throw 1;
-	} // элемента для удаления нет в таблице
+		throw std::exception("\Delete is not possible\n");
+	} // СЌР»РµРјРµРЅС‚Р° РґР»СЏ СѓРґР°Р»РµРЅРёСЏ РЅРµС‚ РІ С‚Р°Р±Р»РёС†Рµ
 	else
 	{
 		if (dataCount > 1)

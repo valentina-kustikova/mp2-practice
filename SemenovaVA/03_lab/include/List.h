@@ -1,61 +1,61 @@
 #pragma once
 #include <iostream>
 
-// Звено
+// Р—РІРµРЅРѕ
 template <typename TData>
 class  Node
 {
 public:
 	TData data;
 	Node<TData>* next;
-	// конструкторы
+	// РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂС‹
 	Node(TData D = NULL, Node<TData>* N = nullptr) { data = D; next = N; }
-	Node(Node<TData>& N2) { data = N2.data; next = nullptr; } // конструктор копирования
-	//перегрузка операций
+	Node(Node<TData>& N2) { data = N2.data; next = nullptr; } // РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РєРѕРїРёСЂРѕРІР°РЅРёСЏ
+	//РїРµСЂРµРіСЂСѓР·РєР° РѕРїРµСЂР°С†РёР№
 	bool operator<   (const Node<TData>& N) const { return (data < N.data); }
 	bool operator>   (const Node<TData>& N) const { return (data > N.data); }
 	bool operator!=  (const Node<TData>& N) const { return !(*this == N); }
 	bool operator==  (const Node<TData>& N) const { return (data == N.data && next == N.next); }
 };
 
-// Список
+// РЎРїРёСЃРѕРє
 template<typename TData>
 class List
 {
 protected:
 	Node<TData>* head;
-	Node<TData>* it; // текущий элемент (итератор)
+	Node<TData>* it; // С‚РµРєСѓС‰РёР№ СЌР»РµРјРµРЅС‚ 
 public:
-	// Конструкторы, деструктор	
+	// РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂС‹, РґРµСЃС‚СЂСѓРєС‚РѕСЂ	
 	List();
-	List(const List<TData>& L2);  // конструктор копирования
+	List(const List<TData>& L2);  // РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РєРѕРїРёСЂРѕРІР°РЅРёСЏ
 	~List();
-	// Методы 
+	// РњРµС‚РѕРґС‹ 
 	void InsertAfter(Node<TData>* N, TData Data);
 	void InsertToTail(TData Data);
 	void InsertToHead(const TData& Data);
 	void Clean();
 	void Delete(Node<TData>* N);
 	void Delete(Node<TData>* start, Node<TData>* finish);
-	void Inverse(); // инвертировать список
-	void Merge(const Node<TData>* start, const List<TData>& l); // добавить список2 после итератора
+	void Inverse(); // РёРЅРІРµСЂС‚РёСЂРѕРІР°С‚СЊ СЃРїРёСЃРѕРє
+	void Merge(const Node<TData>* start, const List<TData>& l); // РґРѕР±Р°РІРёС‚СЊ СЃРїРёСЃРѕРє2 РїРѕСЃР»Рµ РёС‚РµСЂР°С‚РѕСЂР°
 	Node<TData>* Search(const TData& d);
 	TData ViewHead() { return head->data; }
-	int GetSize(); // узнать число звеньев в списке
-	//Операции с указателем на текущий элемент
+	int GetSize(); // СѓР·РЅР°С‚СЊ С‡РёСЃР»Рѕ Р·РІРµРЅСЊРµРІ РІ СЃРїРёСЃРєРµ
+	//РћРїРµСЂР°С†РёРё СЃ СѓРєР°Р·Р°С‚РµР»РµРј РЅР° С‚РµРєСѓС‰РёР№ СЌР»РµРјРµРЅС‚
 	Node<TData>* GetIT() const { return it; }
 	void SetNext() { it = it->next; }
 	void Reset() { it = head->next; }
 	void End() { it = head; }
 	bool IsEnd() const { return it == head; }
-	// Перегрузка операций
+	// РџРµСЂРµРіСЂСѓР·РєР° РѕРїРµСЂР°С†РёР№
 	List<TData>& operator=(const List<TData>& L2);
 	bool operator==(const List<TData>& L) const;
 	bool operator!=(const List<TData>& L) const { return !(*this == L); }
 };
 
-// Pелизация функциий для класса списка
-// Конструкторы, деструктор	
+// PРµР»РёР·Р°С†РёСЏ С„СѓРЅРєС†РёРёР№ РґР»СЏ РєР»Р°СЃСЃР° СЃРїРёСЃРєР°
+// РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂС‹, РґРµСЃС‚СЂСѓРєС‚РѕСЂ	
 template <typename TData>
 List<TData>::List()
 {
@@ -64,7 +64,7 @@ List<TData>::List()
 	head->next = head;
 	it = head;
 }
-template <typename TData> // конструктор копирования
+template <typename TData> // РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РєРѕРїРёСЂРѕРІР°РЅРёСЏ
 List<TData>::List(const List<TData>& L2)
 {
 	Node<TData>* it2 = L2.head;
@@ -85,7 +85,7 @@ List<TData>::~List()
 	Clean();
 	delete head;
 }
-// Перегрузка операций
+// РџРµСЂРµРіСЂСѓР·РєР° РѕРїРµСЂР°С†РёР№
 template <class TData>
 List<TData>& List<TData>::operator=(const List<TData>& L2)
 {
@@ -122,7 +122,7 @@ bool List<TData>::operator==(const List<TData>& L) const
 	}
 	return flag;
 }
-// Методы 
+// РњРµС‚РѕРґС‹ 
 template <class TData>
 void List<TData>::InsertAfter(Node<TData>* N, TData Data)
 {

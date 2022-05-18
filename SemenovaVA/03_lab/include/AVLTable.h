@@ -58,7 +58,7 @@ TData* AVLTable<TData, TKey>::Search(const TKey Key)
     else
     {
         throw std::exception("\tSearch in an empty table is not possible\n");
-    } //Таблица пуста
+    } 
 
 
 }
@@ -89,7 +89,7 @@ void AVLTable<TData, TKey>::Reset()
     else
     {
         throw std::exception("Reset in an empty table is not possible");
-    } //Таблица пуста
+    } 
    
    
 }
@@ -106,7 +106,7 @@ void AVLTable<TData, TKey>::SetNext()
     else
     {
         throw std::exception("SetNext in an empty table is not possible");
-    } //Таблица пуста
+    } 
     
     
 }
@@ -122,7 +122,7 @@ TData* AVLTable<TData, TKey>::GetData() const
     else
     {
         throw std::exception("GetData in an empty table is not possible");
-    } //Таблица пуста
+    } 
 
 
 }
@@ -138,7 +138,7 @@ TKey  AVLTable<TData, TKey>::GetKey() const
     else
     {
         throw std::exception("GetKey in an empty table is not possible");
-    } //Таблица пуста
+    } 
    
 
 }
