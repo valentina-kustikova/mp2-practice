@@ -1,28 +1,6 @@
 #pragma once
 #include "BinarySearchTree.h"
 
-struct Trunk
-{
-	Trunk* prev;
-	std::string str;
-
-	Trunk(Trunk* prev, std::string str)
-	{
-		this->prev = prev;
-		this->str = str;
-	}
-};
-
-// Helper function to print branches of the binary tree
-inline void ShowTrunks(Trunk* p)
-{
-	if (p != nullptr)
-	{
-		ShowTrunks(p->prev);
-		std::cout << p->str;
-	}
-}
-
 template <class TKey, class TData>
 struct BalanceTreeNode : public TreeNode<TKey, TData>
 {
@@ -189,38 +167,6 @@ protected:
 		}
 		return x;
 	}
-
-	void printTree(BalanceTreeNode<TKey, TData>* node, Trunk* prev, bool isLeft)
-	{
-		if (node != nullptr)
-		{
-			std::string prev_str = "    ";
-			Trunk* trunk = new Trunk(prev, prev_str);
-			printTree((BalanceTreeNode<TKey, TData>*)(node->right), trunk, true);
-			if (!prev)
-			{
-				trunk->str = "---";
-			}
-			else if (isLeft)
-			{
-				trunk->str = ".---";
-				prev_str = "   |";
-			}
-			else
-			{
-				trunk->str = "`---";
-				prev->str = prev_str;
-			}
-			ShowTrunks(trunk);
-			std::cout << node->key << "(" << node->balance << ")" << std::endl;
-			if (prev)
-			{
-				prev->str = prev_str;
-			}
-			trunk->str = "   |";
-			printTree((BalanceTreeNode<TKey, TData>*)(node->left), trunk, false);
-		}
-	}
 public:
 	virtual bool Insert(const TKey& key, const TData& data) override
 	{
@@ -294,10 +240,5 @@ public:
 		}
 		else
 			return false;
-	}
-
-	void Print()
-	{
-		printTree((BalanceTreeNode<TKey, TData>*)(this->root), nullptr, false);
 	}
 };

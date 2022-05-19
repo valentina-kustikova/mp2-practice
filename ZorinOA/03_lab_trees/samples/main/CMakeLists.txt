@@ -1,5 +1,5 @@
 # Set target name
-set(target ${03_LAB_TABLES_SAMPLE})
+set(target ${03_LAB_TREES_SAMPLE})
 
 # Get list of header and source files
 FILE(GLOB hdrs "*.h")
@@ -10,10 +10,10 @@ FILE(GLOB srcs "*.cpp")
 ADD_EXECUTABLE(${target} ${srcs} ${hdrs})
 
 # Add a dependency between top-level targets
-ADD_DEPENDENCIES(${target} ${03_LAB_TABLES_LIBRARY})
+ADD_DEPENDENCIES(${target} ${03_LAB_TREES_LIBRARY})
 
 # Link a target to given libraries
-TARGET_LINK_LIBRARIES(${target} ${03_LAB_TABLES_LIBRARY})
+TARGET_LINK_LIBRARIES(${target} ${03_LAB_TREES_LIBRARY})
 
 # Specify include directories to use when compiling a target
-TARGET_INCLUDE_DIRECTORIES(${target} PRIVATE ${03_LAB_TABLES_INCLUDE})
+TARGET_INCLUDE_DIRECTORIES(${target} PRIVATE ${03_LAB_TREES_INCLUDE})

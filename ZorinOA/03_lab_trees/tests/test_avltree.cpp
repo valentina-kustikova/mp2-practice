@@ -171,14 +171,10 @@ TEST(AVLTree, correct_balancing_small_left_rotate_with_root)
 	T.Insert(50, ' ');
 	T.Insert(30, ' ');
 	T.Insert(70, ' ');
-	//T.Insert(10, ' ');
-	//T.Insert(40, ' ');
 	T.Insert(60, ' ');
 	T.Insert(80, ' ');
 
-	//T.Print();
 	T.Insert(75, ' ');
-	//T.Print();
 
 	TreeNode<int, char>* node = T.FindMin()->parent;
 	EXPECT_EQ(50, node->key);
@@ -200,12 +196,8 @@ TEST(AVLTree, correct_balancing_small_right_rotate_with_root)
 	T.Insert(70, ' ');
 	T.Insert(10, ' ');
 	T.Insert(40, ' ');
-	//T.Insert(60, ' ');
-	//T.Insert(80, ' ');
 
-	//T.Print();
 	T.Insert(5, ' ');
-	//T.Print();
 
 	TreeNode<int, char>* node = T.FindMin()->parent;
 	EXPECT_EQ(10, node->key);
@@ -225,14 +217,10 @@ TEST(AVLTree, correct_balancing_big_left_rotate_with_root)
 	T.Insert(50, ' ');
 	T.Insert(30, ' ');
 	T.Insert(70, ' ');
-	//T.Insert(10, ' ');
-	//T.Insert(40, ' ');
 	T.Insert(60, ' ');
 	T.Insert(80, ' ');
 
-	//T.Print();
 	T.Insert(55, ' ');
-	//T.Print();
 
 	TreeNode<int, char>* node = T.FindMin()->parent;
 	EXPECT_EQ(50, node->key);
@@ -254,12 +242,8 @@ TEST(AVLTree, correct_balancing_big_right_rotate_with_root)
 	T.Insert(70, ' ');
 	T.Insert(10, ' ');
 	T.Insert(40, ' ');
-	//T.Insert(60, ' ');
-	//T.Insert(80, ' ');
 
-	//T.Print();
 	T.Insert(45, ' ');
-	//T.Print();
 
 	TreeNode<int, char>* node = T.FindMin()->parent;
 	EXPECT_EQ(30, node->key);
@@ -286,9 +270,7 @@ TEST(AVLTree, correct_balancing_small_right_rotate)
 	T.Insert(100, ' ');
 	T.Insert(400, ' ');
 
-	//T.Print();
 	T.Insert(99, ' ');
-	//T.Print();
 
 	TreeNode<int, char>* node = T.FindMin()->parent;
 	EXPECT_EQ(30, node->key);
@@ -320,9 +302,7 @@ TEST(AVLTree, correct_balancing_small_left_rotate)
 	T.Insert(6, ' ');
 	T.Insert(9, ' ');
 
-	//T.Print();
 	T.Insert(8, ' ');
-	//T.Print();
 
 	TreeNode<int, char>* node = T.FindMin()->parent;
 	EXPECT_EQ(5, node->key);
@@ -356,9 +336,7 @@ TEST(AVLTree, correct_balancing_big_left_rotate)
 	T.Insert(9, ' ');
 	T.Insert(11, ' ');
 
-	//T.Print();
 	T.Insert(8, ' ');
-	//T.Print();
 
 	TreeNode<int, char>* node = T.FindMin()->parent;
 	EXPECT_EQ(5, node->key);
@@ -392,9 +370,7 @@ TEST(AVLTree, correct_balancing_big_right_rotate)
 	T.Insert(100, ' ');
 	T.Insert(400, ' ');
 
-	//T.Print();
 	T.Insert(450, ' ');
-	//T.Print();
 
 	TreeNode<int, char>* node = T.FindMin()->parent;
 	EXPECT_EQ(30, node->key);
@@ -411,6 +387,55 @@ TEST(AVLTree, correct_balancing_big_right_rotate)
 	node = node->right;
 	EXPECT_EQ(450, node->left->key);
 	EXPECT_EQ(700, node->right->key);
+}
+
+TEST(AVLTRee, correct_balancing_small_rotate_on_remove_with_root)
+{
+	AVLTree<int, char> T;
+	T.Insert(50, ' ');
+	T.Insert(10, ' ');
+	T.Insert(90, ' ');
+	T.Insert(80, ' ');
+	T.Insert(100, ' ');
+
+	T.Delete(10);
+
+	TreeNode<int, char>* node = T.FindMin();
+	EXPECT_EQ(80, node->right->key);
+	node = node->parent;
+	EXPECT_EQ(90, node->key);
+	EXPECT_EQ(50, node->left->key);
+	EXPECT_EQ(100, node->right->key);
+}
+
+TEST(AVLTRee, correct_balancing_small_rotate_on_remove)
+{
+	AVLTree<int, char> T;
+	T.Insert(5, ' ');
+	T.Insert(3, ' ');
+	T.Insert(50, ' ');
+	T.Insert(10, ' ');
+	T.Insert(1, ' ');
+	T.Insert(4, ' ');
+	T.Insert(90, ' ');
+	T.Insert(80, ' ');
+	T.Insert(100, ' ');
+
+	T.Delete(10);
+
+	TreeNode<int, char>* node = T.FindMin()->parent;
+	EXPECT_EQ(3, node->key);
+	EXPECT_EQ(1, node->left->key);
+	EXPECT_EQ(4, node->right->key);
+	node = node->parent;
+	EXPECT_EQ(5, node->key);
+	EXPECT_EQ(3, node->left->key);
+	EXPECT_EQ(90, node->right->key);
+	node = node->right;
+	EXPECT_EQ(90, node->key);
+	EXPECT_EQ(50, node->left->key);
+	EXPECT_EQ(80, node->left->right->key);
+	EXPECT_EQ(100, node->right->key);
 }
 
 TEST(AVLTree, correct_tree_big_size)
@@ -443,7 +468,6 @@ TEST(AVLTree, correct_tree_big_size)
 	T.Insert(5, ' ');
 	T.Delete(90);
 	T.Delete(22);
-	//T.Print();
 	T.Insert(38, ' ');
 	T.Insert(53, ' ');
 	T.Insert(32, ' ');
@@ -461,8 +485,7 @@ TEST(AVLTree, correct_tree_big_size)
 	T.Delete(55);
 	T.Delete(70);
 	T.Insert(52, ' ');
-	//T.Print();
-	
+
 	TreeNode<int, char>* node = T.FindMin()->parent->parent;
 	EXPECT_EQ(10, node->key);
 	EXPECT_EQ(5, node->left->key);
@@ -495,5 +518,4 @@ TEST(AVLTree, correct_tree_big_size)
 	EXPECT_EQ(53, node->right->key);
 	EXPECT_EQ(52, node->right->left->key);
 	EXPECT_EQ(54, node->right->right->key);
-
 }

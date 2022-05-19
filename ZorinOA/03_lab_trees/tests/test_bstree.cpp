@@ -9,7 +9,7 @@ TEST(BinarySearchTree, delete_right_child_with_only_left_child)
 	T.Insert(10, ' ');
 	T.Insert(6, ' ');
 	T.Insert(9, ' ');
-	
+
 	EXPECT_TRUE(T.Delete(10));
 	EXPECT_EQ(nullptr, T.Find(10));
 }
@@ -60,7 +60,7 @@ TEST(BinarySearchTree, delete_root_with_two_child)
 	T.Insert(10, ' ');
 	T.Insert(6, ' ');
 	T.Insert(9, ' ');
-	
+
 	EXPECT_TRUE(T.Delete(5));
 	EXPECT_EQ(nullptr, T.Find(5));
 }

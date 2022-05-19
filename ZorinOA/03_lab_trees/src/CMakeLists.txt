@@ -1,8 +1,8 @@
 # Set target name
-set(target ${03_LAB_TABLES_LIBRARY})
+set(target ${03_LAB_TREES_LIBRARY})
 
 # Get list of header and source files
-FILE(GLOB hdrs "*.h" "${03_LAB_TABLES_INCLUDE}/*.h")
+FILE(GLOB hdrs "*.h" "${03_LAB_TREES_INCLUDE}/*.h")
 FILE(GLOB srcs "*.cpp")
 
 # Add a static library target to be built from the source
@@ -10,4 +10,4 @@ FILE(GLOB srcs "*.cpp")
 ADD_LIBRARY(${target} STATIC ${srcs} ${hdrs})
 
 # Specify include directories to use when compiling a target
-TARGET_INCLUDE_DIRECTORIES(${target} PRIVATE ${03_LAB_TABLES_INCLUDE})
+TARGET_INCLUDE_DIRECTORIES(${target} PRIVATE ${03_LAB_TREES_INCLUDE})
