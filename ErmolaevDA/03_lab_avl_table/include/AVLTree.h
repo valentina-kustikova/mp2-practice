@@ -3,28 +3,6 @@
 #include <iostream>
 using namespace std;
 
-struct Trunk
-{
-    Trunk* prev;
-    std::string str;
-
-    Trunk(Trunk* prev, std::string str)
-    {
-        this->prev = prev;
-        this->str = str;
-    }
-};
-
-// Helper function to print branches of the binary tree
-inline void ShowTrunks(Trunk* p)
-{
-    if (p != nullptr)
-    {
-        ShowTrunks(p->prev);
-        std::cout << p->str;
-    }
-}
-
 
 //класс Звено АВЛ дерева
 template <typename TData, typename TKey>
@@ -33,7 +11,7 @@ class  BalanceNode : public TreeNode<TData, TKey>
 public:
   int balance; // индекс балансировки вершины (-1,0,1)
   // Конструкторы
-  BalanceNode(TKey k = {}, TData d = {}, TreeNode* P = nullptr, TreeNode* R = nullptr, TreeNode* L = nullptr, int bal = 0): TreeNode<TData, TKey> (k, d, P, L, R), balance(bal) {};
+  BalanceNode(TKey k = {}, TData d = {}, TreeNode<TData, TKey>* P = nullptr, TreeNode<TData, TKey>* R = nullptr, TreeNode<TData, TKey>* L = nullptr, int bal = 0): TreeNode<TData, TKey> (k, d, P, L, R), balance(bal) {};
  };
 
 //Класс АВЛ дерево
@@ -48,7 +26,7 @@ protected:
   int RBalance(BalanceNode<TData,TKey>* & N1);                       
 public:
   // Конструкторы
-  AVLTree() :BinaryTree<TData, TKey>() {}                                       
+  AVLTree() :BinaryTree<TData, TKey>() {}        
   //Методы
   void printTree(BalanceNode<TData, TKey>* node, Trunk* prev, bool isLeft)
   {
@@ -92,8 +70,8 @@ template <typename TData, typename TKey>
 void AVLTree<TData, TKey>::Insert(TKey k, TData d) 
 { 
     try {
-        if (Find(k) != nullptr) { throw "Re - inserting an element, cannot complete Insert AVLTree"; } //повторная ввставка элемента 
-        Insert((BalanceNode<TData, TKey>*&)Root, k, d);
+        if (this->Find(k) != nullptr) { throw "Re - inserting an element, cannot complete Insert AVLTree"; } //повторная ввставка элемента
+        Insert((BalanceNode<TData, TKey>*&)this->Root, k, d);
     }
     catch (const char* exception) {
         std::cerr << "Error: " << exception << '\n';
@@ -116,7 +94,7 @@ int AVLTree<TData, TKey>::Insert(BalanceNode<TData,TKey>*& N1, TKey k, TData d)
         if (Insert((BalanceNode<TData,TKey>*&)(N1->Left), k, d) == 1) // после вставки высота левого поддерева увеличилась - балансировка
         { return LBalance(N1);}
     }
-    if (k >= N1->GetKey())  // Если K>=X, рекурсивно добавить (K,V) в правое поддереводерева Т и выполнить балансировку
+    if (k > N1->GetKey())  // Если K>=X, рекурсивно добавить (K,V) в правое поддереводерева Т и выполнить балансировку
     {
         if (N1->Right == nullptr)  
         { 
@@ -134,11 +112,11 @@ void AVLTree<TData, TKey>::Delete(TKey k)
 {
   try
   {
-      if (Find(k) == nullptr)
+      if (this->Find(k) == nullptr)
       {
          throw "Deleting a non-existing element,cannot complete Delete AVLTree";
       }
-      Delete((BalanceNode<TData, TKey>*&)Root, k);
+      Delete((BalanceNode<TData, TKey>*&)this->Root, k);
   }
   catch (const char* exception) {
       std::cerr << "Error: " << exception << '\n';
@@ -152,24 +130,21 @@ int AVLTree<TData, TKey>::Delete(BalanceNode<TData,TKey>*& N1, TKey k)
         if (Delete((BalanceNode<TData,TKey>*&)N1->Left, k) == 0)
             return RBalance(N1);
     }
-    else
+    if (k > N1->GetKey())
     {
-        if (k > N1->GetKey())
-        {
         if (Delete((BalanceNode<TData,TKey>*&)N1->Right, k) == 0)
             return LBalance(N1);
-        }
-        else
-        {
-        int h=0;
-        BalanceNode<TData,TKey>* p1 = (BalanceNode<TData,TKey>*)FindNext(N1);
-        if(N1->Right!=nullptr && N1->Left != nullptr)
-        {
-            h= LBalance(p1);
-        }
-        BinaryTree::Delete(N1->GetKey());
-        return h; 
-        }
+    }
+    if (k == N1->GetKey())
+    {
+    int h=0;
+    BalanceNode<TData,TKey>* p1 = (BalanceNode<TData,TKey>*)this->FindNext(N1);
+    if(N1->Right!=nullptr && N1->Left != nullptr)
+    {
+    h= LBalance(p1);
+    }
+    BinaryTree<TData, TKey>::Delete(N1->GetKey());
+    return h; 
     }
 }
 template <typename TData, typename TKey>

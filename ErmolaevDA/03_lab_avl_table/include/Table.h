@@ -15,6 +15,7 @@ template <typename TData, typename TKey> class Table
   int currPos;
   // Конструкторы, деструктор    
   Table(unsigned int n = 100);
+
   virtual ~Table() { delete[] records; }
   //public:
   //информационные методы
@@ -40,7 +41,7 @@ template <typename TData, typename TKey> class Table
   friend std::ostream& operator<< (std::ostream& os, const Table<TData,TKey>& Tab)
   { unsigned int i = 0;
     while (i < Tab.dataCount)
-    { os <<"Key:"<< left << Tab.records[i]->GetKey() << " |Polinom: " << *(Tab.records[i]->GetData()) << '\n';
+    { os <<"Key:"<< left << Tab.records[i]->GetKey() << " | Data: " << *(Tab.records[i]->GetData()) << '\n';
       i++;
     }
     if (Tab.dataCount == 0)

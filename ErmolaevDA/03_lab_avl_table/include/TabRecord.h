@@ -1,7 +1,8 @@
 #pragma once
 template <typename TData, typename TKey>
 class TabRecord
-{ public:
+{ 
+public:
   TKey key;
   TData* data;
   // Конструкторы, деструктор    
@@ -11,6 +12,8 @@ class TabRecord
   //Методы
   TData* GetData() const { return data; }
   TKey GetKey() const { return key; }
+  void SetKey(TKey k) { key = k; }
+  void SetData(TData* d) { delete data; data = d; }
   // Перегрузка операций
   TabRecord<TData,TKey>& operator=(const TabRecord<TData,TKey>& TabR)
   { data = new TData(*(TabR.data)); key = TabR.key; return *this; }

@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1315</width>
+    <width>1361</width>
     <height>655</height>
    </rect>
   </property>
@@ -19,7 +19,7 @@
      <rect>
       <x>0</x>
       <y>10</y>
-      <width>1311</width>
+      <width>1331</width>
       <height>611</height>
      </rect>
     </property>
@@ -241,9 +241,9 @@
       <property name="geometry">
        <rect>
         <x>900</x>
-        <y>20</y>
-        <width>401</width>
-        <height>541</height>
+        <y>10</y>
+        <width>411</width>
+        <height>551</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout">
@@ -298,6 +298,23 @@
        <item>
         <widget class="QTextBrowser" name="textBrowser_4"/>
        </item>
+       <item>
+        <widget class="QLabel" name="label_47">
+         <property name="text">
+          <string>AVL Table</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushButton_27">
+         <property name="text">
+          <string>очистить таблицу AVL Table</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QTextBrowser" name="textBrowser_19"/>
+       </item>
       </layout>
      </widget>
      <widget class="QWidget" name="layoutWidget_2">
@@ -341,6 +358,11 @@
          <item>
           <property name="text">
            <string>Scan Table</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Avl Table</string>
           </property>
          </item>
          <item>
@@ -436,6 +458,11 @@
          </item>
          <item>
           <property name="text">
+           <string>Avl Table</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
            <string>All Tables</string>
           </property>
          </item>
@@ -517,6 +544,11 @@
          <item>
           <property name="text">
            <string>Scan Table</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Avl Table</string>
           </property>
          </item>
          <item>
@@ -999,7 +1031,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1315</width>
+     <width>1361</width>
      <height>22</height>
     </rect>
    </property>

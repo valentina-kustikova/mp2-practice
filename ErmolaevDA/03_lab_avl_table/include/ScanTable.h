@@ -21,7 +21,7 @@ class ScanTable : public Table<TData,TKey>
       unsigned int i = 0;
       while (i < Tab.dataCount)
       {
-          os << "Key:" << left << Tab.records[i]->GetKey() << " |Polinom: " << *(Tab.records[i]->GetData()) << '\n';
+          os << "Key:" << left << Tab.records[i]->GetKey() << " |Data: " << *(Tab.records[i]->GetData()) << '\n';
           i++;
       }
       if (Tab.dataCount == 0)

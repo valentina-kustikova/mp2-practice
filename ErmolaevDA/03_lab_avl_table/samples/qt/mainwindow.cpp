@@ -35,6 +35,13 @@ void MainWindow::updateScan()
     ui->textBrowser_4->setText(QString::fromStdString(tmp.str()));
     ui->textBrowser_12->setText(QString::fromStdString(tmp.str()));
 }
+void MainWindow::updateAvl()
+{
+    std::stringstream tmp;
+    tmp << AV;
+    //ui->textBrowser_4->setText(QString::fromStdString(tmp.str()));
+    ui->textBrowser_19->setText(QString::fromStdString(tmp.str()));
+}
 
 void MainWindow::on_pushButton_released()
 {
@@ -117,6 +124,31 @@ void MainWindow::on_pushButton_released()
 
     }
 
+    if((ui->comboBox->currentText())== "Avl Table")
+    {
+    ui->textBrowser->append("Выбрана Avl таблица для полинома A");
+     QString strig = ui->textEdit->toPlainText().trimmed();
+     QString strig2 = ui->textEdit_4->toPlainText().trimmed();
+     if (strig!=nullptr)
+     {
+    ui->textBrowser->append("Помещение полинома A в выбранную таблицу...");
+    A.str_to_poly(strig.toStdString());
+    if (strig2!=nullptr){
+    AV.InsertRecord(A,strig2.toInt());
+    updateAvl();
+    }
+    else{
+        l++;
+        AV.InsertRecord(A,l);
+        updateAvl();
+    }
+     }
+     else{
+         ui->textBrowser->append("Полином A пустой");
+     }
+
+    }
+
     if((ui->comboBox->currentText())== "All Tables")
     {
     ui->textBrowser->append("Выбраны все таблицы для полинома A");
@@ -134,19 +166,22 @@ void MainWindow::on_pushButton_released()
     updateSort();
     ST.InsertRecord(A,strig2.toStdString());
     updateScan();
-
+    AV.InsertRecord(A,strig2.toInt());
+    updateAvl();
     }
     else{
         i++;
         j++;
         k++;
+        l++;
         HS.InsertRecord(A,to_string(i));
         updateHash();
         SR.InsertRecord(A,to_string(j));
         updateSort();
         ST.InsertRecord(A,to_string(k));
         updateScan();
-
+        AV.InsertRecord(A,l);
+        updateAvl();
     }
      }
      else{
@@ -238,6 +273,31 @@ void MainWindow::on_pushButton_2_released()
 
     }
 
+    if((ui->comboBox_2->currentText())== "Avl Table")
+    {
+    ui->textBrowser->append("Выбрана Avl таблица для полинома A");
+     QString strig = ui->textEdit_2->toPlainText().trimmed();
+     QString strig2 = ui->textEdit_5->toPlainText().trimmed();
+     if (strig!=nullptr)
+     {
+    ui->textBrowser->append("Помещение полинома B в выбранную таблицу...");
+    B.str_to_poly(strig.toStdString());
+    if (strig2!=nullptr){
+    AV.InsertRecord(B,strig2.toInt());
+    updateAvl();
+    }
+    else{
+        l++;
+        AV.InsertRecord(B,l);
+        updateAvl();
+    }
+     }
+     else{
+         ui->textBrowser->append("Полином B пустой");
+     }
+
+    }
+
     if((ui->comboBox_2->currentText())== "All Tables")
     {
     ui->textBrowser->append("Выбраны все таблицы для полинома B");
@@ -255,19 +315,22 @@ void MainWindow::on_pushButton_2_released()
     updateSort();
     ST.InsertRecord(B,strig2.toStdString());
     updateScan();
-
+    AV.InsertRecord(B,strig2.toInt());
+    updateAvl();
     }
     else{
         i++;
         j++;
         k++;
+        l++;
         HS.InsertRecord(B,to_string(i));
         updateHash();
         SR.InsertRecord(B,to_string(j));
         updateSort();
         ST.InsertRecord(B,to_string(k));
         updateScan();
-
+        AV.InsertRecord(B,l);
+        updateAvl();
     }
      }
      else{
@@ -351,6 +414,28 @@ void MainWindow::on_pushButton_4_released()
 
     }
 
+    if((ui->comboBox->currentText())== "Avl Table")
+    {
+    ui->textBrowser->append("Выбрана Avl таблица для полинома A");
+     QString strig = ui->textEdit->toPlainText().trimmed();
+     QString strig2 = ui->textEdit_4->toPlainText().trimmed();
+     if (strig!=nullptr)
+     {
+    ui->textBrowser->append("Удаление полинома A из выбранной таблицы...");
+
+    if (strig2!=nullptr){
+    AV.RemoveRecord(strig2.toInt());
+    updateAvl();
+    }
+    else{
+         ui->textBrowser->append("Впишите в ключ А, который хотите удалить");
+    }
+     }
+     else{
+         ui->textBrowser->append("Впишите в полином А, который хотите удалить");
+     }
+
+    }
     if((ui->comboBox->currentText())== "All Tables")
     {
     ui->textBrowser->append("Выбраны все таблицы для полинома A");
@@ -367,6 +452,8 @@ void MainWindow::on_pushButton_4_released()
     updateSort();
     ST.RemoveRecord(strig2.toStdString());
     updateScan();
+    AV.RemoveRecord(strig2.toInt());
+    updateAvl();
     }
     else{
          ui->textBrowser->append("Впишите в ключ А, который хотите удалить");
@@ -449,6 +536,28 @@ void MainWindow::on_pushButton_5_released()
      }
 
     }
+    if((ui->comboBox_2->currentText())== "Avl Table")
+    {
+    ui->textBrowser->append("Выбрана Avl таблица для полинома B");
+     QString strig = ui->textEdit_2->toPlainText().trimmed();
+     QString strig2 = ui->textEdit_5->toPlainText().trimmed();
+     if (strig!=nullptr)
+     {
+    ui->textBrowser->append("Удаление полинома B из выбранной таблицы...");
+
+    if (strig2!=nullptr){
+    AV.RemoveRecord(strig2.toInt());
+    updateAvl();
+    }
+    else{
+         ui->textBrowser->append("Впишите в ключ B, который хотите удалить");
+    }
+     }
+     else{
+         ui->textBrowser->append("Впишите в полином B, который хотите удалить");
+     }
+
+    }
     if((ui->comboBox->currentText())== "All Tables")
     {
     ui->textBrowser->append("Выбраны все таблицы для полинома B");
@@ -465,6 +574,8 @@ void MainWindow::on_pushButton_5_released()
     updateSort();
     ST.RemoveRecord(strig2.toStdString());
     updateScan();
+    AV.RemoveRecord(strig2.toInt());
+    updateAvl();
     }
     else{
          ui->textBrowser->append("Впишите в ключ B, который хотите удалить");
@@ -600,6 +711,31 @@ void MainWindow::on_pushButton_3_released()
 
     }
 
+    if((ui->comboBox_4->currentText())== "Avl Table")
+    {
+    ui->textBrowser->append("Выбрана Scan таблица для полинома AB");
+     QString strig = ui->textEdit_3->toPlainText().trimmed();
+     QString strig2 = ui->textEdit_6->toPlainText().trimmed();
+     if (strig!=nullptr)
+     {
+    ui->textBrowser->append("Помещение полинома AB в выбранную таблицу...");
+    //AB.str_to_poly(strig.toStdString());
+    if (strig2!=nullptr){
+    AV.InsertRecord(AB,strig2.toInt());
+    updateScan();
+    }
+    else{
+        l++;
+        AV.InsertRecord(AB,l);
+        updateAvl();
+    }
+     }
+     else{
+          ui->textBrowser->append("Полином AB пустой, сосчитайте его");
+     }
+
+    }
+
     if((ui->comboBox_4->currentText())== "All Tables")
     {
     ui->textBrowser->append("Выбраны все таблицы для полинома B");
@@ -617,19 +753,22 @@ void MainWindow::on_pushButton_3_released()
     updateSort();
     ST.InsertRecord(AB,strig2.toStdString());
     updateScan();
-
+    AV.InsertRecord(AB,strig2.toInt());
+    updateAvl();
     }
     else{
         i++;
         j++;
         k++;
+        l++;
         HS.InsertRecord(AB,to_string(i));
         updateHash();
         SR.InsertRecord(AB,to_string(j));
         updateSort();
         ST.InsertRecord(AB,to_string(k));
         updateScan();
-
+        AV.InsertRecord(AB,l);
+        updateAvl();
     }
      }
      else{
@@ -712,6 +851,29 @@ void MainWindow::on_pushButton_6_released()
 
     }
 
+    if((ui->comboBox_4->currentText())== "Avl Table")
+    {
+    ui->textBrowser->append("Выбрана Avl таблица для полинома AB");
+     QString strig = ui->textEdit_3->toPlainText().trimmed();
+     QString strig2 = ui->textEdit_6->toPlainText().trimmed();
+     if (strig!=nullptr)
+     {
+    ui->textBrowser->append("Удаление полинома AB из выбранной таблицы...");
+
+    if (strig2!=nullptr){
+    AV.RemoveRecord(strig2.toInt());
+    updateAvl();
+    }
+    else{
+         ui->textBrowser->append("Впишите в ключ AB, который хотите удалить");
+    }
+     }
+     else{
+         ui->textBrowser->append("Впишите в полином AB, который хотите удалить");
+     }
+
+    }
+
     if((ui->comboBox_4->currentText())== "All Tables")
     {
     ui->textBrowser->append("Выбраны все таблицы для полинома AB");
@@ -728,6 +890,8 @@ void MainWindow::on_pushButton_6_released()
     updateSort();
     ST.RemoveRecord(strig2.toStdString());
     updateScan();
+    AV.RemoveRecord(strig2.toInt());
+    updateAvl();
     }
     else{
          ui->textBrowser->append("Впишите в ключ AB, который хотите удалить");
@@ -952,5 +1116,12 @@ void MainWindow::on_pushButton_16_released()
           ui->textBrowser_6->append("Ключ для полинома не задан в нужное поле");
      }
 }
+}
+
+
+void MainWindow::on_pushButton_27_released()
+{
+    AV.Clear();
+    updateAvl();
 }
 

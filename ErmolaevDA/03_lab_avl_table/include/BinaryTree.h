@@ -4,6 +4,29 @@
 #include "Table.h"
 using namespace std;
 
+struct Trunk
+{
+	Trunk* prev;
+	std::string str;
+
+	Trunk(Trunk* prev, std::string str)
+	{
+		this->prev = prev;
+		this->str = str;
+	}
+};
+
+// Helper function to print branches of the binary tree
+inline void ShowTrunks(Trunk* p)
+{
+	if (p != nullptr)
+	{
+		ShowTrunks(p->prev);
+		std::cout << p->str;
+	}
+}
+
+
 // Класс Звено дерева
 template <typename TData, typename TKey>
 class TreeNode : public TabRecord<TData, TKey>
@@ -15,7 +38,7 @@ class TreeNode : public TabRecord<TData, TKey>
 
   TreeNode(TKey k = {}, TData d = {}, TreeNode* P = nullptr, TreeNode* R = nullptr, TreeNode* L = nullptr):
 		TabRecord<TData, TKey>(k, d), Left(L), Right(R), Parent(P) {}
-  TreeNode(const TreeNode& T1):TabRecord<TData,TKey>(T1.key,T1.pData),Left(nullptr),Right(nullptr),Parent(nullptr) {}
+  TreeNode(const TreeNode& T1):TabRecord<TData,TKey>(T1.GetGetKey()(),T1.pData),Left(nullptr),Right(nullptr),Parent(nullptr) {}
   ~TreeNode();
 
 };
@@ -26,13 +49,14 @@ class BinaryTree
 {
 //protected:
 public:
+int size = 0;
 TreeNode<TData, TKey>* Root;
 TreeNode<TData, TKey>* Cur;
 //public:
 
 	// Конструкторы, деструктор	
 	BinaryTree() {Root = nullptr;}
-	BinaryTree(TKey k, TData d) { Root = new TreeNode<TData, TKey>(k, d); }
+	BinaryTree(TKey k, TData d) { Root = new TreeNode<TData, TKey>(k, d); size += 1; }
 	~BinaryTree();
 
 	//Методы
@@ -53,9 +77,73 @@ TreeNode<TData, TKey>* Cur;
 	TData* GetData() const { if (Cur != nullptr) { return Cur->GetData(); } return nullptr; }
 	TKey GetKey() const { if (Cur != nullptr) { return Cur->GetKey(); } return 0; }
 	TreeNode<TData, TKey>* GetCur() const { return Cur; }
+	bool isEmpty() const
+	{
+		return Root == nullptr;
+	}
+
+	void Clear()
+	{
+		if (!isEmpty())
+		{
+			TreeNode<TData,TKey>* node = Root;
+			std::stack< TreeNode<TData,TKey>* > st1, st2;
+			st1.push(node);
+			while (!st1.empty())
+			{
+				node = st1.top();
+				st1.pop();
+				if (node->Left != nullptr)
+					st1.push(node->Left);
+				if (node->Right != nullptr)
+					st1.push(node->Right);
+				st2.push(node);
+			}
+			while (!st2.empty())
+			{
+				node = st2.top();
+				st2.pop();
+				delete node;
+			}
+			Root = nullptr;
+		}
+	}
+
+	void printTree(TreeNode<TData, TKey>* node, Trunk* prev, bool isLeft)
+	{
+		if (node != nullptr)
+		{
+			std::string prev_str = "    ";
+			Trunk* trunk = new Trunk(prev, prev_str);
+			printTree((TreeNode<TData, TKey>*)(node->Right), trunk, true);
+			if (!prev)
+			{
+				trunk->str = "---";
+			}
+			else if (isLeft)
+			{
+				trunk->str = ".---";
+				prev_str = "   |";
+			}
+			else
+			{
+				trunk->str = "`---";
+				prev->str = prev_str;
+			}
+			ShowTrunks(trunk);
+			std::cout << node->GetKey() << "[" << *(node->GetData()) << "]" << std::endl;
+			if (prev)
+			{
+				prev->str = prev_str;
+			}
+			trunk->str = "   |";
+			printTree((TreeNode<TData, TKey>*)(node->Left), trunk, false);
+		}
+	}
 
     //Перегрузка операций
-  template<class TData> friend std::ostream& operator<< (std::ostream& os, const BinaryTree<TData, TKey>& T1)
+    //template<class TData>
+  friend std::ostream& operator<< (std::ostream& os, const BinaryTree<TData, TKey>& T1)
   { 
 	stack<TreeNode<TData, TKey>*> S1;
 	TreeNode<TData, TKey>* n = T1.Root;
@@ -70,7 +158,7 @@ TreeNode<TData, TKey>* Cur;
 		{
 			n = S1.top();
 			S1.pop();
-			os << "\t" << left << setw(15) << n->GetKey() << " | " << *(n->GetData()) << '\n';
+			os << "Key:" << left << n->GetKey() << " | Data: " << *(n->GetData()) << '\n';
 			n = n->Right;
 		}
 	}
@@ -120,12 +208,7 @@ TreeNode<TData, TKey>* Cur;
 template <typename TData, typename TKey>
 TreeNode<TData, TKey>::~TreeNode()
 {
-	if (Left)
-		delete Left;
-	if (Right)
-		delete Right;
-	if (Parent)
-		delete Parent;
+
 }
 
 //Pелизация функциий для класса бинарное поисковое дерево
@@ -133,23 +216,7 @@ TreeNode<TData, TKey>::~TreeNode()
 template <typename TData, typename TKey>
 BinaryTree<TData, TKey>::~BinaryTree()
 { 
-  stack<TreeNode<TData, TKey>*> S1;
-  TreeNode<TData, TKey>* n = Root;
-  while (S1.size() != 0 || n != nullptr) 
-  { 
-	  if (n != nullptr) 
-    { 
-	  S1.push(n);
-	  n = n->Left;
-	}
-    else
-    { 
-	  n = S1.top();
-	  S1.pop();
-	  Delete(n->GetKey());
-	  n = n->Right;
-	}
-  }
+ 
 }
 
 
@@ -248,6 +315,7 @@ void BinaryTree<TData, TKey>::Insert(TKey k, TData d)
 		if (Root == nullptr)				 //вставка корня
 		{
 			Root = new TreeNode<TData, TKey>(k, d);
+			size += 1;
 			return;
 		}
 		TreeNode<TData, TKey>* x = Root, * y;
@@ -260,11 +328,14 @@ void BinaryTree<TData, TKey>::Insert(TKey k, TData d)
 		if (k < y->GetKey())
 		{
 			y->Left = new TreeNode<TData, TKey>(k, d, y);
+			size += 1;
 		}
 		else
 		{
 			y->Right = new TreeNode<TData, TKey>(k, d, y);
+			size += 1;
 		}
+		
 	}
 	catch (const char* exception) {
 		std::cerr << "Error: " << exception << '\n';
@@ -274,31 +345,35 @@ void BinaryTree<TData, TKey>::Insert(TKey k, TData d)
 template <typename TData, typename TKey>
 void BinaryTree<TData, TKey>::Delete(TKey k)
 { 
-  TreeNode<TData, TKey>* z = Find(k);
-  try {
-	  if (Find(k) == nullptr) { throw "Deleting a non-existing element,cannot complete Delete BinaryTree"; } // удаление не существующего элемента 
-	  TreeNode<TData, TKey>* y = (z->Left != nullptr && z->Right != nullptr) ? FindNext(z) : z;
-	  TreeNode<TData, TKey>* x = (y->Left != nullptr) ? y->Left : y->Right;
+	TreeNode<TData,TKey>* z = Find(k);
+	if (z != nullptr)
+	{
+		TreeNode<TData,TKey>* y = (z->Left != nullptr && z->Right != nullptr) ? FindNext(z) : z;
+		TreeNode<TData,TKey>* x = (y->Left != nullptr) ? y->Left : y->Right;
+		if (x != nullptr)
+			x->Parent = y->Parent;
+		if (y->Parent != nullptr)
+		{
+			if (y == y->Parent->Left)
+				y->Parent->Left = x;
+			else
+				y->Parent->Right = x;
+		}
+		else
+			Root = x;
 
-	  if (x != nullptr) // меняем указатель родителя у потомка
-	  {
-		  x->Parent = y->Parent;
-	  }
-	  if (y->Parent != nullptr) //1,3 случай
-	  {
-		  if (y == y->Parent->Left) { y->Parent->Left = x; }
-		  else { y->Parent->Right = x; }
-	  }
-	  if (y != z) //2 случай
-	  {
-		  z->SetKey(y->GetKey());
-		  z->SetData(y->GetData());
-	  }
-	  //удаление корня, если это единственный узел
-	  if (z == Root && z->Left == nullptr && z->Right == nullptr) { Root = nullptr; }
-  }
-  catch (const char* exception) {
-	  std::cerr << "Error: " << exception << '\n';
-  }
+		if (y != z)
+		{
+			TreeNode<TData, TKey>* tmp = z;
+			z->key = y->key;
+			delete z->data;
+			z->data = y->data;
+			y->data = nullptr;
+		}
+		delete y;
+		return;
+	}
+	else
+		return;
 }
 

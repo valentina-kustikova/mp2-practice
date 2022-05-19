@@ -32,7 +32,7 @@ public:
     { 
       for (int i = 0; i < T1.tabSize; i++)
       { 
-          if ((T1.records[i]!=nullptr)&& (T1.records[i]->key != "deleted")) os << "Key:" << left << T1.records[i]->key << " |Polinom: " << *(T1.records[i]->data) << '\n';
+          if ((T1.records[i]!=nullptr)&& (T1.records[i]->key != "deleted")) os << "Key:" << left << T1.records[i]->key << " |Data: " << *(T1.records[i]->data) << '\n';
       }
 
     }

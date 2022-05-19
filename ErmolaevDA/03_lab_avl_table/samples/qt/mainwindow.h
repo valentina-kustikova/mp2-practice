@@ -7,6 +7,8 @@
 #include "SortTable.h"
 #include "ScanTable.h"
 #include "polinom.h"
+#include "AVLTable.h"
+#include "AVLTree.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; class choose; }
@@ -48,10 +50,13 @@ private slots:
 
     void on_pushButton_16_released();
 
+    void on_pushButton_27_released();
+
 private:
     void updateHash();
     void updateSort();
     void updateScan();
+    void updateAvl();
     int S=0;
     int R=0;
     Polinom AB;
@@ -67,6 +72,9 @@ private:
     int k=0;
     Polinom C;
     ScanTable<Polinom,std::string> ST;
+
+    int l=0;
+    AVLTable<Polinom,int> AV;
 
     Ui::MainWindow *ui;
 };
