@@ -152,6 +152,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     <ClCompile Include="C:\Game\Proga\mp2-practice\ShipilovAY\01_lab_polymons\src\monom.cpp" />
     <ClCompile Include="C:\Game\Proga\mp2-practice\ShipilovAY\01_lab_polymons\src\node.cpp" />
     <ClCompile Include="C:\Game\Proga\mp2-practice\ShipilovAY\01_lab_polymons\src\polinom.cpp" />
+    <ClInclude Include="C:\Game\Proga\mp2-practice\ShipilovAY\01_lab_polymons\include\headlist.h" />
     <ClInclude Include="C:\Game\Proga\mp2-practice\ShipilovAY\01_lab_polymons\include\list.h" />
     <ClInclude Include="C:\Game\Proga\mp2-practice\ShipilovAY\01_lab_polymons\include\monom.h" />
     <ClInclude Include="C:\Game\Proga\mp2-practice\ShipilovAY\01_lab_polymons\include\node.h" />

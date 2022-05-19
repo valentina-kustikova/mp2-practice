@@ -15,6 +15,9 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="C:\Game\Proga\mp2-practice\ShipilovAY\01_lab_polymons\include\headlist.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="C:\Game\Proga\mp2-practice\ShipilovAY\01_lab_polymons\include\list.h">
       <Filter>Header Files</Filter>
     </ClInclude>
