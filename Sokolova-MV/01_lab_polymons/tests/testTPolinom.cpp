@@ -3,7 +3,7 @@
 
 TEST(TPolinom, test00)
 {
-	TPolinom P("2x^2y - z^3");
+	TPolinom P("2x^2y-z^3");
 	if (P(1,2,3) == -23) SUCCEED();
 	else FAIL();
 }
