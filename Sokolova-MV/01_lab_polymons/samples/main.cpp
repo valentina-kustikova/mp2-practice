@@ -1,7 +1,6 @@
-#include<iostream>
+ï»¿#include<iostream>
 #include<locale>
 #include "List.h"
-#include "HeadList.h"
 #include "Monom.h"
 #include "Polinom.h"
 
@@ -9,17 +8,15 @@ using namespace std;
 
 void menu()
 {
-	cout << "\n\t\t\t\t\t\t1. Ñëîæèòü äâà ìíîãî÷ëåíà\n\t\t\t\t\t\t2. Âû÷åñòü âòîðîé ìíîãî÷ëåí èç ïåðâîãî\n\t\t\t\t\t\t3. Óìíîæèòü ìíîãî÷ëåí íà êîíñòàíòó\n\t\t\t\t\t\t4. Ïåðåìíîæèòü äâà ìíîãî÷ëåíà\n\t\t\t\t\t\t5. Âû÷èñëèòü ìíîãî÷ëåí\n\t\t\t\t\t\t0. Âûõîä\n\n\t\t\t\t\t\tÂâîä: ";
+	cout << "\n\t\t\t\t\t\t1. Ð¡Ð»Ð¾Ð¶Ð¸Ñ‚ÑŒ Ð´Ð²Ð° Ð¼Ð½Ð¾Ð³Ð¾Ñ‡Ð»ÐµÐ½Ð°\n\t\t\t\t\t\t2. Ð’Ñ‹Ñ‡ÐµÑÑ‚ÑŒ Ð²Ñ‚Ð¾Ñ€Ð¾Ð¹ Ð¼Ð½Ð¾Ð³Ð¾Ñ‡Ð»ÐµÐ½ Ð¸Ð· Ð¿ÐµÑ€Ð²Ð¾Ð³Ð¾\n\t\t\t\t\t\t3. Ð£Ð¼Ð½Ð¾Ð¶Ð¸Ñ‚ÑŒ Ð¼Ð½Ð¾Ð³Ð¾Ñ‡Ð»ÐµÐ½ Ð½Ð° ÐºÐ¾Ð½ÑÑ‚Ð°Ð½Ñ‚Ñƒ\n\t\t\t\t\t\t4. ÐŸÐµÑ€ÐµÐ¼Ð½Ð¾Ð¶Ð¸Ñ‚ÑŒ Ð´Ð²Ð° Ð¼Ð½Ð¾Ð³Ð¾Ñ‡Ð»ÐµÐ½Ð°\n\t\t\t\t\t\t5. Ð’Ñ‹Ñ‡Ð¸ÑÐ»Ð¸Ñ‚ÑŒ Ð¼Ð½Ð¾Ð³Ð¾Ñ‡Ð»ÐµÐ½\n\t\t\t\t\t\t0. Ð’Ñ‹Ñ…Ð¾Ð´\n\n\t\t\t\t\t\tÐ’Ð²Ð¾Ð´: ";
 }
-
 
 int main() {
 	setlocale(LC_ALL, "Russian");
 	TList<int> list;
 	THeadList<int> headList;
-	TMonom mon;
 	TPolinom p1, p2, p3;
-	int  entry = 1,  entry3 = 0, f = 0, i;
+	int entry = 1;
 	double c;
 
 
@@ -27,58 +24,61 @@ int main() {
 	{
 
 		system("cls");
-		cout << "\t\t\t\t\t\t\tÎïåðàöèè íàä ïîëèíîìàìè\n";
+		cout << "\t\t\t\t\t\t\tÐžÐ¿ÐµÑ€Ð°Ñ†Ð¸Ð¸ Ð½Ð°Ð´ Ð¿Ð¾Ð»Ð¸Ð½Ð¾Ð¼Ð°Ð¼Ð¸\n";
 		menu();
+		entry = 5;
 		cin >> entry;
-		fflush(stdin);
-		int o = 0;
+        fflush(stdin);
+        int o = 0;
 		while (((entry < 0) || (entry > 5)) && (o < 5))
 		{
-			cout << "\t\t\t\t\t\t\tÂÂÅÄÈÒÅ ÎÒ 0 ÄÎ 5\n\n\t\t\t\t\t\tÂâîä: ";
+			cout << "\t\t\t\t\t\t\tÐ’Ð’Ð•Ð”Ð˜Ð¢Ð• ÐžÐ¢ 0 Ð”Ðž 5\n\n\t\t\t\t\t\tÐ’Ð²Ð¾Ð´: ";
 			cin >> entry;
 			o++;
 		}
-		
-		if (o == 5) { cout << "\t\t\t\t\t\t\tÏðîùàé, äóðàê "; entry = 0; }
+		if (o == 5) { cout << "\t\t\t\t\t\t\tÐŸÑ€Ð¾Ñ‰Ð°Ð¹, Ð´ÑƒÑ€Ð°Ðº "; entry = 0; }
 		if (entry != 0)
 		{
 			system("cls");
-			cout << "\n\t\t\t\t\tÂâîä àðãóìåíòîâ äëÿ âû÷èñëåíèÿ âûðàæåíèÿ";
-			cout << "\n\t\t\t\t\t\tÂâîä ïåðâîãî àðãóìåíòà.\n" << "\t\t\t\t\t";
+			cout << "\n\t\t\t\t\tÐ’Ð²Ð¾Ð´ Ð°Ñ€Ð³ÑƒÐ¼ÐµÐ½Ñ‚Ð¾Ð² Ð´Ð»Ñ Ð²Ñ‹Ñ‡Ð¸ÑÐ»ÐµÐ½Ð¸Ñ Ð²Ñ‹Ñ€Ð°Ð¶ÐµÐ½Ð¸Ñ";
+			cout << "\n\t\t\t\t\t\tÐ’Ð²Ð¾Ð´ Ð¿ÐµÑ€Ð²Ð¾Ð³Ð¾ Ð°Ñ€Ð³ÑƒÐ¼ÐµÐ½Ñ‚Ð°.\n" << "\t\t\t\t\t";
 			cin >> p1;
-			if ((entry != 5) && (entry != 3)) { cout << "\n\t\t\t\t\t\tÂâîä âòîðîãî àðãóìåíòà.\n" << "\t\t\t\t\t"; cin >> p2; }
+			if ((entry != 5) && (entry != 3)) { cout << "\n\t\t\t\t\t\tÐ’Ð²Ð¾Ð´ Ð²Ñ‚Ð¾Ñ€Ð¾Ð³Ð¾ Ð°Ñ€Ð³ÑƒÐ¼ÐµÐ½Ñ‚Ð°.\n" << "\t\t\t\t\t"; cin >> p2; }
 			if (entry != 5)
 			{
 				system("cls");
-				cout << "\n\t\t\t\t\t\t\t Âû ââåëè:\n\n\t\t\t\t\t\t1.  " << p1;
+				cout << "\n\t\t\t\t\t\t\t Ð’Ñ‹ Ð²Ð²ÐµÐ»Ð¸:\n\n\t\t\t\t\t\t1.  " << p1;
 			}
 			TMonom m;
 			switch (entry)
 			{
-			case 1: cout << "\t\t\t\t\t\t2.  " << p2 << "\n\t\t\t\tÑóììà äâóõ ïîëèíîìîâ: "; p3 = p1 + p2; cout << p3;
+                case 1:
+                    cout << "\t\t\t\t\t\t2.  " << p2 << "\n\t\t\t\tÐ¡ÑƒÐ¼Ð¼Ð° Ð´Ð²ÑƒÑ… Ð¿Ð¾Ð»Ð¸Ð½Ð¾Ð¼Ð¾Ð²: ";
+                    p3 = p1 + p2;
+                    cout << p3;
+                    break;
+			case 2: cout << "\t\t\t\t\t\t2.  " << p2 << "\n\t\t\t\tÐ Ð°Ð·Ð½Ð¾ÑÑ‚ÑŒ Ð¿Ð¾Ð»Ð¸Ð½Ð¾Ð¼Ð¾Ð²: "; /**/ p3 = p1 - p2; if (p1 == p2) p3=p3+m; cout << p3;
 				break;
-			case 2: cout << "\t\t\t\t\t\t2.  " << p2 << "\n\t\t\t\tÐàçíîñòü ïîëèíîìîâ: ";   /**/ p3 = p1 - p2; if (p1 == p2) p3=p3+m; cout << p3;
-				break;
-			case 3: cout << "\n\t\t\t\t\t\t\tÂâåäèòå êîíñòàíòó\n\t\t\t\t\t\t\tÂâîä: ";
+			case 3: cout << "\n\t\t\t\t\t\t\tÐ’Ð²ÐµÐ´Ð¸Ñ‚Ðµ ÐºÐ¾Ð½ÑÑ‚Ð°Ð½Ñ‚Ñƒ\n\t\t\t\t\t\t\tÐ’Ð²Ð¾Ð´: ";
 				cin >> c;
-				cout << "\n\t\t\t\tÄîìíîæåíèå ïîëèíîìà íà êîíñòàíòó: ";  p3 = p1 * c; cout << p3;
+				cout << "\n\t\t\t\tÐ”Ð¾Ð¼Ð½Ð¾Ð¶ÐµÐ½Ð¸Ðµ Ð¿Ð¾Ð»Ð¸Ð½Ð¾Ð¼Ð° Ð½Ð° ÐºÐ¾Ð½ÑÑ‚Ð°Ð½Ñ‚Ñƒ: ";  p3 = p1 * c; cout << p3;
 				break;
-			case 4: cout << "\n\t\t\t\t\t\t2.  " << p2 << "\n\t\t\t\tÏðîèçâåäåíèå ïîëèíîìîâ: "; p3 = p1 * p2; cout << p3;
+			case 4: cout << "\n\t\t\t\t\t\t2.  " << p2 << "\n\t\t\t\tÐŸÑ€Ð¾Ð¸Ð·Ð²ÐµÐ´ÐµÐ½Ð¸Ðµ Ð¿Ð¾Ð»Ð¸Ð½Ð¾Ð¼Ð¾Ð²: "; p3 = p1 * p2; cout << p3;
 				break;
-			case 5: cout << "\n\t\t\t\t\t\tÎòâåò:" << p1;
+			case 5: cout << "\n\t\t\t\t\t\tÐžÑ‚Ð²ÐµÑ‚:" << p1;
 				break;
 			}
-			cout << "\n\t\t\t\t\t\t1. Âûõîä â ìåíþ\n\t\t\t\t\t\t0. Âûõîä èç ïðîãðàììû\n\t\t\t\t\t\tÂâîä: ";
+			cout << "\n\t\t\t\t\t\t1. Ð’Ñ‹Ñ…Ð¾Ð´ Ð² Ð¼ÐµÐ½ÑŽ\n\t\t\t\t\t\t0. Ð’Ñ‹Ñ…Ð¾Ð´ Ð¸Ð· Ð¿Ñ€Ð¾Ð³Ñ€Ð°Ð¼Ð¼Ñ‹\n\t\t\t\t\t\tÐ’Ð²Ð¾Ð´: ";
 			cin >> entry;
-			int o = 0;
+			o = 0;
 			while (((entry < 0) || (entry > 1)) &&
 				(o < 5))
 			{
-				cout << "\t\t\t\t\t\t\tÂÂÅÄÈÒÅ ËÈÁÎ 1, ËÈÁÎ 0\n\n\t\t\t\t\t\tÂâîä: ";
+				cout << "\t\t\t\t\t\t\tÐ’Ð’Ð•Ð”Ð˜Ð¢Ð• Ð›Ð˜Ð‘Ðž 1, Ð›Ð˜Ð‘Ðž 0\n\n\t\t\t\t\t\tÐ’Ð²Ð¾Ð´: ";
 				cin >> entry;
 				o++;
 			}
-			if ((entry != 0) && (o == 5)) { cout << "\t\t\t\t\t\t\tÏðîùàé, äóðàê "; entry = 0; }
+			if ((entry != 0) && (o == 5)) { cout << "\t\t\t\t\t\t\tÐŸÑ€Ð¾Ñ‰Ð°Ð¹, Ð´ÑƒÑ€Ð°Ðº "; entry = 0; }
 		}
 	}
 	return 0;

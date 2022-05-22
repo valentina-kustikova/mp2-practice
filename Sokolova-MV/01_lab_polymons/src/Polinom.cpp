@@ -4,11 +4,17 @@ TPolinom::TPolinom() {
     TMonom m;
     pHead->data = m;
 }
-TPolinom::TPolinom(const TMonom& m) {
+
+/*TPolinom::TPolinom(const int& m)
+{
+	TMonom m;
+	pHead->data = m;
+}/**/
+TPolinom::TPolinom(const TMonom &m) {
     insCurrent(m);
 }
 
-TPolinom::TPolinom(const TPolinom& p) {
+TPolinom::TPolinom(const TPolinom &p) {
 
     auto pCurr = p.pFirst;
     auto pPrev = p.pStop;
@@ -20,21 +26,20 @@ TPolinom::TPolinom(const TPolinom& p) {
     }
 }
 
-TPolinom TPolinom::operator*(const double& c) const {
+TPolinom TPolinom::operator*(const double &c) const {
     TPolinom res(*this);
     res.reset();
     while (!res.isEnd()) {
         if (c != 0) {
             res.pCurr->data.coeff *= c;
             res.goNext();
-        }
-        else {
+        } else {
             res.RemoveCurr();
         }
     }
     return res;
 }//double
-TPolinom TPolinom::operator*(const TMonom& m) const {
+TPolinom TPolinom::operator*(const TMonom &m) const {
     TPolinom res(*this);
     res.reset();
     while (!res.isEnd()) {
@@ -52,8 +57,7 @@ TPolinom TPolinom::operator*(const TMonom& m) const {
                 break;
             }
             res.pCurr->data.degree = x * 100 + y * 10 + z;
-        }
-        else {
+        } else {
             res.RemoveCurr();
         }
         res.goNext();
@@ -73,8 +77,23 @@ TPolinom TPolinom::operator*(const TPolinom& p) const {
     }
     return res;
 }
-
-TPolinom& TPolinom::operator=(const TPolinom& p) {
+/*
+TPolinom TPolinom::operator*(const TPolinom &p) const {
+    TPolinom tmp1(*this);
+    TPolinom tmp2(p);
+    TPolinom res;
+    tmp2.reset();
+    while (!tmp2.isEnd()) {
+        tmp1.reset();
+        res = res + tmp1 * tmp2.pCurr->data;
+        tmp2.goNext();
+        if (!tmp1.isEnd()) {
+            tmp2.reset();
+        }
+    }
+    return res;
+}/**/
+TPolinom &TPolinom::operator=(const TPolinom &p) {
     TPolinom res(p);
     res.reset();
     reset();
@@ -88,6 +107,26 @@ TPolinom& TPolinom::operator=(const TPolinom& p) {
     }
     return *this;
 }
+
+/*
+* 
+	TPolinom& operator=(const TPolinom& p) {
+		TPolinom tmp(p);
+		tmp.reset();
+		reset();
+		while (!isEnd()) {
+			RemoveCurr();
+			goNext();
+		}
+		while (!tmp.isEnd()) {
+			TMonom t = tmp.getCurrdata();
+			addMonom(t);
+			tmp.goNext();
+		}
+		return *this;
+	}
+/**/
+
 
 bool TPolinom::operator==(const TPolinom& p) const {
     TPolinom res(p);
@@ -103,26 +142,37 @@ bool TPolinom::operator==(const TPolinom& p) const {
     }
     return true;
 }
+/*
+bool TPolinom::operator==(const TPolinom &p) const {
+    TPolinom res(p);
+    TPolinom pthis(*this);
+    res.reset();
+    pthis.reset();
+    while (!res.isEnd()) {
+        if ((pthis.getCurrdata() == res.getCurrdata()) == 0) return false;
+        res.goNext();
+        pthis.goNext();
+    }
+    return true;
+}/**/
 
-bool TPolinom::operator==(const string& s) const {
+bool TPolinom::operator==(const string &s) const {
     TPolinom res(s);
-    TPolinom l((*this));
-    if (l.isEmpty()) return s == "0";
     return *this == res;
 }
 
-TPolinom TPolinom::operator-(const TMonom& p) const {
+TPolinom TPolinom::operator-(const TMonom &p) const {
     TPolinom res(p);
     return (*this + res * (-1.0));
 }
 
-TPolinom TPolinom::operator-(const TPolinom& p) const {
+TPolinom TPolinom::operator-(const TPolinom &p) const {
     TPolinom res(p);
     res = *this + res * (-1.0);
     return (res);
 }
 
-TPolinom TPolinom::operator+(const TPolinom& p) const {
+TPolinom TPolinom::operator+(const TPolinom &p) const {
     TPolinom pthis(*this);
     TPolinom res(p);
     res.reset();
@@ -131,17 +181,15 @@ TPolinom TPolinom::operator+(const TPolinom& p) const {
         if (res.pCurr->data.degree > pthis.pCurr->data.degree)
             res.goNext();
         else if (res.pCurr->data.degree < pthis.pCurr->data.degree) {
-            //            res.insCurrent(pthis.pCurr->data);
+//            res.insCurrent(pthis.pCurr->data);
             res.addMonom(pthis.pCurr->data);
             pthis.goNext();
-        }
-        else {
+        } else {
             res.pCurr->data.coeff += pthis.pCurr->data.coeff;
             if (res.pCurr->data.coeff != 0) {
                 res.goNext();
                 pthis.goNext();
-            }
-            else {
+            } else {
                 res.RemoveCurr();
                 pthis.goNext();
             }
@@ -151,7 +199,14 @@ TPolinom TPolinom::operator+(const TPolinom& p) const {
     return res;
 }
 
-TPolinom::TPolinom(const string& str) {
+/*TPolinom TPolinom::operator+(const TMonom& m) const
+{
+	TPolinom res;
+	res.insCurrent(m);
+	res = *this + res;
+	return res;
+}/**/
+TPolinom::TPolinom(const string &str) {
     TPolinom res;
     int i = 0;
 
@@ -161,19 +216,34 @@ TPolinom::TPolinom(const string& str) {
             continue;
         }
         string coeff;
-        for (; isdigit(str[i]) || str[i] == ' ' || str[i] == ',' || str[i] == '-'; i++) {
-            if (str[i] == ' ') continue;
-            coeff += str[i];
+        if (str[i] == '-') {
+            if (!isdigit(str[i + 1])) {
+                coeff = "-1";
+                ++i;
+            }
+            else{
+                coeff = "-";
+                coeff += str[i + 1];
+                i=i+2;
+                }
         }
-        if (coeff == "-")
-            coeff += '1';
+        else {
+            for (; isdigit(str[i]) || str[i] == ' ' || str[i] == ','; i++) {
+                if (str[i] == ' ') {
+                    continue;
+                }
+                coeff += str[i];
+            }
+        }
+
+        //if (coeff == "-")
+         //   coeff += '1';
         string degX;
         if (str[i] == 'x') {
             i += 1;
             if (str[i] != '^') {
                 degX = "1";
-            }
-            else {
+            } else {
                 i += 1;
                 while (isdigit(str[i])) {
                     degX.push_back(str[i]);
@@ -186,8 +256,7 @@ TPolinom::TPolinom(const string& str) {
             i += 1;
             if (str[i] != '^') {
                 degY = "1";
-            }
-            else {
+            } else {
                 i += 1;
                 while (isdigit(str[i])) {
                     degY.push_back(str[i]);
@@ -200,8 +269,7 @@ TPolinom::TPolinom(const string& str) {
             i += 1;
             if (str[i] != '^') {
                 degZ = "1";
-            }
-            else {
+            } else {
                 i += 1;
                 while (isdigit(str[i])) {
                     degZ.push_back(str[i]);
@@ -226,7 +294,7 @@ TPolinom::TPolinom(const string& str) {
     }
 }
 
-void TPolinom::addMonom(const TMonom& m) {
+void TPolinom::addMonom(const TMonom &m) {
     for (reset(); !isEnd(); goNext()) {
         if (m == pCurr->data) {
             pCurr->data.coeff += m.coeff;
@@ -244,20 +312,22 @@ void TPolinom::addMonom(const TMonom& m) {
         insLast(m);
     }
 }
+
 double TPolinom::operator()(double x, double y, double z)
 {
-    
-	{
-		double res = 0.0;
-		this->reset();
-		while (!this->isEnd())
-		{
+
+    {
+        double res = 0.0;
+        this->reset();
+        while (!this->isEnd())
+        {
             double stx = this->getCurrdata().degree / 100;
             double sty = this->getCurrdata().degree / 10 % 10;
             double stz = this->getCurrdata().degree % 10;
-			res += this->getCurrdata().coeff * pow(x, stx) * pow(y, sty) * pow(z, stz);
-			this->goNext();
-		}
-		return res;
-	}
+            res += this->getCurrdata().coeff * pow(x, stx) * pow(y, sty) * pow(z, stz);
+            this->goNext();
+        }
+        return res;
+    }
 }
+/**/

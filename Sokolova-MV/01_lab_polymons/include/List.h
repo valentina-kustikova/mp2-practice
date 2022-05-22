@@ -119,22 +119,21 @@ public:
 			}
 		}
 	}
-	void RemoveCurr()
-	{
-		if (pCurr != pStop)
-			if (pCurr == pFirst) {
-				RemoveFirst();
-			}
-			else {
-				TNode<TData>* delNode = pCurr;
-				pCurr = pCurr->pNext;
-				if (pPrev->pNext == pLast)
-					pLast = pPrev;
-				pPrev->pNext = pCurr;
-				delete delNode;
-				len--;
-			}
-	}
+
+    void RemoveCurr() {
+        if (pCurr != pStop)
+            if (pCurr == pFirst) {
+                RemoveFirst();
+            } else {
+                TNode<TData> *delNode = pCurr;
+                pCurr = pCurr->pNext;
+                if (pPrev->pNext == pLast)
+                    pLast = pPrev;
+                pPrev->pNext = pCurr;
+                delete delNode;
+                len--;
+            }
+    }
 
 	bool isEmpty()
 	{

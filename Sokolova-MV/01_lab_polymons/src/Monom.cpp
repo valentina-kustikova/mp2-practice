@@ -17,11 +17,11 @@ TMonom & TMonom::operator=(const TMonom & m)
 }
 bool TMonom::operator==(const TMonom& m) const
 {
-    return this->degree == m.degree;
+    return this->degree == m.degree && this->coeff == m.coeff;
 }
 bool TMonom::operator!=(const TMonom & m) const
 {
-    return (this->degree != m.degree);
+    return this->degree != m.degree || this->coeff != m.coeff;
 }
 bool TMonom::operator<(const TMonom & m) const
 {

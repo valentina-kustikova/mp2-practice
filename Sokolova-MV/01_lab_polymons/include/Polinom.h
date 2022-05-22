@@ -32,18 +32,16 @@ public:
 		//if (p.pFirst->data.coeff == 0)
 		//	os << "0";
 		//else {
-			for (p.reset(); !p.isEnd(); p.goNext()) {
-				os << p.getCurrdata();
-				if (p.pCurr->pNext != p.pStop)
-				{
-					os << "+ ";
-				}
-			}
-		//}
-			if (p.isEmpty())
+		for (p.reset(); !p.isEnd(); p.goNext()) {
+			os << p.getCurrdata();
+			if (p.pCurr->pNext != p.pStop)
 			{
-				os << 0;
+				os << " + ";
 			}
+		}
+		//}
+		if (p.isEmpty())
+			os << 0;
 		os << "\n";
 		return os;
 	}
@@ -51,14 +49,11 @@ public:
 	{
 		string str;
 		in >> str;
+		//        getline(in, str);
 		P = TPolinom(str);
 		return in;
 	}
-	TPolinom(const string& str);
 	double operator() (double x, double y, double z);
+	TPolinom(const string& str);
 
-	//тесты из методички
-	//не хранить полиномы
-	//дубляж <</ string& (разбор строки выписать)+
 };
-
