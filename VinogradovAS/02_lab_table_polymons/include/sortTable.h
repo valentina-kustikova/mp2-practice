@@ -35,11 +35,11 @@ public:
 	~SortTable() {}
 	 TData* Search(const TKey Key);
 	void Insert(TData Data, TKey Key);
-
 	void Delete(const TKey Key);
-	SortTable<TData, TKey>& operator = (const SortTable<TData, TKey>& other) {
+	virtual void Clear();
+	/*SortTable<TData, TKey>& operator = (const SortTable<TData, TKey>& other) {
 		return *this;
-	}
+	}*/
 };
 
 
@@ -122,6 +122,22 @@ inline void SortTable<TData, TKey>::Delete(const TKey Key)
 	}
 	else {
 		throw "the element does not exist";
+	}
+}
+
+template<typename TData, typename TKey>
+inline void SortTable<TData, TKey>::Clear()
+{
+	if (!IsEmpty())
+	{
+	Reset();
+		while (!IsTabEnded())
+		{
+			rec[this->index] = nullptr;
+			index++;
+		}
+		count = 0;
+
 	}
 }
 

@@ -30,6 +30,59 @@ public:
 	TPolynom operator*(const double a) ;
 	double operator() (double x, double y, double z);
 
+	string PolStr(TPolynom& p) {
+		TNode<TMonom>* _pCurr = p.pFirst;
+		string res;
+		stringstream os;
+		//Нулевой полином
+		if (_pCurr == p.pStop)
+		{
+			os << "0";
+			return os.str();
+		}
+
+		//Вывод для первого монома полинома
+		TMonom m = _pCurr->value;
+		double absCoeff = fabs(m.coeff);
+
+		if (m.coeff < 0) os << "- ";
+
+		//Моном был константный
+		if (m.IsConst())
+		{
+			os << absCoeff;
+		}
+		//Не константный
+		else
+		{
+			if (absCoeff != 1) os << absCoeff << "*";
+			os << m;
+		}
+
+		_pCurr = _pCurr->pNext;
+
+		for (; _pCurr != p.pStop; _pCurr = _pCurr->pNext)
+		{
+			TMonom m = _pCurr->value;
+			double absCoeff = fabs(m.coeff);
+
+			if (m.coeff < 0) os << " - ";
+			else os << " + ";
+
+			if (m.IsConst())
+			{
+				os << absCoeff;
+			}
+			else
+			{
+				if (absCoeff != 1)
+					os << absCoeff << "*";
+				os << m;
+			}
+		}
+		return os.str();
+	}
+
 	friend std::ostream& operator<<(std::ostream& os, TPolynom& p)
 		
 	{ 

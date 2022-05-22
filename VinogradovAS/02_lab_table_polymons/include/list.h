@@ -28,6 +28,7 @@ public:
 	TNode<T>* GetEnd(){ return pStop };
 	//Добавление элемента в начало списка
 	virtual void InsFirst(T element);
+	void Print(std::ostream& os) const;
 	//Добавление элемента в конец списка
 	void InsLast(T element);
 	//Добавление элемента в текущую позицию (перед текущим) (текущим становится добавленный)
@@ -35,6 +36,7 @@ public:
 
 	//Удаление первого элемента списка
 	virtual void DelFirst();
+	
 	//Удаление текущего элемента списка (текущим становится следующий за ним)
 	void DelCurr();
 
@@ -103,6 +105,17 @@ void TList<T>::InsFirst(T element)
 	if (length == 1)
 		pLast = pFirst;
 }
+template <class T>
+void TList<T>::Print(std::ostream& os) const
+{
+	TNode<T>* t = pFirst;
+
+	while (t != pStop)
+	{
+		os << t->value << " ";
+		t = t->pNext;
+	}
+}
 
 template <class T>
 void TList<T>::InsLast(T element)
@@ -160,6 +173,8 @@ void TList<T>::DelFirst()
 	length--;
 }
 
+
+
 template <class T>
 void TList<T>::DelCurr()
 {
@@ -216,6 +231,6 @@ template <class T>
 std::string TList<T>::ToStr() const
 {
 	std::stringstream ss;
-//	Print(ss);
+   Print(ss);
 	return ss.str();
 }

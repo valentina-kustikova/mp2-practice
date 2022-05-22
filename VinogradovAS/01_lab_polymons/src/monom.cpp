@@ -35,18 +35,29 @@ bool TMonom::operator!=(const TMonom& other) const
 }
 
 bool TMonom::operator<(const TMonom& other) const
-{
-	if (x < other.x) return true;
-	else if (x == other.x)
-	{
-		if (y < other.y) return true;
-		else if (y == other.y)
+{/*
+	if (x == 0 && y == 0 && z == 0) {
+		return coeff < other.coeff;
+	}
+	*/
+
+		if (x < other.x) return true;
+		else if (x == other.x)
 		{
-			return z < other.z;
+			if (y < other.y) return true;
+			else if (y == other.y)
+			{
+				/*if (z == other.z) {
+					return coeff < other.coeff;
+				}
+				else {*/
+				return z < other.z;
+				//}
+			}
+			else return false;
 		}
 		else return false;
-	}
-	else return false;
+	
 }
 
 bool TMonom::operator>(const TMonom& other) const

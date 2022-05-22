@@ -38,6 +38,8 @@ public:
 	//Удаление текущего элемента списка (текущим становится следующий за ним)
 	void DelCurr();
 
+	void Print(std::ostream& os) const;
+
 	//Получение текущего элемента списка
 	T GetCurr() const;
 
@@ -183,6 +185,18 @@ void TList<T>::DelCurr()
 }
 
 template <class T>
+void TList<T>::Print(std::ostream& os) const
+{
+	TNode<T>* t = pFirst;
+
+	while (t != pStop)
+	{
+		os << t->value << " ";
+		t = t->pNext;
+	}
+}
+
+template <class T>
 T TList<T>::GetCurr() const
 {
 	if (pCurr == pStop)
@@ -216,6 +230,6 @@ template <class T>
 std::string TList<T>::ToStr() const
 {
 	std::stringstream ss;
-//	Print(ss);
+	Print(ss);
 	return ss.str();
 }

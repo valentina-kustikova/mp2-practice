@@ -12,7 +12,7 @@ public:
 	 ~ScanTable() {};
 	 virtual TData* Search(const TKey Key) override;
 	 virtual void Insert(TData Data,TKey Key) override;
-	
+	 virtual void Clear();
 	 virtual void Delete(const TKey Key) override;
 
 };
@@ -34,6 +34,9 @@ template<typename TData, typename TKey>
 template<typename TData, typename TKey>
 inline TData* ScanTable<TData, TKey>::Search(const TKey Key)
 {
+	if (IsEmpty()) {
+		return nullptr;
+	}
 	Reset();
 	while (!(IsTabEnded()) && (this->rec[this->index]->GetKey() != Key)) {
 		index++;
@@ -66,6 +69,22 @@ inline void ScanTable<TData, TKey>::Insert(TData Data, TKey Key)
 	
 }
 
+template<typename TData, typename TKey>
+inline void ScanTable<TData, TKey>::Clear()
+{
+	if (!IsEmpty())
+	{
+		Reset();
+		while (!IsTabEnded())
+		{
+			rec[this->index] = nullptr;
+			index++;
+		}
+		count = 0;
+
+	}
+}
+
 
 template<typename TData, typename TKey>
 inline void ScanTable<TData, TKey>::Delete(const TKey Key)
@@ -77,6 +96,9 @@ inline void ScanTable<TData, TKey>::Delete(const TKey Key)
 		this->rec[this->index] = new TabRecord<TData, TKey>(*this->rec[this->count]);
 		delete this->rec[count];
 		this->index = this->count - 1;
+	}
+	else {
+		throw 1;
 	}
 }
 

@@ -16,14 +16,27 @@ void ResultOutput(char op, TPolynom& p1, TPolynom& p2) {
 }
 
 int main1() {
-	TPolynom p1("x");
-	TPolynom p2("y");
+	TPolynom p1("x+y");
+	TPolynom p2("x-y");
 	p1 == p2;
 
 	return 0;
 }
 
-int main()
+int main() {
+	string str1 = "1+x";
+	string str2 = "1-y";
+	TPolynom p1(str1);
+	TPolynom p2(str2);
+	TPolynom p3;
+	p3 = p1 * p2;
+	//p3 = ResultOutput('+', p1, p2);
+	cout << p3;
+	return 0;
+}
+
+
+int main2()
 {
 	setlocale(LC_ALL, "Russian");
 	string str1 = "xyz", str2;
@@ -35,6 +48,7 @@ int main()
 		cout << "p1 = ";
 		cin >> str1;
 		TPolynom p1(str1);
+		
 		cout << "¬ведите второй полином:" << endl;
 		cout << "p2 = ";
 		cin >> str2;
