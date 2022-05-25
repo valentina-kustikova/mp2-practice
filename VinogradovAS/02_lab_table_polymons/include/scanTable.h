@@ -1,20 +1,30 @@
 ﻿#pragma once
-#include "table.h" 
+#include "arrayTable.h" 
 using namespace std;
 
 template <typename TData, typename TKey>
-class ScanTable : public Table<TData, TKey>
+class ScanTable : public ArrayTable<TData, TKey>
 {
-
 public:
-	ScanTable(int maxSize = 10) : Table(maxSize) {};
+	ScanTable(int maxSize = 10) : ArrayTable(maxSize) {};
 	ScanTable(const ScanTable<TData, TKey>& other);
-	 ~ScanTable() {};
+	// ~ScanTable() {};
 	 virtual TData* Search(const TKey Key) override;
 	 virtual void Insert(TData Data,TKey Key) override;
 	 virtual void Clear();
 	 virtual void Delete(const TKey Key) override;
-
+	 template<class TData> friend std::ostream& operator<< (std::ostream& os, const ScanTable<TData, TKey>& Tab)
+	 {
+		 int i = 0;
+		 while (i < Tab.count)
+		 {
+			 os << "\t" << left << Tab.rec[i]->GetKey() << " | " << *(Tab.rec[i]->TabRecord<TData, TKey>::GetData()) << '\n';
+			 i++;
+		 }
+		 if (Tab.count == 0)
+			 os << "\n\tTable is Empty\n";
+		 return os;
+	 }
 };
 
 template<typename TData, typename TKey>
@@ -29,6 +39,7 @@ template<typename TData, typename TKey>
 	{
 		this->rec[i] = new TabRecord<TData, TKey>(*(other.rec[i]));
 	}
+
 }
 
 template<typename TData, typename TKey>
@@ -57,7 +68,7 @@ inline void ScanTable<TData, TKey>::Insert(TData Data, TKey Key)
 	if (this->IsFull()) {
 		throw "ScanTable is full";
 	}
-	this->Table<TData, TKey>::Reset();
+	this->ArrayTable<TData, TKey>::Reset();
 	if (IsEmpty() || Search(Key) == nullptr) {
 		rec[count] = new TabRecord<TData, TKey>(ins);
 		count++;

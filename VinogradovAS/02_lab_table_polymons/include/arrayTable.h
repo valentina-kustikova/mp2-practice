@@ -1,59 +1,20 @@
 ﻿#pragma once 
 #include <iostream>
+#include "table.h" 
 
 
-using namespace std;
 template <typename TData, typename TKey>
-class TabRecord {
-	
+class ArrayTable : public Table<TData, TKey> 
+{
 protected:
-	TKey key;
-	TData* data;
-public:
-	
-	TabRecord() {
-		key = {};
-		data = {};
-	}
-
-	TabRecord(TKey key = {}, TData data = {}) {
-		this->key = key;
-		this->data = new TData(data);
-	}
-
-	TabRecord(const TabRecord& other) {
-		this->key = other.key;
-		this->data = new TData(*(other.data));
-	}
-	 TData* GetData() const { return data; }
-	 TKey GetKey() const { return key; }
-	
-	TabRecord<TData, TKey>& operator=(const TabRecord<TData, TKey>& TabR)
-	{
-		data = new TData(*(TabR.data)); key = TabR.key; return *this;
-	}
-	bool operator<(const TabRecord<TData, TKey>& tr) const
-	{
-		return key < tr.key;
-	}
-	bool operator!=(const TabRecord<TData, TKey>& TabR) const
-	{
-		return !(this->key == TabR.key);
-	}
-};
-
-
-template <typename TData, typename TKey>
-class Table {
-private:
-	TabRecord<TData, TKey>** rec;
 	int maxSize;
-	int count;
 	int index;
-	//virtual void Repacking() = 0;
+	TabRecord<TData, TKey>** rec;
 public:
-	Table(int maxSize =10);
-	virtual ~Table() { delete[] rec; }
+	
+	
+	ArrayTable(int maxSize =10);
+	virtual ~ArrayTable() { delete[] rec; }
 
 	 virtual void Insert(TData data,TKey key) = 0 ;
 	 virtual TData* Search(const TKey key) = 0;
@@ -61,36 +22,22 @@ public:
 
 	void Reset();
 	bool IsFull() const;
-	bool IsEmpty() const;
 	void Next();
 	bool IsTabEnded() const { return index == count || index == -1; }// признак окончания таблицы
-	TData* GetData() ;
-	TKey GetKey() ;
-	int const GetCount() {return count;}
+	TData* GetData() const;
+	TKey GetKey() const;
 		
-	int const GetMaxSize() { return maxSize; }
-	int const GetIndex() { return index; }
-	template<class TData> friend std::ostream& operator<< (std::ostream& os, const Table<TData, TKey>& Tab)
-	{
-		 int i = 0;
-		while (i < Tab.count)
-		{
-			os << "\t" << left << Tab.rec[i]->GetKey() << " | " << *(Tab.rec[i]->TabRecord<TData, TKey>::GetData()) << '\n';
-			i++;
-		}
-		if (Tab.count == 0)
-			os << "\n\tTable is Empty\n";
-		return os;
-	}
+	int  GetMaxSize() const { return maxSize; }
+	int  GetIndex() const { return index; }
+	
 
 
 };
 
 template<typename TData, typename TKey>
-Table<TData, TKey>::Table(int maxSize)
+ArrayTable<TData, TKey>::ArrayTable(int maxSize)
 {
 	this->maxSize = maxSize;
-	this->count = 0;
 	this->index = -1;
 	rec = new TabRecord<TData, TKey>*[maxSize];
 }
@@ -98,7 +45,7 @@ Table<TData, TKey>::Table(int maxSize)
 
 
 template<typename TData, typename TKey>
-void Table<TData, TKey>::Reset()
+void ArrayTable<TData, TKey>::Reset()
 {
 	if (count > 0) {
 		index = 0;
@@ -109,7 +56,7 @@ void Table<TData, TKey>::Reset()
 }
 
 template<typename TData, typename TKey>
-bool Table<TData, TKey>::IsFull() const
+bool ArrayTable<TData, TKey>::IsFull() const
 {
 	if (count == maxSize) {
 		return true;
@@ -119,19 +66,9 @@ bool Table<TData, TKey>::IsFull() const
 	}
 }
 
-template<typename TData, typename TKey>
-inline bool Table<TData, TKey>::IsEmpty() const
-{
-	if (count == 0) {
-		return true;
-	}
-	else {
-		return false;
-	}
-}
 
 template<typename TData, typename TKey>
-void Table<TData, TKey>::Next()
+void ArrayTable<TData, TKey>::Next()
 {
 	if (count > 0) {
 		index++;
@@ -143,7 +80,7 @@ void Table<TData, TKey>::Next()
 }
 
 template<typename TData, typename TKey>
-inline TData* Table<TData, TKey>::GetData() 
+inline TData* ArrayTable<TData, TKey>::GetData() const
 {
 	if (count > 0) {
 		return rec[index]->GetData();
@@ -154,7 +91,7 @@ inline TData* Table<TData, TKey>::GetData()
 }
 
 template<typename TData, typename TKey>
-inline TKey Table<TData, TKey>::GetKey() 
+inline TKey ArrayTable<TData, TKey>::GetKey() const
 {
 	if (count > 0) {
 		return rec[index]->GetKey();

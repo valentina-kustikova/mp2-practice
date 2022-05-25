@@ -60,23 +60,35 @@ void main()
 			Tab1.Insert(P, key);
 			Tab2.Insert(P, key);
 			Tab3.Insert(P, key);
-			cout << "ScanTable: " << endl << Tab1 << endl;
+			/*cout << "ScanTable: " << endl << Tab1 << endl;
 			cout << "-------------------------" << endl;
 			cout << "SortedTable:" << endl << Tab2 << endl;
 			cout << "-------------------------" << endl;
 			cout << "HashTable:" << endl << Tab3 << endl << endl;
-			cout << "-------------------------" << endl;
+			cout << "-------------------------" << endl;*/
 			break;
 		}
 		case '2':
 		{
 			cout << "Введите полином:" << endl;
 			getline(cin, key);
+			int tmp;
 			if (key == "")
 				getline(cin, key);
-			Tab1.Delete(key);
-			Tab2.Delete(key);
-			Tab3.Delete(key);
+			cout << "Выберите таблицу" << endl;
+			cout << "1. ScanTable   2. SortTable   3. HashTable" << endl;
+			cin >> tmp;
+			if (tmp == 1)
+			{
+				Tab1.Delete(key);
+			}
+			else 
+				if(tmp == 2){
+				Tab2.Delete(key);
+			}
+			else {
+				Tab3.Delete(key);
+			}
 			cout << "ScanTable: " << endl << Tab1 << endl;
 			cout << "-------------------------" << endl;
 			cout << "SortedTable:" << endl << Tab2 << endl;
@@ -147,22 +159,25 @@ void main()
 			{
 				TPolynom p1, p2;
 				if (Tab1.Search(strPol1) != nullptr) {
-					p1 = *Tab1.rec[Tab1.GetIndex()]->GetData();
+					
+					p1 = *(TPolynom*)Tab1.Search(strPol1);
 				}
 				else {
 					cout << "Такого полинома нет в таблице";
 					break;
 				}
 				if (Tab1.Search(strPol2) != nullptr) {
-					p2 = *Tab1.rec[Tab1.GetIndex()]->GetData();
+					 p2 = *(TPolynom*)(Tab1.Search(strPol2));
+					
 				}
-				else {
+				else { 
 					cout << "Такого полинома нет в таблице";
 					break;
 				}
 				cout << "Введите операцию, которую вы хотите применить к ним(+,-,*): ";
 				cin >> op;
 				res = ResultOutput(op, p1, p2);
+				
 				cout << endl << "Результат: " << res << endl;
 				cout << "В какую таблицу вы хотите внести новый полином?" << endl;
 				cout << "1. ScanTable   2. SortTable   3. HashTable" << endl;
@@ -183,14 +198,16 @@ void main()
 			{
 				TPolynom p1, p2;
 				if (Tab2.Search(strPol1) != nullptr) {
-					p1 = *Tab2.rec[Tab2.GetIndex()]->GetData();
+					//p1 = *Tab2.rec[Tab2.GetIndex()]->GetData();
+					 p1 = *(TPolynom*)(Tab2.Search(strPol1));
 				}
 				else {
 					cout << "Такого полинома нет в таблице";
 					break;
 				}
 				if (Tab2.Search(strPol2) != nullptr) {
-					p2 = *Tab2.rec[Tab2.GetIndex()]->GetData();
+					//p2 = *Tab2.rec[Tab2.GetIndex()]->GetData();
+					p2 = *(TPolynom*)(Tab2.Search(strPol2));
 				}
 				else {
 					cout << "Такого полинома нет в таблице";
@@ -219,14 +236,16 @@ void main()
 			{
 				TPolynom p1, p2;
 				if (Tab3.Search(strPol1) != nullptr) {
-					p1 = *Tab3.rec[Tab3.GetIndex()]->GetData();
+					//p1 = *Tab3.rec[Tab3.GetIndex()]->GetData();
+					p1 = *(TPolynom*)(Tab3.Search(strPol1));      
 				}
 				else {
 					cout << "Такого полинома нет в таблице";
 					break;
 				}
 				if (Tab3.Search(strPol2) != nullptr) {
-					p2 = *Tab3.rec[Tab3.GetIndex()]->GetData();
+					//p2 = *Tab3.rec[Tab3.GetIndex()]->GetData();
+					p2 = *(TPolynom*)(Tab3.Search(strPol2));
 				}
 				else {
 					cout << "Такого полинома нет в таблице";
@@ -263,63 +282,63 @@ void main()
 }
 
 
+int main2() {
+	string str = "1";
+	TPolynom p(str);
+	string str1 = "x+1";
+	TPolynom p1(str1);
+	string str2 = "1";
+	TPolynom p2(str2);
+	string str3 = "x2";
+	TPolynom p3(str3);
+	string str4 = "y2";
+	TPolynom p4;
+	HashTable<TPolynom, string> T1(5);
+	T1.Insert(p1, str1);
+	
+	T1.Insert(p, str);
+	T1.Insert(p1,str1);
+	T1.Insert(p2, str2);
+	p4 = *(TPolynom*)(T1.Search(str));
+	p2 = p4 + p1;
+	cout << p2;
+	//cout << p;
+	/*HashTable<TPolynom, string> T1(5);
 
-//int main5() {
-//	string str1 = "2xy2";
-//	string str2 = "2";
-//	TPolynom p1(str1);
-//	TPolynom p2(str2);
-//	TPolynom p3;
-//	p3 = p1 + p2;
-//	p3 = ResultOutput('+', p1, p2);
-//	cout << p3;
-//	return 0;
-//}
-//int main2() {
-//	string str = "1";
-//	TPolynom p(str);
-//	string str1 = "x+1";
-//	TPolynom p1(str1);
-//	string str2 = "1";
-//	TPolynom p2(str2);
-//	string str3 = "x2";
-//	TPolynom p3(str3);
-//	string str4 = "y2";
-//	TPolynom p4(str4);
-//	//cout << p;
-//	HashTable<TPolynom, string> T1(5);
-//
-//	T1.Insert(p, str);
-//	T1.Insert(p1, str1);
-//	T1.Clear();
-//
-//	T1.Delete(str);
-//
-//	cout << T1;
-//
-//	T1.Delete(str1);
-//	ScanTable<TPolynom, string> T2(T1);
-//	cout << T2;
-//	cout << T1 << endl << endl;
-//	//T1.Delete(str);
-//	//cout << T1;
-//	/*ScanTable<TPolynom, string> b(2);
-//	SortTable<TPolynom, string> T2(T1);*/
-//	
-//	cout << T1 << endl << endl;
-//	/*ScanTable<int, int> T1(3);
-//	T1.Insert(1, 11);
-//	T1.Insert(2, 22);
-//	T1.Insert(3, 33);
-//	cout << T1 << endl << endl;*/
-//	SortTable<TPolynom, string> S(T1);
-//	/*S.Insert(p1, str1);
-//	S.Insert(p2, str2);
-//	S.Insert(p3, str3);
-//	S.Insert(p, str);
-//	S.Insert(p4, str4);*/
-//	cout << S << endl;
-//	S.Delete("y");
-//	cout << S;
-//	return 0;
-//}
+	T1.Insert(p, str);
+	T1.Insert(p1, str1);
+	T1.Clear();
+
+	T1.Delete(str);
+
+	cout << T1;*/
+
+	//T1.Delete(str1);
+	
+	//T1.Insert(p, str);
+	//T1.Insert(p1, str1);
+	//cout << T1;
+	//cout << T2;
+	//cout << T1 << endl << endl;
+	//T1.Delete(str);
+	//cout << T1;
+	/*ScanTable<TPolynom, string> b(2);
+	SortTable<TPolynom, string> T2(T1);*/
+	
+	//cout << T1 << endl << endl;
+	/*ScanTable<int, int> T1(3);
+	T1.Insert(1, 11);
+	T1.Insert(2, 22);
+	T1.Insert(3, 33);
+	cout << T1 << endl << endl;*/
+	//SortTable<TPolynom, string> S(T1);
+	/*S.Insert(p1, str1);
+	S.Insert(p2, str2);
+	S.Insert(p3, str3);
+	S.Insert(p, str);
+	S.Insert(p4, str4);*/
+	//cout << S << endl;
+	//S.Delete("y");
+	//cout << S;
+	return 0;
+}

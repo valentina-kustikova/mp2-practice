@@ -1,6 +1,6 @@
 ﻿#pragma once 
 #include <iostream>
-//#include "table.h"
+#include "arrayTable.h"
 #include "scanTable.h"
 using namespace std;
 
@@ -28,11 +28,11 @@ protected:
 	}
 public:
 	SortTable(int maxSize = 10) : ScanTable<TData, TKey>(maxSize) {};
-	SortTable(const SortTable<TData, TKey>& other) : ScanTable<TData, TKey>(other) {};
+	//SortTable(const SortTable<TData, TKey>& other) : ScanTable<TData, TKey>(other) {};
 	SortTable(const ScanTable<TData, TKey>& other) : ScanTable<TData, TKey>(other) {
 		Sort();
 	};
-	~SortTable() {}
+	//~SortTable() {}
 	 TData* Search(const TKey Key);
 	void Insert(TData Data, TKey Key);
 	void Delete(const TKey Key);
@@ -40,6 +40,19 @@ public:
 	/*SortTable<TData, TKey>& operator = (const SortTable<TData, TKey>& other) {
 		return *this;
 	}*/
+
+	template<class TData> friend std::ostream& operator<< (std::ostream& os, const SortTable<TData, TKey>& Tab)
+	{
+		int i = 0;
+		while (i < Tab.count)
+		{
+			os << "\t" << left << Tab.rec[i]->GetKey() << " | " << *(Tab.rec[i]->TabRecord<TData, TKey>::GetData()) << '\n';
+			i++;
+		}
+		if (Tab.count == 0)
+			os << "\n\tTable is Empty\n";
+		return os;
+	}
 };
 
 
@@ -88,7 +101,7 @@ inline void SortTable<TData, TKey>::Insert(TData Data, TKey Key)
 		throw "ScanTable is full";
 	}
 
-	this->Table<TData, TKey>::Reset();
+	this->ArrayTable<TData, TKey>::Reset();
 	Reset();
 	while (!IsTabEnded() && Key >= rec[index]->GetKey()) {
 		if (Key == rec[index]->GetKey()) {
