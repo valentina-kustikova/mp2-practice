@@ -28,11 +28,9 @@ int main()
 	cout << "Input first polinom: ";
 	getline(cin, str, '\n');
 	TPolinom P(str);
-	P.Similar();
 	cout << "Input second polinom: ";
 	getline(cin, str2, '\n');
 	TPolinom Q(str2);
-	Q.Similar();
 	Menu();
 	int sw, ch, x, y, z;
 	double c, res1, res2;
@@ -48,7 +46,6 @@ int main()
 		{
 			C = C + P;
 			C = C + Q;
-			C.Similar();
 			cout << "First + second: " << C << endl;
 			C.ClearPol();
 			break;
@@ -57,9 +54,7 @@ int main()
 		{
 			C = C + P;
 			C = C - Q;
-			C.Similar();
 			cout << "First - second: " << C << endl;
-			-Q;
 			C.ClearPol();
 			break;
 		}
@@ -70,12 +65,10 @@ int main()
 			cin.ignore(32767, '\n');
 			C = C + P;
 			C = C * c;
-			C.Similar();
 			cout << "First * const: " << C << endl;
 			C.ClearPol();
 			C = C + Q;
 			C = C * c;
-			C.Similar();
 			cout << "Second * const: " << C << endl;
 			C.ClearPol();
 			break;
@@ -84,7 +77,6 @@ int main()
 		{
 			C = C + P;
 			C = C * Q;
-			C.Similar();
 			cout << "First * second: " << C << endl;
 			C.ClearPol();
 			break;

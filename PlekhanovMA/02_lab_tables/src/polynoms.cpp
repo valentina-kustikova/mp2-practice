@@ -68,61 +68,61 @@ TPolinom::TPolinom(const std::string& string)
 			}
 			if (i > 0 && strpolinom[i - 1][0] == '-')
 				coef = coef * (-1);
-				if (i < strpolinom.size() && i + 1 <= strpolinom.size() && strpolinom[i][0] == 'x')
+			if (i < strpolinom.size() && i + 1 <= strpolinom.size() && strpolinom[i][0] == 'x')
+			{
+				if (i + 1 < strpolinom.size() && isdigit(strpolinom[i + 1][0]))
 				{
-					if (i + 1 < strpolinom.size() && isdigit(strpolinom[i + 1][0]))
-					{
-						x = stoi(strpolinom[i + 1]);
-						i = i + 2;
-					}
-					else
-					{
-						x = 1;
-						i++;
-					}
+					x = stoi(strpolinom[i + 1]);
+					i = i + 2;
 				}
-				if (i < strpolinom.size() && i + 1 <= strpolinom.size() && strpolinom[i][0] == 'y')
-				{
-					if (i + 1 < strpolinom.size() && isdigit(strpolinom[i + 1][0]))
-					{
-						y = stoi(strpolinom[i + 1]);
-						i = i + 2;
-					}
-					else
-					{
-						y = 1;
-						i++;
-					}
-				}
-				if (i < strpolinom.size() && i + 1 <= strpolinom.size() && strpolinom[i][0] == 'z')
-				{
-					if (i + 1 < strpolinom.size() && isdigit(strpolinom[i + 1][0]))
-					{
-						z = stoi(strpolinom[i + 1]);
-						i = i + 2;
-					}
-					else
-					{
-						
-						z = 1;
-						i++;
-					}
-				}
-				if (i < strpolinom.size() && strpolinom[i][0] == 'x')
+				else
 				{
 					x = 1;
 					i++;
 				}
-				if (i < strpolinom.size() && strpolinom[i][0] == 'y')
+			}
+			if (i < strpolinom.size() && i + 1 <= strpolinom.size() && strpolinom[i][0] == 'y')
+			{
+				if (i + 1 < strpolinom.size() && isdigit(strpolinom[i + 1][0]))
+				{
+					y = stoi(strpolinom[i + 1]);
+					i = i + 2;
+				}
+				else
 				{
 					y = 1;
 					i++;
 				}
-				if (i < strpolinom.size() && strpolinom[i][0] == 'z')
+			}
+			if (i < strpolinom.size() && i + 1 <= strpolinom.size() && strpolinom[i][0] == 'z')
+			{
+				if (i + 1 < strpolinom.size() && isdigit(strpolinom[i + 1][0]))
 				{
+					z = stoi(strpolinom[i + 1]);
+					i = i + 2;
+				}
+				else
+				{
+
 					z = 1;
 					i++;
 				}
+			}
+			if (i < strpolinom.size() && strpolinom[i][0] == 'x')
+			{
+				x = 1;
+				i++;
+			}
+			if (i < strpolinom.size() && strpolinom[i][0] == 'y')
+			{
+				y = 1;
+				i++;
+			}
+			if (i < strpolinom.size() && strpolinom[i][0] == 'z')
+			{
+				z = 1;
+				i++;
+			}
 			TMonom* monom = new TMonom(x, y, z, coef);
 			polinom.InsertToTail(monom->data);
 		}
