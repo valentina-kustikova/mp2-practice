@@ -10,11 +10,11 @@ class TPolynom : public THeadList<TMonom>
 {
 protected:
 	void Parser(const std::string& polyStr);
-	void Print(std::ostream& os) const;
-	TPolynom(const TPolynom& other);
+	
 public:
 	
 	TPolynom();
+	TPolynom(const TPolynom& other);
 	void AddMonom(TMonom m);
 	
 	TPolynom(const std::string& polyStr);
@@ -28,7 +28,9 @@ public:
 	TPolynom operator*(const TPolynom& other) ;
 	TPolynom operator*(const TMonom& monom) ;
 	TPolynom operator*(const double a) ;
-	string PolStr( TPolynom& p) {
+	double operator() (double x, double y, double z);
+
+	string PolStr(TPolynom& p) {
 		TNode<TMonom>* _pCurr = p.pFirst;
 		string res;
 		stringstream os;
@@ -80,7 +82,6 @@ public:
 		}
 		return os.str();
 	}
-	double operator() (double x, double y, double z);
 
 	friend std::ostream& operator<<(std::ostream& os, TPolynom& p)
 		

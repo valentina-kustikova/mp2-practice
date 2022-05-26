@@ -18,30 +18,8 @@ struct TMonom
 	bool operator!=(const TMonom& other) const;
 	bool operator<(const TMonom& other) const;
 	bool operator>(const TMonom& other) const;
-	/*string MonStr(stringstream os, TMonom& monom) {
-		if (monom.x != 0)
-		{
-			os << "x";
-			if (monom.x != 1)
-				os << monom.x;
-		}
-		if (monom.y != 0)
-		{
-			os << "y";
-			if (monom.y != 1)
-				os << monom.y;
-		}
-		if (monom.z != 0)
-		{
-			os << "z";
-			if (monom.z != 1)
-				os << monom.z;
-		}
-		return os.str();
 
-
-	}
-	*/
+	
 	bool IsConst() const;
 
 	TMonom operator*(const TMonom& other);

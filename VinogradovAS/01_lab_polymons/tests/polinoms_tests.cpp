@@ -20,11 +20,11 @@ TEST(testPolynom, CanCreatePolynomFromString)
 	EXPECT_EQ(t, correct);
 }
 
-TEST(TPolynom, CanCreateCopiedPolynom)
-{
-	TPolynom t;
-	ASSERT_NO_THROW(TPolynom t2(t));
-}
+//TEST(TPolynom, CanCreateCopiedPolynom)
+//{
+//	TPolynom t;
+//	ASSERT_NO_THROW(TPolynom t2(t));
+//}
 
 TEST(TPolynom, CanAssignPolynoms)
 {
