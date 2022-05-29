@@ -1,0 +1,6 @@
+C:/Game/Proga/mp2-practice/ShipilovAY/02_lab_table/sln/CMakeFiles/ALL_BUILD.dir
+C:/Game/Proga/mp2-practice/ShipilovAY/02_lab_table/sln/CMakeFiles/ZERO_CHECK.dir
+C:/Game/Proga/mp2-practice/ShipilovAY/02_lab_table/sln/gtest/CMakeFiles/gtest.dir
+C:/Game/Proga/mp2-practice/ShipilovAY/02_lab_table/sln/src/CMakeFiles/tables.dir
+C:/Game/Proga/mp2-practice/ShipilovAY/02_lab_table/sln/tests/CMakeFiles/tables_test.dir
+C:/Game/Proga/mp2-practice/ShipilovAY/02_lab_table/sln/samples/CMakeFiles/tables_sample.dir

@@ -1,0 +1,4 @@
+﻿  Building Custom Rule C:/Game/Proga/mp2-practice/ShipilovAY/02_lab_table/samples/CMakeLists.txt
+  table.cpp
+C:\Game\Proga\mp2-practice\ShipilovAY\02_lab_table\include\ListHash.h(68): warning C4715: ListHash<TPolinom,std::basic_string<char,std::char_traits<char>,std::allocator<char> > >::IsFull: значение возвращается не при всех путях выполнения
+  tables_sample.vcxproj -> C:\Game\Proga\mp2-practice\ShipilovAY\02_lab_table\sln\bin\tables_sample.exe
