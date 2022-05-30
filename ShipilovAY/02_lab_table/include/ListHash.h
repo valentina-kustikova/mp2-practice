@@ -23,6 +23,19 @@ public:
 	virtual bool IsFull() const;
 	virtual TKey GetKey() const;
 	virtual TData* GetData() const;
+	virtual void Clear()
+	{
+		if (!(this->IsEmpty()))
+		{
+			for (int i = 0; i < Top; i++)
+			{
+
+				pList[i].Clear();
+			}
+			this->Top = 0;
+			CurrList = 0;
+		}
+	}
 };
 
 template<class TData, class TKey>

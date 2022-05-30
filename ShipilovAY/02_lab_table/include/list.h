@@ -33,6 +33,21 @@ public:
 	TNode<T>* GetNext();
 	TNode<T>* Search(const TNode<T>& d);
 	TNode<T>* GetCurrent() { return current; };
+	void Clear()
+	{
+		if (!IsEmpty())
+		{
+			TNode<T>* p;
+			while (first->pNext != nullptr)
+			{
+				p = first->pNext;
+				first->pNext = p->pNext;
+				delete p;
+			}
+			delete first;
+			first = nullptr;
+		}
+	}
 	friend std::ostream& operator<<(std::ostream& os, TList<T>& l)
 	{
 		os << "[ ";
