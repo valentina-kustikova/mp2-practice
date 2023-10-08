@@ -7,95 +7,117 @@
 
 #include "tset.h"
 
-TSet::TSet(int mp) : BitField(-1)
+TSet::TSet(int mp) : BitField(mp)
 {
+    if (mp >= 0) {
+        MaxPower = mp;
+    }
+    else {
+        throw "error: Set size < 0";
+    }
 }
-
 // конструктор копирования
-TSet::TSet(const TSet &s) : BitField(-1)
+TSet::TSet(const TSet& s) : BitField(s.BitField)
 {
+    MaxPower = s.MaxPower;
 }
-
 // конструктор преобразования типа
-TSet::TSet(const TBitField &bf) : BitField(-1)
+TSet::TSet(const TBitField& bf) : BitField(bf)
 {
+    MaxPower = bf.GetLength();
 }
-
 TSet::operator TBitField()
 {
-    throw "Method is not implemented";
+    return BitField;
 }
 
-int TSet::GetMaxPower(void) const // получить макс. к-во эл-тов
+// доступ к битам
+int TSet::GetMaxPower(void) const noexcept // получить макс. к-во эл-тов
 {
-    throw "Method is not implemented";
+    return BitField.GetLength();
 }
-
-int TSet::IsMember(const int Elem) const // элемент множества?
+bool TSet::IsMember(const int Elem) const // элемент множества?
 {
-    return 0;
+    if (Elem >= MaxPower || Elem < 0) throw "error: index out of range";
+    
+    if (BitField.GetBit(Elem))
+        return true;
+    return false;
 }
-
 void TSet::InsElem(const int Elem) // включение элемента множества
 {
-    throw "Method is not implemented";
+    if (Elem >= MaxPower || Elem < 0) throw "error: index out of range";
+    BitField.SetBit(Elem);
 }
-
 void TSet::DelElem(const int Elem) // исключение элемента множества
 {
-    throw "Method is not implemented";
+    if (Elem >= MaxPower || Elem < 0) throw "error: index out of range";
+    BitField.ClrBit(Elem);
 }
 
 // теоретико-множественные операции
-
-TSet& TSet::operator=(const TSet &s) // присваивание
+const TSet& TSet::operator=(const TSet& s) // присваивание
 {
-    throw "Method is not implemented";
+    MaxPower = s.MaxPower;
+    BitField = s.BitField;
+    return *this;
 }
-
-int TSet::operator==(const TSet &s) const // сравнение
+bool TSet::operator==(const TSet& s) const // сравнение
 {
-    return 0;
+    if (MaxPower != s.MaxPower) return false;
+    return (BitField == s.BitField);
 }
-
-int TSet::operator!=(const TSet &s) const // сравнение
+bool  TSet::operator!=(const TSet& s) const // сравнение
 {
-    throw "Method is not implemented";
+    return !(*this == s);
 }
-
-TSet TSet::operator+(const TSet &s) // объединение
+TSet TSet::operator+(const TSet& s) // объединение
 {
-    throw "Method is not implemented";
-}
+    int len = (MaxPower > s.MaxPower) ? MaxPower : s.MaxPower;
+    TSet res(len);
 
+    res.BitField = BitField | s.BitField;
+    return res;
+}
 TSet TSet::operator+(const int Elem) // объединение с элементом
 {
-    throw "Method is not implemented";
+    if (Elem >= MaxPower || Elem < 0) throw "error: index out of range";
+    
+    TSet res(*this);
+    res.InsElem(Elem);
+    return res;
 }
-
 TSet TSet::operator-(const int Elem) // разность с элементом
 {
-    throw "Method is not implemented";
-}
+    if (Elem >= MaxPower || Elem < 0) throw "error: index out of range";
 
-TSet TSet::operator*(const TSet &s) // пересечение
+    TSet res(*this);
+    res.DelElem(Elem);
+    return res;
+}
+TSet TSet::operator*(const TSet& s) // пересечение
 {
-    throw "Method is not implemented";
-}
+    int len = (MaxPower > s.MaxPower) ? MaxPower : s.MaxPower;
+    TSet res(len);
 
+    res.BitField = BitField & s.BitField;
+    return res;
+}
 TSet TSet::operator~(void) // дополнение
 {
-    throw "Method is not implemented";
+    TSet res(MaxPower);
+    res.BitField = ~BitField;
+    return res;
 }
 
 // перегрузка ввода/вывода
-
-istream &operator>>(istream &istr, TSet &s) // ввод
+istream& operator>>(istream& in, TSet& s) // ввод
 {
-    throw "Method is not implemented";
+    in >> s.BitField;
+    return in;
 }
-
-ostream& operator<<(ostream &ostr, const TSet &s) // вывод
+ostream& operator<<(ostream& out, const TSet& s) // вывод
 {
-    throw "Method is not implemented";
+    out << s.BitField;
+    return out;
 }
