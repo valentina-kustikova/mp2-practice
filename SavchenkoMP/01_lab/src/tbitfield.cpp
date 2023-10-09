@@ -76,12 +76,13 @@ int TBitField::GetBit(const int n) const // получить значение б
 const TBitField& TBitField::operator=(const TBitField &bf) // присваивание
 {
     if (MemLen != bf.MemLen)
-        if (MemLen > 0)
+        if (MemLen > 0) {
             delete[] pMem;
+            MemLen = bf.MemLen;
+            pMem = new TELEM[MemLen];
+        }
 
     BitLen = bf.BitLen;
-    MemLen = bf.MemLen;
-    pMem = new TELEM[MemLen];
     for (int i = 0; i < MemLen; i++)
         pMem[i] = bf.pMem[i];
     return (*this);
@@ -131,34 +132,23 @@ TBitField TBitField::operator~(void) // отрицание
 istream& operator>>(istream& in, TBitField& bf) // ввод
 {
     string ans;
-    bool flag_size = true;
-    bool flag_values = true;
-    
     in >> ans;
-    if (ans.size() > bf.BitLen) {
-        flag_size = false;
-        throw "error: wrong input size";
+
+    int blen = bf.BitLen;
+    int len = (ans.size() < blen) ? ans.size() : blen;
+
+    for (int i = 0; i < blen; i++) {
+        bf.ClrBit(i);
     }
-
-    for (int i = 0; i < ans.size(); i++)
-        if (ans[i] != '1' && ans[i] != '0') {
-            flag_values = false;
-            break;
-        }
-    if (!flag_values) throw "error: wrong input values";
-
-    if (flag_size && flag_values)
-        for (int i = 0; i < ans.size(); i++) {
-            if (ans[i] == '0') bf.ClrBit(i);
-            if (ans[i] == '1') bf.SetBit(i);
-        }
+    for (int i = 0; i < len; i++) {
+        if (ans[i] == '1') bf.SetBit(i);
+    }
 
     return in;
 }
 ostream& operator<<(ostream& out, const TBitField& bf) // вывод
 {
     int len = bf.BitLen;
-    int bitsInElem = bf.bitsInElem;
     for (int i = 0; i < len; i++) {
         if (bf.GetBit(i))
             out << '1';

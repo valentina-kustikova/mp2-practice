@@ -26,7 +26,7 @@ TSet::TSet(const TBitField& bf) : BitField(bf)
 {
     MaxPower = bf.GetLength();
 }
-TSet::operator TBitField()
+TSet::operator TBitField()  
 {
     return BitField;
 }
@@ -34,7 +34,7 @@ TSet::operator TBitField()
 // доступ к битам
 int TSet::GetMaxPower(void) const noexcept // получить макс. к-во эл-тов
 {
-    return BitField.GetLength();
+    return MaxPower;
 }
 bool TSet::IsMember(const int Elem) const // элемент множества?
 {
