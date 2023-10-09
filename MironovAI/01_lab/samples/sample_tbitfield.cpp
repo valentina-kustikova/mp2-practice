@@ -1,35 +1,30 @@
 #include "tbitfield.h"
-#include <iomanip>
+
+void test_tbitfield()
+{
+	TBitField a(5);
+	a.SetBit(1);
+	a.SetBit(3);
+	cout << "A: " << a << endl;
+	TBitField b(a);
+	cout << "B " << b << endl;
+	cout << "B 1 bit: " << b.GetBit(1) << endl;
+	b.ClrBit(1);
+	cout << "B 1 bit after clear: " << b.GetBit(1) << endl;
+
+	cout << "A: " << a << endl;
+	cout << "B: " << b << endl;
+	cout << "A&B " << (a & b) << endl;
+	cout << "A|B " << (a | b) << endl;
+	cout << "A==B " << (a == b) << endl;
+	cout << "~A  " << (~a) << endl;
+	cout << "A.GetLength(): " << a.GetLength() << endl;
+	cout << "OK" << endl;
+}
+
+
+
 int main()
 {
-    int n, m, k, count;
-
-    cout << "Input a number:  ";
-    cin >> n;
-    TBitField s(n + 1);
-    // заполнение множества
-    for (m = 2; m <= n; m++)
-        s.SetBit(m);
-    // проверка до sqrt(n) и удаление кратных
-    for (m = 2; m * m <= n; m++)
-        // если m в s, удаление кратных
-        if (s.GetBit(m))
-            for (k = 2 * m; k <= n; k += m)
-                if (s.GetBit(k))
-                    s.ClrBit(k);
-    // оставшиеся в s элементы - простые числа
-    cout << endl << "Set all digits: " << endl << s << endl;
-    cout << endl << "Set prime digits: " << endl;
-    count = 0;
-    k = 1;
-    for (m = 2; m <= n; m++)
-        if (s.GetBit(m))
-        {
-            count++;
-            cout << setw(3) << m << " ";
-            if (k++ % 10 == 0)
-                cout << endl;
-        }
-    cout << endl;
-    cout << "Count of prime digits: " << count << endl;
+	test_tbitfield();
 }
