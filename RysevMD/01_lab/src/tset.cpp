@@ -36,20 +36,20 @@ int TSet::GetMaxPower(void) const // получить макс. к-во эл-т�
 
 int TSet::IsMember(const int Elem) const // элемент множества?
 {
-    if (Elem > MaxPower) throw "Element not in universe";
+    if (Elem >= MaxPower) throw "Element not in universe";
     if (BitField.GetBit(Elem)) return 1;
     return 0;
 }
 
 void TSet::InsElem(const int Elem) // включение элемента множества
 {
-    if (Elem > MaxPower) throw "Element not in universe";
+    if (Elem >= MaxPower) throw "Element not in universe";
     BitField.SetBit(Elem);
 }
 
 void TSet::DelElem(const int Elem) // исключение элемента множества
 {
-    if (Elem > MaxPower) throw "Element not in universe";
+    if (Elem >= MaxPower) throw "Element not in universe";
     BitField.ClrBit(Elem);
 }
 
@@ -83,7 +83,7 @@ TSet TSet::operator+(const TSet& s) // объединение
 
 TSet TSet::operator+(const int Elem) // объединение с элементом
 {
-    if (Elem > MaxPower) throw "Element not in universe";
+    if (Elem >= MaxPower) throw "Element not in universe";
     TSet tmp(MaxPower);
     tmp.BitField = BitField;
     tmp.BitField.SetBit(Elem);
@@ -92,7 +92,7 @@ TSet TSet::operator+(const int Elem) // объединение с элемент
 
 TSet TSet::operator-(const int Elem) // разность с элементом
 {
-    if (Elem > MaxPower) throw "Element not in universe";
+    if (Elem >= MaxPower) throw "Element not in universe";
     TSet tmp(MaxPower);
     tmp.BitField = BitField;
     tmp.BitField.ClrBit(Elem);
@@ -128,7 +128,7 @@ istream& operator>>(istream& istr, TSet& s) // ввод
 ostream& operator<<(ostream& ostr, const TSet& s) // вывод
 {
     for (int i = 0; i < s.MaxPower; i++) {
-        if (s.BitField.GetBit(i)) cout << i;
+        if (s.BitField.GetBit(i)) cout << i << " ";
     }
     return ostr;
 }

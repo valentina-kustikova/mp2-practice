@@ -50,19 +50,19 @@ int TBitField::GetLength(void) const // получить длину (к-во б�
 
 void TBitField::SetBit(const int n) // установить бит
 {
-	if (n > BitLen || n < 0) throw "out_of_range";
+	if (n >= BitLen || n < 0) throw "out_of_range";
 	pMem[GetMemIndex(n)] |= GetMemMask(n);
 }
 
 void TBitField::ClrBit(const int n) // очистить бит
 {
-	if (n > BitLen || n < 0) throw "out_of_range";
+	if (n >= BitLen || n < 0) throw "out_of_range";
 	pMem[GetMemIndex(n)] &= ~GetMemMask(n);
 }
 
 int TBitField::GetBit(const int n) const // получить значение бита
 {
-	if (n > BitLen || n < 0) throw "out_of_range";
+	if (n >= BitLen || n < 0) throw "out_of_range";
 	if ((pMem[GetMemIndex(n)] & GetMemMask(n)) == 0) return 0;
 	return 1;
 }
