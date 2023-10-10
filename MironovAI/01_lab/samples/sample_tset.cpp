@@ -11,7 +11,7 @@ void test_tset()
 	cout << "B 1 bit: " << a.IsMember(1) << endl;
 	b.DelElem(1);
 	cout << "B 1 bit after clear: " << b.IsMember(1) << endl;
-
+ 
 	cout << "A: " << a << endl;
 	cout << "B: " << b << endl;
 	cout << "A&B " << (a * b) << endl;

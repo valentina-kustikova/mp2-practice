@@ -45,7 +45,7 @@ TELEM TBitField::GetMemMask(const int n) const // битовая маска дл
 		throw "overload_n";
 	if (n < 0)
 		throw "n_is_below_zero";
-	TELEM Mask = GetBit(n) << (size-1 - n % size); // (size - n % size * 8 - 1)
+	TELEM Mask = 1u << (size - n % size - 1);
 	return Mask;
 }
 
@@ -63,7 +63,7 @@ void TBitField::SetBit(const int n) // установить бит
 	if (n < 0)
 		throw "n_is_below_zero";
 
-	pMem[GetMemIndex(n)] |= 1u << (size - n % size - 1);
+	pMem[GetMemIndex(n)] |= GetMemMask(n);
 }
 
 void TBitField::ClrBit(const int n) // очистить бит
@@ -72,7 +72,7 @@ void TBitField::ClrBit(const int n) // очистить бит
 		throw "overload_n";
 	if (n < 0)
 		throw "n_is_below_zero";
-	pMem[GetMemIndex(n)] &= ~(1u << (size - n % size - 1));
+	pMem[GetMemIndex(n)] &= ~(GetMemMask(n));
 }
 
 int TBitField::GetBit(const int n) const // получить значение бита
@@ -81,7 +81,7 @@ int TBitField::GetBit(const int n) const // получить значение б
 		throw "overload_n";
 	if (n < 0)
 		throw "n_is_below_zero";
-	return (pMem[GetMemIndex(n)] & (1u << (size - n % size - 1))) >> (size - n % size - 1);
+	return (pMem[GetMemIndex(n)] & (GetMemMask(n))) >> (size - n % size - 1);
 }
 
 // битовые операции
@@ -127,8 +127,8 @@ int TBitField::operator!=(const TBitField& bf) const // сравнение
 
 TBitField TBitField::operator|(const TBitField& bf) // операция "или"
 {
-	int maxlen = max(GetLength(), bf.GetLength());
-	int minlen = min(GetLength(), bf.GetLength());
+	const int maxlen = max(GetLength(), bf.GetLength());
+	const int minlen = min(GetLength(), bf.GetLength());
 	TBitField A(maxlen);
 	if (GetLength() > bf.GetLength())
 		A = *this;
@@ -145,8 +145,8 @@ TBitField TBitField::operator|(const TBitField& bf) // операция "или"
 
 TBitField TBitField::operator&(const TBitField& bf) // операция "и"
 {
-	int maxlen = max(GetLength(), bf.GetLength());
-	int minlen = min(GetLength(), bf.GetLength());
+	const int maxlen = max(GetLength(), bf.GetLength());
+	const int minlen = min(GetLength(), bf.GetLength());
 	TBitField A(maxlen);
 	int i = 0;
 	for (; i < minlen; ++i)

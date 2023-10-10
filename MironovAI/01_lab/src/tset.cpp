@@ -55,7 +55,6 @@ const TSet& TSet::operator=(const TSet& s) // присваивание
 {
     if (*this == s) return *this;
     MaxPower = s.GetMaxPower();
-    ~BitField;
     BitField = TBitField(MaxPower);
     BitField = BitField | s.BitField; // bitfield = s.bitfield
     return *this;
