@@ -10,7 +10,7 @@ int main()
     a.InsElem(0);
     a.InsElem(9);
     cout << "Set a: " << a << endl;
-    /*
+    
     TSet b(10);
     b = a;
     b.DelElem(3);
@@ -29,7 +29,7 @@ int main()
 
     TSet d(10);
     d = a + c;
-    cout << "Set d: (b + c) " << d << endl;
+    cout << "Set d: (a + c) " << d << endl;
 
     TSet e(10);
     e = ~a;
@@ -37,7 +37,7 @@ int main()
 
     TSet f(10);
     f = e * c;
-    cout << "Set f: (e * c) " << f << endl;*/
+    cout << "Set f: (e * c) " << f << endl;
 
     cout << "a == a? " << (a == a) << endl;
     cout << "a != a ? " << (a != a) << endl;

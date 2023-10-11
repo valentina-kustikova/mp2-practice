@@ -101,7 +101,7 @@ TBitField& TBitField::operator=(const TBitField &bf) // присваивание
         MemLen = bf.MemLen;
         pMem = new TELEM[MemLen];
     }
-    for (int i = 0; i < BitLen; i++) {
+    for (int i = 0; i < MemLen; i++) {
         pMem[i] = bf.pMem[i];
     }
     return (*this);
@@ -154,7 +154,7 @@ TBitField TBitField::operator|(const TBitField &bf) // операция "или"
             tmp.SetBit(i);
         }
     }
-    for (int i = 0; i < bf.BitLen; i++) {
+    for (int i = 0; i < bf.MemLen; i++) {
         tmp.pMem[i] = tmp.pMem[i] | bf.pMem[i];
     }
     return (tmp);
@@ -217,9 +217,10 @@ istream &operator>>(istream &istr, TBitField &bf) // ввод
     int tmp;
     for (int i = 0; i < bf.BitLen; i++) {
         istr >> tmp;
-        if ((i != 0) && (i != 1)) {
+        if ((tmp != 0) && (tmp != 1)) {
             throw "The bit cannot take such a value";
         }
+        
         if (tmp == 0) {
             bf.ClrBit(i);
         }

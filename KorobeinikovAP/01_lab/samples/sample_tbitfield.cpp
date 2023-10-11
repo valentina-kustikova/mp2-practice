@@ -29,7 +29,7 @@ int main()
 
     TBitField e(8);
     e = ~c;
-    std::cout << "BitField e = ~c:\n" << d << endl;
+    std::cout << "BitField e = ~c:\n" << e << endl;
 
     TBitField f(8);
     cin >> f;
