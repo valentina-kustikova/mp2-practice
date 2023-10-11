@@ -33,11 +33,13 @@ TBitField::~TBitField()
 
 int TBitField::GetMemIndex(const int n) const // индекс Мем для бита n
 {
+	if (n >= BitLen || n < 0) throw "out_of_range";
 	return n >> 5;
 }
 
 TELEM TBitField::GetMemMask(const int n) const // битовая маска для бита n
 {
+	if (n >= BitLen || n < 0) throw "out_of_range";
 	return 1 << (BitLen - (n & 31) - 1);
 }
 
