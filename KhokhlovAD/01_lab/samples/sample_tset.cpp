@@ -4,8 +4,12 @@
 
 int main()
 {
-    const int size1 = 4, size2 = 6;
-    TSet set1(size1), set2(size2);
+    TSet set1;
+    TSet set2;
+    cout << "ts1 =";
+    cin >> set1;
+    cout << endl << "ts2 =";
+    cin >> set2;
     bool a = (set1 != set2);
     bool b = (set1 == set2);
     std::cout << a << endl << b << std::endl;

@@ -166,8 +166,8 @@ istream& operator>>(istream& istr, TBitField& bf) // ввод
 	cout << "Enter the Bitlen" << endl;
 	cin >> k;
 	TBitField A(k);
-	cout << "Enter the BitField, please" << endl;
-	for (int i = 0; i < A.GetLength(); i++)
+	cout << "Enter the BitField" << endl;
+	for (int i = 0; i < k; i++)
 	{
 		cin >> z;
 		if (z == 1)
