@@ -18,7 +18,7 @@ TBitField::TBitField(int len)
     memset(pMem, 0, MemLen * sizeof(TELEM));//заполнить MemLen кусков нулями
 }
 
-TBitField::TBitField(const TBitField &obj) // конструктор копирования
+TBitField::TBitField(const TBitField &obj) 
 {
     BitLen = obj.BitLen;
     MemLen = obj.MemLen;
@@ -40,7 +40,7 @@ int TBitField::GetMemIndex(const int n) const // индекс Мем для би
 
 TELEM TBitField::GetMemMask(const int n) const // битовая маска для бита n
 {
-    return 1 << n;
+    return 1 << (n & (BitsInMem-1));
 }
 
 // доступ к битам битового поля
@@ -63,7 +63,7 @@ void TBitField::ClrBit(const int pos) // очистить бит
     if (pos < 0 || pos >= BitLen) {
         throw "Negative length";
     }
-    pMem[GetMemIndex(pos)] = pMem[GetMemIndex(pos)] & (~GetMemMask(pos));
+    pMem[GetMemIndex(pos)] = pMem[GetMemIndex(pos)] & ~GetMemMask(pos);
 }
 
 int TBitField::GetBit(const int n) const // получить значение бита
@@ -72,7 +72,7 @@ int TBitField::GetBit(const int n) const // получить значение б
         throw "Negative length";
     }
     int test = pMem[GetMemIndex(n)] & GetMemMask(n);
-    return (pMem[GetMemIndex(n)] & (GetMemMask(n)) )>> n;
+    return (pMem[GetMemIndex(n)] & GetMemMask(n) );
 }
 
 // битовые операции
@@ -160,16 +160,15 @@ TBitField TBitField::operator&(const TBitField &bf) // операция "и"
 
 TBitField TBitField::operator~(void) // отрицание
 {
-    TBitField tmp(*this);
-    for (size_t i = 0; i < BitLen; i++) {
-        if (tmp.GetBit(i) == 1) {
-            tmp.ClrBit(i);
-        }
-        else if(tmp.GetBit(i) == 0) {
-           tmp.SetBit(i);
-        }
+    TBitField tbf = (*this);
+    for (int i = 0; i < BitLen; i++)
+    {
+        if (tbf.GetBit(i))
+            tbf.ClrBit(i);
+        else
+            tbf.SetBit(i);
     }
-    return tmp;
+    return tbf;
 }
 
 // вывод
@@ -179,7 +178,10 @@ TBitField TBitField::operator~(void) // отрицание
 ostream &operator<<(ostream &ostr, const TBitField &bf) // вывод
 {
     for (int i = 0; i < bf.BitLen; i++) {
-        ostr << bf.GetBit(i);
+        if (bf.GetBit(i)) {
+            ostr << "1";
+        }
+        else { ostr << "0"; }
     }
     return ostr;
 }

@@ -150,12 +150,13 @@ istream& operator>>(istream& istr, TSet& bf) {
 ostream& operator<<(ostream &stream, const TSet &obj) // вывод
 {
     size_t i, n;
-    char ch = '{';
+    stream << "{";
     n = obj.MaxPower;
     for (i = 0; i < n; i++) {
         if (obj.IsMember(i)) {
-            stream << ch << " " << i;
-            ch = ',';
+            
+
+            stream << i << ",";
         }
     }
     stream << "}";
