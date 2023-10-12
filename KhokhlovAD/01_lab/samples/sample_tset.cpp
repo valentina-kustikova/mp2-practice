@@ -31,5 +31,6 @@ int main()
     cout << "ts1 = ~ts3 -> " << set1 << endl;
     set2 = set2 * c;
     cout <<"ts2 = ts2 * ts4 -> "<< set2 << endl;
+    system("PAUSE");
     return 0;
 }

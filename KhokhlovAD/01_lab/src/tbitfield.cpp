@@ -18,7 +18,7 @@ TBitField::TBitField(int len)
 {
 	if (len < 0) throw "Negative len";
 	BitLen = len;
-	MemLen = BitLen / BITS_IN_ONE_MEM + 1;
+	MemLen = (BitLen-1) / BITS_IN_ONE_MEM + 1;
 	pMem = new TELEM[MemLen];
 	for (int i = 0; i < MemLen; i++) pMem[i] = 0;
 }

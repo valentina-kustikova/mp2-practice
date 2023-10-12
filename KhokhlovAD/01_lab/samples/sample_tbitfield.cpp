@@ -28,5 +28,6 @@ int main()
     cout <<"bf2 = bf3 & bf4 -> "<< set2  << endl;
     c = ~d;
     cout <<"bf3 = ~bf4 -> " << c << endl;
+    system("PAUSE");
     return 0;
 }
