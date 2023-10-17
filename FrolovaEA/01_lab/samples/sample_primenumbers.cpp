@@ -18,6 +18,11 @@ int main()
             for (int k = 2 * m; k <= n; k += m)
                 s.DelElem(k);
     cout << s << endl;
+    for (int i = 0; i < s.GetMaxPower(); i++)
+    {
+        if (s.IsMember(i))
+            cout << i << endl;
+    }
 
     return 0;
 }

@@ -32,6 +32,7 @@ TBitField::TBitField(const TBitField &bf) // конструктор копиро
 {
     BitLen = bf.BitLen;
     MemLen = bf.MemLen;
+    pMem = new TELEM[MemLen];
     for (int i = 0; i < MemLen; i++)
     {
         pMem[i] = bf.pMem[i];
@@ -99,7 +100,7 @@ int TBitField::GetBit(const int n) const // получить значение б
 
 // битовые операции
 
-TBitField& TBitField::operator=(const TBitField &bf) // присваивание
+TBitField& TBitField::operator=(const TBitField& bf) // присваивание
 {
     if (this != &bf)
     {
@@ -111,12 +112,13 @@ TBitField& TBitField::operator=(const TBitField &bf) // присваивание
 
         MemLen = bf.MemLen;
         BitLen = bf.BitLen;
-        for (int i = 0; i < BitLen; i++)
+        for (int i = 0; i < MemLen; i++)
         {
             pMem[i] = bf.pMem[i];
         }
-        return *this;
+
     }
+    return *this;
 }
 
 int TBitField::operator==(const TBitField &bf) const // сравнение
@@ -168,26 +170,21 @@ TBitField TBitField::operator&(const TBitField &bf) // операция "или"
     return tmp;
 }
 
-TBitField TBitField::operator|(const TBitField &bf) // операция "и"
+TBitField TBitField::operator|(const TBitField& bf) // операция "и"
 {
     int maxLen = max(GetLength(), bf.GetLength());
     int minLen = min(GetLength(), bf.GetLength());
     TBitField tmp(maxLen);
-    if (GetLength() > bf.GetLength())
-        tmp = *this;
-    else
-        tmp = bf;
-    for (int i = 0; i < minLen; i++)
+
+    for (int i = 0; i < GetLength(); i++)
     {
-        if (GetBit(i) != bf.GetBit(i))
+        if (GetBit(i) == 1)
             tmp.SetBit(i);
-        if (GetBit(i) == bf.GetBit(i))
-        {
-            if (GetBit(i) == 1)
-                tmp.SetBit(i);
-            if (GetBit(i) == 0)
-                tmp.ClrBit(i);
-        }
+    }
+    for (int i = 0; i < bf.GetLength(); i++)
+    {
+        if (bf.GetBit(i) == 1)
+            tmp.SetBit(i);
     }
     return tmp;
 }
