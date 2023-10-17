@@ -6,13 +6,11 @@ using namespace std;
 void set() {
     TSet s1(n);
     TSet s2(n);
+    cout << "Enter s1:";
     cin >> s1;
     cout << "1:" << s1 << endl;
-    s2.InsElem(0);
-    s2.InsElem(1);
-    s2.InsElem(2);
-    s2.InsElem(3);
-    s2.InsElem(4);
+    cout << "Enter s2:";
+    cin >> s2;
     cout << "2:" << s2 <<endl;
     cout << "1==2:" << (s1 == s2) << "\n" << endl;
     cout << "+:" << (s1 + s2) << endl;
