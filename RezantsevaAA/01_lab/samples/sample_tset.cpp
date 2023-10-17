@@ -36,9 +36,10 @@ int main()
         std::cout << "operator==: " << (s1 == s2) << endl;
         std::cout << "operator!=: " << (s1 != s2) << endl;
         std::cout << "operator+: " << (s1 + s2) << endl;
-        std::cout << "operator+ (elem): " << (s1 + 0) << endl;
-        std::cout << "operator- (elem): " << (s1 - 5) << endl;
         std::cout << "operator*: " << (s1 * s2) << endl;
+        std::cout << "operator+ (elem = 0): " << (s1 + 0) << endl;
+        std::cout << "operator- (elem = 5): " << (s1 - 5) << endl;
+      
     }
     catch (string exp) {
         cout << exp << endl;
