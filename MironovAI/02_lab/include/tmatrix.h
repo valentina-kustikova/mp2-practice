@@ -13,7 +13,6 @@ public:
   TMatrix(int s = 10);                           
   TMatrix(const TMatrix &mt);                    
   TMatrix(const TVector<TVector<ValType> > &mt);
-  ~TMatrix();
   bool operator==(const TMatrix<ValType>&mt) const;
   bool operator!=(const TMatrix<ValType>&mt) const;
   const TMatrix& operator=(const TMatrix<ValType> &mt);
@@ -72,14 +71,7 @@ TMatrix<ValType>::TMatrix(const TVector<TVector<ValType>> &mt):TVector<TVector<V
         throw "Allocation Error";
     }
 }
-template <class ValType>
-TMatrix<ValType>::~TMatrix()
-{
-    for (int i = 0; i < Size; i++)
-    {
-        delete[] this[i];
-    }
-}
+
 
 template <class ValType> 
 bool TMatrix<ValType>::operator==(const TMatrix<ValType> &mt) const
