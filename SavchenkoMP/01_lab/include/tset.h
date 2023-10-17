@@ -40,7 +40,7 @@ public:
   TSet operator* (const TSet& s);  // пересечение
   TSet operator~ (void);           // дополнение
 
-  friend istream& operator>>(istream& in, TSet& bf);
-  friend ostream& operator<<(ostream& out, const TSet& bf);
+  friend istream& operator>>(istream& in, TSet& s);
+  friend ostream& operator<<(ostream& out, const TSet& s);
 };
 #endif
