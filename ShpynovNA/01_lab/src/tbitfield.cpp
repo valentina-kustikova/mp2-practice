@@ -4,35 +4,21 @@
 #define Amount (MemLen * shiftSize)
 TBitField::TBitField(int len)
 {
-     if (len < 0) {
-        throw "got negative length";
-       
-    }
-    else if (len == 0)
-    {
-        BitLen = 0;
-        MemLen = 0;
-        pMem = nullptr;
-    }
-    else {
-        BitLen = len;
-        MemLen = ((BitLen + bitsInElem - 1) >> shiftSize);
-        pMem = new TELEM[MemLen];
-        memset(pMem, 0, Amount);
-    }
+    if (len < 0)
+        throw "negative length caught";
+    BitLen = len;
+    MemLen = BitLen / bitsInElem + 1;
+    pMem = new TELEM[MemLen];
+    memset(pMem, 0, Amount);
+
 }
 
 TBitField::TBitField(const TBitField &bf) // конструктор копирования
 {
     BitLen = bf.BitLen;
     MemLen = bf.MemLen;
-    if (bf.MemLen != 0) {
-        pMem = new TELEM[MemLen];
-        memcpy(pMem, bf.pMem, Amount);
-    }
-    else {
-        pMem = nullptr;
-    }
+    pMem = new TELEM[MemLen];
+    memcpy(pMem, bf.pMem, Amount);
 }
 
 TBitField::~TBitField()
@@ -77,7 +63,7 @@ void TBitField::ClrBit(const int n) // очистить бит
 int TBitField::GetBit(const int n) const // получить значение бита
 {
     if (n >= BitLen || n < 0)
-        throw"out of range";
+        throw "out of range";
     if ((pMem[GetMemIndex(n)] & GetMemMask(n)) == 0)
         return 0 ;
     else 
@@ -158,8 +144,9 @@ istream &operator>>(istream &istr, TBitField &bf) // ввод
                 bf.SetBit(i); 
             }
             else{
+                cout << "not 0 or 1, setting to 1";
+                bf.SetBit(i);
                 throw "not 0 or 1";
-                break;
             }
         }
         return istr;
@@ -168,7 +155,8 @@ istream &operator>>(istream &istr, TBitField &bf) // ввод
 ostream &operator<<(ostream &ostr, const TBitField &bf) // вывод
 {
     for (int i = 0; i < bf.BitLen; i++){
-        if (bf.GetBit(i)) cout << "1";
-        else cout << "0";
+        if (bf.GetBit(i)) ostr << "1";
+        else ostr << "0";
     }
+    return ostr;
 }

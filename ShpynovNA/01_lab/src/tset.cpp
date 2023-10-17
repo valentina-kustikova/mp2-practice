@@ -7,95 +7,111 @@
 
 #include "tset.h"
 
-TSet::TSet(int mp) : BitField(-1)
-{
-}
+TSet::TSet(int mp) : MaxPower(mp), BitField(mp) {}
 
 // конструктор копирования
-TSet::TSet(const TSet &s) : BitField(-1)
-{
-}
+TSet::TSet(const TSet &s) : BitField(s.BitField), MaxPower(s.GetMaxPower()) {}
 
 // конструктор преобразования типа
-TSet::TSet(const TBitField &bf) : BitField(-1)
-{
-}
+TSet::TSet(const TBitField &bf) : BitField(bf), MaxPower(bf.GetLength()){}
 
-TSet::operator TBitField()
-{
-    throw "Method is not implemented";
-}
 
 int TSet::GetMaxPower(void) const // получить макс. к-во эл-тов
 {
-    throw "Method is not implemented";
+    return MaxPower;
 }
 
 int TSet::IsMember(const int Elem) const // элемент множества?
 {
-    return 0;
+    return BitField.GetBit(Elem);
 }
 
 void TSet::InsElem(const int Elem) // включение элемента множества
 {
-    throw "Method is not implemented";
+    BitField.SetBit(Elem);
 }
 
 void TSet::DelElem(const int Elem) // исключение элемента множества
 {
-    throw "Method is not implemented";
+    BitField.ClrBit(Elem);
 }
 
 // теоретико-множественные операции
 
 TSet& TSet::operator=(const TSet &s) // присваивание
 {
-    throw "Method is not implemented";
+    if (*this == s)
+        return *this;
+    BitField = s.BitField;
+    MaxPower = s.MaxPower;
+    return *this;
 }
 
 int TSet::operator==(const TSet &s) const // сравнение
 {
-    return 0;
+    if (MaxPower != s.MaxPower)
+        return 0;
+    return (BitField == s.BitField);
 }
 
 int TSet::operator!=(const TSet &s) const // сравнение
 {
-    throw "Method is not implemented";
+    return !(*this == s);
+    
 }
 
 TSet TSet::operator+(const TSet &s) // объединение
 {
-    throw "Method is not implemented";
+    TSet TStmp(max(MaxPower, s.GetMaxPower()));
+    TStmp.BitField = BitField | s.BitField;
+    return TStmp;
 }
 
 TSet TSet::operator+(const int Elem) // объединение с элементом
 {
-    throw "Method is not implemented";
+    TSet TStmp(*this);
+    TStmp.InsElem(Elem);
+    return TStmp;
 }
 
 TSet TSet::operator-(const int Elem) // разность с элементом
 {
-    throw "Method is not implemented";
+    TSet TStmp(*this);
+    TStmp.DelElem(Elem);
+    return TStmp;
 }
 
 TSet TSet::operator*(const TSet &s) // пересечение
 {
-    throw "Method is not implemented";
+    TSet TStmp(max(MaxPower, s.GetMaxPower()));
+    TStmp.BitField = BitField & s.BitField;
+    return TStmp;
 }
 
 TSet TSet::operator~(void) // дополнение
 {
-    throw "Method is not implemented";
+    TSet TStmp(MaxPower);
+    TStmp.BitField = ~BitField;
+    return TStmp;
 }
 
 // перегрузка ввода/вывода
 
 istream &operator>>(istream &istr, TSet &s) // ввод
 {
-    throw "Method is not implemented";
+   int elem;
+   for (int i = 0; i < s.MaxPower; i++) {
+       istr >> elem;
+       if (elem < 0)
+           break;
+       s.InsElem(elem);
+   }
+    return istr;
 }
 
 ostream& operator<<(ostream &ostr, const TSet &s) // вывод
 {
-    throw "Method is not implemented";
+    for (int i = 0; i < s.MaxPower; ++i)
+        ostr << s.IsMember(i) << " ";
+    return ostr;
 }
