@@ -7,10 +7,6 @@
 
 #include "tset.h"
 
-TSet::TSet() : BitField() {
-	MaxPower = 0;
-}
-
 TSet::TSet(int mp) : BitField(mp)
 {
 	MaxPower = mp;
@@ -117,7 +113,13 @@ TSet TSet::operator~(void) // дополнение
 
 }
 
-// перегрузка вывода
+// перегрузка ввода/вывода
+
+istream& operator>>(istream& istr, TSet& s) // ввод
+{
+	istr >> s.BitField;
+	return istr;
+}
 
 ostream& operator<<(ostream& ostr, const TSet& s) // вывод
 {

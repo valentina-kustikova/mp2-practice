@@ -25,7 +25,6 @@ private:
   int   GetMemIndex(const int n) const; // индекс в pМем для бита n       (#О2)
   TELEM GetMemMask (const int n) const; // битовая маска для бита n       (#О3)
 public:
-  TBitField();
   TBitField(int len);                //                                   (#О1)
   TBitField(const TBitField &bf);    //                                   (#П1)
   ~TBitField();                      //                                    (#С)
@@ -44,6 +43,7 @@ public:
   TBitField  operator&(const TBitField &bf); // операция "и"              (#Л2)
   TBitField  operator~(void);                // отрицание                  (#С)
 
+  friend istream& operator>>(istream& istr, TBitField& bf);       //      (#О7)
   friend ostream &operator<<(ostream &ostr, const TBitField &bf); //      (#П4)
 };
 // Структура хранения битового поля

@@ -8,12 +8,6 @@
 #include "tbitfield.h"
 #define BITS_IN_ONE_MEM (sizeof(TELEM) * 8)
 
-TBitField::TBitField() {
-	pMem = nullptr;
-	BitLen = 0;
-	MemLen = 0;
-}
-
 TBitField::TBitField(int len)
 {
 	if (len < 0) throw "Negative len";
@@ -157,7 +151,20 @@ TBitField TBitField::operator~(void) // отрицание
 	return a;
 }
 
-//вывод
+// ввод/вывод
+
+istream& operator>>(istream& istr, TBitField& bf) // ввод
+{
+	for (int i = 0; i < bf.GetLength(); ++i)
+	{
+		int val;
+		istr >> val;
+		if (val > bf.GetLength() || val < 0)
+			throw "Wrong element ";
+		bf.SetBit(val);
+	}
+	return istr;
+}
 
 ostream& operator<<(ostream& ostr, const TBitField& bf) // вывод
 {

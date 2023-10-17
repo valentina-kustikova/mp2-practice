@@ -9,10 +9,10 @@ int main()
     bool b = (set1 == set2);
     cout << "bf1 = " << set1 << endl << "b2 = " << set2 << endl;
     std::cout <<"bf1 != bf2 -> " << a << endl <<"bf1 == bf 2 -> " << b << std::endl;
-    TBitField c;
+    TBitField c(1);
     TBitField d(set1);
-    d.SetBit(2);
-    d.SetBit(3);
+    cout << "enter bf len4" << endl;
+    cin >> d;
     cout << "bf3 = " << d << endl;
     int z = d.GetLength();
     cout << "bf3.lenght = " << z << endl;

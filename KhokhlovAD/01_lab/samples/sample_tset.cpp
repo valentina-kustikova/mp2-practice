@@ -8,14 +8,14 @@ int main()
     set1.InsElem(2);
     set1.InsElem(0);
     TSet set2(4);
-    set2.InsElem(1);
-    set2.InsElem(3);
+    cout << "enter set len4" << endl;
+    cin >> set2;
     cout << "ts1 = " << set1;
     cout << endl << "ts2 = " << set2 << endl;
     bool a = (set1 != set2);
     bool b = (set1 == set2);
     std::cout << "ts1 != ts2 ->" <<a << endl <<"ts1 == ts2 ->" << b << std::endl;
-    TSet c;
+    TSet c(1);
     TSet d(set1);
     d.InsElem(3);
     cout <<"ts3(ts1).inselem(3) -> "<< d << endl;
