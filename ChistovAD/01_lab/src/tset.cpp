@@ -1,4 +1,4 @@
-﻿#include "tset.h"
+#include "tset.h"
 
 TSet::TSet(int mp) :MaxPower(mp), BitField(mp) {}
 TSet::TSet(const TSet& s) : BitField(s.BitField),MaxPower(s.GetMaxPower()) {}
@@ -79,31 +79,18 @@ TSet TSet::operator~(void)
     tmp.BitField = ~BitField;
     return tmp;
 }
-//
 
-istream& operator>>(istream& istr, TSet& ts) {
-    int inputElem;
-    while (true) {
-        istr >> inputElem;
-        if (inputElem == -1) { 
-            break;
-        }
-        if (inputElem >= 0 && inputElem < ts.MaxPower) {
-            ts.InsElem(inputElem); 
-        }
-        else {
-            cerr << "Invalid input. Element out of range." << endl;
-        }
-    }
-    return istr;
-}
+ ostream& operator<<(ostream& ostr, const TSet& s)
+ {
+     const int x = s.MaxPower - 1;
+     for (int i = 0; i <= x; ++i)
+     {
+         ostr << s.IsMember(i) << " ";
+     }
+     return ostr;
+ }
 
-ostream& operator<<(ostream& ostr, const TSet& s) 
-{
-    const int x = s.MaxPower-1;
-    for (int i = 0; i <= x; ++i)
-    {
-        ostr << s.IsMember(i) << " ";
-    }
-    return ostr;
-}
+ istream& operator>>(std::istream& istr, TSet& s) {
+     istr >> s.BitField;
+     return istr;
+ }
