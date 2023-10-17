@@ -136,22 +136,16 @@ TBitField TBitField::operator~(void)
     return tmp;
 }
 
-istream& operator>>(istream& istr, TBitField& bf) {
-    int answer;
+ istream& operator>>(std::istream& in, TBitField& bf) {
+    string answer;
+    in >> answer;
+    if (answer.length() > bf.BitLen)  throw "out of range";
     for (int i = 0; i < bf.BitLen; i++) {
-        istr >> answer;
-        if (answer == 0) {
-            bf.ClrBit(i); 
-        }
-        else if (answer == 1) {
-            bf.SetBit(i); 
-        }
-        else{
-            throw ("The entered element does not match the bit field");
-            break;
+        if (answer[bf.BitLen - 1 - i] == '1') {
+            bf.SetBit(i);
         }
     }
-    return istr;
+    return in;
 }
 
 ostream& operator<<(ostream& ostr, const TBitField& bf) 
