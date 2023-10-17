@@ -42,15 +42,15 @@ public:
     }
 
     friend std::ostream& operator<<(std::ostream& ostr, const TSet& s) {
-        char ch = '{';
-
+        ostr << "{";
         for (int i = 0; i < s.GetMaxPower(); i++) {
             if (s.IsMember(i)) {
-                ostr << ch << " " << i;
-                ch = ',';
+                ostr << " " << i;
             }
         }
-        ostr << '}';
+        ostr << " }";
+
+        /*ostr << s.BitField;*/
 
         return ostr;
     }

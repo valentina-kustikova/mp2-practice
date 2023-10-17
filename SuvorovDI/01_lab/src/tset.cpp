@@ -44,28 +44,22 @@ TSet& TSet::operator=(const TSet& s) {
 }
 
 TSet TSet::operator+(const int Elem) {
-    TSet res(BitField);
+    TSet res(*this);
     res.InsElem(Elem);
     return res;
 }
 
 TSet TSet::operator- (const int Elem) {
-    TSet res(BitField);
+    TSet res(*this);
     res.DelElem(Elem);
     return res;
 }
 
 TSet TSet::operator+(const TSet& s) {
-    if (MaxPower != s.MaxPower)
-        throw std::exception("Different size of set's universes");
-
     return TSet(BitField | s.BitField);
 }
 
 TSet TSet::operator*(const TSet& s) {
-    if (MaxPower != s.MaxPower)
-        throw std::exception("Different size of set's universes");
-
     return TSet(BitField & s.BitField);
 }
 

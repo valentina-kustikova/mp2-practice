@@ -3,60 +3,66 @@
 
 int main() {
 
-	TBitField a(10);
-	TBitField b(4);
-	TBitField c(4);
-
-	try {
-		std::cout << a << std::endl;
-		std::cout << b << std::endl;
-	}
-	catch (std::exception exp) {
-		std::cout << exp.what();
-	}
-
-	try {
-		std::cin >> a;
-		std::cin >> b;
-	}
-	catch (std::exception exp) {
-		std::cout << exp.what();
-	}
-
-	try {
-		std::cout << a << std::endl;
-		std::cout << b << std::endl;
-	}
-	catch (std::exception exp) {
-		std::cout << exp.what();
-	}
-
-	try {
-		std::cout << (a | b) << std::endl;
-		std::cout << (a & b) << std::endl;
-		std::cout << (~a) << std::endl;
-	}
-	catch (std::exception exp) {
-		std::cout << exp.what();
-	}
-
-	try {
-		std::cout << c << std::endl;
-		std::cin >> c;
-		std::cout << c << std::endl;
+	TBitField a(18);
+	TBitField b(10);
+	TBitField c(18);
 	
-		std::cout << (c == a) << std::endl;
-		std::cout << (c != b) << std::endl;
+	try {
+		std::cout << "a: " << a << std::endl;
+		std::cout << "b: " << b << std::endl;
+		std::cout << "c: " << c << std::endl;
+	}
+	catch (std::exception exp) {
+		std::cout << exp.what();
+	}
+
+	std::cout << "\n-----------------------------------\n";
+
+	try {
+		std::cout << "a: ";
+		std::cin >> a;
+		std::cout << "b: ";
+		std::cin >> b;
+		std::cout << "c: ";
+		std::cin >> c;
 	}
 	catch (std::exception exp) {
 		std::cout << exp.what();
 	}
 
 	try {
-		c = a;
-		
-		std::cout << (c == a) << std::endl;
-		std::cout << (c != b) << std::endl;
+		std::cout << "a: " << a << std::endl;
+		std::cout << "b: " << b << std::endl;
+		std::cout << "c: " << c << std::endl;
+	}
+	catch (std::exception exp) {
+		std::cout << exp.what();
+	}
+
+	std::cout << "\n-----------------------------------\n";
+
+	try {
+		std::cout << "a | c :: " << (a | c) << std::endl;
+		std::cout << "c & a :: " << (c & a) << std::endl;
+		std::cout << "~b :: " << (~b) << std::endl;
+	}
+	catch (std::exception exp) {
+		std::cout << exp.what();
+	}
+
+	try {
+		std::cout << "a == c ? Answer: " << (a == c) << std::endl;
+		std::cout << "c != b ? Answer: " << (c != b) << std::endl;
+	}
+	catch (std::exception exp) {
+		std::cout << exp.what();
+	}
+
+	try {
+		b = a;
+		std::cout << "Variable b was assigned variable a\n";
+		std::cout << "b == a ? Answer: " << (b == a) << std::endl;
+		std::cout << "a == c ? Answer: " << (c != b) << std::endl;
 	}
 	catch (std::exception exp) {
 		std::cout << exp.what();

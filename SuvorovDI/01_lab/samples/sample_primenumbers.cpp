@@ -8,10 +8,7 @@ int main()
 
     setlocale(LC_ALL, "Russian");
 
-    /*cout << "Решето Эратосфена" << endl;
-    cout << "Использование класса \"Битовое поле\"" << endl;
-
-    cout << "Введите максимальное целое число: ";*/
+    cout << "Enter n: ";
     cin >> n;
 
     TBitField s(n + 1);
@@ -25,9 +22,7 @@ int main()
             for (k = 2 * m; k <= n; k += m)
             s.ClrBit(k);
 
-    //оставшиеся в s элементы - простые числа
-    /*cout << endl << "Печать множества некратных чисел" << endl << s << endl;
-    cout << endl << "Печать простых чисел" << endl;*/
+    cout << endl << "Prime numbers up to n" << endl;
 
     count = 0;
     k = 1;
@@ -40,7 +35,7 @@ int main()
         }
 
     cout << endl;
-    /*cout << "В первых " << n << " числах " << count << " простых" << endl;*/
+    cout << "There are " << count << " prims in the first " << n << " numbers" << endl;
 
     return 0;
 }

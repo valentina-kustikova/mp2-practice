@@ -43,7 +43,7 @@ public:
 		in >> input;
 
 		if (input.length() > bf.fieldSize)
-			throw "out of range";
+			throw std::exception("out of range");
 
 		for (int i = 0; i < bf.fieldSize; i++) {
 			if (input[bf.fieldSize - 1 - i] == '1') {
