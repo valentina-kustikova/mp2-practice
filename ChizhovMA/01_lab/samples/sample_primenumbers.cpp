@@ -19,6 +19,8 @@ int main()
 				if (s.IsMember(k))
 					s.DelElem(k);
 	// оставшиеся элементы - простые числа
-	cout << s; 
+	for (int i = 0; i <= n; i++)
+		if (s.IsMember(i))
+			cout << i << ' ';
     return 0;
 }

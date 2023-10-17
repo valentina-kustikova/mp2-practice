@@ -37,7 +37,7 @@ int main()
     // Установка бита
     int indexToSet = 4;
     bitField2.SetBit(indexToSet);
-    cout << "Установлен бит под индексом во втором поле " << indexToSet << endl;
+    cout << "Установлен бит во втором поле под индексом " << indexToSet << endl;
     cout << "Битовое поле: " << bitField2 << endl;
 
     // Получение значения бита
