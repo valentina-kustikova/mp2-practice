@@ -4,12 +4,12 @@ const int n = 5;
 void bitfield()
 {
 	TBitField bf1(n);
+	TBitField bf2(n);
+	cout << "Enter bf1:";
 	cin >> bf1;
 	cout << "1:" << bf1 << endl;
-	TBitField bf2(n);
-	bf2.SetBit(1);
-	bf2.SetBit(2);
-	bf2.SetBit(4);
+	cout << "Enter bf2:";
+	cin>>bf2;
 	cout << "2:" << bf2 << endl;
 	bf2.ClrBit(1);
 	cout << "2:" << bf2 << endl;
