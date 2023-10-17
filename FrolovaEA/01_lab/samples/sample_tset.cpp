@@ -6,42 +6,84 @@ using namespace std;
 int main()
 {
     std::cout << "TSet" << std::endl;
-
-    int power = 15;
+    int power;
+    cout << "Enter max power :";
+    cin >> power;
+    cout << endl;
     TSet set1(power);
+
+    int num1;
+    cout << "how mach elements would you like to add to set1: ";
+    cin >> num1;
+    cout << endl;
+    int i = 0;
+    while (i != num1)
+    {
+        int elem;
+        cout << "Enter element : " << "element must be < " << power << "  :";
+        cin >> elem;
+        cout << endl;
+        set1.InsElem(elem);
+        i++;
+    }
+    cout << "Max power of set1 :  " << set1.GetMaxPower() << ";" << "  Elements in set1 : " << set1 << endl;
+
+
     TSet set2(power);
 
-    set1.InsElem(3);
-    set1.InsElem(1);
-    set1.InsElem(10);
-    set1.InsElem(6);
-    set1.InsElem(9);
-
-    set2.InsElem(3);
-    set2.InsElem(1);
-    set2.InsElem(8);
-    set2.InsElem(2);
-    set2.InsElem(11);
+    int num2;
+    cout << "how mach elements would you like to add to set2: ";
+    cin >> num2;
+    cout << endl;
+    int j = 0;
+    while (j != num2)
+    {
+        int elem;
+        cout << "Enter element : " << "element must be < " << power << "  :";
+        cin >> elem;
+        cout << endl;
+        set2.InsElem(elem);
+        j++;
+    }
+    cout << "Max power of set2 :  " << set2.GetMaxPower() << ";" << "  Elements in set1 : " << set2 << endl;
+    cout << endl;
 
     cout <<"Max power of set1 :  "<<set1.GetMaxPower()<<";"<<"  Elements in set1 : " << set1 << endl;
-    cout << "Max power of set2 :  "<< set2.GetMaxPower() <<";"<<"  Elements in set1 : " << set2 << endl;
+    cout << "Max power of set2 :  "<< set2.GetMaxPower() <<";"<<"  Elements in set2 : " << set2 << endl;
     cout << endl;
 
     //is member ?
 
-    cout << " Element 6 in set1 :" << set1.IsMember(6) << endl;
-    cout << " Element 2 in set1 :" << set1.IsMember(2) << endl;
-
-    cout << " Element 6 in set2 :" << set2.IsMember(6) << endl;
-    cout << " Element 2 in set2 :" << set2.IsMember(2) << endl;
+    int element1;
+    cout << "enter elemen you would like to find: ";
+    cin >> element1;
+    cout << endl;
+    while (element1 >= power)
+    {
+        cout << "enter elemen you would like to find: ";
+        cin >> element1;
+        cout << endl;
+    }
+    cout << " Element " << element1 << " in set1 : " << set1.IsMember(element1) << endl;
+    cout << " Element " << element1 << " in set2 : " << set2.IsMember(element1) << endl;
 
     cout << endl;
 
     // delite element
-    set1.DelElem(10);
-    cout << "Elements in set1 after delete 10 :" << set1 << endl;
-    set2.DelElem(1);
-    cout << "Elements in set2 after delete 1 :" << set2 << endl;
+    int element2;
+    cout << "enter elemen you would like to delete: ";
+    cin >> element2;
+    cout << endl;
+    while (element2 >= power)
+    {
+        cout << "enter elemen you would like to find: ";
+        cin >> element2;
+        cout << endl;
+    }
+    set1.DelElem(element2);
+    cout << "Elements in set1 after delete" << element2 << " :" << set1 << endl;
+    set2.DelElem(element2);
+    cout << "Elements in set2 after delete" << element2 << " :" << set2 << endl;
 
     cout << endl;
 
@@ -67,14 +109,34 @@ int main()
     cout << endl;
 
     cout << "operator+ (with element)" << endl;
-    TSet set5(power);
-    set5 = set1 + 14;
-    cout << "set1 + 14 = " << set5 << endl;
+    int element3;
+    cout << "enter elemen you would like to +: ";
+    cin >> element3;
+    cout << endl;
+    while (element3 >= power)
+    {
+        cout << "enter elemen you would like to +: ";
+        cin >> element3;
+        cout << endl;
+    }
+
+    set1 = set1 + element3;
+    cout << "set1 + " << element3 << " = " << set1 << endl;
     cout << endl;
 
     cout << "operator- (with element)" << endl;
-    set5 = set1 - 14;
-    cout << "set1 - 14 = " << set5 << endl;
+    int element4;
+    cout << "enter elemen you would like to -: ";
+    cin >> element4;
+    cout << endl;
+    while (element4 >= power)
+    {
+        cout << "enter elemen you would like to -: ";
+        cin >> element4;
+        cout << endl;
+    }
+    set1 = set1 - element4;
+    cout << "set1 - " << element4 << " = " << set1 << endl;
     cout << endl;
 
     cout << set1 << endl;
