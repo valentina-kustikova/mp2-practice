@@ -38,7 +38,7 @@ void TSet::DelElem(const int Elem) // исключение элемента мн
 
 // теоретико-множественные операции
 
-TSet& TSet::operator=(const TSet &s) // присваивание
+const TSet& TSet::operator=(const TSet &s) // присваивание
 {
     if (*this == s)
         return *this;
@@ -100,10 +100,12 @@ TSet TSet::operator~(void) // дополнение
 istream &operator>>(istream &istr, TSet &s) // ввод
 {
    int elem;
-   for (int i = 0; i < s.MaxPower; i++) {
+   int n;
+   cout << "set length: ";
+   istr >> n;
+   for (int i = 0; i < n; i++) {
        istr >> elem;
-       if (elem < 0)
-           break;
+
        s.InsElem(elem);
    }
     return istr;
@@ -112,6 +114,7 @@ istream &operator>>(istream &istr, TSet &s) // ввод
 ostream& operator<<(ostream &ostr, const TSet &s) // вывод
 {
     for (int i = 0; i < s.MaxPower; ++i)
-        ostr << s.IsMember(i) << " ";
+        if (s.IsMember(i))
+            ostr << i << " ";
     return ostr;
 }

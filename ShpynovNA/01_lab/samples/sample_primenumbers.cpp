@@ -12,7 +12,7 @@ int main()
         TBFtmp.SetBit(i);
     for (int i = 2; i * i < n + 1; i++)
         if (TBFtmp.GetBit(i))
-            for (int j = 2 * i; j <= n; j += i)
+            for (int j = 2 * i; j < n + 1; j += i)
                 TBFtmp.ClrBit(j);
     cout << "prime numerals before " << n << ": ";
     for (int i = 2; i < n + 1; i++) {

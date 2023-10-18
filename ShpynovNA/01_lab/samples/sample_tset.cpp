@@ -8,10 +8,10 @@ void workitwillis()
     cin >> n;
     TSet TS1(n);
     TSet TS2(n);
-    cout << "1st set: ";
+    cout << "1st set: " << endl;
     cin >> TS1;
     cout << "got " << TS1 << endl;
-    cout << "2st set: ";
+    cout << "2st set: " << endl;
     cin >> TS2;
     cout << "got " << TS2 << endl;
     cout << "They are ";
