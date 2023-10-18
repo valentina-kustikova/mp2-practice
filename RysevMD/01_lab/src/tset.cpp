@@ -117,7 +117,10 @@ TSet TSet::operator~(void) // дополнение
 
 istream& operator>>(istream& istr, TSet& s) // ввод
 {
-    for (int i = 0; i < s.MaxPower; i++) {
+    int n;
+    cout << "Input count of element(|U| = " << s.GetMaxPower() << "): ";
+    istr >> n;
+    for (int i = 0; i < n; i++) {
         int val;
         cin >> val;
         s.BitField.SetBit(val);
