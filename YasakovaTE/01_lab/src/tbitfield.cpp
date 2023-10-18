@@ -83,6 +83,10 @@ int TBitField::GetBit(const int n) const // получить значение б
 // битовые операции
 const TBitField& TBitField::operator=(const TBitField& bf) // присваивание, копирует содержимое объекта bf в текущий объект
 {
+    if (this == &bf)
+    {
+        return *this;
+    }
     if (MemLen != bf.MemLen)
         if (MemLen > 0) {
             delete[] pMem;
@@ -139,6 +143,7 @@ TBitField TBitField::operator~(void) // отрицание
 }
 
 // ввод/вывод
+/*
 istream& operator>>(istream& in, TBitField& bf) // ввод
 {
     string ans;
@@ -165,5 +170,31 @@ ostream& operator<<(ostream& out, const TBitField& bf) // вывод
         else
             out << '0';
     }
+    return out;
+}
+*/
+
+
+
+istream& operator>>(istream& in, TBitField& bf) // ввод
+{
+    for (int i = 0; i < bf.GetLength(); ++i)
+    {
+        int val;
+        in >> val;
+        if (val > bf.GetLength() || val < 0)
+            throw "Wrong element ";
+        bf.SetBit(val);
+    }
+    return in;
+}
+
+ostream& operator<<(ostream& out, const TBitField& bf) // вывод
+{
+    for (int i = 0; i < bf.GetLength(); ++i)
+    {
+        out << bf.GetBit(i) << " ";
+    }
+    out << "\n";
     return out;
 }
