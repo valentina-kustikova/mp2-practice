@@ -39,7 +39,7 @@ void TSet::InsElem(const int Elem) // включение элемента мно
 
 void TSet::DelElem(const int Elem) // исключение элемента множества
 {
-    return BitField.ClrBit(Elem);
+    BitField.ClrBit(Elem);
 }
 
 // теоретико-множественные операции
@@ -100,12 +100,31 @@ TSet TSet::operator~(void) // дополнение
 
 istream &operator>>(istream &istr, TSet &s) // ввод
 {
-    istr >> s.BitField;
+    int InputElem;
+    while (true)
+    {
+        istr >> InputElem;
+        if (InputElem == -1)
+        {
+            break;
+        }
+        if (InputElem >= 0 && InputElem < s.MaxPower)
+            s.InsElem(InputElem);
+        else
+            throw "out of range";
+    }
     return istr;
 }
 
 ostream& operator<<(ostream& ostr, const TSet& s) // вывод
 {
-    ostr << s.BitField;
+    for (int i = 0; i < s.GetMaxPower(); i++)
+    {
+        if (s.IsMember(i))
+        {
+            ostr << i << " ";
+        }
+    }
+    //ostr << s.BitField;
     return ostr;
 }

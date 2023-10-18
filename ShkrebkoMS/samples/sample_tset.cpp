@@ -1,17 +1,21 @@
 #include <iostream>
 #include "tset.h"
-const int n = 6;
+
 
 
 void set() {
+    int n;
+    cin >> n;
     TSet s1(n);
     TSet s2(n);
+    cout << "Enter s1" << endl;
     cin >> s1;
     cout << "1:" << s1 << endl;
-    s2.InsElem(0);
-    s2.InsElem(1);
-    s2.InsElem(4);
+    cout << "Enter s2" << endl;
+    cin >> s2;
     cout << "2:" << s2 << endl;
+
+
     cout << "1==2:" << (s1 == s2) << "\n" << endl;
     cout << "+:" << (s1 + s2) << endl;
     cout << "+(Element):" << (s2 + 2) << endl;

@@ -6,6 +6,7 @@ const int n = 6;
 void bitfield()
 {
 	TBitField bf1(n);
+	cout << "Enter bf" << endl;
 	cin >> bf1;
 	cout << "1:" << bf1 << endl;
 	TBitField bf2(n);
@@ -13,6 +14,7 @@ void bitfield()
 	bf2.SetBit(1);
 	bf2.SetBit(2);
 	bf2.SetBit(5);
+
 	cout << "2: " << bf2 << endl;
 	bf2.ClrBit(1);
 	cout << "2:" << bf2 << endl;

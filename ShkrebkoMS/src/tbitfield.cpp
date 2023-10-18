@@ -7,7 +7,7 @@
 
 #include "tbitfield.h"
 #include <iostream>
-
+#define Shiftsize 5
 TBitField::TBitField(int len)
 {
  
@@ -40,7 +40,7 @@ int TBitField::GetMemIndex(const int n) const // индекс Мем для би
 {
     if (n < 0)
         throw "out of range";
-    return n / Bits;
+    return n >> Shiftsize;
    
 }
 
@@ -104,10 +104,12 @@ int TBitField::operator==(const TBitField &bf) const // сравнение
     if (BitLen != bf.BitLen)
         return 0;
 
-    for (int i = 0; i < MemLen; i++)
+    for (int i = 0; i < MemLen-1; i++)
         if (pMem[i] != bf.pMem[i])
             return 0;
-
+    for (int i = (MemLen - 1) * Bits; i < BitLen; i++)
+        if (GetBit(i) != bf.GetBit(i))
+            return 0;
     return 1;
 }
 
@@ -138,10 +140,10 @@ TBitField TBitField::operator&(const TBitField &bf) // операция "и"
 TBitField TBitField::operator~(void) // отрицание
 {
     TBitField result(BitLen);
-    for (int i = 0; i < BitLen; i++)
-        if (GetBit(i)) 
-            result.ClrBit(i);
-        else result.SetBit(i);
+
+    for (int i = 0; i < MemLen; i++)
+        result.pMem[i] = ~pMem[i];
+    
     return result;
 }
 
