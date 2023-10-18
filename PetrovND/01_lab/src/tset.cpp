@@ -15,23 +15,18 @@ int TSet::GetMaxPower(void) const {
 }
 
 void TSet::InsElem(const int Elem) {
-    if (Elem < 0 || Elem >= MaxPower) {
-        throw out_of_range("Element is out of range");
-    }
+    if (Elem < 0 || Elem >= MaxPower) throw out_of_range("Element is out of range");
     BitField.SetBit(Elem);
 }
 
 void TSet::DelElem(const int Elem) {
-    if (Elem < 0 || Elem >= MaxPower) {
-        throw std::out_of_range("Element is out of range");
-    }
+    if (Elem < 0 || Elem >= MaxPower) throw out_of_range("Element is out of range");
+
     BitField.ClrBit(Elem);
 }
 
 int TSet::IsMember(const int Elem) const {
-    if (Elem < 0 || Elem >= MaxPower) {
-        throw std::out_of_range("Element is out of range");
-    }
+    if (Elem < 0 || Elem >= MaxPower) throw out_of_range("Element is out of range");
     return BitField.GetBit(Elem);
 }
 
@@ -46,7 +41,7 @@ int TSet::operator!=(const TSet& s) const {
     return !(*this == s);
 }
 
-TSet& TSet::operator=(const TSet& s) {
+const TSet& TSet::operator=(const TSet& s) {
     if (this == &s) {
         return *this; 
     }
@@ -90,12 +85,11 @@ TSet TSet::operator~() {
 }
 
 istream& operator>>(istream& istr, TSet& ts) {
-    int inputElem;
-    while (true) {
+    int inputElem, n;
+    cout << "Enter the number of elements" << endl;
+    cin >> n;
+    for (int i = 0; i < n; i++) {
         istr >> inputElem;
-        if (inputElem == -1) { // Завершаем ввод, когда встречается -1
-            break;
-        }
         if (inputElem >= 0 && inputElem < ts.MaxPower) {
             ts.InsElem(inputElem);
         }

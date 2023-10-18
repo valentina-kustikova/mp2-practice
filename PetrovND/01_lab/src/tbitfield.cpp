@@ -3,23 +3,19 @@
 
 TBitField::TBitField(int len) {
     if (len < 0) {
-        throw std::invalid_argument("Length cannot be negative");
+        throw invalid_argument("Length cannot be negative");
     }
     BitLen = len;
-    MemLen = (len + sizeof(TELEM) * 8 - 1) / (sizeof(TELEM) * 8);
+    MemLen = (len + bitsInElem - 1) / bitsInElem;
     pMem = new TELEM[MemLen];
-    for (int i = 0; i < MemLen; i++) {
-        pMem[i] = 0; 
-    }
+    memset(pMem, 0, MemLen * sizeof(TELEM));
 }
 
 TBitField::TBitField(const TBitField& bf) {
     BitLen = bf.BitLen;
     MemLen = bf.MemLen;
     pMem = new TELEM[MemLen];
-    for (int i = 0; i < MemLen; i++) {
-        pMem[i] = bf.pMem[i];
-    }
+    memcpy(pMem, bf.pMem, MemLen * sizeof(TELEM));
 }
 
 TBitField::~TBitField() {
@@ -28,16 +24,16 @@ TBitField::~TBitField() {
 
 int TBitField::GetMemIndex(const int n) const {
     if (n < 0 || n >= BitLen) {
-        throw std::out_of_range("Bit index is out of range");
+        throw out_of_range("Bit index is out of range");
     }
-    return n / (sizeof(TELEM) * 8);
+    return n / bitsInElem;
 }
 
 TELEM TBitField::GetMemMask(const int n) const {
     if (n < 0 || n >= BitLen) {
-        throw std::out_of_range("Bit index is out of range");
+        throw out_of_range("Bit index is out of range");
     }
-    int bitIndex = n % (sizeof(TELEM) * 8); 
+    int bitIndex = n % bitsInElem;
     TELEM mask = 1; 
     mask <<= bitIndex; 
     return mask;
@@ -49,7 +45,7 @@ int TBitField::GetLength(void) const {
 
 void TBitField::SetBit(const int n) {
     if (n < 0 || n >= BitLen) {
-        throw std::out_of_range("Bit index is out of range");
+        throw out_of_range("Bit index is out of range");
     }
     int index = GetMemIndex(n);
     TELEM mask = GetMemMask(n); 
@@ -58,7 +54,7 @@ void TBitField::SetBit(const int n) {
 
 void TBitField::ClrBit(const int n) {
     if (n < 0 || n >= BitLen) {
-        throw std::out_of_range("Bit index is out of range");
+        throw out_of_range("Bit index is out of range");
     }
     int index = GetMemIndex(n); 
     TELEM mask = GetMemMask(n);
@@ -67,7 +63,7 @@ void TBitField::ClrBit(const int n) {
 
 int TBitField::GetBit(const int n) const {
     if (n < 0 || n >= BitLen) {
-        throw std::out_of_range("Bit index is out of range");
+        throw out_of_range("Bit index is out of range");
     }
     int index = GetMemIndex(n);
     TELEM mask = GetMemMask(n); 
@@ -90,7 +86,7 @@ int TBitField::operator!=(const TBitField& bf) const {
     return !(*this == bf); 
 }
 
-TBitField& TBitField::operator=(const TBitField& bf) {
+const TBitField& TBitField::operator=(const TBitField& bf) {
     if (this == &bf) {
         return *this; 
     }

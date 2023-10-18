@@ -3,8 +3,19 @@
 
 int main() {
     try {
-        TBitField bf1(10);
-        TBitField bf2(10);
+        int a, b,c;
+        cout << "Enter Bit Field 1 size" << endl;
+        cin >> a;
+        cout << "Enter Bit Field 2 size" << endl;
+        cin >> b;
+        cout << "Enter Bit Field 3 size" << endl;
+        cin >> c;
+
+        TBitField bf1(a);
+        TBitField bf2(b);
+        TBitField bf3(c);
+
+        cin >> bf3;
 
         bf1.SetBit(2);
         bf1.SetBit(5);
@@ -14,17 +25,13 @@ int main() {
         bf2.SetBit(5);
         bf2.SetBit(7);
 
-        std::cout << "Bit Field 1: " << bf1 << std::endl;
-        std::cout << "Bit Field 2: " << bf2 << std::endl;
+        cout << "Bit Field 1: " << bf1 << endl;
+        cout << "Bit Field 2: " << bf2 << endl;
+        cout << "Bit Field 3: " << bf3 << endl;
 
-        TBitField bf3 = bf1 | bf2;
-        std::cout << "Bit Field 1 OR Bit Field 2: " << bf3 << std::endl;
-
-        TBitField bf4 = bf1 & bf2;
-        std::cout << "Bit Field 1 AND Bit Field 2: " << bf4 << std::endl;
-
-        TBitField bf5 = ~bf1;
-        std::cout << "NOT Bit Field 1: " << bf5 << std::endl;
+        cout << "Bit Field 1 OR Bit Field 2: " << (bf1 | bf2) << endl;
+        cout << "Bit Field 1 AND Bit Field 2: " << (bf1 & bf2) << endl;
+        cout << "NOT Bit Field 1: " << ~bf1 << endl;
 
     }
     catch (const std::exception& e) {
