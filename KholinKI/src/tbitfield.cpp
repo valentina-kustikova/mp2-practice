@@ -79,7 +79,7 @@ int TBitField::GetBit(const int n) const // получить значение б
 
 const TBitField& TBitField::operator=(const TBitField &bf) // присваивание
 {
-    if (*this == bf) {
+    if (this == &bf) {
         return *this;
     }
 
@@ -184,4 +184,20 @@ ostream &operator<<(ostream &ostr, const TBitField &bf) // вывод
         else { ostr << "0"; }
     }
     return ostr;
+}
+
+//Ввод
+istream& operator>>(istream& istr, TBitField& obj) {
+    string BitField;
+    istr >> BitField;
+
+    for (int i = 0; i < BitField.length(); i++) {
+        if (BitField[i] == '1') {
+            obj.SetBit(i);
+        }
+        else {
+            obj.ClrBit(i);
+        }
+    }
+    return istr;
 }

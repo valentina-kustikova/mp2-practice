@@ -141,9 +141,16 @@ TSet TSet::operator~(void) // дополнение
 // перегрузка ввода/вывода
 
 istream& operator>>(istream& istr, TSet& bf) {
-    unsigned int e;
-    istr >> e;
-    bf.InsElem(e);
+    unsigned int e = 1;
+    size_t count;
+    cout << "Сколько элементов вы хотите ввести?" << endl;
+    cin >> count;
+    int i = 0;
+    while (i < count) {
+        istr >> e;
+        bf.InsElem(e);
+        i++;
+    }
     return istr;
 }
 
