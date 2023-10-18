@@ -143,7 +143,7 @@ TSet TSet::operator~(void) // дополнение
 istream& operator>>(istream& istr, TSet& bf) {
     unsigned int e = 1;
     size_t count;
-    cout << "Сколько элементов вы хотите ввести?" << endl;
+    cout << "How many element do you want enter?" << endl;
     cin >> count;
     int i = 0;
     while (i < count) {
