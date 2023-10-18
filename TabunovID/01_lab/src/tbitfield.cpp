@@ -190,9 +190,11 @@ istream& operator>>(istream& istr, TBitField& bf) // ввод
 	{
 		int val;
 		istr >> val;
-		if (val > bf.GetLength() || val < 0)
+
+		if ((val !=0) && (val!=1))
 			throw "Wrong element ";
-		bf.SetBit(val);
+		if (val)
+			bf.SetBit(i);
 	}
 	return istr;
 }
@@ -201,7 +203,7 @@ ostream& operator<<(ostream& ostr, const TBitField& bf) // вывод
 {
 	for (int i = 0; i < bf.GetLength(); ++i)
 	{
-		ostr << bf.GetBit(i) << " ";
+		ostr << i << " ";
 	}
 	ostr << "\n";
 	return ostr;

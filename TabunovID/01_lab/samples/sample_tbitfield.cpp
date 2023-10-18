@@ -1,31 +1,37 @@
+#include <iostream>
 #include "tbitfield.h"
 
-void test_tbitfield()
-{
-	TBitField a(5);
-	a.SetBit(1);
-	a.SetBit(3);
-	cout << "A: " << a << endl;
-	TBitField b(a);
-	cout << "B " << b << endl;
-	cout << "B 1 bit: " << b.GetBit(1) << endl;
-	b.ClrBit(1);
-	cout << "B 1 bit after clear: " << b.GetBit(1) << endl;
+void testTBitField() {
+    std::cout << "TBitField:" << std::endl;
+    TBitField a(8);
+    a.SetBit(3);
+    a.SetBit(5);
+    a.SetBit(7);
+    std::cout << "BitField a:\n" << a << endl;
+    TBitField b(8);
+    b = a;
+    b.ClrBit(5);
+    b.ClrBit(7);
+    b.SetBit(4);
+    std::cout << "BitField b:\n" << b << endl;
+    TBitField c(8);
+    c = a | b;
+    std::cout << "BitField c = a | b:\n" << c << endl;
+    TBitField d(8);
+    d = c & b;
+    std::cout << "BitField d = a & c:\n" << d << endl;
 
-	cout << "A: " << a << endl;
-	cout << "B: " << b << endl;
-	cout << "A&B " << (a & b) << endl;
-	cout << "A|B " << (a | b) << endl;
-	cout << "A==B " << (a == b) << endl;
-	cout << "~A  " << (~a) << endl;
-	cout << "A.GetLength(): " << a.GetLength() << endl;
-	cout << "OK" << endl;
-	system("pause"); //Чтобы сразу не пропадало окно
+    TBitField e(8);
+    e = ~c;
+    std::cout << "BitField e = ~c:\n" << e << endl;
+
+    TBitField f(8);
+    cin >> f;
+    cout << "Your input bitfield: " << f;
 }
-
-
 
 int main()
 {
-	test_tbitfield();
+    testTBitField();
+    return 0;
 }
