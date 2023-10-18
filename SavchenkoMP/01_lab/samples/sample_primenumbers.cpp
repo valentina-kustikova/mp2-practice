@@ -22,10 +22,6 @@ int main()
                     s.DelElem(k);
 
     cout << "Prime numbers under " << n << ": " << endl;
-    for (int i = 0; i <= n; i++)
-        if (s.IsMember(i))
-            cout << i << ' ';
-    cout << endl;
-
+    cout << s << endl;
     return 0;
 }

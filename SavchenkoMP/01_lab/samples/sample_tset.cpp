@@ -40,6 +40,11 @@ int main()
         cout << "operator+ (elem): " << (s1 + 0) << endl;
         cout << "operator- (elem): " << (s1 - 5) << endl;
         cout << "operator*: " << (s1 * s2) << endl;
+
+        TSet test_s(6);
+        cout << "\ncin >> s(6): ";
+        cin >> test_s;
+        cout << "cout << s(6): " << test_s << endl;
     }
     catch (string exp) {
         cout << exp << endl;

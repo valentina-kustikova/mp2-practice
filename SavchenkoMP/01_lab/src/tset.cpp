@@ -58,6 +58,7 @@ void TSet::DelElem(const int Elem) // исключение элемента мн
 // теоретико-множественные операции
 const TSet& TSet::operator=(const TSet& s) // присваивание
 {
+    if (this == &s) return *this;
     MaxPower = s.MaxPower;
     BitField = s.BitField;
     return *this;
@@ -113,11 +114,25 @@ TSet TSet::operator~(void) // дополнение
 // перегрузка ввода/вывода
 istream& operator>>(istream& in, TSet& s) // ввод
 {
-    in >> s.BitField;
+    int n, value;
+    cout << "Count of entered values: ";
+    in >> n;
+    do {
+        cout << "Count of entered values: ";
+        in >> n;
+    } while (n <= 0);
+
+    for (int i = 0; i < n; i++) {
+        in >> value;
+        if (value >= 0 && value < s.MaxPower)
+            s.InsElem(value);
+    }
     return in;
 }
 ostream& operator<<(ostream& out, const TSet& s) // вывод
 {
-    out << s.BitField;
+    for (int i = 0; i < s.MaxPower; i++)
+        if (s.IsMember(i))
+            out << i << ' ';
     return out;
 }

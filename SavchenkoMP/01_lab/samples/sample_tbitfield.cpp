@@ -40,6 +40,11 @@ int main()
         cout << "operator!=: " << (bf1 != bf2) << endl;
         cout << "operator|: " << (bf1 | bf2) << endl;
         cout << "operator&: " << (bf1 & bf2) << endl;
+
+        TBitField test_bf(6);
+        cout << "\ncin >> bf(6): ";
+        cin >> test_bf;
+        cout << "cout << bf(6): " << test_bf << endl;
     }
     catch (string exp) {
         cout << exp << endl;

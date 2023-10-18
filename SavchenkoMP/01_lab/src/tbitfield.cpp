@@ -75,6 +75,10 @@ int TBitField::GetBit(const int n) const // получить значение б
 // битовые операции
 const TBitField& TBitField::operator=(const TBitField &bf) // присваивание
 {
+    if (this == &bf)
+    {
+        return *this;
+    }
     if (MemLen != bf.MemLen)
         if (MemLen > 0) {
             delete[] pMem;
@@ -91,11 +95,26 @@ bool TBitField::operator==(const TBitField &bf) const // сравнение
 {
     if (BitLen != bf.BitLen) return false;
     bool flag = true;
-    for (int i = 0; i < MemLen; i++)
+    
+    /*for (int i = 0; i < MemLen; i++)
+        if (pMem[i] != bf.pMem[i]) {
+            flag = false;
+            break;
+        }*/
+    for (int i = 0; i < MemLen - 1; i++)
         if (pMem[i] != bf.pMem[i]) {
             flag = false;
             break;
         }
+
+    if (flag) {
+        int lind = bitsInElem * MemLen - BitLen;
+        for (int i = bitsInElem * (MemLen - 1); i < BitLen; i++)
+            if (GetBit(i) != bf.GetBit(i)) {
+                flag = false;
+                break;
+            }
+    }
     return flag;
 }
 bool TBitField::operator!=(const TBitField &bf) const // сравнение
@@ -107,22 +126,25 @@ TBitField TBitField::operator|(const TBitField &bf) // операция "или"
     int len = (BitLen > bf.BitLen) ? BitLen : bf.BitLen;
 
     TBitField res(len);
-    for (int i = 0; i < BitLen; i++) {
-        if (GetBit(i)) res.SetBit(i);
+
+    for (int i = 0; i < MemLen; i++) {
+        res.pMem[i] = pMem[i];
     }
-    for (int i = 0; i < bf.BitLen; i++) {
-        if (bf.GetBit(i)) res.SetBit(i);
+    for (int i = 0; i < bf.MemLen; i++) {
+        res.pMem[i] |= bf.pMem[i];
     }
     return res;
 }
 TBitField TBitField::operator&(const TBitField &bf) // операция "и"
 {
     int len = (BitLen > bf.BitLen) ? BitLen : bf.BitLen;
-    int mlen = (BitLen < bf.BitLen) ? BitLen : bf.BitLen;
 
     TBitField res(len);
-    for (int i = 0; i < BitLen; i++) {
-        if (GetBit(i) && bf.GetBit(i)) res.SetBit(i);
+    for (int i = 0; i < MemLen; i++) {
+        res.pMem[i] = pMem[i];
+    }
+    for (int i = 0; i < bf.MemLen; i++) {
+        res.pMem[i] &= bf.pMem[i];
     }
     return res;
 }
