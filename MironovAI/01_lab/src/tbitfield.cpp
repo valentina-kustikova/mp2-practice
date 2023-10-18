@@ -1,4 +1,3 @@
-
 #include "tbitfield.h"
 #define size 32 //sizeof(ui)
 TBitField::TBitField(int len)
@@ -175,9 +174,10 @@ istream& operator>>(istream& istr, TBitField& bf) // ввод
 	{
 		int val;
 		istr >> val;
-		if (val > bf.GetLength() || val < 0)
+		if ((val != 0) && (val != 1))
 			throw "Wrong element ";
-		bf.SetBit(val);
+		if (val)
+			bf.SetBit(i);
 	}
 	return istr;
 }

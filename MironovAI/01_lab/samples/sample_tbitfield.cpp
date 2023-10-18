@@ -2,12 +2,14 @@
 
 void test_tbitfield()
 {
-	TBitField a(5);
-	a.SetBit(1);
-	a.SetBit(3);
+	TBitField a(5), b(5);
+	cout << "Input bitfield A with length 5: ";
+	cin >> a;
 	cout << "A: " << a << endl;
-	TBitField b(a);
-	cout << "B " << b << endl;
+	cout << "Input bitfield B with length 5: ";
+	cin >> b;
+	cout << "B: " << b << endl;
+
 	cout << "B 1 bit: " << b.GetBit(1) << endl;
 	b.ClrBit(1);
 	cout << "B 1 bit after clear: " << b.GetBit(1) << endl;

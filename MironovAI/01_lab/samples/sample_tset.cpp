@@ -2,12 +2,14 @@
 
 void test_tset()
 {
-	TSet a(5);
-	a.InsElem(1);
-	a.InsElem(3);
-	cout << "A: " << a << endl;	
-	TSet b(a);
-	cout << "B " << b << endl;
+	TSet a(5), b(5);
+	cout << "Input set A with length 5: " << endl;
+	cin >> a;
+	cout << "A: " << a << endl;
+	cout << "Input set B with length 5: " << endl;
+	cin >> b;
+	cout << "B: " << b << endl;
+
 	cout << "B 1 bit: " << a.IsMember(1) << endl;
 	b.DelElem(1);
 	cout << "B 1 bit after clear: " << b.IsMember(1) << endl;
