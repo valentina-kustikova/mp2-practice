@@ -9,7 +9,7 @@ int main()
 
     setlocale(LC_ALL, "RUSSIAN");
     int len; // длина битового поля
-    cout << "Введит длину поля: ";
+    cout << "Введите длину поля: ";
     cin >> len;
     // Создание объекта TBitField с помощью конструктора
     TBitField bitField1(len);

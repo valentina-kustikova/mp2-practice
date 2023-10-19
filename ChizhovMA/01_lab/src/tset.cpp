@@ -6,6 +6,8 @@
 // Множество - реализация через битовые поля
 
 #include "tset.h"
+#include <string>
+#include <sstream>
 
 TSet::TSet(int mp) : BitField(mp)
 {
@@ -133,7 +135,20 @@ TSet TSet::operator~(void) // дополнение
 
 istream& operator>>(istream& istr, TSet& s) // ввод
 {
-    istr >> s.BitField;
+    int elem, n = 0;
+    do
+    {
+        cout << "Enter the number of digits you want to enter: ";
+        istr >> n;
+    } while (n <= 0 || n > s.MaxPower);
+    for (int i = 0; i < n; i++)
+    {
+        istr >> elem;
+        if (elem > 0 || elem <= s.MaxPower)
+            s.InsElem(elem);
+        else
+            throw "error";
+    }
     return istr;
 }
 

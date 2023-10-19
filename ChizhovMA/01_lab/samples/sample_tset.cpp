@@ -7,24 +7,21 @@ int main()
 {
     cout << "TSet" << endl;
 
-    int maxPower = 10;  // максимальная мощность множества
+    int maxPower;      // максимальная мощность множества
+    cout << "Enter the max size: ";
+    cin >> maxPower;
 
     // Создание множества с максимальной мощностью maxPower
     TSet set1(maxPower);
     TSet set2(maxPower);
 
-    // Добавление элементов в множество
-    set1.InsElem(2);
-    set1.InsElem(5);
-    set1.InsElem(6);
-    set1.InsElem(8);
+    cout << "Enter set1" << endl;
+    cin >> set1;// Добавление элементов в множество
+  
+    cout << "Enter set2" << endl;
+    cin >> set2;
 
-    set2.InsElem(1);
-    set2.InsElem(3);
-    set2.InsElem(8);
-    set2.InsElem(9);
-    // Вывод множества на экран
-    cout << "set1: " << set1 << endl;
+    cout << "set1: " << set1 << endl;   // Вывод множества на экран
     cout << "set2: " << set2 << endl;
 
     // Проверка наличия элементов в множестве
@@ -42,8 +39,8 @@ int main()
     // Проверка операций
     cout << "operator==: " << (set1 == set2) << endl;
     cout << "operator!=: " << (set1 != set2) << endl;
-    cout << "operator+ (elem): " << (set1 + 0) << endl;
-    cout << "operator- (elem): " << (set1 - 5) << endl;
+    cout << "operator+ (elem + 0): " << (set1 + 0) << endl;
+    cout << "operator- (elem - 5): " << (set1 - 5) << endl;
     cout << "operator*: " << (set1 * set2) << endl;
     cout << "operator+: " << (set1 + set2) << endl;
     cout << "operator~: " << ~set1 << endl;
