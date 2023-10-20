@@ -1,4 +1,4 @@
-set(target ${MP2_TESTS})
+vector(target ${MP2_TESTS})
 
 
 file(GLOB hdrs "*.h*")

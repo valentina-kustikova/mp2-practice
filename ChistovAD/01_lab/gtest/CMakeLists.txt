@@ -1,4 +1,4 @@
-set(target "gtest")
+vector(target "gtest")
 
 add_library(${target} STATIC gtest-all.cc)
 
