@@ -31,7 +31,10 @@ TEST(TMatrix, copied_matrix_is_equal_to_source_one)
 	m1[0][0] = 3;
 	m1[0][1] = 4;
 	TMatrix<int> m2(m1);
-	EXPECT_EQ(m1==m2,1);
+	cout << m1 << endl;
+	cout << m2 << endl;
+	bool res = (m1 == m2);
+	EXPECT_EQ(res,1);
 }
 
 TEST(TMatrix, copied_matrix_has_its_own_memory)
@@ -109,6 +112,8 @@ TEST(TMatrix, compare_equal_matrices_return_true)
 	TMatrix<int> m1(10), m2(10);
 	m1[5][0] = 3;
 	m2[5][0] = 3;
+	cout << m1 << endl;
+	cout << m2 << endl;
 	EXPECT_EQ(m1, m2);
 }
 

@@ -10,15 +10,15 @@ template <class ValType>
 class TMatrix : public TVector<TVector<ValType>>
 {
 public:
-  TMatrix(int s = 10);                           
-  TMatrix(const TMatrix &mt);                    
-  TMatrix(const TVector<TVector<ValType> > &mt);
+  TMatrix<ValType>(int s = 10);                           
+  TMatrix<ValType>(const TMatrix<ValType> &mt);                    
+  TMatrix<ValType>(const TVector<TVector<ValType> > &mt);
   bool operator==(const TMatrix<ValType>&mt) const;
   bool operator!=(const TMatrix<ValType>&mt) const;
-  const TMatrix& operator=(const TMatrix<ValType> &mt);
-  TMatrix  operator+(const TMatrix<ValType> &mt);
-  TMatrix  operator-(const TMatrix<ValType> &mt);
-  TMatrix  operator*(const TMatrix<ValType> &mt);
+  const TMatrix<ValType>& operator=(const TMatrix<ValType> &mt);
+  TMatrix<ValType> operator+(const TMatrix<ValType> &mt);
+  TMatrix<ValType> operator-(const TMatrix<ValType> &mt);
+  TMatrix<ValType> operator*(const TMatrix<ValType> &mt);
   
   //Эти операции изменят вид матрицы, что не логично для задачи.
   //TMatrix& operator=(const ValType& v);
@@ -43,10 +43,12 @@ public:
 };
 
 template <class ValType>
-TMatrix<ValType>::TMatrix(int s): TVector<TVector<ValType>>(s)
+TMatrix<ValType>::TMatrix<ValType>(int s): TVector<TVector<ValType>>(s)
 {
-    if(s> MAX_MATRIX_SIZE)
+    if(s > MAX_MATRIX_SIZE)
         throw "Too Large Matrix";
+    if (s <= 0)
+        throw "Too Small Matrix";
     for (int i = 0; i < Size; ++i)
     {
         TVector<ValType> x(Size - i, i);
@@ -55,20 +57,21 @@ TMatrix<ValType>::TMatrix(int s): TVector<TVector<ValType>>(s)
 } 
 
 template <class ValType> 
-TMatrix<ValType>::TMatrix(const TMatrix<ValType> &mt):TVector<TVector<ValType>>(mt) 
+TMatrix<ValType>::TMatrix<ValType>(const TMatrix<ValType> &mt):TVector<TVector<ValType>>(mt) 
 {
-    for (int i = 0; i < Size; ++i)
-    {
-        pVector[i] = mt.pVector[i];
-    }
+  
 }
 
 template <class ValType> 
-TMatrix<ValType>::TMatrix(const TVector<TVector<ValType>> &mt):TVector<TVector<ValType>>(mt) 
+TMatrix<ValType>::TMatrix<ValType>(const TVector<TVector<ValType>> &mt):TVector<TVector<ValType>>(mt) 
 {
-    if (mt.Size > MAX_MATRIX_SIZE)
+    if (Size > MAX_MATRIX_SIZE)
     {
         throw "Allocation Error";
+    }
+    if (Size < 0)
+    {
+        throw "Size should be positive";
     }
 }
 
@@ -76,12 +79,7 @@ TMatrix<ValType>::TMatrix(const TVector<TVector<ValType>> &mt):TVector<TVector<V
 template <class ValType> 
 bool TMatrix<ValType>::operator==(const TMatrix<ValType> &mt) const
 {
-    for (int i = 0; i < Size; ++i)
-    {
-        if (pVector[i] != mt.pVector[i])
-            return 0;
-    }
-    return 1;
+    return TVector<TVector<ValType>>::operator==(mt);
 }
 
 template <class ValType> 
@@ -93,56 +91,21 @@ bool TMatrix<ValType>::operator!=(const TMatrix<ValType> &mt) const
 template <class ValType> 
 const TMatrix<ValType>& TMatrix<ValType>::operator=(const TMatrix<ValType> &mt)
 {
-    if (*this == mt)
-        return *this;
 
-    if (Size != mt.Size)
-    {
-        TVector<ValType>* Tmp  = new TVector<ValType>[mt.Size];
-        delete[] pVector;
-        pVector = Tmp;
-    }
-
-    Size = mt.Size;
-    std::copy(mt.pVector, mt.pVector + mt.Size, pVector);
-    return *this;
+    return TVector<TVector<ValType>>::operator=(mt);
 } 
 
 template <class ValType> 
 TMatrix<ValType> TMatrix<ValType>::operator+(const TMatrix<ValType> &mt)
 {
     
-    TMatrix<ValType> A(std::max(Size, mt.Size)), not_const_mt(mt);
-    for (int i = 0; i < max(Size, mt.Size); ++i)
-    {
-        TVector<ValType> tmp;
-        if (i >= not_const_mt.Size)
-            tmp = (*this)[i];
-        else if (i >= Size)
-            tmp = not_const_mt[i];
-        else
-            tmp = (*this)[i] + not_const_mt[i];
-        A[i] = tmp;
-    }
-    return A;
+    return TVector<TVector<ValType>>::operator+(mt);
 } 
 
 template <class ValType> 
 TMatrix<ValType> TMatrix<ValType>::operator-(const TMatrix<ValType> &mt)
 {
-    TMatrix<ValType> A(std::max(Size, mt.Size)), not_const_mt(mt);
-    for (int i = 0; i < max(Size, mt.Size); ++i)
-    {
-        TVector<ValType> tmp;
-        if (i >= not_const_mt.Size)
-            tmp = (*this)[i];
-        else if (i >= Size)
-            tmp =   not_const_mt[i]*(-1);
-        else
-            tmp = (*this)[i] - not_const_mt[i];
-        A[i] = tmp;
-    }
-    return A;
+    return TVector<TVector<ValType>>::operator-(mt);
 } 
 template <class ValType>
 TMatrix<ValType> TMatrix<ValType>::operator*(const TMatrix<ValType>& mt)

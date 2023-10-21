@@ -1,5 +1,6 @@
 #include "tmatrix.h"
 
+
 void test_tmatrix()
 {
 	TMatrix<int> m1(3), m2(3);
@@ -15,7 +16,7 @@ void test_tmatrix()
 	m1 = m2;
 	cout << "m1 == m2 after m1 = m2: " << (m1 == m2) << endl;
 	cout << "m1[1]: " << m1[1] << endl;
-	cout << "m2[0]: " << m2[0] << endl;
+	cout << "m2[0][1]: " << m2[0][1] << endl;
 	cout << "m1 != m2: " << (m1 != m2) << endl;
 
 	cout << "OK" << endl;
