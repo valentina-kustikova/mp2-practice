@@ -8,7 +8,7 @@
 
 template <class T> class TVector
 {
-private:
+protected:
 	int size;
 	int start_index;
 	T* pVec;
@@ -164,10 +164,10 @@ template <typename T>
 TVector<T> TVector<T>:: operator+(const TVector<T>& v)
 {
 	if (size != v.size)
-		throw "Cannot accumulate vectors with different dimensions!";
+		throw "Can't accumulate vectors with different dimensions!";
 	
 	if (start_index != v.start_index)
-		throw "Cannot accumulate vectors with different indexes";
+		throw "Can't accumulate vectors with different indexes";
 	
 	TVector<T> tmp(*this);
 	for (int i = 0; i < size; i++)
@@ -181,10 +181,10 @@ template <typename T>
 TVector<T> TVector<T>:: operator-(const TVector<T>& v)
 {
 	if (size != v.size)
-		throw "Cannot subtract vectors with different dimensions!";
+		throw "Can't subtract vectors with different dimensions!";
 
 	if (start_index != v.start_index)
-		throw "Cannot subtract vectors with different indexes";
+		throw "Can't subtract vectors with different indexes";
 
 	TVector<T> tmp(*this);
 	for (int i = 0; i < size; i++)
@@ -198,10 +198,10 @@ template <typename T>
 T TVector<T>::operator*(const TVector<T>& v)
 {
 	if (size != v.size)
-		throw "Cannot scalar multiply vectors with different!";
+		throw "Can't scalar multiply vectors with different!";
 
 	if (start_index != v.start_index)
-		throw "Cannot scalar multiply vectors with different indexes";
+		throw "Can't scalar multiply vectors with different indexes";
 
 	T res = 0;
 	for (int i = 0; i < size; i++)
@@ -238,7 +238,7 @@ template <typename T>
 std::ostream& operator<<(std::ostream& ostr, const TVector<T>& v) 
 {
 	for (int i = 0; i < v.size; i++)
-		ostr << v.pVec[i]<< " ";
+		ostr << v.pVec[i]<< '\t';
 	return ostr;
 
 }
