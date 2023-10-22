@@ -5,6 +5,7 @@
 #include <iostream>
 #include <ostream>
 #include <istream>
+#include <iomanip>
 
 template <class T> class TVector
 {
@@ -13,7 +14,7 @@ protected:
 	int start_index;
 	T* pVec;
 public:
-	TVector(int s = 0, int index = 0); //s = size
+	TVector(int s = 10, int index = 0); //s = size
 	TVector(const TVector<T>& vec);
 	~TVector();
 	int GetSize() const;
@@ -238,7 +239,7 @@ template <typename T>
 std::ostream& operator<<(std::ostream& ostr, const TVector<T>& v) 
 {
 	for (int i = 0; i < v.size; i++)
-		ostr << v.pVec[i]<< '\t';
+		ostr  << std::setw(3) << v.pVec[i] << " ";
 	return ostr;
 
 }

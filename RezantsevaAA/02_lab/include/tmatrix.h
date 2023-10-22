@@ -115,8 +115,8 @@ std::ostream& operator<<(std::ostream& ostr, const TMatrix<T>& m)
 {
 	for (int i = 0; i < m.size; i++)
 	{
-		for (int j = 0; j < i; j++)
-			ostr << "0" << '\t';
+		for (int j = 0; j < m.pVec[i].GetIndex(); j++)
+			ostr  << std::setw(3) << "0" << " ";
 		ostr << m.pVec[i] << std::endl;
 
 	}
