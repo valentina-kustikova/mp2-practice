@@ -3,32 +3,32 @@
 TSet::TSet(int mp) :MaxPower(mp), BitField(mp) {}
 TSet::TSet(const TSet& s) : BitField(s.BitField), MaxPower(s.GetMaxPower()) {}
 TSet::TSet(const TBitField& bf) :MaxPower(bf.GetLength()), BitField(bf) {}
-int TSet::GetMaxPower() const 
+int TSet::GetMaxPower() const
 {
     return MaxPower;
 }
-TSet::operator TBitField() 
-{ 
+TSet::operator TBitField()
+{
     return BitField;
 }
 
 int TSet::IsMember(const int Elem) const
 {
-    if (Elem >= MaxPower || Elem < 0) 
+    if (Elem >= MaxPower || Elem < 0)
         throw ("Error: Element is out of universe");
     return BitField.GetBit(Elem);
 }
 
 void TSet::InsElem(const int Elem)
 {
-    if (Elem >= MaxPower || Elem < 0)  
+    if (Elem >= MaxPower || Elem < 0)
         throw ("Error: Element is out of universe");
     return BitField.SetBit(Elem);
 }
 
 void TSet::DelElem(const int Elem)
 {
-    if (Elem >= MaxPower || Elem < 0) 
+    if (Elem >= MaxPower || Elem < 0)
         throw ("Error: Element is out of universe");
     return BitField.ClrBit(Elem);
 }
@@ -64,7 +64,7 @@ TSet TSet::operator+(const TSet& s)
 
 TSet TSet::operator+(const int Elem)
 {
-    if (Elem >= MaxPower || Elem < 0) 
+    if (Elem >= MaxPower || Elem < 0)
         throw ("Error: Element is out of universe");
     TSet obj(*this);
     obj.InsElem(Elem);
@@ -73,7 +73,7 @@ TSet TSet::operator+(const int Elem)
 
 TSet TSet::operator-(const int Elem)
 {
-    if (Elem >= MaxPower || Elem < 0) 
+    if (Elem >= MaxPower || Elem < 0)
         throw ("Error: Elemet is out of universe");
     TSet obj(*this);
     obj.DelElem(Elem);

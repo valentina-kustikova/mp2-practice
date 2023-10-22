@@ -66,20 +66,20 @@ int TBitField::GetLength(void) const
 void TBitField::SetBit(const int n)
 {
     if (n >= BitLen || n < 0)
-        throw("bit position is out of range");
+        throw("The bit is not in the range");
     pMem[GetMemIndex(n)] |= GetMemMask(n);
 }
 
 void TBitField::ClrBit(const int n)
 {
     if (n >= BitLen || n < 0)
-        throw("bit position is out of range");
+        throw("The bit is not in the range");
     pMem[GetMemIndex(n)] &= ~GetMemMask(n);
 }
 
 int TBitField::GetBit(const int n) const {
     if (n >= BitLen || n < 0)
-        throw("bit position is out of range");
+        throw("The bit is not in the range");
     return (pMem[GetMemIndex(n)] & GetMemMask(n)) ? 1 : 0;
 }
 
@@ -101,6 +101,12 @@ TBitField& TBitField::operator=(const TBitField& bf)
     return *this;
 }
 
+
+int TBitField::operator!=(const TBitField& bf) const
+{
+    return !((*this) == bf);
+}
+
 int TBitField::operator==(const TBitField& bf) const
 {
     if (BitLen != bf.BitLen) return 0;
@@ -113,9 +119,14 @@ int TBitField::operator==(const TBitField& bf) const
     return 1;
 }
 
-int TBitField::operator!=(const TBitField& bf) const
+TBitField TBitField::operator&(const TBitField& bf)
 {
-    return !((*this) == bf);
+    int Len = max(BitLen, bf.BitLen);
+    TBitField obj(Len);
+    for (int i = 0; i < obj.MemLen; i++) {
+        obj.pMem[i] = pMem[i] & bf.pMem[i];
+    }
+    return obj;
 }
 
 TBitField TBitField::operator|(const TBitField& bf)
@@ -124,16 +135,6 @@ TBitField TBitField::operator|(const TBitField& bf)
     TBitField obj(Len);
     for (int i = 0; i < obj.MemLen; i++)
         obj.pMem[i] = pMem[i] | bf.pMem[i];
-    return obj;
-}
-
-TBitField TBitField::operator&(const TBitField& bf)
-{
-    int Len = max(BitLen, bf.BitLen);
-    TBitField obj(Len);
-    for (int i = 0; i < obj.MemLen; i++) {
-        obj.pMem[i] = pMem[i] & bf.pMem[i];
-    }
     return obj;
 }
 
@@ -157,7 +158,7 @@ istream& operator>>(istream& istr, TBitField& bf) {
             bf.SetBit(i);
         }
         else {
-            throw ("The entered element does not match the bit field");
+            throw ("The Element doesn't match the bitfield");
             break;
         }
     }
