@@ -125,6 +125,6 @@ ostream& operator<<(ostream& ostr, const TSet& s) // вывод
             ostr << i << " ";
         }
     }
-    //ostr << s.BitField;
+
     return ostr;
 }

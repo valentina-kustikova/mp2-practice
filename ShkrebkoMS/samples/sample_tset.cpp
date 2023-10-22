@@ -5,6 +5,7 @@
 
 void set() {
     int n;
+    cout << "Enter len" << endl;
     cin >> n;
     TSet s1(n);
     TSet s2(n);
