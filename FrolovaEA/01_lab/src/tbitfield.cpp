@@ -139,7 +139,7 @@ int TBitField::operator==(const TBitField &bf) const // сравнение
 }
 
 int TBitField::operator!=(const TBitField &bf) const // сравнение
-{
+{/*
     if (BitLen != bf.BitLen)
         return 1;
     else
@@ -153,38 +153,40 @@ int TBitField::operator!=(const TBitField &bf) const // сравнение
     }
 
     return 0;
+
+*/
+    return !((*this) == bf);
 }
 
-TBitField TBitField::operator&(const TBitField &bf) // операция "или"
+TBitField TBitField::operator&(const TBitField &bf) // операция "и"
 {
     int maxLen = max(GetLength(), bf.GetLength());
     int minLen = min(GetLength(), bf.GetLength());
     TBitField tmp(maxLen);
-    for (int i = 0; i < minLen; i++)
+    for (int i = 0; i < MemLen; i++)
     {
-        if (GetBit(i) == bf.GetBit(i)) {
-            if (GetBit(i) == 1)
-                tmp.SetBit(i);
-        }
+        tmp.pMem[i] = pMem[i];
+    }
+    for (int i = 0; i < bf.MemLen; i++)
+    {
+        tmp.pMem[i] &= bf.pMem[i];
     }
     return tmp;
 }
 
-TBitField TBitField::operator|(const TBitField& bf) // операция "и"
+TBitField TBitField::operator|(const TBitField& bf) // операция "или"
 {
     int maxLen = max(GetLength(), bf.GetLength());
     int minLen = min(GetLength(), bf.GetLength());
     TBitField tmp(maxLen);
 
-    for (int i = 0; i < GetLength(); i++)
+    for (int i = 0; i < MemLen; i++)
     {
-        if (GetBit(i) == 1)
-            tmp.SetBit(i);
+        tmp.pMem[i] = pMem[i];
     }
-    for (int i = 0; i < bf.GetLength(); i++)
+    for (int i = 0; i < bf.MemLen; i++)
     {
-        if (bf.GetBit(i) == 1)
-            tmp.SetBit(i);
+        tmp.pMem[i] |= bf.pMem[i];
     }
     return tmp;
 }

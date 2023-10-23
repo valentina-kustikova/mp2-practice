@@ -142,12 +142,35 @@ TSet TSet::operator~(void) // дополнение
 
 istream &operator>>(istream &istr, TSet &s) // ввод
 {
-    istr >> s.BitField;
+
+    int num1;
+    cout << "how mach elements would you like to add to set: ";
+    istr >> num1;
+    cout << endl;
+    int i = 0;
+    while (i != num1)
+    {
+        int elem;
+        cout << "Enter element : " << "element must be < " << s.GetMaxPower() << "  :";
+        istr >> elem;
+        cout << endl;
+        if(elem>=0 && elem<s.GetMaxPower())
+            s.InsElem(elem);
+        i++;
+    }
     return istr;
 }
 
 ostream& operator<<(ostream &ostr, const TSet &s) // вывод
 {
-    ostr << s.BitField;
+    for (int i = 0; i < s.GetMaxPower(); i++)
+    {
+        if (s.IsMember(i))
+        {
+            ostr << i;
+            cout << endl;
+        }
+
+    }
     return ostr;
 }

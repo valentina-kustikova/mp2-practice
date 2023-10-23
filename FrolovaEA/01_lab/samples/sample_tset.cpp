@@ -12,39 +12,13 @@ int main()
     cout << endl;
     TSet set1(power);
 
-    int num1;
-    cout << "how mach elements would you like to add to set1: ";
-    cin >> num1;
-    cout << endl;
-    int i = 0;
-    while (i != num1)
-    {
-        int elem;
-        cout << "Enter element : " << "element must be < " << power << "  :";
-        cin >> elem;
-        cout << endl;
-        set1.InsElem(elem);
-        i++;
-    }
+    cin >> set1;
     cout << "Max power of set1 :  " << set1.GetMaxPower() << ";" << "  Elements in set1 : " << set1 << endl;
 
 
     TSet set2(power);
 
-    int num2;
-    cout << "how mach elements would you like to add to set2: ";
-    cin >> num2;
-    cout << endl;
-    int j = 0;
-    while (j != num2)
-    {
-        int elem;
-        cout << "Enter element : " << "element must be < " << power << "  :";
-        cin >> elem;
-        cout << endl;
-        set2.InsElem(elem);
-        j++;
-    }
+    cin >> set2;
     cout << "Max power of set2 :  " << set2.GetMaxPower() << ";" << "  Elements in set1 : " << set2 << endl;
     cout << endl;
 
@@ -53,7 +27,7 @@ int main()
     cout << endl;
 
     //is member ?
-
+    
     int element1;
     cout << "enter elemen you would like to find: ";
     cin >> element1;
@@ -138,18 +112,18 @@ int main()
     set1 = set1 - element4;
     cout << "set1 - " << element4 << " = " << set1 << endl;
     cout << endl;
-
+    
     cout << set1 << endl;
     cout << set2 << endl;
     cout << "operator*" << endl;
     cout << "set1 * set2 = " << (set1 * set2) << endl;
     cout << endl;
-
+    
     cout << set2 << endl;
     cout << "operator~" << endl;
     cout << "~set2 = " << (~set2) << endl;
     cout << endl;
-
+    
 
     return 0;
 }
