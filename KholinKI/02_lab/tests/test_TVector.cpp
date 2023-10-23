@@ -3,7 +3,7 @@
 #include <gtest.h>
 
 
-//#СПРАВКА:
+//#СПРАВКА:clude <clocale>
 //Описание макроса TEST():
 //1)Пишем имя макроса(TEST)
 //2)Первым параметром указываем набор тестов(класс или структура)
@@ -12,8 +12,6 @@
 //5)В конце дописываем утверждение
 
 
-//придумать тесты для параметра Vector
-//проверить хвосты векторов
 
 TEST(TVector, throw_when_create_vector_with_negative_length) {
 	ASSERT_THROW(TVector<double> vec(-5), const Exeptions<int>);
@@ -62,6 +60,33 @@ TEST(TVector, equality) {
 	EXPECT_EQ(vector1, vector2);
 	EXPECT_EQ(vector1.GetSize(), vector2.GetSize());  
 	EXPECT_EQ(vector1.GetStart(), vector2.GetStart()); 
+}
+
+TEST(TVector, triple_assign) {
+	TVector<short> vector1(3), vector2(4), vector3(5);
+
+	int i = 0;
+	for (i = 0; i < vector1.GetSize(); i++) {
+		vector1[i] = i;
+	}
+
+	for (i = 0; i < vector2.GetSize(); i++) {
+		vector2[i] = i;
+	}
+
+	for (i = 0; i < vector3.GetSize(); i++) {
+		vector3[i] = i;
+	}
+
+	vector1 = vector2 = vector3;
+
+	EXPECT_EQ(vector2.GetSize(), vector3.GetSize());
+	EXPECT_EQ(vector2.GetStart(), vector3.GetStart());
+	EXPECT_EQ(vector2, vector3);
+	
+	EXPECT_EQ(vector1.GetSize(), vector3.GetSize());
+	EXPECT_EQ(vector1.GetStart(), vector3.GetStart());
+	EXPECT_EQ(vector1, vector3);
 }
 
 TEST(TVector, plus_operator_with_element) {

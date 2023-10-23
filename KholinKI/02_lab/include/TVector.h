@@ -9,33 +9,39 @@
 using namespace std;
 
 template <class Type> class TVector {
-private:
+protected:
 	int start_index;
 	int size;
 	Type* vector;
 public:
-	TVector(int size_ = 10, int start_index_ = 0);
-	TVector(const TVector<Type>& obj);
-	~TVector();
+	//#конструкторы и деструктор
+	TVector(int size_ = 10, int start_index_ = 0);//создание вектора
+	TVector(const TVector<Type>& obj);//копирование векторов
+	~TVector();//удаление вектора
 
-	int GetSize() const;
-	int GetStart() const;
-	Type& operator[](const int index);
+	//#свойства вектора
+	int GetSize() const;//получение размера
+	int GetStart() const;//получение стартового индекса
+	Type& operator[](const int index);//получение элемента вектора
 
-
-	int operator ==(const TVector<Type>& obj) const;
-	int operator !=(const TVector<Type>& obj) const; 
+	//#сравнение векторов
+	int operator ==(const TVector<Type>& obj) const;//проверка на равенство векторов
+	int operator !=(const TVector<Type>& obj) const;//проверка на неравенство векторов 
 	
-	TVector<Type>& operator=(const TVector<Type>& obj);
+	TVector<Type>& operator=(const TVector<Type>& obj);//присваивание векторов
 
-	TVector<Type> operator *(const Type val); 
-	TVector<Type> operator +(const Type val);  
-	TVector<Type> operator -(const Type val); 
+	//#векторно-скалярные операции
+	TVector<Type> operator *(const Type& val);//умножение вектора с элементом 
+	TVector<Type> operator +(const Type& val);//сложение вектора с элементом  
+	TVector<Type> operator -(const Type& val);//вычитание из вектора элемента
 
+	//#векторно-векторные операции
 	TVector<Type> operator +(const TVector<Type>& obj);
 	TVector<Type> operator -(const TVector<Type>& obj);
 	Type operator*(const TVector<Type>& obj);
 
+
+	//#ввод/вывод
 	friend istream& operator>>(istream& istr, TVector<Type>& obj) {
 		for (int i = 0; i < obj.GetSize(); i++) {
 			istr >> obj.vector[i];
@@ -69,6 +75,7 @@ TVector<Type>::TVector(int size_, int start_index_) {
 	size = size_;
 	start_index = start_index_;
 	vector = new Type[size];
+
 }
 
 template <class Type>
@@ -139,11 +146,11 @@ int TVector<Type>::operator==(const TVector<Type>& obj)const {
 
 template<class Type>
 int TVector<Type>::operator !=(const TVector<Type>& obj) const {
-	return !(this == obj);
+	return !(*this == obj);
 }
 
 template<class Type>
-TVector<Type> TVector<Type>::operator*(const Type val) {
+TVector<Type> TVector<Type>::operator*(const Type& val) {
 	TVector<Type> tmp(*this); 
 	for (int i = 0; i < tmp.size; i++) {
 		tmp[i] *= val;
@@ -152,7 +159,7 @@ TVector<Type> TVector<Type>::operator*(const Type val) {
 }
 
 template<class Type>
-TVector<Type> TVector<Type>::operator+(const Type val) {
+TVector<Type> TVector<Type>::operator+(const Type& val) {
 	TVector<Type> tmp(*this);
 	for (int i = 0; i < tmp.size; i++) {
 		tmp[i] += val;
@@ -161,7 +168,7 @@ TVector<Type> TVector<Type>::operator+(const Type val) {
 }
 
 template<class Type>
-TVector<Type> TVector<Type>::operator-(const Type val) {
+TVector<Type> TVector<Type>::operator-(const Type& val) {
 	TVector<Type> tmp(*this);
 	for (int i = 0; i < tmp.size; i++) {
 		tmp[i] -= val;
