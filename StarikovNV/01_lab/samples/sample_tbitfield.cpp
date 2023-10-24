@@ -10,7 +10,7 @@ int main()
 
     setlocale(LC_ALL, "RUSSIAN");
     int len; // длина битового поля
-    cout << "Введит длину поля: ";
+    cout << "Введите длину поля: ";
     cin >> len;
 
 

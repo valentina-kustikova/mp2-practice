@@ -16,8 +16,8 @@ int main()
 
     // Добавление элементов в множество
     set1.InsElem(2);
+    set1.InsElem(4);
     set1.InsElem(5);
-    set1.InsElem(6);
     set1.InsElem(8);
 
     set2.InsElem(1);
