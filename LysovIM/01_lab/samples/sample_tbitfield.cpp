@@ -6,7 +6,7 @@ void bitfield()
 	int n;
 	cin >> n;
 	TBitField bf1(n);
-	cout << "Enter bitfield 1:" << endl;;
+	cout << "Enter bitfield 1:" << endl;
 	cin >> bf1;
 	cout << "Bitfield 1:" << "\t" << bf1 << endl;
 	TBitField bf2(n + 1);
