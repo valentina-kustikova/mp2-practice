@@ -62,7 +62,7 @@ void TSet::DelElem(const int Elem) // исключение элемента мн
 
 // теоретико-множественные операции
 
-TSet& TSet::operator=(const TSet &s) // присваивание
+const TSet& TSet::operator=(const TSet &s)  // присваивание
 {
     if (this != &s)
     {
