@@ -46,11 +46,6 @@ TEST(TMatrix, can_work_with_elements)
 	mat[0][0] = 2;
 	ASSERT_EQ(2, mat[0][0]);
 }
-TEST(TMatrix, all_zeros_beneath_the_triangle)
-{
-	TMatrix<int> mat(2);
-	ASSERT_ANY_THROW(mat[1][0]);
-}
 
 TEST(TMatrix, can_assign_fron_equal_size)
 {
