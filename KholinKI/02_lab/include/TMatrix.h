@@ -101,11 +101,11 @@ TMatrix<Type> TMatrix<Type>::operator-(const TMatrix& matr) {
 template<class Type>
 TMatrix<Type> TMatrix<Type>::operator*(const TMatrix<Type>& matr) {
 	TVector<TVector<Type>> result_matrix(*this); 
-	int I, j, k;
+	int I, j;
 	for (I = 0; I < size; I++) {
 		for (j = I; j < size; j++) {
-			for (k = I; k < j; k++) {
-				result_matrix[I][j] += (*this)[I][k] * matr.vector[k][j];
+			for (start_index = I; start_index < j; start_index++) {
+				result_matrix[I][j] += (*this)[I][start_index] * matr.vector[start_index][j];
 			}
 		}
 	}
