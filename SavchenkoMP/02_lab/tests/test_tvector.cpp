@@ -39,15 +39,15 @@ TEST(TVector, ParameterizedConstructorTest_PositiveLength){
 	
 }
 
-TEST(TVector, ParameterizedConstructorTest_ZeroLength_throw){
+TEST(TVector, throw_ParameterizedConstructorTest_ZeroLength){
 	
 }
 
-TEST(TVector, ParameterizedConstructorTest_NegativeLength_throw){
+TEST(TVector, throw_ParameterizedConstructorTest_NegativeLength){
 	
 }
 
-TEST(TVector, ParameterizedConstructorTest_NegativeStartIndex_throw){
+TEST(TVector, throw_ParameterizedConstructorTest_NegativeStartIndex){
 	
 }
 
@@ -84,15 +84,15 @@ TEST(TVector, IndexingTest){
 	
 }
 
-TEST(TVector, IndexingTest_TooLargeIndex_throw){
+TEST(TVector, throw_IndexingTest_TooLargeIndex){
 	
 }
 
-TEST(TVector, IndexingTest_NegativeIndex_throw){
+TEST(TVector, throw_IndexingTest_NegativeIndex){
 	
 }
 
-TEST(TVector, IndexingTest_IndexLessThanStartIndex_throw){
+TEST(TVector, throw_IndexingTest_IndexLessThanStartIndex){
 	
 }
 
@@ -142,11 +142,11 @@ TEST(TVector, VectorAdditionTest){
 	
 }
 
-TEST(TVector, VectorAdditionTest_InequalSize_throw){
+TEST(TVector, throw_VectorAdditionTest_InequalSize){
 	
 }
 
-TEST(TVector, VectorAdditionTest_InequalStartIndex_throw){
+TEST(TVector, throw_VectorAdditionTest_InequalStartIndex){
 	
 }
 
@@ -155,11 +155,11 @@ TEST(TVector, VectorSubtractionTest){
 	
 }
 
-TEST(TVector, VectorSubtractionTest_InequalSize_throw){
+TEST(TVector, throw_VectorSubtractionTest_InequalSize){
 	
 }
 
-TEST(TVector, VectorSubtractionTest_InequalStartIndex_throw){
+TEST(TVector, throw_VectorSubtractionTest_InequalStartIndex){
 	
 }
 
@@ -168,11 +168,11 @@ TEST(TVector, VectorDotProductTest){
 	
 }
 
-TEST(TVector, VectorDotProductTest_InequalSize_throw){
+TEST(TVector, throw_VectorDotProductTest_InequalSize){
 	
 }
 
-TEST(TVector, VectorDotProductTest_InequalStartIndex_throw){
+TEST(TVector, throw_VectorDotProductTest_InequalStartIndex){
 	
 }
 

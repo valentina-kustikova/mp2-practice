@@ -10,9 +10,6 @@ AssignmentOperatorTest: 		Проверка оператора присваива
 GetSizeTest: 					Проверка метода GetSize().
 GetStartIndexTest: 				Проверка метода GetStartIndex().
 IndexingTest: 					Проверка оператора индексации operator[].
-ScalarMultiplicationTest: 		Проверка оператора умножения на скаляр.
-ScalarAdditionTest: 			Проверка оператора сложения с скаляром.
-ScalarSubtractionTest: 			Проверка оператора вычитания с скаляром.
 MatrixAdditionTest: 			Проверка оператора сложения двух векторов.
 MatrixSubtractionTest: 			Проверка оператора вычитания двух векторов.
 MatrixDotProductTest: 			Проверка оператора скалярного произведения векторов.
@@ -39,15 +36,15 @@ TEST(TMatrix, ParameterizedConstructorTest_PositiveLength){
 	
 }
 
-TEST(TMatrix, ParameterizedConstructorTest_ZeroLength_throw){
+TEST(TMatrix, throw_ParameterizedConstructorTest_ZeroLength){
 	
 }
 
-TEST(TMatrix, ParameterizedConstructorTest_NegativeLength_throw){
+TEST(TMatrix, throw_ParameterizedConstructorTest_NegativeLength){
 	
 }
 
-TEST(TMatrix, ParameterizedConstructorTest_NegativeStartIndex_throw){
+TEST(TMatrix, throw_ParameterizedConstructorTest_NegativeStartIndex){
 	
 }
 
@@ -84,15 +81,15 @@ TEST(TMatrix, IndexingTest){
 	
 }
 
-TEST(TMatrix, IndexingTest_TooLargeIndex_throw){
+TEST(TMatrix, throw_IndexingTest_TooLargeIndex){
 	
 }
 
-TEST(TMatrix, IndexingTest_NegativeIndex_throw){
+TEST(TMatrix, throw_IndexingTest_NegativeIndex){
 	
 }
 
-TEST(TMatrix, IndexingTest_IndexLessThanStartIndex_throw){
+TEST(TMatrix, throw_IndexingTest_IndexLessThanStartIndex){
 	
 }
 
@@ -122,31 +119,16 @@ TEST(TMatrix, InequalityTest_InequalStartIndex){
 	
 }
 
-// ScalarMultiplicationTests
-TEST(TMatrix, ScalarMultiplicationTest){
-	
-}
-
-// ScalarAdditionTests
-TEST(TMatrix, ScalarAdditionTest){
-	
-}
-
-// ScalarSubtractionTests
-TEST(TMatrix, ScalarSubtractionTest){
-	
-}
-
 // MatrixAdditionTests
 TEST(TMatrix, MatrixAdditionTest){
 	
 }
 
-TEST(TMatrix, MatrixAdditionTest_InequalSize_throw){
+TEST(TMatrix, throw_MatrixAdditionTest_InequalSize){
 	
 }
 
-TEST(TMatrix, MatrixAdditionTest_InequalStartIndex_throw){
+TEST(TMatrix, throw_MatrixAdditionTest_InequalStartIndex){
 	
 }
 
@@ -155,11 +137,11 @@ TEST(TMatrix, MatrixSubtractionTest){
 	
 }
 
-TEST(TMatrix, MatrixSubtractionTest_InequalSize_throw){
+TEST(TMatrix, throw_MatrixSubtractionTest_InequalSize){
 	
 }
 
-TEST(TMatrix, MatrixSubtractionTest_InequalStartIndex_throw){
+TEST(TMatrix, throw_MatrixSubtractionTest_InequalStartIndex){
 	
 }
 
@@ -168,10 +150,10 @@ TEST(TMatrix, MatrixDotProductTest){
 	
 }
 
-TEST(TMatrix, MatrixDotProductTest_InequalSize_throw){
+TEST(TMatrix, throw_MatrixDotProductTest_InequalSize){
 	
 }
 
-TEST(TMatrix, MatrixDotProductTest_InequalStartIndex_throw){
+TEST(TMatrix, throw_MatrixDotProductTest_InequalStartIndex){
 	
 }
