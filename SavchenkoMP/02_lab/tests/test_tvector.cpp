@@ -3,13 +3,185 @@
 #include <gtest.h>
 
 /*
+DefaultConstructorTest: 		Проверка конструктора по умолчанию.
+ParameterizedConstructorTest: 	Проверка параметризованного конструктора.
+CopyConstructorTest: 			Проверка конструктора копирования.
+AssignmentOperatorTest: 		Проверка оператора присваивания.
+GetSizeTest: 					Проверка метода GetSize().
+GetStartIndexTest: 				Проверка метода GetStartIndex().
+IndexingTest: 					Проверка оператора индексации operator[].
+ScalarMultiplicationTest: 		Проверка оператора умножения на скаляр.
+ScalarAdditionTest: 			Проверка оператора сложения с скаляром.
+ScalarSubtractionTest: 			Проверка оператора вычитания с скаляром.
+VectorAdditionTest: 			Проверка оператора сложения двух векторов.
+VectorSubtractionTest: 			Проверка оператора вычитания двух векторов.
+VectorDotProductTest: 			Проверка оператора скалярного произведения векторов.
+EqualityTest: 					Проверка оператора сравнения на равенство.
+InequalityTest: 				Проверка оператора сравнения на неравенство.
+*/
 
-TEST(TVecnor, ){
-    
+
+/*
+
+TEST(TVector, ){
+	
 }
 
 */
 
+// DefaultConstructorTests
+TEST(TVector, DefaultConstructorTest){
+	
+}
+
+// ParameterizedConstructorTests
+TEST(TVector, ParameterizedConstructorTest_PositiveLength){
+	
+}
+
+TEST(TVector, ParameterizedConstructorTest_ZeroLength_throw){
+	
+}
+
+TEST(TVector, ParameterizedConstructorTest_NegativeLength_throw){
+	
+}
+
+TEST(TVector, ParameterizedConstructorTest_NegativeStartIndex_throw){
+	
+}
+
+// CopyConstructorTests
+TEST(TVector, CopyConstructorTest){
+	
+}
+
+// AssignmentOperatorTests
+TEST(TVector, AssignmentOperatorTest_Self){
+	
+}
+
+TEST(TVector, AssignmentOperatorTest_EqualSize){
+	
+}
+
+TEST(TVector, AssignmentOperatorTest_DifferentSize){
+	
+}
+
+// GetSizeTests
+TEST(TVector, GetSizeTest){
+	
+}
+
+// GetStartIndexTests
+TEST(TVector, GetStartIndexTest){
+	
+}
+
+// IndexingTests
+TEST(TVector, IndexingTest){
+	
+}
+
+TEST(TVector, IndexingTest_TooLargeIndex_throw){
+	
+}
+
+TEST(TVector, IndexingTest_NegativeIndex_throw){
+	
+}
+
+TEST(TVector, IndexingTest_IndexLessThanStartIndex_throw){
+	
+}
+
+// EqualityTests
+TEST(TVector, EqualityTest_Equal){
+	
+}
+
+TEST(TVector, EqualityTest_InequalSize){
+	
+}
+
+TEST(TVector, EqualityTest_InequalStartIndex){
+	
+}
+
+// InequalityTests
+TEST(TVector, InequalityTest_Equal){
+	
+}
+
+TEST(TVector, InequalityTest_InequalSize){
+	
+}
+
+TEST(TVector, InequalityTest_InequalStartIndex){
+	
+}
+
+// ScalarMultiplicationTests
+TEST(TVector, ScalarMultiplicationTest){
+	
+}
+
+// ScalarAdditionTests
+TEST(TVector, ScalarAdditionTest){
+	
+}
+
+// ScalarSubtractionTests
+TEST(TVector, ScalarSubtractionTest){
+	
+}
+
+// VectorAdditionTests
+TEST(TVector, VectorAdditionTest){
+	
+}
+
+TEST(TVector, VectorAdditionTest_InequalSize_throw){
+	
+}
+
+TEST(TVector, VectorAdditionTest_InequalStartIndex_throw){
+	
+}
+
+// VectorSubtractionTests
+TEST(TVector, VectorSubtractionTest){
+	
+}
+
+TEST(TVector, VectorSubtractionTest_InequalSize_throw){
+	
+}
+
+TEST(TVector, VectorSubtractionTest_InequalStartIndex_throw){
+	
+}
+
+// VectorDotProductTests
+TEST(TVector, VectorDotProductTest){
+	
+}
+
+TEST(TVector, VectorDotProductTest_InequalSize_throw){
+	
+}
+
+TEST(TVector, VectorDotProductTest_InequalStartIndex_throw){
+	
+}
+
+
+
+
+
+/////////////////////////////////////////////////////////////
+/*
 TEST(TVector, can_create_bitfield_with_positive_length) {
     ASSERT_NO_THROW(TVector<int> v(3));
 }
@@ -40,11 +212,11 @@ TEST(TVecnor, can_set_value) {
 
 
 // THROWS
-/*
+
 TEST(TVecnor, throws_when_) {
     ASSERT_ANY_THROW();
 }
-*/
+
 
 TEST(TVecnor, throws_when_create_vector_with_negative_size) {
     ASSERT_ANY_THROW(TVector<int> v(-10));
@@ -68,6 +240,8 @@ TEST(TVecnor, throws_when_index_is_less_than_startIndex) {
     TVector<int> v(10,5);
     ASSERT_ANY_THROW(v[3]);
 }
+*/
+/////////////////////////////////////////////////////////////
 
 /*
 // EXAMPLE
