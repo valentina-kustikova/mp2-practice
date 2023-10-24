@@ -149,7 +149,18 @@ TEST(TMatrix, throw_on_multiply_with_different_sizes)
 	TMatrix<int> mat1(3);
 	ASSERT_ANY_THROW(mat1 * mat);
 }
-
+TEST(TMatrix, throw_on_addition_with_different_sizes)
+{
+	TMatrix<int> mat(2);
+	TMatrix<int> mat1(3);
+	ASSERT_ANY_THROW(mat1 + mat);
+}
+TEST(TMatrix, throw_on_retraction_with_different_sizes)
+{
+	TMatrix<int> mat(2);
+	TMatrix<int> mat1(3);
+	ASSERT_ANY_THROW(mat1 - mat);
+}
 
 
 

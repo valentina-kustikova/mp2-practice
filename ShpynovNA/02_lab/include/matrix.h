@@ -43,4 +43,48 @@ template<typename T> istream& operator>>(istream& in, TMatrix<T>& m)
 	return in;
 }
 
+template  <typename T> TMatrix<T>::TMatrix(int n) :TVector<TVector<T>>(n) {
+	for (i = 0; i < n; i++) {
+		elements[i] = TVector<T>(n - i, i);
+	}
+}
+template  <typename T> TMatrix<T>::TMatrix(const TMatrix<T>& m) : TVector<TVactor<T>>(m.elements) {}
+template  <typename T> TMatrix<T>::TMatrix(const TVector<TVector<T>>& v) : TVector<TVactor<T>>(m.elements) {}
+
+template  <typename T> TMatrix<T> TMatrix<T>::operator+(const TMatrix<T>& m) {
+	if (size != m.size)
+		throw "got different sizes";
+	return TVector<TVector<T>>::operator+(m);
+}
+template  <typename T> TMatrix<T> TMatrix<T>::operator-(const TMatrix<T>& m) {
+	if (size != m.size)
+		throw "got different sizes";
+	return TVector<TVector<T>>::operator-(m);
+}
+template  <typename T> TMatrix<T> TMatrix<T>::operator*(const TMatrix<T>& m) {
+	if (size != m.size)
+		throw "got different sizes";
+	TMatrix<T> res(size);
+	for (int i = 0; i < size; i++)
+		for (int j = i; j < size; j++)
+		{
+			for (int g = i; g <= j; g++)
+				res.elements[i][j - i] = res.elements[i][j - i] + elements[i][g - i] * m.elements[g][j - g];
+		}
+	return res;
+}
+
+template  <typename T> bool TMatrix<T>::operator==(const TMatrix& m) const {
+	if (m.size != size)
+		return false;
+	return TVector<TVector<T>>::operator==(m);
+}
+template  <typename T> bool TMatrix<T>::operator==(const TMatrix& m) const {
+	return (!(*this == m));
+}
+
+template  <typename T> const TMatrix<T>& TMatrix<T>::operator=(const TMatrix<T>& m)
+{
+	return  TVector<TVector<T>>::operator=(m);
+}
 #endif // MATRIX_H_

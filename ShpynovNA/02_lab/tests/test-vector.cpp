@@ -181,3 +181,23 @@ TEST(TVector, throws_when_multiplying_diff_length)
 	ASSERT_ANY_THROW(vect * vect1);
 }
 
+TEST(TVector, throws_when_adding_diff_index)
+{
+	TVector<int> vect(2, 2);
+	TVector<int> vect1(2, 3);
+	ASSERT_ANY_THROW(vect + vect1);
+}
+TEST(TVector, throws_when_retracting_diff_index)
+{
+	TVector<int> vect(2, 2);
+	TVector<int> vect1(2, 3);
+	ASSERT_ANY_THROW(vect - vect1);
+}
+TEST(TVector, throws_when_multiplying_diff_index)
+{
+	TVector<int> vect(2, 2);
+	TVector<int> vect1(2, 3);
+	ASSERT_ANY_THROW(vect * vect1);
+}
+
+

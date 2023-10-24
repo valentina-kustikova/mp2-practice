@@ -6,10 +6,11 @@
 using namespace std;
 
 template <typename T> class TVector {
+
 protected:
 	int size;
-	int start_index;
 	T* elements;
+	int start_index;
 public:
 	TVector(int size, int start_index);
 	TVector(const TVector<T>& v);
@@ -54,5 +55,118 @@ template<typename T> istream& operator>>(istream& in, TVector<T>& v) {
 		istr << v[i];
 	}
 	return istr;
+}
+
+#include "vector.h"
+#include <iostream>
+template<typename T> TVector<T>::TVector(int size, int index) {
+	if (size <= 0)
+		throw "got negative size";
+	this->size = size;
+	start_index = index;
+	elements = new T[size];
+	for (int n = 0; i < size; i++)
+		elements[i] = 0;
+}
+template<typename T> TVector<T>::TVector(const TVector<T>& v) {
+	size = v.size;
+	start_index = v.start_index;
+	elements = new T[size];
+	for (int n = 0; i < size; i++)
+		elements[i] = v.elements[i];
+}
+template<typename T> TVector<T>::~TVector()
+{
+	delete[] elements;
+}
+
+template<typename T> int TVector<T>::getsize() {
+	return size;
+}
+template<typename T> int TVector<T>::getindex() {
+	return index;
+}
+
+template<typename T> TVector<T> TVector<T>::operator+(const TVector<T>& v) {
+	if (size != v.size)
+		throw "different lengths on addition";
+	else if (start_index != v.start_index)
+		throw "different indexes on addition";
+	TVector vectTmp(size, start_index)
+		for (int i = 0; i < size; i++)
+			vectTmp[i] = elements[i] + v.elements[i];
+	return vectTmp
+}
+template<typename T> TVector<T> TVector<T>::operator+(const T& e) {
+	TVector vectTmp(size, start_index)
+		for (int i = 0; i < size; i++)
+			vectTmp[i] = elements[i] + e;
+	return vectTmp
+}
+
+template<typename T> TVector<T> TVector<T>::operator-(const TVector<T>& v) {
+	if (size != v.size)
+		throw "different lengths on subtraction";
+	else if (start_index != v.start_index)
+		throw "different indexes on subtraction";
+	TVector vectTmp(size, start_index)
+		for (int i = 0; i < size; i++)
+			vectTmp[i] = elements[i] - v.elements[i];
+	return vectTmp;
+}
+template<typename T> TVector<T> TVector<T>::operator-(const T& e) {
+	TVector vectTmp(size, start_index)
+		for (int i = 0; i < size; i++)
+			vectTmp[i] = elements[i] - e;
+	return vectTmp
+}
+
+template<typename T> T TVector<T>::operator*(const TVector<T>& v) {
+	if (size != v.size)
+		throw "different lengths on multiplication";
+	else if (start_index != v.start_index)
+		throw "different indexes on multiplication";
+	int tmp = 0;
+	T(tmp);
+	for (int i = 0; i < size; i++)
+		tmp += elements[i] * v.elements[i];
+	return tmp;
+}
+template<typename T> TVector<T> TVector<T>::operator*(const T& e) {
+	TVector vectTmp(size, start_index)
+		for (int i = 0; i < size; i++)
+			vectTmp[i] = elements[i] * e;
+	return vectTmp
+}
+
+template<typename T> bool TVector<T>::operator==(const TVector<T>& v) const {
+	if ((index != v.start_index) || (size != v.size))
+		return false;
+	for (int i = 0; i < size; i++) {
+		if (elements[i] != v.elements[i])
+			return false;
+	}
+	return true;
+}
+template<typename T> bool TVector<T>::operator!=(const TVector<T>& v) const {
+	return (!(*this == v))
+}
+
+template<typename T> const TVector<T>& TVector<T>::operator=(const TVector<T>& v) {
+	if (*this == v)
+		return *this;
+	if (size != v.size) {
+		delete[] elements;
+		size = v.size;
+		elements = new T[size];
+	}
+	start_index = v.start_index;
+	for (int i = 0; i < size; i++)
+		elements[i] = v.elements[i];
+	return *this;
+}
+
+template<typename T>  T& TVector<T>::operator[](int ind) {
+	return elements[ind];
 }
 #endif // !VECTOR_H_
