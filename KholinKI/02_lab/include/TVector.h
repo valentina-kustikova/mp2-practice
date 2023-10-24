@@ -61,7 +61,7 @@ public:
 	}
 };
 
-
+//заменить memcpy
 
 
 template <class Type>
@@ -75,7 +75,9 @@ TVector<Type>::TVector(int size_, int start_index_) {
 	size = size_;
 	start_index = start_index_;
 	vector = new Type[size];
-
+	for (int i = 0; i < size; i++) {
+		vector[i] = {};
+	}
 }
 
 template <class Type>
@@ -121,6 +123,9 @@ TVector<Type>& TVector<Type>::operator=(const TVector<Type>& obj) {
 		delete[] vector;
 		size = obj.size;
 		vector = new Type[size];
+		for (int i = 0; i < size; i++) {
+			vector[i] = {};
+		}
 	}
 	for (int i = 0; i < size; i++) {
 		vector[i] = obj.vector[i];
@@ -179,7 +184,7 @@ TVector<Type> TVector<Type>::operator-(const Type& val) {
 template<class Type>
 TVector<Type> TVector<Type>::operator+(const TVector<Type>& obj) {
 	if (size != obj.size || start_index != obj.start_index) {
-		Type* tmp_vector = new Type[obj.size]; 
+		Type* tmp_vector = new Type[obj.size](); 
 		memcpy(tmp_vector, vector, sizeof(Type)* size);  
 		delete[] vector; 
 		start_index = obj.start_index; 
@@ -196,7 +201,7 @@ TVector<Type> TVector<Type>::operator+(const TVector<Type>& obj) {
 template<class Type>
 TVector<Type> TVector<Type>::operator-(const TVector<Type>& obj) {
 	if (size != obj.size || start_index != obj.start_index) {
-		Type* tmp_vector = new Type[obj.size];
+		Type* tmp_vector = new Type[obj.size]();
 		memcpy(tmp_vector, vector, sizeof(Type) * size);
 		delete[] vector;
 		start_index = obj.start_index;
@@ -213,7 +218,7 @@ TVector<Type> TVector<Type>::operator-(const TVector<Type>& obj) {
 template<class Type>
 Type TVector<Type>::operator*(const TVector<Type>& obj) {
 	if (size != obj.size || start_index != obj.start_index) {
-		Type* tmp_vector = new Type[obj.size];
+		Type* tmp_vector = new Type[obj.size]();
 		memcpy(tmp_vector, vector, sizeof(Type) * size);
 		delete[] vector;
 		start_index = obj.start_index;
