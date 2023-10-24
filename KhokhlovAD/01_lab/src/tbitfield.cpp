@@ -69,7 +69,7 @@ int TBitField::GetBit(const int n) const // получить значение б
 
 // битовые операции
 
-TBitField& TBitField::operator=(const TBitField& bf) // присваивание
+const TBitField& TBitField::operator=(const TBitField& bf) // присваивание
 {
 	delete[] pMem;
 	this->BitLen = bf.BitLen;
@@ -155,13 +155,19 @@ TBitField TBitField::operator~(void) // отрицание
 
 istream& operator>>(istream& istr, TBitField& bf) // ввод
 {
-	for (int i = 0; i < bf.GetLength(); ++i)
-	{
-		int val;
-		istr >> val;
-		if (val > bf.GetLength() || val < 0)
-			throw "Wrong element ";
-		bf.SetBit(val);
+	int tmp;
+	for (int i = 0; i < bf.BitLen; i++) {
+		istr >> tmp;
+		if ((tmp != 0) && (tmp != 1)) {
+			throw "The bit cannot take such a value";
+		}
+
+		if (tmp == 0) {
+			bf.ClrBit(i);
+		}
+		else {
+			bf.SetBit(i);
+		}
 	}
 	return istr;
 }
