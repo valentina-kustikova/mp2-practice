@@ -102,19 +102,19 @@ int TBitField::operator!=(const TBitField& bf) const // сравнение
 
 TBitField TBitField::operator|(const TBitField& bf) // операция "или"
 {
-	int maxm = max(MemLen, bf.MemLen), maxl = max(BitLen, bf.BitLen), i;
+	int maxl = max(BitLen, bf.BitLen), minl = min(BitLen, bf.BitLen), i;
 	TBitField tmp(maxl);
-	for (i = 0; i < maxm; i++) {
-		tmp.pMem[i] = pMem[i] | bf.pMem[i];
+	for (i = 0; i < minl; i++) {
+		if (GetBit(i) | bf.GetBit(i)) tmp.SetBit(i);
 	}
-	/*while (i < BitLen) {
+	while (i < BitLen) {
 		if (GetBit(i)) tmp.SetBit(i);
 		i += 1;
 	}
 	while (i < bf.BitLen) {
 		if (bf.GetBit(i)) tmp.SetBit(i);
 		i += 1;
-	}*/
+	}
 	return tmp;
 }
 
