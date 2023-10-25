@@ -47,7 +47,7 @@ TEST(TMatrix, can_work_with_elements)
 	ASSERT_EQ(2, mat[0][0]);
 }
 
-TEST(TMatrix, can_assign_fron_equal_size)
+TEST(TMatrix, can_assign_from_equal_size)
 {
 	TMatrix<int> mat(2);
 	mat[0][0] = 2;
@@ -55,11 +55,11 @@ TEST(TMatrix, can_assign_fron_equal_size)
 	mat1 = mat;
 	ASSERT_EQ(2, mat1[0][0]);
 }
-TEST(TMatrix, can_assign_fron_diff_size)
+TEST(TMatrix, can_assign_from_diff_size)
 {
 	TMatrix<int> mat(2);
 	TMatrix<int> mat1(3);
-	mat[0][0] = 2;
+	mat1[0][0] = 2;
 	mat = mat1;
 	ASSERT_EQ(2, mat[0][0]);
 }
@@ -74,7 +74,7 @@ TEST(TMatrix, can_compare_with_equal_sizes_eq1)
 	TMatrix<int> mat(2);
 	mat[0][0] = 2;
 	mat[0][1] = 3;
-	mat[1][1] = 4;
+	mat[1][0] = 4;
 	TMatrix<int> mat1(mat);
 	ASSERT_EQ(true, mat == mat1);
 }
@@ -83,9 +83,9 @@ TEST(TMatrix, can_compare_with_equal_sizes_eq_not)
 	TMatrix<int> mat(2);
 	mat[0][0] = 2;
 	mat[0][1] = 3;
-	mat[1][1] = 4;
+	mat[1][0] = 4;
 	TMatrix<int> mat1(mat);
-	mat1[1][1] = 1;
+	mat1[1][0] = 1;
 	ASSERT_EQ(false, mat == mat1);
 }
 TEST(TMatrix, can_compare_with_equal_sizes_noeq)
@@ -93,7 +93,7 @@ TEST(TMatrix, can_compare_with_equal_sizes_noeq)
 	TMatrix<int> mat(2);
 	mat[0][0] = 2;
 	mat[0][1] = 3;
-	mat[1][1] = 4;
+	mat[1][0] = 4;
 	TMatrix<int> mat1(mat);
 	ASSERT_EQ(false, mat != mat1);
 }
@@ -102,9 +102,9 @@ TEST(TMatrix, can_compare_with_equal_sizes_noeq_not)
 	TMatrix<int> mat(2);
 	mat[0][0] = 2;
 	mat[0][1] = 3;
-	mat[1][1] = 4;
+	mat[1][0] = 4;
 	TMatrix<int> mat1(mat);
-	mat1[1][1] = 1;
+	mat1[1][0] = 1;
 	ASSERT_EQ(true, mat != mat1);
 }
 
@@ -113,30 +113,31 @@ TEST(TMatrix, can_add_matrix)
 	TMatrix<int> mat(2);
 	mat[0][0] = 2;
 	mat[0][1] = 3;
-	mat[1][1] = 4;
+	mat[1][0] = 4;
 	TMatrix<int> mat1(mat);
 	mat1 = mat1 + mat;
-	ASSERT_NE(4, mat1[1][1]);
+	ASSERT_NE(4, mat1[1][0]);
 }
-TEST(TMatrix, can_retr_matrix)
+TEST(TMatrix, can_subtr_matrix)
 {
 	TMatrix<int> mat(2);
 	mat[0][0] = 2;
 	mat[0][1] = 3;
-	mat[1][1] = 4;
+	mat[1][0] = 4;
 	TMatrix<int> mat1(mat);
 	mat1 = mat1 - mat;
-	ASSERT_NE(4, mat1[1][1]);
+	ASSERT_NE(4, mat1[1][0]);
 }
 TEST(TMatrix, can_mult_matrix)
 {
 	TMatrix<int> mat(2);
 	mat[0][0] = 2;
 	mat[0][1] = 3;
-	mat[1][1] = 4;
+	mat[1][0] = 4;
 	TMatrix<int> mat1(mat);
-	mat1 = mat1 * mat;
-	ASSERT_EQ(16, mat1[1][1]);
+	TMatrix<int> mat2(2);
+	mat2 = mat1 * mat;
+	ASSERT_EQ(16, mat2[1][0]);
 }
 TEST(TMatrix, throw_on_multiply_with_different_sizes)
 {

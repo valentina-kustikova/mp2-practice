@@ -24,10 +24,12 @@ public:
 
 template<typename T> ostream& operator<<(ostream& out, const TMatrix<T>& m)
 {
+	int tmp = 0;
 	for (int i = 0; i < m.size; i++) {
-		for (int j = 0; j < m.elements[i].getindex(); j++) {
+		for (int j = 0; j < tmp; j++) {
 			out << " 0";
 		}
+		tmp++;
 		out << m.elements[i] << endl;
 	}
 	return out;
@@ -72,8 +74,10 @@ template  <typename T> TMatrix<T> TMatrix<T>::operator*(const TMatrix<T>& m) {
 	for (int i = 0; i < size; i++)
 		for (int j = i; j < size; j++)
 		{
+			T sum = 0;
 			for (int g = i; g <= j; g++)
-				res.elements[i][j - i] = res.elements[i][j - i] + elements[i][g - i] * m.elements[g][j - g];
+				sum += elements[i][g - i] * m.elements[g][j - g];
+			res.elements[i][j - i] = sum;
 		}
 	return res;
 }

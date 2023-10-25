@@ -22,16 +22,6 @@ TEST(TVector, can_use_indexing){
 	TVector<int> vect(5, 3);
 	ASSERT_NO_THROW(vect[0]);
 }
-TEST(TVector, can_get_size)
-{
-	TVector<int> vect(5, 3);
-	EXPECT_EQ(5, vect.getsize());
-}
-TEST(TVector, can_get_index)
-{
-	TVector<int> vect(5, 3);
-	EXPECT_EQ(3, vect.getindex());
-}
 
 TEST(TVector, false_when_compare_with_non_equal_indexes)
 {
@@ -94,10 +84,7 @@ TEST(TVector, can_assign_eq_size) {
 TEST(TVector, can_assign_diff_size) {
 	TVector<int> vect(4, 3);
 	TVector<int> vect1(2, 3);
-	vect[0] = 4;
-	vect[1] = -2;
-	vect[2] = 1;
-	vect[3] = 6;
+	vect[3] = 3;
 	vect1 = vect;
 	ASSERT_EQ(3, vect1[3]);
 }
@@ -158,7 +145,6 @@ TEST(TVector, can_multiply_vector)
 	vect[1] = -2;
 	vect1[0] = 2;
 	vect1[1] = 0;
-	vect = vect - vect1;
 	ASSERT_EQ(8, vect*vect1);
 }
 

@@ -12,13 +12,9 @@ protected:
 	T* elements;
 	int start_index;
 public:
-	TVector();
-	TVector(int s, int index = 0);
+	TVector(int s = 10, int index = 0);
 	TVector(const TVector<T>& v);
 	~TVector();
-
-	int getsize();
-	int getindex();
 
 	TVector operator+(const TVector<T>& v);
 	TVector operator+(const T& e);
@@ -61,33 +57,23 @@ template<typename T> istream& operator>>(istream& in, TVector<T>& v) {
 
 
 
-template<typename T> TVector<T>::TVector(){}
 template<typename T> TVector<T>::TVector(int s, int index) {
 	if (s <= 0)
 		throw "got negative size";
-	else {
-		size = s;
-		start_index = index;
-		elements = new T(size);
-	}
+	size = s;
+	start_index = index;
+	elements = new T[size];
 }
 template<typename T> TVector<T>::TVector(const TVector<T>& v) {
 	size = v.size;
 	start_index = v.start_index;
-	elements = new T(size);
+	elements = new T[size];
 	for (int i = 0; i < size; i++)
 		elements[i] = v.elements[i];
 }
 template<typename T> TVector<T>::~TVector()
 {
 	delete[] elements;
-}
-
-template<typename T> int TVector<T>::getsize() {
-	return size;
-}
-template<typename T> int TVector<T>::getindex() {
-	return start_index;
 }
 
 template<typename T> TVector<T> TVector<T>::operator+(const TVector<T>& v) {
@@ -155,12 +141,12 @@ template<typename T> bool TVector<T>::operator!=(const TVector<T>& v) const {
 }
 
 template<typename T> const TVector<T>& TVector<T>::operator=(const TVector<T>& v) {
-	if (*this == v)
+	if (this == &v)
 		return *this;
 	if (size != v.size) {
 		delete[] elements;
 		size = v.size;
-		elements = new T(size);
+		elements = new T[size];
 	}
 	start_index = v.start_index;
 	for (int i = 0; i < size; i++)
