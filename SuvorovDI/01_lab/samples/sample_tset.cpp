@@ -2,23 +2,31 @@
 #include <iostream>
 
 int main() {
+	int size_U;
+	std::cout << "Enter size of set U for set a:" << std::endl;
+	std::cin >> size_U;
+	TSet a(size_U);
 
-	TSet a(6);
-	TSet b(4);
-	TSet c(4);
+	std::cout << "Enter size of set U for set b:" << std::endl;
+	std::cin >> size_U;
+	TSet b(size_U);
+
+	std::cout << "Enter size of set U for set c:" << std::endl;
+	std::cin >> size_U;
+	TSet c(size_U);
 
 	try {
-		std::cout << "a ( |U| = 6 ): " << a << std::endl;
-		std::cout << "b ( |U| = 4 ): " << b << std::endl;
+		std::cout << "a ( |U| = " << a.GetMaxPower() << " ): " << a << std::endl;
+		std::cout << "b ( |U| = " << b.GetMaxPower() << " ): " << b << std::endl;
 	}
 	catch (std::exception exp) {
 		std::cout << exp.what();
 	}
 
 	try {
-		std::cout << "a ( |U| = 6 ): ";
+		std::cout << "a ( |U| = " << a.GetMaxPower() << " ): ";
 		std::cin >> a;
-		std::cout << "b ( |U| = 4 ): ";
+		std::cout << "b ( |U| = " << b.GetMaxPower() << " ): ";
 		std::cin >> b;
 	}
 	catch (std::exception exp) {
@@ -26,8 +34,8 @@ int main() {
 	}
 
 	try {
-		std::cout << "a ( |U| = 6 ): " << a << std::endl;
-		std::cout << "b ( |U| = 4 ): " << b << std::endl;
+		std::cout << "a ( |U| = " << a.GetMaxPower() << " ): " << a << std::endl;
+		std::cout << "b ( |U| = " << b.GetMaxPower() << " ): " << b << std::endl;
 	}
 	catch (std::exception exp) {
 		std::cout << exp.what();
@@ -45,9 +53,9 @@ int main() {
 	}
 
 	try {
-		std::cout << "c ( |U| = 4 ): ";
+		std::cout << "c ( |U| = " << c.GetMaxPower() << " ): ";
 		std::cin >> c;
-		std::cout << "c ( |U| = 4 ): " << c << std::endl;
+		std::cout << "c ( |U| = " << c.GetMaxPower() << " ): " << c << std::endl;
 		
 		std::cout << "c == a ?  " << (c == a) << std::endl;
 		std::cout << "c != b ?  " << (c != b) << std::endl;

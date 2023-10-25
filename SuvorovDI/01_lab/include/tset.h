@@ -36,7 +36,21 @@ public:
     TSet operator~ (void);           // дополнение
 
     friend std::istream& operator>>(std::istream& istr, TSet& s) {
-        istr >> s.BitField;
+        int Curr_Elem;
+        while (true) {
+            std::cout << "\n";
+            istr >> Curr_Elem;
+            if (Curr_Elem == -1) {
+                break;
+            }
+
+            if (Curr_Elem >= 0 && Curr_Elem < s.MaxPower) {
+                s.InsElem(Curr_Elem);
+            }
+            else {
+                throw std::exception("out of range");
+            }
+        }
 
         return istr;
     }

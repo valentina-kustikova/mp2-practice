@@ -62,7 +62,7 @@ int main() {
 		b = a;
 		std::cout << "Variable b was assigned variable a\n";
 		std::cout << "b == a ? Answer: " << (b == a) << std::endl;
-		std::cout << "a == c ? Answer: " << (c != b) << std::endl;
+		std::cout << "c != b ? Answer: " << (c != b) << std::endl;
 	}
 	catch (std::exception exp) {
 		std::cout << exp.what();
