@@ -19,8 +19,8 @@ public:
     TVector<ValType>(int s = 10, int si = 0);
     TVector<ValType>(const TVector& v);
     virtual ~TVector<ValType>();
-    int GetSize()       { return Size;       } 
-    int GetStartIndex() { return StartIndex; } 
+    int GetSize() const       { return Size;       } 
+    int GetStartIndex() const { return StartIndex; } 
     ValType& operator[](int pos);             
     bool operator==(const TVector<ValType> &v) const;  
     bool operator!=(const TVector<ValType> &v) const;  
@@ -57,17 +57,16 @@ public:
 template <class ValType>
 TVector<ValType>::TVector<ValType>(int s, int si):Size(s), StartIndex(si)
 {
-    if (s <= 0 || s>MAX_VECTOR_SIZE)
+    if (s <= 0 || s > MAX_VECTOR_SIZE)
         throw "Incorrect size";
     if (si < 0)
         throw "You cannot start at negative index!";
-    pVector = new ValType[s]();
+    pVector = new ValType[s];
 }
 
 template <class ValType> 
 TVector<ValType>::TVector<ValType>(const TVector<ValType> &v)
 {
-
     Size = v.Size;
     StartIndex = v.StartIndex;
     pVector = new ValType[Size];
@@ -86,18 +85,16 @@ ValType& TVector<ValType>::operator[](int pos)
     if (pos < 0 || pos>=MAX_VECTOR_SIZE)
         throw "Wrong position";
     if (pos < StartIndex)
-        return x;
+        throw "Wrong position (less than start index)";
 
     if (pos - StartIndex < Size)
         return pVector[pos - StartIndex];
-    else
-        throw "Acces Error";
+    throw "Access Error";
 } 
 
 template <class ValType>
 bool TVector<ValType>::operator==(const TVector &v) const
-{
-   
+{   
     if ((StartIndex != v.StartIndex) || (Size != v.Size)) return false;
 
     for (int i = 0; i < Size; ++i)
@@ -121,7 +118,7 @@ bool TVector<ValType>::operator!=(const TVector<ValType>&v) const
 template <class ValType>
 const TVector<ValType>& TVector<ValType>::operator=(const TVector<ValType>&v)
 {
-    if (*this == v)
+    if (this == &v)
         return *this;
 
     if (Size != v.Size)
@@ -144,28 +141,20 @@ const TVector<ValType>& TVector<ValType>::operator=(const TVector<ValType>&v)
 template <class ValType> 
 TVector<ValType> TVector<ValType>::operator+(const ValType &val)
 {
-    if (val == ValType())
-    {
-        return *this;
-    }
-    TVector<ValType> A(Size+StartIndex);
+    TVector<ValType> A(Size, StartIndex);
     for (int i = 0; i < A.Size; ++i)
     {
-        A[i] = (*this)[i] + val;
+        A[i] = pVector[i] + val;
     }
     return A;
 }
 template <class ValType> 
 TVector<ValType> TVector<ValType>::operator-(const ValType &val)
 {
-    if (val == ValType())
-    {
-        return *this;
-    }
-    TVector<ValType> A(Size + StartIndex);
+    TVector<ValType> A(Size, StartIndex);
     for (int i = 0; i < A.Size; ++i)
     {
-        A[i] = (*this)[i] - val;
+        A[i] = pVector[i] - val;
     }
     return A;
 } 
@@ -177,7 +166,7 @@ TVector<ValType> TVector<ValType>::operator*(const ValType &val)
     TVector<ValType> A(Size , StartIndex);
     for (int i = 0; i < A.Size; ++i)
     {
-        A[i] = (*this)[i] * val;
+        A[i] = pVector[i] * val;
     }
     return A;
 }
@@ -187,13 +176,12 @@ template <class ValType>
 TVector<ValType> TVector<ValType>::operator+(const TVector<ValType> &v)
 {
     if ((Size != v.Size) || (StartIndex != v.StartIndex))
-        throw "Size and startIndex should be equal";
+        throw "Size and StartIndex should be equal";
 
     TVector<ValType> B(Size, StartIndex), tmp(v);
-    for (int i = StartIndex; i < Size+StartIndex; ++i)
+    for (int i = 0; i < Size; ++i)
     {
-
-        B[i] = (*this)[i] + tmp[i];
+        B[i] = pVector[i] + tmp[i];
     }
     return B;
 }
@@ -202,13 +190,13 @@ template <class ValType>
 TVector<ValType> TVector<ValType>::operator-(const TVector<ValType>& v)
 {
     if ((Size != v.Size) || (StartIndex != v.StartIndex))
-        throw "Size and startIndex should be equal";
+        throw "Size and StartIndex should be equal";
 
     TVector<ValType> B(Size, StartIndex), tmp(v);
-    for (int i = StartIndex; i < Size + StartIndex; ++i)
+    for (int i = 0; i < Size; ++i)
     {
 
-        B[i] = (*this)[i] - tmp[i];
+        B[i] = pVector[i] - tmp[i];
     }
     return B;
 }
@@ -220,13 +208,14 @@ ValType TVector<ValType>::operator*(const TVector<ValType> &v)
         throw "dimentions of vectors should be equal for dot product";
 
     ValType ans=ValType();
-    TVector <ValType> tmp(v);
-    for (int i = std::max(v.StartIndex, StartIndex); i < std::min(v.Size, Size); ++i)
+    TVector<ValType> tmp(v);
+    for (int i = 0; i < Size; ++i)
     {
-        ans = ans + (*this)[i] * tmp[i];
+        ans = ans + pVector[i] * tmp[i];
     }
     return ans;
 }
 
 
 #endif
+

@@ -31,16 +31,16 @@ TEST(TVector, can_create_copied_vector)
 
 TEST(TVector, copied_vector_is_equal_to_source_one)
 {
-	TVector<int> t1(5);
-	t1[1] = 3; t1[2] = 3;
+	TVector<int> t1(3);
+	t1[0] = 3;  t1[1] = 3; t1[2] = 3;
 	TVector<int> t2(t1);
 	EXPECT_EQ(t1, t2);
 }
 
 TEST(TVector, copied_vector_has_its_own_memory)
 {
-	TVector<int> t1(5);
-	t1[1] = 3; t1[2] = 3;
+	TVector<int> t1(3);
+	t1[0] = 3;  t1[1] = 3; t1[2] = 3;
 	TVector<int> t2(t1);
 	t1[0] = 2;
 	EXPECT_NE(t1, t2);
@@ -70,7 +70,7 @@ TEST(TVector, can_set_and_get_element)
 
 TEST(TVector, throws_when_set_element_with_negative_index)
 {
-	TVector<int> t1(3);
+  TVector<int> t1(3);
   ASSERT_ANY_THROW(t1[-1]);
 }
 
@@ -91,17 +91,18 @@ TEST(TVector, can_assign_vectors_of_equal_size)
 	TVector<int> t1(3),t2(3);
 	t1[0] = 2;
 	t1[1] = 3;
+	t1[2] = 3;
 	t2 = t1;
 	EXPECT_EQ(t1, t2);
 }
 
-TEST(TVector, assign_operator_change_vector_size)
+TEST(TVector, assign_operator_diff_vector_size)
 {
 	TVector<int> t1(3), t2(2);
 	t1[0] = 2;
 	t1[1] = 3;
 	t2 = t1;
-	EXPECT_EQ(3, t2.GetSize());
+	EXPECT_EQ(t1, t2);
 }
 
 TEST(TVector, can_assign_vectors_of_different_size)
@@ -114,7 +115,7 @@ TEST(TVector, can_assign_vectors_of_different_size)
 
 TEST(TVector, compare_equal_vectors_return_true)
 {
-	TVector<int> t1(3), t2(3);
+	TVector<int> t1(2), t2(2);
 	t1[0] = 2;
 	t1[1] = 3;
 	t2[0] = 2;
@@ -124,7 +125,7 @@ TEST(TVector, compare_equal_vectors_return_true)
 
 TEST(TVector, compare_vector_with_itself_return_true)
 {
-	TVector<int> t1(3);
+	TVector<int> t1(2);
 	t1[0] = 2;
 	t1[1] = 3;
 	EXPECT_EQ(t1, t1);
@@ -145,9 +146,10 @@ TEST(TVector, can_add_scalar_to_vector)
 	TVector<int> t1(3), t2(3);
 	t1[0] = 1;
 	t1[1] = 2;
+	t1[2] = 2;
 	t2[0] = 2;
 	t2[1] = 3;
-	t2[2] = 1;
+	t2[2] = 3;
 	t1 = t1 + 1;
 	EXPECT_EQ(t1, t2);
 }

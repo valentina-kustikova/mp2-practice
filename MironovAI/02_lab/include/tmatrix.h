@@ -10,8 +10,8 @@ template <class ValType>
 class TMatrix : public TVector<TVector<ValType>>
 {
 public:
-  TMatrix<ValType>(int s = 10);                           
-  TMatrix<ValType>(const TMatrix<ValType> &mt);                    
+  TMatrix<ValType>(int s = 10);
+  TMatrix<ValType>(const TMatrix<ValType> &mt);
   TMatrix<ValType>(const TVector<TVector<ValType> > &mt);
   bool operator==(const TMatrix<ValType>&mt) const;
   bool operator!=(const TMatrix<ValType>&mt) const;
@@ -45,14 +45,9 @@ public:
 template <class ValType>
 TMatrix<ValType>::TMatrix<ValType>(int s): TVector<TVector<ValType>>(s)
 {
-    if(s > MAX_MATRIX_SIZE)
-        throw "Too Large Matrix";
-    if (s <= 0)
-        throw "Too Small Matrix";
     for (int i = 0; i < Size; ++i)
     {
-        TVector<ValType> x(Size - i, i);
-        pVector[i] = x;
+        pVector[i] = TVector<ValType>(Size - i, i);
     }
 } 
 
@@ -65,14 +60,7 @@ TMatrix<ValType>::TMatrix<ValType>(const TMatrix<ValType> &mt):TVector<TVector<V
 template <class ValType> 
 TMatrix<ValType>::TMatrix<ValType>(const TVector<TVector<ValType>> &mt):TVector<TVector<ValType>>(mt) 
 {
-    if (Size > MAX_MATRIX_SIZE)
-    {
-        throw "Allocation Error";
-    }
-    if (Size < 0)
-    {
-        throw "Size should be positive";
-    }
+
 }
 
 
@@ -91,14 +79,12 @@ bool TMatrix<ValType>::operator!=(const TMatrix<ValType> &mt) const
 template <class ValType> 
 const TMatrix<ValType>& TMatrix<ValType>::operator=(const TMatrix<ValType> &mt)
 {
-
     return TVector<TVector<ValType>>::operator=(mt);
 } 
 
 template <class ValType> 
 TMatrix<ValType> TMatrix<ValType>::operator+(const TMatrix<ValType> &mt)
-{
-    
+{    
     return TVector<TVector<ValType>>::operator+(mt);
 } 
 
