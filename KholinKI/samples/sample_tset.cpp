@@ -86,7 +86,7 @@ int main()
 	cout << "B= " << B << endl;
 	cout << endl;
 
-	cout << "Объединение множества A с множеством B" << endl;
+	cout << "Объединение множества A с множеством B" << endl;  
 	res1 = A + B;
 	cout << "res1= " << res1 << endl;
 	cout << endl;
