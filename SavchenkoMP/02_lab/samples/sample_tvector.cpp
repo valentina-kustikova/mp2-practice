@@ -3,6 +3,8 @@
 
 using namespace std;
 
+
+
 int main() {
 	cout << "TVector\n" << endl;
 
@@ -21,13 +23,6 @@ int main() {
 		cout << endl;
 		cout << "v1 = " << v1 << endl;
 		cout << "v2 = " << v2 << '\n' << endl;
-
-		/*// copy and operator= test
-		TVector<int> v3(v1);
-		cout << v3 << endl;
-		v3 = v2;
-		cout << v3 << endl;
-		*/
 
 		cout << "v1 * scalar = " << v1 * scalar << endl;
 		cout << "v1 + scalar = " << v1 * scalar << endl;

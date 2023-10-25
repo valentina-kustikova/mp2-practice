@@ -29,54 +29,180 @@ TEST(TVector, ){
 
 */
 
+
+
 // DefaultConstructorTests
 TEST(TVector, DefaultConstructorTest){
-	
+	ASSERT_NO_THROW(TVector<int> v);
 }
 
 // ParameterizedConstructorTests
 TEST(TVector, ParameterizedConstructorTest_PositiveLength){
-	
+	ASSERT_NO_THROW(TVector<int> v(3));
 }
 
 TEST(TVector, throw_ParameterizedConstructorTest_ZeroLength){
-	
+	ASSERT_ANY_THROW(TVector<int> v(0));
 }
 
 TEST(TVector, throw_ParameterizedConstructorTest_NegativeLength){
-	
+	ASSERT_ANY_THROW(TVector<int> v(-3));
 }
 
 TEST(TVector, throw_ParameterizedConstructorTest_NegativeStartIndex){
-	
+	ASSERT_ANY_THROW(TVector<int> v(3, -1));
 }
 
 // CopyConstructorTests
 TEST(TVector, CopyConstructorTest){
+	TVector<int> v(3);
+
+	ASSERT_NO_THROW(TVector<int> test(v));
+}
+
+// EqualityTests
+TEST(TVector, EqualityTest_Equal) {
+	int size = 3;
+	TVector<int> v1(size);
+	TVector<int> v2(size);
+	for (int i = 0; i < size; i++) {
+		v1[i] = i;
+		v2[i] = i;
+	}
+
+	EXPECT_EQ(1, v1 == v2);
+
+
+	TVector<int> v3(size, 2);
+	TVector<int> v4(size, 2);
+	for (int i = v3.GetStartIndex(); i < size; i++) {
+		v3[i] = i;
+		v4[i] = i;
+	}
+
+	EXPECT_EQ(1, v3 == v4);
+}
+
+TEST(TVector, EqualityTest_InequalSize) {
+	int size1 = 3;
+	int size2 = 4;
 	
+	TVector<int> v1(size1);
+	TVector<int> v2(size2);
+
+	EXPECT_EQ(0, v1 == v2);
+}
+
+TEST(TVector, EqualityTest_InequalStartIndex) {
+	int size = 3;
+	int sind1 = 1, sind2 = 2;
+
+	TVector<int> v1(size, sind1);
+	TVector<int> v2(size, sind2);
+
+	EXPECT_EQ(0, v1 == v2);
+}
+
+// InequalityTests
+TEST(TVector, InequalityTest_Equal) {
+	int size = 3;
+	TVector<int> v1(size);
+	TVector<int> v2(size);
+	for (int i = 0; i < size; i++) {
+		v1[i] = i;
+		v2[i] = i;
+	}
+	
+	EXPECT_EQ(0, v1 != v2);
+
+
+	TVector<int> v3(size, 2);
+	TVector<int> v4(size, 2);
+	for (int i = v3.GetStartIndex(); i < size; i++) {
+		v3[i] = i;
+		v4[i] = i;
+	}
+
+	EXPECT_EQ(0, v3 != v4);
+}
+
+TEST(TVector, InequalityTest_InequalSize) {
+	int size1 = 3;
+	int size2 = 4;
+
+	TVector<int> v1(size1);
+	TVector<int> v2(size2);
+
+	EXPECT_EQ(1, v1 != v2);
+}
+
+TEST(TVector, InequalityTest_InequalStartIndex) {
+	int size = 3;
+	int sind1 = 1, sind2 = 2;
+
+	TVector<int> v1(size, sind1);
+	TVector<int> v2(size, sind2);
+
+	EXPECT_EQ(1, v1 != v2);
 }
 
 // AssignmentOperatorTests
-TEST(TVector, AssignmentOperatorTest_Self){
-	
+TEST(TVector, AssignmentOperatorTest_Self) {
+	int size = 3;
+
+	TVector<int> v1(size), expv(size);
+
+	for (int i = 0; i < size; i++) {
+		expv[i] = i;
+		v1[i] = i;
+	}
+
+	v1 = v1;
+
+	EXPECT_EQ(expv, v1);
 }
 
 TEST(TVector, AssignmentOperatorTest_EqualSize){
-	
+	int size = 3;
+
+	TVector<int> v1(size), expv(size);
+
+	for (int i = 0; i < size; i++) {
+		expv[i] = i;
+	}
+
+	v1 = expv;
+
+	EXPECT_EQ(expv, v1);
 }
 
 TEST(TVector, AssignmentOperatorTest_DifferentSize){
-	
+	int size = 3;
+	int expsize = 5;
+
+	TVector<int> v1(size), expv(expsize);
+
+	for (int i = 0; i < expsize; i++) {
+		expv[i] = i;
+	}
+
+	v1 = expv;
+
+	EXPECT_EQ(expv, v1);
 }
 
 // GetSizeTests
 TEST(TVector, GetSizeTest){
-	
+	TVector<int> v(3);
+
+	EXPECT_EQ(3, v.GetSize());
 }
 
 // GetStartIndexTests
 TEST(TVector, GetStartIndexTest){
-	
+	TVector<int> v(2, 2);
+
+	EXPECT_EQ(2, v.GetStartIndex());
 }
 
 // IndexingTests
@@ -85,46 +211,57 @@ TEST(TVector, IndexingTest){
 }
 
 TEST(TVector, throw_IndexingTest_TooLargeIndex){
-	
+	TVector<int> v1(3);
+	ASSERT_ANY_THROW(v1[5]);
+
+	TVector<int> v2(3, 1);
+	ASSERT_ANY_THROW(v2[5]);
 }
 
 TEST(TVector, throw_IndexingTest_NegativeIndex){
-	
+	TVector<int> v(3);
+
+	ASSERT_ANY_THROW(v[-1]);
 }
 
 TEST(TVector, throw_IndexingTest_IndexLessThanStartIndex){
-	
+	TVector<int> v(3, 2);
+	ASSERT_ANY_THROW(v[0]);
 }
 
-// EqualityTests
-TEST(TVector, EqualityTest_Equal){
-	
-}
-
-TEST(TVector, EqualityTest_InequalSize){
-	
-}
-
-TEST(TVector, EqualityTest_InequalStartIndex){
-	
-}
-
-// InequalityTests
-TEST(TVector, InequalityTest_Equal){
-	
-}
-
-TEST(TVector, InequalityTest_InequalSize){
-	
-}
-
-TEST(TVector, InequalityTest_InequalStartIndex){
-	
-}
 
 // ScalarMultiplicationTests
 TEST(TVector, ScalarMultiplicationTest){
+	int size = 4;
+	int sind = 2;
 	
+	// 1 2 3 4
+	TVector<int> v1(size);
+	// 2 4 6 8
+	TVector<int> expv1(size);
+
+	for (int i = 0; i < size; i++) {
+		v1[i] = i + 1;
+		expv1[i] = (i + 1) * 2;
+	}
+
+	v1 = v1 * 2;
+
+	EXPECT_EQ(expv1, v1);
+
+	// 0 0 1 2 3 4
+	TVector<int> v2(size, sind);
+	// 0 0 2 4 6 8
+	TVector<int> expv2(size, sind);
+
+	for (int i = 0; i < size; i++) {
+		v2[i] = i + 1;
+		expv2[i] = (i + 1) * 2;
+	}
+
+	v2 = v2 * 2;
+
+	EXPECT_EQ(expv2, v2);
 }
 
 // ScalarAdditionTests
