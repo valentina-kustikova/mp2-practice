@@ -110,7 +110,7 @@ int main()
 	cout << "Множества A,B,C" << endl;
 	cout << "A= " << A << endl;
 	cout << "B= " << B << endl;
-	cout << "C= " << res3 << endl;
+	cout << "C= " << C << endl;
 
     return 0;
 }

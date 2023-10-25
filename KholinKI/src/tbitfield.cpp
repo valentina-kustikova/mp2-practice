@@ -126,7 +126,7 @@ TBitField TBitField::operator|(const TBitField &bf) // операция "или"
     
         if (BitLen != bf.BitLen) {
             TELEM* p = new TELEM[bf.MemLen];
-            memset(p, 0, bf.MemLen * sizeof(TELEM));//заполнить MemLen кусков нулями
+            memset(p, 0, bf.MemLen * sizeof(TELEM));
             memcpy(p, pMem, MemLen * sizeof(TELEM));
             delete[] pMem;
             BitLen = bf.BitLen;
@@ -145,7 +145,7 @@ TBitField TBitField::operator&(const TBitField &bf) // операция "и"
 {
     if (BitLen != bf.BitLen) {
         TELEM* p = new TELEM[bf.MemLen];
-        memset(p, 0, bf.MemLen * sizeof(TELEM));//заполнить MemLen кусков нулями
+        memset(p, 0, bf.MemLen * sizeof(TELEM));
         memcpy(p, pMem, bf.MemLen * sizeof(TELEM));
         delete[] pMem;
         BitLen = bf.BitLen;
