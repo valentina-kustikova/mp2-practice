@@ -114,9 +114,7 @@ TSet TSet::operator~(void) // дополнение
 // перегрузка ввода/вывода
 istream& operator>>(istream& in, TSet& s) // ввод
 {
-    int n, value;
-    cout << "Count of entered values: ";
-    in >> n;
+    int n = -1, value;
     do {
         cout << "Count of entered values: ";
         in >> n;
