@@ -20,17 +20,6 @@ EqualityTest: 					Проверка оператора сравнения на �
 InequalityTest: 				Проверка оператора сравнения на неравенство.
 */
 
-
-/*
-
-TEST(TVector, ){
-	
-}
-
-*/
-
-
-
 // DefaultConstructorTests
 TEST(TVector, DefaultConstructorTest){
 	ASSERT_NO_THROW(TVector<int> v);
@@ -58,6 +47,46 @@ TEST(TVector, CopyConstructorTest){
 	TVector<int> v(3);
 
 	ASSERT_NO_THROW(TVector<int> test(v));
+}
+
+// GetSizeTests
+TEST(TVector, GetSizeTest){
+	TVector<int> v(3);
+
+	EXPECT_EQ(3, v.GetSize());
+}
+
+// GetStartIndexTests
+TEST(TVector, GetStartIndexTest){
+	TVector<int> v(2, 2);
+
+	EXPECT_EQ(2, v.GetStartIndex());
+}
+
+// IndexingTests
+TEST(TVector, IndexingTest){
+	TVector<int> v(3);
+	v[2] = 2;
+	EXPECT_EQ(2, v[2]);
+}
+
+TEST(TVector, throw_IndexingTest_TooLargeIndex){
+	TVector<int> v1(3);
+	ASSERT_ANY_THROW(v1[5]);
+
+	TVector<int> v2(3, 1);
+	ASSERT_ANY_THROW(v2[5]);
+}
+
+TEST(TVector, throw_IndexingTest_NegativeIndex){
+	TVector<int> v(3);
+
+	ASSERT_ANY_THROW(v[-1]);
+}
+
+TEST(TVector, throw_IndexingTest_IndexLessThanStartIndex){
+	TVector<int> v(3, 2);
+	ASSERT_ANY_THROW(v[0]);
 }
 
 // EqualityTests
@@ -191,457 +220,237 @@ TEST(TVector, AssignmentOperatorTest_DifferentSize){
 	EXPECT_EQ(expv, v1);
 }
 
-// GetSizeTests
-TEST(TVector, GetSizeTest){
-	TVector<int> v(3);
-
-	EXPECT_EQ(3, v.GetSize());
-}
-
-// GetStartIndexTests
-TEST(TVector, GetStartIndexTest){
-	TVector<int> v(2, 2);
-
-	EXPECT_EQ(2, v.GetStartIndex());
-}
-
-// IndexingTests
-TEST(TVector, IndexingTest){
-	
-}
-
-TEST(TVector, throw_IndexingTest_TooLargeIndex){
-	TVector<int> v1(3);
-	ASSERT_ANY_THROW(v1[5]);
-
-	TVector<int> v2(3, 1);
-	ASSERT_ANY_THROW(v2[5]);
-}
-
-TEST(TVector, throw_IndexingTest_NegativeIndex){
-	TVector<int> v(3);
-
-	ASSERT_ANY_THROW(v[-1]);
-}
-
-TEST(TVector, throw_IndexingTest_IndexLessThanStartIndex){
-	TVector<int> v(3, 2);
-	ASSERT_ANY_THROW(v[0]);
-}
-
-
 // ScalarMultiplicationTests
 TEST(TVector, ScalarMultiplicationTest){
 	int size = 4;
-	int sind = 2;
+	int scalar = 2;
 	
 	// 1 2 3 4
-	TVector<int> v1(size);
+	TVector<int> v(size);
 	// 2 4 6 8
-	TVector<int> expv1(size);
+	TVector<int> expv(size);
 
 	for (int i = 0; i < size; i++) {
-		v1[i] = i + 1;
-		expv1[i] = (i + 1) * 2;
+		v[i] = i + 1;
+		expv[i] = (i + 1) * scalar;
 	}
 
-	v1 = v1 * 2;
+	v = v * scalar;
 
-	EXPECT_EQ(expv1, v1);
+	EXPECT_EQ(expv, v);
+}
+
+TEST(TVector, ScalarMultiplicationTest_WithStartIndex) {
+	int size = 4;
+	int sind = 2;
+	int scalar = 2;
 
 	// 0 0 1 2 3 4
-	TVector<int> v2(size, sind);
+	TVector<int> v(size, sind);
 	// 0 0 2 4 6 8
-	TVector<int> expv2(size, sind);
+	TVector<int> expv(size, sind);
 
-	for (int i = 0; i < size; i++) {
-		v2[i] = i + 1;
-		expv2[i] = (i + 1) * 2;
+	for (int i = sind; i < size + sind; i++) {
+		v[i] = i + 1;
+		expv[i] = (i + 1) * scalar;
 	}
 
-	v2 = v2 * 2;
+	v = v * scalar;
 
-	EXPECT_EQ(expv2, v2);
+	EXPECT_EQ(expv, v);
 }
 
 // ScalarAdditionTests
 TEST(TVector, ScalarAdditionTest){
-	
+	int size = 4;
+	int scalar = 2;
+
+	// 1 2 3 4
+	TVector<int> v(size);
+	// 3 4 5 6
+	TVector<int> expv(size);
+
+	for (int i = 0; i < size; i++) {
+		v[i] = i + 1;
+		expv[i] = (i + 1) + scalar;
+	}
+
+	v = v + scalar;
+
+	EXPECT_EQ(expv, v);
+}
+
+TEST(TVector, ScalarAdditionTest_WithStartIndex) {
+	int size = 4;
+	int sind = 2;
+	int scalar = 2;
+
+	// 0 0 1 2 3 4
+	TVector<int> v(size, sind);
+	// 0 0 3 4 5 6
+	TVector<int> expv(size, sind);
+
+	for (int i = sind; i < size + sind; i++) {
+		v[i] = i + 1;
+		expv[i] = (i + 1) + scalar;
+	}
+
+	v = v + scalar;
+
+	EXPECT_EQ(expv, v);
 }
 
 // ScalarSubtractionTests
 TEST(TVector, ScalarSubtractionTest){
-	
+	int size = 4;
+	int scalar = 2;
+
+	// 1 2 3 4
+	TVector<int> v(size);
+	// -1 0 1 2
+	TVector<int> expv(size);
+
+	for (int i = 0; i < size; i++) {
+		v[i] = i + 1;
+		expv[i] = (i + 1) - scalar;
+	}
+
+	v = v - scalar;
+
+	EXPECT_EQ(expv, v);
+}
+
+TEST(TVector, ScalarSubtractionTest_WithStartIndex) {
+	int size = 4;
+	int sind = 2;
+	int scalar = 2;
+
+	// 0 0 1 2 3 4
+	TVector<int> v(size, sind);
+	// 0 0 -1 0 1 2
+	TVector<int> expv(size, sind);
+
+	for (int i = sind; i < size + sind; i++) {
+		v[i] = i + 1;
+		expv[i] = (i + 1) - scalar;
+	}
+
+	v = v - scalar;
+
+	EXPECT_EQ(expv, v);
 }
 
 // VectorAdditionTests
 TEST(TVector, VectorAdditionTest){
+	int size = 4;
 	
+	// 1 2 3 4
+	TVector<int> v1(size);
+	// 5 5 5 5
+	TVector<int> v2(size);
+	// 6 7 8 9
+	TVector<int> expv(size);
+
+	for (int i = 0; i < size; i++) {
+		v1[i] = i + 1;
+		v2[i] = 5;
+		expv[i] = i + 1 + 5;
+	}
+
+	EXPECT_EQ(expv, v1 + v2);
 }
 
 TEST(TVector, throw_VectorAdditionTest_InequalSize){
-	
+	int size1 = 4;
+	int size2 = 5;
+
+	TVector<int> v1(size1);
+	TVector<int> v2(size2);
+
+	ASSERT_ANY_THROW(v1 + v2);
 }
 
 TEST(TVector, throw_VectorAdditionTest_InequalStartIndex){
-	
+	int size = 4;
+
+	TVector<int> v1(size);
+	TVector<int> v2(size, 1);
+
+	ASSERT_ANY_THROW(v1 + v2);
 }
 
 // VectorSubtractionTests
 TEST(TVector, VectorSubtractionTest){
-	
+	int size = 4;
+
+	// 1 2 3 4
+	TVector<int> v1(size);
+	// 5 5 5 5
+	TVector<int> v2(size);
+	// -4 -3 -2 -1
+	TVector<int> expv(size);
+
+	for (int i = 0; i < size; i++) {
+		v1[i] = i + 1;
+		v2[i] = 5;
+		expv[i] = i + 1 - 5;
+	}
+
+	EXPECT_EQ(expv, v1 - v2);
 }
 
 TEST(TVector, throw_VectorSubtractionTest_InequalSize){
-	
+	int size1 = 4;
+	int size2 = 5;
+
+	TVector<int> v1(size1);
+	TVector<int> v2(size2);
+
+	ASSERT_ANY_THROW(v1 - v2);
 }
 
 TEST(TVector, throw_VectorSubtractionTest_InequalStartIndex){
-	
+	int size = 4;
+
+	TVector<int> v1(size);
+	TVector<int> v2(size, 1);
+
+	ASSERT_ANY_THROW(v1 - v2);
 }
 
 // VectorDotProductTests
 TEST(TVector, VectorDotProductTest){
+	int size = 4;
 	
+	// 1 2 3 4
+	TVector<int> v1(size);
+	// 5 5 5 5
+	TVector<int> v2(size);
+	
+	int expValue = 50;
+
+	for (int i = 0; i < size; i++) {
+		v1[i] = i + 1;
+		v2[i] = 5;
+	}
+	EXPECT_EQ(expValue, v1 * v2);
 }
 
 TEST(TVector, throw_VectorDotProductTest_InequalSize){
-	
+	int size1 = 4;
+	int size2 = 5;
+
+	TVector<int> v1(size1);
+	TVector<int> v2(size2);
+
+	ASSERT_ANY_THROW(v1 * v2);
 }
 
 TEST(TVector, throw_VectorDotProductTest_InequalStartIndex){
-	
+	int size = 4;
+
+	TVector<int> v1(size);
+	TVector<int> v2(size, 1);
+
+	ASSERT_ANY_THROW(v1 * v2);
 }
-
-
-
-
-
-/////////////////////////////////////////////////////////////
-/*
-TEST(TVector, can_create_bitfield_with_positive_length) {
-    ASSERT_NO_THROW(TVector<int> v(3));
-}
-
-TEST(TVecnor, can_get_size) {
-    TVector<int> v(3);
-
-    EXPECT_EQ(3, v.GetSize());
-}
-
-TEST(TVecnor, can_get_startIndex) {
-    TVector<int> v(3, 1);
-
-    EXPECT_EQ(1, v.GetStartIndex());
-}
-
-TEST(TVecnor, can_set_value) {
-    TVector<int> v(5);
-
-    v[3] = 3;
-
-    EXPECT_EQ(3, v[3]);
-	
-	v[3] += 1;
-	
-	EXPECT_EQ(4, v[3]);
-}
-
-
-// THROWS
-
-TEST(TVecnor, throws_when_) {
-    ASSERT_ANY_THROW();
-}
-
-
-TEST(TVecnor, throws_when_create_vector_with_negative_size) {
-    ASSERT_ANY_THROW(TVector<int> v(-10));
-}
-
-TEST(TVecnor, throws_when_create_vector_with_negative_startIndex) {
-    ASSERT_ANY_THROW(TVector<int> v(10, -5));
-}
-
-TEST(TVecnor, throws_when_index_is_negative) {
-    TVector<int> v(10);
-    ASSERT_ANY_THROW(v[-5]);
-}
-
-TEST(TVecnor, throws_when_index_is_too_large) {
-    TVector<int> v(10);
-    ASSERT_ANY_THROW(v[15]);
-}
-
-TEST(TVecnor, throws_when_index_is_less_than_startIndex) {
-    TVector<int> v(10,5);
-    ASSERT_ANY_THROW(v[3]);
-}
-*/
-/////////////////////////////////////////////////////////////
-
-/*
-// EXAMPLE
-
-
-TEST(TBitField, new_bitfield_is_set_to_zero)
-{
-  TBitField bf(100);
-
-  int sum = 0;
-  for (int i = 0; i < bf.GetLength(); i++)
-  {
-    sum += bf.GetBit(i);
-  }
-
-  EXPECT_EQ(0, sum);
-}
-
-TEST(TBitField, can_set_bit)
-{
-  TBitField bf(10);
-
-  EXPECT_EQ(0, bf.GetBit(3));
-
-  bf.SetBit(3);
-  EXPECT_NE(0, bf.GetBit(3));
-}
-
-TEST(TBitField, can_clear_bit)
-{
-  TBitField bf(10);
-
-  int bitIdx = 3;
-
-  bf.SetBit(bitIdx);
-  EXPECT_NE(0, bf.GetBit(bitIdx));
-
-  bf.ClrBit(bitIdx);
-  EXPECT_EQ(0, bf.GetBit(bitIdx));
-}
-
-
-
-
-TEST(TBitField, throws_when_get_bit_with_negative_index)
-{
-  TBitField bf(10);
-
-  ASSERT_ANY_THROW(bf.GetBit(-3));
-}
-
-TEST(TBitField, throws_when_get_bit_with_too_large_index)
-{
-  TBitField bf(10);
-
-  ASSERT_ANY_THROW(bf.GetBit(11));
-}
-
-TEST(TBitField, throws_when_clear_bit_with_negative_index)
-{
-  TBitField bf(10);
-
-  ASSERT_ANY_THROW(bf.ClrBit(-3));
-}
-
-TEST(TBitField, throws_when_clear_bit_with_too_large_index)
-{
-  TBitField bf(10);
-
-  ASSERT_ANY_THROW(bf.ClrBit(11));
-}
-
-TEST(TBitField, can_assign_bitfields_of_equal_size)
-{
-  const int size = 2;
-  TBitField bf1(size), bf2(size);
-  for (int i = 0; i < size; i++)
-  {
-    bf1.SetBit(i);
-  }
-  bf2 = bf1;
-
-  EXPECT_NE(0, bf2.GetBit(0));
-  EXPECT_NE(0, bf2.GetBit(1));
-}
-
-TEST(TBitField, assign_operator_changes_bitfield_size)
-{
-  const int size1 = 2, size2 = 5;
-  TBitField bf1(size1), bf2(size2);
-  for (int i = 0; i < size1; i++)
-  {
-    bf1.SetBit(i);
-  }
-  bf2 = bf1;
-
-  EXPECT_EQ(2, bf2.GetLength());
-}
-
-TEST(TBitField, can_assign_bitfields_of_non_equal_size)
-{
-  const int size1 = 2, size2 = 5;
-  TBitField bf1(size1), bf2(size2);
-  for (int i = 0; i < size1; i++)
-  {
-    bf1.SetBit(i);
-  }
-  bf2 = bf1;
-
-  EXPECT_NE(0, bf2.GetBit(0));
-  EXPECT_NE(0, bf2.GetBit(1));
-}
-
-TEST(TBitField, compare_equal_bitfields_of_equal_size)
-{
-  const int size = 2;
-  TBitField bf1(size), bf2(size);
-  for (int i = 0; i < size; i++)
-  {
-    bf1.SetBit(i);
-  }
-  bf2 = bf1;
-
-  EXPECT_EQ(bf1, bf2);
-}
-
-TEST(TBitField, or_operator_applied_to_bitfields_of_equal_size)
-{
-  const int size = 4;
-  TBitField bf1(size), bf2(size), expBf(size);
-  // bf1 = 0011
-  bf1.SetBit(2);
-  bf1.SetBit(3);
-  // bf2 = 0101
-  bf2.SetBit(1);
-  bf2.SetBit(3);
-
-  // expBf = 0111
-  expBf.SetBit(1);
-  expBf.SetBit(2);
-  expBf.SetBit(3);
-
-  EXPECT_EQ(expBf, bf1 | bf2);
-}
-
-TEST(TBitField, or_operator_applied_to_bitfields_of_non_equal_size)
-{
-  const int size1 = 4, size2 = 5;
-  TBitField bf1(size1), bf2(size2), expBf(size2);
-  // bf1 = 0011
-  bf1.SetBit(2);
-  bf1.SetBit(3);
-  // bf2 = 01010
-  bf2.SetBit(1);
-  bf2.SetBit(3);
-
-  // expBf = 01110
-  expBf.SetBit(1);
-  expBf.SetBit(2);
-  expBf.SetBit(3);
-
-  EXPECT_EQ(expBf, bf1 | bf2);
-}
-
-TEST(TBitField, and_operator_applied_to_bitfields_of_equal_size)
-{
-  const int size = 4;
-  TBitField bf1(size), bf2(size), expBf(size);
-  // bf1 = 0011
-  bf1.SetBit(2);
-  bf1.SetBit(3);
-  // bf2 = 0101
-  bf2.SetBit(1);
-  bf2.SetBit(3);
-
-  // expBf = 0001
-  expBf.SetBit(3);
-
-  EXPECT_EQ(expBf, bf1 & bf2);
-}
-
-TEST(TBitField, and_operator_applied_to_bitfields_of_non_equal_size)
-{
-  const int size1 = 4, size2 = 5;
-  TBitField bf1(size1), bf2(size2), expBf(size2);
-  // bf1 = 0011
-  bf1.SetBit(2);
-  bf1.SetBit(3);
-  // bf2 = 01010
-  bf2.SetBit(1);
-  bf2.SetBit(3);
-
-  // expBf = 00010
-  expBf.SetBit(3);
-
-  EXPECT_EQ(expBf, bf1 & bf2);
-}
-
-TEST(TBitField, can_invert_bitfield)
-{
-  const int size = 2;
-  TBitField bf(size), negBf(size), expNegBf(size);
-  // bf = 01
-  bf.SetBit(1);
-  negBf = ~bf;
-
-  // expNegBf = 10
-  expNegBf.SetBit(0);
-
-  EXPECT_EQ(expNegBf, negBf);
-}
-
-TEST(TBitField, can_invert_large_bitfield)
-{
-  const int size = 38;
-  TBitField bf(size), negBf(size), expNegBf(size);
-  bf.SetBit(35);
-  negBf = ~bf;
-
-  for(int i = 0; i < size; i++)
-    expNegBf.SetBit(i);
-  expNegBf.ClrBit(35);
-
-  EXPECT_EQ(expNegBf, negBf);
-}
-
-TEST(TBitField, can_invert_many_random_bits_bitfield)
-{
-  const int size = 38;
-  TBitField bf(size), negBf(size), expNegBf(size);
-
-  std::vector<int> bits;
-  bits.push_back(0);
-  bits.push_back(1);
-  bits.push_back(14);
-  bits.push_back(16);
-  bits.push_back(33);
-  bits.push_back(37);
-
-  for (unsigned int i = 0; i < bits.size(); i++)
-    bf.SetBit(bits[i]);
-
-  negBf = ~bf;
-
-  for(int i = 0; i < size; i++)
-    expNegBf.SetBit(i);
-  for (unsigned int i = 0; i < bits.size(); i++)
-    expNegBf.ClrBit(bits[i]);
-
-  EXPECT_EQ(expNegBf, negBf);
-}
-
-TEST(TBitField, bitfields_with_different_bits_are_not_equal)
-{
-  const int size = 4;
-  TBitField bf1(size), bf2(size);
-
-  bf1.SetBit(1);
-  bf1.SetBit(3);
-
-  bf2.SetBit(1);
-  bf2.SetBit(2);
-
-  EXPECT_NE(bf1, bf2);
-}
-*/

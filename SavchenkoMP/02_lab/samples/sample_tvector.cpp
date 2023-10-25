@@ -47,7 +47,6 @@ int main() {
 		cout << "v3.GetStartIndex() = " << v3.GetStartIndex() << endl;
 		cout << "v3 = " << v3 << endl;
 		cout << "v3[2] = " << v3[2] << endl;
-		//cout << "v3[0] = " << v3[0] << endl;
 	}
 	catch (string exp) {
 		cout << exp;

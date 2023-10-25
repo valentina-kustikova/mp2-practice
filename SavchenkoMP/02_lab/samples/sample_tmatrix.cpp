@@ -21,24 +21,16 @@ int main() {
 		cout << endl;
 		cout << "m1 = \n" << m1 << endl;
 		cout << "m2 = \n" << m2 << endl;
-		//cout << m1 * m2;
 		
 		cout << "m1[1] = " << m1[1] << endl;
 		cout << "m1[1][1] = " << m1[1][1] << endl;
 
 		cout << "\nm1 + m2 = \n" << m1 + m2 << endl;
 		cout << "m1 - m2 = \n" << m1 - m2 << endl;
-		cout << "v1 * v2 = \n" << m1 * m2 << '\n' << endl;
+		cout << "m1 * m2 = \n" << m1 * m2 << '\n' << endl;
 
 		cout << "(m1 == m2) = " << (m1 == m2) << endl;
 		cout << "(m1 != m2) = " << (m1 != m2) << '\n' << endl;
-
-		/* // TEST COPY AND operator=
-		TMatrix<int> m3(m2);
-		cout << m3 << endl;
-		m3 = m1;
-		cout << m3 << endl;
-		*/
 	}
 	catch (string exp) {
 		cout << exp << endl;

@@ -161,8 +161,8 @@ T TVector<T>::operator*(const TVector<T>& v) {
 	if (size != v.size) throw "ERROR: Vector diffirent size";
 	if (startIndex != v.startIndex) throw "ERROR: Vector diffirent startIndex";
 
-	T res = T(NULL);
-	for (int i = 0; i < size; i++)
+	T res = pMem[0] * v.pMem[0];
+	for (int i = 1; i < size; i++)
 		res = res + pMem[i] * v.pMem[i];
 	return res;
 }

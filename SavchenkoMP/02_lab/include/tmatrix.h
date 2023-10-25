@@ -86,7 +86,7 @@ TMatrix<T> TMatrix<T>::operator*(const TMatrix<T>& m) {
 	TMatrix<T> res(size);
 	for (int i = 0; i < size; i++)
 		for (int j = res[i].GetStartIndex(); j < size; j++)
-			res[i][j] = T(NULL);
+			res[i][j] = (*this)[i][j] - (*this)[i][j];
 
 	for (int i = 0; i < size; i++)
 		for (int j = res[i].GetStartIndex(); j < size; j++)
