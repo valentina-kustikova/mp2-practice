@@ -2,7 +2,7 @@
 #define _EXEPTION_H
 
 
-enum TypeExeption { WRONG_SIZE,WRONG_INDEX };
+enum TypeExeption { WRONG_SIZE,WRONG_INDEX,WRONG_DIMENSION };
 template <class T>
 class Exeptions {
 private:
@@ -25,6 +25,7 @@ void Exeptions<T>::what()const {
 	switch (type) {
 	case WRONG_SIZE: cout << "Size is negative or out of range: " << wrong_value << endl;
 	case WRONG_INDEX: cout << "Index is negative or out of range of size array" << wrong_value << endl;
+	case WRONG_DIMENSION: cout << "Not exist matrix with negative or zero dimension! " << wrong_value << endl;
 	default: {cout << "Exeption not found!" << endl; abort(); }
 	}
 }

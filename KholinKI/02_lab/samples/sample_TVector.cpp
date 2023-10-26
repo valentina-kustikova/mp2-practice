@@ -3,10 +3,11 @@
 
 int main()
 {
+ 
     setlocale(LC_ALL, "rus");
     cout << "Создание векторов vec1 и vec2,vec3:" << endl;
     TVector<TVector<double>> vector_vectors;
-    TVector<double> vec1(3), vec2(4),vec3(6), res1(1), res2(1);
+    TVector<double> vec1(4), vec2(4),vec3(4), res1(1), res2(1);
     double scalar = 0.0;
     cout << endl;
 

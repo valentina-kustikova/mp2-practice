@@ -10,39 +10,40 @@ template <class Type> class TMatrix : public TVector<TVector<Type>> {
 public:
 	//#конструкторы
 	TMatrix(int mn = 10);//создание матрицы
-	TMatrix(const TMatrix& matr);//копирование матриц
+	TMatrix(const TMatrix<Type>& matr);//копирование матриц
 	TMatrix(const TVector<TVector<Type>>& v);//преобразование вектора векторов в матрицу
 
-	//const TMatrix& operator=(const TMatrix& matr);//присваивание матриц
+
+	const TMatrix<Type>& operator=(const TMatrix<Type>& matr);//присваивание матриц 
 
 	//#сравнение матриц
-	int operator ==(const TMatrix& matr)const;//проверка на равенство матриц
-	int operator !=(const TMatrix& matr)const;//проверка на неравенство матриц
-
-	//#матрично-скалярные операции
-	TMatrix<Type> operator+(const Type& val);//сложение матрицы с элементом
-	TMatrix<Type> operator-(const Type& val);//вычитание из матрицы элемента
-	TMatrix<Type> operator*(const Type& val);//умножение матрицы с элементом
+	int operator ==(const TMatrix<Type>& matr)const;//проверка на равенство матриц
+	int operator !=(const TMatrix<Type>& matr)const;//проверка на неравенство матриц
 
 	//матричное-матричные операции
-	TMatrix<Type> operator+(const TMatrix& matr);
-	TMatrix<Type> operator-(const TMatrix& matr);
-	TMatrix operator*(const TMatrix& matr);
+	TMatrix<Type> operator+(const TMatrix<Type>& matr); 
+	TMatrix<Type> operator-(const TMatrix<Type>& matr); 
+	TMatrix operator*(const TMatrix<Type>& matr); 
 
 	//#ввод/вывод
 	friend istream& operator>>(istream& istr, TMatrix& obj) {
 		for (int i = 0; i < obj.GetSize(); i++) {
-			for (int j = 0; j < obj.GetSize(); j++) {
-				istr >> obj.vector[i][j];
+			for (int k = obj.GetStart() + i; k < obj.GetSize(); k++) {
+				cin >> obj[i][k];
 			}
 		}
 		return istr;
 	}
 	friend ostream& operator<<(ostream& ostr, const TMatrix& obj) {
 		for (int i = 0; i < obj.GetSize(); i++) {
-			for (int j = 0; j < obj.GetSize(); j++) {
-				ostr << obj.vector[i][j];
+			for (int j = 0; j < obj.GetStart() + i; j++) {
+				ostr << "	";
 			}
+			for (int k = obj.GetStart()+i; k < obj.GetSize(); k++) {
+				ostr << obj.vector[i][k] << "	";
+			}
+			ostr << endl;
+			
 		}
 		return ostr; 
 	}
@@ -57,59 +58,53 @@ TMatrix<Type>::TMatrix(int mn): TVector<TVector<Type>>(mn) {
 }
 
 template <class Type>
-TMatrix<Type>::TMatrix(const TMatrix<Type>& matr) {
-	TVector<TVector<Type>>(matr);
-}
+TMatrix<Type>::TMatrix(const TMatrix<Type>& matr): TVector<TVector<Type>>(matr) {}
 
 template<class Type>
 TMatrix<Type>::TMatrix(const TVector<TVector<Type>>& v): TVector<TVector<Type>>(v) {}   
 
+
+
 template<class Type>
-int TMatrix<Type>::operator ==(const TMatrix& matr)const {
+int TMatrix<Type>::operator ==(const TMatrix<Type>& matr)const {
 	return TVector<TVector<Type>>::operator==(matr);
 }
 
 template<class Type>
-int TMatrix<Type>::operator !=(const TMatrix& matr)const {
+int TMatrix<Type>::operator !=(const TMatrix<Type>& matr)const {
 	return TVector<TVector<Type>>::operator!=(matr);
 }
 
 template<class Type>
-TMatrix<Type> TMatrix<Type>::operator+(const Type& val) {
-	return TVector<TVector<Type>>::operator+(val);
+const TMatrix<Type>& TMatrix<Type>::operator=(const TMatrix<Type>& matr) { 
+	return TVector<TVector<Type>>::operator=(matr);
 }
 
-template<class Type>
-TMatrix<Type> TMatrix<Type>::operator-(const Type& val) {
-	return TVector<TVector<Type>>::operator-(val);
-} 
 
 template<class Type>
-TMatrix<Type> TMatrix<Type>::operator*(const Type& val) {
-	return TVector<TVector<Type>>::operator*(val);
-}
-template<class Type>
-TMatrix<Type> TMatrix<Type>::operator+(const TMatrix& matr) {
+TMatrix<Type> TMatrix<Type>::operator+(const TMatrix<Type>& matr) {
 	return TVector<TVector<Type>>::operator+(matr);
 }
 
 template<class Type>
-TMatrix<Type> TMatrix<Type>::operator-(const TMatrix& matr) {
+TMatrix<Type> TMatrix<Type>::operator-(const TMatrix<Type>& matr) {
 	return TVector<TVector<Type>>::operator-(matr);
 }
 
 template<class Type>
 TMatrix<Type> TMatrix<Type>::operator*(const TMatrix<Type>& matr) {
+	if (size != matr.GetSize())throw Exeptions<int>(WRONG_SIZE, size);
+	if (start_index != matr.GetStart())throw Exeptions<int>(WRONG_INDEX, start_index);
 	TVector<TVector<Type>> result_matrix(*this); 
-	int I, j;
-	for (I = 0; I < size; I++) {
-		for (j = I; j < size; j++) {
-			for (start_index = I; start_index < j; start_index++) {
-				result_matrix[I][j] += (*this)[I][start_index] * matr.vector[start_index][j];
-			}
+	for (int i = 0; i < size; i++) {
+		for (int j = 0; j < size; j++) {
+			for (start_index =  i; start_index < j;start_index++)
+				result_matrix[i][j] += result_matrix[i][start_index] * matr.vector[start_index][j]; 
 		}
 	}
 	return TMatrix(result_matrix);
 }
+
+
 
 #endif

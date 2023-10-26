@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include <limits>
+#include <iomanip>
 #include "Exeption .h"
 
 using namespace std;
@@ -61,7 +62,7 @@ public:
 	}
 };
 
-//заменить memcpy
+
 
 
 template <class Type>
@@ -69,7 +70,7 @@ TVector<Type>::TVector(int size_, int start_index_) {
 	if (size_ <= 0 || size_ > INT_MAX) {
 		throw Exeptions<int>(WRONG_SIZE, size_);
 	}
-	if (start_index_ < 0 || start_index_ >= size_) {
+	if (start_index_ < 0) {
 		throw Exeptions<int>(WRONG_INDEX, start_index_);
 	}
 	size = size_;
@@ -108,7 +109,13 @@ int TVector<Type>::GetStart() const {
 
 template<class Type>
 Type& TVector<Type>::operator[](const int index) {
-	return vector[index]; 
+	if (index < 0 || index >= size + start_index) {
+		throw Exeptions<int>(WRONG_INDEX, index);
+	}
+	if (index < start_index) {
+		throw Exeptions<int>(WRONG_INDEX, index);
+	}
+	return vector[index-start_index];
 }
 
 template<class Type>
@@ -183,51 +190,39 @@ TVector<Type> TVector<Type>::operator-(const Type& val) {
 
 template<class Type>
 TVector<Type> TVector<Type>::operator+(const TVector<Type>& obj) {
-	if (size != obj.size || start_index != obj.start_index) {
-		Type* tmp_vector = new Type[obj.size](); 
-		memcpy(tmp_vector, vector, sizeof(Type)* size);  
-		delete[] vector; 
-		start_index = obj.start_index; 
-		size = obj.size; 
-		vector = tmp_vector;
+	if (start_index != obj.GetStart())throw Exeptions<int>(WRONG_INDEX, start_index);
+	if (size != obj.size) {
+		throw Exeptions<int>(WRONG_SIZE, size);
 	}
 	TVector<Type> result(*this);
 	for (int i = 0; i < result.size; i++) {
-		result.vector[i] += obj.vector[i];
+		result.vector[i] = result.vector[i] + obj.vector[i];
 	}
 	return result;
 }
 
 template<class Type>
 TVector<Type> TVector<Type>::operator-(const TVector<Type>& obj) {
-	if (size != obj.size || start_index != obj.start_index) {
-		Type* tmp_vector = new Type[obj.size]();
-		memcpy(tmp_vector, vector, sizeof(Type) * size);
-		delete[] vector;
-		start_index = obj.start_index;
-		size = obj.size;
-		vector = tmp_vector;
+	if (start_index != obj.GetStart())throw Exeptions<int>(WRONG_INDEX, start_index);
+	if (size != obj.size) {
+		throw Exeptions<int>(WRONG_SIZE, size);
 	}
 	TVector<Type> result(*this);
 	for (int i = 0; i < result.size; i++) {
-		result.vector[i] -= obj.vector[i];
+		result.vector[i] = result.vector[i] - obj.vector[i];
 	}
 	return result;
 }
 
 template<class Type>
 Type TVector<Type>::operator*(const TVector<Type>& obj) {
-	if (size != obj.size || start_index != obj.start_index) {
-		Type* tmp_vector = new Type[obj.size]();
-		memcpy(tmp_vector, vector, sizeof(Type) * size);
-		delete[] vector;
-		start_index = obj.start_index;
-		size = obj.size;
-		vector = tmp_vector;
+	if (start_index != obj.GetStart())throw Exeptions<int>(WRONG_INDEX, start_index);
+	if (size != obj.size) {
+		throw Exeptions<int>(WRONG_SIZE, size);
 	}
 	Type result=0;
 	for (int i = 0; i < size; i++) {
-		result += vector[i] * obj.vector[i];
+		result = result + (vector[i] * obj.vector[i]);
 	}
 	return result;
 }

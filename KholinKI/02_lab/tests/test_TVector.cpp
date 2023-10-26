@@ -38,7 +38,7 @@ TEST(TVector, can_get_start_index) {
 	EXPECT_EQ(5, vec.GetStart());
 }
 
-TEST(TVector, can_get_element_no_type_class) {
+TEST(TVector, can_get_element_with_positive_index) {
 	TVector<int> vec(5);
 
 	vec[4] = 2;
@@ -46,24 +46,42 @@ TEST(TVector, can_get_element_no_type_class) {
 	EXPECT_EQ(2, vec[4]);
 }
 
-TEST(TVector, equality) {
+
+TEST(TVector, throw_when_get_element_with_negative_index) {
+	TVector<int> vec(5);
+
+	vec[4] = 2;
+
+	EXPECT_EQ(2, vec[4]);
+}
+
+
+TEST(TVector, can_get_element_no_type_class) {
+	TVector<int> vec(5,1);
+
+	vec[5] = 2;
+
+	EXPECT_EQ(2, vec[5]);
+}
+
+TEST(TVector, equality_) {
 	TVector<double> vector1(10,2),vector2(10,2);
 
 	EXPECT_EQ(vector1.GetSize(), vector2.GetSize());
 	EXPECT_EQ(vector1.GetStart(), vector2.GetStart());
 
-	for (int i = 0; i < vector1.GetSize(); i++) {
-		vector1[i] = i;
+	for (int i = 2; i < vector1.GetSize(); i++) {
+		vector1[i] = i; 
 	}
 
 	vector2 = vector1;
-	EXPECT_EQ(vector1, vector2);
+	EXPECT_EQ(vector1,vector2);
 	EXPECT_EQ(vector1.GetSize(), vector2.GetSize());  
 	EXPECT_EQ(vector1.GetStart(), vector2.GetStart()); 
 }
 
-TEST(TVector, triple_assign) {
-	TVector<short> vector1(3), vector2(4), vector3(5);
+TEST(TVector, triple_assign_vectors) {
+	TVector<short> vector1(4), vector2(4), vector3(4);
 
 	int i = 0;
 	for (i = 0; i < vector1.GetSize(); i++) {
@@ -92,7 +110,7 @@ TEST(TVector, triple_assign) {
 TEST(TVector, plus_operator_with_element) {
 	TVector<double> vector1(10),res1(1);
 
-	for (int i = 0; i < vector1.GetSize(); i++) {
+	for (int i = vector1.GetStart(); i < vector1.GetSize(); i++) {
 		vector1[i] = i;
 	}
 
@@ -125,13 +143,18 @@ TEST(TVector, minus_operator_with_element) {
 	EXPECT_EQ(test_vec, res1);
 }
 
-TEST(TVector, plus_operator_with_vectors_equal_size) {
+TEST(TVector, plus_operator_with_vectors_equal_size_and_start_index) {
 	TVector<double> vector1(10), vector2(10),res1(1);
 
 	for (int i = 0; i < vector1.GetSize(); i++) {
 		vector1[i] = i;
-		vector2[i] = i * 2;
+		
 	}
+	for (int i = 0; i < vector2.GetSize(); i++) {
+		vector2[i] = i;
+
+	}
+
 	res1 = vector1 + vector2;
 
 	TVector<double> test_vector(vector1);
@@ -142,89 +165,78 @@ TEST(TVector, plus_operator_with_vectors_equal_size) {
 	EXPECT_EQ(test_vector, res1);
 }
 
-TEST(TVector, plus_operator_with_vectors_non_equal_size) {
-	TVector<double> vector1(9), vector2(10), res1(1);
+TEST(TVector, throw_when_plus_operator_with_vectors_non_equal_size) {
+	TVector<double> vector1(9,4), vector2(10,4);
 
-	for (int i = 0; i < vector1.GetSize(); i++) {
+	for (int i = 4; i < vector1.GetSize(); i++) {
 		vector1[i] = i;
-		vector2[i] = i * 2;
 	}
-	res1 = vector1 + vector2;
 
-	TVector<double> test_vector(vector1);
-
-	for (int i = 0; i < test_vector.GetSize(); i++) {
-		test_vector[i] += vector2[i];
+	for (int i = 4; i < vector2.GetSize(); i++) {
+		vector2[i] = i;
 	}
-	EXPECT_EQ(test_vector, res1);
+	
+	ASSERT_THROW(vector1 + vector2, const Exeptions<int>);
 }
 
-TEST(TVector, plus_operator_with_vectors_non_equal_start_index) {
-	TVector<double> vector1(10,3), vector2(10), res1(1);
 
-	for (int i = 0; i < vector1.GetSize(); i++) {
+TEST(TVector, throw_when_plus_operator_with_vectors_non_equal_start_index) {
+	TVector<double> vector1(10, 3), vector2(10, 4), res1(1);
+
+	for (int i = 3; i < vector1.GetSize(); i++) {
 		vector1[i] = i;
-		vector2[i] = i * 2;
 	}
-	res1 = vector1 + vector2;
+	for (int i = 4; i < vector2.GetSize(); i++) {
+		vector2[i] = i;
 
-	TVector<double> test_vector(vector1);
-
-	for (int i = 0; i < test_vector.GetSize(); i++) {
-		test_vector[i] += vector2[i];
 	}
-	EXPECT_EQ(test_vector, res1);
+
+	ASSERT_THROW(vector1 + vector2, const Exeptions<int>);
 }
 
-TEST(TVector, mul_operator_with_vectors_equal_size) {
+
+TEST(TVector, mul_operator_with_vectors_equal_size_and_start_index) {
 	TVector<double> vector1(10), vector2(10);
 
 	for (int i = 0; i < vector1.GetSize(); i++) {
-		vector1[i] = i;
-		vector2[i] = i * 2;
+		vector1[i] = i;//0 1 2 3 4 5 6 7 8 9
 	}
+
+	for (int i = 0; i < vector2.GetSize(); i++) {
+		vector2[i] = i;//0 1 2 3 4 5 6 7 8 9
+	}
+
 	double res1 = vector1 * vector2;
 
-	double test_res = 0;
 
-	for (int i = 0; i < vector1.GetSize(); i++) {
-		test_res += vector1[i] * vector2[i];
-	}
-	EXPECT_EQ(test_res, res1);
+	EXPECT_EQ(285, res1);
 }
 
-TEST(TVector, mul_operator_with_vectors_non_equal_size) {
-	TVector<double> vector1(3), vector2(10);
 
-	for (int i = 0; i < vector1.GetSize(); i++) {
-		vector1[i] = i;
-		vector2[i] = i * 2;
+TEST(TVector, throw_when_mul_operator_with_vectors_non_equal_size) {
+	TVector<double> vector1(10,4), vector2(9,4);
+
+	for (int i = 4; i < vector1.GetSize(); i++) {
+		vector1[i] = i;//4 5 6 7 8 9 0 0 0 0
 	}
-	double res1 = vector1 * vector2;
 
-	double test_res = 0;
-
-	for (int i = 0; i < vector1.GetSize(); i++) {
-		test_res += vector1[i] * vector2[i];
+	for (int i = 4; i < vector2.GetSize(); i++) {
+		vector2[i] = i;//0 1 2 3 4 5 6 7 8 9
 	}
-	EXPECT_EQ(test_res, res1);
+	ASSERT_THROW(vector1 * vector2, const Exeptions<int>);	
 }
 
-TEST(TVector, mul_operator_with_vectors_non_equal_start_index) {
-	TVector<double> vector1(10,4), vector2(10);
+TEST(TVector, throw_when_mul_operator_with_vectors_non_equal_start_index) {
+	TVector<double> vector1(10, 3), vector2(10, 4);
 
-	for (int i = 0; i < vector1.GetSize(); i++) {
-		vector1[i] = i;
-		vector2[i] = i * 2;
+	for (int i = 3; i < vector1.GetSize(); i++) {
+		vector1[i] = i;//4 5 6 7 8 9 0 0 0 0
 	}
-	double res1 = vector1 * vector2;
 
-	double test_res = 0;
-
-	for (int i = 0; i < vector1.GetSize(); i++) {
-		test_res += vector1[i] * vector2[i];
+	for (int i = 4; i < vector2.GetSize(); i++) {
+		vector2[i] = i;//0 1 2 3 4 5 6 7 8 9
 	}
-	EXPECT_EQ(test_res, res1);
+	ASSERT_THROW(vector1 * vector2, const Exeptions<int>);
 }
 
 

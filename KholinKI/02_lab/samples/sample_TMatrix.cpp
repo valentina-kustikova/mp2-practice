@@ -3,24 +3,28 @@
 
 int main()
 {
-  /*  std::cout << "TMatrix" << std::endl;
+	setlocale(LC_ALL, "rus");
+	cout << "Создание матриц 4-ого порядка..." << endl;
+	TMatrix<double> matrix1(4), matrix2(4),res1(1);
+	cout << endl;
+	
+	cout << "Заполните матрицу 1: " << endl;
+	cin >> matrix1;
+	cout << endl;
 
+	cout << "Заполните матрицу 2: " << endl;
+	cin >> matrix2;
+	cout << endl;
 
-	TMatrix<int> Matrix1(4), Matrix2(4);
+	cout << "Заполнение матриц завершено!" << endl;
+	cout << "matrix1" << endl;
+	cout << matrix1 << endl;
+	cout << "matrix2" <<endl;
+	cout << matrix2 << endl;
 
-	for (int i = 0; i < Matrix1.GetSize(); i++) {
-		for (int j = 0; j < Matrix1.GetSize(); j++) {
-			Matrix1[i][j] = j;
-		}
-	}
-
-	for (int i = 0; i < Matrix2.GetSize(); i++) {
-		for (int j = 0; j < Matrix2.GetSize(); j++) {
-			Matrix2[i][j] = j + j;
-		}
-	}
-	cout << Matrix1 << endl;
-	cout << Matrix2 << endl;*/
+	res1 = matrix1 * matrix2;
+	cout << "Результат умножения матриц matrix1 и matrix2:" << endl;
+	cout << res1 << endl;
 
     return 0;
 }
