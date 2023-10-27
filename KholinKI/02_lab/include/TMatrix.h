@@ -95,11 +95,12 @@ template<class Type>
 TMatrix<Type> TMatrix<Type>::operator*(const TMatrix<Type>& matr) {
 	if (size != matr.GetSize())throw Exeptions<int>(WRONG_SIZE, size);
 	if (start_index != matr.GetStart())throw Exeptions<int>(WRONG_INDEX, start_index);
-	TVector<TVector<Type>> result_matrix(*this); 
+	TVector<TVector<Type>> result_matrix(GetSize()); 
 	for (int i = 0; i < size; i++) {
 		for (int j = 0; j < size; j++) {
-			for (start_index =  i; start_index < j;start_index++)
-				result_matrix[i][j] += result_matrix[i][start_index] * matr.vector[start_index][j]; 
+			for (int k = GetStart()+i; k < GetStart() + j + 1; k++) {
+				result_matrix[i][j] += (*this).vector[i][k] * matr.vector[k][j];
+			}
 		}
 	}
 	return TMatrix(result_matrix);
