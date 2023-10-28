@@ -6,7 +6,7 @@ using namespace std;
 
 template <typename T>
 class TVector {
-private:
+protected:
 	int size;
 	int StartIndex;
 	T* elems;
@@ -24,9 +24,9 @@ public:
 		for (int i = 0; i < vec.GetSize(); i++) in >> vec.elems[i];
 		return in;
 	}
-	friend std::ostream& operator << (std::ostream& out, TVector& vec) {
-		for (int i = 0; i < vec.GetStartIndex()) out << "0 ";
-		for (int i = 0; i < vec.GetSize(); i++) out << vec.elems[i] << " ";
+	friend ostream& operator << (ostream& out, TVector& vec) {
+		for (int i = 0; i < vec.GetStartIndex(); i++) out << " 0 ";
+		for (int i = 0; i < vec.GetSize(); i++) out << " " << vec.elems[i] << " ";
 		return out;
 	}
 
