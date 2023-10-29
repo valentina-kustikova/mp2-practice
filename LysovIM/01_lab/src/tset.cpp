@@ -55,13 +55,6 @@ int TSet::operator!=(const TSet& s) const {
     return !(*this == s);
 }
 
-TSet TSet::operator+(const TSet& s)
-{
-    TSet obj(max(MaxPower, s.GetMaxPower()));
-    obj.BitField = BitField | s.BitField;
-    return obj;
-}
-
 TSet TSet::operator+(const int Elem)
 {
     if (Elem >= MaxPower || Elem < 0)
@@ -70,6 +63,14 @@ TSet TSet::operator+(const int Elem)
     obj.InsElem(Elem);
     return obj;
 }
+
+TSet TSet::operator+(const TSet& s)
+{
+    TSet obj(max(MaxPower, s.GetMaxPower()));
+    obj.BitField = BitField | s.BitField;
+    return obj;
+}
+
 
 TSet TSet::operator-(const int Elem)
 {
