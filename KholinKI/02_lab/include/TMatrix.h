@@ -3,6 +3,8 @@
 
 #include "TVector.h"
 
+
+
 //#СПРАВКА:
 //В реализациях методов достаточно вызвать конструктор базового класса.
 
@@ -38,7 +40,7 @@ public:
 		for (int i = 0; i < obj.GetSize(); i++) {
 			for (int j = 0; j < obj.GetStart() + i; j++) {
 				ostr << "	";
-			}
+			}//пропуск нулевых элементов
 			for (int k = obj.GetStart()+i; k < obj.GetSize(); k++) {
 				ostr << obj.vector[i][k] << "	";
 			}

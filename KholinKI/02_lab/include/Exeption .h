@@ -1,7 +1,7 @@
 #ifndef _EXEPTION_H
 #define _EXEPTION_H
 
-
+using namespace std;
 enum TypeExeption { WRONG_SIZE,WRONG_INDEX,WRONG_DIMENSION };
 template <class T>
 class Exeptions {

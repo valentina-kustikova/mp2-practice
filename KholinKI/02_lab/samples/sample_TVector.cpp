@@ -5,10 +5,19 @@ int main()
 {
  
     setlocale(LC_ALL, "rus");
-    cout << "—оздание векторов vec1 и vec2,vec3:" << endl;
-    TVector<TVector<double>> vector_vectors;
-    TVector<double> vec1(4), vec2(4),vec3(4), res1(1), res2(1);
+    cout << "—оздание векторов vec1 и vec2,vec3..." << endl;
+    TVector<double> vec1(4), vec2(4),vec3(4), res1(1), res2(1),res3(1),res4(1),res(1);
     double scalar = 0.0;
+    cout << endl;
+
+    cout << "–азмерность вектора vec1: " << vec1.GetSize() << endl;
+    cout << "–азмерность вектора vec2: " << vec2.GetSize() << endl;
+    cout << "–азмерность вектора vec3: " << vec3.GetSize() << endl;
+    cout << endl;
+
+    cout << "—тартовый индекс vec1:" << vec1.GetStart() << endl;
+    cout << "—тартовый индекс vec2:" << vec2.GetStart() << endl;
+    cout << "—тартовый индекс vec3:" << vec3.GetStart() << endl;
     cout << endl;
 
     cout << "«аполните вектора vec1,vec2,vec3: " << endl;
@@ -55,17 +64,17 @@ int main()
     cout << "vec3= " <<vec3 << endl;
 
     cout << "¬екторно-скал€рные операции: " << endl;
-    cout << "сложение вектора vec1 со скал€ром" << endl;
-    vec1 = vec1 + 6;
-    cout << "vec1= " << vec1 << endl;
+    cout << "сложение вектора vec1 со скал€ром 6" << endl;
+    res1 = vec1 + 6;
+    cout << "res1= " << res1 << endl;
 
-    cout << "вычитание из вектора vec2 скал€ра" << endl;
-    vec2 = vec2 - 4;
-    cout << "vec2= " << vec2 << endl;
+    cout << "вычитание из вектора vec2 скал€ра 4" << endl;
+    res2 = vec2 - 4;
+    cout << "res2= " << res2 << endl;
 
-    cout << "умножение вектора vec3 на скал€р" << endl;
-    vec3 = vec3 * 5;
-    cout << "vec3= " << vec3 << endl;
+    cout << "умножение вектора vec3 на скал€р 5" << endl;
+    res3 = vec3 * 5;
+    cout << "res3= " << res3 << endl;
 
     cout << "¬екторно-векторные операции: " << endl;
     cout << "сложение векторов vec1 и vec2" << endl;
