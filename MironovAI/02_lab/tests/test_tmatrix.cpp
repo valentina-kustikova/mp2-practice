@@ -26,7 +26,7 @@ TEST(TMatrix, can_create_copied_matrix)
 
 TEST(TMatrix, copied_matrix_is_equal_to_source_one)
 {
-	const int size = 10;
+	const int size = 5;
 	TMatrix<int> m1(size);
 	m1[0][0] = 3;
 	m1[0][1] = 4;
@@ -89,7 +89,7 @@ TEST(TMatrix, can_assign_matrix_to_itself)
 TEST(TMatrix, can_assign_matrices_of_equal_size)
 {
 	TMatrix<int> m1(10),m2(10);
-	m1[5][0] = 3;
+	m1[0][5] = 3;
 	m2 = m1;
 	EXPECT_EQ(m1, m2);
 }
@@ -109,11 +109,9 @@ TEST(TMatrix, can_assign_matrices_of_different_size)
 
 TEST(TMatrix, compare_equal_matrices_return_true)
 {
-	TMatrix<int> m1(10), m2(10);
-	m1[5][0] = 3;
-	m2[5][0] = 3;
-	cout << m1 << endl;
-	cout << m2 << endl;
+	TMatrix<int> m1(5), m2(5);
+	m1[0][4] = 3;
+	m2[0][4] = 3;
 	EXPECT_EQ(m1, m2);
 }
 

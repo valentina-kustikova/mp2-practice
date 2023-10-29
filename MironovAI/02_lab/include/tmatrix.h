@@ -3,7 +3,7 @@
 #include <iostream>
 #include "tvector.h"
 
-const int MAX_MATRIX_SIZE = 10000;
+const int MAX_MATRIX_SIZE = 100000;
 
 //Наследуем матрицу от конкретного экземпляра TVector<ValType1>, где ValType1 = TVector<ValType>, причём поля в родительском классе.
 template <class ValType>
@@ -29,15 +29,16 @@ public:
   // ввод / вывод
   friend istream& operator>>(istream &in, TMatrix<ValType>&mt)
   {
-    for (int i = 0; i < mt.Size; i++)
-      in >> mt.pVector[i];
-    return in;
+      for (int i = 0; i < mt.Size; i++)
+        in >> mt.pVector[i];    
+      return in;
   }
   friend ostream & operator<<( ostream &out, const TMatrix<ValType>&mt)
   {
-    for (int i = 0; i < mt.Size; i++)
-      out << mt.pVector[i] << endl;
-    return out;
+     
+      for (int i = 0; i < mt.Size; i++)
+        out << mt.pVector[i] << endl;
+      return out;
   }
 
 };
@@ -47,6 +48,8 @@ TMatrix<ValType>::TMatrix<ValType>(int s): TVector<TVector<ValType>>(s)
 {
     for (int i = 0; i < Size; ++i)
     {
+        TVector<ValType> x(Size - i, i);
+        pVector[i] = x;
         pVector[i] = TVector<ValType>(Size - i, i);
     }
 } 

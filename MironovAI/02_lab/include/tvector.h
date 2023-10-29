@@ -4,7 +4,7 @@
 #include <iostream>
 using namespace std;
 
-const int MAX_VECTOR_SIZE = 100000000;
+const int MAX_VECTOR_SIZE = 100000;
 
 
 // Шаблон вектора
@@ -45,8 +45,11 @@ public:
     }
     friend ostream& operator<<(ostream &out,TVector<ValType> &v)
     {
-
-        for (int i = 0; i < v.StartIndex + v.Size; i++) {
+        for (int i = 0; i < v.StartIndex; i++)
+        {
+            out << ValType() << " ";
+        }
+        for (int i = v.StartIndex; i < v.Size+v.StartIndex; i++) {
 
             out << v[i] << " ";
         }
@@ -61,7 +64,7 @@ TVector<ValType>::TVector<ValType>(int s, int si):Size(s), StartIndex(si)
         throw "Incorrect size";
     if (si < 0)
         throw "You cannot start at negative index!";
-    pVector = new ValType[s];
+    pVector = new ValType[s]();
 }
 
 template <class ValType> 
@@ -81,7 +84,6 @@ TVector<ValType>::~TVector<ValType>()
 template <class ValType> 
 ValType& TVector<ValType>::operator[](int pos) 
 {
-    ValType x = ValType();
     if (pos < 0 || pos>=MAX_VECTOR_SIZE)
         throw "Wrong position";
     if (pos < StartIndex)
@@ -181,7 +183,7 @@ TVector<ValType> TVector<ValType>::operator+(const TVector<ValType> &v)
     TVector<ValType> B(Size, StartIndex), tmp(v);
     for (int i = 0; i < Size; ++i)
     {
-        B[i] = pVector[i] + tmp[i];
+        B.pVector[i] = pVector[i] + v.pVector[i];
     }
     return B;
 }
@@ -196,7 +198,7 @@ TVector<ValType> TVector<ValType>::operator-(const TVector<ValType>& v)
     for (int i = 0; i < Size; ++i)
     {
 
-        B[i] = pVector[i] - tmp[i];
+        B.pVector[i] = pVector[i] - v.pVector[i];
     }
     return B;
 }
