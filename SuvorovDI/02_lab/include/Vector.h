@@ -2,6 +2,7 @@
 #define _VECTOR_H_
 
 #include <iostream>
+#include <cmath>
 
 template <typename ValueType>
 class TVector {
@@ -11,44 +12,39 @@ protected:
 	ValueType* pVector;
 
 public:
-	ValueType& operator[] (const int i);
-
 	TVector(int size = 5, int startIndex = 0);
-	TVector(const TVector& v);
+	TVector(const TVector<ValueType>& v);
 	~TVector();
 
 	int GetSize() const;
 	int GetStartIndex() const;
 
-	int operator== (const TVector& v) const;
-	int operator!= (const TVector& v) const;
+  ValueType& TVector<ValueType>::operator[] (const int i);
 
-	const TVector& operator= (const TVector& v);
+	int operator== (const TVector<ValueType>& v) const;
+	int operator!= (const TVector<ValueType>& v) const;
+
+	const TVector& operator= (const TVector<ValueType>& v);
 
 	TVector operator+ (const ValueType val);
 	TVector operator- (const ValueType val);
 	TVector operator* (const ValueType val);
 
-	TVector operator+ (const TVector& v);
-	TVector operator- (const TVector& v);
-	double operator* (const TVector& v);
+	TVector operator+ (const TVector<ValueType>& v);
+	TVector operator- (const TVector<ValueType>& v);
+	double operator* (const TVector<ValueType>& v);
 
-	friend std::istream& operator>> (std::istream& in, TVector& v) {
-		/*std::cout << "\nEnter vector size: ";
-		in >> v.size;
-		delete[] v.pVector;
-		v.pVector = new ValueType[v.size];*/
-
+	friend std::istream& operator>> (std::istream& in, TVector<ValueType>& v) {
 		for (int i = 0; i < v.size; i++)
-			in >> v.pVector[i]; // если написать v[i] -- то при запуске программа завершиться с кодом -10 миллиардов...
+			in >> v.pVector[i];
 
 		return in;
 	}
 
-	friend std::ostream& operator<< (std::ostream& out, const TVector& v) {
+	friend std::ostream& operator<< (std::ostream& out, TVector& v) {
 		out << "\nVector with size " << v.size << std::endl;
 		for (int i = 0; i < v.size; i++)
-			out << v.pVector[i] << "  "; // Почему-то нельзя написать v[i] - ошибка..
+			out << v.pVector[i] << "  ";
 		out << "\n";
 
 		return out;
@@ -57,14 +53,21 @@ public:
 
 template <typename ValueType>
 TVector<ValueType>::TVector(int size, int startIndex) {
+  if (size < 0)
+    throw std::exception("negative size");
+  if (startIndex < 0)
+    throw std::exception("negative start index");
+
 	this->size = size;
 	this->startIndex = startIndex;
 
 	pVector = new ValueType[size];
+  // for (int i = 0; i < size; i++)
+  //   pVector[i] = 0; НО ОБНУЛЕНИЕ БУДЕТ СПРАВЕДЛИВО ТОЛЬКО ДЛЯ ЧИСЛОВЫХ ТИПОВ ValueType, ЧТО ДЕЛАТЬ ЕСЛИ ЭТО ПОЛЬЗОВАТЕЛЬСКИЙ ТИП???
 }
 
 template <typename ValueType>
-TVector<ValueType>::TVector(const TVector<ValueType>& v) { // Не требует указания шаблонного типа в параметре! Почему?
+TVector<ValueType>::TVector(const TVector<ValueType>& v) {
 	size = v.size;
 	startIndex = v.startIndex;
 
@@ -80,6 +83,13 @@ TVector<ValueType>::~TVector() {
 }
 
 template <typename ValueType>
+ValueType& TVector<ValueType>::operator[](const int i) {
+	if (i < 0 || i >= size)
+		throw std::exception("out of range");
+	return pVector[i];
+}
+
+template <typename ValueType>
 int TVector<ValueType>::GetSize() const {
 	return size;
 }
@@ -87,13 +97,6 @@ int TVector<ValueType>::GetSize() const {
 template <typename ValueType>
 int TVector<ValueType>::GetStartIndex() const {
 	return startIndex;
-}
-
-template <typename ValueType>
-ValueType& TVector<ValueType>::operator[](const int i) {
-	if (i < 0 || i >= size)
-		throw std::exception("out of range");
-	return pVector[i];
 }
 
 template <typename ValueType>
@@ -125,7 +128,7 @@ const TVector<ValueType>& TVector<ValueType>::operator= (const TVector<ValueType
 	startIndex = v.startIndex;
 
 	for (int i = 0; i < size; i++)
-		pVector[i] = v.pVector[i]; // ПОчему-то не работает v[i]
+		pVector[i] = v.pVector[i];
 
 	return *this;
 }
@@ -157,7 +160,7 @@ TVector<ValueType> TVector<ValueType>::operator* (const ValueType val) {
 template <typename ValueType>
 TVector<ValueType> TVector<ValueType>::operator+ (const TVector<ValueType>& v) {
 	if (size != v.size || startIndex != v.startIndex)
-		throw std::exception("deff. sizes");
+		throw std::exception("diff. sizes");
 
 	TVector<ValueType> result(*this);
 
@@ -170,7 +173,7 @@ TVector<ValueType> TVector<ValueType>::operator+ (const TVector<ValueType>& v) {
 template <typename ValueType>
 TVector<ValueType> TVector<ValueType>::operator- (const TVector<ValueType>& v) {
 	if (size != v.size || startIndex != v.startIndex)
-		throw std::exception("deff. sizes");
+		throw std::exception("diff. sizes");
 
 	TVector<ValueType> result(*this);
 
@@ -183,13 +186,13 @@ TVector<ValueType> TVector<ValueType>::operator- (const TVector<ValueType>& v) {
 template <typename ValueType>
 double TVector<ValueType>::operator* (const TVector<ValueType>& v) {
 	if (size != v.size || startIndex != v.startIndex)
-		throw std::exception("deff. sizes");
+		throw std::exception("diff. sizes");
 
 	double sum = 0.0;
 	for (int i = 0; i < size; i++)
 		sum += pVector[i] * v.pVector[i];
 
-	return sum;
+	return sqrt(sum);
 }
 
 #endif
