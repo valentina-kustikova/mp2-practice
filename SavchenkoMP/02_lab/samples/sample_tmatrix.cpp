@@ -9,6 +9,7 @@ int main() {
 	try {
 		int size = 3;
 
+		cout << "Enter the values of the elements of two " << size << "x" << size << " upper triangular vectors." << endl;
 		cout << "input example:\n1 2 3 4 5 6 6 5 4 3 2 1\n" << endl;
 		// 1 2 3 4 5 6 6 5 4 3 2 1
 		// 2 2 2 2 2 2 3 3 3 3 3 3

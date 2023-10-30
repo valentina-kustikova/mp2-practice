@@ -16,6 +16,7 @@ int main() {
 		TVector<int> v1(size);
 		TVector<int> v2(size);
 
+		cout << "Enter the values of the elements of two vectors with length " << size << "." << endl;
 		cout << "input example:\n1 2 3 4 4 3 2 1\n" << endl;
 		// 1 2 3 4 4 3 2 1
 
@@ -24,9 +25,10 @@ int main() {
 		cout << "v1 = " << v1 << endl;
 		cout << "v2 = " << v2 << '\n' << endl;
 
+		cout << "scalar = " << scalar << endl;
 		cout << "v1 * scalar = " << v1 * scalar << endl;
-		cout << "v1 + scalar = " << v1 * scalar << endl;
-		cout << "v1 - scalar = " << v1 * scalar << '\n' << endl;
+		cout << "v1 + scalar = " << v1 + scalar << endl;
+		cout << "v1 - scalar = " << v1 - scalar << '\n' << endl;
 
 		cout << "v1 + v2 = " << v1 + v2 << endl;
 		cout << "v1 - v2 = " << v1 - v2 << endl;
@@ -35,6 +37,7 @@ int main() {
 		cout << "(v1 == v2) = " << (v1 == v2) << endl;
 		cout << "(v1 != v2) = " << (v1 != v2) << '\n' << endl;
 
+		cout << "v1 = " << v1 << endl;
 		cout << "v1[3] = " << v1[3] << endl;
 		cout << "v1.GetSize() = " << v1.GetSize() << endl;
 		cout << "v1.GetStartIndex() = " << v1.GetStartIndex() << '\n' << endl;
@@ -44,8 +47,9 @@ int main() {
 		v3[1 + startind] = 2;
 		v3[2 + startind] = 3;
 		v3[3 + startind] = 4;
-		cout << "v3.GetStartIndex() = " << v3.GetStartIndex() << endl;
+		cout << "Example of vector with startIndex:" << endl;
 		cout << "v3 = " << v3 << endl;
+		cout << "v3.GetStartIndex() = " << v3.GetStartIndex() << endl;
 		cout << "v3[2] = " << v3[2] << endl;
 	}
 	catch (string exp) {
