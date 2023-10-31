@@ -27,7 +27,7 @@ public:
 		return in;
 	}
 	friend ostream& operator << (ostream& out, const TMatrix<T>& matr) {
-		for (int i = 0; i < matr.GetSize(); i++) out << "|" << matr.elems[i] << "|\n";
+		for (int i = 0; i < matr.GetSize(); i++) out << matr.elems[i] << "\n";
 		return out;
 	}
 };

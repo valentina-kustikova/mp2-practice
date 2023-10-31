@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <iomanip>
 
 using namespace std;
 
@@ -80,7 +81,7 @@ int TVector<T>::GetStartIndex() const {
 
 template <typename T>
 T& TVector<T>::operator[] (const int ind) {
-	if (ind < 0 || ind > size) throw "out_of_range";
+	if (ind < 0 || ind > size + StartIndex) throw "out_of_range";
 	if (ind < StartIndex) throw "elemen_not_exist";
 	return elems[ind - StartIndex];
 }
@@ -104,7 +105,8 @@ TVector<T> TVector<T>::operator + (const TVector<T>& vec) const {
 	if (StartIndex != vec.StartIndex) throw "Different start indexes";
 
 	TVector<T> res(vec.size, vec.StartIndex);
-	for (int i = 0; i < size; i++) res.elems[i] = elems[i] + vec.elems[i];
+	for (int i = 0; i < size; i++) 
+		res.elems[i] = elems[i] + vec.elems[i];
 	return res;
 }
 
@@ -114,7 +116,8 @@ TVector<T> TVector<T>::operator - (const TVector<T>& vec) const {
 	if (StartIndex != vec.StartIndex) throw "Different start indexes";
 
 	TVector<T> res(vec.size, vec.StartIndex);
-	for (int i = 0; i < size; i++) res.elems[i] = elems[i] - vec.elems[i];
+	for (int i = 0; i < size; i++) 
+		res.elems[i] = elems[i] - vec.elems[i];
 	return res;
 }
 
