@@ -1,293 +1,283 @@
 #include "TVector.h"
 
 #include <gtest.h>
-/*
-TEST(TBitField, can_create_bitfield_with_positive_length)
+
+TEST(TVector, create_vector_with_positive_length_and_start_index)
 {
-  ASSERT_NO_THROW(TBitField bf(3));
+    ASSERT_NO_THROW(TVector<int> vec(3,1));
 }
 
-TEST(TBitField, can_get_length)
+TEST(TVector, create_vector_with_sero_length)
 {
-  TBitField bf(3);
-
-  EXPECT_EQ(3, bf.GetLength());
+    ASSERT_ANY_THROW(TVector<int> vec(0));
 }
 
-TEST(TBitField, new_bitfield_is_set_to_zero)
+TEST(TVector, create_vector_with_negative_length)
 {
-  TBitField bf(100);
-
-  int sum = 0;
-  for (int i = 0; i < bf.GetLength(); i++)
-  {
-    sum += bf.GetBit(i);
-  }
-
-  EXPECT_EQ(0, sum);
+    ASSERT_ANY_THROW(TVector<int> vec(-3, 0));
 }
 
-TEST(TBitField, can_set_bit)
+TEST(TVector, create_vector_with_negative_start_index)
 {
-  TBitField bf(10);
-
-  EXPECT_EQ(0, bf.GetBit(3));
-
-  bf.SetBit(3);
-  EXPECT_NE(0, bf.GetBit(3));
+    ASSERT_ANY_THROW(TVector<int> vec(3, -1));
 }
 
-TEST(TBitField, can_clear_bit)
+TEST(TVector, copy_constructor_test)
 {
-  TBitField bf(10);
-
-  int bitIdx = 3;
-
-  bf.SetBit(bitIdx);
-  EXPECT_NE(0, bf.GetBit(bitIdx));
-
-  bf.ClrBit(bitIdx);
-  EXPECT_EQ(0, bf.GetBit(bitIdx));
+    TVector<int> v(2);
+    ASSERT_NO_THROW(TVector<int> vec(v));
 }
 
-TEST(TBitField, throws_when_create_bitfield_with_negative_length)
+TEST(TVector, can_get_size)
 {
-  ASSERT_ANY_THROW(TBitField bf(-3));
+    TVector<int> vec(3, 0);
+
+    EXPECT_EQ(3, vec.GetSize());
 }
 
-TEST(TBitField, throws_when_set_bit_with_negative_index)
+TEST(TVector, can_get_start_index)
 {
-  TBitField bf(10);
+    TVector<int> vec(3, 1);
 
-  ASSERT_ANY_THROW(bf.SetBit(-3));
+    EXPECT_EQ(1, vec.GetStart());
 }
 
-TEST(TBitField, throws_when_set_bit_with_too_large_index)
+TEST(TVector, getting_by_index)
 {
-  TBitField bf(10);
-
-  ASSERT_ANY_THROW(bf.SetBit(11));
+    TVector<int> vec(3, 0);
+    vec[0] = 4;
+    vec[1] = 3;
+    vec[2] = 1;
+    EXPECT_EQ(3, vec[1]);
 }
 
-TEST(TBitField, throws_when_get_bit_with_negative_index)
+TEST(TVector, large_index)
 {
-  TBitField bf(10);
-
-  ASSERT_ANY_THROW(bf.GetBit(-3));
+    TVector<int> vec(3, 1);
+    ASSERT_ANY_THROW(vec[4]);
 }
 
-TEST(TBitField, throws_when_get_bit_with_too_large_index)
+TEST(TVector, negative_index)
 {
-  TBitField bf(10);
-
-  ASSERT_ANY_THROW(bf.GetBit(11));
+    TVector<int> vec(3, 0);
+    ASSERT_ANY_THROW(vec[-1]);
 }
 
-TEST(TBitField, throws_when_clear_bit_with_negative_index)
+TEST(TVector, less_than_start_index)
 {
-  TBitField bf(10);
-
-  ASSERT_ANY_THROW(bf.ClrBit(-3));
+    TVector<int> vec(3, 1);
+    ASSERT_ANY_THROW(vec[0]);
 }
 
-TEST(TBitField, throws_when_clear_bit_with_too_large_index)
+TEST(TVector, assignment_check)
 {
-  TBitField bf(10);
-
-  ASSERT_ANY_THROW(bf.ClrBit(11));
+    TVector<int> vec1(3, 0);
+    TVector<int> vec2(3, 0);
+    for (int i = 0; i < 3; i++)
+    {
+        vec1[i] = i;
+        vec2[i] = i + 2;
+    }
+    vec2 = vec1;
+    EXPECT_EQ(vec1, vec2);
 }
 
-TEST(TBitField, can_assign_bitfields_of_equal_size)
+TEST(TVector, assignment_with_different_length)
 {
-  const int size = 2;
-  TBitField bf1(size), bf2(size);
-  for (int i = 0; i < size; i++)
-  {
-    bf1.SetBit(i);
-  }
-  bf2 = bf1;
-
-  EXPECT_NE(0, bf2.GetBit(0));
-  EXPECT_NE(0, bf2.GetBit(1));
+    TVector<int> vec1(3, 0);
+    TVector<int> vec2(5, 0);
+    for (int i = 0; i < 3; i++)
+        vec1[i] = i;
+    for (int j = 0; j < 5; j++)
+        vec2[j] = j + 2;
+    vec2 = vec1;
+    EXPECT_EQ(3, vec2.GetSize());
 }
 
-TEST(TBitField, assign_operator_changes_bitfield_size)
+TEST(TVector, comparison_for_equality_false)
 {
-  const int size1 = 2, size2 = 5;
-  TBitField bf1(size1), bf2(size2);
-  for (int i = 0; i < size1; i++)
-  {
-    bf1.SetBit(i);
-  }
-  bf2 = bf1;
+    TVector<int> vec1(3, 0);
+    TVector<int> vec2(3, 0);
+    for (int i = 0; i < 3; i++)
+    {
+        vec1[i] = i;
+        vec2[i] = i + 2;
+    }
+    
+    EXPECT_EQ(0, vec1==vec2);
+}
+TEST(TVector, comparison_for_equality_true)
+{
+    TVector<int> vec1(3, 0);
+    TVector<int> vec2(3, 0);
+    for (int i = 0; i < 3; i++)
+    {
+        vec1[i] = i;
+        vec2[i] = i;
+    }
 
-  EXPECT_EQ(2, bf2.GetLength());
+    EXPECT_EQ(1, vec1 == vec2);
 }
 
-TEST(TBitField, can_assign_bitfields_of_non_equal_size)
+TEST(TVector, comparison_for_equality_with_diferent_length)
 {
-  const int size1 = 2, size2 = 5;
-  TBitField bf1(size1), bf2(size2);
-  for (int i = 0; i < size1; i++)
-  {
-    bf1.SetBit(i);
-  }
-  bf2 = bf1;
-
-  EXPECT_NE(0, bf2.GetBit(0));
-  EXPECT_NE(0, bf2.GetBit(1));
+    TVector<int> vec1(3, 0);
+    TVector<int> vec2(5, 0);
+ 
+    EXPECT_EQ(0, vec1 == vec2);
 }
 
-TEST(TBitField, compare_equal_bitfields_of_equal_size)
+TEST(TVector, comparison_for_inequality_false)
 {
-  const int size = 2;
-  TBitField bf1(size), bf2(size);
-  for (int i = 0; i < size; i++)
-  {
-    bf1.SetBit(i);
-  }
-  bf2 = bf1;
+    TVector<int> vec1(3, 0);
+    TVector<int> vec2(3, 0);
+    for (int i = 0; i < 3; i++)
+    {
+        vec1[i] = i;
+        vec2[i] = i + 2;
+    }
 
-  EXPECT_EQ(bf1, bf2);
+    EXPECT_EQ(1, vec1 != vec2);
+}
+TEST(TVector, comparison_for_inequality_true)
+{
+    TVector<int> vec1(3, 0);
+    TVector<int> vec2(3, 0);
+    for (int i = 0; i < 3; i++)
+    {
+        vec1[i] = i;
+        vec2[i] = i;
+    }
+
+    EXPECT_EQ(0, vec1 != vec2);
 }
 
-TEST(TBitField, or_operator_applied_to_bitfields_of_equal_size)
+TEST(TVector, comparison_for_inequality_with_diferent_length)
 {
-  const int size = 4;
-  TBitField bf1(size), bf2(size), expBf(size);
-  // bf1 = 0011
-  bf1.SetBit(2);
-  bf1.SetBit(3);
-  // bf2 = 0101
-  bf2.SetBit(1);
-  bf2.SetBit(3);
+    TVector<int> vec1(3, 0);
+    TVector<int> vec2(5, 0);
 
-  // expBf = 0111
-  expBf.SetBit(1);
-  expBf.SetBit(2);
-  expBf.SetBit(3);
-
-  EXPECT_EQ(expBf, bf1 | bf2);
+    EXPECT_EQ(1, vec1 != vec2);
 }
 
-TEST(TBitField, or_operator_applied_to_bitfields_of_non_equal_size)
+TEST(TVector, vector_plus_scalar)
 {
-  const int size1 = 4, size2 = 5;
-  TBitField bf1(size1), bf2(size2), expBf(size2);
-  // bf1 = 0011
-  bf1.SetBit(2);
-  bf1.SetBit(3);
-  // bf2 = 01010
-  bf2.SetBit(1);
-  bf2.SetBit(3);
-
-  // expBf = 01110
-  expBf.SetBit(1);
-  expBf.SetBit(2);
-  expBf.SetBit(3);
-
-  EXPECT_EQ(expBf, bf1 | bf2);
+    TVector<int> vec1(3, 0);
+    TVector<int> vec2(3, 0);
+    for (int i = 0; i < 3; i++)
+    {
+        vec1[i] = i;
+        vec2[i] = i + 2;
+    }
+    EXPECT_EQ(vec2, vec1+2);
 }
 
-TEST(TBitField, and_operator_applied_to_bitfields_of_equal_size)
+TEST(TVector, vector_minus_scalar)
 {
-  const int size = 4;
-  TBitField bf1(size), bf2(size), expBf(size);
-  // bf1 = 0011
-  bf1.SetBit(2);
-  bf1.SetBit(3);
-  // bf2 = 0101
-  bf2.SetBit(1);
-  bf2.SetBit(3);
-
-  // expBf = 0001
-  expBf.SetBit(3);
-
-  EXPECT_EQ(expBf, bf1 & bf2);
+    TVector<int> vec1(3, 0);
+    TVector<int> vec2(3, 0);
+    for (int i = 0; i < 3; i++)
+    {
+        vec1[i] = i;
+        vec2[i] = i - 2;
+    }
+    EXPECT_EQ(vec2, vec1-2);
 }
 
-TEST(TBitField, and_operator_applied_to_bitfields_of_non_equal_size)
+TEST(TVector, vector_multiply_scalar)
 {
-  const int size1 = 4, size2 = 5;
-  TBitField bf1(size1), bf2(size2), expBf(size2);
-  // bf1 = 0011
-  bf1.SetBit(2);
-  bf1.SetBit(3);
-  // bf2 = 01010
-  bf2.SetBit(1);
-  bf2.SetBit(3);
-
-  // expBf = 00010
-  expBf.SetBit(3);
-
-  EXPECT_EQ(expBf, bf1 & bf2);
+    TVector<int> vec1(3, 0);
+    for (int i = 0; i < 3; i++)
+        vec1[i] = i + 2;
+    TVector<int> vec2(3, 0);
+    for (int i = 0; i < 3; i++)
+        vec2[i] = (i + 2) * 3;
+    EXPECT_EQ(vec2, vec1 * 3);
 }
 
-TEST(TBitField, can_invert_bitfield)
+TEST(TVector, exception_vector_plus_vector_due_to_start_index)
 {
-  const int size = 2;
-  TBitField bf(size), negBf(size), expNegBf(size);
-  // bf = 01
-  bf.SetBit(1);
-  negBf = ~bf;
-
-  // expNegBf = 10
-  expNegBf.SetBit(0);
-
-  EXPECT_EQ(expNegBf, negBf);
+    TVector<int> vec1(3, 0);
+    TVector<int> vec2(3, 1);
+    ASSERT_ANY_THROW(vec1 + vec2);
 }
 
-TEST(TBitField, can_invert_large_bitfield)
+TEST(TVector, exception_vector_plus_vector_due_to_length)
 {
-  const int size = 38;
-  TBitField bf(size), negBf(size), expNegBf(size);
-  bf.SetBit(35);
-  negBf = ~bf;
-
-  for(int i = 0; i < size; i++)
-    expNegBf.SetBit(i);
-  expNegBf.ClrBit(35);
-
-  EXPECT_EQ(expNegBf, negBf);
+    TVector<int> vec1(3, 0);
+    TVector<int> vec2(4, 0);
+    ASSERT_ANY_THROW(vec1 + vec2);
 }
 
-TEST(TBitField, can_invert_many_random_bits_bitfield)
+TEST(TVector, vector_plus_vector)
 {
-  const int size = 38;
-  TBitField bf(size), negBf(size), expNegBf(size);
+    TVector<int> vec1(3, 0);
+    TVector<int> vec2(3, 0);
+    TVector<int> vec3(3, 0);
 
-  std::vector<int> bits;
-  bits.push_back(0);
-  bits.push_back(1);
-  bits.push_back(14);
-  bits.push_back(16);
-  bits.push_back(33);
-  bits.push_back(37);
+    for (int i = 0; i < 3; i++)
+    {
+        vec1[i] = i + 1;
+        vec2[i] = 4;
+        vec3[i] = i + 1 + 4;
+    }
 
-  for (unsigned int i = 0; i < bits.size(); i++)
-    bf.SetBit(bits[i]);
-
-  negBf = ~bf;
-
-  for(int i = 0; i < size; i++)
-    expNegBf.SetBit(i);
-  for (unsigned int i = 0; i < bits.size(); i++)
-    expNegBf.ClrBit(bits[i]);
-
-  EXPECT_EQ(expNegBf, negBf);
+    EXPECT_EQ(vec3, vec1 + vec2);
 }
 
-TEST(TBitField, bitfields_with_different_bits_are_not_equal)
+TEST(TVector, exception_vector_minus_vector_due_to_start_index)
 {
-  const int size = 4;
-  TBitField bf1(size), bf2(size);
-
-  bf1.SetBit(1);
-  bf1.SetBit(3);
-
-  bf2.SetBit(1);
-  bf2.SetBit(2);
-
-  EXPECT_NE(bf1, bf2);
+    TVector<int> vec1(3, 0);
+    TVector<int> vec2(3, 1);
+    ASSERT_ANY_THROW(vec1 - vec2);
 }
-*/
+TEST(TVector, exception_vector_minus_vector_due_to_length)
+{
+    TVector<int> vec1(3, 0);
+    TVector<int> vec2(2, 0);
+    ASSERT_ANY_THROW(vec1 - vec2);
+}
+
+TEST(TVector, vector_minus_vector)
+{
+    TVector<int> vec1(4, 0);
+    TVector<int> vec2(4, 0);
+    TVector<int> vec3(4, 0);
+
+    for (int i = 0; i < 4; i++)
+    {
+        vec1[i] = i + 1;
+        vec2[i] = 4;
+        vec3[i] = i + 1 - 4;
+    }
+
+    EXPECT_EQ(vec3, vec1 - vec2);
+}
+
+TEST(TVector, exception_vector_multiply_vector_due_to_start_index)
+{
+    TVector<int> vec1(3, 0);
+    TVector<int> vec2(3, 1);
+    ASSERT_ANY_THROW(vec1 * vec2);
+}
+TEST(TVector, exception_vector_multiply_vector_due_to_length)
+{
+    TVector<int> vec1(3, 0);
+    TVector<int> vec2(2, 0);
+    ASSERT_ANY_THROW(vec1 * vec2);
+}
+
+TEST(TVector, vector_multiply_vector)
+{
+    TVector<int> vec1(4, 0);
+    TVector<int> vec2(4, 0);
+    TVector<int> vec3(4, 0);
+
+    for (int i = 0; i < 4; i++) 
+    {
+        vec1[i] = i;
+        vec2[i] = i+1;
+    }
+
+    EXPECT_EQ(20, vec1 * vec2);
+}

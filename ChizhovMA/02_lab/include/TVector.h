@@ -35,7 +35,7 @@ public:
 
 	friend istream& operator >>(istream& in, TVector<T>& obj)
 	{
-		for (int i = 0; i < obj.size; i++)
+		for (int i = 0; i < obj.GetSize(); i++)
 		{
 			in >> obj.vec[i];
 			in.ignore();
@@ -89,13 +89,10 @@ int TVector<T>::GetStart() const
 template <typename T>
 T& TVector<T>::operator [](const int index)
 {
-	// написать проверку 
-	
+	if (index < 0 || index >= size + start_ind) 
+		throw "error";
 	if (index < start_ind)
-	{
-		T er = T();
-		return er;
-	}
+		throw "error";
 	
 	return vec[index - start_ind];
 }
@@ -103,11 +100,13 @@ template <typename T>
 int TVector<T>::operator==(const TVector<T>& obj) const
 {
 	if (size != obj.size || start_ind != obj.start_ind)
-		return false;
+		return 0;
+	if (this == &obj)
+		return 1;
 	for (int i = 0; i < size; i++)
 		if (vec[i] != obj.vec[i])
-			return false;
-	return true;
+			return 0;
+	return 1;
 };
 template <typename T>
 int TVector<T>::operator!=(const TVector<T>& obj) const
@@ -175,13 +174,13 @@ const TVector<T>& TVector<T>::operator=(const TVector<T>& obj)
 {
 	if (*this == obj)
 		return (*this);
-	if (size != obj.size || start_ind != obj.start_ind)
+	if (size != obj.size)
 	{
 		delete[] vec;
 		size = obj.size;
-		start_ind = obj.start_ind;
 		vec = new T[size];
 	}
+	start_ind = obj.start_ind;
 	for (int i = 0; i < size; i++)
 		vec[i] = obj.vec[i];
 	return (*this);

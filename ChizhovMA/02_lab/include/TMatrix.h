@@ -29,14 +29,14 @@ public:
 			in >> m.vec[i];
 
 		return in;
-	}
+	};
 	friend ostream& operator <<(ostream& out, TMatrix<T>& m)
 	{
 		for (int i = 0; i < m.GetSize(); i++)
 			out << m.vec[i] << endl;
-		
+
 		return out;
-	}
+	};
 };
 
 template <typename T>
