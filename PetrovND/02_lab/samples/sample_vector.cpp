@@ -8,9 +8,12 @@ int main() {
 		int userInput;
 		cout << "Enter the number of vector components" << endl;
 		cin >> userInput;
+		
         Vector<int> v1(5);
 		Vector<int> v2(5);
 		Vector<int> v3(userInput);
+		
+		cin >> v3;
 	
 		for (int i = 0; i < 5; ++i) {
 			v1[i] = i * 2;
