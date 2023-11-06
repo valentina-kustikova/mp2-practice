@@ -11,7 +11,7 @@ void test_tmatrix()
 	cout << "m1+m2:\n" << m1 + m2 << endl;
 	cout << "m1-m2:\n" << m1 - m2 << endl;
 	cout << "m1*m2:\n" << m1 * m2 << endl;
-	cout << "m1.size(): " << m1.Getsize() << endl;
+	cout << "m1.size(): " << m1.GetSize() << endl;
 	cout << "m1 == m2: " << (m1 == m2) << endl;
 	m1 = m2;
 	cout << "m1 == m2 after m1 = m2: " << (m1 == m2) << endl;

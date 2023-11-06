@@ -13,7 +13,7 @@ void test_tvector()
 	cout << "v1*v2: " << v1 * v2 << endl;
 	cout << "v1-2: " << v1 - 2 << endl;
 	cout << "v2 + 2: " << v2 + 2 << endl;
-	cout << "v1.size(): " << v1.Getsize() << endl;
+	cout << "v1.size(): " << v1.GetSize() << endl;
 	cout << "v1 == v2: " << (v1 == v2) << endl;
 	v1 = v2;
 	cout << "v1 == v2 after v1 = v2: " << (v1 == v2) << endl;
