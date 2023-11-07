@@ -49,12 +49,12 @@ public:
 		for (int i = 0; i < m.size; i++) {
 			for (int z = 0; z < i; z++) {
 				std::cout.width(5);
-				out << "0 ";
+				out << "0";
 			}
 
 			for (int j = 0; j < m.pVector[i].GetSize(); j++) {
 				std::cout.width(5);
-				out << m.pVector[i][j] << " ";
+				out << m.pVector[i][j];
 			}
 			out << "\n";
 		}

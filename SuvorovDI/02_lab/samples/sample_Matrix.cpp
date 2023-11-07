@@ -2,7 +2,6 @@
 #include "Matrix.h"
 #include <iostream>
 
-
 int main() {
 	TMatrix<int> m(5);
 	TMatrix<int> d(5);

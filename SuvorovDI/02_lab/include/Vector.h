@@ -41,7 +41,7 @@ public:
 		return in;
 	}
 
-	friend std::ostream& operator<< (std::ostream& out, TVector& v) {
+	friend std::ostream& operator<< (std::ostream& out, TVector<ValueType>& v) {
 		out << "\nVector with size " << v.size << std::endl;
 		for (int i = 0; i < v.size; i++)
 			out << v.pVector[i] << "  ";
@@ -62,8 +62,8 @@ TVector<ValueType>::TVector(int size, int startIndex) {
 	this->startIndex = startIndex;
 
 	pVector = new ValueType[size];
-  // for (int i = 0; i < size; i++)
-  //   pVector[i] = 0; НО ОБНУЛЕНИЕ БУДЕТ СПРАВЕДЛИВО ТОЛЬКО ДЛЯ ЧИСЛОВЫХ ТИПОВ ValueType, ЧТО ДЕЛАТЬ ЕСЛИ ЭТО ПОЛЬЗОВАТЕЛЬСКИЙ ТИП???
+  for (int i = 0; i < size; i++)
+    pVector[i] = 0;
 }
 
 template <typename ValueType>
