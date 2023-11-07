@@ -18,23 +18,19 @@ MatrixDotProductTest: 			Проверка оператора скалярног�
 
 // DefaultConstructorTests
 TEST(TMatrix, DefaultConstructorTest){
-	
+	ASSERT_NO_THROW(TMatrix<int> m);
 }
 
 // ParameterizedConstructorTests
 TEST(TMatrix, ParameterizedConstructorTest_PositiveLength){
-	ASSERT_NO_THROW(TMatrix<int> m);
-}
-
-TEST(TMatrix, throw_ParameterizedConstructorTest_ZeroLength){
 	ASSERT_NO_THROW(TMatrix<int> m(3));
 }
 
-TEST(TMatrix, throw_ParameterizedConstructorTest_NegativeLength){
+TEST(TMatrix, throw_ParameterizedConstructorTest_ZeroLength){
 	ASSERT_ANY_THROW(TMatrix<int> m(0));
 }
 
-TEST(TMatrix, throw_ParameterizedConstructorTest_NegativeStartIndex){
+TEST(TMatrix, throw_ParameterizedConstructorTest_NegativeLength){
 	ASSERT_ANY_THROW(TMatrix<int> m(-3));
 }
 
