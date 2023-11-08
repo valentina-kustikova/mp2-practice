@@ -102,11 +102,11 @@ TSet TSet::operator~(void) // дополнение
     return TSet(~BitField);
 }
 
-// перегрузка ввода/вывода
-
 istream& operator>>(istream& istr, TSet& s) // ввод
 {
-    for (int i = 0; i < s.MaxPower; ++i)
+    cout << "Input a size of your set:\n";
+    int size; cin >> size;
+    for (int i = 0; i < size; ++i)
     {
         cout << "Input element: ";
         int val; istr >> val;

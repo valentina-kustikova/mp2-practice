@@ -188,6 +188,8 @@ istream& operator>>(istream& istr, TBitField& bf) // ввод
 		istr >> val;
 		if ((val != 0) && (val != 1))
 			throw "Wrong element ";
+		if ((val > bf.BitLen) && (val < 0))
+			throw "more or less then val";
 		if (val)
 			bf.SetBit(i);
 	}

@@ -3,13 +3,13 @@
 
 int main()
 {
-    cout << "Input a size of your set:\n";
+    cout << "Input a max size of your set:\n";
     int size; 
     cin >> size;
-    cout << "Input your 1 set:\n";
+
     TSet s1(size);
     cin >> s1;
-    cout << "Input your 2 set:\n";
+;
     TSet s2(size);
     cin >> s2;
 
