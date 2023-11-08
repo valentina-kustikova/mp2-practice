@@ -18,8 +18,9 @@ void workitwillis()
     if (TS1 != TS2)
         cout << "NOT ";
     cout << "equal" << endl;
-    cout << "All their elements: " << TS1+TS2 << endl;
+   
     cout << "Their mutual elements: " << (TS1*TS2) << endl;
+    cout << "All their elements: " << (TS1 + TS2) << endl;
     cout << "Elements that are not in the 1st set: " << ~TS1 << endl;
     cout << "Let's add a 1 to a 1st set on its second position: " << (TS1 + 1) << endl;
     cout << "and now we delete its first one: " << (TS1 - 0) << endl;
