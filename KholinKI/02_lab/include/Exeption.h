@@ -1,6 +1,8 @@
 #ifndef _EXEPTION_H
 #define _EXEPTION_H
 
+//exeption
+
 using namespace std;
 enum TypeExeption { WRONG_SIZE,WRONG_INDEX,WRONG_DIMENSION };
 template <class T>
