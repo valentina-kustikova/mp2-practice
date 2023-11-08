@@ -61,7 +61,8 @@ TMatrix<ValType>::TMatrix<ValType>(const TMatrix<ValType> &mt):TVector<TVector<V
 }
 
 template <class ValType> 
-TMatrix<ValType>::TMatrix<ValType>(const TVector<TVector<ValType>> &mt):TVector<TVector<ValType>>(mt) 
+TMatrix<ValType>::TMatrix<ValType>(const TVector<TVector<ValType>> &mt):
+    TVector<TVector<ValType>>(mt) 
 {
 
 }
