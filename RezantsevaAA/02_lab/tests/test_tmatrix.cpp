@@ -60,7 +60,7 @@ TEST(TMatrix, matrixes_are_not_equal_if_are_not_equal)
 	TMatrix<int> m1(4);
 	TMatrix<int> m2(3);
 
-	ASSERT_TRUE(m1 != m2);
+	EXPECT_NE(m1, m2);
 }
 
 TEST(TMatrix, An_equality_matrix_false_chack)

@@ -2,9 +2,14 @@
 
 #include <gtest.h>
 
-TEST(TVector, can_create_vector_with_positive_length)
+TEST(TVector, can_create_vector_with_positive_length_without_startindex)
 {
 	ASSERT_NO_THROW(TVector<int>(3));
+}
+
+TEST(TVector, can_create_vector_with_positive_length_with_startindex)
+{
+	ASSERT_NO_THROW(TVector<int>(3, 1));
 }
 
 TEST(TVector, cannot_create_vector_with_negative_length)
@@ -78,7 +83,7 @@ TEST(TVector, can_assign_vectors_of_equal_size)
 	ASSERT_NO_THROW(v1 = v2);
 }
 
-TEST(TVector, can_assign_vectors_of_non_size)
+TEST(TVector, can_assign_vectors_of_non_equal_size)
 {
 	TVector<int> v1(4);
 	TVector<int> v2(5);
@@ -120,7 +125,7 @@ TEST(TVector, can_mult)
 	}
 
 	v1 = v1 * 4;
-	ASSERT_TRUE(v1 == v2);
+	EXPECT_EQ(v1, v2);
 }
 
 // vec add const 
