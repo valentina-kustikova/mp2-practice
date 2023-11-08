@@ -8,9 +8,9 @@ TEST(TMatrix, can_create_matrix_with_positive_size)
     ASSERT_NO_THROW(TMatrix<int> m(3));
 }
 
-TEST(TVector, cant_create_matrix_with_negative_size)
+TEST(TMatrix, cant_create_matrix_with_negative_size)
 {
-    ASSERT_NO_THROW(TMatrix<int> m(-3));
+    ASSERT_ANY_THROW(TMatrix<int> m(-3));
 }
 
 TEST(TMatrix, checking_the_copy_constructor)

@@ -2,6 +2,7 @@
 #define _TVECTOR_H
 //#include <cmath>
 #include <math.h>
+#include <iostream>
 using namespace std;
 
 template <class T>
