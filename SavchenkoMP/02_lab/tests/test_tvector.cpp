@@ -30,6 +30,10 @@ TEST(TVector, ParameterizedConstructorTest_PositiveLength){
 	ASSERT_NO_THROW(TVector<int> v(3));
 }
 
+TEST(TVector, ParameterizedConstructorTest_PositiveLengthPositiveStartIndex) {
+	ASSERT_NO_THROW(TVector<int> v(3, 1));
+}
+
 TEST(TVector, throw_ParameterizedConstructorTest_ZeroLength){
 	ASSERT_ANY_THROW(TVector<int> v(0));
 }
@@ -71,11 +75,13 @@ TEST(TVector, IndexingTest){
 }
 
 TEST(TVector, throw_IndexingTest_TooLargeIndex){
-	TVector<int> v1(3);
-	ASSERT_ANY_THROW(v1[5]);
+	TVector<int> v(3);
+	ASSERT_ANY_THROW(v[5]);
+}
 
-	TVector<int> v2(3, 1);
-	ASSERT_ANY_THROW(v2[5]);
+TEST(TVector, throw_IndexingTest_TooLargeIndex_WithStartIndex) {
+	TVector<int> v(3, 1);
+	ASSERT_ANY_THROW(v[5]);
 }
 
 TEST(TVector, throw_IndexingTest_NegativeIndex){
@@ -100,16 +106,18 @@ TEST(TVector, EqualityTest_Equal) {
 	}
 
 	EXPECT_EQ(1, v1 == v2);
+}
 
-
-	TVector<int> v3(size, 2);
-	TVector<int> v4(size, 2);
-	for (int i = v3.GetStartIndex(); i < size; i++) {
-		v3[i] = i;
-		v4[i] = i;
+TEST(TVector, EqualityTest_Equal_WithStartIndex) {
+	int size = 3;
+	TVector<int> v1(size, 2);
+	TVector<int> v2(size, 2);
+	for (int i = v1.GetStartIndex(); i < size; i++) {
+		v1[i] = i;
+		v2[i] = i;
 	}
 
-	EXPECT_EQ(1, v3 == v4);
+	EXPECT_EQ(1, v1 == v2);
 }
 
 TEST(TVector, EqualityTest_InequalSize) {
@@ -143,16 +151,18 @@ TEST(TVector, InequalityTest_Equal) {
 	}
 	
 	EXPECT_EQ(0, v1 != v2);
+}
 
-
-	TVector<int> v3(size, 2);
-	TVector<int> v4(size, 2);
-	for (int i = v3.GetStartIndex(); i < size; i++) {
-		v3[i] = i;
-		v4[i] = i;
+TEST(TVector, InequalityTest_Equal_WithStartIndex) {
+	int size = 3;
+	TVector<int> v1(size, 2);
+	TVector<int> v2(size, 2);
+	for (int i = v1.GetStartIndex(); i < size; i++) {
+		v1[i] = i;
+		v2[i] = i;
 	}
 
-	EXPECT_EQ(0, v3 != v4);
+	EXPECT_EQ(0, v1 != v2);
 }
 
 TEST(TVector, InequalityTest_InequalSize) {

@@ -49,7 +49,7 @@ TEST(TMatrix, GetSizeTest){
 }
 
 // IndexingTests
-TEST(TMatrix, IndexingTest){
+TEST(TMatrix, IndexingTest_Value){
 	int size = 3;
 	
 	// 1 2 3
@@ -60,20 +60,44 @@ TEST(TMatrix, IndexingTest){
 		for (int j = i; j < size; j++)
 			m[i][j] = i + j + 1;
 
-	
 	int expValue = 4;
 	EXPECT_EQ(expValue, m[1][2]);
+}
 
-	TVector<int> expv1(size);
-	expv1[0] = 1;
-	expv1[1] = 2;
-	expv1[2] = 3;
-	EXPECT_EQ(expv1, m[0]);
+TEST(TMatrix, IndexingTest_Vector) {
+	int size = 3;
 
-	TVector<int> expv2(size - 1, 1);
-	expv2[1] = 3;
-	expv2[2] = 4;
-	EXPECT_EQ(expv2, m[1]);
+	// 1 2 3
+	// 0 3 4
+	// 0 0 5
+	TMatrix<int> m(size);
+	for (int i = 0; i < size; i++)
+		for (int j = i; j < size; j++)
+			m[i][j] = i + j + 1;
+
+	TVector<int> expv(size);
+	expv[0] = 1;
+	expv[1] = 2;
+	expv[2] = 3;
+	EXPECT_EQ(expv, m[0]);
+
+}
+
+TEST(TMatrix, IndexingTest_VectorWithStartIndex) {
+	int size = 3;
+
+	// 1 2 3
+	// 0 3 4
+	// 0 0 5
+	TMatrix<int> m(size);
+	for (int i = 0; i < size; i++)
+		for (int j = i; j < size; j++)
+			m[i][j] = i + j + 1;
+
+	TVector<int> expv(size - 1, 1);
+	expv[1] = 3;
+	expv[2] = 4;
+	EXPECT_EQ(expv, m[1]);
 }
 
 TEST(TMatrix, throw_IndexingTest_TooLargeIndex){
@@ -111,15 +135,19 @@ TEST(TMatrix, EqualityTest_Equal){
 		}
 
 	EXPECT_EQ(1, m1 == m2);
+}
+
+TEST(TMatrix, EqualityTest_Inequal) {
+	int size = 3;
 
 	TMatrix<int> m3(size);
 	TMatrix<int> m4(size);
 	for (int i = 0; i < size; i++)
 		for (int j = i; j < size; j++) {
-			m1[i][j] = i + 1;
-			m2[i][j] = i + 2;
+			m3[i][j] = i + 1;
+			m4[i][j] = i + 2;
 		}
-	EXPECT_EQ(0, m1 == m2);
+	EXPECT_EQ(0, m3 == m4);
 }
 
 TEST(TMatrix, EqualityTest_InequalSize){
@@ -142,15 +170,19 @@ TEST(TMatrix, InequalityTest_Equal){
 		}
 
 	EXPECT_EQ(0, m1 != m2);
+}
+
+TEST(TMatrix, InequalityTest_Inequal) {
+	int size = 3;
 
 	TMatrix<int> m3(size);
 	TMatrix<int> m4(size);
 	for (int i = 0; i < size; i++)
 		for (int j = i; j < size; j++) {
-			m1[i][j] = i + 1;
-			m2[i][j] = i + 2;
+			m3[i][j] = i + 1;
+			m4[i][j] = i + 2;
 		}
-	EXPECT_EQ(1, m1 != m2);
+	EXPECT_EQ(1, m3 != m4);
 }
 
 TEST(TMatrix, InequalityTest_InequalSize){
@@ -192,31 +224,36 @@ TEST(TMatrix, AssignmentOperatorTest_EqualSize) {
 	EXPECT_EQ(expm, m);
 }
 
-TEST(TMatrix, AssignmentOperatorTest_DifferentSize) {
+TEST(TMatrix, AssignmentOperatorTest_DifferentSize_SmallerToLarger) {
 	int size1 = 3;
 	int size2 = 4;
 
-	TMatrix<int> m1(size1), expm1(size2);
+	TMatrix<int> m(size1), expm(size2);
 
 	for (int i = 0; i < size2; i++)
 		for (int j = i; j < size2; j++) {
-			expm1[i][j] = i + 1;
+			expm[i][j] = i + 1;
 		}
 
-	m1 = expm1;
+	m = expm;
 
-	EXPECT_EQ(expm1, m1);
+	EXPECT_EQ(expm, m);
+}
 
-	TMatrix<int> m2(size2), expm2(size1);
+TEST(TMatrix, AssignmentOperatorTest_DifferentSize_LargerToSmaller) {
+	int size1 = 3;
+	int size2 = 4;
+
+	TMatrix<int> m(size2), expm(size1);
 
 	for (int i = 0; i < size1; i++)
 		for (int j = i; j < size1; j++) {
-			expm1[i][j] = i + 1;
+			expm[i][j] = i + 1;
 		}
 
-	m1 = expm1;
+	m = expm;
 
-	EXPECT_EQ(expm1, m1);
+	EXPECT_EQ(expm, m);
 }
 
 // MatrixAdditionTests
@@ -270,7 +307,7 @@ TEST(TMatrix, throw_MatrixSubtractionTest_InequalSize){
 }
 
 // MatrixDotProductTests
-TEST(TMatrix, MatrixDotProductTest){
+TEST(TMatrix, MatrixMultiTest){
 	int size = 3;
 
 	TMatrix<int> m1(size), m2(size), expm(size);
@@ -291,7 +328,7 @@ TEST(TMatrix, MatrixDotProductTest){
 	EXPECT_EQ(expm, m1 * m2);
 }
 
-TEST(TMatrix, throw_MatrixDotProductTest_InequalSize){
+TEST(TMatrix, throw_MatrixMultiTest_InequalSize){
 	int size1 = 3;
 	int size2 = 4;
 
