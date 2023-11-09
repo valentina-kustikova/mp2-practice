@@ -33,7 +33,7 @@ void TSet::DelElem(const int Elem)
     return BitField.ClrBit(Elem);
 }
 
-TSet& TSet::operator=(const TSet& s)
+const TSet& TSet::operator=(const TSet& s)
 {
     if (this == &s)
         return *this;
@@ -110,10 +110,11 @@ istream& operator>>(istream& istr, TSet& s)
 
 ostream& operator<<(ostream& ostr, const TSet& s)
 {
-    const int Z = s.MaxPower - 1;
-    for (int i = 0; i <= Z; ++i)
+    for (int i = 0; i < s.MaxPower; i++)
     {
-        ostr << s.IsMember(i) << " ";
+        if (s.IsMember(i))
+            ostr << i << " ";
+        
     }
     return ostr;
 }
