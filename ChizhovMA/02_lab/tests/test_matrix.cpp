@@ -29,6 +29,12 @@ TEST(TMatrix, can_get_size)
 	EXPECT_EQ(3, m.GetSize());
 }
 
+TEST(TMatrix, can_get_start_index)
+{
+	TMatrix<int> m(3);
+	EXPECT_EQ(1, m[1].GetStart());
+}
+//index
 TEST(TMatrix, index_test_matrix)
 {
 	TMatrix<int> m(3);
@@ -42,20 +48,28 @@ TEST(TMatrix, index_test_matrix)
 	EXPECT_EQ(vec2, m[1]);
 }
 
+TEST(TMatrix, index_test_matrix_value)
+{
+	TMatrix<int> m(3);
+	for (int i = 0; i < 3; i++)
+		for (int j = i; j < 3; j++)
+			m[i][j] = i + j + 1;
+
+	EXPECT_EQ(3, m[1][1]);
+}
+
 TEST(TMatrix, large_index_test)
 {
 	TMatrix<int> m(3);
 
 	ASSERT_ANY_THROW(m[3]);
-
-	ASSERT_ANY_THROW(m[0][4]);
 }
 
-TEST(TMatrix, large_start_index)
+TEST(TMatrix, large_index_vector_test)
 {
 	TMatrix<int> m(3);
 
-	ASSERT_ANY_THROW(m[3][0]);
+	ASSERT_ANY_THROW(m[0][4]);
 }
 
 TEST(TMatrix, negative_index)
@@ -65,20 +79,13 @@ TEST(TMatrix, negative_index)
 	ASSERT_ANY_THROW(m[-1]);
 }
 
-TEST(TMatrix, negative_start_index)
-{
-	TMatrix<int> m(3);
-
-	ASSERT_ANY_THROW(m[-1][0]);
-}
-
 TEST(TMatrix, less_than_start_index)
 {
 	TMatrix<int> m(3);
 
 	ASSERT_ANY_THROW(m[1][0]);
 }
-
+//equal
 TEST(TMatrix, comparison_for_equality_true)
 {
 	TMatrix<int> m1(3);
@@ -105,14 +112,14 @@ TEST(TMatrix, comparison_for_equality_false)
 	EXPECT_EQ(0, m1 == m2);
 }
 
-TEST(TMatrix, comparison_for_equality_with_diferent_length)
+TEST(TMatrix, comparison_for_equality_with_diferent_size)
 {
 	TMatrix<int> m1(3);
 	TMatrix<int> m2(4);
 
 	EXPECT_EQ(0, m1 == m2);
 }
-
+//inequal
 TEST(TMatrix, comparison_for_inequality_true)
 {
 	TMatrix<int> m1(3);
@@ -140,14 +147,14 @@ TEST(TMatrix, comparison_for_inequality_false)
 	EXPECT_EQ(0, m1 != m2);
 }
 
-TEST(TMatrix, comparison_for_inequality_with_diferent_length)
+TEST(TMatrix, comparison_for_inequality_with_diferent_size)
 {
 	TMatrix<int> m1(3);
 	TMatrix<int> m2(4);
 
 	EXPECT_EQ(1, m1 != m2);
 }
-
+//operator=
 TEST(TMatrix, assignment_check)
 {
 	TMatrix<int> m1(3);
@@ -163,7 +170,7 @@ TEST(TMatrix, assignment_check)
 	EXPECT_EQ(m2, m1);
 }
 
-TEST(TMatrix, assignment_with_different_length)
+TEST(TMatrix, assignment_with_different_size)
 {
 	TMatrix<int> m1(3);
 	TMatrix<int> m2(4);
@@ -176,7 +183,7 @@ TEST(TMatrix, assignment_with_different_length)
 
 	EXPECT_EQ(m2, m1);
 }
-
+//+matrix
 TEST(TMatrix, matrix_plus_matrix) 
 {
 	TMatrix<int> m1(3);
@@ -201,7 +208,7 @@ TEST(TMatrix, exception_matrix_plus_matrix)
 
 	ASSERT_ANY_THROW(m1 + m2);
 }
-
+//-matrix
 TEST(TMatrix, matrix_minus_matrix) 
 {
 	TMatrix<int> m1(3);
@@ -226,8 +233,8 @@ TEST(TMatrix, exception_matrix_minus_matrix)
 
 	ASSERT_ANY_THROW(m1 - m2);
 }
-
-TEST(TMatrix, MatrixDotProductTest) 
+//*matrix
+TEST(TMatrix, matrix_multiply_matrix)
 {
 	TMatrix<int> m1(3);
 	TMatrix<int> m2(3);
