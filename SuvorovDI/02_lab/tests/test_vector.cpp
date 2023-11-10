@@ -130,9 +130,44 @@ TEST(TVector, checking_a_result_of_the_comparison_operation_for_vectors_with_dif
   EXPECT_NE(v1, v2);
 }
 
+TEST(TVector, checking_self_assignment) {
+  TVector<int> v1(7);
+
+  v1 = v1;
+  EXPECT_EQ(v1 = v1, v1);
+}
+
+TEST(TVector, checking_the_assignment_operation_for_same_length_vectors) {
+  TVector<int> v1(7);
+  TVector<int> v2(7);
+
+  v1[6] = 1;
+  v2[4] = -2;
+
+  v2[0] = 4;
+  v1[4] = -1;
+
+  v1 = v2;
+  EXPECT_EQ(v1, v2);
+}
+
 TEST(TVector, checking_the_assignment_operation) {
   TVector<int> v1(7);
   TVector<int> v2(10);
+
+  v1[6] = 1;
+  v2[4] = -2;
+
+  v2[0] = 4;
+  v1[4] = -1;
+
+  v1 = v2;
+  EXPECT_EQ(v1, v2);
+}
+
+TEST(TVector, checking_the_assignment_operation_for_vectors_with_different_start_indexes) {
+  TVector<int> v1(10, 4);
+  TVector<int> v2(10, 1);
 
   v1[6] = 1;
   v2[4] = -2;
@@ -166,7 +201,6 @@ TEST(TVector, checking_the_correct_result_of_vector_scalar_mult) {
 TEST(TVector, checking_the_correct_result_of_vector_scalar_plus) {
   TVector<int> v(4);
   TVector<int> expect_v(4);
-
   
   v[0] = 1;
   v[1] = 0;
@@ -225,9 +259,22 @@ TEST(TVector, checking_the_correct_result_of_vector_plus) {
   EXPECT_EQ(v1 + v2, expect_v);
 }
 
-TEST(TVector, cannot_add_two_vectors_of_different_lengths) {
+TEST(TVector, cannot_add_two_vectors_with_different_lengths) {
   TVector<int> v1(4);
   TVector<int> v2(2);
+
+  v1[0] = 2;
+  v2[1] = 4;
+
+  ASSERT_ANY_THROW(v1 + v2);
+}
+
+TEST(TVector, cannot_add_two_vectors_with_different_start_indexes) {
+  TVector<int> v1(4, 2);
+  TVector<int> v2(4, 6);
+
+  v1[0] = 2;
+  v2[1] = 4;
 
   ASSERT_ANY_THROW(v1 + v2);
 }
@@ -255,9 +302,22 @@ TEST(TVector, checking_the_correct_result_of_vector_minus) {
   EXPECT_EQ(v1 - v2, expect_v);
 }
 
-TEST(TVector, cannot_subtract_two_vectors_of_different_lengths) {
+TEST(TVector, cannot_subtract_two_vectors_with_different_lengths) {
   TVector<int> v1(4);
-  TVector<int> v2(2);
+  TVector<int> v2(3);
+
+  v1[0] = 2;
+  v2[1] = 23;
+
+  ASSERT_ANY_THROW(v1 - v2);
+}
+
+TEST(TVector, cannot_subtract_two_vectors_with_different_start_indexes) {
+  TVector<int> v1(4, 2);
+  TVector<int> v2(4, 6);
+
+  v1[0] = 2;
+  v2[1] = 4;
 
   ASSERT_ANY_THROW(v1 - v2);
 }
@@ -279,9 +339,22 @@ TEST(TVector, checking_the_correct_result_of_vector_mult) {
   EXPECT_EQ(v1 * v2, 4.0);
 }
 
-TEST(TVector, cannot_multiply_two_vectors_of_different_lengths) {
+TEST(TVector, cannot_multiply_two_vectors_with_different_lengths) {
   TVector<int> v1(4);
   TVector<int> v2(2);
+
+  v1[0] = 3;
+  v2[1] = -4;
+
+  ASSERT_ANY_THROW(v1 * v2);
+}
+
+TEST(TVector, cannot_multiply_two_vectors_with_different_start_indexes) {
+  TVector<int> v1(4, 2);
+  TVector<int> v2(4, 6);
+
+  v1[0] = 2;
+  v2[1] = 4;
 
   ASSERT_ANY_THROW(v1 * v2);
 }
