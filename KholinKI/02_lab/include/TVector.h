@@ -5,7 +5,7 @@
 #include <iostream>
 #include <limits>
 #include <iomanip>
-#include "Exeption .h"
+#include "Exeption.h"
 
 using namespace std;
 
