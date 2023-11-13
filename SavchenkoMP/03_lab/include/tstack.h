@@ -8,8 +8,8 @@ private:
 	int top;
 	T* elems;
 public:
-	TStack(int _maxSize = 10);
-	TStack(const TStack<T>& s);
+	TStack(int _maxSize = 50);
+	TStack(const TStack<T>& s, int extraSize = 0);
 	virtual ~TStack();
 
 	bool IsEmpty(void) const noexcept;
@@ -19,6 +19,8 @@ public:
 
 	void Push(const T& e);
 	void Pop();
+
+	void DUBUG_Print();
 };
 
 template <typename T>
@@ -29,8 +31,10 @@ TStack<T>::TStack(int _maxSize) {
 	elems = new T[maxSize];
 }
 template <typename T>
-TStack<T>::TStack(const TStack<T>& s) {
-	maxSize = s.maxSize;
+TStack<T>::TStack(const TStack<T>& s, int extraSize) {
+	if (extraSize < 0) throw "Error: Stack extra size less than 0.";
+
+	maxSize = s.maxSize + extraSize;
 	top = s.top;
 	elems = new T[maxSize];
 
@@ -66,6 +70,12 @@ template <typename T>
 void TStack<T>::Pop() {
 	if (IsEmpty()) throw "Error: stack is empty.";
 	top--;
+}
+
+template <typename T>
+void TStack<T>::DUBUG_Print() {
+	for (int i = 0; i < top; i++)
+		cout << elems[i] << ' ';
 }
 
 #endif // !_TSTACK_H
