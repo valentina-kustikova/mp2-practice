@@ -25,9 +25,16 @@ int main() {
 			{'H', 0.5}
 		};
 
+		TArithmeticExpression test(b);
+		cout << test.GetInfix() << endl;
+		cout << test.GetPostfix() << endl;
+		
+		test.SetValues(values);
+		cout << test.Calculate() << endl;
+
 		//TStack<char> test = ConvertToPostfixForm(b);
 		//test.DUBUG_Print();
-		cout << Calculate(refPF, values) << endl;
+		//cout << Calculate(refPF, values) << endl;
 		
 		/*test.PrintInfixForm();
 		cout << endl;
