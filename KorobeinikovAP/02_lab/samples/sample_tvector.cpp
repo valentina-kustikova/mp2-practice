@@ -31,7 +31,16 @@ int main()
 
     int h;
     h = a * b;
-    cout << "g = a * b: " << h << endl;
+    cout << "h = a * b: " << h << endl;
+
+    bool x = (a == a);
+    cout << "(a == a) = " << x << endl;
+    x = (a == b);
+    cout << "(a == b) = " << x << endl;
+    x = (a != a);
+    cout << "(a != a) = " << x << endl;
+    x = (a != b);
+    cout << "(a != b) = " << x << endl;
 
     return 0;
 }

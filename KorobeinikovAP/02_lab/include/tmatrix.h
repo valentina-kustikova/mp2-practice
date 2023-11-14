@@ -30,6 +30,9 @@ public:
 
   friend istream& operator>>(istream& istr, TMatrix<T>& m) {
 	  for (int i = 0; i < m.n; ++i) {
+		  int x = m.GetSize() - m.coor[i].GetStart_index();
+		  cout << "Enter line number  " << m.coor[i].GetStart_index() + 1
+			   << ", there are " << x << " elements in it" << endl;
 		  istr >> m.coor[i];
 	  }
 	  return istr;

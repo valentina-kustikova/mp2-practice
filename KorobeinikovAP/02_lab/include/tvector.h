@@ -27,7 +27,7 @@ public:
 	~Vector();                                        // деструктор 
 	 
 	int GetSize() const noexcept;                     // Получить размерность вектора
-	int Vector<T>::GetStart_index() const noexcept;    // Получить стартовый индекс вектора
+	int GetStart_index() const noexcept;			  // Получить стартовый индекс вектора
 
 	T& operator[] (const int ind);                   // Прегрузка операции индексации
 	T& operator[] (const int ind) const;                   // Прегрузка операции индексации
