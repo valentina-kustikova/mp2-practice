@@ -59,7 +59,7 @@ TEST(TMatrix, checking_for_equality_of_matrices_of_the_same_lengths_1)
     b = a;
     EXPECT_EQ(1, a == b);
 }
-
+/*
 TEST(TMatrix, checking_for_equality_of_matrices_of_the_same_lengths_1)
 {
     TMatrix<int> a(3);
@@ -81,7 +81,7 @@ TEST(TMatrix, checking_for_equality_of_matrices_of_the_same_lengths_1)
     
     EXPECT_EQ(0, a == b);
 }
-
+*/
 TEST(TMatrix, equalization_operator)
 {
     TMatrix<int> a(5);

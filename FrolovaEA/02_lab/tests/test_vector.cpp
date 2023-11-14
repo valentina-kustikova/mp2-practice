@@ -332,3 +332,50 @@ TEST(TVector, scalar_product_of_vectors_of_the_same_length_and_startIndex)
     ASSERT_NO_THROW(a * b);
 }
 
+TEST(TVector, checking_for_equality_of_different_vectors_of_the_same_length_and_different_startIndex)
+{
+    TVector<int> a(3, 1);
+    TVector<int> b(3, 0);
+    for (int i = b.GetStartIndex(); i < 3; i++)
+    {
+        b[i] = i;
+    }
+    for (int i = a.GetStartIndex(); i < 3; i++)
+    {
+        a[i] = i;
+    }
+    EXPECT_EQ(0, (a == b));
+}
+
+TEST(TVector, checking_for_equality_of_different_vectors_of_the_same_length_and_equal_startIndex)
+{
+    TVector<int> a(3, 1);
+    TVector<int> b(3, 1);
+    for (int i = b.GetStartIndex(); i < 3; i++)
+    {
+        b[i] = i;
+    }
+    for (int i = a.GetStartIndex(); i < 3; i++)
+    {
+        a[i] = i;
+    }
+    EXPECT_EQ(1, (a == b));
+}
+
+TEST(TVector, checking_for_no_equality_of_different_vectors_of_the_same_length_and_equal_startIndex)
+{
+    TVector<int> a(3, 1);
+    TVector<int> b(3, 1);
+    for (int i = b.GetStartIndex(); i < 3; i++)
+    {
+        b[i] = i + 1;
+    }
+    for (int i = a.GetStartIndex(); i < 3; i++)
+    {
+        a[i] = i;
+    }
+    EXPECT_EQ(0, (a == b));
+}
+
+
+
