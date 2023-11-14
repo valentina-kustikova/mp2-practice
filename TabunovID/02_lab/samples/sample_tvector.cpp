@@ -3,7 +3,7 @@
 
 int main()
 {
-    cout << "Input a size of matrix\n";
+    cout << "Input a size of vectors\n";
     int size;
     cin >> size;
     Vector<int> A(size), B(size);
