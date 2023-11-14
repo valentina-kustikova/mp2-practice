@@ -9,7 +9,7 @@ void bitfield()
 	cout << "Enter bitfield 1:" << endl;
 	cin >> bf1;
 	cout << "Bitfield 1:" << "\t" << bf1 << endl;
-	TBitField bf2(n + 1);
+	TBitField bf2(n+1);
 	cout << "Enter bitfield 2: " << endl;;
 	cin >> bf2;
 	cout << "Bitfield 2:" << "\t" << bf2 << endl;
