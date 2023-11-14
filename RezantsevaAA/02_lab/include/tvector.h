@@ -29,7 +29,7 @@ public:
 	TVector operator-(const T& v);
 
 	TVector operator+(const TVector<T>& v); // v1 + v2
-	T operator*(const TVector<T>& v);
+	T operator*(const TVector<T>& v); //scalar
 	TVector operator-(const TVector<T>& v);
 
 	const TVector& operator=(const TVector<T>& v);
@@ -103,7 +103,7 @@ T& TVector<T> :: operator [](const int index)
 {
 	if (index < 0 || index >= size)
 
-		throw - 1;
+		throw "index can't be negative or bigger then size";
 	else
 		return pVec[index];
 }
@@ -199,7 +199,7 @@ template <typename T>
 T TVector<T>::operator*(const TVector<T>& v)
 {
 	if (size != v.size)
-		throw "Can't scalar multiply vectors with different!";
+		throw "Can't scalar multiply vectors with different size!";
 
 	if (start_index != v.start_index)
 		throw "Can't scalar multiply vectors with different indexes";

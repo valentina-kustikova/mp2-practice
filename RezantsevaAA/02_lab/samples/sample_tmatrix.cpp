@@ -14,7 +14,6 @@ int main()
             C[i][j] = A[i][j];
         }
     
-
    std::cout << "A:" << std::endl << A << std::endl;
    std::cout << "B:" << std::endl << B << std::endl;
    std::cout << "C:" << std::endl << C << std::endl;
