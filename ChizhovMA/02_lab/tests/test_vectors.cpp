@@ -534,8 +534,8 @@ TEST(TVector, exception_vector_multiply_vector_due_to_start_index)
 
 TEST(TVector, exception_vector_multiply_vector_due_to_length)
 {
-    TVector<int> vec1(3,0);
-    TVector<int> vec2(2,0);
+    TVector<int> vec1(3);
+    TVector<int> vec2(2);
     ASSERT_ANY_THROW(vec1 * vec2);
 }
 
