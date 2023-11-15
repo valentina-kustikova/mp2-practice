@@ -76,7 +76,7 @@ void TArithmeticExpression::SetValues() {
 		cin >> val;
 		operands[op.first] = val;
 	}
-	cout << endl;	
+	
 }
 void TArithmeticExpression::SetValues(map<char, double>& values) {
 	for (auto& op : operands) {
@@ -88,13 +88,11 @@ double TArithmeticExpression::Calculate() {
 	return Calculate(operands);
 }
 double TArithmeticExpression::Calculate(const map<char, double>& values) {
-	if ((&values) != (&operands)) {
-		for (auto& val : values) {
-			try {
-				operands.at(val.first) = val.second;
-			}
-			catch (out_of_range& e) {}
+	for (auto& val : values) {
+		try {
+			operands.at(val.first) = val.second;
 		}
+		catch (out_of_range& e) { }
 	}
 
 	TStack<double> st;
@@ -127,17 +125,12 @@ double TArithmeticExpression::Calculate(const map<char, double>& values) {
 			st.Pop();
 			leftOp = st.Top();
 			st.Pop();
-			st.Push(leftOp / rightOp);
+			st.Push(leftOp + rightOp);
 			break;
 		default:
 			st.Push(operands[lexem]);
 			break;
 		}
 	}
-
-	for (auto& val : operands) {
-		operands.at(val.first) = 0.0;
-	}
-
 	return st.Top();
 }
