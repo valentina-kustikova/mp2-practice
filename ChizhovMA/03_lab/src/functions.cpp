@@ -46,10 +46,8 @@ TStack<char> Postfix_Form(string str)
 				if (s == ')')
 				{
 					char sm = st2.Top();
-					while ((sm != '(') || (!st2.IsEmpty()))
+					while (sm != '(')
 					{
-						if (sm == '(')
-							break;
 						Add_to_Stack1(st1, st2, sm);
 						sm = st2.Top();
 					}
