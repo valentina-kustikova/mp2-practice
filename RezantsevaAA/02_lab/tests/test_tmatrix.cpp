@@ -76,7 +76,7 @@ TEST(TMatrix, matrixes_are_not_equal_if_are_not_equal_sizes)
 	EXPECT_NE(m1, m2);
 }
 
-TEST(TMatrix, An_equality_matrix_false_chack)
+TEST(TMatrix, An_equality_matrix_false_check)
 {
 	TMatrix <int> m1(3), m2(3);
 
