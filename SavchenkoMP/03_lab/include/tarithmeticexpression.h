@@ -2,6 +2,7 @@
 #define _TARITHMETIC_EXPRESSION_H
 
 #include <iostream>
+#include <string>
 #include <map>
 #include <vector>
 #include "tstack.h"
@@ -11,26 +12,38 @@ using namespace std;
 class TArithmeticExpression {
 private:
 	string infix;
-	string postfix;
-	vector<char> lexems;
-	static map<char, int> priority;
-	map<char, double> operands;
-	
+	vector<string> postfix;
+	vector<string> lexems;
+	static map<string, int> priority;
+	map<string, double> operands;
+
 	void Parse();
 	void ToPostfix();
 
 public:
-	TArithmeticExpression(string _infix);
+	TArithmeticExpression(const string& _infix);
 
 	string GetInfix() const { return infix; }
-	string GetPostfix() const { return postfix; }
+	vector<string> GetPostfix() const { return postfix; }
+	string GetStringPostfix() const;
 
-	vector<char> GetOperands() const;
+	vector<string> GetOperands() const;
 	void SetValues();
-	void SetValues(map<char, double>& values);
+	void SetValues(map<string, double>& values);
+	void ClearValues();
 
 	double Calculate();
-	double Calculate(const map<char, double>& values);
+	double Calculate(const map<string, double>& values);
+
+private:
+	bool IsOperator(const string& isopr) const;
+	bool IsConst(const string& isopd) const;
+
+	int FindOperator(int pos = 0) const;
+
+	//double StringToValue(const string& str) const;
+
+	void ConvertInfix();
 };
 
 #endif // !_TARITHMETIC_EXPRESSION_H
