@@ -22,11 +22,12 @@ public:
 
 	string GetInfix()const { return infix; }
 	string GetPostfix()const { return postfix; }
-	/*Vector<char> GetOperands()const;*/
+	vector<char> GetOperands()const;
+	map<char, double> SetOperands(const vector<char> operands);
 
 	void Parse();
 	void ToPostfix();
-	//double Calculate(const map<char, double>& values);
+	double Calculate(const map<char, double>& values);
 };
 
 template<typename T>
@@ -95,5 +96,78 @@ void ArithmeticExpression<T>::Parse() {
 		c = infix[i];
 		lexemes.push_back(c);
 	}
+}
+
+template<typename T>
+vector<char> ArithmeticExpression<T>::GetOperands()const {
+	vector<char> tmp;
+	auto it_begin{ operands.begin() };
+	auto it_end{ operands.end() };
+	while (it_begin != it_end) {
+		tmp.push_back(it_begin->first);
+		it_begin++;
+	}
+	return tmp;
+}
+
+template<typename T>
+map<char, double> ArithmeticExpression<T>::SetOperands(const vector<char> operands) {
+	map<char, double> tmp;
+	double value;
+	auto it_begin{operands.begin() }; 
+	auto it_end{ operands.end() };
+	while (it_begin != it_end) {
+		cout << "Enter value of operand " << *it_begin << ": ";
+		cin >> value;
+		tmp.insert({ *it_begin, value });
+		it_begin++;
+	}
+	return tmp;
+}
+
+template<typename T>
+double ArithmeticExpression<T>::Calculate(const map<char, double>& values) {
+	Stack<double> expr_operands;
+	char lexeme;
+	double left_op,right_op;
+	int i = 0;
+	while (i != postfix.size()) {
+		lexeme = postfix[i];
+		switch (lexeme) {
+		case '+':
+		{
+			right_op = expr_operands.Pop();
+			left_op = expr_operands.Pop();
+			expr_operands.Push(left_op + right_op);
+			break;
+		}
+		case '-':
+		{
+			right_op = expr_operands.Pop();
+			left_op = expr_operands.Pop();
+			expr_operands.Push(left_op - right_op);
+			break;
+		}
+		case '*': 
+		{
+			right_op = expr_operands.Pop();
+			left_op = expr_operands.Pop();
+			expr_operands.Push(left_op * right_op);
+			break;
+		}
+		case '/':
+		{
+			right_op = expr_operands.Pop();
+			left_op = expr_operands.Pop();
+			expr_operands.Push(left_op / right_op);
+			break;
+		}
+		default:
+			expr_operands.Push(values.at(lexeme));
+			break;
+		}
+		i++;
+	}
+	return expr_operands.Top();
 }
 #endif
