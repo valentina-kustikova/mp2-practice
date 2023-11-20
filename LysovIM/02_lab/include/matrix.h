@@ -17,12 +17,13 @@ public:
 	int operator==(const TMatrix& mx) const;
 	int operator!=(const TMatrix& mx) const;
 	const TMatrix& operator= (const TMatrix& mx);
+
 	TMatrix  operator+(const TMatrix& mx);
 	TMatrix  operator-(const TMatrix& mx);
 	TMatrix operator*(const TMatrix& mx);
 	friend istream& operator>>(istream& in, TMatrix& mx)
 	{
-		cout << "Enter elements of vectors" << endl;
+		cout << "Enter the elements of the Matrix Vectors" << endl;
 		
 		for (int i = 0; i < mx.size; i++)
 			in >> mx.pVector[i];
@@ -32,39 +33,37 @@ public:
 	{
 		for (int i = 0; i < m.size; i++)
 		{
-			for (int j = 0; j < m.pVector[i].getStartIndex(); j++) {
+			for (int j = 0; j < m.pVector[i].getStartIndex(); j++) 
+			{
 				ostr << "0" << " ";
 			}
 			ostr << m.pVector[i];
 		}
 		return ostr;
-
 	}
 };
 
 template <typename ValueType>TMatrix<ValueType>::
-TMatrix(int size) : TVector<TVector<ValueType>>(size) {
-	for (int i = 0; i < size; ++i) {
+TMatrix(int size) : TVector<TVector<ValueType>>(size)
+{
+	for (int i = 0; i < size; ++i)
+	{
 		pVector[i] = TVector<ValueType>(size - i, i);
 	}
 }
 
 template <typename ValueType>TMatrix<ValueType>::
 TMatrix(const TMatrix& mt) : TVector<TVector<ValueType>>(mt)
-{ 
-
-}
+{ }
 
 template <typename ValueType>
 TMatrix<ValueType>::TMatrix(const TVector<TVector<ValueType>>& mx) : TVector<TVector<ValueType> >(mx) 
-{
-
-}
+{ }
 
 template <typename ValueType>
 int TMatrix<ValueType>::operator==(const TMatrix<ValueType>& mx) const
 {
-	return TVector<TVector<ValueType> >::operator==(mx);
+	return TVector<TVector<ValueType>>::operator==(mx);
 }
 
 template <typename ValueType>
@@ -82,27 +81,13 @@ const TMatrix<ValueType>& TMatrix<ValueType>::operator=(const TMatrix<ValueType>
 template <typename ValueType>
 TMatrix<ValueType> TMatrix<ValueType>::operator+(const TMatrix<ValueType>& mx)
 {
-	if (size != mx.size) {
-		throw ("Error: Matrices have different rank ");
-	}
-	TMatrix obj(*this);
-	for (int i = 0; i < size; ++i) {
-		obj.pVector[i] = obj.pVector[i] + mt.pVector[i];
-	}
-	return obj;
+	return TVector<TVector<ValueType> >::operator+(mx);
 }
 
 template <typename ValueType>
 TMatrix<ValueType> TMatrix<ValueType>::operator-(const TMatrix<ValueType>& mx)
 {
-	if (size != mx.size) {
-		throw ("Error: Matrices have different rank ");
-	}
-	TMatrix obj(*this);
-	for (int i = 0; i < size; ++i) {
-		obj.pVector[i] = obj.pVector[i] - mt.pVector[i];
-	}
-	return obj;
+	return TVector<TVector<ValueType> >::operator-(mx);
 }
 
 template <typename ValueType>
@@ -124,4 +109,4 @@ TMatrix<ValueType> TMatrix<ValueType>::operator*(const TMatrix& m) {
 	return matrix_result;
 }
 
-#endif //__MATRIX_H__
+#endif

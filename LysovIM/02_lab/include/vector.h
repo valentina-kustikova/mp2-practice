@@ -42,7 +42,7 @@ public:
 	//реализация
 	friend istream& operator>>(istream& in, TVector& v)
 	{
-		for (int i = 0; i < v.getSize; ++i)
+		for (int i = 0; i < v.size; ++i)
 		{
 			in >> v.~TVector;
 		}
@@ -60,6 +60,11 @@ public:
 
 };
 
+template <typename ValueType> TVector<ValueType>::~TVector()
+{
+	delete[] pVector;
+}
+
 template <typename ValueType> TVector<ValueType>::TVector(int size, int StartIndex) : size(size), startIndex(StartIndex) 
 {
 	pVector = new ValueType[size];
@@ -73,15 +78,10 @@ template <typename ValueType> TVector<ValueType>::TVector(const TVector& v) : si
 	}
 }
 
-template <typename ValueType> TVector<ValueType>::~TVector()
-{
-	delete[] pVector;
-}
-
 template <typename ValueType> ValueType& TVector<ValueType>::operator[](const int index)
 {
 	if (ind < 0 || ind >= size)
-		throw ("The index is not in the range");
+		throw ("The index has gone out of range.");
 		return pVector[ind];
 }
 
@@ -94,11 +94,15 @@ template <typename ValueType> const TVector<ValueType>& TVector<ValueType>::oper
 {
 	if (this == &v) 
 		return *this;
-	delete[] pVector;
-	size = v.size;
+	if (this->size != v.size)
+	{
+		delete[] pVector;
+		size = v.size;
+	}
 	StartIndex = v.StartIndex;
 	pVector = new ValueType[size];
-	for (int i = 0; i < size; ++i) {
+	for (int i = 0; i < size; ++i)
+	{
 		pVector[i] = v.pVector[i];
 	}
 	return *this;
@@ -107,7 +111,8 @@ template <typename ValueType> const TVector<ValueType>& TVector<ValueType>::oper
 template <typename ValueType> TVector<ValueType> TVector<ValueType>::operator+(const ValueType& value)
 {
 	TVector<ValueType> vector_result(*this);
-	for (int i = 0; i < size; i++) {
+	for (int i = 0; i < size; i++)
+	{
 		vector_result.pVector[i] = vector_result.pVector[i] + value;
 	}
 	return vector_result;
@@ -116,7 +121,8 @@ template <typename ValueType> TVector<ValueType> TVector<ValueType>::operator+(c
 template <typename ValueType> TVector<ValueType> TVector<ValueType>::operator-(const ValueType& value)
 {
 	TVector<ValueType> vector_result(*this);
-	for (int i = 0; i < size; i++) {
+	for (int i = 0; i < size; i++)
+	{
 		vector_result.pVector[i] = vector_result.pVector[i] - value;
 	}
 	return vector_result;
@@ -125,7 +131,8 @@ template <typename ValueType> TVector<ValueType> TVector<ValueType>::operator-(c
 template <typename ValueType> TVector<ValueType> TVector<ValueType>::operator*(const ValueType& value)
 {
 	TVector<ValueType> vector_result(*this);
-	for (int i = 0; i < size; i++) {
+	for (int i = 0; i < size; i++)
+	{
 		vector_result.pVector[i] = vector_result.pVector[i] * value;
 	}
 	return vector_result;
@@ -134,9 +141,9 @@ template <typename ValueType> TVector<ValueType> TVector<ValueType>::operator*(c
 template <typename ValueType> TVector<ValueType> TVector<ValueType>::operator+(const TVector& value) {
 	if (size != value.size) 
 		throw ("For the sum, the vectors must have the same size");
-
 	TVector result(*this);
-	for (int i = 0; i < size; ++i) {
+	for (int i = 0; i < size; ++i)
+	{
 		result.pVector[i] = result.pVector[i] + value.pVector[i];
 	}
 	return result;
