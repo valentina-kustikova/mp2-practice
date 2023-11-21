@@ -128,6 +128,12 @@ double Vector<T>::length() const {
 template <typename T>
 T& Vector<T>:: operator[] (const int ind)  //индексация
 { 
+	if (ind < 0) {
+		throw "Incorrect index";
+	}
+	if (ind >= n) {
+		throw "Incorrect index";
+	}
 	return (coor[ind]);
 }
 
