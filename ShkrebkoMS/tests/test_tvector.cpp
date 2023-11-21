@@ -57,7 +57,14 @@ TEST(TVector, throws_when_position_is_greatere_then_size)
 
 	ASSERT_ANY_THROW(v[8]);
 }
+TEST(TVector, when_position_is_good)
+{
+	TVector<int> v(6);
+	v[2] = 4;
 
+	EXPECT_EQ(v[2], 4);
+
+}
  
 TEST(TVector, compare_two_vectors_with_equal_sizes_is_true)
 {
@@ -80,10 +87,10 @@ TEST(TVector, can_assign_vectors_of_equal_size)
 	TVector<int> v2(4);
 	for (int i = 0; i < 4; i++)
 	{
-		v1[i] = 1;
 		v2[i] = 1;
 	}
-	ASSERT_NO_THROW(v1 = v2);
+	v1 = v2;
+	EXPECT_EQ(v1, v2);
 }
 
 TEST(TVector, can_assign_vectors_of_non_size)
@@ -92,11 +99,11 @@ TEST(TVector, can_assign_vectors_of_non_size)
 	TVector<int> v2(5);
 	for (int i = 0; i < 4; i++)
 	{
-		v1[i] = 1;
 		v2[i] = 1;
 	}
 	v2[4] = 1;
-	ASSERT_NO_THROW(v1 = v2);
+	v1 = v2;
+	EXPECT_EQ(v1, v2);
 }
 
 TEST(TVector, can_assign_vector_to_itself)
@@ -106,9 +113,7 @@ TEST(TVector, can_assign_vector_to_itself)
 	{
 		v1[i] = 1;
 	}
-	TVector<int> v2(5);
-	v2 = v1;
-	EXPECT_EQ(v1,v2);
+	ASSERT_NO_THROW(v1 = v1);
 }
 
 TEST(TVector, compare_two_vectors_of_non_equal_sizes)
@@ -122,43 +127,53 @@ TEST(TVector, compare_two_vectors_of_non_equal_sizes)
 	EXPECT_NE(v1,v2);
 }
 
+TEST(TVector, compare_two_vectors_of_equal_sizes)
+{
+	TVector<int> v1(4);
+	TVector<int> v2(4);
+	v1[0] = 2;
+	v1[1] = 3;
+	v2[0] = 2;
+	v2[1] = 3;
+	EXPECT_EQ(v1, v2);
+}
+
 
 TEST(TVector, can_multiply_vector_and_const)
 {
-	TVector<int> v(5);
+	TVector<int> v(5), v1(5);
 	for (int i = 0; i < 5; i++)
 	{
 		v[i] = 1;
+		v1[i] = 5;
 	}
-	TVector<int> v1(5);
-	v1 = v * 5;
-	EXPECT_EQ(v1, v*5);
+	EXPECT_EQ(v*5, v1);
 }
 
 
  
 TEST(TVector, can_add_const_to_vector)
 {
-	TVector<int> v(5);
+	TVector<int> v(5),v1(5);
 	for (int i = 0; i < 5; i++)
 	{
 		v[i] = 1;
+		v1[i] = 6;
 	}
-	TVector<int> v1(5);
-	v1 = v + 5;
+
 	EXPECT_EQ(v1, v + 5);
 }
 
 
 TEST(TVector, can_subtract_const_from_vector)
 {
-	TVector<int> v(5);
+	TVector<int> v(5),v1(5);
 	for (int i = 0; i < 5; i++)
 	{
 		v[i] = 1;
+		v1[i] = -4;
 	}
-	TVector<int> v1(5);
-	v1 = v - 5;
+
 	EXPECT_EQ(v1, v - 5);
 }
 
@@ -196,41 +211,31 @@ TEST(TVector, can_plus_vectors_with_equal_sizes)
 {
 	TVector<int> v1(3);
 	TVector<int> v2(3);
+	TVector<int> v3(3);
 	for (int i = 0; i < 3; i++)
 	{
 		v1[i] = 1;
-	}
-	for (int i = 0; i < 3; i++)
-	{
 		v2[i] = 1;
+		v3[i] = 2;
 	}
-	TVector<int> v3(3);
-	v3 = v1 + v2;
+
+
 	EXPECT_EQ(v1+v2, v3);
 }
 TEST(TVector, can_plus_vectors_with_equal_indexes)
 {
 	TVector<int> v1(3, 3);
 	TVector<int> v2(3, 3);
+	TVector<int> v3(3, 3);
 	for (int i = 0; i < 3; i++)
 	{
 		v1[i] = 1;
-	}
-	for (int i = 0; i < 3; i++)
-	{
 		v2[i] = 1;
+		v3[i] = 2;
 	}
-	TVector<int> v3(3,3);
-	v3 = v1 + v2;
+
+
 	EXPECT_EQ(v1 + v2, v3);
-}
-
-TEST(TVector, cant_subtract_vectors_with_not_equal_sizes)
-{
-	TVector<int> v1(3);
-	TVector<int> v2(4);
-
-	ASSERT_ANY_THROW(v1 - v2);
 }
 
 
@@ -239,44 +244,59 @@ TEST(TVector, can_subtract_vectors_with_equal_sizes)
 {
 	TVector<int> v1(3);
 	TVector<int> v2(3);
-
-	ASSERT_NO_THROW(v1 - v2);
+	TVector<int> v3(3);
+	for (int i = 0; i < 3; i++)
+	{
+		v1[i] = 2;
+		v2[i] = 1;
+		v3[i] = 1;
+	}
+	
+	
+	
+	EXPECT_EQ(v1 - v2, v3);
 }
 
-TEST(TVector, can_subtract_vectors_with_equal_indexes)
-{
-	TVector<int> v1(3, 3);
-	TVector<int> v2(3, 3);
 
-	ASSERT_NO_THROW(v1 - v2);
-}
 
 TEST(TVector, can_multiply_vectors_of_equal_sizes)
 {
-	TVector<int> v1(6);
-	TVector<int> v2(6);
-
-	ASSERT_NO_THROW(v1 * v2);
+	TVector<int> v1(4);
+	TVector<int> v2(4);
+	for (int i = 0; i < 4; i++)
+	{
+		v1[i] = 2;
+		v2[i] = 1;
+	}
+	int v3;
+	v3 = 8;
+	EXPECT_EQ(v1 * v2, v3);
+	
 }
 TEST(TVector, cant_multiply_vectors_of_not_equal_sizes)
 {
 	TVector<int> v1(3);
 	TVector<int> v2(4);
-
+	for (int i = 0; i < 3; i++)
+	{
+		v1[i] = 2;
+	}
+	for (int i = 0; i < 4; i++)
+	{
+		v2[i] = 2;
+	}
 	ASSERT_ANY_THROW(v1 * v2);
 }
 
-TEST(TVector, can_multiply_vectors_of_equal_indexes)
-{
-	TVector<int> v1(3, 2);
-	TVector<int> v2(3, 2);
 
-	ASSERT_NO_THROW(v1 * v2);
-}
 TEST(TVector, cant_multiply_vectors_of_not_equal_indexes)
 {
 	TVector<int> v1(3, 2);
 	TVector<int> v2(3, 3);
-
+	for (int i = 0; i < 3; i++)
+	{
+		v1[i] = 2;
+		v2[i] = 2;
+	}
 	ASSERT_ANY_THROW(v1 * v2);
 }

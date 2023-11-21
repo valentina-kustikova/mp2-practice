@@ -22,7 +22,7 @@ public:
 	TMatrix operator*(const TMatrix& m); 
 
 
-	friend istream& operator>>(istream& istr, TMatrix<ValueType>& v)
+	friend istream& operator>>(istream& istr, TMatrix<ValueType>& m)
 	{
 
 		istr >> m.Size;
@@ -31,7 +31,7 @@ public:
 			istr >> m.pVector[i];
 		return istr;
 	}
-	friend ostream& operator<<(ostream& ostr, TMatrix<ValueType>& v)
+	friend ostream& operator<<(ostream& ostr, TMatrix<ValueType>& m)
 	{
 		for (int i = 0; i < m.Size; i++)
 		{

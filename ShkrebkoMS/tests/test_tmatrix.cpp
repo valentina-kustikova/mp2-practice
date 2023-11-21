@@ -19,6 +19,20 @@ TEST(TMatrix, can_create_copied_matrix)
 	ASSERT_NO_THROW(TMatrix<int> m1(m));
 }
 
+TEST(TMatrix, check_copied)
+{
+	TMatrix<int> m(3);
+	TMatrix<int> m1(m);
+	EXPECT_EQ(m, m1);
+}
+TEST(TMatrix, check_copied_that_diff_view)
+{
+	TMatrix<int> m(3);
+	TMatrix<int> m1(m);
+	m[0][0] = 2;
+	EXPECT_NE(m, m1);
+}
+
 TEST(TMatrix, can_get_size)
 {
 	TMatrix<int> m(5);
@@ -37,22 +51,21 @@ TEST(TMatrix, throws_when_set_element_with_negative_index)
 	TMatrix<int> m(5);
 	ASSERT_ANY_THROW(m[-1][1] = 1);
 }
-
+TEST(TMatrix, throws_when_set_element_with_negative_index_2)
+{
+	TMatrix<int> m(5);
+	ASSERT_ANY_THROW(m[1][-1] = 1);
+}
 TEST(TMatrix, throws_when_set_element_with_too_large_index)
 {
 	TMatrix<int> m(5);
 	ASSERT_ANY_THROW(m[6][1] = 1);
 }
-
-TEST(TMatrix, assign_operator_change_matrix_size)
+TEST(TMatrix, throws_when_set_element_with_too_large_index_2)
 {
-	TMatrix<int> m1(5);
-	TMatrix<int> m2(4);
-	m1[1][1] = 1;
-	m2 = m1;
-	EXPECT_EQ(5, m2.GetSize());
+	TMatrix<int> m(5);
+	ASSERT_ANY_THROW(m[1][6] = 1);
 }
-
 
 TEST(TMatrix, matrix_are_not_equal)
 {
@@ -114,8 +127,7 @@ TEST(TMatrix, cant_plus_with_not_equal_size)
 {
 	TMatrix<int> m1(4);
 	TMatrix<int> m2(5);
-	m1[1][1] = 1;
-	m2[1][1] = 3;
+
 	ASSERT_ANY_THROW(m1 + m2);
 }
 
@@ -128,20 +140,19 @@ TEST(TMatrix, summ_is_correct)
 		{
 			m1[i][j] = i;
 			m2[i][j] = j;
-			m[i][j] = m1[i][j] + m2[i][j];
+			m[i][j] = i+j;
 		}
 	EXPECT_EQ(m, m1 + m2);
 }
 TEST(TMatrix, cant_minus_with_not_equal_size)
 {
-	TMatrix<int> m1(4);
-	TMatrix<int> m2(5);
-	m1[1][1] = 1;
-	m2[1][1] = 3;
+	TMatrix<int> m1(3);
+	TMatrix<int> m2(4);
+\
 	ASSERT_ANY_THROW(m1 - m2);
 }
 
-TEST(TMatrix, difference_is_correct)
+TEST(TMatrix, minus_is_correct)
 {
 	TMatrix<int> m1(3), m2(3), m(3);
 
@@ -150,7 +161,7 @@ TEST(TMatrix, difference_is_correct)
 		{
 			m1[i][j] = i;
 			m2[i][j] = j;
-			m[i][j] = m1[i][j] - m2[i][j];
+			m[i][j] = i-j;
 		}
 	EXPECT_EQ(m, m1 - m2);
 }
@@ -190,7 +201,7 @@ TEST(TMatrix, can_mult_with_equal_size)
 
 TEST(TMatrix, cant_mult_with_not_equal_size)
 {
-	TMatrix<int> m1(7);
-	TMatrix<int> m2(8);
+	TMatrix<int> m1(4);
+	TMatrix<int> m2(5);
 	ASSERT_ANY_THROW(m1 * m2);
 }

@@ -89,7 +89,7 @@ TVector<ValueType>::~TVector()
 
 
 template <typename ValueType>
-int TVector<ValueType> ::GetSize() const
+int TVector<ValueType>::GetSize() const
 {
 	return Size;
 }
