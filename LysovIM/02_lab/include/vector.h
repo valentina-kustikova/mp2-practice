@@ -1,151 +1,196 @@
-#ifndef _VECTOR_H_
-#define _VECTOR_H_
+#ifndef  __VECTOR_H__
+#define __VECTOR_H__
 #include <iostream>
+
 using namespace std;
 
-template <typename ValueType> 
+template <typename ValueType>
 class TVector
 {
 protected:
 	int size;
 	ValueType* pVector;
-	int StartIndex;
+	int start_index;
 public:
-	//Конструкторы и деструктор
-	TVector(int s = 10, int s_index = 0);//изменил у ч si, у п start_index
-	TVector(const TVector& v);
+	TVector(int s = 5, int start_i = 0);
+	TVector(const TVector& vector);
 	~TVector();
 
-	//Методы
-	int getSize()const { return size };
-	int getStartIndex()const { return StartIndex };
+	int getSize() const;
+	int getStartIndex() const;
 
-	//Операторы
-	ValueType& operator[] (const int ind);
-	int operator != (const TVector& v)const;
-	int operator == (const TVector& v)const;
-	
+	ValueType& operator[](const int ind);
+	int operator==(const TVector& vector) const;
+	int operator!=(const TVector& vector) const;
+	const TVector& operator=(const TVector& vector);
+	TVector  operator+(const TVector& vector);
+	TVector  operator-(const TVector& vector);
+	double  operator*(const TVector& vector);
 
-	TVector operator+ (const ValueType value);
-	TVector operator- (const ValueType value);
-	TVector operator* (const ValueType value);
-	const TVector& operator= (const TVector& v);
-
-
-	TVector operator+ (const ValueType& value);
-	TVector operator- (const ValueType& value);
-	double operator* (const ValueType& value);
-
-	friend istream& operator>>(istream& in, TVector& v);
-	friend ostream& operator<<(ostream& out, const TVector& v);
-
-	//реализация
-	friend istream& operator>>(istream& in, TVector& v)
+	TVector  operator+(const ValueType& value);
+	TVector  operator-(const ValueType& value);
+	TVector  operator*(const ValueType& value);
+	friend istream& operator>>(istream& in, TVector& value)
 	{
-		for (int i = 0; i < v.size; ++i)
+		for (int i = 0; i < value.size; ++i)
 		{
-			in >> v.~TVector;
+			in >> value.pVector[i];
 		}
 		return in;
 	}
-	friend ostream& operator<<(ostream& out, const TVector* v)
+	friend ostream& operator<<(ostream& out, const TVector& value)
 	{
-		for (int i = 0; i < v.size; ++i)
+		for (int i = 0; i < value.size; ++i) 
 		{
-			out << v.pVector[i] << '';
+			out << value.pVector[i] << " ";
 		}
 		out << endl;
 		return out;
-	}	
-
+	}
 };
 
-template <typename ValueType> TVector<ValueType>::~TVector()
+template <typename ValueType>
+int TVector<ValueType>::getSize() const 
+{
+	return size;
+}
+
+template <typename ValueType>
+int TVector<ValueType>::getStartIndex()  const
+{
+	return start_index;
+}
+
+template <typename ValueType>
+TVector<ValueType>::TVector(int size, int startIndex) : size(size), start_index(startIndex)
+{
+	pVector = new ValueType[size];
+}
+
+template <typename ValueType>
+TVector<ValueType>::TVector(const TVector& vector) : size(vector.size), start_index(vector.start_index)
+{
+	pVector = new ValueType[size];
+	for (int i = 0; i < size; ++i) 
+	{
+		pVector[i] = vector.pVector[i];
+	}
+}
+
+template <typename ValueType>
+TVector<ValueType>::~TVector()
 {
 	delete[] pVector;
 }
 
-template <typename ValueType> TVector<ValueType>::TVector(int size, int StartIndex) : size(size), startIndex(StartIndex) 
+template <typename ValueType>
+ValueType& TVector<ValueType>::operator[](const int index)
 {
-	pVector = new ValueType[size];
+	if (index < 0 || index >= size)
+		throw ("Error: the index has gone out of range");
+	return pVector[index];
 }
 
-template <typename ValueType> TVector<ValueType>::TVector(const TVector& v) : size(v.size), StartIndex(v.StartIndex) 
+template <typename ValueType>
+int TVector<ValueType>::operator==(const TVector& vector) const
 {
-	pVector = new ValueType[size];
-	for (int i = 0; i < size; ++i) {
-		pVector[i] = v.pVector[i];
+	if (this != &vector)
+	{
+		if ((size == vector.size) && (start_index == vector.start_index))
+		{
+			for (int i = 0; i < size; i++)
+				if (pVector[i] != vector.pVector[i])
+					return 0;
+			return 1;
+		}
+		else
+			return 0;
 	}
+	return 1;
 }
 
-template <typename ValueType> ValueType& TVector<ValueType>::operator[](const int index)
+template <typename ValueType>
+int TVector<ValueType>::operator!=(const TVector& vector) const
 {
-	if (ind < 0 || ind >= size)
-		throw ("The index has gone out of range.");
-		return pVector[ind];
+	return !(*this == vector);
 }
 
-int TVector<ValueType>::operator!=(const TVector& v) const
+template <typename ValueType>
+const TVector<ValueType>& TVector<ValueType>::operator=(const TVector& vector)
 {
-	return !(*this == v);
-}
-
-template <typename ValueType> const TVector<ValueType>& TVector<ValueType>::operator=(const TVector& v)
-{
-	if (this == &v) 
+	if (this == &vector) 
 		return *this;
-	if (this->size != v.size)
+	if (this->size != vector.size)
 	{
 		delete[] pVector;
-		size = v.size;
+		size = vector.size;
 	}
-	StartIndex = v.StartIndex;
+	start_index = vector.start_index;
 	pVector = new ValueType[size];
-	for (int i = 0; i < size; ++i)
-	{
-		pVector[i] = v.pVector[i];
+	for (int i = 0; i < size; ++i) {
+		pVector[i] = vector.pVector[i];
 	}
 	return *this;
 }
 
-template <typename ValueType> TVector<ValueType> TVector<ValueType>::operator+(const ValueType& value)
+template <typename ValueType>
+TVector<ValueType> TVector<ValueType>::operator+(const TVector<ValueType>& vector)
 {
-	TVector<ValueType> vector_result(*this);
+	if ((size != vector.size) || (start_index != vector.start_index))
+		throw	("Error: vectors have different sizes");
+	TVector result_vector(size, start_index);
 	for (int i = 0; i < size; i++)
-	{
-		vector_result.pVector[i] = vector_result.pVector[i] + value;
-	}
-	return vector_result;
+		result_vector.pVector[i] = pVector[i] + vector.pVector[i];
+	return result_vector;
 }
 
-template <typename ValueType> TVector<ValueType> TVector<ValueType>::operator-(const ValueType& value)
+template <typename ValueType>
+TVector<ValueType> TVector<ValueType>::operator-(const TVector<ValueType>& vector)
 {
-	TVector<ValueType> vector_result(*this);
+	if ((size != vector.size) || (start_index != vector.start_index))
+		throw	("Error: vectors have different sizes");
+	TVector result_vector(size, start_index);
 	for (int i = 0; i < size; i++)
-	{
-		vector_result.pVector[i] = vector_result.pVector[i] - value;
-	}
-	return vector_result;
+		result_vector.pVector[i] = pVector[i] - vector.pVector[i];
+	return result_vector;
 }
 
-template <typename ValueType> TVector<ValueType> TVector<ValueType>::operator*(const ValueType& value)
+template <typename ValueType>
+double TVector<ValueType>::operator*(const TVector<ValueType>& vector)
 {
-	TVector<ValueType> vector_result(*this);
+	if ((size != vector.size) || (start_index != vector.start_index))
+		throw	("Error: vectors have different sizes");
+	double result_vector = 0;
 	for (int i = 0; i < size; i++)
-	{
-		vector_result.pVector[i] = vector_result.pVector[i] * value;
-	}
-	return vector_result;
+		result_vector = result_vector + (pVector[i] * vector.pVector[i]);
+	return result_vector;
 }
 
-template <typename ValueType> TVector<ValueType> TVector<ValueType>::operator+(const TVector& value) {
-	if (size != value.size) 
-		throw ("For the sum, the vectors must have the same size");
-	TVector result(*this);
-	for (int i = 0; i < size; ++i)
-	{
-		result.pVector[i] = result.pVector[i] + value.pVector[i];
+template <typename ValueType>
+TVector<ValueType> TVector<ValueType>::operator+(const ValueType& value)
+{
+	TVector<ValueType> result_vector(*this);
+	for (int i = 0; i < size; i++) {
+		result_vector.pVector[i] = result_vector.pVector[i] + value;
 	}
-	return result;
+	return result_vector;
 }
-#endif // !_VECTOR_H_
+
+template <typename ValueType>
+TVector<ValueType> TVector<ValueType>::operator-(const ValueType& value)
+{
+	TVector<ValueType> result_vector(*this);
+	for (int i = 0; i < size; i++)
+		result_vector.pVector[i] = result_vector.pVector[i] - value;
+	return result_vector;
+}
+
+template <typename ValueType>
+TVector<ValueType> TVector<ValueType>::operator*(const ValueType& value)
+{
+	TVector<ValueType> result_vector(*this);
+	for (int i = 0; i < size; i++)
+		result_vector.pVector[i] = result_vector.pVector[i] * value;
+	return result_vector;
+}
+#endif

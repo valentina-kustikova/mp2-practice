@@ -4,18 +4,19 @@
 int main()
 {
 	int len;
-	cout << "Enter the vector lenght:";
+	cout << "Specify the length of the vector:"<<"\t";
 	cin >> len;
-	TVector<int> vect_1(len), vect_2(len);
-	cout << "Enter the first vector:" << endl;;
-	cin >> vect_1;
-	cout << "Enter the second vector:" << endl;;
-	cin >> vect_2;
-	cout << "vector 1:" << vect_1 << endl;
-	cout << "vector 2:" << vect_2 << endl;
-	cout << "vector 1 + vector 2:" << vect_1 + vect_2 << endl;
-	cout << "vector 1 - vector 2:" << vect_1 - vect_2 << endl;
-	cout << "vector 1 * vector 2:" << vect_1 * vect_2 << endl;
-	cout << "Lenght:" << vect_1.getSize() << endl;
+	TVector<int> vector1(len), vector2(len);
+	cout << "Enter the coordinates of the first vector:" << endl;;
+	cin >> vector1;
+	cout << "Enter the coordinates of the second vector:" << endl;;
+	cin >> vector2;
+	cout << "Vector 1:" << "\t" << vector1;
+	cout << "Vector 2:" << "\t" << vector2;
+	cout << "Lenght Vector`s 1: " << vector1.getSize() << endl;
+	cout << "Lenght Vector`s 2: " << vector2.getSize() << endl;
+	cout << "Vector 1 + vector 2:" << "\t" << vector1 + vector2;
+	cout << "Vector 1 - vector 2:" << "\t" << vector1 - vector2;
+	cout << "Vector 1 * vector 2:" << "\t" << vector1 * vector2;
 	return 0;
 }

@@ -4,15 +4,15 @@ using namespace std;
 
 int main()
 {
-    int dim;
-    cout << "Enter matrix dimension:";
-    cin >> dim;
-    TMatrix <double> matrix_1(dim), matrix_2(dim);
-    cin >> matrix_1;
-    cin >> matrix_2;
-    cout << "Matrix 1:" << endl << matrix_1 << endl;
-    cout << "Matrix 2:" << endl << matrix_2 << endl;
-    cout << "Matrix 1 + Matrix 2:" << endl << matrix_1 + matrix_2 << endl;
-    cout << "Matrix 1 * Matrix 2:" << endl << matrix_1 * matrix_2 << endl;
+    int Dimension;
+    cout << "Enter the dimensionality of the original matrix:"<<"\t";
+    cin >> Dimension;
+    TMatrix <double> matrix1(Dimension), matrix2(Dimension);
+    cin >> matrix1;
+    cin >> matrix2;
+    cout << "Matrix 1:" << endl << matrix1;
+    cout << "Matrix 2:" << endl << matrix2;
+    cout << "Matrix 1 + matrix 2:" << endl << matrix1 + matrix2;
+    cout << "Matrix 1 * matrix 2:" << endl << matrix1 * matrix2;
     return 0;
 }
