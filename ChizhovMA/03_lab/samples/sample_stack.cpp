@@ -6,25 +6,22 @@
 int main()
 {
 	string ar_ex;
+	double res;
 	cout << "Enter arithmetic expression: ";
 	cin >> ar_ex;
 
-	TStack<char> st(5);
-	st = Postfix_Form(ar_ex);
-	cout << st;
+	TStack<string> st(5);
+	try
+	{
+		st = Postfix_Form(ar_ex);
+		cout << st << endl;
+	}
+	catch (string& msg)
+	{
+		cerr << "Error: " << msg << endl;
+	}
+	map<string, double> variableDict = GetVariables(st);
+	res = Calculate(st, variableDict);
+	cout << res;
 	return 0;
 }
-/*
-int Get_Priority(char symbol)
-{
-	int ind = Is_Symbol(symbols, symbol);
-	int priority = symbols[ind].priority;
-	return priority;
-}
-
-void Add_to_Stack1(TStack<char> st1, TStack<char> st2)
-{
-	char sm1 = st2.Top();
-	st1.Push(sm1);
-	st2.Pop();
-}*/

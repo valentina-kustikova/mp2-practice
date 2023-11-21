@@ -2,16 +2,24 @@
 #define Value_H
 
 #include "stack.h"
+#include <map>
+using namespace std;
 
 struct ArithmeticSymbol 
 {
-    char symbol;
+    string symbol;
     int priority;
-
 };
 
-TStack<char> Postfix_Form(string str);
-int Is_Symbol(const ArithmeticSymbol symbols[], char s);
-int Get_Priority(char symbol);
-void Add_to_Stack1(TStack<char>& st1, TStack<char>& st2, char s);
+extern map<string, double> variableDict;
+
+TStack<string> Postfix_Form(string str);
+double Calculate(TStack<string>& st, const map<string, double>& values);
+int Is_Symbol(const ArithmeticSymbol symbols[], string s);
+int Get_Priority(string symbol);
+void Add_to_Stack1(TStack<string>& st1, TStack<string>& st2, string s);
+bool Is_Number(const string& str);
+bool isValidExpression(const string& expression);
+bool isOperand(string c);
+map<string, double> GetVariables(TStack<string>& postfixExpression);
 #endif

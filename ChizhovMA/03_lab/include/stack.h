@@ -19,6 +19,13 @@ public:
 	TStack<T>& operator=(const TStack<T>& s);
 	bool IsEmpty(void) const;
 	bool IsFull(void) const;
+	int Length() const { return top+1; }
+	T GetElement(int ind) const
+	{
+		if (ind < 0 || ind > top) 
+			throw "error";
+		return elems[ind];
+	}
 	T Top() const;
 	void Push(const T& elem);
 	void Pop();
@@ -26,7 +33,7 @@ public:
 	friend ostream& operator <<(ostream& out, const TStack& s)
 	{
 		for (int i = 0; i <= s.top; i++)
-			out << s.elems[i];
+			out << s.elems[i] << ' ';
 		return out;
 	};
 };
