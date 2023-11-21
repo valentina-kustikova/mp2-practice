@@ -63,6 +63,28 @@ TEST(TMatrix, can_assign_matrix_with_different_size)
 
 	EXPECT_EQ(mt, mt2);
 }
+
+TEST(TMatrix, can_assign_3_matrix_with_different_size)
+{
+	TMatrix<int> mt(2);
+	TVec<int> vec1(2), vec2(1);
+
+	vec1[0] = 1;
+	vec1[1] = 1;
+
+
+	vec2[0] = 1;
+
+	mt[0] = vec1;
+	mt[1] = vec2;
+
+	TMatrix<int> mt1(3);
+
+	TMatrix<int> mt2(1);
+	mt2 = mt1 = mt;
+
+	EXPECT_EQ(mt, mt2);
+}
 ///////////////////////////////////////////////////////////////////////////
 
 

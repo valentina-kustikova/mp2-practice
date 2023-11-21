@@ -481,4 +481,18 @@ TEST(TVec, can_assign_vectos_with_different_start_index)
 
 	EXPECT_EQ(3, vec2[2]);
 }
+
+TEST(TVec, can_assign_3_vectos)
+{
+	TVec<int> vec1(3,2);
+	vec1[0] = 1;
+	vec1[1] = 2;
+	vec1[2] = 3;
+
+	TVec<int> vec2(2);
+	TVec<int> vec3(1);
+	vec2 = vec3 = vec1;
+
+	EXPECT_EQ(3, vec2[2]);
+}
 /////////////////////////////////////////////////////////////////////////////
