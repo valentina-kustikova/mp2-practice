@@ -1,6 +1,9 @@
 #ifndef _TSTACK_H
 #define _TSTACK_H
 
+#include <iostream>
+using namespace std;
+
 template <typename T>
 class TStack {
 private:
@@ -21,13 +24,14 @@ public:
 
 	void Push(const T& e);
 	void Pop();
-
-	void DUBUG_Print();
 };
 
 template <typename T>
 void TStack<T>::Realloc(int extraSize) {
-	if (extraSize <= 0) "Error: extraSize must be bigger than 0.";
+	if (extraSize <= 0) {
+		string exp = "Error: extraSize must be bigger than 0.";
+		throw exp;
+	}
 	T* tmp = new T[maxSize + extraSize];
 	for (int i = 0; i < maxSize; i++)
 		tmp[i] = elems[i];
@@ -39,15 +43,20 @@ void TStack<T>::Realloc(int extraSize) {
 
 template <typename T>
 TStack<T>::TStack(int _maxSize) {
-	if (_maxSize <= 0) throw "Error: maxSize must be bigger than 0.";
+	if (_maxSize <= 0) {
+		string exp = "Error: maxSize must be bigger than 0.";
+		throw exp;
+	}
 	maxSize = _maxSize;
 	top = -1;
 	elems = new T[maxSize];
 }
 template <typename T>
 TStack<T>::TStack(const TStack<T>& s, int extraSize) {
-	if (extraSize < 0) throw "Error: Stack extra size less than 0.";
-
+	if (extraSize < 0) {
+		string exp = "Error: Stack extra size less than 0.";
+		throw exp;
+	}
 	maxSize = s.maxSize + extraSize;
 	top = s.top;
 	elems = new T[maxSize];
@@ -71,7 +80,10 @@ bool TStack<T>::IsFull(void) const noexcept {
 
 template <typename T>
 T TStack<T>::Top() {
-	if (IsEmpty()) throw "Error: stack is empty.";
+	if (IsEmpty()) {
+		string exp = "Error: stack is empty.";
+		throw exp;
+	}
 	return elems[top];
 }
 
@@ -83,14 +95,11 @@ void TStack<T>::Push(const T& e) {
 }
 template <typename T>
 void TStack<T>::Pop() {
-	if (IsEmpty()) throw "Error: stack is empty.";
+	if (IsEmpty()) {
+		string exp = "Error: stack is empty.";
+		throw exp;
+	}
 	top--;
-}
-
-template <typename T>
-void TStack<T>::DUBUG_Print() {
-	for (int i = 0; i < top; i++)
-		cout << elems[i] << ' ';
 }
 
 #endif // !_TSTACK_H
