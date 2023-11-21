@@ -7,6 +7,8 @@ private:
 	int maxSize;
 	int top;
 	T* elems;
+
+	void Realloc(int extraSize = 10);
 public:
 	TStack(int _maxSize = 50);
 	TStack(const TStack<T>& s, int extraSize = 0);
@@ -22,6 +24,18 @@ public:
 
 	void DUBUG_Print();
 };
+
+template <typename T>
+void TStack<T>::Realloc(int extraSize) {
+	if (extraSize <= 0) "Error: extraSize must be bigger than 0.";
+	T* tmp = new T[maxSize + extraSize];
+	for (int i = 0; i < maxSize; i++)
+		tmp[i] = elems[i];
+
+	delete[] elems;
+	maxSize = maxSize + extraSize;
+	elems = tmp;
+}
 
 template <typename T>
 TStack<T>::TStack(int _maxSize) {
@@ -63,7 +77,8 @@ T TStack<T>::Top() {
 
 template <typename T>
 void TStack<T>::Push(const T& e) {
-	if (IsFull()) throw "Error: stack is full.";
+	//if (IsFull()) throw "Error: stack is full.";
+	if (IsFull()) Realloc(maxSize / 2);
 	elems[++top] = e;
 }
 template <typename T>
