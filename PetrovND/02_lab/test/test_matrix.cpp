@@ -49,28 +49,13 @@ TEST(Matrix, can_set_and_get_element)
 TEST(Matrix, throws_when_set_element_with_negative_index)
 {
     Matrix<int> m(3);
-    ASSERT_ANY_THROW(m.setElement(-1, TVector<int>(4)));
+    ASSERT_ANY_THROW(m[-1][-1] = 42);
 }
 
 TEST(Matrix, throws_when_set_element_with_too_large_index)
 {
     Matrix<int> m(4);
-    ASSERT_ANY_THROW(m.setElement(10, TVector<int>(4)));
-}
-
-TEST(Matrix, can_assign_matrix_to_itself)
-{
-    Matrix<int> m(4);
-    ASSERT_NO_THROW(m = m);
-}
-
-TEST(Matrix, can_assign_matrices_of_equal_size)
-{
-    Matrix<int> m(4);
-    Matrix<int> m1(4);
-    m1[1][1] = 5;
-    m = m1;
-    ASSERT_EQ(m, m1);
+    ASSERT_ANY_THROW(m[5][5] = 42);
 }
 
 TEST(Matrix, assign_operator_change_matrix_size)

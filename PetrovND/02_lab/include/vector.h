@@ -44,7 +44,9 @@ public:
 };
 
 template <typename ValueType>
-Vector<ValueType>::Vector(int size, int startIndex) : size(size), startIndex(startIndex) {
+Vector<ValueType>::Vector(int size, int startIndex) : size(size) {
+	if (startIndex < 0) throw std::invalid_argument("Negative start index.");
+	this->startIndex = startIndex;
     pVector = new ValueType[size];
 }
 
