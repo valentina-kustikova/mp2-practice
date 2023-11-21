@@ -10,14 +10,28 @@ private:
 	ValueType* elems;
 public: 
 	TStack(int maxSize = 10);
-	TStack(const  TStack<ValueType>& s);
-	~TStack() { delete[] elems };
-	bool isEmpty(void) const { return top != (-1) };
-	bool isFull (void) const { return top != maxSize - 1 };
+	TStack(const  TStack<ValueType>& s, int size = 0);
+	~TStack();
+	bool isEmpty(void) const;
+	bool isFull (void) const;
 	ValueType Top() const;
 	void Push(const ValueType& e);
 	void Pop();
 };
+template <typename ValueType> TStack<ValueType>::~TStack()
+{
+	delete[] elems;
+}
+
+template <typename ValueType> bool TStack<ValueType>::isEmpty(void) const
+{
+	return top != (-1);
+}
+
+template <typename ValueType> bool TStack<ValueType>::isFull(void) const
+{
+	return top != maxSize - 1;
+}
 
 template<typename ValueType> TStack<ValueType>::TStack(int maxSize)
 {
@@ -28,9 +42,12 @@ template<typename ValueType> TStack<ValueType>::TStack(int maxSize)
 	elems = new ValueType[maxSize];
 }
 
-template<typename ValueType> TStack<ValueType>::TStack(const  TStack<ValueType>& s)
+template<typename ValueType> TStack<ValueType>::TStack(const  TStack<ValueType>& s, int size)
 {
-	maxSize = s.maxSize;
+	if (size < 0) {
+		throw "Error: Stack size less than 0";
+	}
+	maxSize = s.maxSize + size;
 	top = s.top;
 	elems = new ValueType[maxSize];
 	for (int i = 0; i <= top; i++)
@@ -45,12 +62,12 @@ template<typename ValueType> ValueType TStack<ValueType>::Top() const
 	return elems[top];
 }
 template<typename ValueType> void TStack<ValueType>::Pop() {
-	if (isEmpty)
+	if (isEmpty())
 		throw "Stack is empty";
 	top -= 1;
 }
 template<typename ValueType> void TStack<ValueType>::Push(const ValueType& e) {
-	if (isFull)
+	if (isFull())
 		throw "Stack is full";
 	elems[++top] = e;
 }
