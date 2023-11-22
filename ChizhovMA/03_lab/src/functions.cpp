@@ -59,6 +59,9 @@ bool isValidExpression(const string& expression)
 	{
 		char c=expression[i];
 		string s(1, c);
+		/*if (i == 0)
+			if (Is_Symbol(symbols, s))
+				return false;*/
 		if (s == "(" || s == ")")
 		{
 			k++;
@@ -106,7 +109,10 @@ map<string, double> GetVariables(TStack<string>& postfixExpression) {
 TStack<string> Postfix_Form(string str)
 {
 	if (!isValidExpression(str))
-		throw "Input Error";
+	{
+		string msg = "Input error";
+		throw msg;
+	}
 	TStack<string> st1(20);
 	TStack<string> st2(20);
 	string numStr;
@@ -146,6 +152,8 @@ TStack<string> Postfix_Form(string str)
 						}
 						st2.Pop();
 					}
+					else if (s == "(")
+						st2.Push(s);
 					else
 					{
 						string priveous = st2.Top();

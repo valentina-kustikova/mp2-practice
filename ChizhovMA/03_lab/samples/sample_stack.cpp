@@ -11,9 +11,13 @@ int main()
 	cin >> ar_ex;
 
 	TStack<string> st(5);
-	st = Postfix_Form(ar_ex);
-	cout << st << endl;
-
+	try {
+		st = Postfix_Form(ar_ex);
+		cout << st << endl;
+	}
+	catch (string msg) {
+		cout << msg << endl;
+	}
 	map<string, double> variableDict = GetVariables(st);
 	res = Calculate(st, variableDict);
 	cout << res;

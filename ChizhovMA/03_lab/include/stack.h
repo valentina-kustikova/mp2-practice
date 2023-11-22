@@ -42,7 +42,10 @@ template <class T>
 TStack<T>::TStack<T>(int maxSize)
 {
 	if (maxSize <= 0)
-		throw "Error";
+	{
+		string msg = "Error";
+		throw msg;
+	}
 	this->maxSize = maxSize;
 	top = -1;
 	elems = new T[maxSize];
@@ -100,7 +103,10 @@ template <class T>
 T TStack<T>::Top() const
 {
 	if (top == -1)
-		throw "Error";
+	{
+		string msg = "Error: stack is empty";
+		throw msg;
+	}
 	return elems[top];
 }
 
@@ -116,7 +122,10 @@ template <class T>
 void TStack<T>::Pop()
 {
 	if (IsEmpty())
-		throw "Error";
+	{
+		string msg = "Error: stack is empty";
+		throw msg;
+	}
 	top -= 1;
 }
 
