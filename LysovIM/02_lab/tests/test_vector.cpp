@@ -50,7 +50,7 @@ TEST(TVector, can_get_start_index)
     EXPECT_EQ(1, vector.getStartIndex());
 }
 
-TEST(TVector, throws_when_set_element_with_negative_index)
+TEST(TVector, can`t_when_set_element_with_negative_index)
 {
     TVector<int>value(4, 2);
     ASSERT_ANY_THROW(value[-1] = 1);
