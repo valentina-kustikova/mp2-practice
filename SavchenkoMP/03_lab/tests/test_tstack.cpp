@@ -21,57 +21,91 @@ TEST(TStack, throw_ParameterizedConstructorTest_NegativeSize) {
 }
 
 // IsEmptyTest
-TEST(TStack, IsEmptyTest) {
+TEST(TStack, IsEmptyTest_Empty) {
 	TStack<int> s(3);
 	EXPECT_EQ(true, s.IsEmpty());
+}
 
+TEST(TStack, IsEmptyTest_NotEmpty) {
+	TStack<int> s(3);
 	s.Push(1);
 	EXPECT_EQ(false, s.IsEmpty());
 }
 
 // IsFullTest
-TEST(TStack, IsFullTest) {
+TEST(TStack, IsFullTest_Empty) {
 	TStack<int> s(2);
 	EXPECT_EQ(false, s.IsFull());
+}
 
+TEST(TStack, IsFullTest_NotEmpty) {
+	TStack<int> s(2);
 	s.Push(1);
 	EXPECT_EQ(false, s.IsFull());
+}
 
+TEST(TStack, IsFullTest_Full) {
+	TStack<int> s(2);
+	s.Push(1);
 	s.Push(2);
 	EXPECT_EQ(true, s.IsFull());
 }
 
 // PushAndTopTests
-TEST(TStack, PushAndTopTest) {
+TEST(TStack, PushAndTopTest_TopIfEmpty) {
 	TStack<int> s(3);
-	
+	ASSERT_ANY_THROW(s.Top());
+}
+
+TEST(TStack, throw_PushTest_StackIsEmpty) {
+	TStack<int> s(2);
+
+	ASSERT_NO_THROW(s.Push(1));
+}
+
+TEST(TStack, throw_PushTest_StackIsNotEmpty) {
+	TStack<int> s(2);
+
 	s.Push(1);
-	EXPECT_EQ(1, s.Top());
-
-	s.Push(2);
-	EXPECT_EQ(2, s.Top());
-
-	s.Push(3);
-	EXPECT_EQ(3, s.Top());
+	ASSERT_NO_THROW(s.Push(2));
 }
 
 TEST(TStack, throw_PushTest_StackIsFull) {
 	TStack<int> s(2);
-	
-	ASSERT_NO_THROW(s.Push(1));
-	
-	ASSERT_NO_THROW(s.Push(2));
-	
-	ASSERT_ANY_THROW(s.Push(3));
+
+	s.Push(1);
+	s.Push(2);
+	ASSERT_NO_THROW(s.Push(3));
 }
 
-TEST(TStack, throw_TopElementTest_StackIsEmpty) {
+TEST(TStack, PushAndTopTest_PushIfEmpty) {
+	TStack<int> s(3);
+	
+	s.Push(1);
+	EXPECT_EQ(1, s.Top());
+}
+
+TEST(TStack, PushAndTopTest_PushIfNotEmpty) {
 	TStack<int> s(3);
 
-	ASSERT_ANY_THROW(s.Top());
+	s.Push(1);
+	s.Push(2);
+	EXPECT_EQ(2, s.Top());
+
 }
 
+TEST(TStack, PushAndTopTest_PushIfFull) {
+	TStack<int> s(3);
+
+	s.Push(1);
+	s.Push(2);
+	s.Push(3);
+	EXPECT_EQ(3, s.Top());
+}
+
+
 // PopTest
+// –¿«ƒ≈À»“‹ “≈—“€
 TEST(TStack, PopTest) {
 	TStack<int> s(3);
 

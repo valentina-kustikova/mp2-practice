@@ -1,6 +1,6 @@
 #include <gtest.h>
 
-#include "tarithmeticexpression_str.h"
+#include "tarithmeticexpression.h"
 
 /*
 1. A+B*C
@@ -34,103 +34,103 @@
 	N O P + / Q R * - S +
 */
 
-TEST(TArithmeticExpression_str, ArithmeticExpression1) {
+TEST(TArithmeticExpression, ArithmeticExpression1) {
 	string str = "A+B*C";
 	string expPostfix = "A B C * +";
 
-	ASSERT_NO_THROW(TArithmeticExpression_str ae(str));
-	
-	TArithmeticExpression_str ae(str);
+	ASSERT_NO_THROW(TArithmeticExpression, ae(str));
+
+	TArithmeticExpression ae(str);
 	EXPECT_EQ(expPostfix, ae.GetStringPostfix());
 }
 
-TEST(TArithmeticExpression_str, ArithmeticExpression2) {
+TEST(TArithmeticExpression, ArithmeticExpression2) {
 	string str = "D/(E-F)";
 	string expPostfix = "D E F - /";
 
-	ASSERT_NO_THROW(TArithmeticExpression_str ae(str));
+	ASSERT_NO_THROW(TArithmeticExpression ae(str));
 
-	TArithmeticExpression_str ae(str);
+	TArithmeticExpression ae(str);
 	EXPECT_EQ(expPostfix, ae.GetStringPostfix());
 }
 
-TEST(TArithmeticExpression_str, ArithmeticExpression3) {
+TEST(TArithmeticExpression, ArithmeticExpression3) {
 	string str = "(G+H)*I-J";
 	string expPostfix = "G H + I * J -";
 
-	ASSERT_NO_THROW(TArithmeticExpression_str ae(str));
+	ASSERT_NO_THROW(TArithmeticExpression ae(str));
 
-	TArithmeticExpression_str ae(str);
+	TArithmeticExpression ae(str);
 	EXPECT_EQ(expPostfix, ae.GetStringPostfix());
 }
 
-TEST(TArithmeticExpression_str, ArithmeticExpression4) {
+TEST(TArithmeticExpression, ArithmeticExpression4) {
 	string str = "K*L/(M+N)";
 	string expPostfix = "K L * M N + /";
 
-	ASSERT_NO_THROW(TArithmeticExpression_str ae(str));
+	ASSERT_NO_THROW(TArithmeticExpression ae(str));
 
-	TArithmeticExpression_str ae(str);
+	TArithmeticExpression ae(str);
 	EXPECT_EQ(expPostfix, ae.GetStringPostfix());
 }
 
-TEST(TArithmeticExpression_str, ArithmeticExpression5) {
+TEST(TArithmeticExpression, ArithmeticExpression5) {
 	string str = "(O-P)*Q/R+S";
 	string expPostfix = "O P - Q * R / S +";
 
-	ASSERT_NO_THROW(TArithmeticExpression_str ae(str));
+	ASSERT_NO_THROW(TArithmeticExpression ae(str));
 
-	TArithmeticExpression_str ae(str);
+	TArithmeticExpression ae(str);
 	EXPECT_EQ(expPostfix, ae.GetStringPostfix());
 }
 
-TEST(TArithmeticExpression_str, ArithmeticExpression6) {
+TEST(TArithmeticExpression, ArithmeticExpression6) {
 	string str = "T*(U+V)-W/X";
 	string expPostfix = "T U V + * W X / -";
 
-	ASSERT_NO_THROW(TArithmeticExpression_str ae(str));
+	ASSERT_NO_THROW(TArithmeticExpression ae(str));
 
-	TArithmeticExpression_str ae(str);
+	TArithmeticExpression ae(str);
 	EXPECT_EQ(expPostfix, ae.GetStringPostfix());
 }
 
-TEST(TArithmeticExpression_str, ArithmeticExpression7) {
+TEST(TArithmeticExpression, ArithmeticExpression7) {
 	string str = "Y/Z-(A+B)*C";
 	string expPostfix = "Y Z / A B + C * -";
 
-	ASSERT_NO_THROW(TArithmeticExpression_str ae(str));
+	ASSERT_NO_THROW(TArithmeticExpression ae(str));
 
-	TArithmeticExpression_str ae(str);
+	TArithmeticExpression ae(str);
 	EXPECT_EQ(expPostfix, ae.GetStringPostfix());
 }
 
-TEST(TArithmeticExpression_str, ArithmeticExpression8) {
+TEST(TArithmeticExpression, ArithmeticExpression8) {
 	string str = "D+(E*F)/G-H";
 	string expPostfix = "D E F * G / + H -";
 
-	ASSERT_NO_THROW(TArithmeticExpression_str ae(str));
+	ASSERT_NO_THROW(TArithmeticExpression ae(str));
 
-	TArithmeticExpression_str ae(str);
+	TArithmeticExpression ae(str);
 	EXPECT_EQ(expPostfix, ae.GetStringPostfix());
 }
 
-TEST(TArithmeticExpression_str, ArithmeticExpression9) {
+TEST(TArithmeticExpression, ArithmeticExpression9) {
 	string str = "I*(J-K/L)+M";
 	string expPostfix = "I J K L / - * M +";
 
-	ASSERT_NO_THROW(TArithmeticExpression_str ae(str));
+	ASSERT_NO_THROW(TArithmeticExpression ae(str));
 
-	TArithmeticExpression_str ae(str);
+	TArithmeticExpression ae(str);
 	EXPECT_EQ(expPostfix, ae.GetStringPostfix());
 }
 
-TEST(TArithmeticExpression_str, ArithmeticExpression10) {
+TEST(TArithmeticExpression, ArithmeticExpression10) {
 	string str = "N/(O+P)-Q*R+S";
 	string expPostfix = "N O P + / Q R * - S +";
 
-	ASSERT_NO_THROW(TArithmeticExpression_str ae(str));
+	ASSERT_NO_THROW(TArithmeticExpression ae(str));
 
-	TArithmeticExpression_str ae(str);
+	TArithmeticExpression ae(str);
 	EXPECT_EQ(expPostfix, ae.GetStringPostfix());
 }
 

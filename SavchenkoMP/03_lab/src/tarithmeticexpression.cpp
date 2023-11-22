@@ -46,61 +46,6 @@ int TArithmeticExpression::FindOperator(int pos) const {
 	}
 	return ind;
 }
-//int TArithmeticExpression::FindLastOperator(int offset_from_end) const {
-//	if (offset_from_end < 0 || offset_from_end >= infix.size()) throw "ERROR: Position out of range";
-//	
-//	int ind = -1;
-//	for (int i = infix.size() - 1 - offset_from_end; i >= 0; i--) {
-//		string isopr;
-//		isopr += infix[i];
-//
-//		if (IsOperator(isopr)) {
-//			ind = i;
-//			break;
-//		}
-//	}
-//	return ind;
-//}
-
-//double TArithmeticExpression::StringToValue(const string& str) const {
-//	if (!IsConst(str)) throw "ERROR: Invalid argument";
-//
-//	double value = stod(str);
-//
-//	return value;
-//
-//	//int dot = -1, dotcount = 0;
-//	//for (int i = 0; i < str.size(); i++) {
-//	//	if (str[i] == '.') {
-//	//		dot = i;
-//	//		dotcount++;
-//	//	}
-//	//}
-//	//if (dotcount > 1) throw "ERROR: too many dots string number";
-//	//if (dot == -1) dot = str.size();
-//	//double fraction_lenght;
-//
-//	//
-//	//double value = 0.0;
-//	//double fraction = 0.0;
-//	//double fraction_grade = 1.0;
-//	//double grade = 10.0;
-//	//
-//
-//	//for (int i = 0; i < dot; i++) {
-//	//	value *= 10;
-//	//	value += str[i] - '0';
-//	//}
-//	//for (int i = dot + 1; i < str.size(); i++) {
-//	//	fraction *= 10;
-//	//	fraction += str[i] - '0';
-//	//	fraction_grade *= 10;
-//	//}
-//	//value += fraction_grade;
-//
-//	//return value;
-//}
-
 
 void TArithmeticExpression::ConvertInfix() {
 	string tmp;
@@ -140,10 +85,36 @@ void TArithmeticExpression::ConvertInfix() {
 	else tmp += infix[infix.size() - 1];
 	infix = tmp;
 }
-void TArithmeticExpression::Parse() {
-	// »ƒ≈я: подсчитывать кол-во операторов, чтобы можно было добавл€ть в операторы функции
 
+void TArithmeticExpression::CorrectnessCheck() {
+	int op_bracket = 0;
+	int cl_bracket = 0;
+	int dot = 0;
+
+	string exp = "Incorrect arithmetic expression";
+
+	if (infix[0] == '+' || infix[0] == '*' || infix[0] == '/' || infix[0] == ')') throw exp;
+	if (infix[infix.size() - 1] == '+' || infix[infix.size() - 1] == '-' || infix[infix.size() - 1] == '*' || infix[infix.size() - 1] == '/' || infix[infix.size() - 1] == '(') throw exp;
+	for (int i = 1; i < infix.size()-1; i++) {
+		char elem = infix[i];
+		if (elem == '(')
+			op_bracket++;
+		else if (elem == ')')
+			cl_bracket++;
+		else if (elem == '.')
+			dot++;
+		else if (elem == '+' || elem == '-' || elem == '*' || elem == '/') {
+			if (dot > 1) throw exp;
+			dot = 0;
+			if (infix[i + 1] == '+' || infix[i - 1] == '-' || infix[i + 1] == '*' || infix[i + 1] == '/' || infix[i + 1] == ')') throw exp;
+		}
+	}
+	if (op_bracket != cl_bracket) throw exp;
+}
+
+void TArithmeticExpression::Parse() {
 	ConvertInfix();
+	CorrectnessCheck();
 
 	int firstind, secondind;;
 	string token;

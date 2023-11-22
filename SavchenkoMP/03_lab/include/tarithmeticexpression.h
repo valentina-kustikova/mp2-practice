@@ -41,9 +41,8 @@ private:
 
 	int FindOperator(int pos = 0) const;
 
-	//double StringToValue(const string& str) const;
-
 	void ConvertInfix();
+	void CorrectnessCheck();
 };
 
 #endif // !_TARITHMETIC_EXPRESSION_H
