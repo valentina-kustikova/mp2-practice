@@ -41,7 +41,7 @@ public:
 template <typename ValueType>
 TMatrix<ValueType>::TMatrix(int size) : TVector<TVector<ValueType>>(size) {
 	for (int i = 0; i < size; ++i) {
-		pVector[i] = TVector<ValueType>(size-i,i);
+		pVector[i] = TVector<ValueType>(size - i, i);
 	}
 }
 
