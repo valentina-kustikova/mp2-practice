@@ -224,11 +224,14 @@ TEST(TVector, cant_add_vectors_with_not_equal_size)
     v1[1] = 1;
     v1[2] = 2;
     v1[3] = 3;
+    v1[4] = 3;
     TVector<int> v2(6);
     v2[0] = 0;
     v2[1] = 1;
     v2[2] = 2;
     v2[3] = 3;
+    v2[4] = 3;
+    v2[5] = 3;
     ASSERT_ANY_THROW(v1+v2);
 }
 
@@ -282,20 +285,19 @@ TEST(TVector, can_multiply_vectors_with_equal_size)
     v2[1] = 1;
     v2[2] = 2;
     v2[3] = 3;
-    EXPECT_EQ(v1 * v2,14);
+    EXPECT_EQ(v1 * v2, 14);
 }
 
 TEST(TVector, cant_multiply_vectors_with_not_equal_size)
 {
-    TVector<int> v1(5);
+    TVector<int> v1(3);
     v1[0] = 0;
     v1[1] = 1;
     v1[2] = 2;
-    v1[3] = 3;
-    TVector<int> v2(6);
+    TVector<int> v2(4);
     v2[0] = 0;
     v2[1] = 1;
     v2[2] = 2;
     v2[3] = 3;
-    ASSERT_ANY_THROW(v1*v2);
+    ASSERT_ANY_THROW(v1 * v2);
 }

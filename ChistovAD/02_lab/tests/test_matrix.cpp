@@ -37,10 +37,8 @@ TEST(TMatrix, copied_matrix_has_its_own_memory)
 	m1[0][0] = 1;
 	m1[0][1] = 2;
 	m1[1][0] = 1;
-	TMatrix <int> m2(2);
+	TMatrix <int> m2(m1);
 	m1[0][0] = 3;
-	m1[0][1] = 4;
-	m1[1][0] = 1;
 	EXPECT_EQ(m1 == m2, 0);
 }
 
@@ -99,8 +97,8 @@ TEST(TMatrix, can_assign_matrix_of_different_size)
 	m1[0][1] = 2;
 	m1[1][0] = 1;
 	TMatrix <int> m2(1);
-	m1[0][0] = 1;
-	m1 = m2;
+	m2[0][0] = 1;
+	m2 = m1;
 	EXPECT_EQ(m1, m2);
 }
 
@@ -109,8 +107,11 @@ TEST(TMatrix, assign_operator_change_matrix_size)
 	TMatrix <int> m1(2);
 	m1[0][0] = 1;
 	m1[0][1] = 2;
-	m1[1][0] = 1;;
-	EXPECT_EQ(2, m1.GetSize());
+	m1[1][0] = 1;
+	TMatrix <int> m2(1);
+	m2[0][0] = 1;
+	m2 = m1;
+	EXPECT_EQ(2, m2.GetSize());
 }
 
 TEST(TMatrix, compare_equal_matrix_return_true)
@@ -148,7 +149,6 @@ TEST(TMatrix, matrix_with_different_size_are_not_equal)
 
 TEST(TMatrix, can_add_matrices_with_equal_size)
 {
-
 	TMatrix <int> m1(2);
 	m1[0][0] = 1;
 	m1[0][1] = 2;
@@ -161,7 +161,7 @@ TEST(TMatrix, can_add_matrices_with_equal_size)
 	m3[0][0] = 1;
 	m3[0][1] = 3;
 	m3[1][0] = 3;
-	ASSERT_TRUE(m3 == m1+m2);
+	EXPECT_EQ(m3, m1+m2);
 }
 
 TEST(TMatrix, cannot_plus_with_not_equal_size)
@@ -189,7 +189,7 @@ TEST(TMatrix, can_subtract_matrices_with_equal_size)
 	m3[0][0] = 0;
 	m3[0][1] = 1;
 	m3[1][0] = -1;
-	EXPECT_EQ(m3, m1-m2);
+	EXPECT_EQ(m3, m1 - m2);
 }
 
 TEST(TMatrix, cant_subtract_matrixes_with_not_equal_size)
@@ -200,7 +200,7 @@ TEST(TMatrix, cant_subtract_matrixes_with_not_equal_size)
 	m1[1][0] = 1;
 	TMatrix<int> m2(1);
 	m2[0][0] = 1;
-	ASSERT_ANY_THROW(m1-m2);
+	ASSERT_ANY_THROW(m1 - m2);
 }
 
 TEST(TMatrix, can_mult_with_equal_size)
@@ -217,8 +217,7 @@ TEST(TMatrix, can_mult_with_equal_size)
 	m3[0][0] = 0;
 	m3[0][1] = 5;
 	m3[1][0] = 2;
-
-	ASSERT_TRUE(m3 == m1 * m2);
+	EXPECT_EQ(m3, m1 * m2);
 }
 
 TEST(TMatrix, cant_mult_with_not_equal_size)
