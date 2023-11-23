@@ -7,9 +7,9 @@ int main()
 	cout << "Specify the length of the vector:"<<"\t";
 	cin >> len;
 	TVector<int> vector1(len), vector2(len);
-	cout << "Enter the coordinates of the first vector:" << endl;;
+	cout << "Enter the coordinates of the first vector:" << endl;
 	cin >> vector1;
-	cout << "Enter the coordinates of the second vector:" << endl;;
+	cout << "Enter the coordinates of the second vector:" << endl;
 	cin >> vector2;
 	cout << "Vector 1:" << "\t" << vector1;
 	cout << "Vector 2:" << "\t" << vector2;
