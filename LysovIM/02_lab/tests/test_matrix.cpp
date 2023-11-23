@@ -3,7 +3,7 @@
 
 TEST(TMatrix, can_create_matrix_with_positive_length)
 {
-	ASSERT_NO_THROW(TMatrix<int> matrix(2));
+	ASSERT_NO_THROW(TMatrix<int> matrix(3));
 }
 
 TEST(TMatrix, when_create_matrix_with_negative_length_false)
