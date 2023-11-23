@@ -14,5 +14,6 @@ int main()
     cout << "Matrix 2:" << endl << matrix2;
     cout << "Matrix 1 + matrix 2:" << endl << matrix1 + matrix2;
     cout << "Matrix 1 * matrix 2:" << endl << matrix1 * matrix2;
+    cout << "Matrix 1 == Matrix 2?" << "\t" << (matrix1 == matrix2);
     return 0;
 }

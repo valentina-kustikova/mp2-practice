@@ -17,6 +17,10 @@ int main()
 	cout << "Lenght Vector`s 2: " << vector2.getSize() << endl;
 	cout << "Vector 1 + vector 2:" << "\t" << vector1 + vector2;
 	cout << "Vector 1 - vector 2:" << "\t" << vector1 - vector2;
-	cout << "Vector 1 * vector 2:" << "\t" << vector1 * vector2;
+	cout << "Vector 1 * vector 2:" << "\t" << vector1 * vector2 << endl;
+	cout << "Vector 1 - one:" << "\t" << vector1 - 1;
+	cout << "Vector 2 * three:" << "\t" << vector2 * 3;
+	cout << "Vector 1 == Vector 2" << "\t" << (vector1 == vector2) << endl;
+	cout << "Vector 1 != Vector 2" << "\t" << (vector1 != vector2) << endl;
 	return 0;
 }
