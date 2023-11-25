@@ -48,6 +48,13 @@ int TArithmeticExpression::FindOperator(int pos) const {
 }
 
 void TArithmeticExpression::ConvertInfix() {
+	string nospaces;
+	for (int i = 0; i < infix.size(); i++) {
+		if (infix[i] != ' ')
+			nospaces += infix[i];
+	}
+	infix = nospaces;
+	
 	string tmp;
 	if (infix[0] == '-') tmp += "0-";
 	else if (infix[0] == '.') tmp += "0.";
@@ -65,7 +72,7 @@ void TArithmeticExpression::ConvertInfix() {
 			tmp += '-';
 		}
 		else if (elem == '(') {
-			if (infix[i - 1] == ')' || (infix[i - 1] >= '0' && infix[i - 1] <= '9'))
+			if (infix[i - 1] == ')' || infix[i - 1] == '.' || (infix[i - 1] >= '0' && infix[i - 1] <= '9'))
 				tmp += '*';
 			tmp += '(';
 		}
@@ -76,6 +83,7 @@ void TArithmeticExpression::ConvertInfix() {
 			if (infix[i + 1] < '0' || infix[i + 1] > '9')
 				tmp += '0';
 		}
+
 		else {
 			tmp += elem;
 		}
@@ -95,18 +103,26 @@ void TArithmeticExpression::CorrectnessCheck() {
 
 	if (infix[0] == '+' || infix[0] == '*' || infix[0] == '/' || infix[0] == ')') throw exp;
 	if (infix[infix.size() - 1] == '+' || infix[infix.size() - 1] == '-' || infix[infix.size() - 1] == '*' || infix[infix.size() - 1] == '/' || infix[infix.size() - 1] == '(') throw exp;
+
+	if (infix[0] == '(') op_bracket++;
+	else if (infix[0] == '.') dot++;
+	if (infix[infix.size() - 1] == ')') cl_bracket++;
+	else if (infix[infix.size() - 1] == '.') dot++;
+
 	for (int i = 1; i < infix.size()-1; i++) {
 		char elem = infix[i];
 		if (elem == '(')
 			op_bracket++;
-		else if (elem == ')')
+		else if (elem == ')') {
+			if (infix[i - 1] == '(' || infix[i - 1] == '+' || infix[i - 1] == '-' || infix[i - 1] == '*' || infix[i - 1] == '/') throw exp;
 			cl_bracket++;
+		}
 		else if (elem == '.')
 			dot++;
 		else if (elem == '+' || elem == '-' || elem == '*' || elem == '/') {
 			if (dot > 1) throw exp;
 			dot = 0;
-			if (infix[i + 1] == '+' || infix[i - 1] == '-' || infix[i + 1] == '*' || infix[i + 1] == '/' || infix[i + 1] == ')') throw exp;
+			if (infix[i - 1] == '+' || infix[i - 1] == '-' || infix[i - 1] == '*' || infix[i - 1] == '/' || infix[i - 1] == '(') throw exp;
 		}
 	}
 	if (op_bracket != cl_bracket) throw exp;
@@ -273,6 +289,10 @@ double TArithmeticExpression::Calculate(const map<string, double>& values) {
 			st.Pop();
 			leftOp = st.Top();
 			st.Pop();
+			if (rightOp == 0) {
+				string exp = "Error: division by 0";
+				throw exp;
+			}
 			st.Push(leftOp / rightOp);
 		}
 		else {

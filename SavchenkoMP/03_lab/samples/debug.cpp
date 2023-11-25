@@ -71,6 +71,14 @@ int main() {
 	try {
 		//test_ae();
 		//test_IsConst();
+
+		string str = "5(A+B)";
+		string prefix = "0.5(A+B)";
+
+		TArithmeticExpression ae(str);
+
+	
+
 	}
 	catch (string exp) {
 		cout << exp << endl;

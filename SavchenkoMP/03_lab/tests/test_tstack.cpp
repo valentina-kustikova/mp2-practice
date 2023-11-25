@@ -78,14 +78,27 @@ TEST(TStack, throw_PushTest_StackIsFull) {
 	ASSERT_NO_THROW(s.Push(3));
 }
 
-TEST(TStack, PushAndTopTest_PushIfEmpty) {
+TEST(TStack, throw_TopTest_TopIfEmpty) {
+	TStack<int> s(3);
+
+	ASSERT_ANY_THROW(s.Top());
+}
+
+TEST(TStack, TopTest_TopIfNotEmpty) {
+	TStack<int> s(3);
+
+	s.Push(1);
+	EXPECT_EQ(1, s.Top());
+}
+
+TEST(TStack, TopValueTest_PushIfEmpty) {
 	TStack<int> s(3);
 	
 	s.Push(1);
 	EXPECT_EQ(1, s.Top());
 }
 
-TEST(TStack, PushAndTopTest_PushIfNotEmpty) {
+TEST(TStack, TopValueTest_PushIfNotEmpty) {
 	TStack<int> s(3);
 
 	s.Push(1);
@@ -94,7 +107,7 @@ TEST(TStack, PushAndTopTest_PushIfNotEmpty) {
 
 }
 
-TEST(TStack, PushAndTopTest_PushIfFull) {
+TEST(TStack, TopValueTest_PushIfFull) {
 	TStack<int> s(3);
 
 	s.Push(1);
@@ -105,8 +118,12 @@ TEST(TStack, PushAndTopTest_PushIfFull) {
 
 
 // PopTest
-// –¿«ƒ≈À»“‹ “≈—“€
-TEST(TStack, PopTest) {
+TEST(TStack, throw_PopTest_StackIsEmpty) {
+	TStack<int> s(3);
+	ASSERT_ANY_THROW(s.Pop());
+}
+
+TEST(TStack, PopTest_StackIsFull) {
 	TStack<int> s(3);
 
 	s.Push(1);
@@ -114,14 +131,36 @@ TEST(TStack, PopTest) {
 	s.Push(3);
 
 	ASSERT_NO_THROW(s.Pop());
+}
+
+TEST(TStack, PopTest_StackIsFull_Value) {
+	TStack<int> s(3);
+
+	s.Push(1);
+	s.Push(2);
+	s.Push(3);
+
+	s.Pop();
 	EXPECT_EQ(2, s.Top());
+}
+
+TEST(TStack, PopTest_StackIsNotFull) {
+	TStack<int> s(3);
+
+	s.Push(1);
+	s.Push(2);
 
 	ASSERT_NO_THROW(s.Pop());
+}
+
+TEST(TStack, PopTest_StackIsNotFull_Value) {
+	TStack<int> s(3);
+
+	s.Push(1);
+	s.Push(2);
+
+	s.Pop();
 	EXPECT_EQ(1, s.Top());
 
 }
 
-TEST(TStack, throw_PopTest_StackIsEmpty) {
-	TStack<int> s(3);
-	ASSERT_ANY_THROW(s.Pop());
-}
