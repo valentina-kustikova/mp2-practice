@@ -20,12 +20,7 @@ public:
 	bool IsEmpty(void) const;
 	bool IsFull(void) const;
 	int Length() const { return top+1; }
-	T GetElement(int ind) const
-	{
-		if (ind < 0 || ind > top) 
-			throw "error";
-		return elems[ind];
-	}
+	T GetElement(int ind) const;
 	T Top() const;
 	void Push(const T& elem);
 	void Pop();
@@ -97,6 +92,14 @@ bool TStack<T>::IsFull(void) const
 	if (maxSize - 1 == top)
 		return true;
 	return false;
+}
+
+template <class T>
+T TStack<T>::GetElement(int ind) const
+{
+	if (ind < 0 || ind > top)
+		throw "error";
+	return elems[ind];
 }
 
 template <class T>

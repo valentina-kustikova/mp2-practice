@@ -21,7 +21,7 @@ int Is_Symbol(const ArithmeticSymbol symbols[], string sm)
 	return -1;
 }
 
-int Get_Priority(string symbol)
+int Get_Priority(const string symbol)
 {
 	int ind = Is_Symbol(symbols, symbol);
 	int priority = symbols[ind].priority;
@@ -46,43 +46,75 @@ bool Is_Number(const string& str)
 	return true;
 }
 
-bool isOperand(string c)
+bool isOperand(char c)
 {
-	return ((c >= "0" && c <= "9") || (c >= "a" && c <= "z") || (c >= "A" && c <= "Z"));
+	return ((c >= '0' && c <= '9') || (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'));
 }
+
+bool isOperator(string s)
+{
+	return ((s == "-") || (s == "+") || (s == "/") || (s == "*"));
+}
+
+string FilteredExpression(const string& s)
+{
+	string filteredExpression = "";
+	int l = s.length();
+	for (int i = 0; i<l; i++)
+	{
+		char c = s[i];
+		if (c != ' ')
+		{
+			filteredExpression += c;
+		}
+	}
+	return filteredExpression;
+}
+
 
 bool isValidExpression(const string& expression) 
 {
-	int k = 0;
+	int k1 = 0, k2 = 0;
 	int l = expression.length();
 	for (int i = 0; i < l; i++)
 	{
-		char c=expression[i];
+		char c = expression[i];
 		string s(1, c);
-		/*if (i == 0)
-			if (Is_Symbol(symbols, s))
-				return false;*/
+		if (i == 0)
+			if (isOperator(s))
+				return false;
 		if (s == "(" || s == ")")
 		{
-			k++;
-			if (s == ")")
+			if (s == "(")
+				k1++;
+			else
 			{
-				char c = expression[i+1];
+				k2++;
+				char c1 = expression[i + 1];
 				string s1(1, c);
-				if (isOperand(s1))
+				if (isOperand(c1) || c1=='(')
 					return false;
 			}
 		}
-		else if ((Is_Symbol(symbols, s) != -1) || isOperand(s))
+		else if ((Is_Symbol(symbols, s) != -1) || isOperand(c))
 		{
-			if ((Is_Symbol(symbols, s) != -1) && (i == l - 1))
+			char c1 = expression[i + 1];
+			string s1(1, c1);
+			if (isOperator(s))
+			{
+				if (isOperator(s1))
+					return false;
+				if (i == l - 1)
+					return false;
+			}
+			if ((isOperand(c)) && (s1 == "("))
 				return false;
 			continue;
 		}
 		else 
 			return false; // обнаружен недопустимый символ
 	}
-	if (k % 2 != 0)
+	if (k1 != k2)
 		return false;
 	return true; 
 }
@@ -106,8 +138,9 @@ map<string, double> GetVariables(TStack<string>& postfixExpression) {
 	return uniqueVariables;
 }
 
-TStack<string> Postfix_Form(string str)
+TStack<string> Postfix_Form(const string& s)
 {
+	string str = FilteredExpression(s);
 	if (!isValidExpression(str))
 	{
 		string msg = "Input error";

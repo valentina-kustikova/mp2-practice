@@ -8,7 +8,7 @@ int main()
 	string ar_ex;
 	double res;
 	cout << "Enter arithmetic expression: ";
-	cin >> ar_ex;
+	getline(cin, ar_ex);
 
 	TStack<string> st(5);
 	try {
