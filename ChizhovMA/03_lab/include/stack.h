@@ -19,6 +19,7 @@ public:
 	TStack<T>& operator=(const TStack<T>& s);
 	bool IsEmpty(void) const;
 	bool IsFull(void) const;
+	void ResizeStack();
 	int Length() const { return top+1; }
 	T GetElement(int ind) const;
 	T Top() const;
@@ -95,6 +96,20 @@ bool TStack<T>::IsFull(void) const
 }
 
 template <class T>
+void TStack<T>::ResizeStack()
+{
+	int newMaxSize = maxSize * 5; // Увеличиваем размер вдвое
+	T* newElems = new T[newMaxSize]; // Создаем новый массив с увеличенным размером
+
+	for (int i = 0; i <= top; i++)
+		newElems[i] = elems[i]; // Копируем элементы из старого массива в новый
+
+	delete[] elems; // Удаляем старый массив
+	elems = newElems; // Указываем на новый массив
+	maxSize = newMaxSize; // Обновляем значение maxSize
+}
+
+template <class T>
 T TStack<T>::GetElement(int ind) const
 {
 	if (ind < 0 || ind > top)
@@ -117,7 +132,7 @@ template <class T>
 void TStack<T>::Push(const T& elem)
 {
 	if (IsFull())
-		throw "Error";
+		ResizeStack();
 	elems[++top] = elem;
 }
 

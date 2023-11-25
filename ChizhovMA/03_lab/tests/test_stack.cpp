@@ -77,6 +77,15 @@ TEST(TStack, stack_pop)
     EXPECT_EQ(1, s.Top());
 }
 
+//push
+TEST(TStack, stack_push_with_resize)
+{
+    TStack<int> s(3);
+    for (int i = 1; i < 6; i++)
+        s.Push(i);
+    EXPECT_EQ(5, s.Length());
+}
+
 //length
 TEST(TStack, stack_length_zero)
 {

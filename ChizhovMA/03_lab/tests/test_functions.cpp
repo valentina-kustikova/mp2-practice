@@ -140,10 +140,39 @@ TEST(ValidExpressionTest, last_symbol_is_operator)
 	EXPECT_EQ(0, isValidExpression(s));
 }
 
-TEST(ValidExpression, correct_input)
+TEST(ValidExpressionTest, correct_input)
 {
 	string s = "a+(b-a)/(d-a)*12-(x2+b)/x1";
 	EXPECT_EQ(1, isValidExpression(s));
+}
+
+TEST(AddToStack1Test, add_elements_to_stack1_from_stack_2)
+{
+	TStack<string> s1(5);
+	TStack<string> s2(5);
+	TStack<string> s3(5);
+	s1.Push("x");
+	s1.Push("5");
+	s1.Push("+");
+
+	s2.Push("a");
+	s2.Push("b");
+	s2.Push("*");
+
+	s3.Push("x");
+	s3.Push("5");
+	s3.Push("+");
+	s3.Push("*");
+	s3.Push("b");
+	s3.Push("a");
+
+	while (!s2.IsEmpty())
+	{
+		string a = s2.Top();
+		Add_to_Stack1(s1, s2, a);
+	}
+	for (int i = 0; i < s3.Length(); i++)
+		EXPECT_EQ(s3.GetElement(i), s1.GetElement(i));
 }
 
 TEST(GetVariablesTest, variables_exist)

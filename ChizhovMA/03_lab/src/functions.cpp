@@ -146,8 +146,8 @@ TStack<string> Postfix_Form(const string& s)
 		string msg = "Input error";
 		throw msg;
 	}
-	TStack<string> st1(20);
-	TStack<string> st2(20);
+	TStack<string> st1(5);
+	TStack<string> st2(5);
 	string numStr;
 	string varStr;
 	for (int i = 0; i < str.length(); i++)
