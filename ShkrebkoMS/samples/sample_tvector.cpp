@@ -6,7 +6,7 @@ int main()
 
     TVector<int> v1(4, 1);
     TVector<int> v2(4, 1);
-    TVector<int> v3(3, 1);
+    TVector<int> v3;
     TVector<int> v4(4, 1);
 
     for (int i = 0; i < 4; i++)
