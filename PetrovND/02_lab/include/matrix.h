@@ -78,24 +78,12 @@ const Matrix<ValueType>& Matrix<ValueType>::operator=(const Matrix& m) {
 
 template <typename ValueType>
 Matrix <ValueType> Matrix<ValueType>::operator+(const Matrix& m) {
-	if (this->size != m.size) throw invalid_argument("Matrices must have the same size for addition.");
-
-	Matrix result(*this);
-	for (int i = 0; i < this->size; ++i) {
-		result.pVector[i] = result.pVector[i] + m.pVector[i];
-	}
-	return result;
+	return Vector<Vector<ValueType> >::operator+(m);
 }
 
 template <typename ValueType>
 Matrix <ValueType> Matrix<ValueType>::operator-(const Matrix& m) {
-	if (this->size != m.size) throw invalid_argument("Matrices must have the same size for subtraction.");
-
-	Matrix result(*this);
-	for (int i = 0; i < this->size; ++i) {
-		result.pVector[i] = result.pVector[i] - m.pVector[i];
-	}
-	return result;
+	return Vector<Vector<ValueType> >::operator-(m);
 }
 
 template <typename ValueType>

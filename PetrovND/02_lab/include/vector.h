@@ -148,7 +148,7 @@ Vector<ValueType> Vector<ValueType>::operator-(const Vector& v) {
 
     Vector result(*this);
     for (int i = 0; i < size; ++i) {
-        result.pVector[i] -= v.pVector[i];
+        result.pVector[i] = pVector[i] - v.pVector[i];
     }
     return result;
 }
