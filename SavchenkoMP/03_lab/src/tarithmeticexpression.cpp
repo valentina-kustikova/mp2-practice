@@ -77,13 +77,23 @@ void TArithmeticExpression::ConvertInfix() {
 			tmp += '(';
 		}
 		else if (elem == '.') {
-			if (infix[i - 1] < '0' || infix[i - 1] > '9')
+			if (infix[i - 1] < '0' || infix[i - 1] > '9') {
+				if (infix[i - 1] == ')')
+					tmp += '*';
 				tmp += '0';
+			}
 			tmp += '.';
-			if (infix[i + 1] < '0' || infix[i + 1] > '9')
+			if (infix[i + 1] < '0' || infix[i + 1] > '9') {
 				tmp += '0';
+				if (infix[i + 1] == '(')
+					tmp += '*';
+			}
 		}
-
+		else if (elem >= '0' && elem <= '9') {
+			if (infix[i - 1] == ')')
+				tmp += '*';
+			tmp += elem;
+		}
 		else {
 			tmp += elem;
 		}

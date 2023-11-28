@@ -15,9 +15,8 @@ int main() {
 		cout << "It may contain operators : +, -, -(unary), *, /." << endl;
 		cout << "Operands are multicharacter words, e.g. \"A\", \"b\", \"X2\", \"aBc\", etc." << endl;
 		cout << "Supports integer and fractional constant entries." << endl;
-		cout << "Supports abbreviations such as: 2(A+B), (A+B)(C+D), .1, 3., etc." << endl;
-		cout << "It is considered that the entered arithmetic expression is written without errors.\n" << endl;
-		cout << "a.e. example: \n" << example1  << "\n" << example2 << "\n"<< example3 << "\n" << endl;
+		cout << "Supports abbreviations such as: 2(A+B), (C-D)3, (A+B)(C+D), .1, 3., etc.\n" << endl;
+		cout << "Arithmetic expression examples: \n" << example1  << "\n" << example2 << "\n"<< example3 << "\n" << endl;
 
 
 		string inf;

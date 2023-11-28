@@ -667,34 +667,37 @@ TEST(TArithmeticExpression, FractionalConstAE_Calculate) {
 
 //// ANOTHER TESTS ////
 TEST(TArithmeticExpression, ConvertingAE_Infix) {
-	string str = "-3 + .5 (A -C)(-D- E)+3.";
-	string expstr = "0-3+0.5*(A-C)*(0-D-E)+3.0";
-	string expPostfix = "0 3 - 0.5 A C - * 0 D - E - * + 3.0 +";
+	string str = "-3 + .5 (A -B)(-C- D)+ (E-F/G)2(A + B)3 +3.";
+	string expstr = "0-3+0.5*(A-B)*(0-C-D)+(E-F/G)*2*(A+B)*3+3.0";
+	string expPostfix = "0 3 - 0.5 A B - * 0 C - D - * + E F G / - 2 * A B + * 3 * + 3.0 +";
 
 	TArithmeticExpression ae(str);
 	EXPECT_EQ(expstr, ae.GetInfix());
 }
 
 TEST(TArithmeticExpression, ConvertingAE_StringPrefix) {
-	string str = "-3 + .5 (A -C)(-D- E)+3.";
-	string expstr = "0-3+0.5*(A-C)*(0-D-E)+3.0";
-	string expPostfix = "0 3 - 0.5 A C - * 0 D - E - * + 3.0 +";
+	string str = "-3 + .5 (A -B)(-C- D)+ (E-F/G)2(A + B)3 +3.";
+	string expstr = "0-3+0.5*(A-B)*(0-C-D)+(E-F/G)*2*(A+B)*3+3.0";
+	string expPostfix = "0 3 - 0.5 A B - * 0 C - D - * + E F G / - 2 * A B + * 3 * + 3.0 +";
 
 	TArithmeticExpression ae(str);
 	EXPECT_EQ(expPostfix, ae.GetStringPostfix());
 }
 
 TEST(TArithmeticExpression, ConvertingAE_Calculate) {
-	string str = "-3 + .5 (A -C)(-D- E)+3.";
-	string expstr = "0-3+0.5*(A-C)*(0-D-E)+3.0";
-	string expPostfix = "0 3 - 0.5 A C - * 0 D - E - * + 3.0 +";
+	string str = "-3 + .5 (A -B)(-C- D)+ (E-F/G)2(A + B)3 +3.";
+	string expstr = "0-3+0.5*(A-B)*(0-C-D)+(E-F/G)*2*(A+B)*3+3.0";
+	string expPostfix = "0 3 - 0.5 A B - * 0 C - D - * + E F G / - 2 * A B + * 3 * + 3.0 +";
 	map<string, double> values = {
 		{"A", 1},
+		{"B", 2},
 		{"C", 3},
 		{"D", 4},
 		{"E", 5},
+		{"F", 6},
+		{"G", 2},
 	};
-	double ans = 9;
+	double ans = 39.5;
 
 	TArithmeticExpression ae(str);
 	EXPECT_EQ(ans, ae.Calculate(values));
