@@ -16,7 +16,7 @@ public:
 	TStack(int maxSize = 10);
 	TStack(const TStack<T>& s);
 	~TStack();
-	TStack<T>& operator=(const TStack<T>& s);
+	const TStack<T>& operator=(const TStack<T>& s);
 	bool IsEmpty(void) const;
 	bool IsFull(void) const;
 	void ResizeStack();
@@ -64,7 +64,7 @@ TStack<T>::~TStack()
 }
 
 template <class T>
-TStack<T>& TStack<T>::operator=(const TStack<T>& s)
+const TStack<T>& TStack<T>::operator=(const TStack<T>& s)
 {
 	if (this == &s) {
 		return *this;
