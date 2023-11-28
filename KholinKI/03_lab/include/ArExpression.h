@@ -40,68 +40,99 @@ ArithmeticExpression<T>::ArithmeticExpression(string infix_) :infix(infix_) {
 }
 
 template<typename T>
+void ArithmeticExpression<T>::Parse() {
+	char c;
+	string str;
+	for (int i = 0; i <= (infix.size() - 1); i++) {
+		c = infix[i];
+		if ((c == '-' && i == 0) || (c == '-' && infix[i - 1] == '(')) {
+			str.append("0");
+			str.append("-");
+			lexemes.push_back(str);
+			str = "";
+			continue;
+		}
+		while (c >= 48 && c <= 57 || c == '.') {
+			str += c;
+			i++;
+			c = infix[i];
+		}
+		if (str[0] >= 48 && str[0] <= 57) {
+			lexemes.push_back(str);
+			str = "";
+		}//можно объединить в одно условие
+		if (c == '\0') {
+			continue;
+		}
+		str = c;
+		lexemes.push_back(str);
+		str = "";
+	}
+}
+
+template<typename T>
 void ArithmeticExpression<T>::ToPostfix() {
 	Parse();
 	Stack<char> stack_ops;
-	char c;
+	signed char c;
 	string lexeme;
 	char stack_op;
 	for (int i = 0; i <= (lexemes.size() - 1); i++) {
 		lexeme = lexemes[i];
-		if(lexeme.size() == 1){
-			c = lexeme[0];
-			switch (c) {
-			case '(':
-			{
-				stack_ops.Push(c);
-				break;
-			}
-			case '+': case '-': case '*': case '/':
-			{
-				while (!stack_ops.IsEmpty()) {
-					stack_op = stack_ops.Pop();
-					if (priority[c] <= priority[stack_op]) {
-						string tmp_str;
-						tmp_str = stack_op;
-						postfix.push_back(tmp_str);
-					}
-					else {
-						stack_ops.Push(stack_op);
-						break;
-					}
-				}
-				stack_ops.Push(c);
-				break;
-			}
-			case ')':
-			{
-				stack_op = stack_ops.Pop();
-				string tmp_str;
-				while (stack_op != '(') {
-					tmp_str = stack_op;
-					postfix.push_back(tmp_str);
-					stack_op = stack_ops.Pop();
-				}
-				break;
-			}
-			default:
-				string new_str;
-				new_str = c;
-				if (c >= 48 && c <= 57) {
-					operands.insert({ new_str,stod(new_str) });
-					postfix.push_back(new_str);
-					break;
-				}
-				operands.insert({ new_str, 0.0 });
-				postfix.push_back(new_str);
-				break;
-			}
+		if (lexeme == "0-") {
+			c = 151;
 		}
 		else {
-			operands.insert({ lexeme,stod(lexeme) });
-			postfix.push_back(lexeme);
+			c = lexeme[0];
 		}
+		switch (c) {
+		case '(':
+		{
+			stack_ops.Push(c);
+			break;
+		}
+		case '+': case '-': case '*': case '/': case 'Ч'
+		{
+			while (!stack_ops.IsEmpty()) {
+				stack_op = stack_ops.Pop();
+				if (priority[c] <= priority[stack_op]) {
+					string tmp_str;
+					tmp_str = stack_op;
+					postfix.push_back(tmp_str);
+				}
+				else {
+					stack_ops.Push(stack_op);
+					break;
+				}
+			}
+			if (c == 'Ч') {
+				//...
+			}
+			stack_ops.Push(c);
+			break;
+		}
+		case ')':
+		{
+			stack_op = stack_ops.Pop();
+			string tmp_str;
+			while (stack_op != '(') {
+				tmp_str = stack_op;
+				postfix.push_back(tmp_str);
+				stack_op = stack_ops.Pop();
+			}
+			break;
+		}
+		default:
+			if (c >= 47 && c <= 57) {
+				operands.insert({ lexeme,stod(lexeme) });
+				postfix.push_back(lexeme);
+				break;
+			}
+			operands.insert({ lexeme, 0.0 });
+			postfix.push_back(lexeme);
+			break;
 	}
+}
 		
 	while (!stack_ops.IsEmpty()) {
 		stack_op = stack_ops.Pop();
@@ -111,29 +142,6 @@ void ArithmeticExpression<T>::ToPostfix() {
 	}
 }
 
-template<typename T>
-void ArithmeticExpression<T>::Parse() {
-	char c;
-	string str;
-	for (int i = 0; i <= (infix.size() - 1); i++) {
-		c = infix[i];
-		while (c >= 48 && c <= 57 || c == '.') {
-			str += c;
-			i++;
-			c = infix[i];
-		}
-		if (str[0] >= 48 && str[0] <= 57) {
-			lexemes.push_back(str);
-			str = "";
-		}
-		if (c == '\0') {
-			continue;
-		}
-		str = c;
-		lexemes.push_back(str);
-		str = "";
-	}
-}
 
 template<typename T>
 vector<string> ArithmeticExpression<T>::GetOperands()const {
@@ -151,11 +159,11 @@ template<typename T>
 map<string, double> ArithmeticExpression<T>::SetOperands(const vector<string> operands) {
 	map<string, double> tmp;
 	double value;
-	auto it_begin_map{ this->operands.begin() };
 	auto it_begin{operands.begin() }; 
 	auto it_end{ operands.end() };
 	while (it_begin != it_end) {
-		if (it_begin_map->second != 0) {//???
+		if (this->operands.at(*it_begin) != 0) {
+			tmp.insert({ *it_begin, this->operands.at(*it_begin) });
 			it_begin++;
 			continue;
 		}
@@ -170,45 +178,58 @@ map<string, double> ArithmeticExpression<T>::SetOperands(const vector<string> op
 template<typename T>
 double ArithmeticExpression<T>::Calculate(const map<string, double>& values) {
 	Stack<double> expr_operands;
-	char lexeme;
+	string lexeme;
+	char c;
 	double left_op,right_op;
-	int i = 0;
-	while (i != postfix.size()) {
-		lexeme = postfix[i];
-		switch (lexeme) {
-		case '+':
-		{
-			right_op = expr_operands.Pop();
-			left_op = expr_operands.Pop();
-			expr_operands.Push(left_op + right_op);
-			break;
+	auto it_begin = postfix.begin();
+	auto it_end = postfix.end();
+	while (it_begin != it_end) {
+		lexeme = *it_begin;
+		if (lexeme.size() == 1) {
+			c = lexeme[0];
+			switch (c) {
+			case '0-': {
+				right_op = expr_operands.Pop();
+				expr_operands.Push(-right_op);
+				break;
+			}
+			case '+':
+			{
+				right_op = expr_operands.Pop();
+				left_op = expr_operands.Pop();
+				expr_operands.Push(left_op + right_op);
+				break;
+			}
+			case '-':
+			{
+				right_op = expr_operands.Pop();
+				left_op = expr_operands.Pop();
+				expr_operands.Push(left_op - right_op);
+				break;
+			}
+			case '*':
+			{
+				right_op = expr_operands.Pop();
+				left_op = expr_operands.Pop();
+				expr_operands.Push(left_op * right_op);
+				break;
+			}
+			case '/':
+			{
+				right_op = expr_operands.Pop();
+				left_op = expr_operands.Pop();
+				expr_operands.Push(left_op / right_op);
+				break;
+			}
+			default:
+				expr_operands.Push(values.at(lexeme));
+				break;
+			}
 		}
-		case '-':
-		{
-			right_op = expr_operands.Pop();
-			left_op = expr_operands.Pop();
-			expr_operands.Push(left_op - right_op);
-			break;
-		}
-		case '*': 
-		{
-			right_op = expr_operands.Pop();
-			left_op = expr_operands.Pop();
-			expr_operands.Push(left_op * right_op);
-			break;
-		}
-		case '/':
-		{
-			right_op = expr_operands.Pop();
-			left_op = expr_operands.Pop();
-			expr_operands.Push(left_op / right_op);
-			break;
-		}
-		default:
+		else {
 			expr_operands.Push(values.at(lexeme));
-			break;
 		}
-		i++;
+		it_begin++;
 	}
 	return expr_operands.Top();
 }
