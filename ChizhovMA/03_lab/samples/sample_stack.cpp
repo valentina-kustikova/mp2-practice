@@ -12,14 +12,14 @@ int main()
 
 	TStack<string> st(5);
 	try {
-		st = Postfix_Form(ar_ex);
+		st = ArithmeticExpression::Postfix_Form(ar_ex);
 		cout << st << endl;
 	}
 	catch (string msg) {
 		cout << msg << endl;
 	}
-	map<string, double> variableDict = GetVariables(st);
-	res = Calculate(st, variableDict);
+	map<string, double> variableDict = ArithmeticExpression::GetVariables(st);
+	res = ArithmeticExpression::Calculate(st, variableDict);
 	cout << res;
 	return 0;
 }

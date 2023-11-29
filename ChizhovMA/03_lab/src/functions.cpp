@@ -4,37 +4,37 @@
 //#include <map>
 
 using namespace std;
-ArithmeticSymbol symbols[] = {
+map<string, double> ArithmeticSymbol::symbolDict = {
 	{"*", 3},
 	{"/", 3},
 	{"+", 2},
 	{"-", 2},
-	{"(", 1},
-	{")", 1},
-};
+}; 
 
-int Is_Symbol(const ArithmeticSymbol symbols[], string sm)
+int ArithmeticExpression::Is_Symbol(string sm)
 {
-	for (int i = 0; i < 6; i++) 
-		if (symbols[i].symbol == sm) 
-			return i;
-	return -1;
+	if (ArithmeticSymbol::symbolDict.find(sm) != ArithmeticSymbol::symbolDict.end())
+		return 1;
+	else if (sm == "(" || sm == ")")
+		return 2;
+	return 0;
 }
 
-int Get_Priority(const string symbol)
+int ArithmeticExpression::Get_Priority(const string symbol)
 {
-	int ind = Is_Symbol(symbols, symbol);
-	int priority = symbols[ind].priority;
+	int priority = ArithmeticSymbol::symbolDict[symbol];
+	if (symbol == "(" || symbol == ")")
+		priority = 1;
 	return priority;
 }
 
-void Add_to_Stack1(TStack<string>& st1, TStack<string>& st2, string s)
+void ArithmeticExpression::Add_to_Stack1(TStack<string>& st1, TStack<string>& st2, string s)
 {
 	st1.Push(s);
 	st2.Pop();
 }
 
-bool Is_Number(const string& str)
+bool ArithmeticExpression::Is_Number(const string& str)
 {
 	for (int i = 0; i< str.length(); i++)
 	{
@@ -46,17 +46,13 @@ bool Is_Number(const string& str)
 	return true;
 }
 
-bool isOperand(char c)
+bool ArithmeticExpression::isOperand(char c)
 {
 	return ((c >= '0' && c <= '9') || (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'));
 }
 
-bool isOperator(string s)
-{
-	return ((s == "-") || (s == "+") || (s == "/") || (s == "*"));
-}
 
-string FilteredExpression(const string& s)
+string ArithmeticExpression::FilteredExpression(const string& s)
 {
 	string filteredExpression = "";
 	int l = s.length();
@@ -72,7 +68,7 @@ string FilteredExpression(const string& s)
 }
 
 
-bool isValidExpression(const string& expression) 
+bool ArithmeticExpression::isValidExpression(const string& expression)
 {
 	int k1 = 0, k2 = 0;
 	int l = expression.length();
@@ -81,7 +77,7 @@ bool isValidExpression(const string& expression)
 		char c = expression[i];
 		string s(1, c);
 		if (i == 0)
-			if (isOperator(s))
+			if (Is_Symbol(s)==1)
 				return false;
 		if (s == "(" || s == ")")
 		{
@@ -96,13 +92,13 @@ bool isValidExpression(const string& expression)
 					return false;
 			}
 		}
-		else if ((Is_Symbol(symbols, s) != -1) || isOperand(c))
+		else if ((Is_Symbol(s) != 0) || isOperand(c))
 		{
 			char c1 = expression[i + 1];
 			string s1(1, c1);
-			if (isOperator(s))
+			if (Is_Symbol(s) == 1)
 			{
-				if (isOperator(s1))
+				if (Is_Symbol(s1) == 1)
 					return false;
 				if (i == l - 1)
 					return false;
@@ -119,11 +115,11 @@ bool isValidExpression(const string& expression)
 	return true; 
 }
 
-map<string, double> GetVariables(TStack<string>& postfixExpression) {
+map<string, double> ArithmeticExpression::GetVariables(TStack<string>& postfixExpression) {
 	map<string, double> uniqueVariables;
 	for (int i = 0; i < postfixExpression.Length(); i++) {
 		string token = postfixExpression.GetElement(i);
-		if (Is_Symbol(symbols,token) != -1 || Is_Number(token))
+		if ((Is_Symbol(token) != 0) || Is_Number(token))
 			continue;
 		else
 		{
@@ -138,7 +134,7 @@ map<string, double> GetVariables(TStack<string>& postfixExpression) {
 	return uniqueVariables;
 }
 
-TStack<string> Postfix_Form(const string& s)
+TStack<string> ArithmeticExpression::Postfix_Form(const string& s)
 {
 	string str = FilteredExpression(s);
 	if (!isValidExpression(str))
@@ -171,7 +167,7 @@ TStack<string> Postfix_Form(const string& s)
 				st1.Push(varStr);  
 				varStr.clear();
 			}
-			if (Is_Symbol(symbols, s) != -1)
+			if (Is_Symbol(s) != 0)
 			{
 				if (!st2.IsEmpty())
 				{
@@ -236,14 +232,14 @@ TStack<string> Postfix_Form(const string& s)
 	return st1;
 }
 
-double Calculate(TStack<string>& st, const map<string, double>& values)
+double ArithmeticExpression::Calculate(TStack<string>& st, const map<string, double>& values)
 {
 	TStack<double> stack(20);
 	double rightOp, leftOp, resOp;
 	for (int i = 0; i < st.Length(); i++)
 	{
 		string c = st.GetElement(i);
-		if (Is_Symbol(symbols, c) != -1)
+		if (Is_Symbol(c) == 1)
 		{
 			if (c == "+")
 			{
