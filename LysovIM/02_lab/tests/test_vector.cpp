@@ -249,3 +249,5 @@ TEST(TVector, cant_multiplication_vectors_with_not_same_size)
     vector2[3] = 3;
     ASSERT_ANY_THROW(vector1 * vector2);
 }
+
+//without start index

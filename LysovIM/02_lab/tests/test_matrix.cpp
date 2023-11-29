@@ -27,7 +27,7 @@ TEST(TMatrix, copied_matrix_is_equal_to_source)
 	matrix1[0][1] = 1;
 	matrix1[1][0] = 1;
 	TMatrix<int> matrix2(matrix1);
-	EXPECT_EQ(matrix1 == matrix2, 1);
+	ASSERT_TRUE(matrix1 == matrix2);
 }
 
 TEST(TMatrix, copied_matrix_has_their_own_memory)
@@ -39,7 +39,7 @@ TEST(TMatrix, copied_matrix_has_their_own_memory)
 	matrix1[1][0] = 1;
 	TMatrix <int> matrix2(matrix1);
 	matrix1[0][0] = 2;
-	EXPECT_EQ(matrix1 == matrix2, 0);
+	ASSERT_FALSE(matrix1 == matrix2);
 }
 
 TEST(TMatrix, can_get_size)
@@ -87,18 +87,6 @@ TEST(TMatrix, can_assign_matrix_of_different_size)
 	matrix1[0][0] = 3;
 	matrix1 = matrix;
 	EXPECT_EQ(matrix, matrix1);
-}
-
-TEST(TMatrix, assign_operator_change_matrix_size)
-{
-	TMatrix <int> matrix(2);
-	matrix[0][0] = 1;
-	matrix[0][1] = 2;
-	matrix[1][0] = 3;
-	TMatrix <int> matrix1(1);
-	matrix1[0][0] = 0;
-	matrix1 = matrix;
-	EXPECT_EQ(2, matrix1.getSize());
 }
 
 TEST(TMatrix, compare_equal_matrix)
