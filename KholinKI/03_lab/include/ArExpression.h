@@ -45,22 +45,32 @@ void ArithmeticExpression<T>::Parse() {
 	string str;
 	for (int i = 0; i <= (infix.size() - 1); i++) {
 		c = infix[i];
-		if ((c == '-' && i == 0) || (c == '-' && infix[i - 1] == '(')) {
-			str.append("0");
-			str.append("-");
-			lexemes.push_back(str);
-			str = "";
-			continue;
+		
+		switch (c) {
+		case '+': case '-': case '*': case '/': case '(': case ')':
+			{
+				if ((c == '-' && i == 0) || (c == '-' && infix[i - 1] == '(')) {
+					lexemes.push_back("0");
+					lexemes.push_back("-");
+					str = "";
+					continue;
+				}
+				str = c;
+				lexemes.push_back(str);
+				str = "";
+				continue;
+			}
+			default:
+				while (c != '+' && c != '-' && c != '*' && c != '/' && c != '(' && c != ')') {//сделать проще условие
+					str += c;
+					i++;
+					c = infix[i];
+				}
+				lexemes.push_back(str);
+				str = "";
+				break;
 		}
-		while (c >= 48 && c <= 57 || c == '.') {
-			str += c;
-			i++;
-			c = infix[i];
-		}
-		if (str[0] >= 48 && str[0] <= 57) {
-			lexemes.push_back(str);
-			str = "";
-		}//можно объединить в одно условие
+
 		if (c == '\0') {
 			continue;
 		}
@@ -74,24 +84,19 @@ template<typename T>
 void ArithmeticExpression<T>::ToPostfix() {
 	Parse();
 	Stack<char> stack_ops;
-	signed char c;
+	unsigned char c;
 	string lexeme;
 	char stack_op;
 	for (int i = 0; i <= (lexemes.size() - 1); i++) {
 		lexeme = lexemes[i];
-		if (lexeme == "0-") {
-			c = 151;
-		}
-		else {
-			c = lexeme[0];
-		}
+		c = lexeme[0];
 		switch (c) {
 		case '(':
 		{
 			stack_ops.Push(c);
 			break;
 		}
-		case '+': case '-': case '*': case '/': case 'Ч'
+		case '+': case '-': case '*': case '/': case 'Ч':
 		{
 			while (!stack_ops.IsEmpty()) {
 				stack_op = stack_ops.Pop();
@@ -104,9 +109,6 @@ void ArithmeticExpression<T>::ToPostfix() {
 					stack_ops.Push(stack_op);
 					break;
 				}
-			}
-			if (c == 'Ч') {
-				//...
 			}
 			stack_ops.Push(c);
 			break;
@@ -123,15 +125,15 @@ void ArithmeticExpression<T>::ToPostfix() {
 			break;
 		}
 		default:
-			if (c >= 47 && c <= 57) {
+			if (c >= 47 && c <= 57) {//operand-number
 				operands.insert({ lexeme,stod(lexeme) });
 				postfix.push_back(lexeme);
 				break;
 			}
-			operands.insert({ lexeme, 0.0 });
+			operands.insert({ lexeme, 0.0 });//operand-symbol(string)
 			postfix.push_back(lexeme);
 			break;
-	}
+		}
 }
 		
 	while (!stack_ops.IsEmpty()) {
@@ -162,7 +164,7 @@ map<string, double> ArithmeticExpression<T>::SetOperands(const vector<string> op
 	auto it_begin{operands.begin() }; 
 	auto it_end{ operands.end() };
 	while (it_begin != it_end) {
-		if (this->operands.at(*it_begin) != 0) {
+		if (this->operands.at(*it_begin) != 0 || *it_begin == "0") {
 			tmp.insert({ *it_begin, this->operands.at(*it_begin) });
 			it_begin++;
 			continue;
@@ -185,14 +187,8 @@ double ArithmeticExpression<T>::Calculate(const map<string, double>& values) {
 	auto it_end = postfix.end();
 	while (it_begin != it_end) {
 		lexeme = *it_begin;
-		if (lexeme.size() == 1) {
 			c = lexeme[0];
 			switch (c) {
-			case '0-': {
-				right_op = expr_operands.Pop();
-				expr_operands.Push(-right_op);
-				break;
-			}
 			case '+':
 			{
 				right_op = expr_operands.Pop();
@@ -224,10 +220,6 @@ double ArithmeticExpression<T>::Calculate(const map<string, double>& values) {
 			default:
 				expr_operands.Push(values.at(lexeme));
 				break;
-			}
-		}
-		else {
-			expr_operands.Push(values.at(lexeme));
 		}
 		it_begin++;
 	}
