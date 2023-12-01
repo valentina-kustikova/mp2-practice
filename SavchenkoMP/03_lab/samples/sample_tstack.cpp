@@ -27,7 +27,6 @@ int main() {
 			if (ans == 1) {
 				system("cls");
 				cout << "Enter element to push: ";
-				//getline(cin, elem);
 				cin >> elem;
 				stack.Push(elem);
 			}
@@ -37,8 +36,7 @@ int main() {
 			else if (ans == 3) {
 				system("cls");
 				cout << "Element on the top of stack: " << stack.Top() << endl;
-				cout << "Enter any value to continue: ";
-				cin >> ans;
+				system("pause");
 			}
 			else {
 				break;

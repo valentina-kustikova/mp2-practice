@@ -9,7 +9,7 @@ int main() {
 	try {
 		string example1 = "A+(B-C)*D-F/(G+H)";
 		string example2 = "Ax+(B-C)*D + 2 -Fy/(G+H)+yy -1.5";
-		string example3 = "-2.5 + 2(3 - 1.4)(1+1) + 1 / 2 - X1 + 2x2"; //4.4 - X1 + 2x2
+		string example3 = "-2.5 + 2(3 - 1.4)(1+1) + 1 / 2 - X1 + 2x2";
 
 		cout << "Enter an arithmetic expression." << endl;
 		cout << "It may contain operators : +, -, -(unary), *, /." << endl;
