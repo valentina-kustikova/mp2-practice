@@ -4,7 +4,7 @@
 
 
 TEST(Stack, can_ToPostfix) {
-	ArithmeticExpression<double> Expr("-(6+11.5)-(-A*D+C/(-20))-100*(-4)");
+	ArithmeticExpression<double> Expr("-X1-(6+11.5)-(-X2*X3+TURBO/(-20)*)-100*(-4)");
 }
 
 //TEST(ArithmeticExpression, can_get_operands) {

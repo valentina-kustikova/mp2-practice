@@ -5,7 +5,6 @@
 #include <Stack.h>
 #include <vector>
 #include <map>
-
 using namespace std;
 
 
@@ -17,6 +16,10 @@ private:
 	vector<string> lexemes;
 	map<char, int> priority;
 	map<string, double> operands;
+
+	bool checking_characters();
+	bool checking_brackets();
+	bool checking_operations();
 public:
 	ArithmeticExpression(string infix_);
 
@@ -25,6 +28,7 @@ public:
 	vector<string> GetOperands()const;
 	map<string, double> SetOperands(const vector<string> operands);
 
+	void Check();
 	void Parse();
 	void ToPostfix();
 	double Calculate(const map<string, double>& values);
@@ -40,12 +44,108 @@ ArithmeticExpression<T>::ArithmeticExpression(string infix_) :infix(infix_) {
 }
 
 template<typename T>
+void ArithmeticExpression<T>::Check() {
+	bool status1 = checking_characters();
+	bool status2 = checking_brackets();
+	bool status3 = checking_operations();
+	if (status1 != status2 != status3) {
+		throw "Mistake in arithmetic expression!";
+	}
+}
+
+template<typename T>
+bool ArithmeticExpression<T>::checking_characters() {
+	int i = 0;
+	char c;
+	while (i < infix.size()) {
+		c = infix[i];
+		if (c >= 65 && c <= 90 || c >= 97 && c <= 122 || c >= 48 && c <= 57 || !(c != '+' && c != '-' && c != '*' && c != '/' && c != '(' && c != ')') || c == '.') {
+			i++;
+			continue;
+		}
+		else {
+			return false;
+		}
+	}
+	return true;
+}
+
+template<typename T>
+bool ArithmeticExpression<T>::checking_brackets() {
+	int count_left_open_bracket = 0;
+	int count_right_close_bracket = 0;
+	char c;
+	char next_c;
+	int i = 0;
+	while (i < infix.size()) {
+		c = infix[i];
+		next_c = infix[i + 1];
+		if (c == '('){
+			if (next_c == '+' || next_c == '-' || next_c == '*' || next_c == '/' || next_c == ')') {
+				throw "Mistake in arithmetic expression!";
+			}
+			count_left_open_bracket++;
+		}
+		if (c == ')') {
+			count_right_close_bracket++;
+		}
+		i++;
+	}
+	if (count_left_open_bracket != count_right_close_bracket) {
+		return false;
+	}
+	else {
+		return true;
+	}
+}
+
+template<typename T>
+bool ArithmeticExpression<T>::checking_operations() {
+	int i = 0;
+	char c;
+	char cc;
+	while (i < infix.size()) {
+		c = infix[i];
+		switch (c) {
+		case '+': case '-': case '*': case '/':
+		{
+			cc = infix[i + 1];
+			auto tmp = priority.find(cc);
+			if (tmp != priority.end() && tmp->first != ')' && tmp->first != '(') {
+				return false;
+			}
+			if (tmp->first != ')') {
+				return false;
+			}
+
+		}
+		default:
+			cc = infix[i + 1];
+			if (c == '.' && cc == '.') {
+				return false;
+			}
+			break;
+		}
+		i++;
+	}
+	return true;
+}
+
+
+//checking_characters();//проверяет на чужеродные символы
+//checking_brackets();//проверяет на соответствие числа открывающих и закрывающих скобок
+//checking_operations();//проверяет на отсутствие двух идущих подряд операций и точек
+
+template<typename T>
 void ArithmeticExpression<T>::Parse() {
 	char c;
+	char cc;
 	string str;
-	for (int i = 0; i <= (infix.size() - 1); i++) {
+	int i = 0;
+	Check();
+	for (i = 0; i <= (infix.size() - 1); i++) {
 		c = infix[i];
-		
+		char first_c = c;
 		switch (c) {
 		case '+': case '-': case '*': case '/': case '(': case ')':
 			{
@@ -61,10 +161,30 @@ void ArithmeticExpression<T>::Parse() {
 				continue;
 			}
 			default:
-				while (c != '+' && c != '-' && c != '*' && c != '/' && c != '(' && c != ')') {//сделать проще условие
-					str += c;
-					i++;
-					c = infix[i];
+				while (c != '+' && c != '-' && c != '*' && c != '/' && c != '(' && c != ')') {//заменить на итератор
+					if (c == '.' && str == "") {
+						throw "Mistake in arithmetic error!";//целая часть пустая,но до конца не дошли
+					}
+					if (c >= 48 && c <= 57 && first_c >= 48 && first_c <= 57 || c == '.') {//константа-операнд
+						str += c;
+						i++;
+						c = infix[i];
+						if (!(c != '+' && c != '-' && c != '*' && c != '/' && c != '(' && c != ')')) {
+							str += '0';//если дошли до конца,но дробная часть пустая
+						}
+						if (c >= 65 && c <= 90 || c >= 97 && c <= 122 && !(c != '+' && c != '-' && c != '*' && c != '/' && c != '(' && c != ')')) {
+							throw "Mistake in arithmetic expression!";//встретился символ внутри константы-операнда
+						}
+					}
+					else {
+						str += c;
+						i++;
+						c = infix[i];
+						if (!(c != '+' && c != '-' && c != '*' && c != '/' && c != '(' && c != ')')) {
+							throw "Mistake in arithmetic expression!";//операнд-буквенный
+						}
+					}
+
 				}
 				lexemes.push_back(str);
 				str = "";
