@@ -77,12 +77,17 @@ void TArithmeticExpression::SetValues()
 
 bool TArithmeticExpression::IsConst(const string& lecsem) const
 {
+	bool hasDot = false;
 	bool flag = true;
-	for (int i=0;i<lecsem.size();i++)
-	{
-		if (!isdigit(lecsem[i]))
-		{
-			flag = false;
+	for (char c : lecsem) {
+		if (!std::isdigit(c)) {
+			if (c == '.' && !hasDot) {
+				hasDot = true;
+			}
+			else {
+				flag = false;
+				break;
+			}
 		}
 	}
 	return flag;
@@ -205,4 +210,13 @@ bool TArithmeticExpression::isCorrectInfixExpression()
 
 	return openParentheses == closeParentheses;
 
+}
+
+void TArithmeticExpression::ShowPostfix()
+{
+	for (int i = 0; i < postfix.size(); i++)
+	{
+		cout << postfix[i] << " ";
+	}
+	cout << endl;
 }

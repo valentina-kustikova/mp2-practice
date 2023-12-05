@@ -36,6 +36,7 @@ public:
 	void SetValues();
 	double Calculate(const map<string, double>& values);
 	double Calculate();
+	void ShowPostfix();
 
 };
 
