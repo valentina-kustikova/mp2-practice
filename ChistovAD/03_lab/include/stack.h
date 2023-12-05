@@ -4,23 +4,25 @@
 #include <map>
 #include <vector>
 #include <string>
-const int _maxSize = 25;
+const int _maxSize = 1000;
+const int _step = 10;
 
 template <typename T>
 class TStack {
 private:
+	T* elems;
 	int maxSize;
 	int top;
-	T* elems;
 public:
 	TStack(int Size=_maxSize);
 	TStack(const TStack<T>& stack);
-	~TStack();
+	virtual ~TStack();
 	T Pop();
 	T Top() const;
 	void Push(const T& elm);
 	bool IsEmpty(void) const;
 	bool IsFull(void) const;
+	void Realloc(int step = _step);
 };
 
 template <typename T>
@@ -43,9 +45,24 @@ TStack<T>::TStack(const TStack<T>& stack) {
 
 template <typename T>
 TStack<T>::~TStack() {
+	if (elems != NULL) {
+		delete[] elems;
+		top = -1;
+		maxSize = 0;
+	}
+}
+
+template <class T>
+void TStack<T>::Realloc(int step)
+{
+	if (step <= 0) { throw "Step<0 or step=0"; }
+	T* tmp = new T[step + maxSize];
+	for (int i = 0; i < maxSize; i++) {
+		tmp[i] = elems[i];
+	}
 	delete[] elems;
-	top = -1;
-	maxSize = 0;
+	elems = tmp;
+	maxSize = maxSize + step;
 }
 
 template <typename T>
@@ -68,7 +85,10 @@ T TStack<T>::Top() const {
 
 template <typename T>
 void TStack<T>::Push(const T& elm) {
-	if (IsFull()) throw "Stack is full.";
+	if (IsFull())
+	{
+		Realloc(_step);
+	}
 	else { elems[++top] = elm; }
 }
 

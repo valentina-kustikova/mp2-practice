@@ -7,31 +7,23 @@
 #include "stack.h"
 using namespace std;
 
-
-class TArithmeticExpession {
+class TArithmeticExpression {
 private:
 	string infix;
 	vector<string> postfix;
 	vector<string> lexems;
-	map<char, int> priority ={
-		   {'*', 3},
-		   { '/', 3},
-		   { '+', 2},
-		   { '-', 2},
-		   { '( ', 1}
-	};
+	map<string, int> priority;
 	map<string, double> operands;
-public:
-	TArithmeticExpession(const string& _infix);
-	string GetInfix() const { return infix; }
-	vector<string> GetPostfix() const { return postfix; }
-	string GetStringPostfix() const;
-	vector<string> GetOperands()const;
+
 	void Parse();
 	void ToPostfix();
-	bool IsOperator(const char& c) const;
-	bool IsConst(const string& s) const;
+	bool IsConst(const string& st) const;
 	double Calculate(const map<string, double>& values);
+
+public:
+	TArithmeticExpression(string infx);
+	void SetValues();
+	double Calculate();
 };
 
 #endif 

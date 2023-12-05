@@ -1,37 +1,116 @@
 #include "stack.h"
 #include "arithmetic.h"
 
-bool TArithmeticExpession::IsOperator(const char& c) const {
-	return priority.find(c) != priority.end();
+TArithmeticExpression::TArithmeticExpression(string infx) :infix(infx) {
+	priority = { {"(",1},{")",1},{"+",2},{"-",2}, {"*",3},{"/",3} };
+	ToPostfix(); 
 }
 
-bool TArithmeticExpession::IsConst(const string& s) const {
-	for (int i = 0; i < s.size(); i++) {
-		if (s[i] < '0' || s[i] > '9') {
-			if (s[i] != '.')
-				return false;
+bool TArithmeticExpression::IsConst(const string& s) const {
+	for (char c:s) {
+		if (!isdigit(c) && c != '.') {
+			return false;
 		}
-		break;
 	}
 	return true;
 }
 
-TArithmeticExpession::TArithmeticExpession(const string& _infix) {
-	infix = _infix;
-	ToPostfix();
+void TArithmeticExpression::SetValues(){
+	double value;
+	for (auto& op : operands){
+		if (!IsConst(op.first)){
+			cout << "Enter value of " << op.first << ":";
+			cin >> value;
+			operands[op.first] = value;
+		}
+	}
 }
 
-
-void TArithmeticExpession::Parse() {
-
+void TArithmeticExpression::Parse()
+{
+	string currentElement;
+	for (char c : infix) {
+		if (c == '+' || c == '-' || c == '*' || c == '/' || c == '(' || c == ')') {
+			if (!currentElement.empty()) {
+				lexems.push_back(currentElement);
+				currentElement = "";
+			}
+			lexems.push_back(string(1, c));
+		}
+		else if (isdigit(c) || c == '.' || isalpha(c)) {
+			currentElement += c;
+		}
+	}
+	if (!currentElement.empty()) {
+		lexems.push_back(currentElement);
+	}
 }
 
-void TArithmeticExpession::ToPostfix() {
-
+void TArithmeticExpression::ToPostfix() {
+	Parse();
+	TStack<string> st;
+	string stackItem;
+		for (string item : lexems) {
+			if (item == "(") {
+				st.Push(item);
+			}
+			else if (item == ")") {
+				while (st.Top() != "(") {
+					postfix.push_back(st.Top());st.Pop();
+				}
+				st.Pop();
+			}
+			else if (item == "+" || item == "-" || item == "*" || item == "/") {
+				while (!st.IsEmpty() && priority[item] <= priority[st.Top()]) {
+					postfix.push_back(st.Top());st.Pop();
+				}
+				st.Push(item);
+			}
+			else {
+				double value = IsConst(item) ? stod(item) : 0.0;
+				operands.insert({ item, value });
+				postfix.push_back(item);
+			}
+		}
+	while (!st.IsEmpty()) {
+		postfix.push_back(st.Top());st.Pop();
+	}
 }
 
-
-double TArithmeticExpession::Calculate(const map<string, double>& values) {
-
+double TArithmeticExpression::Calculate(const map<string, double>& values) {
+	TStack<double> st;
+	for (string lexem : postfix) {
+		if (lexem == "+") {
+			double rightOperand = st.Top(); st.Pop();
+			double leftOperand = st.Top(); st.Pop();
+			st.Push(leftOperand + rightOperand);
+		}
+		else if (lexem == "-") {
+			double rightOperand = st.Top(); st.Pop();
+			double leftOperand = st.Top(); st.Pop();
+			st.Push(leftOperand - rightOperand);
+		}
+		else if (lexem == "*") {
+			double rightOperand = st.Top(); st.Pop();
+			double leftOperand = st.Top(); st.Pop();
+			st.Push(leftOperand * rightOperand);
+		}
+		else if (lexem == "/") {
+			double rightOperand = st.Top(); st.Pop();
+			double leftOperand = st.Top(); st.Pop();
+			if (rightOperand == 0) {throw "exp";}
+			st.Push(leftOperand / rightOperand);
+		}
+		else {
+			auto _lexem = values.find(lexem);
+			if (_lexem != values.end()) {
+				st.Push(_lexem->second);
+			}
+		}
+	}
+	return st.Top();
 }
 
+double TArithmeticExpression::Calculate() {
+	return Calculate(operands);
+}
