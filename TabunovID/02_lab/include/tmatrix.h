@@ -1,124 +1,125 @@
-// ННГУ, ИИТММ, Курс "Алгоритмы и структуры данных", С++, ООП
-//
-// tmatrix.cpp - бесполезный файл поскольку класс шаблонный 
-// Разработано для Microsoft Visual Studio 2022 Коробейниковым А.П. (15.10.2023)
-//
-// Матрица - реализация через публичное наследование вектора векторов
-
-#ifndef __MATRIX_H__
-#define __MATRIX_H__
+#ifndef __TMATRIX_H__
+#define __TMATRIX_H__
 
 #include "tvector.h"
 
-
-template <typename T>
-class TMatrix: public Vector<Vector<T>>
+template <typename T> class TMatrix : public TVector <TVector<T>>
 {
 public:
-  TMatrix<T>(int mn = 10);                        //конструктор по умолчанию
-  TMatrix<T>(const TMatrix<T> &m);                // конструктор копирования
-  TMatrix<T>(const Vector<Vector<T>> &vec);       // конструктор преобразования типа
-  
-  const TMatrix<T>& operator = (const TMatrix<T>& m);    //оператор присваивания
+	TMatrix(int mn = 10);
+	TMatrix(const TMatrix& m);
+	TMatrix(const TVector <TVector<T>>& m);
 
-  bool operator == (const TMatrix<T>& m) const;      //оператор проверки на равенство
-  bool operator != (const TMatrix<T>& m) const;      //оператор проверки на неравенство
+	//operations 
+	const TMatrix operator=(const TMatrix& m);
+	int operator==(const TMatrix& m) const;
+	int operator!=(const TMatrix& m) const;
 
-  TMatrix<T> operator + (const TMatrix<T>& m);       //сложение матриц
-  TMatrix<T> operator - (const TMatrix<T>& m);       //вычитание матриц
-  TMatrix<T> operator * (const TMatrix<T>& m);       //умножение матриц
+	TMatrix operator+(const TMatrix& m); // A + B
+	TMatrix operator-(const TMatrix& m); // A - B
+	TMatrix operator*(const TMatrix& m); // A * B
 
-  friend istream& operator>>(istream& istr, TMatrix<T>& m) {
-	  for (int i = 0; i < m.n; ++i) {
-		  istr >> m.coor[i];
-	  }
-	  return istr;
-  }
-  friend ostream& operator<<(ostream& ostr, const TMatrix<T>& m) {
-	  for (int i = 0; i < m.n; ++i) {
-		  ostr << m.coor[i];
-	  }
-	  return ostr;
-  }
+	template<typename T> friend std::ostream& operator<<(std::ostream& ostr, const TMatrix<T>& v);
+	template<typename T> friend std::istream& operator>>(std::istream& istr, TMatrix<T>& v);
+
 };
-
-// конструкторы 
-
+//constructors
 template <typename T>
-TMatrix<T>::TMatrix(int mn): Vector<Vector<T>>(mn) {
-	for (int i = 0; i < mn; ++i) {
-		coor[i] = Vector<T>(mn - i, i);
+TMatrix<T>::TMatrix<T>(int mn) :TVector<TVector<T>>(mn)
+{
+	for (int i = 0; i < mn; i++)
+	{
+		pVec[i] = TVector<T>(mn - i, i);
 	}
 }
 
-template <typename T>
-TMatrix<T>::TMatrix(const TMatrix<T>& m) : Vector<Vector<T>>((Vector<Vector<T>>) m) {}
+template<typename T>
+TMatrix<T>::TMatrix<T>(const TMatrix& m) :TVector<TVector<T>>(m) { };
 
 template <typename T>
-TMatrix<T>::TMatrix<T>(const Vector<Vector<T>>& v) : Vector<Vector<T>> (v) {}
+TMatrix<T>::TMatrix<T>(const TVector<TVector<T>>& m) :TVector<TVector<T>>(m) { };
 
-//операторы 
-
-template <typename T>
-bool TMatrix<T>:: operator == (const TMatrix<T>& m) const //проверка на равенство
+//oprations
+// =
+template<typename T>
+const TMatrix<T> TMatrix<T>::operator=(const TMatrix<T>& m)
 {
-	return Vector<Vector<T>> :: operator == (m);
+	return  TVector<TVector<T>>::operator=(m);
+}
+// ==
+template <typename T>
+int TMatrix<T>::operator==(const TMatrix& m) const
+{
+	return TVector<TVector<T> >::operator==(m);
+}
+// !=
+template <typename T>
+int TMatrix<T>::operator!=(const TMatrix& m) const
+{
+	return TVector<TVector<T> >::operator!=(m);
 }
 
-
-template <typename T>
-bool TMatrix<T>:: operator != (const TMatrix<T>& m) const //проверка на неравенство
+// A + B
+template<typename T>
+TMatrix<T> TMatrix<T>::operator+(const TMatrix& m)
 {
-	return Vector<Vector<T>> :: operator != (m);
+	if (size != m.size)
+		throw "Can't accumulate matrix with different dimensions!";
+	else
+		return TVector<TVector<T> > :: operator+(m);
 }
 
-template <class T>
-const TMatrix<T>& TMatrix<T>::operator = (const TMatrix<T>& m) //оператор присваивания
+// A - B 
+template<typename T>
+TMatrix<T> TMatrix<T>::operator-(const TMatrix& m)
 {
-	if (this == &m) {
-		return *this;
-	}
-	return Vector<Vector<T>>::operator=(m);
+	if (size != m.size)
+		throw "Can't subtract matrix with different dimensions!";
+	else
+		return TVector<TVector<T> > :: operator-(m);
 }
 
-template <typename T>
-TMatrix<T> TMatrix<T>:: operator + (const TMatrix<T>& m) //сложение матриц
+// A * B
+template<typename T>
+TMatrix<T> TMatrix<T>::operator*(const TMatrix& m)
 {
-	return Vector<Vector<T>> :: operator + (m);
-}
-
-template <typename T>
-TMatrix<T> TMatrix<T>:: operator - (const TMatrix<T>& m) //вычитание матриц
-{
-	return Vector<Vector<T>> :: operator - (m);
-}
-
-template <typename T>
-TMatrix<T> TMatrix<T>:: operator * (const TMatrix<T>& m) {
-	if (n != m.n) {
-		throw "Matrices must have the same size";
-	}
-	TMatrix res(n);
-	
-	for (int i = 0; i < n; ++i) {
-		for (int j = i; j < n; ++j) {
-				res[i][j - i] = 0;
+	if (size != m.size)
+		throw "Can't multiply matrix with different dimensions!";
+	else
+		size;
+	TMatrix <T> res(size);
+	for (int i = 0; i < size; i++)
+		for (int j = i; j < size; j++)
+		{
+			for (int k = i; k <= j; k++)
+				res.pVec[i][j - i] += this->pVec[i][k - i] * m.pVec[k][j - k];
 		}
-	}
-	
-	for (int i = 0; i < n; ++i) {
-		for (int j = i; j < n; ++j) {
-			for (int k = i; k <= j; ++k) {
-				res[i][j - i] += (*this)[i][k-i] * m[k][j - k];
-			}
-		}
-	}
-	
-
 	return res;
 }
 
+// in
+template <typename T>
+std::istream& operator>>(std::istream& istr, TMatrix<T>& m)
+{
+	istr >> m.size;
+	std::cout << "\nEnter the " << m.size << " elements: ";
+	for (int i = 0; i < m.size; i++)
+		istr >> m.pVec[i];
+	return istr;
+}
 
+// out
+template <typename T>
+std::ostream& operator<<(std::ostream& ostr, const TMatrix<T>& m)
+{
+	for (int i = 0; i < m.size; i++)
+	{
+		for (int j = 0; j < m.pVec[i].GetIndex(); j++)
+			ostr << std::setw(3) << "0" << " ";
+		ostr << m.pVec[i] << std::endl;
 
+	}
+	return ostr;
 
-#endif 
+}
+#endif

@@ -2,304 +2,237 @@
 
 #include <gtest.h>
 
-TEST(Matrix, can_create_matrix_with_positive_size)
+TEST(TMatrix, can_create_matrix_with_positive_length)
 {
-	ASSERT_NO_THROW(TMatrix<int> m(10) );
+	ASSERT_NO_THROW(TMatrix<int> m);
 }
 
-TEST(Matrix, throws_when_create_matrix_with_negative_size)
+TEST(TMatrix, throws_when_create_matrix_with_negative_length)
 {
-	ASSERT_ANY_THROW(TMatrix<int> m(-3));
+	ASSERT_ANY_THROW(TMatrix<int> m(-7));
 }
 
-
-TEST(Matrix, can_create_copy_of_the_matrix)
+TEST(TMatrix, can_create_copied_matrix)
 {
-	TMatrix<int> a(2);
-	Vector<int> av(2), bv(1);
-	av[0] = 1;
-	av[1] = 2;
+	TMatrix<int> m(7);
 
-	bv[0] = 4;
-
-	a[0] = av;
-	a[1] = bv;
-	 
-	TMatrix<int> b(a);
-
-	EXPECT_EQ(4, b[1][0]);
+	ASSERT_NO_THROW(TMatrix<int> m1(m));
 }
 
-TEST(Matrix, can_assign_matrix_with_equal_size)
+TEST(TMatrix, can_get_size)
 {
-	TMatrix<int> a(2);
-	Vector<int> av(2), bv(1);
-	av[0] = 1;
-	av[1] = 2;
-
-	bv[0] = 4;
-
-	a[0] = av;
-	a[1] = bv;
-
-	TMatrix<int> b(2);
-	b = a;
-
-	EXPECT_EQ(4, b[1][0]);
+	TMatrix<int> m(7);
+	EXPECT_EQ(7, m.GetSize());
 }
 
-
-TEST(Matrix, can_assign_matrix_with_not_equal_size)
+TEST(TMatrix, can_set_and_get_element)
 {
-	TMatrix<int> a(2);
-	Vector<int> av(2), bv(1);
-	av[0] = 1;
-	av[1] = 2;
+	TMatrix<int> m(8);
+	m[1][2] = 3;
+	EXPECT_EQ(3, m[1][2]);
+}
 
-	bv[0] = 4;
+TEST(TMatrix, throws_when_set_element_with_negative_length)
+{
+	TMatrix<int> m(7);
+	ASSERT_ANY_THROW(m[-2][1] = 1);
+}
 
-	a[0] = av;
-	a[1] = bv;
+TEST(TMatrix, throws_when_set_element_with_negative_index)
+{
+	TMatrix<int> m(7);
+	ASSERT_ANY_THROW(m[2][-1] = 1);
+}
 
-	TMatrix<int> b(100);
-	b = a;
+TEST(TMatrix, throws_when_set_element_with_too_large_length)
+{
+	TMatrix<int> m(7);
+	ASSERT_ANY_THROW(m[9][1] = 1);
+}
 
-	EXPECT_EQ(4, b[1][0]);
+TEST(TMatrix, throws_when_set_element_with_too_large_index)
+{
+	TMatrix<int> m(7);
+	ASSERT_ANY_THROW(m[1][9] = 1);
 }
 
 
-TEST(Matrix, matrix_with_equal_size_but_not_eaual)
+TEST(TMatrix, assign_operator_change_matrix_size)
 {
-	TMatrix<int> a(2);
-	Vector<int> av1(2), av2(1);
-	av1[0] = 1;
-	av1[1] = 2;
-
-	av2[0] = 4;
-
-	a[0] = av1;
-	a[1] = av2;
-
-
-	TMatrix<int> b(2);
-	Vector<int> bv1(2), bv2(1);
-	bv1[0] = 100;
-	bv1[1] = 100;
-
-	bv2[0] = 100;
-
-	b[0] = bv1;
-	b[1] = bv2;
-
-
-	EXPECT_NE(a, b);
+	TMatrix<int> m1(7);
+	TMatrix<int> m2(8);
+	m1[1][1] = 1;
+	m2 = m1;
+	EXPECT_EQ(7, m2.GetSize());
 }
 
-TEST(Matrix, equal_matrix_are_equal)
+//operators
+// == !=
+TEST(TMatrix, matrixes_are_not_equal_if_are_not_equal_sizes)
 {
-	TMatrix<int> a(2);
-	Vector<int> av1(2), av2(1);
-	av1[0] = 1;
-	av1[1] = 2;
+	TMatrix<int> m1(4);
+	TMatrix<int> m2(3);
 
-	av2[0] = 4;
-
-	a[0] = av1;
-	a[1] = av2;
-
-	TMatrix<int> b(2);
-	Vector<int> bv1(2), bv2(1);
-	bv1[0] = 1;
-	bv1[1] = 2;
-
-	bv2[0] = 4;
-
-	b[0] = bv1;
-	b[1] = bv2;
-
-	EXPECT_EQ(a, b);
+	EXPECT_NE(m1, m2);
 }
 
-TEST(Matrix, matrix_with_different_size_are_not_eaual)
+TEST(TMatrix, An_equality_matrix_false_check)
 {
-	TMatrix<int> a(2);
-	Vector<int> av(2), bv(1);
-	av[0] = 1;
-	av[1] = 2;
+	TMatrix <int> m1(3), m2(3);
 
-	bv[0] = 4;
+	for (int i = 0; i < m1.GetSize(); i++)
+		for (int j = 0; j < m1.GetSize() - i; j++)
+		{
+			m1[i][j] = i * 2;
+			m2[i][j] = 3 * (i + j);
+		}
 
-	a[0] = av;
-	a[1] = bv;
-
-	TMatrix<int> b(100);
-	
-	EXPECT_NE(a, b);
+	ASSERT_FALSE(m1 == m2);
 }
 
-
-
-TEST(Matrix, can_add_matrix_with_equal_size)
+TEST(TMatrix, An_equality_matrix_with_diff_size)
 {
-	TMatrix<int> a(2);
-	Vector<int> av1(2), av2(1);
-	av1[0] = 1;
-	av1[1] = 2;
+	TMatrix <int> m1(8), m2(3);
 
-	av2[0] = 4;
-
-	a[0] = av1;
-	a[1] = av2;
-
-	TMatrix<int> b(2);
-	Vector<int> bv1(2), bv2(1);
-	bv1[0] = 1;
-	bv1[1] = 2;
-
-	bv2[0] = 4;
-
-	b[0] = bv1;
-	b[1] = bv2;
-
-	TMatrix<int> c(2);
-	c = a + b;
-	EXPECT_EQ(8, c[1][0]);
+	ASSERT_FALSE(m1 == m2);
 }
 
-TEST(Matrix, throws_when_add_matrix_with_different_size)
+TEST(TMatrix, An_inequality_matrix_true_check)
 {
-	TMatrix<int> a(2);
-	Vector<int> av1(2), av2(1);
-	av1[0] = 1;
-	av1[1] = 2;
+	TMatrix <int> m1(7), m2(7);
 
-	av2[0] = 4;
+	for (int i = 0; i < m1.GetSize(); i++)
+		for (int j = 0; j < m2.GetSize() - i; j++)
+		{
+			m1[i][j] = i;
+			m2[i][j] = i + 1 + j;
+		}
 
-	a[0] = av1;
-	a[1] = av2;
-
-	TMatrix<int> b(100);
-
-	ASSERT_ANY_THROW(a + b);
+	ASSERT_TRUE(m1 != m2);
 }
 
+// A + B
 
-TEST(Matrix, can_substract_matrix_with_equal_size)
+TEST(TMatrix, can_add_matrix_with_equal_size)
 {
-	TMatrix<int> a(2);
-	Vector<int> av1(2), av2(1);
-	av1[0] = 1;
-	av1[1] = 2;
+	TMatrix<int> m1(3);
+	TMatrix<int> m2(3);
+	TMatrix<int> m(3);
 
-	av2[0] = 8;
+	for (int i = 0; i < 3; i++)
+		for (int j = 0; j < 3 - i; j++)
+		{
+			m1[i][j] = 1;
+			m2[i][j] = 2;
+			m[i][j] = 3;
+		}
 
-	a[0] = av1;
-	a[1] = av2;
-
-	TMatrix<int> b(2);
-	Vector<int> bv1(2), bv2(1);
-	bv1[0] = 1;
-	bv1[1] = 2;
-
-	bv2[0] = 4;
-
-	b[0] = bv1;
-	b[1] = bv2;
-
-	TMatrix<int> c(2);
-	c = a - b;
-	EXPECT_EQ(4, c[1][0]);
+	EXPECT_EQ(m, m2 + m1);
 }
 
-TEST(Matrix, throws_when_substract_matrix_with_different_size)
+TEST(TMatrix, cannot_plus_with_not_equal_size)
 {
-	TMatrix<int> a(2);
-	Vector<int> av1(2), av2(1);
-	av1[0] = 1;
-	av1[1] = 2;
-
-	av2[0] = 4;
-
-	a[0] = av1;
-	a[1] = av2;
-
-	TMatrix<int> b(100);
-
-	ASSERT_ANY_THROW(a - b);
+	TMatrix<int> m1(7);
+	TMatrix<int> m2(8);
+	m1[1][1] = 1;
+	m2[1][1] = 3;
+	m2[2][2] = 3;
+	ASSERT_ANY_THROW(m1 + m2);
 }
 
-
-TEST(Matrix, can_multiply_matrix_with_equal_size)
+TEST(TMatrix, summ_is_correct)
 {
-	TMatrix<int> a(2);
-	Vector<int> av1(2), av2(1);
-	av1[0] = 1;
-	av1[1] = 2;
+	TMatrix<int> m1(2), m2(2), m(2);
 
-	av2[0] = 4;
-
-	a[0] = av1;
-	a[1] = av2;
-
-	TMatrix<int> b(2);
-	Vector<int> bv1(2), bv2(1);
-	bv1[0] = 1;
-	bv1[1] = 2;
-
-	bv2[0] = 4;
-
-	b[0] = bv1;
-	b[1] = bv2;
-
-	TMatrix<int> c(2);
-	c = a * b;
-	EXPECT_EQ(16, c[1][0]);
+	for (int i = 0; i < m1.GetSize(); i++)
+		for (int j = 0; j < m1.GetSize() - i; j++)
+		{
+			m1[i][j] = i;
+			m2[i][j] = j;
+			m[i][j] = m1[i][j] + m2[i][j];
+		}
+	EXPECT_EQ(m, m1 + m2);
+}
+// A - B
+TEST(TMatrix, cannot_subtract_with_not_equal_size)
+{
+	TMatrix<int> m1(7);
+	TMatrix<int> m2(8);
+	m1[1][1] = 1;
+	m2[1][1] = 3;
+	m2[2][2] = 3;
+	ASSERT_ANY_THROW(m1 - m2);
 }
 
-TEST(Matrix, throws_when_multiply_matrix_with_different_size)
+TEST(TMatrix, difference_is_correct)
 {
-	TMatrix<int> a(2);
-	Vector<int> av1(2), av2(1);
-	av1[0] = 1;
-	av1[1] = 2;
+	TMatrix<int> m1(2), m2(2), m(2);
 
-	av2[0] = 4;
-
-	a[0] = av1;
-	a[1] = av2;
-
-	TMatrix<int> b(100);
-
-	ASSERT_ANY_THROW(a * b);
+	for (int i = 0; i < m1.GetSize(); i++)
+		for (int j = 0; j < m1.GetSize() - i; j++)
+		{
+			m1[i][j] = i;
+			m2[i][j] = j;
+			m[i][j] = m1[i][j] - m2[i][j];
+		}
+	EXPECT_EQ(m, m1 - m2);
 }
 
-
-
-TEST(Matrix, triple_assign)
+// A * B
+TEST(TMatrix, can_multiplicate_matrix)
 {
-	TMatrix<int> a(2);
-	Vector<int> av1(2), av2(1);
-	av1[0] = 50;
-	av1[1] = 2;
+	TMatrix <int> m1(2), m2(2), res(2);
 
-	av2[0] = 100;
+	m1[0][0] = 1;
+	m1[0][1] = 2;
+	m1[1][0] = 3;
 
-	a[0] = av1;
-	a[1] = av2;
+	m2[0][0] = 5;
+	m2[0][1] = 6;
+	m2[1][0] = 7;
 
-	TMatrix<int> b(2);
-	Vector<int> bv1(2), bv2(1);
-	bv1[0] = 1;
-	bv1[1] = 2;
+	res[0][0] = 5;
+	res[0][1] = 20;
+	res[1][0] = 21;
 
-	bv2[0] = 4;
-
-	b[0] = bv1;
-	b[1] = bv2;
-
-	TMatrix<int> c(2);
-	b = a;
-	c = b;
-	EXPECT_EQ(50, c[0][0]);
+	ASSERT_TRUE(res == m1 * m2);
 }
 
+TEST(TMatrix, can_mult_with_equal_size)
+{
+	TMatrix<int> m1(3);
+	TMatrix<int> m2(3);
+	for (int i = 0; i < 3; i++)
+		for (int j = 0; j < 3 - i; j++)
+		{
+			m1[i][j] = 1;
+			m2[i][j] = 2;
+
+		}
+	ASSERT_NO_THROW(m1 * m2);
+}
+
+TEST(TMatrix, can_mult_matrix_with_equal_size)
+{
+	TMatrix<double> m1(3);
+	TMatrix<double> m2(3);
+	TMatrix<double> m(3);
+	for (int i = 0; i < 3; i++)
+		for (int j = 0; j < 3 - i; j++)
+		{
+			m1[i][j] = 1;
+			m2[i][j] = 2;
+			m[i][j] = 2 * i + 2 * j + 2;
+		}
+	m[1][1] = 4;
+	m[1][0] = 2;
+	m[2][0] = 2;
+	EXPECT_EQ(m1 * m2, m);
+}
+
+TEST(TMatrix, cant_mult_with_not_equal_size)
+{
+	TMatrix<int> m1(7);
+	TMatrix<int> m2(8);
+	ASSERT_ANY_THROW(m1 * m2);
+}
