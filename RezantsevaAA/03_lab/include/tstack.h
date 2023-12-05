@@ -16,8 +16,9 @@ public:
 	bool isFull (void) const;
 	ValueType Top() const;
 	void Push(const ValueType& e);
-	void Pop();
+	ValueType Pop();
 };
+
 template <typename ValueType> TStack<ValueType>::~TStack()
 {
 	delete[] elems;
@@ -25,12 +26,12 @@ template <typename ValueType> TStack<ValueType>::~TStack()
 
 template <typename ValueType> bool TStack<ValueType>::isEmpty(void) const
 {
-	return top != (-1);
+	return top == -1;
 }
 
 template <typename ValueType> bool TStack<ValueType>::isFull(void) const
 {
-	return top != maxSize - 1;
+	return top == maxSize - 1;
 }
 
 template<typename ValueType> TStack<ValueType>::TStack(int maxSize)
@@ -61,14 +62,15 @@ template<typename ValueType> ValueType TStack<ValueType>::Top() const
 		throw "Stack is empty";
 	return elems[top];
 }
-template<typename ValueType> void TStack<ValueType>::Pop() {
+template<typename ValueType> ValueType TStack<ValueType>::Pop() {
 	if (isEmpty())
 		throw "Stack is empty";
-	top -= 1;
+	return elems[top--];
 }
 template<typename ValueType> void TStack<ValueType>::Push(const ValueType& e) {
 	if (isFull())
 		throw "Stack is full";
 	elems[++top] = e;
 }
+
 #endif
