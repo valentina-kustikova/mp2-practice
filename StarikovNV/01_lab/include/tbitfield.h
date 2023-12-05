@@ -38,7 +38,7 @@ public:
   // битовые операции
   int operator==(const TBitField &bf) const; // сравнение
   int operator!=(const TBitField &bf) const; // сравнение
-  TBitField& operator=(const TBitField &bf); // присваивание
+  const TBitField& operator=(const TBitField &bf); // присваивание
   TBitField  operator|(const TBitField &bf); // операция "или"
   TBitField  operator&(const TBitField &bf); // операция "и"
   TBitField  operator~(void);                // отрицание

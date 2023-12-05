@@ -58,7 +58,7 @@ void TSet::DelElem(const int Elem) // исключение элемента множества
 
 // теоретико-множественные операции
 
-TSet& TSet::operator=(const TSet& s) // присваивание
+const TSet& TSet::operator=(const TSet& s) // присваивание
 {
     if (this != &s)
     {
@@ -131,12 +131,24 @@ TSet TSet::operator~(void) // дополнение
 
 istream& operator>>(istream& istr, TSet& s) // ввод
 {
-    istr >> s.BitField;
+    for (int i = 0; i < s.MaxPower; i++)
+    {
+        int element;
+        istr >> element;
+        if (element == 0)
+            s.InsElem(i);
+    }
     return istr;
 }
 
 ostream& operator<<(ostream& ostr, const TSet& s) // вывод
 {
-    ostr << s.BitField;
+    ostr << "{ ";
+    for (int i = 0; i < s.GetMaxPower(); i++) 
+    {
+        if (s.IsMember(i))
+            ostr << i << " ";
+    }
+    ostr << "}";
     return ostr;
 }

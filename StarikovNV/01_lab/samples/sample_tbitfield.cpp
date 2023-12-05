@@ -21,7 +21,7 @@ int main()
     cin >> bitField1;
 
 
-    cout << "Битовое поле: " << bitField1 << endl; // Вывод значений битового поля с помощью оператора вывода
+    cout << "Битовое поле 1: " << bitField1 << endl; // Вывод значений битового поля с помощью оператора вывода
 
 
     TBitField bitField2(bitField1);    // Создание второго объекта TBitField с помощью конструктора копирования
@@ -31,7 +31,7 @@ int main()
     cin >> bitField2;
 
 
-    cout << "Битовое поле: " << bitField2 << endl; // Вывод значений битового поля с помощью оператора вывода
+    cout << "Битовое поле 2: " << bitField2 << endl; // Вывод значений битового поля с помощью оператора вывода
 
 
     cout << "Длина второго битового поля: " << bitField2.GetLength() << " бит" << endl; // Получение длины битового поля
@@ -40,19 +40,19 @@ int main()
     int indexToSet = 4; // Установка бита
     bitField2.SetBit(indexToSet);
     cout << "Установлен бит во втором поле под индексом " << indexToSet << endl;
-    cout << "Битовое поле: " << bitField2 << endl;
+    cout << "Битовое поле 2: " << bitField2 << endl;
 
 
     int indexToGet = 5; // Получение значения бита
     int bitValue = bitField2.GetBit(indexToGet);
     cout << "Значение бита во втором поле под индексом " << indexToGet << ": " << bitValue << endl;
-    cout << "Битовое поле: " << bitField2 << endl;
+    cout << "Битовое поле 2: " << bitField2 << endl;
 
 
     int indexToClear = 2; // Очистка бита
     bitField2.ClrBit(indexToClear);
     cout << "Очищен бит во втором поле под индексом " << indexToClear << endl;
-    cout << "Битовое поле: " << bitField2 << endl;
+    cout << "Битовое поле 2: " << bitField2 << endl;
 
 
     if (bitField1 == bitField2) { // Проверка оператора сравнения
@@ -67,7 +67,7 @@ int main()
     bitField3 = bitField1;
     if (bitField3 == bitField1) {
         cout << "Битовое поле успешно скопировано" << endl;
-        cout << "Битовое поле: " << bitField3 << endl;
+        cout << "Битовое поле 1: " << bitField3 << endl;
     }
 
 

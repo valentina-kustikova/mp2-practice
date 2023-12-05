@@ -49,6 +49,5 @@ int main()
     cout << "operator*: " << (set1 * set2) << endl;
     cout << "operator+: " << (set1 + set2) << endl;
     cout << "operator~: " << ~set1 << endl;
-    cout << "operator= (set2=set1): " << (set2 = set1) << endl;
     return 0;
 }

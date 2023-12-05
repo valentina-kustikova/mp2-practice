@@ -25,8 +25,6 @@ TBitField::TBitField(int len)
     }
     else
         throw "Size error";
-
-
 }
 
 TBitField::TBitField(const TBitField& bf) // конструктор копирования
@@ -53,7 +51,7 @@ int TBitField::GetMemIndex(const int n) const // индекс Мем для бита n
 {
     return n / (sizeof(TELEM) * 8);//возвращает индекс ячейки для бита с номером n
 }
-
+ 
 
 
 TELEM TBitField::GetMemMask(const int n) const // битовая маска для бита n
@@ -94,7 +92,7 @@ int TBitField::GetBit(const int n) const // получить значение бита
 
 // битовые операции
 
-TBitField& TBitField::operator=(const TBitField& bf) // присваивание
+const TBitField& TBitField::operator=(const TBitField& bf) // присваивание
 {
     if (this != &bf)
     {
@@ -176,8 +174,7 @@ istream& operator>>(istream& istr, TBitField& bf) // ввод
 }
 
 ostream& operator<<(ostream& ostr, const TBitField& bf) // вывод
-{
-    //for (int i = bf.BitLen - 1; i >= 0; i--) 
+{ 
     for (int i = 0; i < bf.BitLen; i++)
         ostr << bf.GetBit(i);
     return ostr;
