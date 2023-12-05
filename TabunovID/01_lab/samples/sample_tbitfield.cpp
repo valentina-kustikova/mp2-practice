@@ -26,9 +26,7 @@ int main()
     e = ~c;
     std::cout << "BitField e = ~c:\n" << e << endl;
 
-    TBitField f(N);
-    cin >> f;
-    cout << "Your input bitfield: " << f;
+    cout << "Bietfield a = Bietfield b? : " << "\t" << (a == b) << endl;
 
 
     return 0;

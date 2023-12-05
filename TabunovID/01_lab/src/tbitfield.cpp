@@ -169,14 +169,13 @@ TBitField TBitField::operator&(const TBitField &bf) // операция "и"
     return res;
 }
 
-TBitField TBitField::operator~(void) // отрицание
+TBitField TBitField::operator~()
 {
-	TBitField A(GetLength());
-	for (int i = 0; i <= GetMemIndex(GetLength()); ++i)
-	{
-		A.pMem[i] = ~pMem[i];
-	}
-	return A;
+	TBitField obj(BitLen);
+	for (int i = 0; i < BitLen; i++)
+		if (GetBit(i) == 0)
+			obj.SetBit(i);
+	return obj;
 }
 
 // ввод/вывод
