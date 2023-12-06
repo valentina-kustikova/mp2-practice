@@ -11,9 +11,9 @@ private:
 	int mem_size;
 	T* pMem;
 public:
-	Stack(int size = 10);
+	Stack(int size = 25);
 	Stack(const Stack<T>& obj);
-	~Stack() { delete[] pMem; mem_size = 0; top = -1; }
+	~Stack();
 
 	T Top();
 	size_t Size()const noexcept { return top + 1; }
@@ -24,6 +24,13 @@ public:
 
 	void Push(const T val);
 	T Pop();
+
+	friend istream& operator>>(istream& istr, Stack<T>& st) {
+		T elem;
+		istr >> elem;
+		st.Push(elem);
+		return istr;
+	}
 };
 
 template <typename T>
@@ -47,6 +54,7 @@ Stack<T>::Stack(const Stack <T>& obj) {
 	for(int i = 0; i <= top;i++){
 		pMem[i] = obj.pMem[i];
 	}
+	cout << "Сработал конструктор копирования!" << endl;
 }
 
 
@@ -81,6 +89,14 @@ T Stack<T>::Pop() {
 
 		return pMem[top--];
 	}
+}
+
+template <typename T>
+Stack<T>::~Stack() {
+	delete[] pMem;
+	mem_size = 0; 
+	top = -1;
+	cout << "Сработал деструктор!" << endl;
 }
 
 #endif

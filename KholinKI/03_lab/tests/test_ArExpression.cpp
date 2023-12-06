@@ -2,9 +2,11 @@
 
 #include <gtest.h>
 
-
+//#test
+//"---.3)9X!&1-((+-/*6+.11..5()-ARM11.KI)-(-X2*!#@X3+TURBO/(-20*190.)*)-100/(*(-4)"
+//предусмотреть русский язык
 TEST(Stack, can_ToPostfix) {
-	ArithmeticExpression<double> Expr("-X1-(6+11.5)-(-X2*X3+TURBO/(-20)*)-100*(-4)");
+	ASSERT_NO_THROW(ArithmeticExpression<double> Expr("X1-(6+11.5-ARM11KI)-(-X2*X1293AMxkl+TUR11BO/(-20*190))-100/(-4)"));
 }
 
 //TEST(ArithmeticExpression, can_get_operands) {
