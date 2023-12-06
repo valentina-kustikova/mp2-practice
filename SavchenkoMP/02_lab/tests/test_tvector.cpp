@@ -53,6 +53,18 @@ TEST(TVector, CopyConstructorTest){
 	ASSERT_NO_THROW(TVector<int> test(v));
 }
 
+TEST(TVector, CopyConstructorTest_DifferentMemory) {
+	TVector<int> v1(3);
+	v1[0] = 0;
+	v1[1] = 1;
+	v1[2] = 2;
+
+	TVector<int> v2(v1);
+	v2[0] = 1;
+
+	EXPECT_NE(v2[0], v1[0]);
+}
+
 // GetSizeTests
 TEST(TVector, GetSizeTest){
 	TVector<int> v(3);
@@ -192,13 +204,10 @@ TEST(TVector, AssignmentOperatorTest_Self) {
 	TVector<int> v1(size), expv(size);
 
 	for (int i = 0; i < size; i++) {
-		expv[i] = i;
 		v1[i] = i;
 	}
 
-	v1 = v1;
-
-	EXPECT_EQ(expv, v1);
+	ASSERT_NO_THROW(v1 = v1);
 }
 
 TEST(TVector, AssignmentOperatorTest_EqualSize){

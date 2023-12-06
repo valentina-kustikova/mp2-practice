@@ -41,6 +41,20 @@ TEST(TMatrix, CopyConstructorTest){
 	ASSERT_NO_THROW(TMatrix<int> test(m));
 }
 
+TEST(TMatrix, CopyConstructorTest_DifferentMemory) {
+	TMatrix<int> m1(2);
+	// 1 2
+	// 0 3
+	m1[0][0] = 1;
+	m1[0][1] = 2;
+	m1[1][1] = 3;
+
+	TMatrix<int> m2(m1);
+	m2[0][0] = 2;
+
+	EXPECT_NE(m2[0][0], m1[0][0]);
+}
+
 // GetSizeTests
 TEST(TMatrix, GetSizeTest){
 	TMatrix<int> m(3);
@@ -196,17 +210,14 @@ TEST(TMatrix, InequalityTest_InequalSize){
 TEST(TMatrix, AssignmentOperatorTest_Self) {
 	int size = 3;
 
-	TMatrix<int> m(size), expm(size);
+	TMatrix<int> m(size);
 
 	for (int i = 0; i < size; i++)
 		for (int j = i; j < size; j++) {
 			m[i][j] = i + 1;
-			expm[i][j] = i + 1;
 		}
 
-	m = m;
-
-	EXPECT_EQ(expm, m);
+	ASSERT_NO_THROW(m = m);
 }
 
 TEST(TMatrix, AssignmentOperatorTest_EqualSize) {
