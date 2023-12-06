@@ -36,7 +36,6 @@ public:
 			ostr << m.pVector[i];
 		}
 		return ostr;
-
 	}
 };
 
@@ -50,10 +49,12 @@ TMatrix<ValueType>::TMatrix(int size) : TVector<TVector<ValueType>>(size)
 }
 
 template <typename ValueType>
-TMatrix<ValueType>::TMatrix(const TMatrix& matrix) : TVector<TVector<ValueType>>(matrix) { }
+TMatrix<ValueType>::TMatrix(const TMatrix& matrix) :
+	TVector<TVector<ValueType>>(matrix) { }
 
 template <typename ValueType>
-TMatrix<ValueType>::TMatrix(const TVector<TVector<ValueType>>& matrix) : TVector<TVector<ValueType> >(matrix) {}
+TMatrix<ValueType>::TMatrix(const TVector<TVector<ValueType>>& matrix) : 
+	TVector<TVector<ValueType> >(matrix) {}
 
 template <typename ValueType>
 int TMatrix<ValueType>::operator==(const TMatrix<ValueType>& matrix) const
@@ -68,19 +69,22 @@ int TMatrix<ValueType>::operator!=(const TMatrix<ValueType>& matrix) const
 }
 
 template <typename ValueType>
-const TMatrix<ValueType>& TMatrix<ValueType>::operator=(const TMatrix<ValueType>& matrix)
+const TMatrix<ValueType>& TMatrix<ValueType>::operator=(
+	const TMatrix<ValueType>& matrix)
 {
 	return TVector<TVector<ValueType> >::operator=(matrix);
 }
 
 template <typename ValueType>
-TMatrix<ValueType> TMatrix<ValueType>::operator+(const TMatrix<ValueType>& matrix)
+TMatrix<ValueType> TMatrix<ValueType>::operator+(
+	const TMatrix<ValueType>& matrix)
 {
 	return TVector<TVector<ValueType> >::operator+(matrix);
 }
 
 template <typename ValueType>
-TMatrix<ValueType> TMatrix<ValueType>::operator-(const TMatrix<ValueType>& matrix)
+TMatrix<ValueType> TMatrix<ValueType>::operator-(
+	const TMatrix<ValueType>& matrix)
 {
 	return TVector<TVector<ValueType> >::operator-(matrix);
 }
@@ -100,7 +104,7 @@ TMatrix<ValueType> TMatrix<ValueType>::operator*(const TMatrix& m)
 			ValueType summa = 0;
 			for (int r = k; r <= j; r++)
 			{
-				summa = summa + (this->pVector[k][r - k] * m.pVector[r][j - r]);
+				summa += (this->pVector[k][r - k] * m.pVector[r][j - r]);
 			}
 			result.pVector[k][j - k] = summa;
 		}

@@ -94,19 +94,14 @@ ValueType& TVector<ValueType>::operator[](const int index)
 template <typename ValueType>
 int TVector<ValueType>::operator==(const TVector& vector) const
 {
-	if (this != &vector)
+	if ((size == vector.size) && (start_index == vector.start_index))
 	{
-		if ((size == vector.size) && (start_index == vector.start_index))
-		{
-			for (int i = 0; i < size; i++)
-				if (pVector[i] != vector.pVector[i])
-					return 0;
-			return 1;
-		}
-		else
-			return 0;
+		for (int i = 0; i < size; i++)
+			if (pVector[i] != vector.pVector[i])
+				return 0;
+		return 1;
 	}
-	return 1;
+		return 0;
 }
 
 template <typename ValueType>
