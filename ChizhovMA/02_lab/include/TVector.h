@@ -101,8 +101,6 @@ int TVector<T>::operator==(const TVector<T>& obj) const
 {
 	if (size != obj.size || start_ind != obj.start_ind)
 		return 0;
-	if (this == &obj)
-		return 1;
 	for (int i = 0; i < size; i++)
 		if (vec[i] != obj.vec[i])
 			return 0;

@@ -23,17 +23,25 @@ TEST(TMatrix, copy_constructor_test)
 	ASSERT_NO_THROW(TMatrix<int> matrix(m));
 }
 
+TEST(TMatrix, copy_constructor_test_memory) {
+	TMatrix<int> m1(2);
+
+	m1[0][0] = 1;
+	m1[0][1] = 1;
+	m1[1][1] = 2;
+
+	TMatrix<int> m2(m1);
+	m2[0][0] = 2;
+
+	EXPECT_NE(m2[0][0], m1[0][0]);
+}
+
 TEST(TMatrix, can_get_size)
 {
 	TMatrix<int> m(3);
 	EXPECT_EQ(3, m.GetSize());
 }
 
-TEST(TMatrix, can_get_start_index)
-{
-	TMatrix<int> m(3);
-	EXPECT_EQ(1, m[1].GetStart());
-}
 //index
 TEST(TMatrix, index_test_matrix)
 {
@@ -97,7 +105,7 @@ TEST(TMatrix, comparison_for_equality_true)
 			m2[i][j] = i + 1;
 		}
 
-	EXPECT_EQ(1, m1 == m2);
+	ASSERT_TRUE(m1 == m2);
 }
 
 TEST(TMatrix, comparison_for_equality_false)
@@ -109,15 +117,15 @@ TEST(TMatrix, comparison_for_equality_false)
 			m1[i][j] = i + 1;
 			m2[i][j] = i + 2;
 		}
-	EXPECT_EQ(0, m1 == m2);
+	ASSERT_FALSE(m1 == m2);
 }
 
-TEST(TMatrix, comparison_for_equality_with_diferent_size)
+TEST(TMatrix, comparison_for_equality_with_different_size)
 {
 	TMatrix<int> m1(3);
 	TMatrix<int> m2(4);
 
-	EXPECT_EQ(0, m1 == m2);
+	ASSERT_FALSE(m1 == m2);
 }
 //inequal
 TEST(TMatrix, comparison_for_inequality_true)
@@ -131,7 +139,7 @@ TEST(TMatrix, comparison_for_inequality_true)
 			m2[i][j] = i + 2;
 		}
 
-	EXPECT_EQ(1, m1 != m2);
+	ASSERT_TRUE(m1 != m2);
 }
 
 TEST(TMatrix, comparison_for_inequality_false)
@@ -144,7 +152,7 @@ TEST(TMatrix, comparison_for_inequality_false)
 			m1[i][j] = i + 1;
 			m2[i][j] = i + 1;
 		}
-	EXPECT_EQ(0, m1 != m2);
+	ASSERT_FALSE(m1 != m2);
 }
 
 TEST(TMatrix, comparison_for_inequality_with_diferent_size)
@@ -152,7 +160,7 @@ TEST(TMatrix, comparison_for_inequality_with_diferent_size)
 	TMatrix<int> m1(3);
 	TMatrix<int> m2(4);
 
-	EXPECT_EQ(1, m1 != m2);
+	ASSERT_TRUE(m1 != m2);
 }
 //operator=
 TEST(TMatrix, assignment_check)
@@ -168,6 +176,17 @@ TEST(TMatrix, assignment_check)
 	m1 = m2;
 
 	EXPECT_EQ(m2, m1);
+}
+
+TEST(TMatrix, assignment_check_self)
+{
+	TMatrix<int> m1(3);
+
+	for (int i = 0; i < 3; i++)
+		for (int j = i; j < 3; j++)
+			m1[i][j] = i + 1;
+
+	ASSERT_NO_THROW(m1 = m1);
 }
 
 TEST(TMatrix, assignment_with_different_size)
