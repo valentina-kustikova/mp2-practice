@@ -3,7 +3,7 @@
 #include <iostream>
 #include "tvector.h"
 
-const int MAX_MATRIX_SIZE = 100000;
+//const int MAX_MATRIX_SIZE = 100000;
 
 template <class ValType>
 class TMatrix : public TVector<TVector<ValType>>

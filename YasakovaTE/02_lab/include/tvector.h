@@ -4,7 +4,7 @@
 #include <iostream>
 using namespace std;
 
-const int MAX_VECTOR_SIZE = 100000;
+//const int MAX_VECTOR_SIZE = 100000;
 
 
 template <class ValType>
@@ -56,7 +56,7 @@ public:
 template <class ValType>
 TVector<ValType>::TVector<ValType>(int s, int si) :Size(s), StartIndex(si)
 {
-    if (s <= 0 || s > MAX_VECTOR_SIZE)
+    if (s <= 0 || s > size)
         throw "Incorrect size";
     if (si < 0)
         throw "You cannot start at negative index!";
@@ -80,7 +80,7 @@ TVector<ValType>::~TVector<ValType>()
 template <class ValType>
 ValType& TVector<ValType>::operator[](int pos)
 {
-    if (pos < 0 || pos >= MAX_VECTOR_SIZE)
+    if (pos < 0 || pos >= size)
         throw "Wrong position";
     if (pos < StartIndex)
         throw "Wrong position (less than start index)";

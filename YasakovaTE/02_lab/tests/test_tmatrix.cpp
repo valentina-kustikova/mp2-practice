@@ -31,8 +31,6 @@ TEST(TMatrix, copied_matrix_is_equal_to_source_one)
 	m1[0][0] = 3;
 	m1[0][1] = 4;
 	TMatrix<int> m2(m1);
-	cout << m1 << endl;
-	cout << m2 << endl;
 	bool res = (m1 == m2);
 	EXPECT_EQ(res, 1);
 }
@@ -201,3 +199,4 @@ TEST(TMatrix, can_multiply_matrix_with_matrix)
 	res[1][1] = 1; res[1][2] = 1; res[2][2] = 1;
 	ASSERT_EQ(m1 * m2, res);
 }
+//!!!

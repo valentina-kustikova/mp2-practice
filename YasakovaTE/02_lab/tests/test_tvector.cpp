@@ -267,7 +267,7 @@ TEST(TVector, can_add_scalar_to_vector)
 
 TEST(TVector, can_add_scalar_to_vector_start_index)
 {
-	TVector<int> t1(3,0), t2(3,0);
+	TVector<int> t1(3,1), t2(3,1);
 	t1[0] = 1;
 	t1[1] = 2;
 	t1[2] = 2;
