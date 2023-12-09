@@ -37,6 +37,11 @@ TEST(TVector, no_throw_when_use_constructor_copy) {
 	ASSERT_NO_THROW(TVector<double> vec(vec1));
 }
 
+TEST(TVector, different_addresses_memory) {
+	TVector<double> vec1(3, 4),vec2(3);
+	ASSERT_TRUE(vec1.GetMemory() != vec2.GetMemory());
+}
+
 TEST(TVector, no_throw_when_work_destructor) {
 	TVector<double>* pVec = new TVector<double>(1, 2);
 	ASSERT_NO_THROW(delete pVec);
@@ -134,8 +139,13 @@ TEST(TVector, no_equality_lenghts) {
 TEST(TVector, can_assign_vectors) {
 	TVector<double> vec1(3, 4), vec2(4, 3);
 	ASSERT_NO_THROW(vec1 = vec2);
+}
+
+TEST(TVector, can_assign_vectors_and_parameters_are_equal) {
+	TVector<double> vec1(3, 4), vec2(4, 3);
 	EXPECT_EQ(vec1, vec2);
 }
+
 
 TEST(TVector, triple_assign_vectors) {
 	TVector<short> vector1(4), vector2(4), vector3(4);

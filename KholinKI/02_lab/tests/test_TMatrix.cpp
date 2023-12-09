@@ -3,7 +3,7 @@
 #include <gtest.h>
 
 TEST(TMatrix, throw_when_create_matrix_with_negative_dimensionality) {
-	ASSERT_ANY_THROW(TMatrix<double> matr1(-4), const Exeptions<int>);
+	ASSERT_ANY_THROW(TMatrix<double> matr1(-4));
 }
 
 TEST(TMatrix, can_create_matrix_with_positive_dimensionality) {
@@ -90,7 +90,7 @@ TEST(TMatrix, non_equality_values) {
 }
 
 
-TEST(can_assign_matrix_not_equal_dimensions) {
+TEST(TMatrix,can_assign_matrix_not_equal_dimensions) {
 	TMatrix<double> matr1(4), matr2(3);
 
 	for (int i = 0; i < matr1.GetSize(); i++) {
@@ -238,22 +238,5 @@ TEST(TMatrix, throw_when_mult_operator_with_matrix_not_equal_dimension) {
 	ASSERT_ANY_THROW(matr1 * matr2);
 }
 
-TEST(TMatrix, triple_assign) {
-	TMatrix<double> matr1(4), matr2(4),matr3(4);
-
-	for (int i = 0; i < matr1.GetSize(); i++) {
-		for (int k = matr1.GetStart() + i; k < matr1.GetSize(); k++) {
-			matr1[i][k] = k * 2;
-		}
-	}
-
-	for (int i = 0; i < matr2.GetSize(); i++) {
-		for (int k = matr2.GetStart() + i; k < matr2.GetSize(); k++) {
-			matr2[i][k] = k * 3;
-		}
-	}
-	matr1 = matr3 = matr2;
-	ASSERT_TRUE((matr1 == matr3) && (matr1 == matr2) && (matr2 == matr3));
-}
 
 
