@@ -141,10 +141,7 @@ TEST(TVector, can_assign_vectors) {
 	ASSERT_NO_THROW(vec1 = vec2);
 }
 
-TEST(TVector, can_assign_vectors_and_parameters_are_equal) {
-	TVector<double> vec1(3, 4), vec2(4, 3);
-	EXPECT_EQ(vec1, vec2);
-}
+
 
 
 TEST(TVector, triple_assign_vectors) {
