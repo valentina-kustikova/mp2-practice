@@ -23,6 +23,20 @@ TEST(TStack, copy_constructor_test)
     ASSERT_NO_THROW(TStack<int> s2(s));
 }
 
+TEST(TStack, copy_constructor_test_memory)
+{
+    TStack<int> s1(3);
+    s1.Push(1);
+    s1.Push(2);
+    s1.Push(2);
+
+    TStack<int> s2(s1);
+    s2.Pop();
+    s2.Push(4);
+
+    EXPECT_NE(s2.Top(), s1.Top());
+}
+
 //is_empty
 TEST(TStack, stack_is_empty_true)
 {
