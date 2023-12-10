@@ -92,17 +92,17 @@ TMatrix<T> TMatrix<T>::operator-(const TMatrix<T>& m)
 template <typename T>
 TMatrix<T> TMatrix<T>::operator*(const TMatrix<T>& m)
 {
-	if (TVector<TVector<T>>::GetSize() != m.GetSize() || TVector<TVector<T>>::GetStart() != m.GetStart())
+	if (GetSize() != m.GetSize() || GetStart() != m.GetStart())
 		throw "ERROR: matrix sizes do not match";
 
-	TMatrix<T> result(TVector<TVector<T>>::GetSize());
-	for (int i = 0; i < TVector<TVector<T>>::GetSize(); i++)
-		for (int j = result[i].GetStart(); j < TVector<TVector<T>>::GetSize(); j++)
+	TMatrix<T> result(GetSize());
+	for (int i = 0; i < GetSize(); i++)
+		for (int j = result[i].GetStart(); j < GetSize(); j++)
 			result[i][j] = T(NULL);
 
-	for (int i = 0; i < TVector<TVector<T>>::GetSize(); i++)
+	for (int i = 0; i < GetSize(); i++)
 	{
-		for (int j = result[i].GetStart(); j < TVector<TVector<T>>::GetSize(); j++)
+		for (int j = result[i].GetStart(); j < GetSize(); j++)
 		{
 			T sum = 0;
 			for (int k = result[i].GetStart(); k <= j; k++) {

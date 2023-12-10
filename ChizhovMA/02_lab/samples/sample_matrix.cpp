@@ -34,7 +34,7 @@ int main()
     cout << "m5 = m1*m2:"<< endl << matrix5 << endl;
 
     matrix1 = matrix2;
-    cout << "m1 = m2: " << endl << matrix1 << endl;
+    //cout << "m1 = m2: " << endl << matrix1 << endl;
     if (matrix1 == matrix2)
         cout << "Матрицы m1 и m2 равны" << endl;
     else
