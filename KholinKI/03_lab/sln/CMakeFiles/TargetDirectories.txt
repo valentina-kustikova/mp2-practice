@@ -1,8 +1,0 @@
-C:/Users/Кирилл/mp2-practice/mp2-practice/KholinKI/03_lab/sln/CMakeFiles/ALL_BUILD.dir
-C:/Users/Кирилл/mp2-practice/mp2-practice/KholinKI/03_lab/sln/CMakeFiles/ZERO_CHECK.dir
-C:/Users/Кирилл/mp2-practice/mp2-practice/KholinKI/03_lab/sln/src/CMakeFiles/ArExpression.dir
-C:/Users/Кирилл/mp2-practice/mp2-practice/KholinKI/03_lab/sln/samples/CMakeFiles/sample_ArExpression.dir
-C:/Users/Кирилл/mp2-practice/mp2-practice/KholinKI/03_lab/sln/samples/CMakeFiles/sample_primenumbers.dir
-C:/Users/Кирилл/mp2-practice/mp2-practice/KholinKI/03_lab/sln/samples/CMakeFiles/sample_stack.dir
-C:/Users/Кирилл/mp2-practice/mp2-practice/KholinKI/03_lab/sln/gtest/CMakeFiles/gtest.dir
-C:/Users/Кирилл/mp2-practice/mp2-practice/KholinKI/03_lab/sln/tests/CMakeFiles/tests_ArExpression.dir
