@@ -66,7 +66,8 @@ bool ArithmeticExpression<T>::checking_characters() {
 	char c;
 	while (i < infix.size()) {
 		c = infix[i];
-		if (c >= 65 && c <= 90 || c >= 97 && c <= 122 || c >= 48 && c <= 57 || !(c != '+' && c != '-' && c != '*' && c != '/' && c != '(' && c != ')') || c == '.') {
+		if (c >= 65 && c <= 90 || c >= 97 && c <= 122 || c >= 48 && c <= 57 ||
+			!(c != '+' && c != '-' && c != '*' && c != '/' && c != '(' && c != ')') || c == '.') {
 			i++;
 			continue;
 		}
@@ -126,6 +127,7 @@ bool ArithmeticExpression<T>::checking_operations() {
 			}
 		}
 		default:
+			
 			cc = infix[i + 1];
 			if (c == '.' && cc == '.') {//повторы точки
 				return false;
@@ -143,7 +145,7 @@ bool ArithmeticExpression<T>::checking_operations() {
 //checking_operations();//проверяет на отсутствие двух идущих подряд операций и точек
 
 template<typename T>
-void ArithmeticExpression<T>::Parse() {
+void ArithmeticExpression<T>::Parse() {//использованы правила идентификаторов переменных
 	char c;
 	char cc;
 	int count_points = 0;
@@ -157,6 +159,12 @@ void ArithmeticExpression<T>::Parse() {
 		switch (c) {
 		case '+': case '-': case '*': case '/': case '(': case ')':
 			{
+				if (i == 0 && c != '-' && c != '(') {
+				throw "Mistake in arithmetic expression!";
+				}
+				if (i == infix.size() - 1 && c != ')') {
+					throw "Mistake in arithmetic expression!";
+				}
 				if ((c == '-' && i == 0) || (c == '-' && infix[i - 1] == '(')) {
 					lexemes.push_back("0");
 					lexemes.push_back("-");
@@ -169,7 +177,7 @@ void ArithmeticExpression<T>::Parse() {
 				continue;
 			}
 			default:
-				while (c != '+' && c != '-' && c != '*' && c != '/' && c != '(' && c != ')') {//заменить на итератор
+				while (c != '+' && c != '-' && c != '*' && c != '/' && c != '(' && c != ')') {
 					if (c == '.' && str == "") {
 						throw "Mistake in arithmetic expression!";
 					}
@@ -189,22 +197,24 @@ void ArithmeticExpression<T>::Parse() {
 						if (c >= 65 && c <= 90 || c >= 97 && c <= 122) {
 							throw "Mistake in arithmetic expression!";//встретился символ внутри константы-операнда
 						}
+						if (c == '.' && (infix[i + 1] == '+' || infix[i + 1] == '-' || infix[i + 1] == '*' || infix[i + 1] == '/' || infix[i + 1] == '(' || infix[i + 1] == ')') && i+1 != infix.size()) {
+							throw "Mistake in arithmetic expression!";
+						}
 					}
 					else {
 						str += c;
 						i++;
 						if (i == infix.size()) {
-							int j = 0;
-							while (j < str.size()) {
-								if (str[j] == '+' || str[j] == '-' || str[j] == '*' || str[j] == '/' || str[j] == '(' || str[j] == ')' || str[j] == '.') {
-									throw "Mistake in arithmetic expression!";
-								}
-								j++;
-							}
 							break;
 						}
+
 						c = infix[i];
-						if (!(c != '+' && c != '-' && c != '*' && c != '/' && c != '(' && c != ')' && c != '.')) {
+						if (!(c != '.')) {
+							throw "Mistake in arithmetic expression!";
+						}
+						
+						
+					/*	if (!(c != '+' && c != '-' && c != '*' && c != '/' && c != '(' && c != ')' && c != '.')) {
 							int j = 0;
 							while (j < str.size()) {
 								if (str[j] == '+' || str[j] == '-' || str[j] == '*' || str[j] == '/' || str[j] == '(' || str[j] == ')' || str[j] == '.') {
@@ -212,9 +222,12 @@ void ArithmeticExpression<T>::Parse() {
 								}
 								j++;
 							}
-						}
+						}*/
 					}
 
+				}
+				if (i == infix.size() - 1 && c != ')') {
+					throw "Mistake in arithmetic expression!";
 				}
 				count_points = 0;
 				lexemes.push_back(str);

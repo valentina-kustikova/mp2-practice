@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\Кирилл\mp2-practice\mp2-practice\KholinKI\03_lab\sln\CMakeFiles\216e282126765009fd22b1f280146be5\generate.stamp.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{624B75DC-A23C-3DF1-84C2-63D1275E1F41}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

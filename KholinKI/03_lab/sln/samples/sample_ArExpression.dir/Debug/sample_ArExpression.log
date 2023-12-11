@@ -1,0 +1,8 @@
+﻿  sample_ArExpression.cpp
+C:\Users\Кирилл\mp2-practice\mp2-practice\KholinKI\03_lab\include\ArExpression.h(150,7): warning C4101: cc: неиспользованная локальная переменная
+C:\Users\Кирилл\mp2-practice\mp2-practice\KholinKI\03_lab\include\ArExpression.h(148,39): message : во время компиляции функции-члена класс шаблон "void ArithmeticExpression<double>::Parse(void)"
+C:\Users\Кирилл\mp2-practice\mp2-practice\KholinKI\03_lab\include\ArExpression.h(250,43): message : во время компиляции функции-члена класс шаблон "void ArithmeticExpression<double>::ToPostfix(void)"
+C:\Users\Кирилл\mp2-practice\mp2-practice\KholinKI\03_lab\include\ArExpression.h(39,62): message : во время компиляции функции-члена класс шаблон "ArithmeticExpression<double>::ArithmeticExpression(std::string)"
+C:\Users\Кирилл\mp2-practice\mp2-practice\KholinKI\03_lab\samples\sample_ArExpression.cpp(11,38): message : см. первую ссылку на "ArithmeticExpression<double>::ArithmeticExpression" в "main"
+C:\Users\Кирилл\mp2-practice\mp2-practice\KholinKI\03_lab\samples\sample_ArExpression.cpp(11,34): message : выполняется компиляция ссылки на экземпляр класс шаблон функции "ArithmeticExpression<double>"
+  sample_ArExpression.vcxproj -> C:\Users\Кирилл\mp2-practice\mp2-practice\KholinKI\03_lab\sln\bin\sample_ArExpression.exe

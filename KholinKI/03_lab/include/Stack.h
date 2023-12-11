@@ -11,13 +11,14 @@ private:
 	int mem_size;
 	T* pMem;
 public:
-	Stack(int size = 25);
+	Stack(int size = 100);
 	Stack(const Stack<T>& obj);
 	~Stack();
 
 	T Top();
 	size_t Size()const noexcept { return top + 1; }
 	int GetTop() { return top; }
+	T* GetMemory()const { return pMem; }
 
 	bool IsEmpty()const { return top == -1; }
 	bool IsFull()const { return top == mem_size - 1; }
@@ -54,7 +55,7 @@ Stack<T>::Stack(const Stack <T>& obj) {
 	for(int i = 0; i <= top;i++){
 		pMem[i] = obj.pMem[i];
 	}
-	cout << "Сработал конструктор копирования!" << endl;
+	cout << "Constructor copy is worked!" << endl;
 }
 
 
@@ -96,7 +97,7 @@ Stack<T>::~Stack() {
 	delete[] pMem;
 	mem_size = 0; 
 	top = -1;
-	cout << "Сработал деструктор!" << endl;
+	cout << "Destructor is worked!" << endl;
 }
 
 #endif

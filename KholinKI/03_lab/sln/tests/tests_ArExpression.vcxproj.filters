@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\Users\Кирилл\mp2-practice\mp2-practice\KholinKI\03_lab\tests\test_ArExpression.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Кирилл\mp2-practice\mp2-practice\KholinKI\03_lab\tests\test_Stack.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Кирилл\mp2-practice\mp2-practice\KholinKI\03_lab\tests\test_main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\Кирилл\mp2-practice\mp2-practice\KholinKI\03_lab\tests\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{ED632BC6-64CE-37A9-A672-EBB64C55228B}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
