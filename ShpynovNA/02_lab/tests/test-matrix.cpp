@@ -19,93 +19,75 @@ TEST(TMatrix, can_create_copy)
 	TMatrix<int> mat(2);
 	ASSERT_NO_THROW(TMatrix<int> mat1(mat));
 }
+TEST(TMatrix, check_own_memory)
+{
+	TMatrix<int> mat(2);
+	TMatrix<int> mat1(mat);
+	mat[0][0] = 1;
+	EXPECT_NE(mat1, mat);
+}
+
 TEST(TMatrix, can_create_from_vector)
 {
-	TVector<TVector<int>> vect(2, 0);
+	TVector<TVector<int>> vect(2);
 	ASSERT_NO_THROW(TMatrix<int> mat1(vect));
 }
 
-//TEST(TMatrix, throw_if_vector_is_not_diagonal)
-//{
-//	
-//	TVector<int> vect(2, 0);
-//	TVector<int> vect1(2, 0);
-//	vect[0] = 4;
-//	vect[1] = -2;
-//	vect1[0] = 2;
-//	vect1[1] = 0;
-//	TVector<TVector<int>> Vvect(2, 0);
-//	Vvect[0] = vect;
-//	Vvect[1] = vect1;
-//	ASSERT_ANY_THROW(TMatrix<int> mat1(Vvect));
-//}
 
 TEST(TMatrix, can_work_with_elements)
 {
 	TMatrix<int> mat(2);
-	mat[0][0] = 2;
-	ASSERT_EQ(2, mat[0][0]);
+	ASSERT_NO_THROW(mat[0][0]); // <0, >len
+}
+TEST(TMatrix, throw_on_negative_indexing)
+{
+	TMatrix<int> mat(2);
+	ASSERT_ANY_THROW(mat[0][-1]); // <0, >len
+}
+TEST(TMatrix, throw_on_out_of_range_indexing)
+{
+	TMatrix<int> mat(2);
+	ASSERT_ANY_THROW(mat[0][4]); // <0, >len
 }
 
 TEST(TMatrix, can_assign_from_equal_size)
 {
 	TMatrix<int> mat(2);
-	mat[0][0] = 2;
 	TMatrix<int> mat1(2);
-	mat1 = mat;
-	ASSERT_EQ(2, mat1[0][0]);
+	mat = mat1;
+	EXPECT_EQ(mat, mat1);
 }
 TEST(TMatrix, can_assign_from_diff_size)
 {
 	TMatrix<int> mat(2);
 	TMatrix<int> mat1(3);
-	mat1[0][0] = 2;
 	mat = mat1;
-	ASSERT_EQ(2, mat[0][0]);
+	EXPECT_EQ(mat, mat1);
 }
 
 TEST(TMatrix, false_when_compare_with_non_equal_sizes) {
 	TMatrix<int> mat(2);
 	TMatrix<int> mat1(3);
-	ASSERT_EQ(false, mat == mat1);
+	EXPECT_NE(mat, mat1);
 }
-TEST(TMatrix, can_compare_with_equal_sizes_eq1)
+TEST(TMatrix, can_compare_with_equal_sizes)
 {
 	TMatrix<int> mat(2);
 	mat[0][0] = 2;
 	mat[0][1] = 3;
 	mat[1][0] = 4;
 	TMatrix<int> mat1(mat);
-	ASSERT_EQ(true, mat == mat1);
+	EXPECT_EQ(mat, mat1);
 }
-TEST(TMatrix, can_compare_with_equal_sizes_eq_not)
+
+TEST(TMatrix, can_compare_with_equal_sizes_not_eq)
 {
 	TMatrix<int> mat(2);
+	TMatrix<int> mat1(mat);
 	mat[0][0] = 2;
 	mat[0][1] = 3;
 	mat[1][0] = 4;
-	TMatrix<int> mat1(mat);
-	mat1[1][0] = 1;
-	ASSERT_EQ(false, mat == mat1);
-}
-TEST(TMatrix, can_compare_with_equal_sizes_noeq)
-{
-	TMatrix<int> mat(2);
-	mat[0][0] = 2;
-	mat[0][1] = 3;
-	mat[1][0] = 4;
-	TMatrix<int> mat1(mat);
-	ASSERT_EQ(false, mat != mat1);
-}
-TEST(TMatrix, can_compare_with_equal_sizes_noeq_not)
-{
-	TMatrix<int> mat(2);
-	mat[0][0] = 2;
-	mat[0][1] = 3;
-	mat[1][0] = 4;
-	TMatrix<int> mat1(mat);
-	mat1[1][0] = 1;
-	ASSERT_EQ(true, mat != mat1);
+	EXPECT_NE(mat, mat1);
 }
 
 TEST(TMatrix, can_add_matrix)
@@ -114,9 +96,15 @@ TEST(TMatrix, can_add_matrix)
 	mat[0][0] = 2;
 	mat[0][1] = 3;
 	mat[1][0] = 4;
-	TMatrix<int> mat1(mat);
-	mat1 = mat1 + mat;
-	ASSERT_NE(4, mat1[1][0]);
+	TMatrix<int> mat1(2);
+	mat1[0][0] = 0;
+	mat1[0][1] = 1;
+	mat1[1][0] = 2;
+	TMatrix<int> expected_mat(2);
+	expected_mat[0][0] = 2;
+	expected_mat[0][1] = 4;
+	expected_mat[1][0] = 6;
+	EXPECT_EQ(mat + mat1, expected_mat);
 }
 TEST(TMatrix, can_subtr_matrix)
 {
@@ -124,9 +112,15 @@ TEST(TMatrix, can_subtr_matrix)
 	mat[0][0] = 2;
 	mat[0][1] = 3;
 	mat[1][0] = 4;
-	TMatrix<int> mat1(mat);
-	mat1 = mat1 - mat;
-	ASSERT_NE(4, mat1[1][0]);
+	TMatrix<int> mat1(2);
+	mat1[0][0] = 0;
+	mat1[0][1] = 1;
+	mat1[1][0] = 2;
+	TMatrix<int> expected_mat(2);
+	expected_mat[0][0] = 2;
+	expected_mat[0][1] = 2;
+	expected_mat[1][0] = 2;
+	EXPECT_EQ(expected_mat, mat - mat1);
 }
 TEST(TMatrix, can_mult_matrix)
 {
@@ -134,10 +128,15 @@ TEST(TMatrix, can_mult_matrix)
 	mat[0][0] = 2;
 	mat[0][1] = 3;
 	mat[1][0] = 4;
-	TMatrix<int> mat1(mat);
-	TMatrix<int> mat2(2);
-	mat2 = mat1 * mat;
-	ASSERT_EQ(16, mat2[1][0]);
+	TMatrix<int> mat1(2);
+	mat1[0][0] = 0;
+	mat1[0][1] = 1;
+	mat1[1][0] = 2;
+	TMatrix<int> expected_mat(2);
+	expected_mat[0][0] = 0;
+	expected_mat[0][1] = 8;
+	expected_mat[1][0] = 8;
+	EXPECT_EQ(expected_mat, mat * mat1);
 }
 TEST(TMatrix, throw_on_multiply_with_different_sizes)
 {
@@ -151,7 +150,7 @@ TEST(TMatrix, throw_on_addition_with_different_sizes)
 	TMatrix<int> mat1(3);
 	ASSERT_ANY_THROW(mat1 + mat);
 }
-TEST(TMatrix, throw_on_retraction_with_different_sizes)
+TEST(TMatrix, throw_on_subtraction_with_different_sizes)
 {
 	TMatrix<int> mat(2);
 	TMatrix<int> mat1(3);

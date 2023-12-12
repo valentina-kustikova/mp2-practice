@@ -155,6 +155,8 @@ template<typename T> const TVector<T>& TVector<T>::operator=(const TVector<T>& v
 }
 
 template<typename T>  T& TVector<T>::operator[](int ind) {
+	if ((ind > size) || (ind < 0))
+		throw "out of range";
 	return elements[ind];
 }
 #endif // !VECTOR_H_
