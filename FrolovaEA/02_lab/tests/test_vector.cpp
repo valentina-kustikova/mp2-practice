@@ -29,6 +29,17 @@ TEST(TVector, checking_the_copy_constructor)
     ASSERT_NO_THROW(TVector<int> v(a));
 }
 
+TEST(TVector, copy_constructor_test_different_memory)
+{
+    TVector<int> a(3);
+    a[0] = 0;
+    a[1] = 1;
+    a[2] = 2;
+    TVector<int> b(a);
+    b[0] = 1;
+    EXPECT_NE(b[0], a[0]);
+}
+
 TEST(TVector, can_get_the_size)
 {
     TVector<int> a(3,0);
