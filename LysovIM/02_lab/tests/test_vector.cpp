@@ -50,10 +50,16 @@ TEST(TVector, can_get_start_index)
     EXPECT_EQ(1, vector.getStartIndex());
 }
 
-TEST(TVector, cant_when_set_element_with_negative_index)
+TEST(TVector, when_position_is_less_then_0_false)
 {
-    TVector<int>value(4, 1);
-    ASSERT_ANY_THROW(value[-6] = 1); //>len
+    TVector<int> vector(3);
+    ASSERT_ANY_THROW(vector[-4]);
+}
+
+TEST(TVector, when_position_is_greatere_then_len_false)
+{
+    TVector<int> vector(3);
+    ASSERT_ANY_THROW(vector[4]);
 }
 
 TEST(TVector, can_set_and_get_element)
@@ -65,9 +71,15 @@ TEST(TVector, can_set_and_get_element)
 
 TEST(TVector, can_assign_vector_to_itself)
 {
-    TVector<int>value(3,0);
-    value[0] = 1;
+    TVector<int>value(3,1);
+    value[1] = 1;
     ASSERT_NO_THROW(value = value);
+}
+
+TEST(TVector, throws_when_position_is_greatere_then_size)
+{
+    TVector<int> vector(3);
+    ASSERT_ANY_THROW(vector[5]);
 }
 
 TEST(TVector, assign_operator_of_different_size)
@@ -145,11 +157,11 @@ TEST(TVector, can_subtraction_numbers_from_vector)
 
 TEST(TVector, can_multiplication_scalar_by_vector)
 {
-    TVector<int> vector1(3,0);
+    TVector<int> vector1(3,1);
     vector1[0] = 1;
     vector1[1] = 1;
     vector1[2] = 1;
-    TVector<int> vector2(3,0);
+    TVector<int> vector2(3,1);
     vector2[0] = 2;
     vector2[1] = 2;
     vector2[2] = 2;
@@ -158,15 +170,15 @@ TEST(TVector, can_multiplication_scalar_by_vector)
 
 TEST(TVector, can_addition_vectors_of_the_same_size)
 {
-    TVector<int> vector1(3,0);
+    TVector<int> vector1(3,1);
     vector1[0] = 1;
     vector1[1] = 1;
     vector1[2] = 1;
-    TVector<int> vector2(3,0);
+    TVector<int> vector2(3,1);
     vector2[0] = 1;
     vector2[1] = 1;
     vector2[2] = 1;
-    TVector<int> vector3(3,0);
+    TVector<int> vector3(3,1);
     vector3[0] = 2;
     vector3[1] = 2;
     vector3[2] = 2;
@@ -175,15 +187,15 @@ TEST(TVector, can_addition_vectors_of_the_same_size)
 
 TEST(TVector, can_subtraction_vectors_with_same_size)
 {
-    TVector<int> vector1(3,0);
+    TVector<int> vector1(3,1);
     vector1[0] = 1;
     vector1[1] = 1;
     vector1[2] = 1;
-    TVector<int> vector2(3,0);
+    TVector<int> vector2(3,1);
     vector2[0] = 1;
     vector2[1] = 1;
     vector2[2] = 1;
-    TVector<int> vector3(3,0);
+    TVector<int> vector3(3,1);
     vector3[0] = 0;
     vector3[1] = 0;
     vector3[2] = 0;
@@ -192,11 +204,11 @@ TEST(TVector, can_subtraction_vectors_with_same_size)
 
 TEST(TVector, can_multiplication_vectors_with_same_size)
 {
-    TVector<int> vector1(3,0);
+    TVector<int> vector1(3,1);
     vector1[0] = 1;
     vector1[1] = 1;
     vector1[2] = 1;
-    TVector<int> vector2(3,0);
+    TVector<int> vector2(3,1);
     vector2[0] = 1;
     vector2[1] = 1;
     vector2[2] = 1;
@@ -205,11 +217,11 @@ TEST(TVector, can_multiplication_vectors_with_same_size)
 
 TEST(TVector, cant_struct_vectors_with_not_same_size)
 {
-    TVector<int> vector1(3,0);
+    TVector<int> vector1(3,1);
     vector1[0] = 0;
     vector1[1] = 1;
     vector1[2] = 2;
-    TVector<int> vector2(4,0);
+    TVector<int> vector2(4,1);
     vector2[0] = 0;
     vector2[1] = 1;
     vector2[2] = 2;
@@ -219,11 +231,11 @@ TEST(TVector, cant_struct_vectors_with_not_same_size)
 
 TEST(TVector, cant_subtraction_vectors_with_not_same_size)
 {
-    TVector<int> vector1(3,0);
+    TVector<int> vector1(3,1);
     vector1[0] = 0;
     vector1[1] = 1;
     vector1[2] = 2;
-    TVector<int> vector2(4,0);
+    TVector<int> vector2(4,1);
     vector2[0] = 0;
     vector2[1] = 1;
     vector2[2] = 2;
@@ -233,11 +245,11 @@ TEST(TVector, cant_subtraction_vectors_with_not_same_size)
 
 TEST(TVector, cant_multiplication_vectors_with_not_same_size)   
 {
-    TVector<int> vector1(4,0);
+    TVector<int> vector1(4,1);
     vector1[0] = 0;
     vector1[1] = 1;
     vector1[2] = 2;
-    TVector<int> vector2(6,0);
+    TVector<int> vector2(6,1);
     vector2[0] = 0;
     vector2[1] = 1;
     vector2[2] = 2;

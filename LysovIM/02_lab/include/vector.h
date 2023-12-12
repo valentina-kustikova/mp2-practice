@@ -12,7 +12,7 @@ protected:
 	ValueType* pVector;
 	int start_index;
 public:
-	TVector(int s = 5, int start_i = 0);
+	TVector(int s = 2, int start_i = 0);
 	TVector(const TVector& vector);
 	~TVector();
 
