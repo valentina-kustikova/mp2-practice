@@ -1,103 +1,139 @@
 #pragma once
 #include <iostream>
+#include <map>
+#include <vector>
+#include <string>
 #include "stack.h"
 
-class Postfix_notation {
+class ArithmeticExp {
 private:
-  std::string original_exp;
-  std::string postfix_exp;
+	std::string original_exp;
+	std::string postfix_exp;
 
-  const std::pair<char, int> priorities[6] = {
-    {'*', 3},
-    {'/', 3},
-    {'+', 2},
-    {'-', 2},
-    {'(', 1},
-    {'=', 0}
-  };
+	std::vector<char> lexemes;
+	std::map<char, int> priorities;
+	std::map<char, double> operands_values; // !!!!! cahr -> string
 
-  int get_priority(const char op);
-  int get_postfix_length(const std::string exp) const;
-  std::string conversion_to_postfix(const std::string exp);
-
+	void Parse();
+	void ToPostfix();
 public:
-  Postfix_notation(const std::string exp);
-  std::string get_postfix() const;
+	ArithmeticExp(const std::string exp);
+
+	std::string GetOriginal() {return original_exp;}
+	std::string GetPostfix() { return postfix_exp; }
+
+	std::vector<char> GetOperands() const; // !!!!
+	double Calculate(const std::map<char, double>& values); // !!!!
 };
 
-int Postfix_notation::get_postfix_length(const std::string exp) const {
-    int len = 0;
-    for (int i = 0; i < exp.length(); i++)
-        if (exp[i] != '(' && exp[i] != ')')
-            len++;
-    return len;
+ArithmeticExp::ArithmeticExp(const std::string exp) : original_exp(exp) {
+	priorities = {
+		{'*', 3},
+		{'/', 3},
+		{'+', 2},
+		{'-', 2},
+	};
+	ToPostfix();
 }
 
-std::string Postfix_notation::get_postfix() const {
-    return postfix_exp;
+void ArithmeticExp::Parse() {
+	for (char c : original_exp) {
+		lexemes.push_back(c); // !!!!
+	}
 }
 
-Postfix_notation::Postfix_notation(const std::string exp) {
-  original_exp = exp;
-  postfix_exp = conversion_to_postfix(exp);
+void ArithmeticExp::ToPostfix() {
+	Parse();
+	Stack<char> operations;
+	Stack<char> operands; // !!!
+
+	for (char elem : lexemes) { // !!!
+		switch (elem) {
+		case '(':
+			operations.Push(elem);
+			break;
+		case ')':
+			while (operations.Top() != '(') {
+				operands.Push(operations.Top());
+				operations.Pop();
+			}
+			break;
+		case '+': case '-': case '*': case '/':
+			while (!operations.isEmpty()) {
+				if (priorities[elem] <= priorities[operations.Top()]) {
+					operands.Push(operations.Top());
+					operations.Pop();
+				}
+				else {
+					break;
+				}
+			}
+			operations.Push(elem);
+			break;
+		default:
+			operands.Push(elem);
+			operands_values.insert({elem, 0.0});
+		}
+	}
+	while (!operations.isEmpty()) {
+		operands.Push(operations.Top());
+		operations.Pop();
+	}
+
+	while (!operands.isEmpty()) {
+		postfix_exp = operands.Top() + postfix_exp;
+		operands.Pop();
+	}
 }
 
-int Postfix_notation::get_priority(const char op) {
-  for (int i = 0; i < 6; i++) {
-    if (op == priorities[i].first) {
-      return priorities[i].second;
-    }
-  }
-  throw std::exception("No such operation\n");
+std::vector<char> ArithmeticExp::GetOperands() const {
+	std::vector<char> op;
+	for (const std::pair<char, double> elem : operands_values) {
+		op.push_back(elem.first);
+	}
+	return op;
 }
 
-std::string Postfix_notation::conversion_to_postfix(const std::string exp) {
-  Stack<char> operations;
-  Stack<char> operands;
+double ArithmeticExp::Calculate(const std::map<char, double>& values) {
+	for (std::pair<char, double> val : values) {
+		operands_values.at(val.first) = val.second; // зачем try catch в лекциях
+	}
 
-  for (int i = 0; i < exp.length(); i++) {
-    bool is_operation = false;
-    for (int op = 0; op < 6; op++)
-      if (exp[i] == priorities[op].first || exp[i] == ')') {
-        is_operation = true;
-        break;
-      }
-    
-    if (is_operation) {
-      if (exp[i] == ')') {
-        while ( !operations.isEmpty() && operations.Top() != '(' ) {
-          operands.Push(operations.Top());
-          operations.Pop();
-        }
-        if (!operations.isEmpty() && operations.Top() == '(')
-          operations.Pop(); // Delete '('
-      }
-      else if (!operations.isEmpty() && get_priority(operations.Top()) > get_priority(exp[i])) {
-        while (!operations.isEmpty() && get_priority(operations.Top()) >= get_priority(exp[i])) {
-          operands.Push(operations.Top());
-          operations.Pop();
-        }
-        operations.Push(exp[i]);
-      }
-      else {
-        operations.Push(exp[i]);
-      }
-    }
-    else {
-      operands.Push(exp[i]);
-    }
-  }
-  while (!operations.isEmpty()) {
-      operands.Push(operations.Top());
-      operations.Pop();
-  }
-
-  std::string res(get_postfix_length(exp), ' ');
-  
-  for (int i = get_postfix_length(exp) - 1; i >= 0; i--) {
-    res[i] = operands.Top();
-    operands.Pop();
-  }
-
-  return res;
+	Stack<double> st;
+	double leftOp, rightOp;
+	for (char lexem : postfix_exp) {
+		switch (lexem) {
+		case '+':
+			rightOp = st.Top();
+			st.Pop();
+			leftOp = st.Top();
+			st.Pop();
+			st.Push(leftOp + rightOp);
+			break;
+		case '-':
+			rightOp = st.Top();
+			st.Pop();
+			leftOp = st.Top();
+			st.Pop();
+			st.Push(leftOp - rightOp);
+			break;
+		case '*':
+			rightOp = st.Top();
+			st.Pop();
+			leftOp = st.Top();
+			st.Pop();
+			st.Push(leftOp * rightOp);
+			break;
+		case '/':
+			rightOp = st.Top();
+			st.Pop();
+			leftOp = st.Top();
+			st.Pop();
+			st.Push(leftOp / rightOp);
+			break;
+		default:
+			st.Push(operands_values[lexem]);
+		}
+	}
+	return st.Top();
 }

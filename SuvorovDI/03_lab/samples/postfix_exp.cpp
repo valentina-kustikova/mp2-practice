@@ -1,16 +1,28 @@
 #include "postfix_exp.h"
 #include <iostream>
+#include <string>
+#include <vector>
+#include <map>
 
 int main() {
-  try {
-    Postfix_notation first_exp("(a-c/d)+(a*(c+b))");
-    std::cout << first_exp.get_postfix();
-  }
-  catch (const std::exception ex) {
-    std::cout << ex.what();
-  }
-  
-  
+    std::string exp;
+    std::cout << "Enter your expression : ";
+    std::cin >> exp;
 
-  return 0;
+    ArithmeticExp expr(exp);
+    std::cout << expr.GetOriginal() << std::endl;
+    std::cout << expr.GetPostfix() << std::endl;
+    std::vector<char> operands = expr.GetOperands();
+
+    std::map<char, double> values;
+    double val;
+    for (const char op : operands) {
+        std::cout << "Enter value of " << op << ": ";
+        std::cin >> val;
+        values[op] = val;
+    }
+
+    std::cout << expr.Calculate(values) << std::endl;
+    
+    return 0;
 }

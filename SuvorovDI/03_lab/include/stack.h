@@ -14,7 +14,7 @@ public:
   void Pop() {
     if (isEmpty())
       throw std::exception("The stack is empty\n");
-    
+    stack.pop_back();
     top--;
   }
   ValueType Top() const {
