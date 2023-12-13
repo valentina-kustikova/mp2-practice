@@ -13,10 +13,10 @@ int main(){
     TMatrix<double> mat2(n);
     cout << "1st vector:";
     cin >> mat1;
-    cout << "got " << endl<< mat1;
+    cout << "got " << endl << mat1 << endl;
     cout << "2nd vector:";
     cin >> mat2;
-    cout << "got " <<endl << mat2;
+    cout << "got " <<endl << mat2 << endl;
     try {
         cout << "they are ";
         if (mat1 != mat2)
