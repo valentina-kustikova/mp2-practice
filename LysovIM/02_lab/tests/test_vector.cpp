@@ -50,15 +50,15 @@ TEST(TVector, can_get_start_index)
     EXPECT_EQ(1, vector.getStartIndex());
 }
 
-TEST(TVector, when_position_is_less_then_0_false)
+TEST(TVector, when_position_is_less_than_0_false)
 {
     TVector<int> vector(3);
     ASSERT_ANY_THROW(vector[-4]);
 }
 
-TEST(TVector, when_position_is_greatere_then_len_false)
+TEST(TVector, when_position_is_greater_than_len_false)
 {
-    TVector<int> vector(3);
+    TVector<int> vector(3,1);
     ASSERT_ANY_THROW(vector[4]);
 }
 
@@ -76,7 +76,7 @@ TEST(TVector, can_assign_vector_to_itself)
     ASSERT_NO_THROW(value = value);
 }
 
-TEST(TVector, throws_when_position_is_greatere_then_size)
+TEST(TVector, throws_when_position_is_greater_than_size)
 {
     TVector<int> vector(3);
     ASSERT_ANY_THROW(vector[5]);
@@ -129,7 +129,7 @@ TEST(TVector, vectors_with_different_size_are_not_equal)
     EXPECT_NE(vector1, vector2);
 }
 
-TEST(TVector, can_addition_numbers_to_vector)
+TEST(TVector, can_addition_number_to_vector)
 {
     TVector<int> vector1(3,1);
     vector1[0] = 0;
@@ -142,7 +142,7 @@ TEST(TVector, can_addition_numbers_to_vector)
     EXPECT_EQ(vector1 + 1, vector2);
 }
 
-TEST(TVector, can_subtraction_numbers_from_vector)
+TEST(TVector, can_subtract_number_from_vector)
 {
     TVector<int> vector1(3,1);
     vector1[0] = 0;
@@ -155,7 +155,7 @@ TEST(TVector, can_subtraction_numbers_from_vector)
     EXPECT_EQ(vector1 - 1, vector2);
 }
 
-TEST(TVector, can_multiplication_scalar_by_vector)
+TEST(TVector, can_multiply_scalar_by_vector)
 {
     TVector<int> vector1(3,1);
     vector1[0] = 1;
@@ -168,7 +168,7 @@ TEST(TVector, can_multiplication_scalar_by_vector)
     EXPECT_EQ(vector1 * 2, vector2);
 }
 
-TEST(TVector, can_addition_vectors_of_the_same_size)
+TEST(TVector, can_add_vectors_of_the_same_size)
 {
     TVector<int> vector1(3,1);
     vector1[0] = 1;
@@ -185,7 +185,7 @@ TEST(TVector, can_addition_vectors_of_the_same_size)
     EXPECT_EQ(vector1 + vector2, vector3);
 }
 
-TEST(TVector, can_subtraction_vectors_with_same_size)
+TEST(TVector, can_subtract_vectors_with_same_size)
 {
     TVector<int> vector1(3,1);
     vector1[0] = 1;
@@ -202,7 +202,7 @@ TEST(TVector, can_subtraction_vectors_with_same_size)
     EXPECT_EQ(vector1 - vector2, vector3);
 }
 
-TEST(TVector, can_multiplication_vectors_with_same_size)
+TEST(TVector, can_multiply_vectors_with_same_size)
 {
     TVector<int> vector1(3,1);
     vector1[0] = 1;
@@ -215,7 +215,7 @@ TEST(TVector, can_multiplication_vectors_with_same_size)
     EXPECT_EQ(vector1 * vector2, 3);
 }
 
-TEST(TVector, cant_struct_vectors_with_not_same_size)
+TEST(TVector, cant_add_vectors_with_not_same_size)
 {
     TVector<int> vector1(3,1);
     vector1[0] = 0;
@@ -229,7 +229,7 @@ TEST(TVector, cant_struct_vectors_with_not_same_size)
     ASSERT_ANY_THROW(vector1 + vector2);
 }
 
-TEST(TVector, cant_subtraction_vectors_with_not_same_size)
+TEST(TVector, cant_subtract_vectors_with_not_same_size)
 {
     TVector<int> vector1(3,1);
     vector1[0] = 0;
@@ -243,7 +243,7 @@ TEST(TVector, cant_subtraction_vectors_with_not_same_size)
     ASSERT_ANY_THROW(vector1 - vector2);
 }
 
-TEST(TVector, cant_multiplication_vectors_with_not_same_size)   
+TEST(TVector, cant_multiply_vectors_with_not_same_size)   
 {
     TVector<int> vector1(4,1);
     vector1[0] = 0;
@@ -280,7 +280,7 @@ TEST(TVector, can_get_size_without_start_index)
     EXPECT_EQ(5, vector.getSize());
 }
 
-TEST(Vector,  can_index_vector_without_start_index)
+TEST(TVector,  can_index_vector_without_start_index)
 {
     TVector<int> vector(3);
     vector[0] = 1;
