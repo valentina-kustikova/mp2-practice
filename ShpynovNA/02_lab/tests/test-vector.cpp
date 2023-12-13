@@ -97,6 +97,14 @@ TEST(TVector, can_assign_diff_size) {
 	EXPECT_EQ(vect, vect1);
 }
 
+TEST(TVector, can_assign_itself)
+{
+	TVector<int> vect(2);
+	vect[0] = 4;
+	vect[1] = -2;
+	ASSERT_NO_THROW(vect = vect);
+}
+
 TEST(TVector, can_add_number)
 {
 	TVector<int> vect(2);

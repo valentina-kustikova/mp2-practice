@@ -37,17 +37,17 @@ TEST(TMatrix, can_create_from_vector)
 TEST(TMatrix, can_work_with_elements)
 {
 	TMatrix<int> mat(2);
-	ASSERT_NO_THROW(mat[0][0]); // <0, >len
+	ASSERT_NO_THROW(mat[0][0]);
 }
 TEST(TMatrix, throw_on_negative_indexing)
 {
 	TMatrix<int> mat(2);
-	ASSERT_ANY_THROW(mat[0][-1]); // <0, >len
+	ASSERT_ANY_THROW(mat[0][-1]);
 }
 TEST(TMatrix, throw_on_out_of_range_indexing)
 {
 	TMatrix<int> mat(2);
-	ASSERT_ANY_THROW(mat[0][4]); // <0, >len
+	ASSERT_ANY_THROW(mat[0][4]);
 }
 
 TEST(TMatrix, can_assign_from_equal_size)
@@ -76,17 +76,24 @@ TEST(TMatrix, can_compare_with_equal_sizes)
 	mat[0][0] = 2;
 	mat[0][1] = 3;
 	mat[1][0] = 4;
-	TMatrix<int> mat1(mat);
+	TMatrix<int> mat1(2);
+	mat1[0][0] = 2;
+	mat1[0][1] = 3;
+	mat1[1][0] = 4;
 	EXPECT_EQ(mat, mat1);
 }
 
 TEST(TMatrix, can_compare_with_equal_sizes_not_eq)
 {
 	TMatrix<int> mat(2);
-	TMatrix<int> mat1(mat);
+	TMatrix<int> mat1(2);
 	mat[0][0] = 2;
 	mat[0][1] = 3;
 	mat[1][0] = 4;
+	
+	mat1[0][0] = 1;
+	mat1[0][1] = 1;
+	mat1[1][0] = 1;
 	EXPECT_NE(mat, mat1);
 }
 
