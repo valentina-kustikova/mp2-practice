@@ -28,7 +28,7 @@ TEST(TVec, can_copy_vector)
 }
 ///////////////////////////////////////////////////////////////////////////
 
-
+// check own memory
 
 
 
@@ -55,6 +55,8 @@ TEST(TVec, can_get_index_value)
 	vec[1] = 3;
 	EXPECT_EQ(3, vec[1]);
 }
+
+// 1. idx < 0 2. idx > len
 ///////////////////////////////////////////////////////////////////////////
 
 
@@ -76,8 +78,7 @@ TEST(TVec, equality_equal_vectors_with_equal_start_index_and_equal_size)
 	vec2[1] = 2;
 	vec2[2] = 3;
 
-	bool res = (vec1 == vec2);
-	EXPECT_EQ(true, res);
+	ASSERT_TRUE(vec1 == vec2);
 }
 
 TEST(TVec, equality_equal_vectors_with_not_equal_start_index_and_equal_size)
@@ -92,7 +93,7 @@ TEST(TVec, equality_equal_vectors_with_not_equal_start_index_and_equal_size)
 	vec2[2] = 3;
 
 	bool res = (vec1 == vec2);
-	EXPECT_EQ(false, res);
+	EXPECT_EQ(false, res); /// ASSERT_FALSE
 }
 
 TEST(TVec, equality_not_equal_vectors_with_equal_start_index_and_not_equal_size)
@@ -106,7 +107,7 @@ TEST(TVec, equality_not_equal_vectors_with_equal_start_index_and_not_equal_size)
 	vec2[2] = 3;
 
 	bool res = (vec1 == vec2);
-	EXPECT_EQ(false, res);
+	EXPECT_EQ(false, res); ///
 }
 
 TEST(TVec, equality_not_equal_vectors_with_equal_start_index_and_equal_size)
@@ -121,7 +122,7 @@ TEST(TVec, equality_not_equal_vectors_with_equal_start_index_and_equal_size)
 	vec2[2] = 3;
 
 	bool res = (vec1 == vec2);
-	EXPECT_EQ(false, res);
+	EXPECT_EQ(false, res); ///
 }
 
 TEST(TVec, inequality_equal_vectors_with_equal_start_index_and_equal_size)
@@ -136,7 +137,7 @@ TEST(TVec, inequality_equal_vectors_with_equal_start_index_and_equal_size)
 	vec2[2] = 3;
 
 	bool res = (vec1 != vec2);
-	EXPECT_EQ(false, res);
+	EXPECT_EQ(false, res); ///
 }
 
 TEST(TVec, inequality_equal_vectors_with_not_equal_start_index_and_equal_size)
@@ -151,7 +152,7 @@ TEST(TVec, inequality_equal_vectors_with_not_equal_start_index_and_equal_size)
 	vec2[2] = 3;
 
 	bool res = (vec1 != vec2);
-	EXPECT_EQ(true, res);
+	EXPECT_EQ(true, res); ///
 }
 
 TEST(TVec, inequality_not_equal_vectors_with_equal_start_index_and_not_equal_size)
@@ -165,7 +166,7 @@ TEST(TVec, inequality_not_equal_vectors_with_equal_start_index_and_not_equal_siz
 	vec2[2] = 3;
 
 	bool res = (vec1 != vec2);
-	EXPECT_EQ(true, res);
+	EXPECT_EQ(true, res); ///
 }
 
 TEST(TVec, inequality_not_equal_vectors_with_equal_start_index_and_equal_size)
@@ -180,7 +181,7 @@ TEST(TVec, inequality_not_equal_vectors_with_equal_start_index_and_equal_size)
 	vec2[2] = 3;
 
 	bool res = (vec1 != vec2);
-	EXPECT_EQ(true, res);
+	EXPECT_EQ(true, res); ///
 }
 /////////////////////////////////////////////////////////////////////////////
 
@@ -196,7 +197,7 @@ TEST(TVec, can_multiply_vector_by_number)
 	int value = 3;
 	TVec<int> tmp(3);
 	tmp = vec * value;
-	EXPECT_EQ(9, tmp[2]);
+	EXPECT_EQ(9, tmp[2]); /// all vector components
 }
 
 TEST(TVec, cant_multiply_vector_by_number_with_different_start_index)
@@ -271,7 +272,7 @@ TEST(TVec, can_add_vectors)
 	vec2[2] = 6;
 	TVec<int> tmp(3);
 	tmp = vec1 + vec2;
-	EXPECT_EQ(9, tmp[2]);
+	EXPECT_EQ(9, tmp[2]); // all components
 }
 
 TEST(TVec, cant_add_vectors_with_different_size)
@@ -314,7 +315,7 @@ TEST(TVec, can_add_vectors_with_start_index_more_0)
 	vec2[2] = 6;
 	TVec<int> tmp(3,6);
 	tmp = vec1 + vec2;
-	EXPECT_EQ(9, tmp[2]);
+	EXPECT_EQ(9, tmp[2]); // all components
 }
 /////////////////////////////////////////////////////////////////////////////
 
@@ -335,7 +336,7 @@ TEST(TVec, can_subtract_vectors)
 	vec2[2] = 3;
 	TVec<int> tmp(3);
 	tmp = vec1 - vec2;
-	EXPECT_EQ(4, tmp[2]);
+	EXPECT_EQ(4, tmp[2]);// all components
 }
 
 TEST(TVec, cant_subtract_vectors_with_different_size)
@@ -376,7 +377,7 @@ TEST(TVec, can_subtract_vectors_with_start_index_more_0)
 	vec2[2] = 3;
 	TVec<int> tmp(3,5);
 	tmp = vec1 - vec2;
-	EXPECT_EQ(3, tmp[2]);
+	EXPECT_EQ(3, tmp[2]);// all components
 }
 /////////////////////////////////////////////////////////////////////////////
 
@@ -394,7 +395,7 @@ TEST(TVec, can_add_vector_and_const)
 	int value = 2;
 	TVec<int> tmp(3);
 	tmp = vec1 + value;
-	EXPECT_EQ(5, tmp[2]);
+	EXPECT_EQ(5, tmp[2]);// all components
 }
 
 TEST(TVec, can_add_vector_with_start_index_more_0_and_const)
@@ -482,7 +483,7 @@ TEST(TVec, can_assign_vectos_with_different_start_index)
 	EXPECT_EQ(3, vec2[2]);
 }
 
-TEST(TVec, can_assign_3_vectos)
+TEST(TVec, can_assign_3_vectors)
 {
 	TVec<int> vec1(3,2);
 	vec1[0] = 1;

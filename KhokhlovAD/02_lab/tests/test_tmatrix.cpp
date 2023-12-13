@@ -17,7 +17,7 @@ TEST(TMatrix, throws_when_create_matrix_with_negative_length)
 TEST(TMatrix, can_copy_matrix)
 {
 	TMatrix<int> mt1(3);
-	ASSERT_NO_THROW(TMatrix<int> mt1(mt1));
+	ASSERT_NO_THROW(TMatrix<int> mt1(mt1)); // own memory
 }
 ///////////////////////////////////////////////////////////////////////////
 
