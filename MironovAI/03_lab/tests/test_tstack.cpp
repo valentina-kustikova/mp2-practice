@@ -16,6 +16,19 @@ TEST(TStack, create_stack_with_negative_number) {
 	ASSERT_ANY_THROW(TStack<int> s3(-3));
 }
 
+TEST(TStack, create_stack_with_another_stack)
+{
+	TStack<float> stack(3);
+	stack.Push(0.1);
+	stack.Push(0.1);
+	stack.Push(0.1);
+	ASSERT_NO_THROW(TStack<float>::TStack(stack));
+	TStack<float> stack_copy(stack);
+	EXPECT_TRUE(stack_copy.IsFull(), stack.IsFull());
+	EXPECT_TRUE(stack_copy.Top(), stack.Top());
+	
+}
+
 TEST(TStack, push_top_test) {
 	TStack<int> stack(5);
 	stack.Push(0);

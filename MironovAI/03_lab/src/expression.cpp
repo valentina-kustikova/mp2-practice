@@ -263,7 +263,7 @@ void Expression::Convert()
 	Parse();
 
 	string op;
-	TStack<string> stack;
+	TStack<string> stack(infix.size()+10);
 
 	for (string lexem : lexems) 
 	{
@@ -314,7 +314,7 @@ void Expression::Convert()
 			}
 			postfix.push_back(lexem);
 		}
-	} // for
+	}
 	while (!stack.IsEmpty()) {
 		op = stack.Top();
 		stack.Pop();
@@ -332,7 +332,7 @@ string Expression::GetPostfix() const
 void Expression::Calculate()
 {
 	
-	TStack<double> stack;
+	TStack<double> stack(infix.size()+10);
 	double op1, op2;
 
 	for (string lexem : postfix) {

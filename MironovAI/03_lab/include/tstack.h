@@ -27,7 +27,7 @@ template <class Type>
 TStack<Type>::TStack(int maxSize1)
 {
 	if (maxSize1 < 1) 
-		throw "Size > 0";
+		throw exception("Size should be > 0");
 	
 	maxSize = maxSize1;
 	elems = new Type[maxSize];
@@ -39,7 +39,7 @@ TStack<Type>::TStack(const TStack<Type>& s)
 {
 
 
-	maxSize = s.maxSize + extraSize;
+	maxSize = s.maxSize;
 	top = s.top;
 
 	elems = new Type[maxSize];
@@ -52,8 +52,8 @@ TStack<Type>::TStack(const TStack<Type>& s)
 template <class Type>
 TStack<Type>::~TStack() 
 {
-	//elems is not nullptr
-	delete[] elems;
+	if (elems != nullptr)
+		delete[] elems;
 }
 
 template <class Type>
@@ -72,7 +72,7 @@ template <class Type>
 Type TStack<Type>::Top() const
 {
 	if (top == -1)
-		throw "Stack is empty";
+		throw exception("Stack is empty");
 	
 	return elems[top];
 }
@@ -81,7 +81,7 @@ template <class Type>
 void TStack<Type>::Push(const Type& elem)
 {
 	if (top + 1 == maxSize)
-		throw "Stack is full";
+		throw exception("Stack is full");
 	elems[++top] = elem;
 }
 
@@ -89,7 +89,7 @@ template <class Type>
 void TStack<Type>::Pop() 
 {
 	if (top-- == -1)
-		throw "Stack is empty";
+		throw exception("Stack is empty");
 }
 
 #endif // !_TSTACK_H

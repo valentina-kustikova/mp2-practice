@@ -13,12 +13,15 @@ void test_expression()
 
 
 		string infix;
-		cin >> infix;
+		std::getline(cin, infix);
 		cout << "Input a number of operands" << endl;
 		int count; cin >> count;
-		cout << "Input a pair <key value> where key is operand \
-		and value is operand`s value\n";
 
+		if (count > 0)
+		{
+			cout << "Input a pair <key value> where key is operand and value is operand`s value\n";
+		}
+		
 		map<string, double> operands;
 		for (int i = 0; i < count; i++)
 		{
@@ -28,9 +31,9 @@ void test_expression()
 		}
 
 		Expression exp(infix, operands);
-		cout << exp.GetInfix() << endl;
-		cout << exp.GetPostfix() << endl;
-		cout << exp.Get_res() << endl;
+		cout << "Infix form:   " << exp.GetInfix() << endl;
+		cout << "Postfix form:   " << exp.GetPostfix() << endl;
+		cout << "Result:   "  << exp.Get_res() << endl;
 	}
 	catch (string exp) 
 	{
