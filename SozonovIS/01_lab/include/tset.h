@@ -9,6 +9,7 @@
 #define __SET_H__
 
 #include "tbitfield.h"
+#include <iostream>
 
 class TSet
 {
@@ -37,7 +38,29 @@ public:
   TSet operator* (const TSet &s);  // пересечение
   TSet operator~ (void);           // дополнение
 
-  friend istream &operator>>(istream &istr, TSet &bf);
-  friend ostream &operator<<(ostream &ostr, const TSet &bf);
+  // перегрузка ввода/вывода
+  friend istream& operator>>(istream& istr, TSet& s)  //ввод
+  {
+      int a;
+      size_t count;
+      cout << "Power of set: ";
+      cin >> count;
+      cout << "Enter elements of set: ";
+      for (int i = 0; i < count; i++){
+          istr >> a;
+          s.InsElem(a);
+      }
+      return istr;
+  }
+
+  friend ostream& operator<<(ostream& ostr, const TSet& s)  //вывод
+  {
+      ostr << "{";
+      for (int i = 0; i < s.GetMaxPower(); i++)
+          if (s.IsMember(i))
+              ostr << " " << i;
+      ostr << " }";
+      return ostr;
+  }
 };
 #endif

@@ -24,6 +24,8 @@ private:
   // методы реализации
   int   GetMemIndex(const int n) const; // индекс в pМем для бита n       (#О2)
   TELEM GetMemMask (const int n) const; // битовая маска для бита n       (#О3)
+  int BitsInMem = 16; // универс в куске памяти
+  int shiftSize = 4; // смещение на k бит
 public:
   TBitField(int len);                //                                   (#О1)
   TBitField(const TBitField &bf);    //                                   (#П1)
@@ -43,8 +45,31 @@ public:
   TBitField  operator&(const TBitField &bf); // операция "и"              (#Л2)
   TBitField  operator~(void);                // отрицание                  (#С)
 
-  friend istream &operator>>(istream &istr, TBitField &bf);       //      (#О7)
-  friend ostream &operator<<(ostream &ostr, const TBitField &bf); //      (#П4)
+  // перегрузка ввода/вывода
+  friend istream& operator>>(istream& istr, TBitField& bf)       //ввод    (#О7)
+  {
+      cout << "Enter bit string: ";
+      string BitField;
+      istr >> BitField;
+      if (BitField.length() > bf.BitLen)
+          throw exception("Out of range");
+      for (int i = 0; i < BitField.length(); i++)
+          if (BitField[i] == '1')
+              bf.SetBit(i);
+          else
+              bf.ClrBit(i);
+      return istr;
+  }
+
+  friend ostream& operator<<(ostream& ostr, const TBitField& bf) //вывод    (#П4)
+  {
+      for (int i = bf.BitLen - 1; i >= 0; i--)
+          if (bf.GetBit(i))
+              ostr << "1";
+          else
+              ostr << "0";
+      return ostr;
+  }
 };
 // Структура хранения битового поля
 //   бит.поле - набор битов с номерами от 0 до BitLen

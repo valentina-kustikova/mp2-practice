@@ -6,96 +6,109 @@
 // Множество - реализация через битовые поля
 
 #include "tset.h"
+#include "tbitfield.h"
 
-TSet::TSet(int mp) : BitField(-1)
+using namespace std;
+
+TSet::TSet(int mp) : BitField(mp)
 {
+    MaxPower = mp;
 }
 
 // конструктор копирования
-TSet::TSet(const TSet &s) : BitField(-1)
+TSet::TSet(const TSet &s) : BitField(s.GetMaxPower())
 {
+    MaxPower = s.GetMaxPower();
+    BitField = s.BitField;
 }
 
 // конструктор преобразования типа
-TSet::TSet(const TBitField &bf) : BitField(-1)
+TSet::TSet(const TBitField &bf) : BitField(bf)
 {
+    MaxPower = bf.GetLength();
+    BitField = bf;
 }
 
 TSet::operator TBitField()
 {
-    throw "Method is not implemented";
+    TBitField tmp(BitField);
+    return tmp;
 }
 
 int TSet::GetMaxPower(void) const // получить макс. к-во эл-тов
 {
-    throw "Method is not implemented";
+    return MaxPower;
 }
 
 int TSet::IsMember(const int Elem) const // элемент множества?
 {
-    return 0;
+    return BitField.GetBit(Elem);
 }
 
 void TSet::InsElem(const int Elem) // включение элемента множества
 {
-    throw "Method is not implemented";
+    if (Elem < 0 || Elem >= MaxPower) {
+        throw exception("Element is out of univers");
+    }
+    BitField.SetBit(Elem);
 }
 
 void TSet::DelElem(const int Elem) // исключение элемента множества
 {
-    throw "Method is not implemented";
+    if (Elem < 0 || Elem >= MaxPower) {
+        throw exception("Element is out of univers");
+    }
+    BitField.ClrBit(Elem);
 }
 
 // теоретико-множественные операции
 
 TSet& TSet::operator=(const TSet &s) // присваивание
 {
-    throw "Method is not implemented";
+    MaxPower = s.MaxPower;
+    BitField = s.BitField;
+    return *this;
 }
 
 int TSet::operator==(const TSet &s) const // сравнение
 {
-    return 0;
+    return BitField == s.BitField;
 }
 
 int TSet::operator!=(const TSet &s) const // сравнение
 {
-    throw "Method is not implemented";
+    return !(*this == s);
 }
 
 TSet TSet::operator+(const TSet &s) // объединение
 {
-    throw "Method is not implemented";
+    if (*this == s)
+        return *this;
+    return TSet(BitField | s.BitField);
 }
 
 TSet TSet::operator+(const int Elem) // объединение с элементом
 {
-    throw "Method is not implemented";
+    TSet res(*this);
+    res.InsElem(Elem);
+    return TSet(res);
 }
 
 TSet TSet::operator-(const int Elem) // разность с элементом
 {
-    throw "Method is not implemented";
+    TSet res(*this);
+    res.DelElem(Elem);
+    return TSet(res);
 }
 
 TSet TSet::operator*(const TSet &s) // пересечение
 {
-    throw "Method is not implemented";
+    if (*this == s)
+        return *this;
+    return TSet(BitField & s.BitField);
 }
 
 TSet TSet::operator~(void) // дополнение
 {
-    throw "Method is not implemented";
-}
-
-// перегрузка ввода/вывода
-
-istream &operator>>(istream &istr, TSet &s) // ввод
-{
-    throw "Method is not implemented";
-}
-
-ostream& operator<<(ostream &ostr, const TSet &s) // вывод
-{
-    throw "Method is not implemented";
+    return TSet(~BitField);
 }

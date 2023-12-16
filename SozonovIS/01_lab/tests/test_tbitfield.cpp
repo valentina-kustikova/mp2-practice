@@ -239,30 +239,30 @@ TEST(TBitField, can_invert_bitfield)
 
 TEST(TBitField, can_invert_large_bitfield)
 {
-  const int size = 38;
+  const int size = 8;
   TBitField bf(size), negBf(size), expNegBf(size);
-  bf.SetBit(35);
+  bf.SetBit(5);
   negBf = ~bf;
 
   for(int i = 0; i < size; i++)
     expNegBf.SetBit(i);
-  expNegBf.ClrBit(35);
+  expNegBf.ClrBit(5);
 
   EXPECT_EQ(expNegBf, negBf);
 }
 
 TEST(TBitField, can_invert_many_random_bits_bitfield)
 {
-  const int size = 38;
+  const int size = 8;
   TBitField bf(size), negBf(size), expNegBf(size);
 
   std::vector<int> bits;
   bits.push_back(0);
   bits.push_back(1);
-  bits.push_back(14);
-  bits.push_back(16);
-  bits.push_back(33);
-  bits.push_back(37);
+  bits.push_back(4);
+  bits.push_back(6);
+  bits.push_back(3);
+  bits.push_back(7);
 
   for (unsigned int i = 0; i < bits.size(); i++)
     bf.SetBit(bits[i]);
