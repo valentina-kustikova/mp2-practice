@@ -18,9 +18,9 @@ private:
 	map<char, int> priority;
 	map<string, double> operands;
 
-	bool checking_characters();
-	bool checking_brackets();
-	bool checking_operations();
+	bool Is_Operator(char c)const;
+	bool Is_Operand_String(char c)const;
+	bool Is_Operand_const(char c)const;
 public:
 	ArithmeticExpression(string infix_);
 
@@ -45,50 +45,45 @@ ArithmeticExpression<T>::ArithmeticExpression(string infix_) :infix(infix_) {
 }
 
 template<typename T>
-void ArithmeticExpression<T>::Check() {
-	bool status1 = checking_characters();
-	if (status1 == false) {
-		throw "Mistake in arithmetic expression!";
-	}
-	bool status2 = checking_brackets();
-	if (status2 == false) {
-		throw "Mistake in arithmetic expression!";
-	}
-	bool status3 = checking_operations();
-	if (status3 == false) {
-		throw "Mistake in arithmetic expression!";
-	}
+bool ArithmeticExpression<T>::Is_Operator(char c)const {
+	return c == '+' || c == '-' || c == '*' || c == '/' || c == '(' || c == ')';
 }
 
 template<typename T>
-bool ArithmeticExpression<T>::checking_characters() {
+bool ArithmeticExpression<T>::Is_Operand_String(char c)const {
+	return c >= 65 && c <= 90 || c >= 97 && c <= 122;
+}
+
+template<typename T>
+bool ArithmeticExpression<T>::Is_Operand_const(char c)const {
+	return c >= 48 && c <= 57;
+}
+
+
+template<typename T>
+void ArithmeticExpression<T>::Check() {
 	int i = 0;
 	char c;
-	while (i < infix.size()) {
+	while (i < infix.size()) {//проверяет на чужеродные символы
 		c = infix[i];
-		if (c >= 65 && c <= 90 || c >= 97 && c <= 122 || c >= 48 && c <= 57 ||
-			!(c != '+' && c != '-' && c != '*' && c != '/' && c != '(' && c != ')') || c == '.') {
+		if (Is_Operand_String(c) || Is_Operand_const(c) ||
+			Is_Operator(c) || c == '.') {
 			i++;
 			continue;
 		}
 		else {
-			return false;
+			throw "Mistake in arithmetic expression!";
 		}
 	}
-	return true;
-}
+	i = 0;
 
-template<typename T>
-bool ArithmeticExpression<T>::checking_brackets() {
 	int count_left_open_bracket = 0;
 	int count_right_close_bracket = 0;
-	char c;
 	char next_c;
-	int i = 0;
-	while (i < infix.size()) {
+	while (i < infix.size()) {//проверяет на соответствие числа открывающих и закрывающих скобок
 		c = infix[i];
 		next_c = infix[i + 1];
-		if (c == '('){
+		if (c == '(') {
 			if (next_c == '+' || next_c == '*' || next_c == '/' || next_c == ')') {
 				throw "Mistake in arithmetic expression!";
 			}
@@ -100,49 +95,36 @@ bool ArithmeticExpression<T>::checking_brackets() {
 		i++;
 	}
 	if (count_left_open_bracket != count_right_close_bracket) {
-		return false;
+		throw "Mistake in arithmetic expression!";
 	}
-	else {
-		return true;
-	}
-}
+	i = 0;
 
-template<typename T>
-bool ArithmeticExpression<T>::checking_operations() {
-	int i = 0;
-	char c;
 	char cc;
-	while (i < infix.size()) {
+	while (i < infix.size()) {//проверяет на отсутствие двух идущих подряд операций и точек
 		c = infix[i];
 		switch (c) {
 		case '+': case '-': case '*': case '/':
 		{
 			cc = infix[i + 1];
 			if (cc == ')') {
-				return false;
+				throw "Mistake in arithmetic expression!";
 			}
 			auto tmp = priority.find(cc);
 			if (tmp != priority.end() && tmp->first != ')' && tmp->first != '(') {//повторы операций
-				return false;
+				throw "Mistake in arithmetic expression!";
 			}
 		}
 		default:
-			
+
 			cc = infix[i + 1];
 			if (c == '.' && cc == '.') {//повторы точки
-				return false;
+				throw "Mistake in arithmetic expression!";
 			}
 			break;
 		}
 		i++;
 	}
-	return true;
 }
-
-
-//checking_characters();//проверяет на чужеродные символы
-//checking_brackets();//проверяет на соответствие числа открывающих и закрывающих скобок
-//checking_operations();//проверяет на отсутствие двух идущих подряд операций и точек
 
 template<typename T>
 void ArithmeticExpression<T>::Parse() {//использованы правила идентификаторов переменных
@@ -177,11 +159,11 @@ void ArithmeticExpression<T>::Parse() {//использованы правила идентификаторов пе
 				continue;
 			}
 			default:
-				while (c != '+' && c != '-' && c != '*' && c != '/' && c != '(' && c != ')') {
+				while (!Is_Operator(c)) {
 					if (c == '.' && str == "") {
 						throw "Mistake in arithmetic expression!";
 					}
-					if (c >= 48 && c <= 57 && first_c >= 48 && first_c <= 57 || c == '.') {//константа-операнд
+					if (Is_Operand_const(c) && Is_Operand_const(first_c) || c == '.') {//константа-операнд
 						if (c == '.') {
 							count_points++;
 							if (count_points > 1) {
@@ -194,10 +176,10 @@ void ArithmeticExpression<T>::Parse() {//использованы правила идентификаторов пе
 							break;
 						}
 						c = infix[i];
-						if (c >= 65 && c <= 90 || c >= 97 && c <= 122) {
+						if (Is_Operand_String(c)) {
 							throw "Mistake in arithmetic expression!";//встретился символ внутри константы-операнда
 						}
-						if (c == '.' && (infix[i + 1] == '+' || infix[i + 1] == '-' || infix[i + 1] == '*' || infix[i + 1] == '/' || infix[i + 1] == '(' || infix[i + 1] == ')') && i+1 != infix.size()) {
+						if (c == '.' && Is_Operator(infix[i+1]) && i + 1 != infix.size()) {
 							throw "Mistake in arithmetic expression!";
 						}
 					}
@@ -212,17 +194,6 @@ void ArithmeticExpression<T>::Parse() {//использованы правила идентификаторов пе
 						if (!(c != '.')) {
 							throw "Mistake in arithmetic expression!";
 						}
-						
-						
-					/*	if (!(c != '+' && c != '-' && c != '*' && c != '/' && c != '(' && c != ')' && c != '.')) {
-							int j = 0;
-							while (j < str.size()) {
-								if (str[j] == '+' || str[j] == '-' || str[j] == '*' || str[j] == '/' || str[j] == '(' || str[j] == ')' || str[j] == '.') {
-									throw "Mistake in arithmetic expression!";
-								}
-								j++;
-							}
-						}*/
 					}
 
 				}
