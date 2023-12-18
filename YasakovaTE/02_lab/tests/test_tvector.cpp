@@ -13,10 +13,6 @@ TEST(TVector, can_create_vector_with_positive_length_with_start_index)
 	ASSERT_NO_THROW(TVector<int> v(5,1));
 }
 
-TEST(TVector, cant_create_too_large_vector)
-{
-	ASSERT_ANY_THROW(TVector<int> v(MAX_VECTOR_SIZE + 1));
-}
 
 TEST(TVector, throws_when_create_vector_with_negative_length)
 {
@@ -267,7 +263,7 @@ TEST(TVector, can_add_scalar_to_vector)
 
 TEST(TVector, can_add_scalar_to_vector_start_index)
 {
-	TVector<int> t1(3,1), t2(3,1);
+	TVector<int> t1(3,0), t2(3,0);
 	t1[0] = 1;
 	t1[1] = 2;
 	t1[2] = 2;

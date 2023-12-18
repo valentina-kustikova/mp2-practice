@@ -3,8 +3,6 @@
 #include <iostream>
 #include "tvector.h"
 
-//const int MAX_MATRIX_SIZE = 100000;
-
 template <class ValType>
 class TMatrix : public TVector<TVector<ValType>>
 {
@@ -19,6 +17,7 @@ public:
     TMatrix<ValType> operator-(const TMatrix<ValType>& mt);
     TMatrix<ValType> operator*(const TMatrix<ValType>& mt);
 
+    // ввод / вывод
     friend istream& operator>>(istream& in, TMatrix<ValType>& mt)
     {
         for (int i = 0; i < mt.Size; i++)
@@ -53,7 +52,8 @@ TMatrix<ValType>::TMatrix<ValType>(const TMatrix<ValType>& mt) :TVector<TVector<
 }
 
 template <class ValType>
-TMatrix<ValType>::TMatrix<ValType>(const TVector<TVector<ValType>>& mt) :TVector<TVector<ValType>>(mt)
+TMatrix<ValType>::TMatrix<ValType>(const TVector<TVector<ValType>>& mt) :
+    TVector<TVector<ValType>>(mt)
 {
 
 }

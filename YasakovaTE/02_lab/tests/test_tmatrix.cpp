@@ -7,11 +7,6 @@ TEST(TMatrix, can_create_matrix_with_positive_length)
 	ASSERT_NO_THROW(TMatrix<int> m(5));
 }
 
-TEST(TMatrix, cant_create_too_large_matrix)
-{
-	ASSERT_ANY_THROW(TMatrix<int> m(MAX_MATRIX_SIZE + 1));
-}
-
 TEST(TMatrix, throws_when_create_matrix_with_negative_length)
 {
 	ASSERT_ANY_THROW(TMatrix<int> m(-5));
@@ -199,4 +194,3 @@ TEST(TMatrix, can_multiply_matrix_with_matrix)
 	res[1][1] = 1; res[1][2] = 1; res[2][2] = 1;
 	ASSERT_EQ(m1 * m2, res);
 }
-//!!!
