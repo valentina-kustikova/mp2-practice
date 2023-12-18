@@ -6,12 +6,13 @@ using namespace std;
 
 int main() {
 	try {
-		string s;
+		string str;
 		cout << "Enter expression:";
-		cin >> s;
-		TArithmeticExpression example(s);
+		cin >> str;
+		TArithmeticExpression example(str);
+		cout <<"Postfix:"<< example.ToPostfix() << endl;
 		example.SetValues();
-		cout <<"Result:" <<example.Calculate() << endl;
+		cout << "Result:" << example.Calculate() << endl;
 	}
 	catch (string exp) {
 		cout << exp << endl;
