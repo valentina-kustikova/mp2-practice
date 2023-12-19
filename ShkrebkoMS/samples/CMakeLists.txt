@@ -15,3 +15,4 @@ foreach(sample_filename ${samples_list})
     PROJECT_LABEL "${sample}"
     RUNTIME_OUTPUT_DIRECTORY "../")
 endforeach()
+

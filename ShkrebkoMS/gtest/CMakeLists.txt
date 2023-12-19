@@ -9,3 +9,4 @@ if((${CMAKE_CXX_COMPILER_ID} MATCHES "GNU" OR
 endif()
 
 target_link_libraries(${target} ${pthread})
+

@@ -60,8 +60,10 @@ template <typename T>
 T Stack<T>::Top() {
 	if (IsEmpty()) {
 		throw "Stack is empty!";
-	return elems[top];
-
+	}
+	else {
+		return elems[top];
+	}
 }
 
 
@@ -70,7 +72,9 @@ void Stack<T>::Push(const T e) {
 	if (IsFull()) {
 		throw "Stack is full!";
 	}
-	elems[++top] = e;
+	else {
+		elems[++top] = e;
+	}
 }
 
 
@@ -79,7 +83,10 @@ T Stack<T>::Pop() {
 	if (IsEmpty()) {
 		throw "Stack is empty!";
 	}
-	return elems[top--];
+	else {
+
+		return elems[top--];
+	}
 }
 
 #endif

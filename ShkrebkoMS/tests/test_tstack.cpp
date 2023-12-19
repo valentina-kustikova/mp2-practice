@@ -84,6 +84,3 @@ TEST(TStack, checking_whether_the_stack_is_empty2)
 	stack.Push(1);
 	EXPECT_EQ(0, stack.IsEmpty());
 }
-
-
-
