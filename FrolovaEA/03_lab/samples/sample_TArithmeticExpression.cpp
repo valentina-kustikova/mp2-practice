@@ -43,7 +43,7 @@ int main()
 		*/
 
 		cout << expr.Calculate() << endl;
-
+		cout << expr.GetPostFix_str() << endl;
 	}
 	return 0;
 }

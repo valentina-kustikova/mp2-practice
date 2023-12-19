@@ -13,6 +13,7 @@ class TArithmeticExpression
 {
 private:
 	string infix;
+	string str_postfix;
 	vector<string> postfix;
 	vector<string> lexems;
 	map<string, int> priority;
@@ -30,6 +31,8 @@ public:
 
 	string GetInfix() const { return infix; }
 	vector<string> GetPostFix() const { return postfix; }
+	string GetPostFix_str() const { return str_postfix; }
+
 
 	bool isCorrectInfixExpression();
 	vector<string> GetOperands() const;
@@ -37,6 +40,7 @@ public:
 	double Calculate(const map<string, double>& values);
 	double Calculate();
 	void ShowPostfix();
+	void InToPostfix();
 
 };
 

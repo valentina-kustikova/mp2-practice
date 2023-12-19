@@ -6,7 +6,7 @@ TArithmeticExpression::TArithmeticExpression(string infx) : infix(infx)
 {
 	priority = { {"(",1},{")",1},{"+",2},{"-",2}, {"*",3},{"/",3}};
 	ToPostfix();
-
+	InToPostfix();
 }
 
 void TArithmeticExpression::Parse()
@@ -219,4 +219,11 @@ void TArithmeticExpression::ShowPostfix()
 		cout << postfix[i] << " ";
 	}
 	cout << endl;
+}
+
+void TArithmeticExpression::InToPostfix()
+{
+	for (const auto& elem : postfix) {
+		str_postfix += elem; // конкатенируем каждый элемент в строку result
+	}
 }

@@ -96,4 +96,20 @@ TEST(TArithmeticExpression, cant_divide_by_zero)
     ASSERT_ANY_THROW(expression.Calculate(values));
 }
 
+TEST(TArithmeticExpression, checking_the_record)
+{
+    string str = "(a+b*c)*(c/d-e)";
+
+    TArithmeticExpression expression(str);
+    EXPECT_EQ("abc*+cd/e-*", expression.GetPostFix_str());
+}
+
+TEST(TArithmeticExpression, checking_the_record_with_words_and_numbers)
+{
+    string str = "(a+b*const)*(5/d-e)";
+
+    TArithmeticExpression expression(str);
+    EXPECT_EQ("abconst*+5d/e-*", expression.GetPostFix_str());
+}
+
 
