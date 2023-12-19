@@ -6,6 +6,7 @@
 #include <vector>
 #include <map>
 #include <string>
+#include <stdlib.h>
 using namespace std;
 
 
@@ -16,23 +17,24 @@ private:
 	vector<string> postfix;
 	vector<string> lexemes;
 	map<char, int> priority;
-	map<string, double> operands;
+	map<string, T> operands;
 
 	bool Is_Operator(char c)const;
 	bool Is_Operand_String(char c)const;
-	bool Is_Operand_const(char c)const;
+	bool Is_Operand_const(char c)const; 
+	double Transform(string str);
 public:
 	ArithmeticExpression(string infix_);
 
 	string GetInfix()const { return infix; }
 	vector<string> GetPostfix()const { return postfix; }
 	vector<string> GetOperands()const;
-	map<string, double> SetOperands(const vector<string> operands);
+	map<string, T> SetOperands(const vector<string> operands);
 
 	void Check();
 	void Parse();
 	void ToPostfix();
-	double Calculate(const map<string, double>& values);
+	double Calculate(const map<string, T>& values);
 };
 
 template<typename T>
@@ -59,6 +61,27 @@ bool ArithmeticExpression<T>::Is_Operand_const(char c)const {
 	return c >= 48 && c <= 57;
 }
 
+template<typename T>
+double ArithmeticExpression<T>::Transform(string str) {
+	int i = 0;
+	string int_part;
+	while (i < str.find(".")) {
+		int_part += str[i];
+		i++;
+	}
+	int index = str.find(".") + 1;
+	string fractal_part;
+	int count_signs = 0;
+	while (index < str.size()) {
+		count_signs++;
+		fractal_part += str[index];
+		index++;
+	}
+	double arg = 1;
+	double fractal_part_transformed = stod(fractal_part) * (arg / pow(10,count_signs));
+	double transformed = stod(int_part) + fractal_part_transformed;
+	return transformed;
+}
 
 template<typename T>
 void ArithmeticExpression<T>::Check() {
@@ -263,6 +286,11 @@ void ArithmeticExpression<T>::ToPostfix() {
 		}
 		default:
 			if (c >= 47 && c <= 57) {//operand-number
+				if (lexeme.find(".") != -1) {
+					operands.insert({ lexeme,Transform(lexeme) }); 
+					postfix.push_back(lexeme);
+					break;
+				}
 				operands.insert({ lexeme,stod(lexeme) });
 				postfix.push_back(lexeme);
 				break;
@@ -295,9 +323,9 @@ vector<string> ArithmeticExpression<T>::GetOperands()const {
 }
 
 template<typename T>
-map<string, double> ArithmeticExpression<T>::SetOperands(const vector<string> operands) {
-	map<string, double> tmp;
-	double value;
+map<string, T> ArithmeticExpression<T>::SetOperands(const vector<string> operands) {
+	map<string, T> tmp;
+	T value;
 	auto it_begin{operands.begin() }; 
 	auto it_end{ operands.end() };
 	while (it_begin != it_end) {
@@ -315,11 +343,11 @@ map<string, double> ArithmeticExpression<T>::SetOperands(const vector<string> op
 }
 
 template<typename T>
-double ArithmeticExpression<T>::Calculate(const map<string, double>& values) {
+double ArithmeticExpression<T>::Calculate(const map<string, T>& values) {
 	Stack<double> expr_operands;
 	string lexeme;
 	char c;
-	double left_op,right_op;
+	T left_op,right_op; 
 	auto it_begin = postfix.begin();
 	auto it_end = postfix.end();
 	while (it_begin != it_end) {
