@@ -3,60 +3,133 @@
 #include <map>
 #include <vector>
 #include <string>
+#include <algorithm>
 #include "stack.h"
 
 class ArithmeticExp {
 private:
 	std::string original_exp;
-	std::string postfix_exp;
+	std::vector<std::string> vector_postfix_exp;
+	std::string string_postfix_exp;
 
-	std::vector<char> lexemes;
-	std::map<char, int> priorities;
-	std::map<char, double> operands_values; // !!!!! cahr -> string
+	std::vector<std::string> lexemes;
+	std::map<std::string, int> priorities;
+	std::map<std::string, double> operands_values;
+	std::vector<std::string> valid_symbols;
 
 	void Parse();
 	void ToPostfix();
+	bool Check();
 public:
 	ArithmeticExp(const std::string exp);
 
 	std::string GetOriginal() {return original_exp;}
-	std::string GetPostfix() { return postfix_exp; }
+	std::string GetPostfix() { return string_postfix_exp; }
 
-	std::vector<char> GetOperands() const; // !!!!
-	double Calculate(const std::map<char, double>& values); // !!!!
+	std::vector<std::string> GetOperands() const;
+	double Calculate(const std::map<std::string, double>& values);
 };
 
-ArithmeticExp::ArithmeticExp(const std::string exp) : original_exp(exp) {
-	priorities = {
-		{'*', 3},
-		{'/', 3},
-		{'+', 2},
-		{'-', 2},
-	};
-	ToPostfix();
+bool isLetter(char l) {
+	return ('a' <= l && l <= 'z') || ('A' <= l && l <= 'Z');
+}
+
+bool valid_brackets(const std::string& str)
+{
+	int count = 0;
+	for (char c : str)
+	{
+		if (c == '(')
+			count++;
+		else if (c == ')')
+			count--;
+		if (count < 0)
+			return false;
+	}
+	return count == 0;
+}
+
+bool is_char_operation(char c, std::vector<std::string> valid_symbols) {
+	return std::find(valid_symbols.begin(), valid_symbols.end(), std::string(1, c)) != valid_symbols.end();
+}
+
+bool ArithmeticExp::Check() {
+	for (const char i : original_exp) {
+		if (!(isLetter(i) || is_char_operation(i, valid_symbols))) {
+			return false;
+		}
+	}
+	if (!valid_brackets(original_exp))
+		return false;
+	if (original_exp == "")
+		return false;
+	return true;
 }
 
 void ArithmeticExp::Parse() {
+	std::string name = "";
 	for (char c : original_exp) {
-		lexemes.push_back(c); // !!!!
+		if (!is_char_operation(c, valid_symbols)) {
+			name += c;
+		}
+		else {
+			if (name != "") {
+				lexemes.push_back(name);
+			}
+			name = "";
+			lexemes.push_back(std::string(1, c));
+		}
+	}
+
+	if (name != "") {
+		lexemes.push_back(name);
+	}
+}
+
+ArithmeticExp::ArithmeticExp(const std::string exp) : original_exp(exp) {
+	original_exp.erase(std::remove_if(original_exp.begin(), original_exp.end(), isspace), original_exp.end());
+	
+	priorities = {
+		{"*", 3},
+		{"/", 3},
+		{"+", 2},
+		{"-", 2},
+	};
+
+	valid_symbols = {
+		"(",
+		")",
+	};
+	for (std::pair<std::string, int> i : priorities) {
+		valid_symbols.push_back(i.first);
+	}
+
+	bool check_status = Check();
+	if (check_status) {
+		ToPostfix();
+	}
+	else {
+		string_postfix_exp = "there are invalid characters...";
 	}
 }
 
 void ArithmeticExp::ToPostfix() {
 	Parse();
-	Stack<char> operations;
-	Stack<char> operands; // !!!
 
-	for (char elem : lexemes) { // !!!
-		switch (elem) {
+	Stack<std::string> operations;
+	Stack<std::string> operands;
+
+	for (std::string elem : lexemes) {
+		switch (elem[0]) {
 		case '(':
 			operations.Push(elem);
 			break;
 		case ')':
-			while (operations.Top() != '(') {
+			while (operations.Top() != "(") {
 				operands.Push(operations.Top());
 				operations.Pop();
 			}
+			operations.Pop(); // deleting '('
 			break;
 		case '+': case '-': case '*': case '/':
 			while (!operations.isEmpty()) {
@@ -80,58 +153,63 @@ void ArithmeticExp::ToPostfix() {
 		operations.Pop();
 	}
 
+	Stack<std::string> tmp(operands);
+	while (!tmp.isEmpty()) {
+		vector_postfix_exp.insert(vector_postfix_exp.begin(), tmp.Top());
+		tmp.Pop();
+	}
+
 	while (!operands.isEmpty()) {
-		postfix_exp = operands.Top() + postfix_exp;
+		string_postfix_exp = operands.Top() + " " + string_postfix_exp;
 		operands.Pop();
 	}
 }
 
-std::vector<char> ArithmeticExp::GetOperands() const {
-	std::vector<char> op;
-	for (const std::pair<char, double> elem : operands_values) {
+std::vector<std::string> ArithmeticExp::GetOperands() const {
+	std::vector<std::string> op;
+	for (const std::pair<std::string, double> elem : operands_values) {
 		op.push_back(elem.first);
 	}
 	return op;
 }
 
-double ArithmeticExp::Calculate(const std::map<char, double>& values) {
-	for (std::pair<char, double> val : values) {
-		operands_values.at(val.first) = val.second; // зачем try catch в лекциях
+double ArithmeticExp::Calculate(const std::map<std::string, double>& values) {
+	for (std::pair<std::string, double> val : values) {
+		operands_values.at(val.first) = val.second; // пїЅпїЅпїЅпїЅпїЅ try catch пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	}
 
 	Stack<double> st;
 	double leftOp, rightOp;
-	for (char lexem : postfix_exp) {
-		switch (lexem) {
-		case '+':
+	for (std::string lexem : vector_postfix_exp) {
+		if (lexem == "+") {
 			rightOp = st.Top();
 			st.Pop();
 			leftOp = st.Top();
 			st.Pop();
 			st.Push(leftOp + rightOp);
-			break;
-		case '-':
+		}
+		else if (lexem == "-") {
 			rightOp = st.Top();
 			st.Pop();
 			leftOp = st.Top();
 			st.Pop();
 			st.Push(leftOp - rightOp);
-			break;
-		case '*':
+		}
+		else if (lexem == "*") {
 			rightOp = st.Top();
 			st.Pop();
 			leftOp = st.Top();
 			st.Pop();
 			st.Push(leftOp * rightOp);
-			break;
-		case '/':
+		}
+		else if (lexem == "/") {
 			rightOp = st.Top();
 			st.Pop();
 			leftOp = st.Top();
 			st.Pop();
 			st.Push(leftOp / rightOp);
-			break;
-		default:
+		}
+		else {
 			st.Push(operands_values[lexem]);
 		}
 	}

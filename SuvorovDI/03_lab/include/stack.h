@@ -29,4 +29,18 @@ public:
   }
 
   bool isEmpty() const {return top == -1;}
+
+  friend std::ostream& operator<<(std::ostream& out, Stack<ValueType>& s) {
+      Stack<ValueType> tmp = s;
+
+      while (!s.isEmpty()) {
+          std::cout << "| " << s.Top() << " |" << std::endl;
+          s.Pop();
+      }
+      std::cout << "\\---/" << std::endl;
+
+      s = tmp;
+
+      return out;
+  }
 };
