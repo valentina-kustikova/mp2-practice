@@ -36,11 +36,7 @@ TEST(TVector, copy_constructor_test_different_memory)
     a[1] = 1;
     a[2] = 2;
     TVector<int> b(a);
-<<<<<<< HEAD
     b[0] = 1;
-=======
-    b[0] = 2;
->>>>>>> 2022ba813e0ea759b034f52ec9b86e1f7ed94b71
     EXPECT_NE(a[0], b[0]);
 }
 
