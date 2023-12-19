@@ -92,11 +92,19 @@ int TVec<T>::GetStartIndex()const noexcept {
 
 template <class T>
 T& TVec<T>::operator[](const int index) {
+	if (index < 0)
+		throw "invalid index";
+	if (index > size)
+		throw "invalid index";
 	return pMem[index];
 }
 
 template <class T>
 T& TVec<T>::operator[](const int index)const {
+	if (index < 0)
+		throw "invalid index";
+	if (index > size)
+		throw "invalid index";
 	return pMem[index];
 }
 

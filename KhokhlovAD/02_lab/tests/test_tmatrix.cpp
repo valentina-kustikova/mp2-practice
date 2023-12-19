@@ -19,6 +19,16 @@ TEST(TMatrix, can_copy_matrix)
 	TMatrix<int> mt1(3);
 	ASSERT_NO_THROW(TMatrix<int> mt1(mt1)); // own memory
 }
+
+TEST(TMatrix, copy_own_memory)
+{
+	TMatrix<int> mt1(3);
+	TMatrix<int> mt2(mt1);
+	TVec<int> vec(2);
+	vec[1] = 2;
+	mt2[1] = vec;
+	ASSERT_NE(mt1, mt2);
+}
 ///////////////////////////////////////////////////////////////////////////
 
 
@@ -110,16 +120,22 @@ TEST(TMatrix, can_add_matrix)
 	vec3[0] = 1;
 	vec3[1] = 1;
 
-	vec1[0] = 1;
+	vec4[0] = 1;
 
 
 	mt2[0] = vec3;
 	mt2[1] = vec4;
+
+	TMatrix<int> res(2);
+	TVec<int> res1(2), res2(1);
+	res1[0] = 2;
+	res1[1] = 2;
+	res2[0] = 2;
+	res[0] = res1;
+	res[1] = res2;
 	TMatrix<int> tmp(2);
-	TVec<int> res(2);
-	res = vec1 + vec3;
 	tmp = mt + mt2;
-	EXPECT_EQ(res, tmp[0]);
+	EXPECT_EQ(res, tmp);
 }
 
 TEST(TMatrix, cant_add_matrix_with_different_size)
@@ -155,16 +171,22 @@ TEST(TMatrix, can_subtract_matrix)
 	vec3[0] = 1;
 	vec3[1] = 1;
 
-	vec1[0] = 1;
+	vec4[0] = 1;
 
 
 	mt2[0] = vec3;
 	mt2[1] = vec4;
+
+	TMatrix<int> res(2);
+	TVec<int> res1(2), res2(1);
+	res1[0] = 0;
+	res1[1] = 0;
+	res2[0] = 0;
+	res[0] = res1;
+	res[1] = res2;
 	TMatrix<int> tmp(2);
 	tmp = mt - mt2;
-	TVec<int> res(2);
-	res = vec1 - vec3;
-	EXPECT_EQ(res, tmp[0]);
+	EXPECT_EQ(res, tmp);
 }
 
 TEST(TMatrix, cant_subtrac_matrix_with_different_size)
@@ -205,9 +227,17 @@ TEST(TMatrix, can_multiply_matrix)
 
 	mt2[0] = vec3;
 	mt2[1] = vec4;
+
+	TMatrix<int> res(2);
+	TVec<int> res1(2), res2(1,1);
+	res1[0] = 1;
+	res1[1] = 2;
+	res2[0] = 1;
+	res[0] = res1;
+	res[1] = res2;
 	TMatrix<int> tmp(2);
 	tmp = mt * mt2;
-	EXPECT_EQ(2, tmp[0][1]);
+	EXPECT_EQ(res, tmp);
 }
 
 TEST(TMatrix, cant_multiply_matrix_with_different_size)
@@ -248,7 +278,7 @@ TEST(TMatrix, equality_equal_matrix_with_equal_size)
 
 	mt2[0] = vec3;
 	mt2[1] = vec4;
-	EXPECT_EQ(mt, mt2);
+	ASSERT_TRUE(mt == mt2);
 }
 
 TEST(TMatrix, equality_not_equal_matrix_with_equal_size)
@@ -275,8 +305,7 @@ TEST(TMatrix, equality_not_equal_matrix_with_equal_size)
 
 	mt2[0] = vec3;
 	mt2[1] = vec4;
-	bool res = (mt == mt2);
-	EXPECT_EQ(false, res);
+	ASSERT_FALSE(mt == mt2);
 }
 
 TEST(TMatrix, equality_matrix_with_not_equal_size)
@@ -285,8 +314,7 @@ TEST(TMatrix, equality_matrix_with_not_equal_size)
 
 	TMatrix<int> mt2(2);
 
-	bool res = (mt == mt2);
-	EXPECT_EQ(false, res);
+	ASSERT_FALSE(mt == mt2);
 }
 
 
@@ -314,8 +342,7 @@ TEST(TMatrix, unequality_equal_matrix_with_equal_size)
 
 	mt2[0] = vec3;
 	mt2[1] = vec4;
-	bool res = (mt != mt2);
-	EXPECT_EQ(false, res);
+	ASSERT_FALSE(mt != mt2);
 }
 TEST(TMatrix, unequality_equal_matrix_with_not_equal_size)
 {
@@ -323,8 +350,7 @@ TEST(TMatrix, unequality_equal_matrix_with_not_equal_size)
 
 	TMatrix<int> mt2(2);
 
-	bool res = (mt != mt2);
-	EXPECT_EQ(true, res);
+	ASSERT_TRUE(mt != mt2);
 }
 
 TEST(TMatrix, unequality_not_equal_matrix_with_equal_size)
@@ -351,7 +377,6 @@ TEST(TMatrix, unequality_not_equal_matrix_with_equal_size)
 
 	mt2[0] = vec3;
 	mt2[1] = vec4;
-	bool res = (mt != mt2);
-	EXPECT_EQ(true, res);
+	ASSERT_TRUE(mt != mt2);
 }
 ///////////////////////////////////////////////////////////////////////////
