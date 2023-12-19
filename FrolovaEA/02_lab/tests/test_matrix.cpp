@@ -19,6 +19,17 @@ TEST(TMatrix, checking_the_copy_constructor)
     ASSERT_NO_THROW(TMatrix<int> m(a));
 }
 
+TEST(TMatrix, copy_constructor_test_different_memory)
+{
+    TMatrix<int> a(2);
+    a[0][0] = 1;
+    a[0][1] = 2;
+    a[1][1] = 3;
+    TMatrix<int> b(a);
+    b[0][0] = 2;
+    EXPECT_NE(a[0][0], b[0][0]);
+}
+
 TEST(TMatrix, can_get_elem)
 {
     TMatrix<int> a(3);
@@ -59,29 +70,7 @@ TEST(TMatrix, checking_for_equality_of_matrices_of_the_same_lengths_1)
     b = a;
     EXPECT_EQ(1, a == b);
 }
-/*
-TEST(TMatrix, checking_for_equality_of_matrices_of_the_same_lengths_1)
-{
-    TMatrix<int> a(3);
-    TMatrix<int> b(3);
-    a[0][0] = 1;
-    a[0][1] = 1;
-    a[0][2] = 1;
-    a[1][1] = 1;
-    a[1][2] = 1;
-    a[2][2] = 1;
 
-    b[0][0] = 2;
-    b[0][1] = 2;
-    b[0][2] = 2;
-    b[1][1] = 2;
-    b[1][2] = 2;
-    b[2][2] = 2;
-
-    
-    EXPECT_EQ(0, a == b);
-}
-*/
 TEST(TMatrix, equalization_operator)
 {
     TMatrix<int> a(5);
