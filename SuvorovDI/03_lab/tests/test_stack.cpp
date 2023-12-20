@@ -19,7 +19,7 @@ TEST(Stack, create_stack_with_another_stack) {
 
 TEST(Stack, check_is_new_stack_empty) {
 	Stack<double> a;
-	EXPECT_EQ(a.isEmpty(), true);
+	ASSERT_TRUE(a.isEmpty());
 }
 
 TEST(Stack, check_is_stack_empty_after_deleting_all_elements) {
@@ -30,7 +30,7 @@ TEST(Stack, check_is_stack_empty_after_deleting_all_elements) {
 	a.Pop(); 
 	a.Pop();
 
-	EXPECT_EQ(a.isEmpty(), true);
+	ASSERT_TRUE(a.isEmpty());
 }
 
 TEST(Stack, check_is_stack_empty_after_deleting_not_all_elements) {
@@ -40,7 +40,7 @@ TEST(Stack, check_is_stack_empty_after_deleting_not_all_elements) {
 
 	a.Pop();
 
-	EXPECT_NE(a.isEmpty(), true);
+	ASSERT_TRUE(a.isEmpty());
 }
 
 TEST(Stack, compare_lengths_of_two_equal_stacks) {
@@ -63,7 +63,7 @@ TEST(Stack, compare_lengths_of_two_equal_stacks) {
 		a.Pop();
 	}
 
-	EXPECT_EQ(true, length_st == length_a);
+	ASSERT_TRUE(length_st == length_a);
 }
 
 TEST(Stack, compare_two_equal_stacks) {
@@ -73,7 +73,7 @@ TEST(Stack, compare_two_equal_stacks) {
 	st.Push(-3.1);
 
 	Stack<double> a(st);
-	bool res = true;
+	bool res = true; /// operator==
 	while (!st.isEmpty() && !a.isEmpty()) {
 		if (st.Top() != a.Top()) {
 			res = false;
@@ -82,7 +82,7 @@ TEST(Stack, compare_two_equal_stacks) {
 		st.Pop();
 		a.Pop();
 	}
-	EXPECT_EQ(res, true);
+	ASSERT_TRUE(res);
 }
 
 TEST(Stack, check_push_operation) {
