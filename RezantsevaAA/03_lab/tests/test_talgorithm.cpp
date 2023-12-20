@@ -18,12 +18,12 @@ TEST(Polsk, can_get_priority)
 
 TEST(Polsk, can_check_is_operator)
 {
-	ASSERT_EQ(1, Polsk::isOperator(')'));
-	ASSERT_EQ(1, Polsk::isOperator('('));
-	ASSERT_EQ(1, Polsk::isOperator('+'));
-	ASSERT_EQ(1, Polsk::isOperator('-'));
-	ASSERT_EQ(1, Polsk::isOperator('*'));
-	ASSERT_EQ(1, Polsk::isOperator('/'));
+	ASSERT_EQ(true, Polsk::isOperator(')'));
+	ASSERT_EQ(true, Polsk::isOperator('('));
+	ASSERT_EQ(true, Polsk::isOperator('+'));
+	ASSERT_EQ(true, Polsk::isOperator('-'));
+	ASSERT_EQ(true, Polsk::isOperator('*'));
+	ASSERT_EQ(true, Polsk::isOperator('/'));
 	ASSERT_EQ(false, Polsk::isOperator('4'));
 	ASSERT_EQ(false, Polsk::isOperator('!'));
 }
