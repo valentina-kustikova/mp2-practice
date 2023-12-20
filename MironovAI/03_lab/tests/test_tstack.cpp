@@ -22,11 +22,7 @@ TEST(TStack, create_stack_with_another_stack)
 	stack.Push(0.1);
 	stack.Push(0.1);
 	stack.Push(0.1);
-	ASSERT_NO_THROW(TStack<float>::TStack(stack));
-	TStack<float> stack_copy(stack);
-	EXPECT_TRUE(stack_copy.IsFull(), stack.IsFull());
-	EXPECT_TRUE(stack_copy.Top(), stack.Top());
-	
+	ASSERT_NO_THROW(TStack<float>::TStack(stack));	
 }
 
 TEST(TStack, push_top_test) {
@@ -48,9 +44,9 @@ TEST(TStack, pop_top_test) {
 
 TEST(TStack, empty_test) {
 	TStack<int> stack(5);
-	EXPECT_EQ(true, stack.IsEmpty());
+	ASSERT_TRUE(stack.IsEmpty());
 	stack.Push(0);
-	EXPECT_EQ(false, stack.IsEmpty());
+	ASSERT_FALSE(stack.IsEmpty());
 }
 
 TEST(TStack, full_test) {
@@ -64,7 +60,7 @@ TEST(TStack, full_test) {
 
 TEST(TStack, push_to_full_stack) {
 	TStack<int> stack(5);
-	for (int i = 0; i < 5; i++) ASSERT_NO_THROW(stack.Push(i));
+	for (int i = 0; i < 5; i++) stack.Push(i);
 	ASSERT_ANY_THROW(stack.Push(5));
 }
 

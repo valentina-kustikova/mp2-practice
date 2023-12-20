@@ -10,8 +10,6 @@ void test_expression()
 	cout << "Input a expression\n" << endl;
 	try 
 	{
-
-
 		string infix;
 		std::getline(cin, infix);
 		cout << "Input a number of operands" << endl;

@@ -184,7 +184,6 @@ void Expression::IsCorrect() const
 		{
 			if (infix[i - 1] == ')')
 			{
-				//  ") A" 
 				throw massage;
 			}
 		}
@@ -393,7 +392,11 @@ void Expression::Calculate()
 		{
 			if (operands.find(lexem) == operands.end())
 			{
-				throw "Wrong list of operands";
+				cout << "Input a operand: " + lexem + " = ";
+				double value;
+				cin >> value;
+				cout << "\n";
+				operands[lexem]=value;
 			}
 			stack.Push( operands[lexem] );
 		}
@@ -405,11 +408,11 @@ void Expression::Calculate()
 
 Expression::Expression(const string& expression, const map<string, double> operands_) 
 {
-	if (operands_ != map<string, double>::map())
+	if (operands_ != map<string, double>())
 	{
-		for (pair<string, double> elems : operands_)
+		for (pair<string, double> elem : operands_)
 		{
-			operands[elems.first] = elems.second;
+			operands[elem.first] = elem.second;
 		}
 	}
 	if (expression.empty())
