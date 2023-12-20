@@ -27,7 +27,7 @@ TEST(TMatrix, copy_constructor_test_different_memory)
     a[1][1] = 3;
     TMatrix<int> b(a);
     b[0][0] = 2;
-    EXPECT_NE(a[0][0], b[0][0]);
+    EXPECT_NE(a, b);
 }
 
 TEST(TMatrix, can_get_elem)
@@ -53,7 +53,7 @@ TEST(TMatrix, checking_for_equality_of_matrices_of_different_lengths)
 {
     TMatrix<int> a(5);
     TMatrix<int> b(7);
-    EXPECT_EQ(0,a==b);
+    ASSERT_FALSE(a == b);
 }
 
 TEST(TMatrix, checking_for_equality_of_matrices_of_the_same_lengths_1)
@@ -68,7 +68,7 @@ TEST(TMatrix, checking_for_equality_of_matrices_of_the_same_lengths_1)
     a[2][2] = 1;
 
     b = a;
-    EXPECT_EQ(1, a == b);
+    ASSERT_TRUE(a == b);
 }
 
 TEST(TMatrix, equalization_operator)
@@ -76,7 +76,7 @@ TEST(TMatrix, equalization_operator)
     TMatrix<int> a(5);
     TMatrix<int> b(7);
     a = b;
-    EXPECT_EQ(1, (a.GetSize()==b.GetSize()));
+    EXPECT_EQ(a.GetSize(), b.GetSize());
 }
 
 TEST(TMatrix, addition_of_matrices_of_the_same_length)
@@ -87,7 +87,7 @@ TEST(TMatrix, addition_of_matrices_of_the_same_length)
     a[0][0] = 1;
     b[0][0] = 1;
     c = a + b;
-    EXPECT_EQ(2, c[0][0]);
+    EXPECT_EQ(a + b, c);
 }
 
 TEST(TMatrix, addition_of_matrices_of_the_non_same_length)

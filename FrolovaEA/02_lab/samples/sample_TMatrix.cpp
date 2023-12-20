@@ -30,7 +30,7 @@ int main()
 	cout << "Matrix a = " << endl << a << endl;
 	cout << "Matrix b = " << endl << b << endl;
 	cout << "a[0] :" << a[0] << endl;
-	cout << "a[0][0] :" << a[0][1] << endl;
+	cout << "a[0][1] :" << a[0][1] << endl;
 	cout << "Matrix c = a + b" << endl << c << endl;
 	cout << "equality check " << endl;
 	cout << "a == b  ? :" << (a == b)<<endl;

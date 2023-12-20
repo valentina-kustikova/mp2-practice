@@ -88,7 +88,7 @@ TEST(TVector, checking_for_equality_of_different_vectors_of_the_same_length_1)
         a[i] = i;
         b[i] = i;
     }
-    EXPECT_EQ(1, (a == b));
+   ASSERT_TRUE(a == b);
 }
 
 TEST(TVector, checking_for_equality_of_different_vectors_of_the_same_length_2)
@@ -100,21 +100,21 @@ TEST(TVector, checking_for_equality_of_different_vectors_of_the_same_length_2)
         a[i] = 1 + i;
         b[i] = i;
     }
-    EXPECT_EQ(0, (a == b));
+    ASSERT_FALSE(a == b);
 }
 
 TEST(TVector, checking_for_equality_of_different_vectors_of_different_size)
 {
     TVector<int> a(3, 0);
     TVector<int> b(4, 0);
-    EXPECT_EQ(0, (a == b));
+    ASSERT_FALSE(a == b);
 }
 
 TEST(TVector, checking_for_equality_of_different_vectors_of_different_StartIndex)
 {
     TVector<int> a(4, 1);
     TVector<int> b(4, 0);
-    EXPECT_EQ(0, (a == b));
+    ASSERT_FALSE(a == b);
 }
 
 TEST(TVector, checking_for_non_equality_of_the_same_vectors_of_the_same_lenght_1)
@@ -126,7 +126,7 @@ TEST(TVector, checking_for_non_equality_of_the_same_vectors_of_the_same_lenght_1
         a[i] = i;
         b[i] = i;
     }
-    EXPECT_EQ(0, (a != b));
+    ASSERT_FALSE(a != b);
 }
 
 TEST(TVector, checking_for_non_equality_of_different_vectors_of_the_same_length_2)
@@ -138,21 +138,21 @@ TEST(TVector, checking_for_non_equality_of_different_vectors_of_the_same_length_
         a[i] = 1 + i;
         b[i] = i;
     }
-    EXPECT_EQ(1, (a != b));
+    ASSERT_TRUE(a != b);
 }
 
 TEST(TVector, checking_for_non_equality_of_different_vectors_of_different_size)
 {
     TVector<int> a(3, 0);
     TVector<int> b(4, 0);
-    EXPECT_EQ(1, (a != b));
+    ASSERT_TRUE(a != b);
 }
 
 TEST(TVector, checking_for_non_equality_of_different_vectors_of_different_StartIndex)
 {
     TVector<int> a(4, 1);
     TVector<int> b(4, 0);
-    EXPECT_EQ(1, (a != b));
+    ASSERT_TRUE(a != b);
 }
 
 TEST(TVector, checking_the_equalization_operator_for_vectors_with_the_same_length)
@@ -205,7 +205,7 @@ TEST(TVector, can_add_a_constant_to_the_vector)
         b[i] = 4;
     }
     a = a + 3;
-    EXPECT_EQ(1, (a == b));
+    EXPECT_EQ(a, b);
 }
 
 TEST(TVector, can_subtract_a_constant)
@@ -218,7 +218,7 @@ TEST(TVector, can_subtract_a_constant)
         b[i] = 4;
     }
     b = b - 3;
-    EXPECT_EQ(1, (a == b));
+    EXPECT_EQ(a, b);
 }
 
 TEST(TVector, can_multiply_by_a_constant)
@@ -231,7 +231,7 @@ TEST(TVector, can_multiply_by_a_constant)
         b[i] = 3;
     }
     a = a * 3;
-    EXPECT_EQ(1, (a == b));
+    EXPECT_EQ(a, b);
 }
 
 TEST(TVector, addition_of_vectors_of_the_same_length)
@@ -355,7 +355,7 @@ TEST(TVector, checking_for_equality_of_different_vectors_of_the_same_length_and_
     {
         a[i] = i;
     }
-    EXPECT_EQ(0, (a == b));
+    EXPECT_NE(a, b);
 }
 
 TEST(TVector, checking_for_equality_of_different_vectors_of_the_same_length_and_equal_startIndex)
@@ -370,7 +370,7 @@ TEST(TVector, checking_for_equality_of_different_vectors_of_the_same_length_and_
     {
         a[i] = i;
     }
-    EXPECT_EQ(1, (a == b));
+    EXPECT_EQ(a, b);
 }
 
 TEST(TVector, checking_for_no_equality_of_different_vectors_of_the_same_length_and_equal_startIndex)
@@ -385,8 +385,5 @@ TEST(TVector, checking_for_no_equality_of_different_vectors_of_the_same_length_a
     {
         a[i] = i;
     }
-    EXPECT_EQ(0, (a == b));
+    EXPECT_NE(a, b);
 }
-
-
-
