@@ -27,7 +27,7 @@ private:
 
 public:
 
-	TArithmeticExpression(string infix);
+	TArithmeticExpression(const string& infix);
 
 	string GetInfix() const { return infix; }
 	vector<string> GetPostFix() const { return postfix; }

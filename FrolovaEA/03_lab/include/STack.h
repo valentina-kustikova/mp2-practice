@@ -14,19 +14,19 @@ private:
 	T* elem;
 	int step = 10;
 
+	void Realloc(int step);
 public:
 
 	TStack(int maxSize = 50);//конструктор
 	TStack(const TStack<T>& s);//конструктор
 	virtual ~TStack(); //деструктор
-	void Realloc(int step);
 
 	bool IsEmpty(void) const; // контроль пустоты
 	bool IsFull(void) const; // контроль переполнения
 
 	void Push(const T& Val);// добавить значение
 	void Pop(void); // извлечь значение
-	T Top();
+	T Top() const;
 
 };
 
@@ -107,7 +107,7 @@ void TStack<T>::Pop(void)
 }
 
 template <class T>
-T TStack<T>::Top()
+T TStack<T>::Top() const
 {
 	if (IsEmpty())
 		throw "Error";

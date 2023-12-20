@@ -60,7 +60,7 @@ TEST(TStack, cant_pop_element_in_empty_stack)
 TEST(TStack, checking_whether_the_stack_is_full1)
 {
 	TStack<int> stack(5);
-	EXPECT_EQ(0, stack.IsFull());
+	EXPECT_EQ(0, stack.IsFull());//assert
 }
 
 TEST(TStack, checking_whether_the_stack_is_full2)
@@ -68,7 +68,7 @@ TEST(TStack, checking_whether_the_stack_is_full2)
 	TStack<int> stack(2);
 	stack.Push(1);
 	stack.Push(1);
-	EXPECT_EQ(1, stack.IsFull());
+	EXPECT_EQ(1, stack.IsFull());//assert
 }
 
 TEST(TStack, checking_whether_the_stack_is_empty1)
@@ -82,7 +82,7 @@ TEST(TStack, checking_whether_the_stack_is_empty2)
 	TStack<int> stack(2);
 	stack.Push(1);
 	stack.Push(1);
-	EXPECT_EQ(0, stack.IsEmpty());
+	EXPECT_EQ(0, stack.IsEmpty());//assert
 }
 
 

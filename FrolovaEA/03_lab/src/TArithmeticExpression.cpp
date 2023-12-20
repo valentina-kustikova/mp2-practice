@@ -1,8 +1,9 @@
 #include "TArithmeticExpression.h"
 #include <iostream>
+#include <string>
 #include <map>
 
-TArithmeticExpression::TArithmeticExpression(string infx) : infix(infx)
+TArithmeticExpression::TArithmeticExpression(const string& infx) : infix(infx)
 {
 	priority = { {"(",1},{")",1},{"+",2},{"-",2}, {"*",3},{"/",3}};
 	ToPostfix();
@@ -60,6 +61,7 @@ bool TArithmeticExpression::IsOperator(const string& lecsem) const
 	return flag;
 
 }
+
 
 void TArithmeticExpression::SetValues()
 {
@@ -205,8 +207,6 @@ bool TArithmeticExpression::isCorrectInfixExpression()
 			openParentheses++;
 		else if (c == ')')
 			closeParentheses++;
-
-
 
 	return openParentheses == closeParentheses;
 
