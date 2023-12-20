@@ -10,7 +10,7 @@ int main() {
 
         Parser::isValidExpression(tokens);
 
-        Stack<string> res = Parser::infixToPostfix(tokens);
+        vector<string> res = Parser::infixToPostfix(tokens);
 
         map<string, double> opVal = Parser::getOperandValues(tokens);
         cout << Parser::evaluatePostfixExpression(opVal, res);

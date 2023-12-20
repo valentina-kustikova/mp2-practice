@@ -1,4 +1,5 @@
 ﻿#include <iostream>
+#include <algorithm>
 #include "parser.h"
 
 vector<string> Parser::splitExpression(const string& expression) {
@@ -40,12 +41,12 @@ bool Parser::isOperator(const string& token) {
 }
 
 void Parser::isValidExpression(const vector<string>& infixExpression) {
-    if(isOperator(infixExpression[0])) throw invalid_argument("Ошибка1: \n");
-    else if (isOperator(infixExpression[infixExpression.size() - 1])) throw invalid_argument("Ошибка2: \n");
+    if(isOperator(infixExpression[0])) throw invalid_argument("Error: The expression starts with the operator\n");
+    else if (isOperator(infixExpression[infixExpression.size() - 1])) throw invalid_argument("Error: The expression ends with the operator\n");
     else{
         for (int i = 0; i < infixExpression.size() - 1; i++) {
-            if(isOperator(infixExpression[i]) && isOperator(infixExpression[i+1])) throw invalid_argument("Ошибка3: \n");
-            if(infixExpression[i] == "/" && infixExpression[i+1] == "0") throw invalid_argument("Ошибка4: \n");
+            if(isOperator(infixExpression[i]) && isOperator(infixExpression[i+1])) throw invalid_argument("Error: Two consecutive operators\n");
+            if(infixExpression[i] == "(" && isOperator(infixExpression[i + 1]))throw invalid_argument("Error: The operator after the open parenthesis\n");
         }
     }
 }
@@ -71,7 +72,7 @@ map<string, double> Parser::getOperandValues(const vector<string>& tokens) {
     return operandValues;
 }
 
-Stack<string> Parser::infixToPostfix(const vector<string>& infixExpression) {
+vector<string> Parser::infixToPostfix(const vector<string>& infixExpression) {
     Stack<string>operands;
     Stack<string> operators;
 
@@ -103,24 +104,21 @@ Stack<string> Parser::infixToPostfix(const vector<string>& infixExpression) {
         operators.pop();
     }
 
-    return operands;
+    vector<string> postfix;
+
+    while (!operands.isEmpty()){
+        postfix.push_back(operands.top());
+        operands.pop();
+    }
+    reverse(postfix.begin(), postfix.end());
+    return postfix;
 }
 
-double Parser::evaluatePostfixExpression(const map<string, double>& operandValues, Stack<string>& postfixExpression) {
+double Parser::evaluatePostfixExpression(const map<string, double>& operandValues, vector<string>& postfixExpression) {
     Stack<double> resultStack;
-    Stack<string> tmp = postfixExpression;
-    while (!postfixExpression.isEmpty()) {
-        postfixExpression.pop();
-    }
-    while (!tmp.isEmpty()){
-        string str = tmp.top();
-        postfixExpression.push(str);
-        tmp.pop();
-    }
 
-    while (!postfixExpression.isEmpty()) {
-        const string token = postfixExpression.top();
-        postfixExpression.pop();
+    for (int i = 0; i < postfixExpression.size(); i++) {
+        const string token = postfixExpression[i];
 
         if (!(isOperator(token))) {
             if (operandValues.find(token) != operandValues.end()) {

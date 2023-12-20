@@ -2,13 +2,16 @@
 #ifndef _STACK_H
 #define _STACK_H
 #include <iostream>
+#include <../gtest/gtest.h>
 
 template <typename T> class Stack {
 private:
 	T* data;
 	int maxSize;
 	int top_;
+
 	void resize(int step = 10);
+	FRIEND_TEST(resize_test, resize_change_size);
 public:
 	Stack(int size = 10);
 	Stack(const Stack<T>& stack);
@@ -19,6 +22,7 @@ public:
 	bool isEmpty() const;
 	bool isFull() const;
 	Stack<T>& operator=(const Stack<T>& stack);
+	bool operator==(const Stack<T>& stack) const;
 };
 
 template <typename T> Stack<T>::Stack(int size) {
@@ -67,7 +71,7 @@ template <typename T> bool Stack<T>::isEmpty() const {
 
 template <typename T> T Stack<T>::top() const {
 	if (isEmpty()) throw "Stack is empty";
-	else { return data[top_]; }
+	return data[top_];
 }
 
 template <typename T> void Stack<T>::push(const T& element) {
@@ -77,7 +81,7 @@ template <typename T> void Stack<T>::push(const T& element) {
 
 template <typename T> T Stack<T>::pop() {
 	if (isEmpty()) throw "Stack is empty!";
-	else { return data[top_--]; }
+	return data[top_--];
 }
 
 template <typename T> Stack<T>& Stack<T>::operator=(const Stack<T>& stack) {
@@ -91,5 +95,19 @@ template <typename T> Stack<T>& Stack<T>::operator=(const Stack<T>& stack) {
 		}
 	}
 	return *this;
+}
+
+template <typename T> bool Stack<T>::operator==(const Stack<T>& stack) const {
+	if (top_ != stack.top_) {
+		return false;
+	}
+
+	for (int i = 0; i < top_; ++i) {
+		if (data[i] != stack.data[i]) {
+			return false;
+		}
+	}
+
+	return true;
 }
 #endif // !_STACK_H

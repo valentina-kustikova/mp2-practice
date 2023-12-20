@@ -15,10 +15,10 @@ private:
 public:
 	static void isValidExpression(const vector<string>& infixExpression);
 	static vector<string> splitExpression(const string& expression);
-	static Stack<string> infixToPostfix(const vector<string>& infixExpression);
+	static vector<string> infixToPostfix(const vector<string>& infixExpression);
 	static map<string, double> getOperandValues(const vector<string>& tokens);
 	static double evaluatePostfixExpression(const map<string, double>& operandValues,
-		Stack<string>& postfixExpression);
+		vector<string>& postfixExpression);
 };
 
 #endif // !_PARSER_H

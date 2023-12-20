@@ -22,18 +22,85 @@ TEST(Stack, copy_constructor_test)
     ASSERT_NO_THROW(Stack<int> s2(s));
 }
 
+TEST(Stack, copied_stack_is_equal_to_source)
+{
+    Stack<int> s1(3);
+    s1.push(1);
+    s1.push(2);
+    s1.push(3);
+
+    Stack<int> s2(s1);
+    EXPECT_EQ(s2, s1);
+}
+
 TEST(Stack, copy_constructor_test_memory)
 {
     Stack<int> s1(3);
     s1.push(1);
     s1.push(2);
-    s1.push(2);
+    s1.push(3);
 
     Stack<int> s2(s1);
     s2.pop();
     s2.push(4);
 
     EXPECT_NE(s2.top(), s1.top());
+}
+
+TEST(Stack, assignment_perator_test)
+{
+    Stack<int> s1(3);
+    s1.push(1);
+    s1.push(2);
+    s1.push(3);
+
+    Stack<int> s2;
+    s2 = s1;
+
+    EXPECT_EQ(s1, s2);
+}
+
+TEST(Stack, assignment_perator_memory_test)
+{
+    Stack<int> s1(3);
+    s1.push(1);
+    s1.push(2);
+    s1.push(3);
+
+    Stack<int> s2 = s1;
+    s2.pop();
+    s2.push(4);
+
+    EXPECT_NE(s2.top(), s1.top());
+}
+
+TEST(Stack, equality_operator_true)
+{
+    Stack<int> stack1;
+    stack1.push(1);
+    stack1.push(2);
+    stack1.push(3);
+
+    Stack<int> stack2;
+    stack2.push(1);
+    stack2.push(2);
+    stack2.push(3);
+
+    ASSERT_TRUE(stack1 == stack2);
+}
+
+TEST(Stack, equality_operator_false)
+{
+    Stack<int> stack1;
+    stack1.push(1);
+    stack1.push(2);
+    stack1.push(3);
+
+    Stack<int> stack3;
+    stack3.push(4);
+    stack3.push(5);
+
+    ASSERT_FALSE(stack1 == stack3);
 }
 
 TEST(Stack, stack_is_empty_true)
@@ -93,10 +160,17 @@ TEST(Stack, throws_when_pop_element_is_empty)
 	ASSERT_ANY_THROW(st.pop());
 }
 
-TEST(Stack, push_in_full_stack) 
+TEST(Stack, resize_works)
 {
-	Stack<int> st(1);
-	st.push(1);
-	ASSERT_NO_THROW(st.push(2));
+    Stack<int> s1(2);
+    s1.push(1);
+    s1.push(2);
+    EXPECT_NO_THROW(s1.push(3));
 }
 
+TEST(resize_test, resize_change_size)
+{
+    Stack<int> s1(2);
+    s1.resize(2);
+    EXPECT_EQ(s1.maxSize, 4);
+}
