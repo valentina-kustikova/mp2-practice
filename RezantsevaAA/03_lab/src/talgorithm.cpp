@@ -4,7 +4,7 @@
 #include <string>
 #include <stdexcept>
 
-int Polsk::GetPriority(const char op)
+int Postfix::GetPriority(const char op)
 {
     switch (op)
     {
@@ -25,7 +25,7 @@ int Polsk::GetPriority(const char op)
     }
 }
 
-bool  Polsk::isOperator(char c) {
+bool  Postfix::isOperator(char c) {
     return (c == '+' || c == '-' || c == '*' || c == '/' || c == '(' || c == ')');
 }
 
@@ -58,7 +58,7 @@ Postfix::Postfix()
     s_postfix = "";
 }
 
-Postfix::Postfix(std::vector<Operand> postf)
+Postfix::Postfix(const std::vector<Operand>& postf)
 {
     operands = postf;
     s_postfix = "";
@@ -90,7 +90,7 @@ void Postfix::setValues()
     }
 };
 
-double Postfix::calculateOperator(char operator_, double a, double b)
+double Postfix::calculateOperator(char operator_, double a, double b) const
 {
     switch (operator_)
     {
@@ -105,7 +105,7 @@ double Postfix::calculateOperator(char operator_, double a, double b)
     }
 }
 
-double Postfix::calculate()
+double Postfix::calculate() const
 {
     TStack<double> S; //store value
     for (int i = 0; i < operands.size(); i++)
@@ -126,7 +126,7 @@ double Postfix::calculate()
 
 //namespace Polsk
 
-std::pair<Operand, int> Polsk::getOperand(std::string s, int pos)
+std::pair<Operand, int> Postfix::getOperand(std::string s, int pos)
 {
     Operand tmp;
     tmp.isSign = false;
@@ -148,7 +148,7 @@ std::pair<Operand, int> Polsk::getOperand(std::string s, int pos)
     return {tmp, pos};
 }
 
-Postfix Polsk::ConvertToPol(std::string s)
+Postfix Postfix::ConvertToPol(const std::string& s)
 {
     int open = 0;
     int close = 0;
