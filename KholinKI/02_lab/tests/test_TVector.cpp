@@ -38,8 +38,11 @@ TEST(TVector, no_throw_when_use_constructor_copy) {
 }
 
 TEST(TVector, different_addresses_memory) {
-	TVector<double> vec1(3, 4),vec2(3);
-	ASSERT_TRUE(vec1.GetMemory() != vec2.GetMemory());
+	TVector<double> vec1(3, 4);
+	// fill
+	TVector<double> vec2(vec1);
+	vec2[0] = 1;
+	ASSERT_TRUE(vec1 != vec2);
 }
 
 TEST(TVector, no_throw_when_work_destructor) {
@@ -162,7 +165,9 @@ TEST(TVector, triple_assign_vectors) {
 
 	vector1 = vector2 = vector3;
 
-	ASSERT_TRUE((vector1 == vector2) && (vector2 == vector3) && (vector1 == vector3));
+	ASSERT_TRUE(vector1 == vector2);
+	ASSERT_TRUE(vector2 == vector3);
+	ASSERT_TRUE(vector1 == vector3);
 }
 
 TEST(TVector, no_throw_when_plus_operator_with_element) {
@@ -242,9 +247,7 @@ TEST(TVector, mul_operator_with_vectors_equal_size_and_start_index) {
 		vector2[i] = i;//0 1 2 3 4 5 6 7 8 9
 	}
 	double res;
-	ASSERT_NO_THROW(res = vector1 * vector2);
-
-
+    res = vector1 * vector2;
 	EXPECT_EQ(285, res);
 }
 

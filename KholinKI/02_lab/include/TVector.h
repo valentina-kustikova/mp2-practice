@@ -24,7 +24,7 @@ public:
 	int GetSize() const;//получение размера
 	int GetStart() const;//получение стартового индекса
 	Type& operator[](const int index);//получение элемента вектора
-	Type* GetMemory()const;//получение памяти
+
 
 	//#сравнение векторов
 	int operator ==(const TVector<Type>& obj) const;//проверка на равенство векторов
