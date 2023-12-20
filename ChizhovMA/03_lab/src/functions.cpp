@@ -117,8 +117,12 @@ bool ArithmeticExpression::isValidExpression(const string& expression)
 
 map<string, double> ArithmeticExpression::GetVariables(TStack<string>& postfixExpression) {
 	map<string, double> uniqueVariables;
-	for (int i = 0; i < postfixExpression.Length(); i++) {
-		string token = postfixExpression.GetElement(i);
+	TStack<string> tmpSt = postfixExpression;
+	tmpSt.ReverseStack();
+	while (!tmpSt.IsEmpty())
+	{
+		string token = tmpSt.Top();
+		tmpSt.Pop();
 		if ((Is_Symbol(token) != 0) || Is_Number(token))
 			continue;
 		else
@@ -235,10 +239,13 @@ TStack<string> ArithmeticExpression::Postfix_Form(const string& s)
 double ArithmeticExpression::Calculate(TStack<string>& st, const map<string, double>& values)
 {
 	TStack<double> stack(20);
+	TStack<string> tempStack = st;
+	tempStack.ReverseStack();
 	double rightOp, leftOp, resOp;
-	for (int i = 0; i < st.Length(); i++)
+	while (!tempStack.IsEmpty())
 	{
-		string c = st.GetElement(i);
+		string c = tempStack.Top();
+		tempStack.Pop();
 		if (Is_Symbol(c) == 1)
 		{
 			if (c == "+")
@@ -274,6 +281,8 @@ double ArithmeticExpression::Calculate(TStack<string>& st, const map<string, dou
 				stack.Pop();
 				leftOp = stack.Top();
 				stack.Pop();
+				if (rightOp == 0)
+					throw "Error";
 				resOp = leftOp / rightOp;
 				stack.Push(resOp);
 			}

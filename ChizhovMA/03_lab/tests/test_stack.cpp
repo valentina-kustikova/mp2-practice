@@ -74,6 +74,7 @@ TEST(TStack, exception_get_top)
     ASSERT_ANY_THROW(s.Top());
 }
 
+//push
 TEST(TStack, stack_push_and_get_top)
 {
     TStack<int> s(3);
@@ -97,53 +98,20 @@ TEST(TStack, stack_push_with_resize)
     TStack<int> s(3);
     for (int i = 1; i < 6; i++)
         s.Push(i);
-    EXPECT_EQ(5, s.Length());
+    EXPECT_EQ(5, s.Top());
 }
 
-//length
-TEST(TStack, stack_length_zero)
+//Reverse
+TEST(TStack, reverse_stack)
 {
-    TStack<int> s(3);
-    EXPECT_EQ(0, s.Length());
-}
-
-TEST(TStack, stack_length)
-{
-    TStack<int> s(3);
-    for (int i = 1; i < 3; i++)
-        s.Push(i);
-    EXPECT_EQ(2, s.Length());
-}
-
-//get_element
-TEST(TStack, stack_get_element_with_zero_length)
-{
-    TStack<int> s(3);
-    ASSERT_ANY_THROW(s.GetElement(0));
-}
-
-TEST(TStack, stack_get_element_more_than_top)
-{
-    TStack<int> s(3);
-    for (int i = 1; i < 3; i++)
-        s.Push(i);
-    ASSERT_ANY_THROW(s.GetElement(2));
-}
-
-TEST(TStack, stack_get_element_with_negative_index)
-{
-    TStack<int> s(3);
-    for (int i = 1; i < 3; i++)
-        s.Push(i);
-    ASSERT_ANY_THROW(s.GetElement(-1));
-}
-
-TEST(TStack, stack_get_element)
-{
-    TStack<int> s(3);
-    for (int i = 1; i < 3; i++)
-        s.Push(i);
-    EXPECT_EQ(2, s.GetElement(1));
+    TStack<int> s1(3);
+    TStack<int> s2(3);
+    for (int i = 1; i < 4; i++)
+        s1.Push(i);
+    for (int i = 3; i > 0; i--)
+        s2.Push(i);
+    s1.ReverseStack();
+    EXPECT_EQ(s1.Top(), s2.Top());
 }
 
 //opersator=
@@ -151,32 +119,32 @@ TEST(TStack, stack_assignment)
 {
     TStack<int> s1(3);
     TStack<int> s2(3);
-    for (int i = 1; i < 3; i++)
+    for (int i = 1; i < 4; i++)
     {
         s1.Push(i);
         s2.Push(i + 1);
     }
     s2 = s1;
-    EXPECT_EQ(s1.GetElement(1), s2.GetElement(1));
+    EXPECT_EQ(s1.Top(), s2.Top());
 }
 
 TEST(TStack, stack_assignment_with_different_length)
 {
     TStack<int> s1(3);
     TStack<int> s2(4);
-    for (int i = 1; i < 3; i++)
+    for (int i = 1; i < 4; i++)
         s1.Push(i);
-    for(int j = 0; j<3;j++)
+    for(int j = 0; j<4;j++)
         s2.Push(j);
     s2 = s1;
-    EXPECT_EQ(s1.Length(), s2.Length());
+    EXPECT_EQ(s1.Top(), s2.Top());
 }
 
 TEST(TStack, stack_assignment_to_empty_stack)
 {
     TStack<int> s1(3);
     TStack<int> s2(4);
-    for (int i = 1; i < 3; i++)
+    for (int i = 1; i < 4; i++)
         s1.Push(i);
     s2 = s1;
     EXPECT_EQ(s1.Top(), s2.Top());

@@ -20,8 +20,7 @@ public:
 	bool IsEmpty(void) const;
 	bool IsFull(void) const;
 	void ResizeStack();
-	int Length() const { return top+1; }
-	T GetElement(int ind) const;
+	void ReverseStack();
 	T Top() const;
 	void Push(const T& elem);
 	void Pop();
@@ -109,12 +108,18 @@ void TStack<T>::ResizeStack()
 	maxSize = newMaxSize; // Обновляем значение maxSize
 }
 
-template <class T>
-T TStack<T>::GetElement(int ind) const
+template <typename T>
+void TStack<T>::ReverseStack()
 {
-	if (ind < 0 || ind > top)
-		throw "error";
-	return elems[ind];
+	TStack<T> tempStack;
+	while (!IsEmpty())
+	{
+		T element = Top();
+		Pop();
+		tempStack.Push(element);
+	}
+
+	*this = tempStack; // переприсваиваем tempStack в stack, чтобы поменять содержимое стека наоборот
 }
 
 template <class T>

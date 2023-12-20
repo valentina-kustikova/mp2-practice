@@ -3,17 +3,16 @@
 
 #include <gtest.h>
 
-TEST(IsSymbolTestTest, is_symbol_true)
+TEST(IsSymbolTest, is_symbol_true)
 {
-
 	string s = "+";
-	EXPECT_EQ(1, ArithmeticExpression::Is_Symbol(s));
+	ASSERT_TRUE(ArithmeticExpression::Is_Symbol(s));
 }
 
-TEST(IsSymbolTestTest, is_symbol_false)
+TEST(IsSymbolTest, is_symbol_false)
 {
 	string s = "!";
-	EXPECT_EQ(0, ArithmeticExpression::Is_Symbol(s));
+	ASSERT_FALSE(ArithmeticExpression::Is_Symbol(s));
 }
 
 TEST(GetPriorityTest, get_priority_multiplication)
@@ -31,45 +30,33 @@ TEST(GetPriorityTest, get_priority_addition)
 TEST(IsNumberTest, is_number_true)
 {
 	string s = "123";
-	EXPECT_EQ(1, ArithmeticExpression::Is_Number(s));
+	ASSERT_TRUE(ArithmeticExpression::Is_Number(s));
 }
 
 TEST(IsNumberTest, is_number_false)
 {
 	string s = "1c3";
-	EXPECT_EQ(0, ArithmeticExpression::Is_Number(s));
+	ASSERT_FALSE(ArithmeticExpression::Is_Number(s));
 }
 
 TEST(IsOperandTest, is_operand_digit)
 {
 	char c = '3';
-	EXPECT_EQ(1, ArithmeticExpression::isOperand(c));
+	ASSERT_TRUE(ArithmeticExpression::isOperand(c));
 }
 
 TEST(IsOperandTest, is_operand_symbol)
 {
 	char c = 'x';
-	EXPECT_EQ(1, ArithmeticExpression::isOperand(c));
+	ASSERT_TRUE(ArithmeticExpression::isOperand(c));
 }
 
 TEST(IsOperandTest, is_operand_header_symbol)
 {
 	char c = 'B';
-	EXPECT_EQ(1, ArithmeticExpression::isOperand(c));
-}
-/*
-TEST(IsOperatorTest, is_operator_true)
-{
-	string c = "+";
-	EXPECT_EQ(1, ArithmeticExpression::isOperator(c));
+	ASSERT_TRUE(ArithmeticExpression::isOperand(c));
 }
 
-TEST(IsOperatorTest, is_operator_false)
-{
-	string c = "(";
-	EXPECT_EQ(0, ArithmeticExpression::isOperator(c));
-}
-*/
 TEST(FiltExpressionTest, removing_spaces)
 {
 	string s1 = "(a-b)*c+a";
@@ -80,55 +67,55 @@ TEST(FiltExpressionTest, removing_spaces)
 TEST(ValidExpressionTest, no_bracket)
 {
 	string s = "(a-b*c+a";
-	EXPECT_EQ(0, ArithmeticExpression::isValidExpression(s));
+	ASSERT_FALSE(ArithmeticExpression::isValidExpression(s));
 }
 
 TEST(ValidExpressionTest, two_identical_brackets)
 {
 	string s = "(a-b(*c+a";
-	EXPECT_EQ(0, ArithmeticExpression::isValidExpression(s));
+	ASSERT_FALSE(ArithmeticExpression::isValidExpression(s));
 }
 
 TEST(ValidExpressionTest, operand_before_brackets_without_operator)
 {
 	string s = "a(c-b)*k";
-	EXPECT_EQ(0, ArithmeticExpression::isValidExpression(s));
+	ASSERT_FALSE(ArithmeticExpression::isValidExpression(s));
 }
 
 TEST(ValidExpressionTest, correctly_placed_brackets)
 {
 	string s = "(a-b)*(c+a)";
-	EXPECT_EQ(1, ArithmeticExpression::isValidExpression(s));
+	ASSERT_TRUE(ArithmeticExpression::isValidExpression(s));
 }
 
 TEST(ValidExpressionTest, two_operators)
 {
 	string s = "(a-b)-*c+a";
-	EXPECT_EQ(0, ArithmeticExpression::isValidExpression(s));
+	ASSERT_FALSE(ArithmeticExpression::isValidExpression(s));
 }
 
 TEST(ValidExpressionTest, operand_after_bracket_without_operator)
 {
 	string s = "(a-b)c+a";
-	EXPECT_EQ(0, ArithmeticExpression::isValidExpression(s));
+	ASSERT_FALSE(ArithmeticExpression::isValidExpression(s));
 }
 
 TEST(ValidExpressionTest, first_symbol_is_operator)
 {
 	string s = "/(a-b)*c+a";
-	EXPECT_EQ(0, ArithmeticExpression::isValidExpression(s));
+	ASSERT_FALSE(ArithmeticExpression::isValidExpression(s));
 }
 
 TEST(ValidExpressionTest, last_symbol_is_operator)
 {
 	string s = "(a-b)*c+a*";
-	EXPECT_EQ(0, ArithmeticExpression::isValidExpression(s));
+	ASSERT_FALSE(ArithmeticExpression::isValidExpression(s));
 }
 
 TEST(ValidExpressionTest, correct_input)
 {
 	string s = "a+(b-a)/(d-a)*12-(x2+b)/x1";
-	EXPECT_EQ(1, ArithmeticExpression::isValidExpression(s));
+	ASSERT_TRUE(ArithmeticExpression::isValidExpression(s));
 }
 
 TEST(AddToStack1Test, add_elements_to_stack1_from_stack_2)
@@ -156,8 +143,7 @@ TEST(AddToStack1Test, add_elements_to_stack1_from_stack_2)
 		string a = s2.Top();
 		ArithmeticExpression::Add_to_Stack1(s1, s2, a);
 	}
-	for (int i = 0; i < s3.Length(); i++)
-		EXPECT_EQ(s3.GetElement(i), s1.GetElement(i));
+	EXPECT_EQ(s1.Top(), s3.Top());
 }
 
 TEST(GetVariablesTest, variables_exist)
@@ -202,8 +188,7 @@ TEST(PostfixFormTest, translation_into_postfix_form)
 	s.Push("+");
 	s.Push("*");
 	s2 = ArithmeticExpression::Postfix_Form(ex);
-	for(int i =0; i<s2.Length();i++)
-		EXPECT_EQ(s.GetElement(i), s2.GetElement(i));
+	EXPECT_EQ(s.Top(), s2.Top());
 }
 
 TEST(CalculateTest, Addition)
@@ -252,8 +237,19 @@ TEST(CalculateTest, Division)
 	inputStack.Push("b");
 	inputStack.Push("/");
 
-	map<string, double> values = { {"a", 10}, {"b", 4} };;
+	map<string, double> values = { {"a", 10}, {"b", 4} };
 	double result = ArithmeticExpression::Calculate(inputStack, values);
 
 	EXPECT_DOUBLE_EQ(2.5, result);
+}
+
+TEST(CalculateTest, Exception_Division)
+{
+	TStack<string> inputStack;
+	inputStack.Push("a");
+	inputStack.Push("b");
+	inputStack.Push("/");
+
+	map<string, double> values = { {"a", 10}, {"b", 0} };
+	ASSERT_ANY_THROW(ArithmeticExpression::Calculate(inputStack, values));
 }
