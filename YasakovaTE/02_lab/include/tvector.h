@@ -1,11 +1,8 @@
-#ifndef __TVECTOR_H__
+ #ifndef __TVECTOR_H__
 #define __TVECTOR_H__
 
 #include <iostream>
 using namespace std;
-
-//const int MAX_VECTOR_SIZE = 100000;
-
 
 template <class ValType>
 class TVector
@@ -24,15 +21,18 @@ public:
     bool operator==(const TVector<ValType>& v) const;
     bool operator!=(const TVector<ValType>& v) const;
     const TVector<ValType>& operator=(const TVector<ValType>& v);
-     //скалярные
+
+    // скалярные операции
     TVector<ValType>  operator+(const ValType& val);
     TVector<ValType>  operator-(const ValType& val);
     TVector<ValType>  operator*(const ValType& val);
-    //векторные
+
+    // векторные операции
     TVector<ValType>  operator+(const TVector<ValType>& v);
     TVector<ValType>  operator-(const TVector<ValType>& v);
     ValType  operator*(const TVector<ValType>& v);
 
+    // ввод-вывод
     friend istream& operator>>(istream& in, TVector<ValType>& v)
     {
         for (int i = v.StartIndex; i < v.StartIndex + v.Size; i++)
@@ -56,7 +56,7 @@ public:
 template <class ValType>
 TVector<ValType>::TVector<ValType>(int s, int si) :Size(s), StartIndex(si)
 {
-    if (s <= 0 || s > size)
+    if (s <= 0 || s > Size)
         throw "Incorrect size";
     if (si < 0)
         throw "You cannot start at negative index!";
@@ -80,7 +80,7 @@ TVector<ValType>::~TVector<ValType>()
 template <class ValType>
 ValType& TVector<ValType>::operator[](int pos)
 {
-    if (pos < 0 || pos >= size)
+    if (pos < 0 || pos >= 1000)
         throw "Wrong position";
     if (pos < StartIndex)
         throw "Wrong position (less than start index)";
