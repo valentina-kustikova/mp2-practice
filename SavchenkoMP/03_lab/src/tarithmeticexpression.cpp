@@ -220,6 +220,13 @@ TArithmeticExpression::TArithmeticExpression(const string& _infix) {
 	ToPostfix();
 }
 
+TArithmeticExpression::TArithmeticExpression(const TArithmeticExpression& ae) {
+	infix = ae.infix;
+	postfix = ae.postfix;
+	lexems = ae.lexems;
+	operands = ae.operands;
+}
+
 string TArithmeticExpression::GetStringPostfix() const {
 	string pf;
 	for (const string& item : postfix)

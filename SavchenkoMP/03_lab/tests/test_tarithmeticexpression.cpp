@@ -50,6 +50,55 @@ TEST(TArithmeticExpression, SimpleAE_Calculate) {
 	EXPECT_EQ(ans, ae.Calculate(values));
 }
 
+TEST(TArithmeticExpression, SimpleAE_CopyConstructor) {
+	string str = "A+B*C-D/E";
+	TArithmeticExpression ae(str);
+
+	ASSERT_NO_THROW(TArithmeticExpression ae1(ae));
+}
+
+TEST(TArithmeticExpression, SimpleAE_Copy_Infix) {
+	string str = "A+B*C-D/E";
+
+	TArithmeticExpression ae(str);
+	TArithmeticExpression ae1(ae);
+	EXPECT_EQ(str, ae1.GetInfix());
+}
+
+TEST(TArithmeticExpression, SimpleAE_Copy_Postfix) {
+	string str = "A+B*C-D/E";
+	vector<string> expvPostfix = { "A", "B", "C", "*", "+", "D", "E", "/", "-" };
+
+	TArithmeticExpression ae(str);
+	TArithmeticExpression ae1(ae);
+	EXPECT_EQ(expvPostfix, ae1.GetPostfix());
+}
+
+TEST(TArithmeticExpression, SimpleAE_Copy_StringPostfix) {
+	string str = "A+B*C-D/E";
+	string expPostfix = "A B C * + D E / -";
+
+	TArithmeticExpression ae(str);
+	TArithmeticExpression ae1(ae);
+	EXPECT_EQ(expPostfix, ae1.GetStringPostfix());
+}
+
+TEST(TArithmeticExpression, SimpleAE_Copy_Calculate) {
+	string str = "A+B*C-D/E";
+	map<string, double> values = {
+		{"A", 1},
+		{"B", 2},
+		{"C", 3},
+		{"D", 4},
+		{"E", 5},
+	};
+	double ans = 6.2;
+
+	TArithmeticExpression ae(str);
+	TArithmeticExpression ae1(ae);
+	EXPECT_EQ(ans, ae1.Calculate(values));
+}
+
 TEST(TArithmeticExpression, SimpleAE_Brackets_AtBeginning_Infix) {
 	string str = "(A+B)*C-D/E";
 
@@ -460,6 +509,38 @@ TEST(TArithmeticExpression, ConvertingAE_Calculate) {
 	TArithmeticExpression ae(str);
 	EXPECT_EQ(ans, ae.Calculate(values));
 }
+
+TEST(TArithmeticExpression, SetValuesTest_SetValues) {
+	string str = "A+B*C-D/E";
+	map<string, double> values = {
+		{"A", 1},
+		{"B", 2},
+		{"C", 3},
+		{"D", 4},
+		{"E", 5},
+	};
+
+	TArithmeticExpression ae(str);
+	ASSERT_NO_THROW(ae.SetValues(values));
+}
+
+TEST(TArithmeticExpression, SetValuesTest_Calculate) {
+	string str = "A+B*C-D/E";
+	map<string, double> values = {
+		{"A", 1},
+		{"B", 2},
+		{"C", 3},
+		{"D", 4},
+		{"E", 5},
+	};
+	double ans = 6.2;
+
+	TArithmeticExpression ae(str);
+	ae.SetValues(values);
+	EXPECT_EQ(ans, ae.Calculate());
+}
+
+
 
 
 //// INCORRECT ////

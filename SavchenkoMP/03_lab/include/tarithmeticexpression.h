@@ -22,6 +22,7 @@ private:
 
 public:
 	TArithmeticExpression(const string& _infix);
+	TArithmeticExpression(const TArithmeticExpression& ae);
 
 	string GetInfix() const { return infix; }
 	vector<string> GetPostfix() const { return postfix; }
