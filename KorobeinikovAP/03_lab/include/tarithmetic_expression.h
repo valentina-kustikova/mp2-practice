@@ -11,15 +11,23 @@ private:
 	string infix;
 	string postfix;
 	vector<char> lexems;
-	map <char, int> priority;
+	static map <char, int> priority;
 	map <char, double> operands;
 
 	void Parse();
 	void ToPostfix();
 public:
+	TArithmeticExpression(string infx);
 
+	string GetInfix() const {
+		return infix;
+	}
+	string GetPostfix()  const {
+		return postfix;
+	}
 
+	vector <char> GetOperands() const;
 
-
+	double  Calculate(const map<char, double>& values);
 };
 #endif
