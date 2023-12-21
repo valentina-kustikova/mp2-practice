@@ -6,3 +6,5 @@ file(GLOB srcs "*.cpp")
 include_directories("${MP2_INCLUDE}")
 
 add_library(${target} STATIC ${srcs} ${hdrs})
+
+
