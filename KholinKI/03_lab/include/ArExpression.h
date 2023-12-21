@@ -11,13 +11,13 @@ using namespace std;
 
 
 
-template <typename T> class ArithmeticExpression {
+class ArithmeticExpression {
 private:
 	string infix;
 	vector<string> postfix;
 	vector<string> lexemes;
 	map<char, int> priority;
-	map<string, T> operands;
+	map<string, double> operands;
 
 	bool Is_Operator(char c)const;
 	bool Is_Operand_String(char c)const;
@@ -29,16 +29,16 @@ public:
 	string GetInfix()const { return infix; }
 	vector<string> GetPostfix()const { return postfix; }
 	vector<string> GetOperands()const;
-	map<string, T> SetOperands(const vector<string> operands);
+	map<string, double> SetOperands(const vector<string> operands);
 
 	void Check();
 	void Parse();
 	void ToPostfix();
-	double Calculate(const map<string, T>& values);
+	double Calculate(const map<string, double>& values);
 };
 
-template<typename T>
-ArithmeticExpression<T>::ArithmeticExpression(string infix_) :infix(infix_) {
+
+ArithmeticExpression::ArithmeticExpression(string infix_) :infix(infix_) {
 	priority =
 	{
 		{'(',1},{'+',2},{'-',2},{'*',3}, {'/',3}
@@ -46,23 +46,23 @@ ArithmeticExpression<T>::ArithmeticExpression(string infix_) :infix(infix_) {
 	ToPostfix();
 }
 
-template<typename T>
-bool ArithmeticExpression<T>::Is_Operator(char c)const {
+
+bool ArithmeticExpression::Is_Operator(char c)const {
 	return c == '+' || c == '-' || c == '*' || c == '/' || c == '(' || c == ')';
 }
 
-template<typename T>
-bool ArithmeticExpression<T>::Is_Operand_String(char c)const {
+
+bool ArithmeticExpression::Is_Operand_String(char c)const {
 	return c >= 65 && c <= 90 || c >= 97 && c <= 122;
 }
 
-template<typename T>
-bool ArithmeticExpression<T>::Is_Operand_const(char c)const {
+
+bool ArithmeticExpression::Is_Operand_const(char c)const {
 	return c >= 48 && c <= 57;
 }
 
-template<typename T>
-double ArithmeticExpression<T>::Transform(string str) {
+
+double ArithmeticExpression::Transform(string str) {
 	int i = 0;
 	string int_part;
 	while (i < str.find(".")) {
@@ -83,8 +83,8 @@ double ArithmeticExpression<T>::Transform(string str) {
 	return transformed;
 }
 
-template<typename T>
-void ArithmeticExpression<T>::Check() {
+
+void ArithmeticExpression::Check() {
 	int i = 0;
 	char c;
 	while (i < infix.size()) {//проверяет на чужеродные символы
@@ -149,8 +149,8 @@ void ArithmeticExpression<T>::Check() {
 	}
 }
 
-template<typename T>
-void ArithmeticExpression<T>::Parse() {//использованы правила идентификаторов переменных
+
+void ArithmeticExpression::Parse() {//использованы правила идентификаторов переменных
 	char c;
 	char cc;
 	int count_points = 0;
@@ -240,8 +240,7 @@ void ArithmeticExpression<T>::Parse() {//использованы правила идентификаторов пе
 	}
 }
 
-template<typename T>
-void ArithmeticExpression<T>::ToPostfix() {
+void ArithmeticExpression::ToPostfix() {
 	Parse();
 	Stack<char> stack_ops;
 	unsigned char c;
@@ -310,8 +309,7 @@ void ArithmeticExpression<T>::ToPostfix() {
 }
 
 
-template<typename T>
-vector<string> ArithmeticExpression<T>::GetOperands()const {
+vector<string> ArithmeticExpression::GetOperands()const {
 	vector<string> tmp;
 	auto it_begin{ operands.begin() };
 	auto it_end{ operands.end() };
@@ -322,10 +320,10 @@ vector<string> ArithmeticExpression<T>::GetOperands()const {
 	return tmp;
 }
 
-template<typename T>
-map<string, T> ArithmeticExpression<T>::SetOperands(const vector<string> operands) {
-	map<string, T> tmp;
-	T value;
+
+map<string, double> ArithmeticExpression::SetOperands(const vector<string> operands) {
+	map<string, double> tmp;
+	double value;
 	auto it_begin{operands.begin() }; 
 	auto it_end{ operands.end() };
 	while (it_begin != it_end) {
@@ -342,12 +340,12 @@ map<string, T> ArithmeticExpression<T>::SetOperands(const vector<string> operand
 	return tmp;
 }
 
-template<typename T>
-double ArithmeticExpression<T>::Calculate(const map<string, T>& values) {
+
+double ArithmeticExpression::Calculate(const map<string, double>& values) {
 	Stack<double> expr_operands;
 	string lexeme;
 	char c;
-	T left_op,right_op; 
+	double left_op,right_op; 
 	auto it_begin = postfix.begin();
 	auto it_end = postfix.end();
 	while (it_begin != it_end) {
