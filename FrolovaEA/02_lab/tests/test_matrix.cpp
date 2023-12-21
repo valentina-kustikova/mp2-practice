@@ -90,6 +90,28 @@ TEST(TMatrix, addition_of_matrices_of_the_same_length)
     EXPECT_EQ(a + b, c);
 }
 
+TEST(TMatrix, addition_of_matrices_of_the_same_length2)
+{
+    TMatrix<int> a(2);
+    TMatrix<int> b(2);
+    TMatrix<int> c(2);
+    TMatrix<int> d(2);
+
+    a[0][0] = 4;
+    a[0][1] = 4;
+    a[1][1] = 4;
+
+    b[0][0] = 1;
+    b[0][1] = 1;
+    b[1][1] = 1;
+
+    d[0][0] = 5;
+    d[0][1] = 5;
+    d[1][1] = 5;
+    c = a + b;
+    EXPECT_EQ(c, d);
+}
+
 TEST(TMatrix, addition_of_matrices_of_the_non_same_length)
 {
     TMatrix<int> a(3);
@@ -106,6 +128,28 @@ TEST(TMatrix, difference_of_matrices_of_the_same_length)
     b[0][0] = 1;
     c = a - b;
     EXPECT_EQ(3, c[0][0]);
+}
+
+TEST(TMatrix, difference_of_matrices_of_the_same_length2)
+{
+    TMatrix<int> a(2);
+    TMatrix<int> b(2);
+    TMatrix<int> c(2);
+    TMatrix<int> d(2);
+
+    a[0][0] = 4;
+    a[0][1] = 4;
+    a[1][1] = 4;
+
+    b[0][0] = 1;
+    b[0][1] = 1;
+    b[1][1] = 1;
+
+    d[0][0] = 3;
+    d[0][1] = 3;
+    d[1][1] = 3;
+    c = a - b;
+    EXPECT_EQ(c, d);
 }
 
 TEST(TMatrix, difference_of_matrices_of_the_non_same_length)
@@ -137,6 +181,6 @@ TEST(TMatrix, the_product_of_matrices_of_the_same_length)
     res[2][2] = 1;
 
     d = m1 * m2;
-    EXPECT_EQ(1, (res==d));
+    EXPECT_EQ(d, res);
 }
 

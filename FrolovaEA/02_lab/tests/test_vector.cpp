@@ -347,7 +347,7 @@ TEST(TVector, checking_for_equality_of_different_vectors_of_the_same_length_and_
 {
     TVector<int> a(3, 1);
     TVector<int> b(3, 0);
-    for (int i = b.GetStartIndex(); i < 3; i++)
+    for (int i = 0; i < 3; i++)
     {
         b[i] = i;
     }
@@ -387,3 +387,99 @@ TEST(TVector, checking_for_no_equality_of_different_vectors_of_the_same_length_a
     }
     EXPECT_NE(a, b);
 }
+
+TEST(TVector, adding_two_vectors_checking_the_answer)
+{
+    TVector<int> a(3, 1);
+    TVector<int> b(3, 1);
+    TVector<int> c(3, 1);
+    for (int i = b.GetStartIndex(); i < 3; i++)
+    {
+        b[i] = 1;
+        a[i] = 2;
+        c[i] = 3;
+    }
+    
+    EXPECT_EQ(c, a+b);
+}
+
+TEST(TVector, adding_two_vectors_with_startIndex_checking_the_answer)
+{
+    TVector<int> a(3, 1);
+    TVector<int> b(3, 1);
+    TVector<int> c(3, 1);
+    for (int i = b.GetStartIndex(); i < 3; i++)
+    {
+        b[i] = 1;
+        a[i] = 2;
+        c[i] = 3;
+    }
+
+    EXPECT_EQ(c, a + b);
+}
+
+TEST(TVector, the_difference_of_two_vectors_checking_the_response)
+{
+    TVector<int> a(3);
+    TVector<int> b(3);
+    TVector<int> c(3);
+    TVector<int> k(3);
+    for (int i = 0; i < 3; i++)
+    {
+        b[i] = 2;
+        a[i] = 3;
+        c[i] = -1;
+    }
+    k = b - a;
+
+    EXPECT_EQ(c, k);
+}
+
+TEST(TVector, the_difference_of_two_vectors_with_startIndex_checking_the_response)
+{
+    TVector<int> a(3,1);
+    TVector<int> b(3,1);
+    TVector<int> c(3,1);
+    TVector<int> k(3);
+    for (int i = a.GetStartIndex(); i < a.GetSize(); i++)
+    {
+        b[i] = 3;
+        a[i] = 2;
+        c[i] = 1;
+    }
+ 
+
+    EXPECT_EQ(c, b-a);
+}
+
+TEST(TVector, scalar_product_of_two_vectors_checking_the_answer)
+{
+    TVector<int> a(3);
+    TVector<int> b(3);
+    for (int i = b.GetStartIndex(); i < 3; i++)
+    {
+        b[i] = 3;
+        a[i] = 2; 
+    }
+    double v = b * a;
+    double c = 18;
+
+    EXPECT_EQ(c,v);
+}
+
+TEST(TVector, scalar_product_of_two_vectors_with_startIndex_checking_the_answer)
+{
+    TVector<int> a(2,1);
+    TVector<int> b(2,1);
+    for (int i = b.GetStartIndex(); i < 3; i++)
+    {
+        b[i] = 3;
+        a[i] = 2;
+    }
+    double v = b * a;
+    double c = 12;
+
+    EXPECT_EQ(c, b*a);
+}
+
+

@@ -199,7 +199,7 @@ TVector<T> TVector<T>:: operator-(const TVector<T>& v)
 	TVector<T> tmp(*this);
 	for (int i = 0; i < Size; i++)
 	{
-		tmp.pVector[i] = v.pVector[i] - tmp.pVector[i];
+		tmp.pVector[i] = tmp.pVector[i] - v.pVector[i];
 	}
 	return tmp;
 }
@@ -209,10 +209,10 @@ T TVector <T>:: operator* (const TVector<T>& v)
 {
 	if (Size != v.Size || StartIndex != v.StartIndex)
 		throw "Error";
-	T res = T();
-	for (int i = 0; i < Size; i++)
+	T res = pVector[0] * v.pVector[0];
+	for (int i = 1; i < Size; i++)
 	{
-		res += pVector[i] * v.pVector[i];
+		res = res + pVector[i] * v.pVector[i];
 	}
 	return res;
 }
