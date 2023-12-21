@@ -97,7 +97,7 @@ template<class Type>
 TMatrix<Type> TMatrix<Type>::operator*(const TMatrix<Type>& matr) {
 	if (size != matr.GetSize())throw Exeptions<int>(WRONG_SIZE, size);
 	if (start_index != matr.GetStart())throw Exeptions<int>(WRONG_INDEX, start_index);
-	TVector<TVector<Type>> result_matrix(GetSize()); 
+	TMatrix<Type> result_matrix(size);
 	for (int i = 0; i < size; i++) {
 		for (int j = 0; j < size; j++) {
 			for (int k = GetStart()+i; k < GetStart() + j + 1; k++) {
@@ -105,7 +105,7 @@ TMatrix<Type> TMatrix<Type>::operator*(const TMatrix<Type>& matr) {
 			}
 		}
 	}
-	return TMatrix(result_matrix);
+	return result_matrix;
 }
 
 

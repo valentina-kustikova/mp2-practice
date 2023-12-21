@@ -108,10 +108,6 @@ int TVector<Type>::GetStart() const {
 	return start_index;
 }
 
-template<typename Type>
-Type* TVector<Type>::GetMemory()const {
-	return vector;
-}
 
 template<class Type>
 Type& TVector<Type>::operator[](const int index) {

@@ -3,7 +3,7 @@
 
 
 
-#define dim 4
+#define dim 2
 
 int main()
 {

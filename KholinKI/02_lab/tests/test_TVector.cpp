@@ -38,10 +38,10 @@ TEST(TVector, no_throw_when_use_constructor_copy) {
 }
 
 TEST(TVector, different_addresses_memory) {
-	TVector<double> vec1(3, 4);
-	// fill
+	TVector<double> vec1(3, 1);
+	vec1[1] = 4;
 	TVector<double> vec2(vec1);
-	vec2[0] = 1;
+	vec2[1] = 1;
 	ASSERT_TRUE(vec1 != vec2);
 }
 
@@ -68,6 +68,12 @@ TEST(TVector, can_get_element_with_positive_index) {
 	EXPECT_EQ(2, vec[4]);
 }
 
+TEST(TVector, can_get_element) {
+	TVector<double> vector(3, 1);
+	vector[1] = 3;
+	vector[2] = 4;
+	EXPECT_EQ(4,vector[2]);
+}
 
 TEST(TVector, throw_when_get_element_with_negative_index) {
 	TVector<int> vec(5);

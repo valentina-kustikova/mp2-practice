@@ -15,7 +15,16 @@ TEST(TMatrix, no_throw_when_use_constructor_copy) {
 	ASSERT_NO_THROW(TMatrix<float> matrix2(matrix1));
 }
 
-TEST(TMatrix, can_work_constructor_transform) {
+TEST(TMatrix, can_get_element) {
+	TMatrix<int> matrix1(4);
+	for (int i = 0; i < matrix1.GetSize(); i++) {
+		for (int k = matrix1.GetStart() + i; k < matrix1.GetSize(); k++) {
+			ASSERT_NO_THROW(matrix1[i][k] = k);
+		}
+	}
+}
+
+TEST(TMatrix, no_throw_when_constructor_transform) {
 	TVector<TVector<double>> vector_vectors(5);
 	ASSERT_NO_THROW(TMatrix<double> matrix(vector_vectors));
 }
@@ -27,13 +36,15 @@ TEST(TMatrix, check_matrix_start_indices) {
 	}
 }
 
-TEST(TMatrix, can_get_element) {
-	TMatrix<int> matrix1(4);
-	for (int i = 0; i < matrix1.GetSize(); i++) {
-		for (int k = matrix1.GetStart() + i; k < matrix1.GetSize(); k++) {
-			ASSERT_NO_THROW(matrix1[i][k] = k);
-		}
-	}
+
+
+TEST(TMatrix, different_adresses_memory) {
+	TMatrix<float> matrix1(3);
+	matrix1[0][0] = 2;
+	matrix1[0][1] = 4;
+	TMatrix<float> matrix2(matrix1);
+	matrix2[0][2] = 5;
+	ASSERT_TRUE(matrix1 != matrix2);
 }
 
 TEST(TMatrix, can_get_dimension) {
@@ -148,6 +159,22 @@ TEST(TMatrix, no_throw_when_plus_operator_with_matrix_equal_dimensions) {
 	ASSERT_NO_THROW(matr1+matr2);
 }
 
+TEST(TMatrix,can_plus_operator_with_matrix_equal_dimensions) {
+	TMatrix<double> matr1(2), matr2(2);
+
+	matr1[0][0] = 4; matr1[0][1] = 3;
+					 matr1[1][1] = 2;
+
+	matr2[0][0] = 2; matr2[0][1] = 3;
+					 matr2[1][1] = 4;
+
+	TMatrix<double> res(2);
+	res[0][0] = 4 + 2;res[0][1] = 3 + 3;
+					  res[1][1] = 2 + 4;
+	EXPECT_EQ(res, matr1 + matr2);
+}
+
+
 TEST(TMatrix, throw_when_plus_operator_with_matrix_not_equal_dimensions) {
 	TMatrix<double> matr1(4), matr2(3);
 
@@ -166,22 +193,19 @@ TEST(TMatrix, throw_when_plus_operator_with_matrix_not_equal_dimensions) {
 	ASSERT_ANY_THROW(matr1+matr2);
 }
 
-TEST(TMatrix, no_throw_when_minus_operator_with_matrix_equal_dimension) {
-	TMatrix<double> matr1(4), matr2(4);
+TEST(TMatrix, can_minus_operator_with_matrix_equal_dimensions) {
+	TMatrix<double> matr1(2), matr2(2);
 
-	for (int i = 0; i < matr1.GetSize(); i++) {
-		for (int k = matr1.GetStart() + i; k < matr1.GetSize(); k++) {
-			matr1[i][k] = k * 2;
-		}
-	}
+	matr1[0][0] = 4; matr1[0][1] = 3;
+	matr1[1][1] = 2;
 
-	for (int i = 0; i < matr2.GetSize(); i++) {
-		for (int k = matr2.GetStart() + i; k < matr2.GetSize(); k++) {
-			matr2[i][k] = k * 3;
-		}
-	}
+	matr2[0][0] = 2; matr2[0][1] = 3;
+	matr2[1][1] = 4;
 
-	ASSERT_NO_THROW(matr1-matr2);
+	TMatrix<double> res(2);
+	res[0][0] = 4 - 2;res[0][1] = 3 - 3;
+					  res[1][1] = 2 - 4;
+	EXPECT_EQ(res, matr1 - matr2);
 }
 
 TEST(TMatrix, throw_when_minus_operator_with_matrix_not_equal_dimension) {
@@ -219,6 +243,23 @@ TEST(TMatrix, no_throw_when_mult_operator_with_matrix_equal_dimension) {
 
 	ASSERT_NO_THROW(matr1 * matr2);
 }
+
+TEST(TMatrix, can_mult_operator_with_matrix_equal_dimension) {
+	TMatrix<double> matr1(2), matr2(2);
+
+	matr1[0][0] = 4;matr1[0][1] = 3;
+					matr1[1][1] = 2;
+
+	matr2[0][0] = 2;matr2[0][1] = 3;
+					matr2[1][1] = 4;
+
+	TMatrix<double> res(2);
+	res[0][0] = 4 * 2;res[0][1] = 4*3 + 3*4;
+					  res[1][1] = 2*4;
+
+	EXPECT_EQ(res, matr1 * matr2);
+}
+
 
 TEST(TMatrix, throw_when_mult_operator_with_matrix_not_equal_dimension) {
 	TMatrix<double> matr1(4), matr2(3);
