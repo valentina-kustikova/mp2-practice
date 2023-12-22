@@ -328,6 +328,23 @@ string Expression::GetPostfix() const
 	return string_postfix;
 }
 
+void Expression::SetOperand(const string& operand)
+{
+	string op;
+	cout << "Input operand: " + operand + " = ";
+	cin >> op;
+	cout << endl;
+	try 
+	{
+		double number = stoi(op);
+		operands[operand] = number;
+	}
+	catch (const exception& e)
+	{
+		throw string("You did not input a number: " + op + "\n");
+	}
+}
+
 void Expression::Calculate()
 {
 	
@@ -392,11 +409,7 @@ void Expression::Calculate()
 		{
 			if (operands.find(lexem) == operands.end())
 			{
-				cout << "Input a operand: " + lexem + " = ";
-				double value;
-				cin >> value;
-				cout << "\n";
-				operands[lexem]=value;
+				SetOperand(lexem);
 			}
 			stack.Push( operands[lexem] );
 		}
@@ -406,7 +419,7 @@ void Expression::Calculate()
 
 }
 
-Expression::Expression(const string& expression, const map<string, double> operands_) 
+Expression::Expression(const string& expression, const map<string, double> operands_)
 {
 	if (operands_ != map<string, double>())
 	{

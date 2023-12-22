@@ -27,9 +27,10 @@ private:
 	void IsCorrect() const;
 	int FindFirstOperator(int pos = 0) const;
 	void Calculate();
+	void SetOperand(const string& operand);
 
 public:
-	Expression(const string& expression, const map<string, double> operands_);
+	Expression(const string& expression, const map<string, double> operands_ = map<string, double>());
 
 	string GetInfix() const { return infix; }
 	string GetPostfix() const;

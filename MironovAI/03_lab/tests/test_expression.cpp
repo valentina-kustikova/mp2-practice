@@ -1,9 +1,7 @@
 #include <gtest.h>
 #include <vector>
 #include <map>
-
 #include "expression.h"
-
 
 TEST(Expression, create_expression)
 {
@@ -13,26 +11,6 @@ TEST(Expression, create_expression)
 
 	ASSERT_NO_THROW(Expression::Expression(infix, operands));
 }
-/*
-TEST(Expression, create_expression_with_wrong_operands)
-{
-	string infix = "-2.0+A+B*(B/A)+3.1+2";
-	string postfix = "02.0-A+BBA/*+3.1+2+";
-	map<string, double> operands = { {"A", 1}, {"X", 2} };
-
-	ASSERT_ANY_THROW(Expression::Expression(infix, operands));
-}
-
-TEST(Expression, create_expression_without_operand)
-{
-	string infix = "-2.0+A+B*(B/A)+3.1+2";
-	string postfix = "02.0-A+BBA/*+3.1+2+";
-	map<string, double> operands = { {"A", 1} };
-	double result = 8.1;
-
-	ASSERT_ANY_THROW(Expression::Expression(infix, operands));
-}
-*/
 
 TEST(Expression, create_empty_expression)
 {
@@ -43,31 +21,6 @@ TEST(Expression, create_empty_expression)
 
 	ASSERT_ANY_THROW(Expression::Expression(infix, operands));
 }
-/*
-TEST(Expression, create_expression_with_empty_operands)
-{
-	string infix = "1+1";
-	string postfix = "11+";
-	map<string, double> operands = { };
-	double result = 2;
-	ASSERT_NO_THROW(Expression exp(infix, operands));
-
-	Expression exp(infix, operands);
-	EXPECT_EQ(result, exp.Get_res());
-	
-}
-
-TEST(Expression, create_expression_with_wrong_empty_operands)
-{
-	string infix = "A+B";
-	string postfix = "AB+";
-	map<string, double> operands = { {"A", 1} };
-
-	double result = 2;
-	ASSERT_ANY_THROW(Expression exp(infix, operands));
-}
-*/
-
 
 TEST(Expression, test_correct_expressions1)
 {
@@ -203,7 +156,6 @@ TEST(Expression, test_incorrect_expressions4)
 	ASSERT_ANY_THROW(Expression exp(infix, operands));
 }
 
-
 // two dots
 TEST(Expression, test_incorrect_expressions5)
 {
@@ -214,7 +166,6 @@ TEST(Expression, test_incorrect_expressions5)
 
 	ASSERT_ANY_THROW(Expression exp(infix, operands));
 }
-
 
 // missing brackets
 TEST(Expression, test_incorrect_expressions6)
