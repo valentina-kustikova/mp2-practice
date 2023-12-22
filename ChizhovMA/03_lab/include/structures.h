@@ -13,6 +13,7 @@ struct ArithmeticSymbol
     static map<string, double> symbolDict; // второй статический словарь
 };
 
+
 class ArithmeticExpression
 {
 public:
