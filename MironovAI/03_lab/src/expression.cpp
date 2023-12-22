@@ -387,7 +387,7 @@ void Expression::Calculate()
 			stack.Pop();
 			
 			if (op2 == 0) {
-				throw "Division by 0";
+				throw string("Division by 0");
 			}
 			else stack.Push(op1 / op2);
 		}
