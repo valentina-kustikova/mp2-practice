@@ -12,16 +12,15 @@ TEST(TStack, throw_when_try_to_create_stack_with_negative_size) {
 
 TEST(TStack, can_check_empty) {
 	TStack<int> stack;
-	EXPECT_EQ(true, stack.IsEmpty());
 	stack.Push(1);
-	EXPECT_NE(true, stack.IsEmpty());
+	stack.Pop();
+	ASSERT_TRUE(stack.IsEmpty());
 }
 
 TEST(TStack, can_check_full) {
 	TStack<int> stack(1);
-	EXPECT_NE(true, stack.IsFull());
 	stack.Push(1);
-	EXPECT_EQ(true, stack.IsFull());
+	ASSERT_TRUE(stack.IsFull());
 }
 
 

@@ -17,7 +17,7 @@ public:
 	T Pop();
 	void Push(const T& elem);
 
-	T Top();
+	T Top() const;
 };
 
 template <typename T>
@@ -64,7 +64,7 @@ void TStack<T>::Push(const T& elem) {
 }
 
 template <typename T>
-T TStack<T>::Top() {
+T TStack<T>::Top() const {
 	if (IsEmpty()) throw "stack_is_empty";
 	return elems[top];
 }

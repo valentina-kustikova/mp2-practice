@@ -157,14 +157,14 @@ float ArithmeticExpression::Calculate() {
 	return st.Pop();
 }
 
-string ArithmeticExpression::InfixForm() {
+string ArithmeticExpression::InfixForm() const{
 	string str = "";
 	for (string i : mas) {
 		str += i;
 	}
 	return str;
 }
-string ArithmeticExpression::PostfixForm() {
+string ArithmeticExpression::PostfixForm() const {
 	string str = "";
 	for (string i : post_form) {
 		str += i;

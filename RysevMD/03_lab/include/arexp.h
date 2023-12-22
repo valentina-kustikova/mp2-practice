@@ -28,6 +28,6 @@ public:
 	void ToPostfixForm();
 	float Calculate();
 
-	string InfixForm();
-	string PostfixForm();
+	string InfixForm() const;
+	string PostfixForm() const;
 };
