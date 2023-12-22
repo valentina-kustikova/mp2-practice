@@ -177,24 +177,30 @@ TEST(TVector, triple_assign_vectors) {
 }
 
 TEST(TVector, no_throw_when_plus_operator_with_element) {
-	TVector<double> vector1(10),res1(1);
+	TVector<double> vector1(10),res(1);
 
 	for (int i = vector1.GetStart(); i < vector1.GetSize(); i++) {
 		vector1[i] = i;
 	}
 
-	ASSERT_NO_THROW(res1 = vector1 + 6);
+	ASSERT_NO_THROW(res = vector1 + 6);
 }
 
 
 TEST(TVector, minus_operator_with_element) {
-	TVector<double> vector1(10), res1(1);
+	TVector<double> vector1(10), res(1);
 
 	for (int i = vector1.GetStart(); i < vector1.GetSize(); i++) {
 		vector1[i] = i;
 	}
 
-	ASSERT_NO_THROW(res1 = vector1 - 6);
+	res = vector1 - 6;
+
+	TVector<double> vector2(10);
+	for (int i = vector2.GetStart(); i < vector2.GetSize(); i++) {
+		vector2[i] = vector1[i] - 6;
+	}
+	EXPECT_EQ(res, vector2);
 }
 
 TEST(TVector, plus_operator_with_vectors_equal_size_and_start_index) {
@@ -226,6 +232,27 @@ TEST(TVector, throw_when_plus_operator_with_vectors_non_equal_size) {
 	ASSERT_ANY_THROW(res = vector1 + vector2);
 }
 
+TEST(TVector, can_plus_operator_with_vectors_equal_size_and_start_index) {
+	TVector<double> vector1(10), vector2(10), res(1);
+
+	for (int i = vector1.GetStart(); i < vector1.GetSize(); i++) {
+		vector1[i] = i;
+
+	}
+	for (int i = vector2.GetStart(); i < vector2.GetSize(); i++) {
+		vector2[i] = i;
+
+	}
+
+	res = vector1 + vector2;
+
+	TVector<double> vec3(10);
+	for (int i = vec3.GetStart(); i < vec3.GetSize(); i++) {
+		vec3[i] = vector1[i]+vector2[i];
+	}
+	EXPECT_EQ(res, vec3);
+}
+
 
 TEST(TVector, throw_when_plus_operator_with_vectors_non_equal_start_index) {
 	TVector<double> vector1(10, 3), vector2(10, 4), res1(1);
@@ -246,11 +273,11 @@ TEST(TVector, mul_operator_with_vectors_equal_size_and_start_index) {
 	TVector<double> vector1(10), vector2(10);
 
 	for (int i = vector1.GetStart(); i < vector1.GetSize(); i++) {
-		vector1[i] = i;//0 1 2 3 4 5 6 7 8 9
+		vector1[i] = i;
 	}
 
 	for (int i = vector1.GetStart(); i < vector2.GetSize(); i++) {
-		vector2[i] = i;//0 1 2 3 4 5 6 7 8 9
+		vector2[i] = i;
 	}
 	double res;
     res = vector1 * vector2;
@@ -262,11 +289,11 @@ TEST(TVector, throw_when_mul_operator_with_vectors_non_equal_size) {
 	TVector<double> vector1(10,4), vector2(9,4);
 
 	for (int i = vector1.GetStart(); i < vector1.GetSize(); i++) {
-		vector1[i] = i;//4 5 6 7 8 9 0 0 0 0
+		vector1[i] = i;
 	}
 
 	for (int i = vector2.GetStart(); i < vector2.GetSize(); i++) {
-		vector2[i] = i;//0 1 2 3 4 5 6 7 8 9
+		vector2[i] = i;
 	}
 	double res;
 	ASSERT_ANY_THROW(res = vector1 * vector2);	
@@ -276,11 +303,11 @@ TEST(TVector, throw_when_mul_operator_with_vectors_non_equal_start_index) {
 	TVector<double> vector1(10, 3), vector2(10, 4);
 
 	for (int i = vector1.GetStart(); i < vector1.GetSize(); i++) {
-		vector1[i] = i;//4 5 6 7 8 9 0 0 0 0
+		vector1[i] = i;
 	}
 
 	for (int i = vector2.GetStart(); i < vector2.GetSize(); i++) {
-		vector2[i] = i;//0 1 2 3 4 5 6 7 8 9
+		vector2[i] = i;
 	}
 	double res;
 	ASSERT_ANY_THROW(res = vector1 * vector2);
