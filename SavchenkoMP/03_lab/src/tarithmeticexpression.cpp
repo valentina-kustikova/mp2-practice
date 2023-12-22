@@ -254,11 +254,13 @@ void TArithmeticExpression::SetValues() {
 	}
 }
 void TArithmeticExpression::SetValues(map<string, double>& values) {
-	for (auto& val : values) {
-		try {
-			operands.at(val.first) = val.second;
+	if (&values != &operands) {
+		for (auto& val : values) {
+			try {
+				operands.at(val.first) = val.second;
+			}
+			catch (out_of_range& e) {}
 		}
-		catch (out_of_range& e) {}
 	}
 }
 void TArithmeticExpression::ClearValues() {
@@ -270,11 +272,13 @@ void TArithmeticExpression::ClearValues() {
 
 
 double TArithmeticExpression::Calculate(const map<string, double>& values) {
-	for (auto& val : values) {
-		try {
-			operands.at(val.first) = val.second;
+	if (&values != &operands) {
+		for (auto& val : values) {
+			try {
+				operands.at(val.first) = val.second;
+			}
+			catch (out_of_range& e) {}
 		}
-		catch (out_of_range& e) {}
 	}
 
 	TStack<double> st;
