@@ -3,72 +3,84 @@
 
 #include <gtest.h>
 
+class TestEx : public ArithmeticExpression
+{
+public:
+	using ArithmeticExpression::Is_Symbol;
+	using ArithmeticExpression::Get_Priority;
+	using ArithmeticExpression::Add_to_Stack1;
+	using ArithmeticExpression::Is_Number;
+	using ArithmeticExpression::isValidExpression;
+	using ArithmeticExpression::isOperand;
+	using ArithmeticExpression::FilteredExpression;
+};
+
 TEST(IsSymbolTest, is_symbol_true)
 {
-	ArithmeticExpression exp;
+	TestEx exp;
 	string s = "+";
 	ASSERT_TRUE(exp.Is_Symbol(s));
 }
 
 TEST(IsSymbolTest, is_symbol_false)
 {
-	ArithmeticExpression exp;
+	TestEx exp;
 	string s = "!";
 	ASSERT_FALSE(exp.Is_Symbol(s));
 }
 
 TEST(GetPriorityTest, get_priority_multiplication)
 {
-	ArithmeticExpression exp;
+	TestEx exp;
 	string s = "*";
 	EXPECT_EQ(3, exp.Get_Priority(s));
 }
 
 TEST(GetPriorityTest, get_priority_addition)
 {
-	ArithmeticExpression exp;
+	TestEx exp;
 	string s = "+";
 	EXPECT_EQ(2, exp.Get_Priority(s));
 }
 
 TEST(IsNumberTest, is_number_true)
 {
-	ArithmeticExpression exp;
+	TestEx exp;
 	string s = "123";
 	ASSERT_TRUE(exp.Is_Number(s));
 }
 
 TEST(IsNumberTest, is_number_false)
 {
-	ArithmeticExpression exp;
+	TestEx exp;
 	string s = "1c3";
 	ASSERT_FALSE(exp.Is_Number(s));
 }
 
 TEST(IsOperandTest, is_operand_digit)
 {
-	ArithmeticExpression exp;
+	TestEx exp;
 	char c = '3';
 	ASSERT_TRUE(exp.isOperand(c));
 }
 
 TEST(IsOperandTest, is_operand_symbol)
 {
-	ArithmeticExpression exp;
+	TestEx exp;
 	char c = 'x';
 	ASSERT_TRUE(exp.isOperand(c));
 }
 
 TEST(IsOperandTest, is_operand_header_symbol)
 {
-	ArithmeticExpression exp;
+	TestEx exp;
 	char c = 'B';
 	ASSERT_TRUE(exp.isOperand(c));
 }
 
 TEST(FiltExpressionTest, removing_spaces)
 {
-	ArithmeticExpression exp;
+	TestEx exp;
 	string s1 = "(a-b)*c+a";
 	string s2 = "(a - b)*c + a";
 	EXPECT_EQ(s1, exp.FilteredExpression(s2));
@@ -76,70 +88,70 @@ TEST(FiltExpressionTest, removing_spaces)
 
 TEST(ValidExpressionTest, no_bracket)
 {
-	ArithmeticExpression exp;
+	TestEx exp;
 	string s = "(a-b*c+a";
 	ASSERT_FALSE(exp.isValidExpression(s));
 }
 
 TEST(ValidExpressionTest, two_identical_brackets)
 {
-	ArithmeticExpression exp;
+	TestEx exp;
 	string s = "(a-b(*c+a";
 	ASSERT_FALSE(exp.isValidExpression(s));
 }
 
 TEST(ValidExpressionTest, operand_before_brackets_without_operator)
 {
-	ArithmeticExpression exp;
+	TestEx exp;
 	string s = "a(c-b)*k";
 	ASSERT_FALSE(exp.isValidExpression(s));
 }
 
 TEST(ValidExpressionTest, correctly_placed_brackets)
 {
-	ArithmeticExpression exp;
+	TestEx exp;
 	string s = "(a-b)*(c+a)";
 	ASSERT_TRUE(exp.isValidExpression(s));
 }
 
 TEST(ValidExpressionTest, two_operators)
 {
-	ArithmeticExpression exp;
+	TestEx exp;
 	string s = "(a-b)-*c+a";
 	ASSERT_FALSE(exp.isValidExpression(s));
 }
 
 TEST(ValidExpressionTest, operand_after_bracket_without_operator)
 {
-	ArithmeticExpression exp;
+	TestEx exp;
 	string s = "(a-b)c+a";
 	ASSERT_FALSE(exp.isValidExpression(s));
 }
 
 TEST(ValidExpressionTest, first_symbol_is_operator)
 {
-	ArithmeticExpression exp;
+	TestEx exp;
 	string s = "/(a-b)*c+a";
 	ASSERT_FALSE(exp.isValidExpression(s));
 }
 
 TEST(ValidExpressionTest, last_symbol_is_operator)
 {
-	ArithmeticExpression exp;
+	TestEx exp;
 	string s = "(a-b)*c+a*";
 	ASSERT_FALSE(exp.isValidExpression(s));
 }
 
 TEST(ValidExpressionTest, correct_input)
 {
-	ArithmeticExpression exp;
+	TestEx exp;
 	string s = "a+(b-a)/(d-a)*12-(x2+b)/x1";
 	ASSERT_TRUE(exp.isValidExpression(s));
 }
 
 TEST(AddToStack1Test, add_elements_to_stack1_from_stack_2)
 {
-	ArithmeticExpression exp;
+	TestEx exp;
 	TStack<string> s1(5);
 	TStack<string> s2(5);
 	TStack<string> s3(5);

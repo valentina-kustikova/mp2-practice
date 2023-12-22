@@ -41,14 +41,14 @@ TEST(TStack, copy_constructor_test_memory)
 TEST(TStack, stack_is_empty_true)
 {
     TStack<int> s(3);
-    EXPECT_EQ(1,s.IsEmpty());
+    ASSERT_TRUE(s.IsEmpty());
 }
 
 TEST(TStack, stack_is_empty_false)
 {
     TStack<int> s(3);
     s.Push(1);
-    EXPECT_EQ(0, s.IsEmpty());
+    ASSERT_FALSE(s.IsEmpty());
 }
 
 //is_full
@@ -56,7 +56,7 @@ TEST(TStack, stack_is_full_false)
 {
     TStack<int> s(3);
     s.Push(1);
-    EXPECT_EQ(0, s.IsFull());
+    ASSERT_FALSE(s.IsFull());
 }
 
 TEST(TStack, stack_is_full_true)
@@ -64,7 +64,7 @@ TEST(TStack, stack_is_full_true)
     TStack<int> s(3);
     for (int i = 0; i < 3; i++)
         s.Push(i);
-    EXPECT_EQ(1, s.IsFull());
+    ASSERT_TRUE(s.IsFull());
 }
 
 //top
