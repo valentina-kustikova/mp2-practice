@@ -3,8 +3,8 @@
 template <typename T>
 class TStack {
 private:
-	int MaxSize; //размер стека
-	int top;	 //индекс последнего элемента
+	int MaxSize;
+	int top;
 	T* elems;
 public:
 	TStack(int size = 10);
@@ -14,10 +14,10 @@ public:
 	bool IsEmpty() const;
 	bool IsFull() const;
 
-	T Pop(); // убрать элемнт с вершины стека
+	T Pop();
 	void Push(const T& elem);
 
-	T Top(); // скопировать значение элемента с вершины стека
+	T Top();
 };
 
 template <typename T>
