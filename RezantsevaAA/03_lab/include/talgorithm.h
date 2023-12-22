@@ -28,7 +28,7 @@ private:
 
 public:
     Postfix(); 
-    Postfix(const std::vector<std::string>& postf); // должен принимать строку и делать парсинг, разбивать на лексемы и проверять корректность и т.д
+    Postfix(const std::vector<std::string>& postf); 
     std::string getStringView() const
     {
         return s_postfix;

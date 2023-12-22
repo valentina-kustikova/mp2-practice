@@ -33,7 +33,7 @@ bool Postfix::isOperator(const std::string& str) {
     return (str == "+" || str == "-" || str == "*" || str == "/" || str == "(" || str == ")");
 }
 
-// cout for struct Postrix
+// cout for struct Postfix
 std::ostream& operator<<(std::ostream& out, const Postfix& op)
 {
     out << op.s_postfix;
@@ -104,6 +104,8 @@ double Postfix::calculateOperator(char operator_, double a, double b) const
     case '*':
         return a * b;
     case '/':
+        if (b == 0)
+            throw "Division by zero";
         return a / b;
     }
 }
