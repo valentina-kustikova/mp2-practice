@@ -21,26 +21,27 @@ private:
 
 	void Parse();
 	void ToPostfix();
+	void InToPostfix();
+	vector<string> GetPostFix() const { return postfix; }
+
 	bool IsOperator(const string& lecsem) const;
 	bool IsConst(const string& lecsem) const;
+	bool isOperatorChar(char c) const;
+	bool isCorrectInfixExpression();
+	vector<string> GetOperands() const;
+	
 	
 
 public:
 
 	TArithmeticExpression(const string& infix);
-
-	string GetInfix() const { return infix; }
-	vector<string> GetPostFix() const { return postfix; }
-	string GetPostFix_str() const { return str_postfix; }
-
-
-	bool isCorrectInfixExpression();
-	vector<string> GetOperands() const;
 	void SetValues();
+	string GetInfix() const { return infix; }
+	string GetPostFix_str() const { return str_postfix; }
 	double Calculate(const map<string, double>& values);
 	double Calculate();
 	void ShowPostfix();
-	void InToPostfix();
+	
 
 };
 

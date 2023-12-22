@@ -6,6 +6,7 @@
 TArithmeticExpression::TArithmeticExpression(const string& infx) : infix(infx)
 {
 	priority = { {"(",1},{")",1},{"+",2},{"-",2}, {"*",3},{"/",3}};
+	isCorrectInfixExpression();
 	ToPostfix();
 	InToPostfix();
 }
@@ -199,17 +200,27 @@ double TArithmeticExpression::Calculate()
 
 bool TArithmeticExpression::isCorrectInfixExpression()
 {
-	int openParentheses = 0;
-	int closeParentheses = 0;
+	int count = 0;
 
 	for (char c : infix)
+	{
 		if (c == '(')
-			openParentheses++;
+			count++;
 		else if (c == ')')
-			closeParentheses++;
+			count--;
+	}
 
-	return openParentheses == closeParentheses;
+	if (count != 0)
+		throw"Error";
 
+	for (int i = 0; i < infix.size(); i++)
+	{
+		for (int j = i + 1; j < i + 2; j++)
+		{
+			if (isOperatorChar(infix[i]) && isOperatorChar(infix[j]))
+				throw"Error";
+		}
+	}
 }
 
 void TArithmeticExpression::ShowPostfix()
@@ -226,4 +237,8 @@ void TArithmeticExpression::InToPostfix()
 	for (const auto& elem : postfix) {
 		str_postfix += elem; // конкатенируем каждый элемент в строку result
 	}
+}
+
+bool TArithmeticExpression::isOperatorChar(char c) const {
+	return (c == '+' || c == '-' || c == '*' || c == '/');
 }
