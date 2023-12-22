@@ -25,69 +25,72 @@ int Postfix::GetPriority(const char op)
     }
 }
 
-bool  Postfix::isOperator(char c) {
+bool Postfix::isOperator(char c) {
     return (c == '+' || c == '-' || c == '*' || c == '/' || c == '(' || c == ')');
 }
 
-//for struct Operand
-std::ostream& operator<<(std::ostream& out, const Operand& op)
+bool Postfix::isOperator(const std::string& str) {
+    return (str == "+" || str == "-" || str == "*" || str == "/" || str == "(" || str == ")");
+}
+
+// cout for struct Postrix
+std::ostream& operator<<(std::ostream& out, const Postfix& op)
 {
-    out << op.name;
+    out << op.s_postfix;
     return out;
 };
-
-void Operand::SetValue()
-{
-    std::cout << "Enter variable value for \"" << name << "\"" << std::endl;
-    std::cin >> value;
-};
-
-bool Operand::isSpecified() {
-    if ((value == INFINITY) && (isSign == false)) {
-        return false;
-    }
-
-    return true;
-}
 
 //for class Postfix
 
 Postfix::Postfix()
 {
-    operands = std::vector<Operand>();
+    postfixArray = std::vector<std::string>();
     s_postfix = "";
+    operands = std::map<std::string, double>();
 }
 
-Postfix::Postfix(const std::vector<Operand>& postf)
+Postfix::Postfix(const std::vector<std::string>& postf)
 {
-    operands = postf;
+    postfixArray = postf;
     s_postfix = "";
     for (int i = 0; i < postf.size(); i++)
     {
-        s_postfix += postf[i].name;
+        s_postfix += postf[i];
         s_postfix += " ";
+
+        if (!isOperator(postf[i]) && operands.find(postf[i]) == operands.end()) {
+            double value = INFINITY;
+
+            try {
+                value = std::stof(postf[i]);
+            }
+            catch (std::invalid_argument const& ex)
+            {
+            };
+
+            // put new unique operand to map
+            operands[postf[i]] = value;
+        }
     }
 }
 
 void Postfix::setValues()
 {
-    std::map <std::string, double> readyOperands;
-    for (int i = 0; i < operands.size(); i++)
+    for (auto& operand : operands)
     {
-        if (!operands[i].isSpecified())
-        {
-            if (readyOperands.find(operands[i].name) != readyOperands.end()) //found a match 
-            {
-                operands[i].value = readyOperands[operands[i].name];
-            }
-            else
-            {
-                operands[i].SetValue();
-                readyOperands[operands[i].name] = operands[i].value;
-            }
+        if (operand.second == INFINITY) {
+            operand.second = getValue(operand.first);
         }
-
     }
+};
+
+double Postfix::getValue(const std::string& name)
+{
+    std::cout << "Enter variable value for \"" << name << "\"" << std::endl;
+    double value = INFINITY;
+    std::cin >> value;
+
+    return value;
 };
 
 double Postfix::calculateOperator(char operator_, double a, double b) const
@@ -105,60 +108,52 @@ double Postfix::calculateOperator(char operator_, double a, double b) const
     }
 }
 
-double Postfix::calculate() const
+double Postfix::calculate()
 {
     TStack<double> S; //store value
-    for (int i = 0; i < operands.size(); i++)
+    for (int i = 0; i < postfixArray.size(); i++)
     {
-        if (operands[i].isSign == false) // if operand
+        if (!isOperator(postfixArray[i])) // if operand
         {
-            S.Push(operands[i].value);
+            S.Push(operands[postfixArray[i]]);
         }
-        else //if operator 
+        else // if operator 
         {
             double b = S.Pop();
             double a = S.Pop();
-            S.Push(calculateOperator(operands[i].name[0], a, b));
+            S.Push(calculateOperator(postfixArray[i][0], a, b));
         }
     }
+
     return S.Pop();
 }
 
-//namespace Polsk
-
-std::pair<Operand, int> Postfix::getOperand(std::string s, int pos)
+// Get string name of operand in source string s
+std::pair<std::string, int> Postfix::getOperand(const std::string& s, int pos)
 {
-    Operand tmp;
-    tmp.isSign = false;
-    tmp.name = "";
-    tmp.value = INFINITY;
+    std::string operandName = "";
 
     while (pos < s.size() && !isOperator(s[pos]))
     {
-        tmp.name += s[pos];
+        operandName += s[pos];
         pos++;
     }
-    try {
-        tmp.value = std::stof(tmp.name);
-    }
-    catch (std::invalid_argument const& ex)
-    {
-    };
 
-    return {tmp, pos};
+    return {operandName, pos};
 }
+
 
 Postfix Postfix::ConvertToPol(const std::string& s)
 {
     int open = 0;
     int close = 0;
-    TStack<Operand> S1(s.size());  //store operand
+    TStack<std::string> S1(s.size());  //store operand
     TStack<char> S2(s.size());  // store operations
     for (int i = 0; i < s.size(); i++)
     {
         if (!isOperator(s[i]))
         {
-            std::pair<Operand, int> op = getOperand(s, i);
+            std::pair<std::string, int> op = getOperand(s, i);
             S1.Push(op.first);
             i = op.second - 1;
         }
@@ -173,11 +168,10 @@ Postfix Postfix::ConvertToPol(const std::string& s)
             {
                 while (!S2.isEmpty())
                 {
-                    Operand elem;
-                    elem.name = S2.Pop();
-                    if (elem.name != "(")
+                    char operation = S2.Pop();
+                    if (operation != '(')
                     {
-                        S1.Push(elem);
+                        S1.Push(std::string(1, operation));
                     }
                     else
                     {
@@ -194,12 +188,10 @@ Postfix Postfix::ConvertToPol(const std::string& s)
                 else {
                     while (!S2.isEmpty())
                     {
-                        char elem = S2.Top();
-                        if (GetPriority(elem) >= GetPriority(s[i]))
+                        char operation = S2.Top();
+                        if (GetPriority(operation) >= GetPriority(s[i]))
                         {
-                            Operand a;
-                            a.name = S2.Pop();
-                            S1.Push(a);
+                            S1.Push(std::string(1, S2.Pop()));
                         }
                         else {
                             break;
@@ -216,15 +208,13 @@ Postfix Postfix::ConvertToPol(const std::string& s)
     }
     while (!S2.isEmpty())
     {
-        Operand b;
-        b.name = S2.Pop();
-        S1.Push(b);
+        S1.Push(std::string(1, S2.Pop()));
     } 
 
     // we got a postfix entry on stack 1, now convert it to a string
    
-    std::vector<Operand> result_inverse;
-    std::vector<Operand> result;
+    std::vector<std::string> result_inverse;
+    std::vector<std::string> result;
 
     while (!S1.isEmpty())
     {
@@ -242,13 +232,10 @@ Postfix Postfix::ConvertToPol(const std::string& s)
 
 int Postfix::getCountNotSpecified() {
     int count = 0;
-    std::set<std::string> unique;
-    for (int i = 0; i < operands.size(); i++)
+    for (auto& operand : operands)
     {
-        if ((!operands[i].isSpecified()) && (unique.find(operands[i].name) == unique.end()))
-        {
+        if (operand.second == INFINITY) {
             count += 1;
-            unique.insert(operands[i].name);
         }
     }
 
@@ -257,8 +244,6 @@ int Postfix::getCountNotSpecified() {
 
 void Postfix::setValuesFromVector(const std::vector<double>& values) {
     int countOfNotSpecified = getCountNotSpecified();
-    std::map <std::string, double> readyOperands;
-    std::cout << countOfNotSpecified << " " << values.size() << '\n';
     if (countOfNotSpecified != values.size())
     {
         std::cout << "Number of provided values not equal number of not specified values\n";
@@ -266,18 +251,10 @@ void Postfix::setValuesFromVector(const std::vector<double>& values) {
     }
 
     int posValues = 0;
-    for (int i = 0; i < operands.size(); i++)
+    for (auto& operand : operands)
     {
-        if (!operands[i].isSpecified()) {
-            if (readyOperands.find(operands[i].name) != readyOperands.end()) //нашли совпадение 
-            {
-                operands[i].value = readyOperands[operands[i].name];
-            }
-            else
-            {
-                operands[i].value = values[posValues++];
-                readyOperands[operands[i].name] = operands[i].value;
-            }
+        if (operand.second == INFINITY) {
+            operand.second = values[posValues++];
         }
-    }   
+    }
 }

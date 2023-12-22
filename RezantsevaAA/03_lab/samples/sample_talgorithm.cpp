@@ -4,10 +4,11 @@
 int main()
 {
 	std::string s1 = "A+B+X1+XY+2.5+3";
+
 	std::string s2 = "A+(B-A)/(D-A)*K-(A+B)/B";
 	Postfix postfix1 = postfix1.ConvertToPol(s1);
 	std::cout << "Formula 1 : " << s1 << std::endl;
-	std::cout << "Postfix 1 : " << postfix1.getStringView()<<std::endl;
+	std::cout << "Postfix 1 : " << postfix1 << std::endl;
 	
 
 	postfix1.setValues();
@@ -16,7 +17,7 @@ int main()
 
 	Postfix postfix2 = postfix2.ConvertToPol(s2);
 	std::cout << "Formula 2 : " << s2 << std::endl;
-	std::cout << "Postfix 2 : "<< postfix2.getStringView() << std::endl;;
+	std::cout << "Postfix 2 : "<< postfix2 << std::endl;;
 
 	postfix2.setValues();
 	double result2 = postfix2.calculate();
