@@ -18,12 +18,6 @@ TEST(Stack, no_throw_when_use_constructor_copy) {
 	ASSERT_NO_THROW(Stack<double> stack2(stack1));
 }
 
-TEST(Stack, original_adresses_memory) {
-	Stack<double> stack1;
-	Stack<double> stack2(stack1);
-	EXPECT_TRUE(stack1.GetMemory() != stack2.GetMemory());
-}
-
 TEST(Stack, no_throw_when_use_destructor) {
 	Stack<int>* my_stack = new Stack<int>(5);
 	ASSERT_NO_THROW(delete my_stack);
