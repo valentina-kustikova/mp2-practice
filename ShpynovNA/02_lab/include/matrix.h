@@ -59,17 +59,17 @@ template  <typename T> TMatrix<T>::TMatrix(const TVector<TVector<T>>& v) : TVect
 
 template  <typename T> TMatrix<T> TMatrix<T>::operator+(const TMatrix<T>& m) {
 	if (size != m.size)
-		throw "got different sizes on addition";
+		throw "got different sizes on addition, can't add, subtract or multiplicate";
 	return TVector<TVector<T>>::operator+(m);
 }
 template  <typename T> TMatrix<T> TMatrix<T>::operator-(const TMatrix<T>& m) {
 	if (size != m.size)
-		throw "got different sizes on subtractoin";
+		throw "got different sizes on subtractoin, can't add, subtract or multiplicate";
 	return TVector<TVector<T>>::operator-(m);
 }
 template  <typename T> TMatrix<T> TMatrix<T>::operator*(const TMatrix<T>& m) {
 	if (size != m.size)
-		throw "got different sizes on multiplication";
+		throw "got different sizes on multiplication, can't add, subtract or multiplicate";
 	TMatrix<T> res(size);
 	for (int i = 0; i < size; i++)
 		for (int j = i; j < size; j++)

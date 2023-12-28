@@ -11,10 +11,10 @@ int main(){
     cout << "2nd matrix size:";
     cin >> n;
     TMatrix<double> mat2(n);
-    cout << "1st vector:";
+    cout << "1st matrix:";
     cin >> mat1;
     cout << "got " << endl << mat1 << endl;
-    cout << "2nd vector:";
+    cout << "2nd matrix:";
     cin >> mat2;
     cout << "got " <<endl << mat2 << endl;
     try {
