@@ -8,10 +8,9 @@
 using namespace std;
 
 class Talgorithm {
-private:
+public:
 	static bool isOperator(const string& str);
 	static int getPrecedence(const string& op);
-public:
 	static void isValidTalgorithm(const vector<string>& infixTalgorithm);
 	static vector<string> splitTalgorithm(const string& expression);
 	static Stack<string> infixToPostfix(const vector<string>& infixTalgorithm);
