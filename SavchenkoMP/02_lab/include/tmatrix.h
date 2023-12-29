@@ -85,12 +85,12 @@ TMatrix<T> TMatrix<T>::operator*(const TMatrix<T>& m) {
 	
 	TMatrix<T> res(size);
 	for (int i = 0; i < size; i++)
-		for (int j = res[i].GetStartIndex(); j < size; j++)
+		for (int j = i; j < size; j++)
 			res[i][j] = (*this)[i][j] - (*this)[i][j];
 
 	for (int i = 0; i < size; i++)
-		for (int j = res[i].GetStartIndex(); j < size; j++)
-			for (int k = res[i].GetStartIndex(); k <= j; k++)
+		for (int j = i; j < size; j++)
+			for (int k = i; k <= j; k++)
 				res[i][j] += (*this)[i][k] * m.pMem[k][j];
 	return res;
 }
