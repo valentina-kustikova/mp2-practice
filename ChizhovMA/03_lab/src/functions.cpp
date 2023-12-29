@@ -282,7 +282,11 @@ double ArithmeticExpression::Calculate(TStack<string>& st, const map<string, dou
 				leftOp = stack.Top();
 				stack.Pop();
 				if (rightOp == 0)
-					throw "Error";
+				{
+					cout << "Error: Offset by zero";
+					return -1;
+				}
+					
 				resOp = leftOp / rightOp;
 				stack.Push(resOp);
 			}

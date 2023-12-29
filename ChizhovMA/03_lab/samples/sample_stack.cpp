@@ -20,6 +20,7 @@ int main()
 	}
 	map<string, double> variableDict = ArithmeticExpression::GetVariables(st);
 	res = ArithmeticExpression::Calculate(st, variableDict);
-	cout << res;
+	if (res != -1)
+		cout << res;
 	return 0;
 }
