@@ -12,8 +12,8 @@ int main()
         cout << "Postfix form:         | " << expr.GetPostfix() << endl;
         cout << "Calculate expression: | " << expr.Calculate() << endl;
     }
-    catch (const string& exp){
-        cout << exp;
+    catch (const char* exp){
+        cout << exp << endl;
         return 0;
     }
     return 0;

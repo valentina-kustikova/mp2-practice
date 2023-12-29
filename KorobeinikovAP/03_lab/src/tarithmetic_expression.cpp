@@ -366,7 +366,7 @@ double TArithmeticExpression::Calculate() {
 			st.Pop();
 
 			if (op2 == 0) {
-				throw string("Division by 0 (prohibited)");
+				throw "Division by 0 (prohibited)";
 			}
 			else st.Push(op1 / op2);
 		}
