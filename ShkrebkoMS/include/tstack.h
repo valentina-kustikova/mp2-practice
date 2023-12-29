@@ -14,16 +14,11 @@ public:
 	Stack(int size = 10);
 	Stack(const Stack<T>& s);
 	~Stack();
-	T Pop();
-	T Top();
+	void Pop();
+	T Top() const;
 	void Push(const T e);
 	bool IsFull()const { return top == maxSize - 1; }
 	bool IsEmpty()const { return top == -1; }
-	int GetTop() { return top; }
-
-
-
-
 };
 
 template <typename T>
@@ -57,7 +52,7 @@ Stack<T>::~Stack() {
 }
 
 template <typename T>
-T Stack<T>::Top() {
+T Stack<T>::Top() const {
 	if (IsEmpty()) {
 		throw "Stack is empty!";
 	}
@@ -79,14 +74,11 @@ void Stack<T>::Push(const T e) {
 
 
 template <typename T>
-T Stack<T>::Pop() {
+void Stack<T>::Pop() { 
 	if (IsEmpty()) {
 		throw "Stack is empty!";
 	}
-	else {
-
-		return elems[top--];
-	}
+	top--;
 }
 
 #endif

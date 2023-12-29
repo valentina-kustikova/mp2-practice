@@ -6,25 +6,19 @@ using namespace std;
 
 int main() {
 	cout << "TArithmeticExpression\n" << endl;
+	cout << "Enter an arithmetic expression." << endl;
+	string infix;
+	getline(cin, infix);
+
+	TArithmeticExpression ae(infix);
+
+	ae.SetValues();
+	ae.ShowPostfix();
 	try {
-		string example1 = "A+(B-C)*D-F/(G+H)";
-
-
-
-		cout << "Enter an arithmetic expression." << endl;
-		cout << "Arithmetic expression examples: \n" << example1 << "\n" << endl;
-
-
-		string infix;
-		getline(cin, infix);
-
-		TArithmeticExpression ae(infix);
-
-		ae.SetValues();
 		cout << ae.Calculate() << endl;
 	}
-	catch (string exp) {
-		cout << exp << endl;
+	catch (std::exception exp) {
+		cout << exp.what() << endl;
 	}
 	return 0;
 }

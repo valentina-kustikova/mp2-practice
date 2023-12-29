@@ -34,7 +34,7 @@ TEST(TStack, can_pop_element)
 	Stack<int> stack(5);
 	stack.Push(1);
 	stack.Push(2);
-	ASSERT_NO_THROW(stack.Pop());
+	ASSERT_NO_THROW(stack.Pop()); 
 }
 
 TEST(TStack, can_show_top_element)

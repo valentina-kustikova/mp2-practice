@@ -100,6 +100,7 @@ bool TArithmeticExpression::IsConst(const string& lexem) const
 
 TArithmeticExpression::TArithmeticExpression(const string& infix) :infix(infix) {
 	ToPostfix();
+	InToPostfix();
 }
 
 map<string, int> TArithmeticExpression::priority = {
@@ -174,8 +175,8 @@ double TArithmeticExpression::Calculate(const map<string, double>& values)
 			st.Pop();
 			leftOperand = st.Top();
 			st.Pop();
-			if (rightOperand == 0) {
-				throw"Error";
+			if (rightOperand == 0.0) {
+				throw std::exception ("Error");
 			}
 			st.Push(leftOperand / rightOperand);
 		}
@@ -193,3 +194,20 @@ double TArithmeticExpression::Calculate()
 
 
 
+void TArithmeticExpression::ShowPostfix()
+{
+	for (int i = 0; i < postfix.size(); i++)
+	{
+		cout << postfix[i] << " ";
+	}
+	cout << endl;
+}
+
+
+
+void TArithmeticExpression::InToPostfix()
+{
+	for (const auto& elem : postfix) {
+		spostfix += elem; 
+	}
+}

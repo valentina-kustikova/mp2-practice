@@ -12,23 +12,30 @@ using namespace std;
 class TArithmeticExpression {
 private:
 	string infix;
+	string spostfix;
 	vector<string> postfix;
 	vector<string> lexems;
 	static map<string, int> priority;
 	map<string, double> operands;
 	void Parse();
 	void ToPostfix();
-	bool IsOperator(const string& lecsem) const;
-	bool IsConst(const string& lecsem) const;
-	double Calculate(const map<string, double>& values);
+	bool IsOperator(const string& lexem) const;
+	bool IsConst(const string& lexem) const;
+
+	void InToPostfix();
 
 public:
 	TArithmeticExpression(const string& infix);
 	string GetInfix() const { return infix; }
-	vector<string> GetPostFix() const { return postfix; }
+	string GetPostfix_str() const { return spostfix; }
+	vector<string> GetPostfix() const { return postfix; }
 	bool isCorrectInfixExpression();
 	void SetValues();
 	double Calculate();
+	double Calculate(const map<string, double>& values);
+	void ShowPostfix();
 };
+
+
 
 #endif
