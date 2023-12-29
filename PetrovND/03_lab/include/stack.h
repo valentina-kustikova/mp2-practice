@@ -2,26 +2,25 @@
 #ifndef _STACK_H
 #define _STACK_H
 #include <iostream>
-#include <../gtest/gtest.h>
 
 template <typename T> class Stack {
+	friend class StackTest;
 private:
 	T* data;
 	int maxSize;
 	int top_;
 
 	void resize(int step = 10);
-	FRIEND_TEST(resize_test, resize_change_size);
 public:
 	Stack(int size = 10);
 	Stack(const Stack<T>& stack);
 	~Stack();
-	T pop();
+	void pop();
 	T top() const;
 	void push(const T& element);
 	bool isEmpty() const;
 	bool isFull() const;
-	Stack<T>& operator=(const Stack<T>& stack);
+	const Stack<T>& operator=(const Stack<T>& stack);
 	bool operator==(const Stack<T>& stack) const;
 };
 
@@ -79,12 +78,12 @@ template <typename T> void Stack<T>::push(const T& element) {
 	data[++top_] = element;
 }
 
-template <typename T> T Stack<T>::pop() {
+template <typename T> void Stack<T>::pop() {
 	if (isEmpty()) throw "Stack is empty!";
-	return data[top_--];
+	top_--;
 }
 
-template <typename T> Stack<T>& Stack<T>::operator=(const Stack<T>& stack) {
+template <typename T> const Stack<T>& Stack<T>::operator=(const Stack<T>& stack) {
 	if (this != &stack) {
 		delete[] data;
 		maxSize = stack.maxSize;

@@ -40,15 +40,16 @@ bool Parser::isOperator(const string& token) {
     return (token == "+" || token == "-" || token == "*" || token == "/");
 }
 
-void Parser::isValidExpression(const vector<string>& infixExpression) {
-    if(isOperator(infixExpression[0])) throw invalid_argument("Error: The expression starts with the operator\n");
-    else if (isOperator(infixExpression[infixExpression.size() - 1])) throw invalid_argument("Error: The expression ends with the operator\n");
+bool Parser::isValidExpression(const vector<string>& infixExpression) {
+    if (isOperator(infixExpression[0])) return 0;
+    else if (isOperator(infixExpression[infixExpression.size() - 1])) return 0;
     else{
         for (int i = 0; i < infixExpression.size() - 1; i++) {
-            if(isOperator(infixExpression[i]) && isOperator(infixExpression[i+1])) throw invalid_argument("Error: Two consecutive operators\n");
-            if(infixExpression[i] == "(" && isOperator(infixExpression[i + 1]))throw invalid_argument("Error: The operator after the open parenthesis\n");
+            if(isOperator(infixExpression[i]) && isOperator(infixExpression[i+1])) return 0;
+            if(infixExpression[i] == "(" && isOperator(infixExpression[i + 1])) return 0;
         }
     }
+    return 1;
 }
 
 
@@ -125,7 +126,7 @@ double Parser::evaluatePostfixExpression(const map<string, double>& operandValue
                 resultStack.push(operandValues.at(token));
             }
             else {
-                cerr << "Error: operands value '" << token << "' not exist.\n";
+                throw invalid_argument("Error: operands value not exist.\n");
                 return 0.0;
             }
         }
@@ -147,7 +148,7 @@ double Parser::evaluatePostfixExpression(const map<string, double>& operandValue
             }
             else if (token == "/") {
                 if (operand2 == 0) {
-                    cerr << "ERROR: divizion by zero.\n";
+                    throw "ERROR: divizion by zero.\n";
                     return 0.0;
                 }
                 resultStack.push(operand1 / operand2);

@@ -13,7 +13,7 @@ private:
 	static bool isOperator(const string& token);
 	static int getPrecedence(const string& op);
 public:
-	static void isValidExpression(const vector<string>& infixExpression);
+	static bool isValidExpression(const vector<string>& infixExpression);
 	static vector<string> splitExpression(const string& expression);
 	static vector<string> infixToPostfix(const vector<string>& infixExpression);
 	static map<string, double> getOperandValues(const vector<string>& tokens);

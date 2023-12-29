@@ -1,5 +1,17 @@
-#include "stack.h"
 #include <gtest.h>
+#include "stack.h"
+
+class StackTest :public::testing::Test {
+protected:
+    Stack<int> st;
+    void resize(int step = 10) { st.resize(); }
+    int maxSize() { return st.maxSize; }
+};
+
+TEST_F(StackTest, resize) {
+    StackTest::resize();
+    EXPECT_EQ(StackTest::maxSize(), 20);
+}
 
 TEST(Stack, create_stack)
 {
@@ -60,7 +72,7 @@ TEST(Stack, assignment_perator_test)
     EXPECT_EQ(s1, s2);
 }
 
-TEST(Stack, assignment_perator_memory_test)
+TEST(Stack, assignment_operator_memory_test)
 {
     Stack<int> s1(3);
     s1.push(1);
@@ -168,9 +180,3 @@ TEST(Stack, resize_works)
     EXPECT_NO_THROW(s1.push(3));
 }
 
-TEST(resize_test, resize_change_size)
-{
-    Stack<int> s1(2);
-    s1.resize(2);
-    EXPECT_EQ(s1.maxSize, 4);
-}
