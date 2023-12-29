@@ -112,7 +112,9 @@ void TArithmeticExpression::CorrectnessCheck() {
 	string exp = "Incorrect arithmetic expression";
 
 	if (infix[0] == '+' || infix[0] == '*' || infix[0] == '/' || infix[0] == ')') throw exp;
-	if (infix[infix.size() - 1] == '+' || infix[infix.size() - 1] == '-' || infix[infix.size() - 1] == '*' || infix[infix.size() - 1] == '/' || infix[infix.size() - 1] == '(') throw exp;
+	if (infix[infix.size() - 1] == '+' || infix[infix.size() - 1] == '-' ||
+		infix[infix.size() - 1] == '*' || infix[infix.size() - 1] == '/' ||
+		infix[infix.size() - 1] == '(') throw exp;
 
 	if (infix[0] == '(') op_bracket++;
 	else if (infix[0] == '.') dot++;
