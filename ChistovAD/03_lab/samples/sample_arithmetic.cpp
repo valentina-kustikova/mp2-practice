@@ -14,7 +14,7 @@ int main() {
 		example.SetValues();
 		cout << "Result:" << example.Calculate() << endl;
 	}
-	catch (string exp) {
+	catch (char* exp) {
 		cout << exp << endl;
 	}
 	return 0;
