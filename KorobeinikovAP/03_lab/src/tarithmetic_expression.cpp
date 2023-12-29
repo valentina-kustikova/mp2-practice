@@ -405,7 +405,7 @@ TArithmeticExpression::TArithmeticExpression(const string& infx) {
 }
 */
 
-TArithmeticExpression::TArithmeticExpression(string infx,const map<string, double> operands_): infix(infx) 
+TArithmeticExpression::TArithmeticExpression(const string& infx,const map<string, double> operands_): infix(infx) 
 {
 	if (operands_ != map<string, double>() )
 	{
