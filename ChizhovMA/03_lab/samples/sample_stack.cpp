@@ -19,8 +19,13 @@ int main()
 		cout << msg << endl;
 	}
 	map<string, double> variableDict = ArithmeticExpression::GetVariables(st);
-	res = ArithmeticExpression::Calculate(st, variableDict);
-	if (res != -1)
+	try {
+		res = ArithmeticExpression::Calculate(st, variableDict);
 		cout << res;
+	}
+	catch(string exp){
+		cout << exp;
+	}
+		
 	return 0;
 }
