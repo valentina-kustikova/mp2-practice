@@ -3,31 +3,45 @@
 
 #include <iostream>
 #include <vector>
+#include <string>
 #include <map>
 #include "tstack.h"
 
 class TArithmeticExpression {
 private:
 	string infix;
-	string postfix;
-	vector<char> lexems;
-	static map <char, int> priority;
-	map <char, double> operands;
+	vector<string> postfix;
+	vector<string> lexems;
+	map <string, int> priority;
+	map <string, double> operands;
+
+	//вспомогательные функции
+	bool IsOperator(const string& op) const;
+	bool IsConst(const string& op) const;
+	bool IsBinaryOperator(const char& op) const;
+	int FindFirstOperator(int pos) const;
+
+	void SetOperand(const string& operand);
+
+	void GetFinishedLine();
+	void CheckCorrect() const;
+
 
 	void Parse();
 	void ToPostfix();
 public:
-	TArithmeticExpression(string infx);
+	//TArithmeticExpression(const string& infx);
+	TArithmeticExpression(string infx, const map<string, double> operands_ = map<string, double>());
 
 	string GetInfix() const {
 		return infix;
 	}
 	string GetPostfix()  const {
-		return postfix;
+		string postfix_str = postfix[0];
+		for (int i = 1; i < postfix.size(); i++) postfix_str  += postfix[i];
+		return postfix_str;
 	}
 
-	vector <char> GetOperands() const;
-
-	double  Calculate(const map<char, double>& values);
+	double  Calculate();
 };
 #endif
