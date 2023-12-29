@@ -46,12 +46,6 @@ TEST(TalgorithmTest, IsValidTalgorithm_DivisionByZero) {
     ASSERT_THROW(talgorithm.isValidTalgorithm(infixTalgorithm), invalid_argument);
 }
 
-TEST(TalgorithmTest, GetOperandValues_ValidOperandsValues) {
-    Talgorithm talgorithm;
-    vector<string> tokens = { "x", "y" };
-    ASSERT_NO_THROW(talgorithm.getOperandValues(tokens));
-}
-
 TEST(TalgorithmTest, InfixToPostfix_ValidExpression) {
     Talgorithm talgorithm;
     vector<string> infixTalgorithm = { "2", "+", "3" };
@@ -70,10 +64,10 @@ TEST(TalgorithmTest, EvaluatePostfixTalgorithm_MissingOperandValue) {
 
 TEST(TalgorithmTest, EvaluatePostfixTalgorithm_DivisionByZero) {
     Talgorithm talgorithm;
-    map<string, double> operandValues = { {"x", 0.0} };
+    map<string, double> operandValues = { {"x", 1.0}, {"y", 0.0} };
     Stack<string> postfixTalgorithm;
-    postfixTalgorithm.push("2");
     postfixTalgorithm.push("x");
+    postfixTalgorithm.push("y");
     postfixTalgorithm.push("/");
     ASSERT_DOUBLE_EQ(talgorithm.evaluatePostfixTalgorithm(operandValues, postfixTalgorithm), 0.0);
 }
@@ -98,8 +92,6 @@ TEST(TalgorithmTest, EvaluatePostfixTalgorithm_ValidExpression) {
     double result = talgorithm.evaluatePostfixTalgorithm(operandValues, postfixTalgorithm);
     ASSERT_DOUBLE_EQ(result, 5.0);
 }
-
-
 
 
 

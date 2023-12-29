@@ -16,7 +16,6 @@ TEST(TStack, cannot_create_stack_with_zero_length)
 	ASSERT_ANY_THROW(Stack<int> S(0));
 }
 
-// test isEmpty
 TEST(TStack, stack_is_empty)
 {
 	Stack<int> S(3);
@@ -30,7 +29,6 @@ TEST(TStack, stack_is_not_empty)
 	EXPECT_EQ(false, S.isEmpty());
 }
 
-//  test isFull
 TEST(TStack, stack_is_not_empty_and_not_full)
 {
 	Stack<int> S(2);
@@ -51,7 +49,7 @@ TEST(TStack, stack_is_full)
 	S.push(2);
 	EXPECT_EQ(true, S.isFull());
 }
-// Top and Push
+
 TEST(TStack, cannot_top_if_stack_is_empty)
 {
 	Stack<int> S(3);
@@ -95,7 +93,7 @@ TEST(TStack, right_value_push_if_stack_is_full)
 	S.push(3);
 	EXPECT_EQ(3, S.top());
 }
-// Pop
+
 TEST(TStack, cannot_pop_if_stack_is_empty)
 {
 	Stack<int> S(3);
