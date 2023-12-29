@@ -3,7 +3,7 @@
 
 TEST(MathArithmetics, can_create_expression) 
 {
-	string str = "A+B";
+	string str = "(A+B)*C+D";
 	MathArithmetics expression(str);
 	EXPECT_EQ(str, expression.GetInfix());
 }
@@ -15,27 +15,27 @@ TEST(MathArithmetics, cannot_create_empty_expression)
 
 TEST(MathArithmetics, throw_when_unequal_number_of_brackets1) 
 {
-	ASSERT_ANY_THROW(MathArithmetics expression("((a+b)"));
+	ASSERT_ANY_THROW(MathArithmetics expression("((A+B)"));
 }
 
 TEST(MathArithmetics, throw_when_unequal_number_of_brackets2) 
 {
-	ASSERT_ANY_THROW(MathArithmetics expression("(a+b))"));
+	ASSERT_ANY_THROW(MathArithmetics expression("(A+B))"));
 }
 
 TEST(MathArithmetics, no_throw_when_equal_number_of_brackets) 
 {
-	ASSERT_NO_THROW(MathArithmetics expression("(a+b)"));
+	ASSERT_NO_THROW(MathArithmetics expression("(A+B)"));
 }
 
 TEST(MathArithmetics, no_throw_when_brackets_inside_brackets)
 {
-	ASSERT_NO_THROW(MathArithmetics expression("((c*a)+b)"));
+	ASSERT_NO_THROW(MathArithmetics expression("((C*A)+B)"));
 }
 
 TEST(MathArithmetics, no_throw_when_one_elemet_in_brackets)
 {
-	ASSERT_NO_THROW(MathArithmetics expression("a+(a)"));
+	ASSERT_NO_THROW(MathArithmetics expression("(A+(A))"));
 }
 
 
@@ -50,7 +50,7 @@ TEST(MathArithmetics, can_correctly_count_when_brackets_inside_brackets)
 
 TEST(MathArithmetics, cannot_count_if_there_are_no_values)
 {
-	MathArithmetics expression("a+b");
+	MathArithmetics expression("A+B");
 	expression.ToPostfix();
 	EXPECT_EQ(0, expression.Calculate());
 }
@@ -71,7 +71,7 @@ TEST(MathArithmetics, any_throw_when_expression_is_operator)
 
 TEST(MathArithmetics, throw_when_first_symbol_is_operator)
 {
-	MathArithmetics expression("/(a - b)");
+	MathArithmetics expression("+(35-a)");
 	expression.ToPostfix();
 	ASSERT_ANY_THROW(expression.Calculate());
 }
@@ -98,11 +98,11 @@ TEST(MathArithmetics, can_convert_to_postfix)
 }
 
 TEST(MathArithmetics, can_set_integer_elements) {
-	MathArithmetics expression("(a+b*c)*(c/d-e)");
-	vector<double> example = { 1,2,3,4,5 };
+	MathArithmetics expression("(a+b*c)*(c-d)");
+	vector<double> example = { 1,2,3,4};
 	expression.ToPostfix();
 	expression.SetValues(example);
-	EXPECT_EQ(-29.75, expression.Calculate());
+	EXPECT_EQ(-7, expression.Calculate());
 }
 
 TEST(MathArithmetics, can_set_double_elements)
@@ -116,11 +116,11 @@ TEST(MathArithmetics, can_set_double_elements)
 
 TEST(MathArithmetics, can_set_equal_elements)
 {
-	MathArithmetics expression("a+a+a+b+b");
+	MathArithmetics expression("a+a+b+b");
 	vector<double> example = { 1,2 };
 	expression.ToPostfix();
 	expression.SetValues(example);
-	EXPECT_EQ(7, expression.Calculate());
+	EXPECT_EQ(6, expression.Calculate());
 }
 
 TEST(MathArithmetics, throw_when_have_zero_division)

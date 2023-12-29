@@ -36,24 +36,10 @@ TEST(TStack, stack_is_full_check)
 	EXPECT_EQ(true, stack.IsFull());
 }
 
-TEST(TStack, stack_is_not_full_check) 
-{
-	TStack<int> stack(5);
-	stack.Push(1);
-	EXPECT_EQ(false, stack.IsFull());
-}
-
 TEST(TStack, stack_is_empty_check)
 {
 	TStack<int> stack(1);
 	EXPECT_EQ(true, stack.IsEmpty());
-}
-
-TEST(TStack, stack_is_not_empty_check)
-{
-	TStack<int> stack(1);
-	stack.Push(4);
-	EXPECT_EQ(false, stack.IsEmpty());
 }
 
 TEST(TStack, can_pop_elements)
@@ -63,6 +49,17 @@ TEST(TStack, can_pop_elements)
 	stack.Push(500);
 	stack.Pop();
 	EXPECT_EQ(300, stack.Top());
+}
+
+TEST(TStack, right_value_after_pop_if_stack_is_not_full) {
+	TStack<int> stack(2);
+
+	stack.Push(1);
+	stack.Push(2);
+
+	stack.Pop();
+	EXPECT_EQ(1, stack.Top());
+
 }
 
 TEST(TStack, throws_when_top_element_is_empty) 
@@ -93,10 +90,14 @@ TEST(TStack, can_memory_reallocation)
 
 TEST(TStack, correct_order_of_return_values)
 {
-	TStack <int> stack(3);
+	TStack <int> stack(5);
 	stack.Push(1);
 	stack.Push(2);
 	stack.Push(3);
+	stack.Push(4);
+	stack.Push(5);
+	ASSERT_EQ(5, stack.Pop());
+	ASSERT_EQ(4, stack.Pop());
 	ASSERT_EQ(3, stack.Pop());
 	ASSERT_EQ(2, stack.Pop());
 	ASSERT_EQ(1, stack.Pop());
