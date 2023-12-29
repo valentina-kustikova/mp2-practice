@@ -186,7 +186,39 @@ TEST(TArithmeticExpression, checking_for_the_correct_entry_of_a_postfix_expressi
 }
 //__________________________________________________________
 
+//________________( A + B ) * C_______________
+TEST(TArithmeticExpression, can_get_infix_6)
+{
+    string str = "( A + B ) * C";
+    TArithmeticExpression expression(str);
+    ASSERT_NO_THROW(expression.GetInfix());
+}
 
+TEST(TArithmeticExpression, can_get_postfix_6)
+{
+    string str = "( A + B ) * C";
+    TArithmeticExpression expression(str);
+    ASSERT_NO_THROW(expression.GetPostFix_str());
+}
+
+TEST(TArithmeticExpression, checking_for_the_correct_entry_of_a_postfix_expression_6)
+{
+    string str = "( A + B ) * C";
+    string postfix = "AB+C*";
+    TArithmeticExpression expression(str);
+    EXPECT_EQ(postfix, expression.GetPostFix_str());
+}
+
+TEST(TArithmeticExpression, can_calculate_expressions_from_letters_6)
+{
+    string str = "( A + B ) * C";
+    map<string, double> values = {
+        {"A",1},{"B",2},{"C",4}
+    };
+    TArithmeticExpression expression(str);
+    EXPECT_EQ(12, expression.Calculate(values));
+}
+//______________________________________________________________
 
 
 
