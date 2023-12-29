@@ -23,8 +23,13 @@ int main() {
             std::cin >> val;
             values[op] = val;
         }
-
-        std::cout << expr.Calculate(values) << std::endl;
+        
+        try {
+          std::cout << expr.Calculate(values) << std::endl;
+        }
+        catch (std::exception exp) {
+          std::cout << exp.what() << std::endl;
+        }
     }
     
     return 0;
