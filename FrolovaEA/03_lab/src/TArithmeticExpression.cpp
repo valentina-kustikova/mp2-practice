@@ -15,7 +15,7 @@ void TArithmeticExpression::Parse()
 {
 	string currentElement;
 	for (char c : infix) {
-		if (c == '+' || c == '-' || c == '*' || c == '/' || c == '('||c==')') {
+		if (c == '+' || c == '-' || c == '*' || c == '/' || c == '(' || c == ')') {
 			// Если текущий символ - оператор, добавляем текущий элемент в вектор и затем добавляем оператор
 			if (!currentElement.empty()) {
 				lexems.push_back(currentElement);
@@ -31,11 +31,12 @@ void TArithmeticExpression::Parse()
 			// Если текущий символ - буква, добавляем его к текущему элементу
 			currentElement += c;
 		}
+		else if (c == ' ') continue;  // Игнорируем пробелы
 	}
 	// Добавляем последний элемент в вектор
 	if (!currentElement.empty()) {
 		lexems.push_back(currentElement);
-	}	
+	}
 }
 
 vector<string> TArithmeticExpression::GetOperands() const

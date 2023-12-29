@@ -19,6 +19,8 @@ private:
 	map<string, int> priority;
 	map<string, double> operands;
 
+protected:
+
 	void Parse();
 	void ToPostfix();
 	void InToPostfix();

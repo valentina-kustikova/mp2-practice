@@ -2,6 +2,7 @@
 
 #include <gtest.h>
 
+
 TEST(TArithmeticExpression, checking_constructor_1)
 {
     string str = "A+B*C";
@@ -184,6 +185,7 @@ TEST(TArithmeticExpression, checking_for_the_correct_entry_of_a_postfix_expressi
     EXPECT_EQ(postfix, expression.GetPostFix_str());
 }
 //__________________________________________________________
+
 
 
 

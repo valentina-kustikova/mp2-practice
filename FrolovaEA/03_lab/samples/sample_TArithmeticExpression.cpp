@@ -8,15 +8,26 @@ int main()
 {
 
 
-	string exprStr;
+	string str;
 	cout << "Enter expression : ";
-	cin >> exprStr;
+	getline(cin, str);
 	cout << endl;
-	TArithmeticExpression expr(exprStr);
-	
+	cout << str << endl;
+	TArithmeticExpression expr(str);
+	expr.ShowPostfix();
+	/*//____________________________________________________
+	cout << "kolichestvo alementov v vectore: " << expr.lexems.size() << endl;
+	for (int i = 0; i < expr.lexems.size(); i++)
+	{
+		cout << expr.lexems[i] << endl;
+	}
+
+	cout << "Infix:" << expr.GetInfix() << endl;
+	cout << "str_postfix: " << expr.str_postfix << endl;
+	*/
 	expr.SetValues();
 
-
+	cout << "-----" << endl;
 	cout << expr.Calculate() << endl;
 	cout << expr.GetPostFix_str() << endl;
 	
