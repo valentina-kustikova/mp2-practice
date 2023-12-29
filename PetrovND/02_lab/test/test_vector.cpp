@@ -184,6 +184,7 @@ TEST(Vector, assign_operator_of_different_size_with_nonzero_startIndex)//
     v2[1] = 1;
     v2[2] = 2;
     v2[3] = 3;
+	v2[4] = 4;
     v2 = v1;
     EXPECT_EQ(v1, v2);
 }
@@ -232,7 +233,7 @@ TEST(Vector, compare_equal_vectors_return_true)
     v2[1] = 1;
     v2[2] = 2;
     v2[3] = 3;
-    EXPECT_EQ(v1, v2);
+    EXPECT_TRUE(v1 == v2);
 }
 
 TEST(Vector, compare_equal_vectors_return_true_with_nonzero_startIndex)//
@@ -247,7 +248,7 @@ TEST(Vector, compare_equal_vectors_return_true_with_nonzero_startIndex)//
     v2[1] = 1;
     v2[2] = 2;
     v2[3] = 3;
-    EXPECT_EQ(v1, v2);
+    EXPECT_TRUE(v1 == v2);
 }
 
 TEST(Vector, compare_vector_with_itself_return_true)
@@ -257,7 +258,7 @@ TEST(Vector, compare_vector_with_itself_return_true)
     v1[1] = 1;
     v1[2] = 2;
     v1[3] = 3;
-    EXPECT_EQ(v1, v1);
+    EXPECT_TRUE(v1 == v1);
 }
 
 TEST(Vector, compare_vector_with_itself_return_true_with_nonzero_startIndex)//
@@ -267,7 +268,7 @@ TEST(Vector, compare_vector_with_itself_return_true_with_nonzero_startIndex)//
     v1[1] = 1;
     v1[2] = 2;
     v1[3] = 3;
-    EXPECT_EQ(v1, v1);
+    EXPECT_TRUE(v1 == v1);
 }
 
 TEST(Vector, vectors_with_different_size_are_not_equal)
@@ -283,7 +284,7 @@ TEST(Vector, vectors_with_different_size_are_not_equal)
     v2[2] = 3;
     v2[3] = 4;
     v2[4] = 5;
-    EXPECT_NE(v1, v2);
+    EXPECT_FALSE(v1 == v2);
 }
 
 TEST(Vector, vectors_with_different_size_are_not_equal_with_nonzero_startIndex)//
@@ -299,7 +300,7 @@ TEST(Vector, vectors_with_different_size_are_not_equal_with_nonzero_startIndex)/
     v2[2] = 3;
     v2[3] = 4;
     v2[4] = 5;
-    EXPECT_NE(v1, v2);
+    EXPECT_FALSE(v1 == v2);
 }
 
 TEST(Vector, can_add_scalar_to_vector)

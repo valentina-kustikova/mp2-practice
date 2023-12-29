@@ -15,9 +15,9 @@ public:
 	int operator==(const Matrix& m) const;
 	int operator!=(const Matrix& m) const;
 	const Matrix& operator=(const Matrix& m);
-	Matrix operator+(const Matrix& m);
-	Matrix operator-(const Matrix& m);
-	Matrix operator*(const Matrix& m);
+	Matrix<ValueType> operator+(const Matrix& m);
+	Matrix<ValueType> operator-(const Matrix& m);
+	Matrix<ValueType> operator*(const Matrix& m);
 
 	friend istream& operator>>(istream& in, Matrix<ValueType>& m) {
 		int size = m.getSize();

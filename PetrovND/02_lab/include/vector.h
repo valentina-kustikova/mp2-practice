@@ -20,11 +20,11 @@ public:
     int operator==(const Vector& v) const;
     int operator!=(const Vector& v) const;
     const Vector& operator=(const Vector& v);
-    Vector operator+(const ValueType vt);
-    Vector operator-(const ValueType vt);
-    Vector operator*(const ValueType vt);
-    Vector operator+(const Vector& v);
-    Vector operator-(const Vector& v);
+    Vector<ValueType> operator+(const ValueType vt);
+    Vector<ValueType> operator-(const ValueType vt);
+    Vector<ValueType> operator*(const ValueType vt);
+    Vector<ValueType> operator+(const Vector& v);
+    Vector<ValueType> operator-(const Vector& v);
     ValueType operator*(const Vector& v);
 
     friend std::istream& operator>>(std::istream& in, Vector& v) {

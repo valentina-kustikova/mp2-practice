@@ -4,20 +4,10 @@
 int main() {
     try{
         Matrix<int> m1(3);
-        m1[0][0] = 1;
-        m1[0][1] = 2;
-        m1[0][2] = 3;
-        m1[1][0] = 4;
-        m1[1][1] = 5;
-        m1[2][0] = 6;
+        cin >> m1;
 
         Matrix<int> m2(3);
-        m2[0][0] = 7;
-        m2[0][1] = 8;
-        m2[0][2] = 9;
-        m2[1][0] = 10;
-        m2[1][1] = 11;
-        m2[2][0] = 12;
+        cin >> m2;
 
         cout << "Enter matrix dimension:" << endl;
         int userInput;
