@@ -1,8 +1,5 @@
 #include "stack.h"
 #include <iostream>
-#include <string>
-#include <vector>
-#include <map>
 
 using namespace std;
 
@@ -24,11 +21,25 @@ int main() {
     }
 
     cout << a;
-
+   
     cout << "last element: " << a.Top() << endl;
     a.Pop();
-    cout << "last element was deleted:" << endl;
-    cout << "last element: " << a.Top() << endl;
+    if (!a.isEmpty()) {
+      cout << "last element was deleted:" << endl;
+      cout << "last element: " << a.Top() << endl;
+    }
+    else {
+      cout << "Your stack is empty now!" << endl;
+    }
+
+
+    int new_element;
+    cout << "Enter some integer number - new stack element: " << endl;
+    cin >> new_element;
+    a.Push(new_element);
+
+    cout << "Stack after pushing your last added element:" << endl;
+    cout << a;
 
     return 0;
 }

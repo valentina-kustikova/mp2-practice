@@ -5,6 +5,10 @@ TEST(Stack, create_normal_double_stack) {
 	ASSERT_NO_THROW(Stack<double> a);
 }
 
+TEST(Stack, create_normal_integer_stack) {
+	ASSERT_NO_THROW(Stack<int> a);
+}
+
 TEST(Stack, create_normal_char_stack) {
 	ASSERT_NO_THROW(Stack<char> a);
 }
@@ -40,7 +44,7 @@ TEST(Stack, check_is_stack_empty_after_deleting_not_all_elements) {
 
 	a.Pop();
 
-	ASSERT_TRUE(a.isEmpty());
+	ASSERT_FALSE(a.isEmpty());
 }
 
 TEST(Stack, compare_lengths_of_two_equal_stacks) {
@@ -73,16 +77,8 @@ TEST(Stack, compare_two_equal_stacks) {
 	st.Push(-3.1);
 
 	Stack<double> a(st);
-	bool res = true; /// operator==
-	while (!st.isEmpty() && !a.isEmpty()) {
-		if (st.Top() != a.Top()) {
-			res = false;
-			break;
-		}
-		st.Pop();
-		a.Pop();
-	}
-	ASSERT_TRUE(res);
+
+	ASSERT_TRUE(st == a);
 }
 
 TEST(Stack, check_push_operation) {

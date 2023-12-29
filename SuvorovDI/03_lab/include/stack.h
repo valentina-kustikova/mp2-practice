@@ -11,6 +11,10 @@ public:
   Stack() : top(-1) {}
   Stack(const Stack<ValueType>& s) : top(s.top), stack(s.stack) {}
 
+  bool operator==(const Stack<ValueType>& st) {
+      return (top == st.top) && (stack == st.stack);
+  }
+
   void Pop() {
     if (isEmpty())
       throw std::exception("The stack is empty\n");
@@ -34,8 +38,8 @@ public:
       Stack<ValueType> tmp = s;
 
       while (!s.isEmpty()) {
-          std::cout << "| " << s.Top() << " |" << std::endl;
-          s.Pop();
+        std::cout << "| " << s.Top() << " |" << std::endl;
+        s.Pop();
       }
       std::cout << "\\---/" << std::endl;
 

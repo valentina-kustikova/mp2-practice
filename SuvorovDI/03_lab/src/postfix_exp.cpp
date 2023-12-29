@@ -64,10 +64,10 @@ ArithmeticExp::ArithmeticExp(const std::string& exp) : original_exp(exp) {
 		{"/", 3},
 		{"+", 2},
 		{"-", 2},
+    {"(", 1},
 	};
 
 	valid_symbols = {
-		"(",
 		")",
 	};
 	for (std::pair<std::string, int> i : priorities) {

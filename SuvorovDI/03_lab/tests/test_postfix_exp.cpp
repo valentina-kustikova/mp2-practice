@@ -153,10 +153,11 @@ TEST(ArithmeticExp, test_calculate_fully_expression) {
 	std::vector<std::string> operands = exp.GetOperands();
 
 	std::map<std::string, double> values;
+	
 	double val = 1.0;
 	for (const std::string op : operands) {
 		values[op] = val;
 		val += 1;
 	}
-	EXPECT_EQ(exp.Calculate(values), -0.5);
+	EXPECT_EQ(exp.Calculate(values), -6.5);
 }
