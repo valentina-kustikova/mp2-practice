@@ -183,7 +183,7 @@ double TArithmeticExpression::Calculate(const map<string, double>& values)
 			leftOperand = st.Top();
 			st.Pop();
 			if (rightOperand == 0) {
-				throw"Error";
+				throw "Division by zero";
 			}
 			st.Push(leftOperand / rightOperand);
 		}
