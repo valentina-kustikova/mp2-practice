@@ -18,7 +18,6 @@ public:
 	T Top();
 	size_t Size()const noexcept { return top + 1; }
 	int GetTop() { return top; }
-	T* GetMemory()const { return pMem; }
 
 	bool IsEmpty()const { return top == -1; }
 	bool IsFull()const { return top == mem_size - 1; }

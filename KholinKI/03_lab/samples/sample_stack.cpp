@@ -10,8 +10,9 @@ int main()
 
 
     cout << endl;
-    cout << "Пусть стек будет содержать 5 элементов" << endl;
-    int count = 5;
+    cout << "Сколько элементов добавить в стек?" << endl;
+    int count = 0;
+    cin >> count;
     cout << "Добавьте элементы в стек: " << endl;
     for (int i = 0; i < count; i++) {
         cin >> st;

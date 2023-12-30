@@ -19,26 +19,29 @@ private:
 	map<char, int> priority;
 	map<string, double> operands;
 
-	bool Is_Operator(char c)const;
-	bool Is_Operand_String(char c)const;
-	bool Is_Operand_const(char c)const; 
-	double Transform(string str);
+	
 public:
-	ArithmeticExpression(string infix_);
+	ArithmeticExpression(const string& infix_);
 
 	string GetInfix()const { return infix; }
 	vector<string> GetPostfix()const { return postfix; }
 	vector<string> GetOperands()const;
 	map<string, double> SetOperands(const vector<string> operands);
 
-	void Check();
+	
 	void Parse();
 	void ToPostfix();
 	double Calculate(const map<string, double>& values);
+private:
+	void Check()const;
+	bool Is_Operator(char c)const;
+	bool Is_Operand_String(char c)const;
+	bool Is_Operand_const(char c)const;
+	double Transform(string str)const;
 };
 
 
-ArithmeticExpression::ArithmeticExpression(string infix_) :infix(infix_) {
+ArithmeticExpression::ArithmeticExpression(const string& infix_) :infix(infix_) {
 	priority =
 	{
 		{'(',1},{'+',2},{'-',2},{'*',3}, {'/',3}
@@ -62,7 +65,7 @@ bool ArithmeticExpression::Is_Operand_const(char c)const {
 }
 
 
-double ArithmeticExpression::Transform(string str) {
+double ArithmeticExpression::Transform(string str)const {
 	int i = 0;
 	string int_part;
 	while (i < str.find(".")) {
@@ -84,7 +87,7 @@ double ArithmeticExpression::Transform(string str) {
 }
 
 
-void ArithmeticExpression::Check() {
+void ArithmeticExpression::Check()const {
 	int i = 0;
 	char c;
 	while (i < infix.size()) {//проверяет на чужеродные символы
@@ -375,13 +378,15 @@ double ArithmeticExpression::Calculate(const map<string, double>& values) {
 			}
 			case '/':
 			{
-				right_op = expr_operands.Pop();
-				left_op = expr_operands.Pop();
-				if (right_op == 0) {
-					throw "division by zero!";
+				try {
+					right_op = expr_operands.Pop();
+					left_op = expr_operands.Pop();
+					expr_operands.Push(left_op / right_op);
+					break;
 				}
-				expr_operands.Push(left_op / right_op);
-				break;
+				catch(const double zero){
+					cout << "Division by zero!" << endl;
+				}
 			}
 			default:
 				expr_operands.Push(values.at(lexeme));
