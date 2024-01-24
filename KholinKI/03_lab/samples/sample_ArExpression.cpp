@@ -7,7 +7,7 @@ int main()
     setlocale(LC_ALL, "rus");
     string expression_str;
     cout << "Enter expression:" << endl;
-    cin >> expression_str;
+    getline(cin, expression_str);
     cout << endl;
     ArithmeticExpression expr(expression_str);
     vector<string> postfix = expr.GetPostfix();

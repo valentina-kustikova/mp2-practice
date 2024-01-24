@@ -9,19 +9,19 @@
 
 
 TEST(ArExpression, throw_when_check_characters_is_failed) {
-	ASSERT_ANY_THROW(ArithmeticExpression Expr("(A+B-D@)*(-400/(-!20)*amx32)+E%"));
+	ASSERT_ANY_THROW(ArithmeticExpression Expr("(A + B - D@)*(-400 / (-!20) * amx32) + E%"));
 }
 
 TEST(ArExpression, throw_when_check_brackets_is_failed) {
-	ASSERT_ANY_THROW(ArithmeticExpression Expr("(A+B-D)*(-400/-20)*amx32)+E"));
+	ASSERT_ANY_THROW(ArithmeticExpression Expr("(A + B - D) * (-400 / -20) * amx32) + E"));
 }
 
 TEST(ArExpression, throw_when_check_brackets_is_failed_op_in_start_bracket) {
-	ASSERT_ANY_THROW(ArithmeticExpression Expr("(A+B-D)*((/400/20)*amx32)+E"));
+	ASSERT_ANY_THROW(ArithmeticExpression Expr("(A + B - D) * ((/400 / 20) * amx32) + E"));
 }
 
 TEST(ArExpression, throw_when_check_brackets_is_failed_op_in_end_bracket) {
-	ASSERT_ANY_THROW(ArithmeticExpression Expr("(A+B-D)*((400/20)*amx32/)+E"));
+	ASSERT_ANY_THROW(ArithmeticExpression Expr("(A + B - D)*((400 / 20) * amx32/) + E"));
 }
 
 TEST(ArExpression, throw_when_op_in_start_expression) {
@@ -38,15 +38,19 @@ TEST(ArExpression, no_throw_when_op_unary_minus_in_start) {
 }
 
 TEST(ArExpression, throw_when_brackets_are_next_to_each_other) {
-	ASSERT_ANY_THROW(ArithmeticExpression Expr("(A+B-D)*(-400.25//(-20)*()amx32)+E"));
+	ASSERT_ANY_THROW(ArithmeticExpression Expr("(A + B - D) * (-400.25 // (-20) * () amx32) + E"));
 }
 
-TEST(ArExpression, throw_when_check_operations_is_failed_two_ops) {
-	ASSERT_ANY_THROW(ArithmeticExpression Expr("(A+B-D)*(-400//(-20)*amx32)+E"));
+TEST(ArExpression, throw_when_check_operations_is_failed_two_ops_1) {
+	ASSERT_ANY_THROW(ArithmeticExpression Expr("(A + B - D)*(-400 // (-20) * amx32) + E"));
+}
+
+TEST(ArExpression, throw_when_double_space) {
+	ASSERT_ANY_THROW(ArithmeticExpression Expr("(A + B - D) * (-400 / (-20) * am  x32) + E"));
 }
 
 TEST(ArExpression, throw_when_check_operations_is_failed_two_points) {
-	ASSERT_ANY_THROW(ArithmeticExpression Expr("(A+B-D)*(-400..25//(-20)*amx32)+E"));
+	ASSERT_ANY_THROW(ArithmeticExpression Expr("(A+B-D)*(-400..25/(-20)*amx32)+E"));
 }
 
 TEST(ArExpression, throw_when_to_postfix_) {
@@ -54,7 +58,7 @@ TEST(ArExpression, throw_when_to_postfix_) {
 }
 
 TEST(ArExpression, throw_when_empty_integer_part) {
-	ASSERT_ANY_THROW(ArithmeticExpression Expr(".4+3*(-4)"));
+	ASSERT_ANY_THROW(ArithmeticExpression Expr(".4 + 3 * (-4)"));
 }
 
 TEST(ArExpression, throw_when_empty_fractional_part) {
@@ -66,7 +70,22 @@ TEST(ArExpression, throw_when_double_points_in_constant) {
 }
 
 TEST(ArExpression, throw_when_operand_inside_constant_1) {
-	ASSERT_ANY_THROW(ArithmeticExpression Expr("4+421.BMV3*(-4)"));
+	ASSERT_ANY_THROW(ArithmeticExpression Expr("4 + 421.BMV3 * (-4)"));
+}
+
+TEST(ArExpression, throw_when_space_within_operand_1) {
+	ASSERT_ANY_THROW(ArithmeticExpression Expr("4+42 1*(-4)"));
+}
+
+TEST(ArExpression, throw_when_space_within_operand_2) {
+	ASSERT_ANY_THROW(ArithmeticExpression Expr("4+421-A BC*(-4)"));
+}
+
+TEST(ArExpression, throw_when_space_in_start_bracket) {
+	ASSERT_ANY_THROW(ArithmeticExpression Expr("4+421*( -4)"));
+}
+TEST(ArExpression, throw_when_space_in_the_end_bracket) {
+	ASSERT_ANY_THROW(ArithmeticExpression Expr("4+421*(-4 )"));
 }
 
 
@@ -89,7 +108,7 @@ TEST(ArExpression, unary_minus_after_bracket) {
 }
 
 TEST(ArExpression, can_to_postfix) {
-	ASSERT_NO_THROW(ArithmeticExpression Expr("X1-(6+11.5-ARM11KI)-(-X2*X1293AMxkl+TUR11BO/(-20*190))-100/(-4)"));
+	ASSERT_NO_THROW(ArithmeticExpression Expr("X1 - (6 + 11.5 - ARM11KI) - (-X2 * X1293AMxkl + TUR11BO / (-20 * 190)) - 100 / (-4)"));
 }
 
 TEST(ArExpression, no_throw_when_can_get_infix) {
@@ -103,12 +122,12 @@ TEST(ArExpression, no_throw_when_get_postfix) {
 }
 
 TEST(ArExpression, no_throw_when_get_operands) {
-	ArithmeticExpression Expr("-B+DLK*(-m)");
+	ArithmeticExpression Expr("-B + DLK * (-m)");
 	ASSERT_NO_THROW(vector<string> operands = Expr.GetOperands());
 }
 
 TEST(ArExpression, can_get_operands) {
-	ArithmeticExpression Expr("-B+DLK*(-m)");
+	ArithmeticExpression Expr("-B + DLK * (-m)");
 	vector<string> operands = Expr.GetOperands();
 
 	ASSERT_TRUE(operands.at(0) == "0");
@@ -118,7 +137,7 @@ TEST(ArExpression, can_get_operands) {
 
 
 TEST(ArExpression, no_throw_when_can_calculate_1) {
-	ArithmeticExpression Expr("-5+4*(-3)");
+	ArithmeticExpression Expr("-5 + 4 * (-3)");
 	vector<string> operands = Expr.GetOperands();
 	map<string, double> values = Expr.SetOperands(operands);
 	ASSERT_NO_THROW(double result = Expr.Calculate(values));
@@ -163,7 +182,7 @@ TEST(ArExpression, can_calculate_4) {
 
 
 TEST(ArExpression, unary_minus_start_expression) {
-	ArithmeticExpression Expr("-5+4");
+	ArithmeticExpression Expr("-5 + 4");
 	vector<string> operands = Expr.GetOperands();
 	map<string, double> values = Expr.SetOperands(operands);
 	double unary = Expr.Calculate(values);
@@ -171,7 +190,7 @@ TEST(ArExpression, unary_minus_start_expression) {
 }
 
 TEST(ArExpression, binary_minus) {
-	ArithmeticExpression Expr("5*4-8");
+	ArithmeticExpression Expr("5 * 4 - 8");
 	vector<string> operands = Expr.GetOperands();
 	map<string, double> values = Expr.SetOperands(operands);
 	double unary = Expr.Calculate(values);
