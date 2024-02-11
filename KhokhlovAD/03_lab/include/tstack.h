@@ -6,95 +6,82 @@
 using namespace std;
 
 template <class ValType>
-class Stack {
+class TStack {
 private:
-	ValType * arr;
-	int SM;
-	int ind;
+	ValType* elems;
+	int MaxSize;
+	int top;
 public:
-	Stack(int Size_Max);
-	~Stack();
-	Stack(const Stack& a);
-	void push(const ValType a);
-	ValType pop();
-	ValType check();
-	bool IsEmpty();
-	int Size();
-	void Clear();
-	void Print();
-	int getInd();
-	int GetSizeMax();
+	TStack(int MaxSize = 10);
+	TStack(const TStack<ValType>& s);
+	~TStack();
+	bool isEmpty()const; // провекра на пустоту
+	bool isFull()const;  // проверка на заполненность
+	ValType Top()const;  // проверка значения верхнего элемента
+	void push(const ValType& elem); //добавление элемента наверх
+	ValType Pop();  //удаление верхнего элемента
 };
+
 template <class ValType>
-int Stack <ValType> ::GetSizeMax() {
-	return SM;
-}
-template <class ValType>
-Stack <ValType> ::Stack(int Size_Max)
+TStack<ValType>::TStack(int MaxSize)
 {
-	SM = Size_Max;
-	ind = -1;
-	arr = new ValType[SM];
+	if (MaxSize < 0)
+		throw "invalide size";
+	top = -1;
+	this->MaxSize = MaxSize;
+	elems = new ValType[MaxSize];
 }
 
 template <class ValType>
-Stack <ValType> ::~Stack()
+TStack<ValType>::TStack(const TStack<ValType>& s)
 {
-	delete[] arr;
+	MaxSize = s.MaxSize;
+	top = s.top;
+	elems = new ValType[MaxSize];
+	for (int i = 0; i <= top; i++)
+		elems[i] = s.elems[i];
 }
+
 template <class ValType>
-Stack <ValType> ::Stack(const Stack& a)
+TStack<ValType>::~TStack()
 {
-	SM = a.SM;
-	arr = new ValType[SM];
-	for (int i = 0; i <= ind; i++)
-		arr[i] = a.arr[i];
+	if (elems != nullptr)
+		delete[] elems;
 }
 
 template <class ValType>
-void Stack <ValType> ::push(const ValType a) {
-	if (ind + 1 >= SM) {
-		Stack <ValType> b(*this);
-		delete[] arr;
-		SM = SM * 2;
-		arr = new ValType[SM];
-		for (int i = 0; i <= ind; i++) arr[i] = b.arr[i];
-		arr[++ind] = a;
-	}
-	else
-		arr[++ind] = a;
-}
-template <class ValType>
-ValType Stack <ValType> ::pop() {
-	if (ind == -1) throw "negative"; else
-		return arr[ind--];
-}
-template <class ValType>
-ValType Stack <ValType> ::check() {
-	if (ind == -1) return 0; else
-		return arr[ind];
+bool TStack<ValType>::isEmpty()const
+{
+	return top == -1;
 }
 
 template <class ValType>
-bool  Stack <ValType> ::IsEmpty() {
-	if (ind == -1) return 1; else return 0;
+bool TStack<ValType>::isFull()const
+{
+	return top + 1 == MaxSize;
 }
 
 template <class ValType>
-int  Stack <ValType> ::Size() {
-	return (ind + 1);
-}
-template <class ValType>
-void Stack <ValType> ::Clear() {
-	ind = -1;
+ValType TStack<ValType>::Top()const
+{
+	if (top == -1)
+		throw "stack is empty";
+	return elems[top];
 }
 
 template <class ValType>
-void Stack <ValType> ::Print() {
-	for (int i = 0; i <= ind; i++) cout << arr[i] << endl;
+void TStack<ValType>::push(const ValType& elem)
+{
+	if (top + 1 == MaxSize)
+		throw "stack is full";
+	elems[++top] = elem;
 }
+
 template <class ValType>
-int Stack <ValType> ::getInd() {
-	return ind;
+ValType TStack<ValType>::Pop()
+{
+	if (top--  == -1)
+		throw "stack is empty";
+	return elems[top + 1];
 }
 #endif
