@@ -15,11 +15,11 @@ public:
 	TStack(int MaxSize = 10);
 	TStack(const TStack<ValType>& s);
 	~TStack();
-	bool isEmpty()const; // провекра на пустоту
-	bool isFull()const;  // проверка на заполненность
-	ValType Top()const;  // проверка значения верхнего элемента
-	void push(const ValType& elem); //добавление элемента наверх
-	ValType Pop();  //удаление верхнего элемента
+	bool isEmpty()const; 
+	bool isFull()const; 
+	ValType Top()const;  
+	void push(const ValType& elem);
+	ValType Pop(); 
 };
 
 template <class ValType>

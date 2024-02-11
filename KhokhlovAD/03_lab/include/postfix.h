@@ -9,61 +9,27 @@ using namespace std;
 class TPostfix
 {
 private:
-	string infix;  //инфиксная форма записи (которую вводят)
-	vector<string> postfix;  //постфиксная форма записи (которую надо получить)
-	vector<char> lexems;  //разбиение инфиксной записи на лексемы
-	map<string, int> priority;  //приоритет операторов
-	map<string, double> operands;  //операнды и их значения
+	string infix;  
+	vector<string> postfix;  
+	vector<char> lexems;  
+	map<string, int> priority;  
+	map<string, double> operands;  
 public:
-	//конструктор/деструктор не нужен, так как сами память не выделяем
-	////////////////////////////
-	TPostfix(string infx);			//задается приоритет операторов
-	////////////////////////////
-
-	//геттеры
-	////////////////////////////
+	TPostfix(string infx);			
 	string GetInfix()const { return infix; }
 	string GetPostfix()const;
-	////////////////////////////
-	
-	//разбор на лексемы
-	////////////////////////////
 	void Parse(); 
-	////////////////////////////
-
-
-	//перевод в постфиксную форму
-	////////////////////////////
 	void ToPostfix();
-	////////////////////////////
-
-
-	//вычисление в постфиксной форме
-	////////////////////////////
 	double Calculate();
-	////////////////////////////
-
-	//проверка на корректность записи
-	////////////////////////////
 	bool IsCorrect()const;
 	bool IsCorrectOperator()const;
 	bool IsCorrectOperands()const;
 	bool IsOperator(int ind)const;
 	bool IncorrectSybol()const;
-	////////////////////////////
-
 	void PrintInfix();
 	void PrintPostfix();
 
 };
-
-
-
-
-
-
-
-
 /*
 1) приоритет
 	* /   (3)
