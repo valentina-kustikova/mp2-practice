@@ -1,7 +1,7 @@
 #include "stack.h"
 #include "arithmetic.h"
 
-MathArithmetics::MathArithmetics(const string& _infix) 
+MathArithmetics::MathArithmetics(const string& _infix) //контсрутор класса
 {
     if (_infix.empty())
     {
@@ -193,7 +193,7 @@ double MathArithmetics::Calculate(const map<string, double>& values)
             leftOperand = stack.Top();
             stack.Pop();
             if (rightOperand == 0)  
-                throw"Error";
+                throw"You cant divide by zero";
             stack.Push(leftOperand / rightOperand);
         }
         else

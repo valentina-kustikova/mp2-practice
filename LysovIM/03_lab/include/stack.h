@@ -17,6 +17,7 @@ private:
 	int top;
 
 	void Realloc(int step = _step);
+
 public:
 	TStack(int Size = _maxSize);
 	TStack(const TStack<T>& stack);
@@ -30,17 +31,17 @@ public:
 };
 
 template <typename T>
-TStack<T>::TStack(int Size)
+TStack<T>::TStack(int Size) //конструктор класса
 {
 	if (Size <= 0) 
-		throw "maxSize should be bigger than 0.";
+		throw "The maxSize must be greater than 0.";
 	maxSize = Size;
 	top = -1;
 	elems = new T[maxSize];
 }
 
 template <typename T>
-TStack<T>::TStack(const TStack<T>& stack) 
+TStack<T>::TStack(const TStack<T>& stack) //конструктор копировани€ класса
 {
 	maxSize = stack.maxSize;
 	top = stack.top;
@@ -62,10 +63,10 @@ TStack<T>::~TStack()
 	}
 }
 
-template <class T>
+template <class T>//функци€ мен€юща€ размер стэка
 void TStack<T>::Realloc(int step)
 {
-	if (step <= 0) { throw "Step should be bigger than 0"; }
+	if (step <= 0) { throw "The step should be greater than 0."; }
 	T* tmp = new T[step + maxSize];
 	for (int i = 0; i < maxSize; i++)
 	{
@@ -73,26 +74,26 @@ void TStack<T>::Realloc(int step)
 	}
 	delete[] elems;
 	elems = tmp;
-	maxSize =maxSize + step;
+	maxSize = maxSize + step;
 }
 
-template <typename T>
+template <typename T>//проверка на заполненность
 bool TStack<T>::IsFull(void) const
 {
 	return (top == maxSize - 1);
 }
 
-template <typename T>
+template <typename T> //проверка на пустоту
 bool TStack<T>::IsEmpty(void) const 
 {
-	return (top == -1);
+	return (top == -1);// по дефолту top = -1
 }
 
 template <typename T>
 T TStack<T>::Top() const
 {
 	if (IsEmpty()) 
-		throw "The stack does not contain any data"; 
+		throw "Stack does not contain any data"; 
 	return elems[top];
 }
 
@@ -108,7 +109,7 @@ template <typename T>
 T TStack<T>::Pop()
 {
 	if (IsEmpty())
-		throw "The stack does not contain any data!";
+		throw "Stack does not contain any data";
 	return elems[top--];
 }
 

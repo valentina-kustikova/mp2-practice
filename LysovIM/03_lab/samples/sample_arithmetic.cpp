@@ -13,12 +13,12 @@ int main()
 		cout << "\n";
 		getline(cin, str);
 		MathArithmetics example(str);
-		cout << "Postfix:" << example.ToPostfix() << endl;
+		cout << "Postfix forms:" << example.ToPostfix() << endl;
 		cout << "\n";
 		example.SetValues();
 		cout << "Result:" << example.Calculate() << endl;
 	}
-	catch (string exp)
+	catch (char* exp)
 	{
 		cout << exp << endl;
 	}

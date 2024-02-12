@@ -9,12 +9,14 @@ int main()
 	try 
 	{
 		int max_size_stack;
-		cout << "Enter max_size_stack:";
+		cout << "Enter max size stack:";
 		cin >> max_size_stack;
 		TStack<int> stack(max_size_stack);
 		int answer, element;
 		string elem;
 		while (true) {
+			cout << "Menu:" << endl;
+			cout << "Select the menu item" << endl;
 			cout << "1 - Push()" << endl;
 			cout << "2 - Pop()" << endl;
 			cout << "3 - Top()" << endl;
