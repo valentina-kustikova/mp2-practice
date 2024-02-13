@@ -29,6 +29,7 @@ public:
 	string GetPostfix()const;
 	
 	double Calculate();
+	double Calculate(map<string, double> opernds);
 	
 	void PrintInfix();
 	void PrintPostfix();

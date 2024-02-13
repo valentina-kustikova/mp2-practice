@@ -26,7 +26,7 @@ template <class ValType>
 TStack<ValType>::TStack(int MaxSize)
 {
 	if (MaxSize < 0)
-		throw "invalid size";
+		throw std::exception("invalid size");
 	top = -1;
 	this->MaxSize = MaxSize;
 	elems = new ValType[MaxSize];
@@ -65,7 +65,7 @@ template <class ValType>
 ValType TStack<ValType>::Top()const
 {
 	if (top == -1)
-		throw "stack is empty";
+		throw std::exception("stack is empty");
 	return elems[top];
 }
 
@@ -73,7 +73,7 @@ template <class ValType>
 void TStack<ValType>::push(const ValType& elem)
 {
 	if (top + 1 == MaxSize)
-		throw "stack is full";
+		throw std::exception("stack is full");
 	elems[++top] = elem;
 }
 
@@ -81,7 +81,7 @@ template <class ValType>
 ValType TStack<ValType>::Pop()
 {
 	if (top--  == -1)
-		throw "stack is empty";
+		throw std::exception("stack is empty");
 	return elems[top + 1];
 }
 #endif
