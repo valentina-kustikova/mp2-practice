@@ -137,3 +137,16 @@ TEST(TPostfix, correctly_calculate)
 	int b = 3 + (1 - 2) * (2) - 2 / (0.5 + 0.5);
 	EXPECT_EQ(b, a.Calculate());
 }
+
+TEST(TPostfix, division_by_zero)
+{
+	string str = "1/0";
+	ASSERT_NO_THROW(TPostfix a(str));
+}
+
+TEST(TPostfix, division_by_zero_1)
+{
+	string str = "1/0";
+	TPostfix a(str);
+	ASSERT_ANY_THROW(a.Calculate());
+}

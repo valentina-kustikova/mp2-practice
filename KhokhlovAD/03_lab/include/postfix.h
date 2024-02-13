@@ -14,21 +14,24 @@ private:
 	vector<char> lexems;  
 	map<string, int> priority;  
 	map<string, double> operands;  
-public:
-	TPostfix(string infx);			
-	string GetInfix()const { return infix; }
-	string GetPostfix()const;
-	void Parse(); 
+
+	void Parse();
 	void ToPostfix();
-	double Calculate();
+	void setOperands();
 	bool IsCorrect()const;
 	bool IsCorrectOperator()const;
 	bool IsCorrectOperands()const;
 	bool IsOperator(int ind)const;
 	bool IncorrectSybol()const;
+public:
+	TPostfix(const string& infx);			
+	string GetInfix()const { return infix; }
+	string GetPostfix()const;
+	
+	double Calculate();
+	
 	void PrintInfix();
 	void PrintPostfix();
-
 };
 /*
 1) приоритет

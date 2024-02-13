@@ -1,8 +1,8 @@
 ﻿#include <postfix.h>
 
-TPostfix::TPostfix(string infx) {  
+TPostfix::TPostfix(const string& infx) {
 	if (infx == "")
-		throw "empty infix";
+		throw std::exception("empty infix");
 	infix = infx;
 	std::string::iterator end_pos = std::remove(infix.begin(), infix.end(), ' ');
 	infix.erase(end_pos, infix.end());
@@ -10,6 +10,7 @@ TPostfix::TPostfix(string infx) {
 		{"+", 2}, {"-", 2}, 
 		{"(", 1}, {"=", 0}};
 	ToPostfix();
+	setOperands();
 }
 
 void TPostfix::Parse() {
@@ -152,7 +153,7 @@ void TPostfix::ToPostfix()
 	Parse();
 	if (!IsCorrect())
 	{
-		throw "invalid infix";
+		throw std::exception("invalid infix");
 	}
 	TStack<string> st2(lexems.size());
 	int i = 0;
@@ -232,19 +233,31 @@ void TPostfix::ToPostfix()
 						break;
 				}
 				postfix.push_back(operand);
-				double a;
-				std::cout << operand << " = ";
-				cin >> a;
-				operands.insert({ operand, a }); 
+				if (operands.find(operand) != operands.end())
+					operands.insert({ operand, 0.0 }); 
 			}
 			break;
 		}
 		}
 	}
-	std::cout << endl;
 	while (!st2.isEmpty())
 	{
 		postfix.push_back(st2.Pop());    
+	}
+}
+
+void TPostfix::setOperands()
+{
+	double b;
+	for (auto it = operands.begin(); it != operands.end(); it++)
+	{
+		if (it->second == 0.0)
+		{
+			cout << it->first << " = ";
+			cin >> b;
+			operands[it->first] = b;
+			cout << endl;
+		}
 	}
 }
 
@@ -283,7 +296,7 @@ double TPostfix::Calculate()
 		if (postfix[i] == "/")
 		{
 			double b = st.Pop(), a = st.Pop();
-			if (b == 0) throw "Division by zero";
+			if (b <= 0.000000001) throw std::exception("Division by zero");
 			st.push(a / b);
 			i++;
 			flag = false;

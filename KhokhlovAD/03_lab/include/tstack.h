@@ -26,7 +26,7 @@ template <class ValType>
 TStack<ValType>::TStack(int MaxSize)
 {
 	if (MaxSize < 0)
-		throw "invalide size";
+		throw "invalid size";
 	top = -1;
 	this->MaxSize = MaxSize;
 	elems = new ValType[MaxSize];
