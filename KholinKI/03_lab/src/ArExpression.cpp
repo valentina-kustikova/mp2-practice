@@ -33,15 +33,17 @@ double ArithmeticExpression::Transform(string str)const {
 		i++;
 	}
 	int index = str.find(".") + 1;
-	string fractal_part;
+	string fractal_part_string;
 	int count_signs = 0;
 	while (index < str.size()) {
 		count_signs++;
-		fractal_part += str[index];
+		fractal_part_string += str[index];
 		index++;
 	}
 	double arg = 1;
-	double fractal_part_transformed = stod(fractal_part) * (arg / pow(10, count_signs));
+	double fractal_part_double = stod(fractal_part_string);
+	double multiplier = arg / pow(10, count_signs);
+	double fractal_part_transformed = fractal_part_double * multiplier;
 	double transformed = stod(int_part) + fractal_part_transformed;
 	return transformed;
 }
@@ -66,11 +68,12 @@ void ArithmeticExpression::Check()const {
 	int count_left_open_bracket = 0;
 	int count_right_close_bracket = 0;
 	char next_c;
-	while (i < infix.size()) {//проверяет на соответствие числа открывающих и закрывающих скобок
+	while (i < infix.size()) {
 		c = infix[i];
 		next_c = infix[i + 1];
 		if (c == '(') {
-			if (next_c == '+' || next_c == '*' || next_c == '/' || next_c == ')' || next_c == ' ') {
+			if (next_c == '+' || next_c == '*' || next_c == '/'
+				|| next_c == ')' || next_c == ' ') {
 				throw "Mistake in arithmetic expression!";
 			}
 			count_left_open_bracket++;
@@ -89,7 +92,7 @@ void ArithmeticExpression::Check()const {
 	i = 0;
 
 	char cc = 0;
-	while (i < infix.size()) {//проверяет на отсутствие двух идущих подряд операций и точек
+	while (i < infix.size()) {
 		c = infix[i];
 		switch (c) {
 		case '+': case '-': case '*': case '/':
@@ -99,7 +102,8 @@ void ArithmeticExpression::Check()const {
 				throw "Mistake in arithmetic expression!";
 			}
 			auto tmp = priority.find(cc);
-			if (tmp != priority.end() && tmp->first != ')' && tmp->first != '(') {//повторы операций
+			if (tmp != priority.end() && tmp->first != ')'
+				&& tmp->first != '(') {//повторы операций
 				throw "Mistake in arithmetic expression!";
 			}
 		}
@@ -118,7 +122,8 @@ void ArithmeticExpression::Check()const {
 }
 
 
-void ArithmeticExpression::Parse() {//использованы правила идентификаторов переменных
+void ArithmeticExpression::Parse() {
+//использованы правила идентификаторов переменных
 	char c;
 	char cc;
 	int count_points = 0;
@@ -154,7 +159,8 @@ void ArithmeticExpression::Parse() {//использованы правила идентификаторов перем
 				if (c == '.' && str == "") {
 					throw "Mistake in arithmetic expression!";
 				}
-				if (Is_Operand_const(c) && Is_Operand_const(first_c) || c == '.') {//константа-операнд
+				if (Is_Operand_const(c) && Is_Operand_const(first_c) || c == '.') {
+					//константа-операнд
 					if (c == '.') {
 						count_points++;
 						if (count_points > 1) {
@@ -169,7 +175,8 @@ void ArithmeticExpression::Parse() {//использованы правила идентификаторов перем
 					c = infix[i];
 					cc = infix[i + 1];
 					if (Is_Operand_String(c)) {
-						throw "Mistake in arithmetic expression!";//встретился символ внутри константы-операнда
+						throw "Mistake in arithmetic expression!";
+						//встретился символ внутри константы-операнда
 					}
 					if (c == '.' && Is_Operator(infix[i + 1]) && i + 1 != infix.size()) {
 						throw "Mistake in arithmetic expression!";
@@ -313,7 +320,8 @@ vector<string> ArithmeticExpression::GetOperands()const {
 }
 
 
-map<string, double> ArithmeticExpression::SetOperands(const vector<string> operands) {
+map<string, double> ArithmeticExpression::SetOperands
+	(const vector<string> operands) {
 	map<string, double> tmp;
 	double value;
 	auto it_begin{ operands.begin() };
@@ -333,7 +341,8 @@ map<string, double> ArithmeticExpression::SetOperands(const vector<string> opera
 }
 
 
-double ArithmeticExpression::Calculate(const map<string, double>& values) {
+double ArithmeticExpression::Calculate
+(const map<string, double>& values) {
 	Stack<double> expr_operands;
 	string lexeme;
 	char c;
