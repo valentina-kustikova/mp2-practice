@@ -96,7 +96,7 @@ Stack<T>::~Stack() {
 	delete[] pMem;
 	mem_size = 0; 
 	top = -1;
-	cout << "Destructor is worked!" << endl;
+	
 }
 
 #endif

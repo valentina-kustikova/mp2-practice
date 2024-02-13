@@ -370,6 +370,9 @@ double ArithmeticExpression::Calculate(const map<string, double>& values) {
 			try {
 				right_op = expr_operands.Pop();
 				left_op = expr_operands.Pop();
+				if (right_op == 0) {
+					throw std::domain_error("result division for value 0 not undefined!");
+				}
 				expr_operands.Push(left_op / right_op);
 				break;
 			}

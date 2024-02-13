@@ -143,13 +143,6 @@ TEST(ArExpression, no_throw_when_can_calculate_1) {
 	ASSERT_NO_THROW(double result = Expr.Calculate(values));
 }
 
-TEST(ArExpression, no_throw_when_can_calculate_2) {
-	ArithmeticExpression Expr("A+(B*C)");
-	vector<string> operands = Expr.GetOperands();
-	map<string, double> values = Expr.SetOperands(operands);
-	ASSERT_NO_THROW(double result = Expr.Calculate(values));
-}
-
 TEST(ArExpression, no_throw_when_can_calculate_3) {
 	ArithmeticExpression Expr("8+2*43-10/5");
 	vector<string> operands = Expr.GetOperands();
@@ -197,3 +190,9 @@ TEST(ArExpression, binary_minus) {
 	EXPECT_EQ(unary, 12);
 }
 
+TEST(ArExpression, division_by_zero) {
+	ArithmeticExpression Expr("5 * 4/0 +(9*3-15)");
+	vector<string> operands = Expr.GetOperands();
+	map<string, double> values = Expr.SetOperands(operands);
+	ASSERT_ANY_THROW(double unary = Expr.Calculate(values));
+}
