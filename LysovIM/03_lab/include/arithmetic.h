@@ -27,7 +27,7 @@ private:
 public:
 	MathArithmetics(const string& _infix);
 	string ToPostfix();
-	string GetInfix()
+	string GetInfix()const
 	{
 		return infix;
 	}

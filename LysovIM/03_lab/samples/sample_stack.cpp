@@ -48,7 +48,7 @@ int main()
 			}
 		}
 	}
-	catch (string exp)
+	catch (char* exp)
 	{
 		cout << exp << endl;
 	}

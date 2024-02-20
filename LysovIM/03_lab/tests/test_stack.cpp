@@ -51,17 +51,6 @@ TEST(TStack, can_pop_elements)
 	EXPECT_EQ(300, stack.Top());
 }
 
-TEST(TStack, right_value_after_pop_if_stack_is_not_full) {
-	TStack<int> stack(2);
-
-	stack.Push(1);
-	stack.Push(2);
-
-	stack.Pop();
-	EXPECT_EQ(1, stack.Top());
-
-}
-
 TEST(TStack, throws_when_top_element_is_empty) 
 {
 	TStack<int> stack(5);

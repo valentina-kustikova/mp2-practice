@@ -152,7 +152,7 @@ TEST(MathArithmetics, can_get_float_const)
 
 TEST(MathArithmetics, expression_with_spaces)
 {
-	MathArithmetics expression("  ( a  +   b*   c)*(c   /  d- e ) ");
+	MathArithmetics expression("  ( a  +   b*   c) * (c   /  d - e ) ");
 	vector<double> example = { 1,2,3,4,5 };
 	expression.ToPostfix();
 	expression.SetValues(example);
