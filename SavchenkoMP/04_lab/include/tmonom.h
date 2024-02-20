@@ -11,7 +11,16 @@ private:
 	double coeff;
 	int degree;
 public:
+	TMonom();
+	TMonom(const TMonom& monom);
+	TMonom(double _coeff, int _degree);
 
+	virtual TData* copy() const;
+
+	virtual bool operator<(const TData& data) const;
+	virtual bool operator>(const TData& data) const;
+	virtual bool operator==(const TData& data) const;
+	virtual bool operator!=(const TData& data) const;
 };
 
 #endif // !TMONOM_H

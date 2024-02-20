@@ -68,7 +68,7 @@ TList<T>::TList(const TList<T>& obj) {
 	TNode<T>* tmp2 = pFirst;
 
 	while (tmp->pNext != obj.pStop) {
-		tmp2->pNext = new TNode<T>(tmp->data);
+		tmp2->pNext = new TNode<T>(tmp->key);
 		tmp2 = tmp2->pNext;
 		tmp = tmp->pNext;
 	}
