@@ -253,67 +253,21 @@ void TPostfix::setOperands()
 			continue;
 		if (!isdigit(postfix[i][0]))
 		{
-			operands.insert({ postfix[i], 0.0 });
-			cout << postfix[i] << " = ";
 			double b;
+			cout << postfix[i] << " = ";
 			cin >> b;
-			operands[postfix[i]] = b;
+			operands.insert({ postfix[i], b });
 			continue;
 		}
-		operands.insert({ postfix[i], 0.0 });
-		operands[postfix[i]] = stod(postfix[i]);
+		operands.insert({ postfix[i], stod(postfix[i]) });
 	}
 }
 
 
 double TPostfix::Calculate()
 {
-	setOperands();
-	int i = 0;
-	TStack<double> st(postfix.size());
-	while (i < postfix.size())
-	{
-		bool flag = true;
-		if (postfix[i] == "+")
-		{
-			double b = st.Pop(), a = st.Pop();
-			st.push(a + b);
-			i++;
-			flag = false;
-			continue;
-		}
-		if (postfix[i] == "*")
-		{
-			double b = st.Pop(), a = st.Pop();
-			st.push(a * b);
-			i++;
-			flag = false;
-			continue;
-		}
-		if (postfix[i] == "-")
-		{
-			double b = st.Pop(), a = st.Pop();
-			st.push(a - b);
-			i++;
-			flag = false;
-			continue;
-		}
-		if (postfix[i] == "/")
-		{
-			double b = st.Pop(), a = st.Pop();
-			if (b == 0.0) throw std::exception("Division by zero");
-			st.push(a / b);
-			i++;
-			flag = false;
-			continue;
-		}
-		if (flag)
-		{
-			st.push(operands[postfix[i]]);
-			i++;
-		}
-	}
-	return st.Pop();
+	setOperands();	
+	return Calculate(operands);
 }
 
 double TPostfix::Calculate(map<string, double> oprnds)

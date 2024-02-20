@@ -144,6 +144,7 @@ TEST(TPostfix, correctly_calculate_with_alpha)
 	TPostfix a(str);
 	map<string, double> val = { {"A", 0}, {"B", 1}, {"C", 2}, {"D", -1}, {"F", 2}, {"G", 0.5}, {"H", 0.5} };
 	double b = 0 + (1 - 2) * (-1) - 2 / (0.5 + 0.5);
+	EXPECT_EQ(a.GetPostfix(), "ABC-D*+FGH+/-");
 	EXPECT_EQ(b, a.Calculate(val));
 }
 
@@ -153,6 +154,7 @@ TEST(TPostfix, correctly_calculate_with_a_repeat_alpha)
 	TPostfix a(str);
 	map<string, double> val = { {"A", 3}, {"C", 2}, {"D", -1}, {"F", 2}, {"H", 0.5} };
 	double b = 3 + (3 - 2) * (-1) - 2 / (3 + 0.5);
+	EXPECT_EQ(a.GetPostfix(), "AAC-D*+FAH+/-");
 	EXPECT_EQ(b, a.Calculate(val));
 }
 
