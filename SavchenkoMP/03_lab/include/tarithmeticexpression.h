@@ -5,6 +5,7 @@
 #include <string>
 #include <map>
 #include <vector>
+#include <cmath>
 #include "tstack.h"
 
 using namespace std;

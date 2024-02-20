@@ -1,6 +1,7 @@
 #include "tarithmeticexpression.h"
 
 map<string, int> TArithmeticExpression::priority = {
+	{"^", 4},
 	{"*", 3},
 	{"/", 3},
 	{"+", 2},
@@ -111,10 +112,11 @@ void TArithmeticExpression::CorrectnessCheck() {
 
 	string exp = "Incorrect arithmetic expression";
 
-	if (infix[0] == '+' || infix[0] == '*' || infix[0] == '/' || infix[0] == ')') throw exp;
+	if (infix[0] == '+' || infix[0] == '*' || infix[0] == '/' ||
+		infix[0] == ')' || infix[0] == '^') throw exp;
 	if (infix[infix.size() - 1] == '+' || infix[infix.size() - 1] == '-' ||
 		infix[infix.size() - 1] == '*' || infix[infix.size() - 1] == '/' ||
-		infix[infix.size() - 1] == '(') throw exp;
+		infix[infix.size() - 1] == '(' || infix[infix.size() - 1] == '^') throw exp;
 
 	if (infix[0] == '(') op_bracket++;
 	else if (infix[0] == '.') dot++;
@@ -126,15 +128,17 @@ void TArithmeticExpression::CorrectnessCheck() {
 		if (elem == '(')
 			op_bracket++;
 		else if (elem == ')') {
-			if (infix[i - 1] == '(' || infix[i - 1] == '+' || infix[i - 1] == '-' || infix[i - 1] == '*' || infix[i - 1] == '/') throw exp;
+			if (infix[i - 1] == '(' || infix[i - 1] == '+' || infix[i - 1] == '-' || 
+				infix[i - 1] == '*' || infix[i - 1] == '/' || infix[i - 1] == '^') throw exp;
 			cl_bracket++;
 		}
 		else if (elem == '.')
 			dot++;
-		else if (elem == '+' || elem == '-' || elem == '*' || elem == '/') {
+		else if (elem == '+' || elem == '-' || elem == '*' || elem == '/' || elem == '^') {
 			if (dot > 1) throw exp;
 			dot = 0;
-			if (infix[i - 1] == '+' || infix[i - 1] == '-' || infix[i - 1] == '*' || infix[i - 1] == '/' || infix[i - 1] == '(') throw exp;
+			if (infix[i - 1] == '+' || infix[i - 1] == '-' || infix[i - 1] == '*' || 
+				infix[i - 1] == '/' || infix[i - 1] == '(' || infix[i - 1] == '^') throw exp;
 		}
 	}
 	if (op_bracket != cl_bracket) throw exp;
@@ -188,7 +192,7 @@ void TArithmeticExpression::ToPostfix() {
 				st.Pop();
 			}
 		}
-		else if (token == "+" || token == "-" || token == "*" || token == "/") {
+		else if (token == "+" || token == "-" || token == "*" || token == "/" || token == "^") {
 			while (!st.IsEmpty()) {
 				stackToken = st.Top();
 				st.Pop();
@@ -310,6 +314,13 @@ double TArithmeticExpression::Calculate(const map<string, double>& values) {
 				throw exp;
 			}
 			st.Push(leftOp / rightOp);
+		}
+		else if (lexem == "^") {
+			rightOp = st.Top();
+			st.Pop();
+			leftOp = st.Top();
+			st.Pop();
+			st.Push(pow(leftOp, rightOp));
 		}
 		else {
 			st.Push(operands[lexem]);
