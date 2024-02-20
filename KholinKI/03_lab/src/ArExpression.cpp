@@ -7,7 +7,7 @@ ArithmeticExpression::ArithmeticExpression(const string& infix_) :infix(infix_) 
 		{'(',1},{'+',2},{'-',2},{'*',3}, {'/',3}
 	};
 	ToPostfix();
-}
+}//priority
 
 
 bool ArithmeticExpression::Is_Operator(char c)const {
