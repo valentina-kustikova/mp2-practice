@@ -20,8 +20,8 @@ int main() {
     try{
         cout << Parser::evaluatePostfixExpression(opVal, res);
     }
-    catch (const exception& e){
-        cout << e.what();
+    catch (const char* error){
+        cout << error;
     }
     return 0;
 }
