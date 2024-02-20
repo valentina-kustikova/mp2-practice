@@ -45,7 +45,3 @@ TEST(TStack, cant_get_top_if_empty) {
 	TStack<double> S(1);
 	ASSERT_ANY_THROW(S.top());
 }
-TEST(TStack, right_size) {
-	TStack<double> S(1);
-	EXPECT_EQ(S.get_size(), -1);
-}

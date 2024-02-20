@@ -24,30 +24,24 @@ private:
     string expression;                      //string that was recieved
     vector<operand> vars;                   //stores variables
     vector<string> expression_refined;      //separated each unit
-    vector<string> expression_postfixed;   /*postfixed expression,  
-                                            units are still separated*/
-public:
+    vector<string> expression_postfixed;    //postfixed expression,  
     int get_operator_priority(const string op);
     bool is_operator(const int i) const;
     bool is_operator(char c) const;
     bool is_operator(const string c) const;
     void divide_string();
-    void add_a_new_variable(const string n);
+    void add_a_new_variable(const string n);    
+    double operation(double a, char op, double b);
+    void create_postfixed_expression(TStack<string>& S);
+public:
+    
     void get_values_for_variables();
     void postfix_notation();
     int get_variables_amount(){
         return vars.size();
     }
-    vector<string> get_refined(){
-        return expression_refined;
-    }
-    vector<string> get_postfixed(){
-        return expression_postfixed;
-    }
-    double operation(double a, char op, double b);
-    void create_postfixed_expression(TStack<string>& S);
     double calculate_the_result();
-    tPostfix(string S);
+    tPostfix(const string& S);
     friend ostream& operator<<(ostream& out, const tPostfix& p) {
         out << "current expression is:" << endl
             << p.expression << ";" << endl << endl;

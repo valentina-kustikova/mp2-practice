@@ -76,3 +76,8 @@ TEST(tPostfix, can_use_variables_multiple_times) {
 	int test_ex = 2;
 	EXPECT_EQ(P.get_variables_amount(), test_ex);
 }
+TEST(tPostfix, throws_on_dividing_by_0) {
+	tPostfix P("4-2/0");
+	P.get_values_for_variables();
+	ASSERT_ANY_THROW(P.calculate_the_result());
+}

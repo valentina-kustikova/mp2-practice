@@ -18,9 +18,7 @@ public:
 
     T& top();
     void add(const T& elem);
-    int get_size() {
-        return current_amount;
-    }
+
     void del() ;
 };
 

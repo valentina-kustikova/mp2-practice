@@ -1,6 +1,6 @@
 #include "tPostfixNotation.h"
 #include <vector>
-tPostfix::tPostfix(string S){
+tPostfix::tPostfix(const string& S){
     expression = S;
     postfix_notation();
 }
@@ -147,7 +147,7 @@ void tPostfix::postfix_notation(){
 }
 
 void tPostfix::create_postfixed_expression(TStack<string>& S) {
-    TStack<string> Reversed(S.get_size()+1);
+    TStack<string> Reversed(40);
     while (!S.is_empty()){
         Reversed.add(S.top());
         S.del();
@@ -187,8 +187,8 @@ double tPostfix::operation (double a, char op, double b){
         case '*':
             return a * b;
         case '/':
-            if (b == 0.0)
-                throw "except.";
+            if (b == 0)
+                throw "can't divide by zero";
                 return a/b;
         default:
             throw "smth";
