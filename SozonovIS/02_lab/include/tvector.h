@@ -12,44 +12,44 @@ protected:
 	int startIndex;
 	ValueType* pVector;
 public:
-	TVector(int size = 5; int startIndex = 0);
-	TVector(const TVector& v);
+	TVector(int size = 5, int startIndex = 0);
+	TVector(const TVector<ValueType>& v);
 	~TVector();
 	int GetSize() const;
 	int GetStartIndex() const;
 	ValueType& operator[](const int i);
-	int operator==(const TVector& v) const;
-	int operator!=(const TVector& v) const;
-	const TVector& operator=(const TVector& v);
+	int operator==(const TVector<ValueType>& v) const;
+	int operator!=(const TVector<ValueType>& v) const;
+	const TVector& operator=(const TVector<ValueType>& v);
 	TVector operator+(const ValueType t);
 	TVector operator-(const ValueType t);
 	TVector operator*(const ValueType t);
-	TVector operator+(const TVector& v);
-	TVector operator-(const TVector& v);
-	double operator*(const TVector& v);
-	friend istream& operator>>(istream in, TVector& v){
-		cout << "Enter elements of vector" << endl;
-		for (int i = 0; i < v.size; ++i) {
+	TVector operator+(const TVector<ValueType>& v);
+	TVector operator-(const TVector<ValueType>& v);
+	double operator*(const TVector<ValueType>& v);
+	friend istream& operator>>(istream& in, TVector<ValueType>& v) {
+		for (int i = 0; i < v.size; i++)
 			in >> v.pVector[i];
-		}
 		return in;
 	}
-	friend ostream& operator<<(ostream out, const TVector & v){
-		for (int i = 0; i < v.size; ++i) {
+	friend ostream& operator<<(ostream& out, const TVector<ValueType>& v) {
+		for (int i = 0; i < v.size; i++)
 			out << v.pVector[i] << " ";
-		}
-		out << endl;
 		return out;
 	}
 };
 
 template <typename ValueType>
 TVector<ValueType>::TVector(int size, int startIndex) : size(size), startIndex(startIndex) {
-	pVector = new ValueType[size];
+	if (size <= 0)
+		throw exception("vector size should be greater than zero");
+	if (startIndex < 0)
+		throw exception("vector start index should be at least zero");
+	pVector = new ValueType[size]();
 }
 
 template <typename ValueType>
-TVector<ValueType>::TVector(const TVector<ValueType>& v): size(v.size), startIndex(v.startIndex){
+TVector<ValueType>::TVector(const TVector<ValueType>& v) : size(v.size), startIndex(v.startIndex) {
 	pVector = new ValueType[size];
 	for (int i = 0; i < size; i++)
 		pVector[i] = v.pVector[i];
@@ -61,24 +61,25 @@ TVector<ValueType>::~TVector() {
 }
 
 template <typename ValueType>
-int TVector<ValueType>::GetSize() const{
+int TVector<ValueType>::GetSize() const {
 	return size;
 }
 
 template <typename ValueType>
-int TVector<ValueType>::GetStartIndex() const{
+int TVector<ValueType>::GetStartIndex() const {
 	return startIndex;
 }
 
 template <typename ValueType>
-ValueType& TVector<ValueType>:: operator[](const int index){
-	if (i < o || i >= size)
+ValueType& TVector<ValueType>::operator[](const int i) {
+	if (i < 0 || i >= size)
 		throw exception("out of range");
 	return pVector[i];
 }
+
 template <typename ValueType>
-int TVector<ValueType>::operator==(const TVector<ValueType>& v) const{
-	if (size != v.size || strartIndex != v.startIndex)
+int TVector<ValueType>::operator==(const TVector<ValueType>& v) const {
+	if (size != v.size || startIndex != v.startIndex)
 		return 0;
 	for (int i = 0; i < size; i++)
 		if (pVector[i] != v.pVector[i])
@@ -87,14 +88,15 @@ int TVector<ValueType>::operator==(const TVector<ValueType>& v) const{
 }
 
 template <typename ValueType>
-int TVector<ValueType>::operator!=(const TVector<ValueType>& v) const{
+int TVector<ValueType>::operator!=(const TVector<ValueType>& v) const {
 	return !(*this == v);
 }
 
 template <typename ValueType>
 const TVector<ValueType>& TVector<ValueType>::operator=(const TVector<ValueType>& v) {
-	if (*this == v) return *this;
-	if (size != v.size || strartIndex != v.startIndex) {
+	if (this == &v)
+		return *this;
+	if (size != v.size || startIndex != v.startIndex) {
 		delete[] pVector;
 		size = v.size;
 		startIndex = v.startIndex;
@@ -110,7 +112,7 @@ template <typename ValueType>
 TVector<ValueType> TVector<ValueType>::operator+(const ValueType t) {
 	TVector<ValueType> tmp(*this);
 	for (int i = 0; i < size; i++)
-		tmp.pVector[i] += t;
+		tmp[i] += t;
 	return tmp;
 }
 
@@ -118,7 +120,7 @@ template <typename ValueType>
 TVector<ValueType> TVector<ValueType>::operator-(const ValueType t) {
 	TVector<ValueType> tmp(*this);
 	for (int i = 0; i < size; i++)
-		tmp.pVector[i] -= t;
+		tmp[i] -= t;
 	return tmp;
 }
 
@@ -126,32 +128,32 @@ template <typename ValueType>
 TVector<ValueType> TVector<ValueType>::operator*(const ValueType t) {
 	TVector<ValueType> tmp(*this);
 	for (int i = 0; i < size; i++)
-		tmp.pVector[i] *= t;
+		tmp[i] *= t;
 	return tmp;
 }
 template <typename ValueType>
 TVector<ValueType> TVector<ValueType>::operator+(const TVector<ValueType>& v) {
-	if (size != v.size || strartIndex != v.startIndex)
+	if (size != v.size || startIndex != v.startIndex)
 		throw exception("different sizes");
-	TVector<ValueType> tmp(size, startIndex);
+	TVector<ValueType> tmp(*this);
 	for (int i = 0; i < size; i++)
-		tmp.pVector[i] = pVector[i] + v.pVector[i];
+		tmp.pVector[i] = tmp.pVector[i] + v.pVector[i];
 	return tmp;
 }
 
 template <typename ValueType>
 TVector<ValueType> TVector<ValueType>::operator-(const TVector<ValueType>& v) {
-	if (size != v.size || strartIndex != v.startIndex)
+	if (size != v.size || startIndex != v.startIndex)
 		throw exception("different sizes");
-	TVector<ValueType> tmp(size, startIndex);
+	TVector<ValueType> tmp(*this);
 	for (int i = 0; i < size; i++)
-		tmp.pVector[i] = pVector[i] - v.pVector[i];
+		tmp.pVector[i] = tmp.pVector[i] - v.pVector[i];
 	return tmp;
 }
 
 template <typename ValueType>
 double TVector<ValueType>::operator*(const TVector<ValueType>& v) {
-	if (size != v.size || strartIndex != v.startIndex)
+	if (size != v.size || startIndex != v.startIndex)
 		throw exception("different sizes");
 	double sum = 0.0;
 	for (int i = 0; i < size; i++)

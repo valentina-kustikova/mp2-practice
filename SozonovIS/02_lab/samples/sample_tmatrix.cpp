@@ -6,27 +6,39 @@ using namespace std;
 
 int main()
 {
-    int size;
-    cout << "Enter matrix size:";
-    cin >> size;
+    try {
+        int size;
+        cout << "Enter matrix size: ";
+        cin >> size;
+        cout << endl;
 
-    TMatrix<double> A(size), B(size), C(size);
-    cin >> A;
-    cin >> B;
+        TMatrix<double> A(size);
+        cout << "Enter matrix vectors: " << endl;
+        cin >> A;
+        cout << endl;
 
-    cout << "A:" << endl << A << endl;
-    cout << "B:" << endl << B << endl;
+        cout << "Enter matrix size: ";
+        cin >> size;
+        cout << endl;
 
-    cout << "A + B:" << endl << A + B << endl;
-    cout << "A - B:" << endl << A - B << endl;
-    cout << "A * B:" << endl << A * B << endl;
+        TMatrix<double> B(size);
+        cout << "Enter matrix vectors: " << endl;
+        cin >> B;
+        cout << endl;
 
-    C = A;
-    cout << "C:" << endl << C << endl;
+        cout << "Matrix A:" << endl << A << endl;
+        cout << "Matrix B:" << endl << B << endl;
 
-    std::cout << "A == B ? " << (A == B) << std::endl;
-    std::cout << "A != B ? " << (A != B) << std::endl;
-    std::cout << "A == C ? " << (A == C) << std::endl;
+        cout << "A == B ? " << (A == B) << endl;
+        cout << "A != B ? " << (A != B) << endl;
+        cout << endl;
 
+        cout << "A + B:" << endl << A + B << endl;
+        cout << "A - B:" << endl << A - B << endl;
+        cout << "A * B:" << endl << A * B << endl;
+    }
+    catch (exception exp) {
+        cout << exp.what();
+    }
     return 0;
 }

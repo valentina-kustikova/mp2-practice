@@ -6,38 +6,50 @@ using namespace std;
 
 int main()
 {
-    int size;
-    cout << "Enter vector size:";
-    cin >> size;
+    try {
+        int size;
+        cout << "Enter vector size: ";
+        cin >> size;
+        cout << endl;
 
-    TVector<int> a(size), b(size), c(size);
-    cin >> a;
-    cin >> b;
+        TVector<int> a(size);
+        cout << "Enter vector: ";
+        cin >> a;
+        cout << endl;
 
-    cout << "a:" << endl << a << endl;
-    cout << "b:" << endl << b << endl;
+        cout << "Enter vector size: ";
+        cin >> size;
+        cout << endl;
 
-    cout << "Size a:" << a.GetSize() << endl;
-    cout << "Size b:" << a.GetSize() << endl;
+        TVector<int> b(size);
+        cout << "Enter vector: ";
+        cin >> b;
+        cout << endl;
 
-    cout << "a + b:" << endl << a + b << endl;
-    cout << "a - b:" << endl << a - b << endl;
-    cout << "a * b:" << endl << a * b << endl;
+        cout << "Vector a: " << a << endl;
+        cout << "Vector b: " << b << endl;
+        cout << endl;
 
-    int t;
-    cout << "Enter a random number:";
-    cin >> t;
+        std::cout << "a == b ? " << (a == b) << endl;
+        std::cout << "a != b ? " << (a != b) << endl;
+        cout << endl;
 
-    cout << "a + t:" << endl << a + t << endl;
-    cout << "a - t:" << endl << a - t << endl;
-    cout << "a * t:" << endl << a * t << endl;
+        cout << "a + b: " << a + b << endl;
+        cout << "a - b: " << a - b << endl;
+        cout << "a * b: " << a * b << endl;
+        cout << endl;
 
-    c = a;
-    cout << "c:" << endl << c << endl;
+        int t;
+        cout << "Enter a random number: ";
+        cin >> t;
+        cout << endl;
 
-    std::cout << "a == b ? " << (a == b) << std::endl;
-    std::cout << "a != b ? " << (a != b) << std::endl;
-    std::cout << "a == c ? " << (a == c) << std::endl;
-
+        cout << "a + " << t << ": " << a + t << endl;
+        cout << "a - " << t << ": " << a - t << endl;
+        cout << "a * " << t << ": " << a * t << endl;
+    }
+    catch (exception exp) {
+        cout << exp.what();
+    }
 	return 0;
 }
