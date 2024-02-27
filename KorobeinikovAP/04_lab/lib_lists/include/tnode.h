@@ -1,24 +1,20 @@
 #ifndef __NODE_H__
 #define __NODE_H__
 
-#include "tdata.h"
+
+
+#include <iostream>
+
+
 
 template <typename T>
 class TNode {
 private:
-	TData data;
+	T data;
 	TNode* pNext;
+public:
+	TNode(const T& data_, TNode* pNext_ = nullptr);
+	TNode(const TNode<T>& obj);
 };
-
-
-
-
-/*
-class TNode {
-private:
-	TData data;
-	TNode* pNext;  
-};
-*/
 
 #endif // !__NODE_H__
