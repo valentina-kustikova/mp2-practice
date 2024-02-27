@@ -3,7 +3,6 @@
 
 #include <iostream>
 #include "tlist.h"
-#include "tdata.h"
 
 using namespace std;
 
