@@ -10,11 +10,14 @@ struct TNode {
 	T key;
 	TNode<T>* pNext;
 
-	TNode() : key(), pNext(nullptr) {};
-	TNode(const T& data) : key(data), pNext(nullptr) {};
-	TNode(const T& data, TNode<T>* node) : key(data), pNext(node) {};
-	//TNode(const TNode<T>& node) : key(node.key), pNext(node.pNext) {};
+	TNode(const T& data, TNode<T>* _pNext = nullptr);
 };
+
+template <typename T>
+TNode<T>::TNode(const T& data, TNode<T>* _pNext) {
+	key = data;
+	pNext = _pNext;
+}
 
 
 #endif // !TNODE_H

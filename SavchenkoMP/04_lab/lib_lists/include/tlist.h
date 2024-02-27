@@ -63,7 +63,7 @@ template <typename T>
 TList<T>::TList(const TList<T>& obj) {
 	if (obj.pFirst == nullptr) return; // опнбепхрэ мю йнппейрмнярэ
 
-	pFirst = new TNode<T>(obj.pFirst);
+	pFirst = new TNode<T>(obj.pFirst->key);
 	TNode<T>* tmp = pFirst;
 	TNode<T>* tmp2 = pFirst;
 

@@ -39,17 +39,6 @@ private:
 	vector<string> lexems;
 	static map<string, int> priority;
 	map<string, double> operands;
-	
-	void Parse();
-	void ToPostfix();
-
-	bool IsOperator(const string& isopr) const;
-	bool IsConst(const string& isopd) const;
-
-	int FindOperator(int pos = 0) const;
-
-	void ConvertInfix();
-	void CorrectnessCheck();
 };
 
 #endif // !TPOLYNOM_H

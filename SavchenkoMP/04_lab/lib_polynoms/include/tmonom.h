@@ -6,7 +6,7 @@
 
 using namespace std;
 
-class TMonom : public TData {
+class TMonom{
 private:
 	double coeff;
 	int degree;
@@ -15,12 +15,10 @@ public:
 	TMonom(const TMonom& monom);
 	TMonom(double _coeff, int _degree);
 
-	virtual TData* copy() const;
-
-	virtual bool operator<(const TData* data) const;
-	virtual bool operator>(const TData* data) const;
-	virtual bool operator==(const TData* data) const;
-	virtual bool operator!=(const TData* data) const;
+	virtual bool operator<(const TMonom& data) const;
+	virtual bool operator>(const TMonom& data) const;
+	virtual bool operator==(const TMonom& data) const;
+	virtual bool operator!=(const TMonom& data) const;
 };
 
 #endif // !TMONOM_H
