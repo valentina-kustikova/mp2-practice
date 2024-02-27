@@ -6,16 +6,22 @@
 #include <map>
 #include <vector>
 #include "tringlist.h"
-#include "tdata.h"
 #include "tmonom.h"
-#include "tstack.h"
+#include "tarithmeticexpression.h"
 
 using namespace std;
+
+#define infix name
 
 class TPolynom {
 private:
 	TRingList<TMonom>* monoms;
 	string name;
+	
+	vector<string> lexems;
+	static map<string, int> priority;
+
+	void Parse();
 public:
 	TPolynom();
 	TPolynom(const string _name);
@@ -35,10 +41,13 @@ public:
 	TPolynom dif_z() const;
 
 private:
-	vector<string> postfix;
-	vector<string> lexems;
-	static map<string, int> priority;
-	map<string, double> operands;
+	bool IsOperator(const string& isopr) const;
+	bool IsConst(const string& isopd) const;
+
+	int FindOperator(int pos = 0) const;
+
+	void ConvertInfix();
+	void CorrectnessCheck();
 };
 
 #endif // !TPOLYNOM_H

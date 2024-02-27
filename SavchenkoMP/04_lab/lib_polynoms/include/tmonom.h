@@ -2,7 +2,6 @@
 #define TMONOM_H
 
 #include <iostream>
-#include "tdata.h"
 
 using namespace std;
 
