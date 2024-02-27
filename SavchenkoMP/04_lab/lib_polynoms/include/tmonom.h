@@ -17,10 +17,10 @@ public:
 
 	virtual TData* copy() const;
 
-	virtual bool operator<(const TData& data) const;
-	virtual bool operator>(const TData& data) const;
-	virtual bool operator==(const TData& data) const;
-	virtual bool operator!=(const TData& data) const;
+	virtual bool operator<(const TData* data) const;
+	virtual bool operator>(const TData* data) const;
+	virtual bool operator==(const TData* data) const;
+	virtual bool operator!=(const TData* data) const;
 };
 
 #endif // !TMONOM_H

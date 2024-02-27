@@ -54,7 +54,7 @@ TList<T>::TList(const TNode<T>* _pFirst) {
 	pCurr = pFirst;
 
 	TNode<T>* tmp = pFirst;
-	while (tmp->pNext != nullptr)
+	while (tmp->pNext != pStop)
 		tmp = tmp->pNext;
 	pLast = tmp;
 }
