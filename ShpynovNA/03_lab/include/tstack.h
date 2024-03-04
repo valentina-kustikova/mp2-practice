@@ -10,7 +10,7 @@ private:
     T* elements;
 public:
     TStack();
-    TStack(int size = 20);
+    TStack(int size = 20, int current_amount = 5);
     ~TStack();
 
     bool is_full() const;
@@ -23,7 +23,7 @@ public:
 };
 
 template <typename T> TStack<T>::TStack(){}
-template <typename T> TStack<T>::TStack(int size) {
+template <typename T> TStack<T>::TStack(int size, int current_amonunt) {
     if (size <= 0) {
         throw "size must be positive";
     }

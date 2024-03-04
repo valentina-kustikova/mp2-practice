@@ -16,14 +16,16 @@ int main()
             if (k > tmp)
                 cout << "Stack is smaller";
         } while (k > tmp);
-        
+        int kk = 0;
         for (int i = 0; i < k; i++){
             cout << "new number: ";
             int j;
             cin >> j;
             Stack.add(j);
+            kk++;
         }
-        cout << "got a stack with " << Stack.get_size() + 1 << " elements" << endl;
+
+        cout << "got a stack with " << kk << " elements" << endl;
         cout << "last one is " << Stack.top() << endl;
         cout << "previous one is ";
         Stack.del();
