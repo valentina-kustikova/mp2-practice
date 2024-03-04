@@ -1,6 +1,8 @@
 #include "tnode.h"
+//здесь пусто потому что шаблоннный класс
 
 
+/*
 template <typename T>
 TNode<T>::TNode<T>(const T& data_, TNode* pNext_ = nullptr) {
 	this->data = data_;
@@ -14,4 +16,4 @@ TNode<T>::TNode<T>(const TNode<T>& obj) {
 	this->pNext = obj.pNext;
 }
 
-
+*/
