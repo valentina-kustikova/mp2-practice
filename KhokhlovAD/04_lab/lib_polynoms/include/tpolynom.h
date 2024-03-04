@@ -1,17 +1,19 @@
 #ifndef _TPOLYNOM_
 #define _TPOLYNOM_
 #include "tringlist.h"
+#include "tmonom.h"
+
 using namespace std;
 
 class TPolynom
 {
 private:
-	TRingList* monoms;
+	TRingList<TMonom>* monoms;
 	string name;
 public:
 	TPolynom();
 	TPolynom(const string& name);
-	TPolynom(const TRingList* monoms);
+	TPolynom(const TRingList<TMonom>* monoms);
 	TPolynom(const TPolynom& p);
 	~TPolynom();
 	TPolynom operator+(const TPolynom& polynom);
