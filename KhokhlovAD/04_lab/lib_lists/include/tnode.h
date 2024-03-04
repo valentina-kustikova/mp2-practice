@@ -1,6 +1,6 @@
 #ifndef _TNODE_
 #define _TNODE_
-#include "tdata.h"
+
 
 template <typename T>
 struct TNode
