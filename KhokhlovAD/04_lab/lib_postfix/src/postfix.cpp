@@ -8,7 +8,7 @@ TPostfix::TPostfix(const string& infx) {
 	infix.erase(end_pos, infix.end());
 	priority = { {"*", 3}, {"/", 3}, 
 		{"+", 2}, {"-", 2}, 
-		{"(", 1}, {"=", 0}};
+		{"(", 1}, {"^", 10}};
 	ToPostfix();
 }
 
@@ -44,7 +44,7 @@ bool TPostfix::IsCorrect()const
 bool TPostfix::IsOperator(int ind)const
 {
 	if ( lexems[ind] == '*' || lexems[ind] == '/' || 
-		lexems[ind] == '+' || lexems[ind] == '-' )
+		lexems[ind] == '+' || lexems[ind] == '-' || lexems[ind] == '^')
 		return true;
 	return false;
 }
@@ -58,7 +58,7 @@ bool TPostfix::IsCorrectOperands()const
 	{
 		if (lexems[ind] == ')' && !IsOperator(ind + 1))
 			return false;
-		if (lexems[ind] == '(' && IsOperator(ind + 1))
+		if (lexems[ind] == '(' && IsOperator(ind + 1) && lexems[ind+1] != '-')
 			return false;
 		if(IsOperator(ind) || lexems[ind] == '(' || lexems[ind] == ')')
 			ind++;
@@ -117,7 +117,7 @@ bool TPostfix::IsCorrectOperator()const
 		flag++;
 		break;
 		}
-		case '*': case '/': case '+': case '-': case ',':
+		case '*': case '/': case '+': case '-': case ',': case '^':
 		{
 			if (flag == 0 || flag == lexems.size()-1)
 				return false;
@@ -178,7 +178,7 @@ void TPostfix::ToPostfix()
 			i++;
 			break;
 		}
-		case '+': case '-': case '*': case '/':
+		case '+': case '-': case '*': case '/': case '^':
 		{
 			int flag = 0;
 			tmp = lexems[i];
@@ -247,7 +247,7 @@ void TPostfix::setOperands()
 	for (int i = 0; i < postfix.size() ; i++)
 	{
 		if (postfix[i] == "*" || postfix[i] == "/"
-			|| postfix[i] == "+" || postfix[i] == "-")
+			|| postfix[i] == "+" || postfix[i] == "-" || postfix[i] == "^")
 			continue;
 		if (operands.find(postfix[i]) != operands.end())
 			continue;
@@ -298,6 +298,22 @@ double TPostfix::Calculate(map<string, double> oprnds)
 		{
 			double b = st.Pop(), a = st.Pop();
 			st.push(a - b);
+			i++;
+			flag = false;
+			continue;
+		}
+		if (postfix[i] == "^")
+		{
+			double b = st.Pop(), a = st.Pop();
+			if (b == 0) {
+				st.push(1.0); 
+				i++;
+				continue;
+			}
+			int tmp = a;
+			for (int ind = 0; ind < b-1; ind++)
+				a *= tmp;
+			st.push(a);
 			i++;
 			flag = false;
 			continue;

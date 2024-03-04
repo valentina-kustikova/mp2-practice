@@ -4,10 +4,10 @@
 
 
 template <typename T>
-class TRingList : public TList
+class TRingList : public TList<T>
 {
 private:
-	TNode* pHead;
+	TNode<T>* pHead;
 public:
 	//перегрузить некоторые функциии, в том числе конструктор
 	//pHead - фективный элемент

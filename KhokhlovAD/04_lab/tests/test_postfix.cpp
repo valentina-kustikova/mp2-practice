@@ -158,6 +158,36 @@ TEST(TPostfix, correctly_calculate_with_a_repeat_alpha)
 	EXPECT_EQ(b, a.Calculate(val));
 }
 
+TEST(TPostfix, correctly_calculate_with_a_degree)
+{
+	string str = "A + (A - C) ^ D - F / (A + H)";
+	TPostfix a(str);
+	map<string, double> val = { {"A", 3}, {"C", 2}, {"D", 1}, {"F", 2}, {"H", 0.5} };
+	double b = 3 + (3 - 2) * (1) - 2 / (3 + 0.5);
+	EXPECT_EQ(a.GetPostfix(), "AAC-D^+FAH+/-");
+	EXPECT_EQ(b, a.Calculate(val));
+}
+
+TEST(TPostfix, degreee_equal_zero)
+{
+	string str = "12^0";
+	ASSERT_NO_THROW(TPostfix a(str));
+}
+
+TEST(TPostfix, degreee_equal_zero_1)
+{
+	string str = "12^0";
+	TPostfix a(str);
+	EXPECT_EQ(a.Calculate(), 1);
+}
+
+TEST(TPostfix, degreee_less_zero)
+{
+	string str = "12^(-1)";
+	ASSERT_ANY_THROW(TPostfix a(str));
+}
+
+
 TEST(TPostfix, division_by_zero)
 {
 	string str = "1/0";
