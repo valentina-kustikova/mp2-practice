@@ -421,6 +421,51 @@ TEST(TArithmeticExpression, FractionalConstAE_Calculate) {
 }
 
 
+//// exponentiation EXPONENTIATION TESTS ////
+TEST(TArithmeticExpression, ExponentiationOperator_Constructor) {
+	string str = "X^0*A^1+B^2-C^3";
+
+	ASSERT_NO_THROW(TArithmeticExpression ae(str));
+}
+
+TEST(TArithmeticExpression, ExponentiationOperator_Infix) {
+	string str = "X^0*A^1+B^2-C^3";
+	
+	TArithmeticExpression ae(str);
+	EXPECT_EQ(str, ae.GetInfix());
+}
+
+TEST(TArithmeticExpression, ExponentiationOperator_Postfix) {
+	string str = "X^0*A^1+B^2-C^3";
+	vector<string> expvPostfix = { "X", "0", "^", "A", "1", "^", "*", "B", "2", "^", "+", "C", "3", "^", "-" };
+	
+	TArithmeticExpression ae(str);
+	EXPECT_EQ(expvPostfix, ae.GetPostfix());
+}
+
+TEST(TArithmeticExpression, ExponentiationOperator_StringPostfix) {
+	string str = "X^0*A^1+B^2-C^3";
+	string expPostfix = "X 0 ^ A 1 ^ * B 2 ^ + C 3 ^ -";
+	
+	TArithmeticExpression ae(str);
+	EXPECT_EQ(expPostfix, ae.GetStringPostfix());
+}
+
+TEST(TArithmeticExpression, ExponentiationOperator_Calculation) {
+	string str = "X^0*A^1+B^2-C^3";
+
+	TArithmeticExpression ae(str);
+	map<string, double> values = {
+		{"A", 2},
+		{"B", 3},
+		{"C", 4},
+		{"X", 5},
+	};
+	double ans = -53;
+	EXPECT_EQ(ans, ae.Calculate(values));
+}
+
+
 //// ANOTHER TESTS ////
 TEST(TArithmeticExpression, ConvertingAE_Constructor) {
 	string str = "-3 + .5 (A -B)(-C- D)+ (E-F/G)2(A + B)3 +3.";
