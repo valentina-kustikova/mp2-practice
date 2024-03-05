@@ -1,6 +1,17 @@
 #include "tPostfixNotation.h"
 #include <gtest.h>
 
+class TestsPostfix : public tPostfix
+{
+public:
+	TestsPostfix(const string& S) : tPostfix(S) { };
+	using tPostfix::expression_postfixed;
+	using tPostfix::expression_refined;
+	using tPostfix::create_postfixed_expression;
+	using tPostfix::is_operator;
+	using tPostfix::operation;
+};
+
 TEST(tPostfix, can_create_postfix) {
 	ASSERT_NO_THROW(tPostfix P("a+b-c"));
 }
@@ -11,32 +22,32 @@ TEST(tPostfix, throw_on_less_that_two_operators) {
 	ASSERT_ANY_THROW(tPostfix P("a+"));
 }
 TEST(tPostfix, operator_is_operator_index) {
-	tPostfix P("a+b");
-	EXPECT_TRUE(P.evaluate_operator(1));
+	TestsPostfix P("a+b");
+	EXPECT_TRUE(P.is_operator(1));
 }
 TEST(tPostfix, non_operator_is_non_operator_index) {
-	tPostfix P("a+b");
-	EXPECT_FALSE(P.evaluate_operator(0));
+	TestsPostfix P("a+b");
+	EXPECT_FALSE(P.is_operator(0));
 }
 TEST(tPostfix, operator_is_operator_char) {
-	tPostfix P("a+b");
-	EXPECT_TRUE(P.evaluate_operator('-'));
+	TestsPostfix P("a+b");
+	EXPECT_TRUE(P.is_operator('-'));
 }
 TEST(tPostfix, non_operator_is_non_operator_char) {
-	tPostfix P("a+b");
-	EXPECT_FALSE(P.evaluate_operator('a'));
+	TestsPostfix P("a+b");
+	EXPECT_FALSE(P.is_operator('a'));
 }
 TEST(tPostfix, operator_is_operator_string) {
-	tPostfix P("a+b");
-	EXPECT_TRUE(P.evaluate_operator("-"));
+	TestsPostfix P("a+b");
+	EXPECT_TRUE(P.is_operator("-"));
 }
 TEST(tPostfix, non_operator_is_non_operator_string) {
-	tPostfix P("a+b");
-	EXPECT_FALSE(P.evaluate_operator("ds"));
+	TestsPostfix P("a+b");
+	EXPECT_FALSE(P.is_operator("ds"));
 }
 TEST(tPostfix, operation_is_correct) {
-	tPostfix P("a+b");
-	double test = P.test_operation(2, '-', 4);
+	TestsPostfix P("a+b");
+	double test = P.operation(2, '-', 4);
 	double test_ex = -2;
 	EXPECT_EQ(test, test_ex);
 }
@@ -47,14 +58,14 @@ TEST(tPostfix, calculation_is_correct) {
 	EXPECT_EQ(P.calculate_the_result(), test_ex);
 }
 TEST(tPostfix, postfix_is_correct) {
-	tPostfix P("(a*b-c)/(d-a)-b");
+	TestsPostfix P("(a*b-c)/(d-a)-b");
 	vector<string> test_ex = { "a","b", "*", "c", "-","d","a", "-", "/", "b", "-"};
-	EXPECT_TRUE(P.check_postfixed(test_ex));
+	EXPECT_EQ(P.expression_postfixed,test_ex);
 }
 TEST(tPostfix, string_division_is_correct) {
-	tPostfix P("(a*b-c)");
+	TestsPostfix P("(a*b-c)");
 	vector<string> test_ex = { "(", "a","*","b" ,"-" ,"c" ,")" };
-	EXPECT_TRUE(P.check_refined(test_ex));
+	EXPECT_EQ(P.expression_refined,test_ex);
 }
 TEST(tPostfix, can_use_constants) {
 	tPostfix P("5+3-2");
@@ -63,9 +74,9 @@ TEST(tPostfix, can_use_constants) {
 	EXPECT_EQ(P.calculate_the_result(), test_ex);
 }
 TEST(tPostfix, can_use_non_single_element_variables) {
-	tPostfix P("st*nd-rd");
+	TestsPostfix P("st*nd-rd");
 	vector<string> test_ex = { "st","*","nd" ,"-" ,"rd" };
-	EXPECT_TRUE(P.check_refined(test_ex));
+	EXPECT_EQ(P.expression_refined,test_ex);
 }
 TEST(tPostfix, can_use_variables_multiple_times) {
 	tPostfix P("st*nd-st");
