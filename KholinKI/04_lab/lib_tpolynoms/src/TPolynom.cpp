@@ -368,20 +368,20 @@ TPolynom& TPolynom::operator=(const TPolynom& Q) {
 	return *this;
 }
 
-void TPolynom::SetXYZ(double values[], int size) {
+void TPolynom::SetPoint(double x, double y, double z) {
 	ArithmeticExpression my_polynom(polynom);
 	vector<string> my_operands = my_polynom.GetOperands();
 	auto it_begin{ my_operands.begin() };
 	auto it_end{ my_operands.end() };
 	while (it_begin != it_end) {
 		if (*it_begin == "x") {
-			values_xyz.insert({ *it_begin, values[0] });
+			values_xyz.insert({ *it_begin, x });
 		}
 		else if (*it_begin == "y") {
-			values_xyz.insert({ *it_begin, values[1] });
+			values_xyz.insert({ *it_begin, y });
 		}
 		else if (*it_begin == "z") {
-			values_xyz.insert({ *it_begin, values[2] });
+			values_xyz.insert({ *it_begin, z });
 		}
 		it_begin++;
 	}
@@ -392,11 +392,8 @@ double TPolynom::operator()(double x, double y, double z) {
 	vector<string> operands = my_polynom.GetOperands();
 	map<string, double> values;
 	if (values_xyz.size() == 0) {
-		double* arr = new double[3];
-		arr[0] = x; arr[1] = y; arr[2] = z;
-		SetXYZ(arr, 3);
+		SetPoint(x,y,z);
 		values = my_polynom.SetOperands_v2(operands, values_xyz);
-		
 	}
 	else {
 	    values = my_polynom.SetOperands_v2(operands, values_xyz);
@@ -587,20 +584,6 @@ istream& operator>>(istream& istr, TPolynom& Q) {
 	TPolynom new_polynom(new_list_monoms);//#пользовательский полином
 	Q = new_polynom;
 	cout << "FLAG END" << endl;
-
-	cout << endl << endl << endl;
-	cout << "For convenience, it is suggested that you pre-enter" << endl;
-	cout << "the point at which your polynomial will be calculated." << endl;
-
-	double x; double y; double z;
-	cout << "Enter the values of the variables x, y, z: " << endl;
-	cout << endl;
-	cout << "x = "; cin >> x; cout << endl;
-	cout << "y = "; cin >> y; cout << endl;
-	cout << "z = "; cin >> z; cout << endl;
-	double* arr = new double[3];
-	arr[0] = x; arr[1] = y; arr[2] = z;
-	Q.SetXYZ(arr, 3);
 	return istr;
 }
 
