@@ -12,7 +12,7 @@ private:
 	TNode<T>* pHead;
 public:
 	TRingList();
-	TRingList(const TNode<T>* _pFirst);
+	TRingList(TNode<T>* _pFirst);
 	TRingList(const TList<T>& obj);
 	TRingList(const TRingList<T>& obj);
 	virtual ~TRingList();
@@ -25,7 +25,7 @@ TRingList<T>::TRingList() : TList() {
 }
 
 template <typename T>
-TRingList<T>::TRingList(const TNode<T>* _pFirst) : TList(_pFirst) {
+TRingList<T>::TRingList(TNode<T>* _pFirst) : TList(_pFirst) {
 	pHead = new TNode<T>(pFirst); // !!! бнглнфмн ме пюанрюер я TMONOM !!!
 	pStop = pHead;
 }
@@ -38,7 +38,7 @@ TRingList<T>::TRingList(const TList<T>& obj) : TList(obj) {
 
 template <typename T>
 TRingList<T>::TRingList(const TRingList<T>& obj) {
-	if (obj.pFirst == nullptr) return; // бнглнфмн опнбепхрэ мю йнппейрмнярэ
+	if (obj.pFirst == nullptr) return;					// бнглнфмн опнбепхрэ мю йнппейрмнярэ
 
 	pFirst = new TNode<T>(obj.pFirst->key);
 	TNode<T>* tmp = pFirst;
@@ -50,7 +50,6 @@ TRingList<T>::TRingList(const TRingList<T>& obj) {
 		tmp = tmp->pNext;
 	}
 	pLast = tmp2;
-	pCurr = pFirst;
 	
 	pHead = new TNode<T>(pFirst);
 	pStop = pHead;
