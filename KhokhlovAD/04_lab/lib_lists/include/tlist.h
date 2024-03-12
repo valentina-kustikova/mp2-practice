@@ -14,9 +14,12 @@ public:
 	TList();
 	TList(TNode<T>* pF);
 	TList(const TList<T>& tL);
-	~TList();
 
+	~TList();
 	void clear();
+
+	bool isEmpty()const;
+	bool isEnd()const;
 };
 
 template <typename T>
@@ -90,5 +93,17 @@ void TList<T>::clear()
 	}
 	pCurr = pStop;
 	pLast = pStop;
+}
+
+template <typename T>
+bool TList<T>::isEmpty()const
+{
+	return pFirst == nullptr;
+}
+
+template <typename T>
+bool TList<T>::isEnd()const
+{
+	return pCurr->pNext == pStop;
 }
 #endif
