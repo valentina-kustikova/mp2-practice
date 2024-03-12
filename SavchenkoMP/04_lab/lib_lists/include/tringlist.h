@@ -6,6 +6,9 @@
 
 using namespace std;
 
+// pLast = pHead
+// pHead->pNext === pHead
+
 template <typename T>
 class TRingList : public TList<T> {
 private:
@@ -21,19 +24,20 @@ public:
 template <typename T>
 TRingList<T>::TRingList() : TList() {
 	pHead = new TNode<T>(pFirst); // ??? бнглнфмн ме пюанрюер я TMONOM !!!
-	pStop = pHead;
+	pLast->pNext = pHead;
+	pLast = pLast->pNext;
 }
 
 template <typename T>
 TRingList<T>::TRingList(TNode<T>* _pFirst) : TList(_pFirst) {
 	pHead = new TNode<T>(pFirst); // !!! бнглнфмн ме пюанрюер я TMONOM !!!
-	pStop = pHead;
+	pLast = pHead;
 }
 
 template <typename T>
 TRingList<T>::TRingList(const TList<T>& obj) : TList(obj) {
 	pHead = new TNode<T>(pFirst); // !!! бнглнфмн ме пюанрюер я TMONOM !!!
-	pStop = pHead;
+	pLast = pHead;
 }
 
 template <typename T>

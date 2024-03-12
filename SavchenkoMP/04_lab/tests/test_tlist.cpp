@@ -14,8 +14,6 @@ TEST(TList, DefaultConstructorTest) {
 	ASSERT_NO_THROW(TList<int> list);
 }
 
-// 
-
 // InsertionFirstTest
 TEST(TList, InsertionFirstTest) {
 	TList<int> list;
@@ -375,3 +373,225 @@ TEST(TList, RemovalTest_Last) {
 	EXPECT_EQ(2, tmp->pNext->key);
 	EXPECT_EQ(nullptr, tmp->pNext->pNext);
 }
+
+
+// NOVOGATION
+// GetCurrentTest
+TEST(TList, GetCurrentTest) {
+	TList<int> list;
+
+	EXPECT_NO_THROW(list.GetCurrent());
+}
+
+TEST(TList, GetCurrentTest_NullptrInEmpty) {
+	TList<int> list;
+	TNode<int>* tmp = list.GetCurrent();
+
+	EXPECT_EQ(nullptr, tmp);
+}
+
+TEST(TList, GetCurrentTest_BeforeReset) {
+	TList<int> list;
+	list.InsertLast(1);
+	list.InsertLast(2);
+	list.InsertLast(3);
+
+	TNode<int>* tmp = list.GetCurrent();
+
+	EXPECT_EQ(1, tmp->key);
+}
+
+TEST(TList, GetCurrentTest_AfterReset) {
+	TList<int> list;
+	list.InsertLast(1);
+	list.InsertLast(2);
+	list.InsertLast(3);
+
+	list.Reset();
+	TNode<int>* tmp = list.GetCurrent();
+
+	EXPECT_EQ(1, tmp->key);
+}
+
+// ResetTest
+TEST(TList, ResetTest) {
+	TList<int> list;
+	list.InsertLast(1);
+	
+	EXPECT_NO_THROW(list.Reset());
+}
+
+TEST(TList, ResetTest_Empty) {
+	TList<int> list;
+	
+	TNode<int>* tmp = list.GetCurrent();
+
+	EXPECT_EQ(nullptr, tmp);
+}
+
+TEST(TList, ResetTest_NotEmpty) {
+	TList<int> list;
+	list.InsertLast(1);
+	list.InsertLast(2);
+	list.InsertLast(3);
+	
+	TNode<int>* tmp = list.GetCurrent();
+
+	EXPECT_EQ(1, tmp->key);
+}
+
+// NextTest
+TEST(TList, NextTest_BeforeReset) {
+	TList<int> list;
+	list.InsertLast(1);
+	list.InsertLast(2);
+	list.InsertLast(3);
+
+	list.Next();
+	TNode<int>* tmp = list.GetCurrent();
+
+	EXPECT_EQ(2, tmp->key);
+}
+
+TEST(TList, NextTest_AfterReset) {
+	TList<int> list;
+	list.InsertLast(1);
+	list.InsertLast(2);
+	list.InsertLast(3);
+
+	list.Reset();
+	list.Next();
+	list.Next();
+	TNode<int>* tmp = list.GetCurrent();
+
+	EXPECT_EQ(3, tmp->key);
+}
+
+TEST(TList, NextTest_MultipleNext) {
+	TList<int> list;
+	list.InsertLast(1);
+	list.InsertLast(2);
+	list.InsertLast(3);
+	list.InsertLast(4);
+
+	list.Next(3);
+	TNode<int>* tmp = list.GetCurrent();
+
+	EXPECT_EQ(4, tmp->key);
+}
+
+// IsEndedTest
+TEST(TList, IsEnded_NotEnded_BeforeReset) {
+	TList<int> list;
+	list.InsertLast(1);
+	list.InsertLast(2);
+
+	EXPECT_EQ(false, list.IsEnded());
+}
+
+TEST(TList, IsEnded_NotEnded_AfterReset) {
+	TList<int> list;
+	list.InsertLast(1);
+	list.InsertLast(2);
+	list.Reset();
+
+	EXPECT_EQ(false, list.IsEnded());
+}
+
+TEST(TList, IsEnded_Ended) {
+	TList<int> list;
+	list.InsertLast(1);
+	list.InsertLast(2);
+	list.Reset();
+	list.Next();
+
+	EXPECT_EQ(true, list.IsEnded());
+}
+
+// InsertBeforeTest
+TEST(TList, InsertBeforeTest_BeforeNext) {
+	TList<int> list;
+	list.InsertLast(1);
+	list.InsertLast(2);
+	list.InsertLast(3);
+
+	list.InsertBefore(10);
+	TNode<int>* curr = list.GetCurrent();
+	TNode<int>* tmp = list.Search(10);
+
+	EXPECT_EQ(1, curr->key);
+	EXPECT_EQ(10, tmp->key);
+	EXPECT_EQ(1, tmp->pNext->key);
+	EXPECT_EQ(2, tmp->pNext->pNext->key);
+}
+
+TEST(TList, InsertBeforeTest_AfterNext) {
+	TList<int> list;
+	list.InsertLast(1);
+	list.InsertLast(2);
+	list.InsertLast(3);
+	list.Next();
+
+	list.InsertBefore(10);
+	TNode<int>* curr = list.GetCurrent();
+	TNode<int>* tmp = list.Search(1);
+
+	EXPECT_EQ(2, curr->key);
+	EXPECT_EQ(1, tmp->key);
+	EXPECT_EQ(10, tmp->pNext->key);
+	EXPECT_EQ(2, tmp->pNext->pNext->key);
+}
+
+// InsertAfterTest
+TEST(TList, InsertAfterTest_BeforeNext) {
+	TList<int> list;
+	list.InsertLast(1);
+	list.InsertLast(2);
+	list.InsertLast(3);
+
+	list.InsertAfter(10);
+	TNode<int>* curr = list.GetCurrent();
+	TNode<int>* tmp = list.Search(1);
+
+	EXPECT_EQ(1, curr->key);
+	EXPECT_EQ(1, tmp->key);
+	EXPECT_EQ(10, tmp->pNext->key);
+	EXPECT_EQ(2, tmp->pNext->pNext->key);
+}
+
+TEST(TList, InsertAfterTest_AfterNext_AtMiddle) {
+	TList<int> list;
+	list.InsertLast(1);
+	list.InsertLast(2);
+	list.InsertLast(3);
+	list.Next();
+
+	list.InsertAfter(10);
+	TNode<int>* curr = list.GetCurrent();
+	TNode<int>* tmp = list.Search(1);
+
+	EXPECT_EQ(2, curr->key);
+	EXPECT_EQ(1, tmp->key);
+	EXPECT_EQ(2, tmp->pNext->key);
+	EXPECT_EQ(10, tmp->pNext->pNext->key);
+}
+
+TEST(TList, InsertAfterTest_AfterNext_AtEnd) {
+	TList<int> list;
+	list.InsertLast(1);
+	list.InsertLast(2);
+	list.InsertLast(3);
+	list.Next();
+	list.Next();
+
+	list.InsertAfter(10);
+	TNode<int>* curr = list.GetCurrent();
+	TNode<int>* tmp = list.Search(1);
+
+	EXPECT_EQ(3, curr->key);
+	EXPECT_EQ(1, tmp->key);
+	EXPECT_EQ(2, tmp->pNext->key);
+	EXPECT_EQ(3, tmp->pNext->pNext->key);
+	EXPECT_EQ(10, tmp->pNext->pNext->pNext->key);
+}
+
