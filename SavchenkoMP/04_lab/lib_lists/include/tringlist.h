@@ -6,62 +6,76 @@
 
 using namespace std;
 
-// pLast = pHead
-// pHead->pNext === pHead
-
 template <typename T>
 class TRingList : public TList<T> {
-private:
-	TNode<T>* pHead;
 public:
 	TRingList();
 	TRingList(TNode<T>* _pFirst);
-	TRingList(const TList<T>& obj);
-	TRingList(const TRingList<T>& obj);
+	TRingList(const TRingList<T>& rlist);
 	virtual ~TRingList();
 };
 
 template <typename T>
-TRingList<T>::TRingList() : TList() {
-	pHead = new TNode<T>(pFirst); // ??? бнглнфмн ме пюанрюер я TMONOM !!!
-	pLast->pNext = pHead;
-	pLast = pLast->pNext;
+TRingList<T>::TRingList() {
+	TNode<T>* pHead = new TNode<T>();
+	pHead->pNext = pHead;
+	pStop = pHead;
+	pFirst = pHead;
+	pLast = pHead;
+	pCurr = pHead;
 }
 
 template <typename T>
 TRingList<T>::TRingList(TNode<T>* _pFirst) : TList(_pFirst) {
-	pHead = new TNode<T>(pFirst); // !!! бнглнфмн ме пюанрюер я TMONOM !!!
-	pLast = pHead;
-}
-
-template <typename T>
-TRingList<T>::TRingList(const TList<T>& obj) : TList(obj) {
-	pHead = new TNode<T>(pFirst); // !!! бнглнфмн ме пюанрюер я TMONOM !!!
-	pLast = pHead;
-}
-
-template <typename T>
-TRingList<T>::TRingList(const TRingList<T>& obj) {
-	if (obj.pFirst == nullptr) return;					// бнглнфмн опнбепхрэ мю йнппейрмнярэ
-
-	pFirst = new TNode<T>(obj.pFirst->key);
-	TNode<T>* tmp = pFirst;
-	TNode<T>* tmp2 = pFirst;
-
-	while (tmp->pNext != obj.pStop) {
-		tmp2->pNext = new TNode<T>(tmp->key);
-		tmp2 = tmp2->pNext;
-		tmp = tmp->pNext;
-	}
-	pLast = tmp2;
-	
-	pHead = new TNode<T>(pFirst);
+	TNode<T>* pHead = new TNode<T>();
+	pHead->pNext = pHead;
 	pStop = pHead;
+	
+	if (pFirst == nullptr) {
+		pFirst = pHead;
+		pLast = pHead;
+		pCurr = pHead;
+	}
+	else {
+		TNode<T>* tmp = pFirst;
+		while (tmp->pNext != nullptr) {
+			tmp = tmp->pNext;
+		}
+		tmp->pNext = pHead;
+		pLast = tmp;
+	}
+}
+
+template <typename T>
+TRingList<T>::TRingList(const TRingList<T>& rlist) {
+	TNode<T>* pHead = new TNode<T>();
+	pHead->pNext = pHead;
+	pStop = pHead;
+	
+	if (rlist.pFirst == rlist.pStop) {
+		pFirst = pHead;
+		pLast = pHead;
+		pCurr = pHead;
+	}
+	else {
+		pFirst = new TNode<T>(rlist.pFirst->key);
+		TNode<T>* tmp = rlist.pFirst;
+		TNode<T>* pNode = pFirst;
+
+		while (tmp->pNext != rlist.pStop) {
+			pNode->pNext = new TNode<T>(tmp->pNext->key);
+			pNode = pNode->pNext;
+			tmp = tmp->pNext;
+		}
+		pLast = pNode;
+		pLast->pNext = pStop;
+		pCurr = pFirst;
+	}
 }
 
 template <typename T>
 TRingList<T>::~TRingList() {
-	if (pHead) delete pHead;
+	if (pStop) delete pStop;
 }
 
-#endif // !TRINGLIST_H
+#endif

@@ -9,17 +9,15 @@ protected:
 	TNode<T>* pFirst;
 	TNode<T>* pLast;
 	TNode<T>* pCurr;
-	//TNode<T>* pPrev;
 	TNode<T>* pStop;
 
 public:
 	TList();
-	TList(TNode<T>* _pFirst);
-	TList(const TList<T>& obj);
+	TList(TNode<T>* _pFirst, TNode<T>* _pStop = nullptr);
+	TList(const TList<T>& obj, TNode<T>* _pStop = nullptr);
 	virtual ~TList();
 
 	TNode<T>* Search(const T& data);
-	//TNode<T>* Search(const T& data, const TNode<T>* _pPrev);
 	void InsertFirst(const T& data);
 	void InsertLast(const T& data);
 	void InsertBefore(const T& data, const T& before);
@@ -37,6 +35,10 @@ public:
 	TNode<T>* GetCurrent() const;
 	void Next(const int count = 1);
 	bool IsEnded() const;
+
+	TNode<T>* first() const;
+	TNode<T>* last() const;
+	TNode<T>* stop() const;
 };
 
 template <typename T>
@@ -48,8 +50,8 @@ TList<T>::TList() {
 }
 
 template <typename T>
-TList<T>::TList(TNode<T>* _pFirst) {
-	pStop = nullptr;
+TList<T>::TList(TNode<T>* _pFirst, TNode<T>* _pStop) {
+	pStop = _pStop;
 	pFirst = _pFirst;
 	if (pFirst == pStop) {
 		pLast = pStop;
@@ -64,11 +66,12 @@ TList<T>::TList(TNode<T>* _pFirst) {
 }
 
 template <typename T>
-TList<T>::TList(const TList<T>& obj) {
+TList<T>::TList(const TList<T>& obj, TNode<T>* _pStop) {
 	if (obj.pFirst == obj.pStop) {
-		pStop = nullptr;
+		pStop = _pStop;
 		pFirst = pStop;
 		pLast = pStop;
+		pCurr = pFirst;
 		return;
 	}
 
@@ -83,6 +86,7 @@ TList<T>::TList(const TList<T>& obj) {
 	}
 	pLast = pNode;
 	pStop = pLast->pNext;
+	pCurr = pFirst;
 }
 
 template <typename T>
@@ -93,7 +97,7 @@ TList<T>::~TList() {
 
 
 template <typename T>
-TNode<T>* TList<T>::Search(const T& data) {
+TNode<T>* TList<T>::Search(const T& data) { // if (obj.Search(data) == obj.stop) - NOT FOUND
 	TNode<T>* tmp = pFirst;
 	while (tmp != pStop && tmp->key != data)
 		tmp = tmp->pNext;
@@ -115,7 +119,7 @@ void TList<T>::InsertLast(const T& data) {
 		InsertFirst(data);
 		return;
 	}
-	TNode<T>* tmp = new TNode<T>(data);
+	TNode<T>* tmp = new TNode<T>(data, pStop);
 	pLast->pNext = tmp;
 	pLast = pLast->pNext;
 
@@ -313,5 +317,17 @@ bool TList<T>::IsEnded() const {
 	else return false;
 }
 
+template <typename T>
+TNode<T>* TList<T>::first() const {
+	return pFirst;
+}
+template <typename T>
+TNode<T>* TList<T>::last() const {
+	return pLast;
+}
+template <typename T>
+TNode<T>* TList<T>::stop() const {
+	return pStop;
+}
 
 #endif // !TLIST_H
