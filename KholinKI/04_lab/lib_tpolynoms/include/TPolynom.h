@@ -21,11 +21,12 @@ public:
 	~TPolynom();
 
 	TPolynom& operator=(const TPolynom& Q);
+	bool operator==(const TPolynom& Q)const;
 	TPolynom operator+(const TPolynom& Q);
 	TPolynom operator-(const TPolynom& Q);
 	TPolynom operator*(const TPolynom& Q);
 	double operator()(double x = 1,double y = 1, double z = 1);
-	map<string, double> GetPoint()const { return values_xyz; }
+	map<string, double>GetPoint()const { return values_xyz; }
 	void SetPoint(double x, double y, double z);
 
 	TRingList<TMonom>* GetMonoms()const;
@@ -34,7 +35,7 @@ public:
 	TPolynom differentiate_by_x()const;
 	TPolynom differentiate_by_y()const;
 	TPolynom differentiate_by_z()const;
-	
-	
+private:
+	void ShowStructureList(const bool& mode);
 };
 #endif

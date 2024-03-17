@@ -1,9 +1,12 @@
 #ifndef _TMONOM_H
 #define _TMONOM_H
+#include <iostream>
+#include <string>
 
-
-
+using namespace std;
 class TMonom {
+	friend ostream& operator<<(ostream& ostr, const TMonom& monom);
+	friend istream& operator>>(istream& istr, TMonom& monom);
 private:
 	double coeff;
 	int wrap_degree;
@@ -18,14 +21,15 @@ public:
 	double GetCoeff(void)const { return coeff; }
 	int GetWD(void)const { return wrap_degree; }
 
-	TMonom& operator=(const TMonom& monom);
+
 	bool operator<(const TMonom& monom)const;
 	bool operator<=(const TMonom& monom)const;
+	bool operator>(const TMonom& monom)const;
+	bool operator>=(const TMonom& monom)const;
 	bool operator!=(const TMonom& monom)const;
+	bool operator==(const TMonom& monom)const;
 	TMonom operator*(const TMonom& monom)const;
-	//virtual bool operator>(const TData& data)const;
-	//virtual bool operator==(const TData& data)const;
-	
+	TMonom& operator=(const TMonom& monom);
 };
 
 

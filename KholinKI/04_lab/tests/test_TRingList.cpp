@@ -230,11 +230,14 @@ TEST(TRingList, navigation_part_3_check_end) {
 
 	rList->insert_after(4, 5);
 
-	while (rList->GetCurrent()->pNext != rList->GetPStop()) {
+	Node<int>* tmp = rList->GetCurrent();
+
+	while (tmp != rList->GetPStop()) {
 		rList->next();
+		tmp = rList->GetCurrent();
 	}
 
-	Node<int>* tmp = rList->GetCurrent();
+	
 
 	ASSERT_TRUE(rList->Is_End());
 }
@@ -248,17 +251,19 @@ TEST(TRingList, navigation_part_4_reset_current_pointer) {
 
 	rList->insert_after(4, 5);
 
-	while (rList->GetCurrent()->pNext != rList->GetPStop()) {
+	Node<int>* tmp = rList->GetCurrent();
+
+	while (tmp != rList->GetPStop()) {
 		rList->next();
+		tmp = rList->GetCurrent();
 	}
 
-	Node<int>* tmp = rList->GetCurrent();
-	
 	if (rList->Is_End()) {
 		rList->reset();
+		tmp = rList->GetCurrent();
 	}
 
-	ASSERT_TRUE(rList->GetCurrent()->data == 10);
+	ASSERT_TRUE(tmp == rList->GetPFirst());
 }
 
 
