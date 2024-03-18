@@ -22,6 +22,8 @@ private:
 	static map<string, int> priority;
 
 	void Parse();
+	void ToMonoms();
+	void AddMonom(const TMonom& m);
 public:
 	TPolynom();
 	TPolynom(const string _name);
@@ -31,9 +33,9 @@ public:
 
 	const TPolynom& operator=(const TPolynom& polynom);
 
-	TPolynom operator+(const TPolynom& polynom);
-	TPolynom operator-(const TPolynom& polynom);
-	TPolynom operator*(const TPolynom& polynom);
+	TPolynom operator+(TPolynom& polynom);
+	TPolynom operator-(TPolynom& polynom);
+	TPolynom operator*(TPolynom& polynom);
 	double operator()(double x, double y, double z);
 
 	TPolynom dif_x() const;

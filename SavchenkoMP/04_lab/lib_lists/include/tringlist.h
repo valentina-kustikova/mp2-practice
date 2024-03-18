@@ -38,6 +38,7 @@ TRingList<T>::TRingList(TNode<T>* _pFirst) : TList(_pFirst) {
 	}
 	else {
 		TNode<T>* tmp = pFirst;
+		pHead->pNext = pFirst;
 		while (tmp->pNext != nullptr) {
 			tmp = tmp->pNext;
 		}
@@ -61,6 +62,7 @@ TRingList<T>::TRingList(const TRingList<T>& rlist) {
 		pFirst = new TNode<T>(rlist.pFirst->key);
 		TNode<T>* tmp = rlist.pFirst;
 		TNode<T>* pNode = pFirst;
+		pHead->pNext = pFirst;
 
 		while (tmp->pNext != rlist.pStop) {
 			pNode->pNext = new TNode<T>(tmp->pNext->key);

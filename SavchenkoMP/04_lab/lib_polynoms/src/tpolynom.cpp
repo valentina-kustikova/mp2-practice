@@ -178,12 +178,42 @@ void TPolynom::Parse() {
 
 // ======================================================= //
 
+void TPolynom::ToMonoms() {
+	throw "NOT IMPLEMENTED";
+}
+
+void TPolynom::AddMonom(const TMonom& m) {
+	monoms->Reset();
+	while (!monoms->IsEnded()) {
+		TMonom* curr = &monoms->GetCurrent()->key;
+		
+		if (m == *curr) {
+			(*curr).set_coeff(m.get_coeff() + (*curr).get_coeff());
+			return;
+		}
+
+		else if (m < *curr) {
+			monoms->InsertBefore(m);
+			return;
+		}
+
+		else {
+			monoms->Next();
+		}
+	}
+	monoms->InsertLast(m);
+}
+
+
 TPolynom::TPolynom() {
+	name = "";
 	monoms = new TRingList<TMonom>;
 }
 TPolynom::TPolynom(const string _name) {
 	name = _name;
 	monoms = new TRingList<TMonom>;
+
+	Parse();
 }
 TPolynom::TPolynom(const TRingList<TMonom>& ringlist) {
 	monoms = new TRingList<TMonom>(ringlist);
@@ -197,26 +227,68 @@ TPolynom::~TPolynom() {
 	if (monoms) delete monoms;
 }
 
+
+
+
 const TPolynom& TPolynom::operator=(const TPolynom& polynom) {
-
-	throw "NOT IMPLEMENTED";
+	TPolynom tmp(polynom);
+	return tmp;
 }
 
-TPolynom TPolynom::operator+(const TPolynom& polynom) {
+TPolynom TPolynom::operator+(TPolynom& polynom) {
+	TPolynom res(*this);
 
-	throw "NOT IMPLEMENTED";
+	polynom.monoms->Reset();
+	while (!polynom.monoms->IsEnded()) {
+		TMonom curr_monom = polynom.monoms->GetCurrent()->key;
+		res.AddMonom(curr_monom);
+		polynom.monoms->Next();
+	}
+
+	return res;
 }
-TPolynom TPolynom::operator-(const TPolynom& polynom) {
+TPolynom TPolynom::operator-(TPolynom& polynom) {
+	TPolynom res(*this);
 
-	throw "NOT IMPLEMENTED";
+	polynom.monoms->Reset();
+	while (!polynom.monoms->IsEnded()) {
+		TMonom curr_monom = polynom.monoms->GetCurrent()->key;
+		curr_monom.set_coeff((-1) * curr_monom.get_coeff());
+		res.AddMonom(curr_monom);
+		polynom.monoms->Next();
+	}
+
+	return res;
 }
-TPolynom TPolynom::operator*(const TPolynom& polynom) {
+TPolynom TPolynom::operator*(TPolynom& polynom) {
+	TPolynom res;
+	
+	monoms->Reset();
+	while (!monoms->IsEnded()) {
+		TMonom curr1 = monoms->GetCurrent()->key;
+		
+		polynom.monoms->Reset();
+		while (!polynom.monoms->IsEnded()) {
+			TMonom curr2 = polynom.monoms->GetCurrent()->key;
+			res.AddMonom(curr1 * curr2);
+			polynom.monoms->Next();
+		}
+		
+		monoms->Next();
+	}
 
-	throw "NOT IMPLEMENTED";
+	return res;
 }
 double TPolynom::operator()(double x, double y, double z) {
+	double res = 0;
 
-	throw "NOT IMPLEMENTED";
+	monoms->Reset();
+	while (!monoms->IsEnded()) {
+		res += monoms->GetCurrent()->key.value(x, y, z);
+		monoms->Next();
+	}
+
+	return res;
 }
 
 TPolynom TPolynom::dif_x() const {
