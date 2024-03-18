@@ -1,11 +1,13 @@
+# Set target name
 set(target "gtest")
 
-add_library(${target} STATIC gtest-all.cc)
+# Get list of header and source files
+FILE(GLOB hdrs "*.h")
+FILE(GLOB srcs "*.cc")
 
-if((${CMAKE_CXX_COMPILER_ID} MATCHES "GNU" OR
-    ${CMAKE_CXX_COMPILER_ID} MATCHES "Clang") AND
-    (${CMAKE_SYSTEM_NAME} MATCHES "Linux"))
-    set(pthread "-pthread")
-endif()
+# Add a static library target to be built from the source
+# files listed in the command invocation
+ADD_LIBRARY(${target} STATIC ${srcs} ${hdrs})
 
-target_link_libraries(${target} ${pthread})
+# Specify include directories to use when compiling a target
+TARGET_INCLUDE_DIRECTORIES(${target} PRIVATE ${GTEST_INCLUDE})

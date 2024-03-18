@@ -1,8 +1,13 @@
-set(target ${MP2_LIBRARY})
+# Set target name
+set(target ${01_LAB_POLYNOMS_LIBRARY})
 
-file(GLOB hdrs "*.h*" "${MP2_INCLUDE}/*.h*")
-file(GLOB srcs "*.cpp")
+# Get list of header and source files
+FILE(GLOB hdrs "*.h" "${01_LAB_POLYNOMS_INCLUDE}/*.h")
+FILE(GLOB srcs "*.cpp")
 
-include_directories("${MP2_INCLUDE}")
+# Add a static library target to be built from the source
+# files listed in the command invocation
+ADD_LIBRARY(${target} STATIC ${srcs} ${hdrs})
 
-add_library(${target} STATIC ${srcs} ${hdrs})
+# Specify include directories to use when compiling a target
+TARGET_INCLUDE_DIRECTORIES(${target} PRIVATE ${01_LAB_POLYNOMS_INCLUDE})

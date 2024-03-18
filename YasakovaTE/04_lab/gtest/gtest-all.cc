@@ -8509,7 +8509,7 @@ bool ValidateRegex(const char* regex) {
         is_valid = false;
       } else if (IsRepeat(ch) && !prev_repeatable) {
         ADD_FAILURE() << FormatRegexSyntaxError(regex, i)
-                      << "'" << ch << "' can only follow a repeatable str.";
+                      << "'" << ch << "' can only follow a repeatable token.";
         is_valid = false;
       }
 
