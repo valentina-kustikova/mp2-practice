@@ -313,7 +313,7 @@ void TList<T>::Next(const int count) {
 template <typename T>
 bool TList<T>::IsEnded() const {
 	if (pCurr == pStop) return true;
-	if (pCurr->pNext == pStop) return true;
+	//if (pCurr->pNext == pStop) return true;
 	else return false;
 }
 

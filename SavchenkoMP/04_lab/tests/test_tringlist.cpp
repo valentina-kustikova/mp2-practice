@@ -497,11 +497,22 @@ TEST(TRingList, IsEnded_NotEnded_AfterReset) {
 	EXPECT_EQ(false, list.IsEnded());
 }
 
+TEST(TRingList, IsEnded_LastNode) {
+	TRingList<int> list;
+	list.InsertLast(1);
+	list.InsertLast(2);
+	list.Reset();
+	list.Next();
+
+	EXPECT_EQ(false, list.IsEnded());
+}
+
 TEST(TRingList, IsEnded_Ended) {
 	TRingList<int> list;
 	list.InsertLast(1);
 	list.InsertLast(2);
 	list.Reset();
+	list.Next();
 	list.Next();
 
 	EXPECT_EQ(true, list.IsEnded());

@@ -181,11 +181,36 @@ void TPolynom::Parse(string& name) {
 
 // ======================================================= //
 
-void TPolynom::ToMonoms(vector<string>& lexems) { // опнбепхрэ мюбхцюжхч вепег i !!!
+void TPolynom::ToMonoms(vector<string>& lexems) { // FOR PERFECT POLYNOMS
 	double coeff = 0;
 	int degX = 0, degY = 0, degZ = 0;
 	int minus_next = 1;
 	
+	for (int i = 0; i < lexems.size(); i++) {
+		if (lexems[i] == "+" || lexems[i] == "-") {
+			TMonom monom(minus_next * coeff, degX, degY, degZ);
+			AddMonom(monom);
+
+			if (lexems[i] == "+") minus_next = 1;
+			else minus_next = -1;
+			coeff = 0;
+			degX = 0;
+			degY = 0;
+			degZ = 0;
+		}
+		else { // "1*x^1*y^1*z^1+2*x^2*y^2*z^2+3*x^3*y^3*z^3"
+			coeff = stod(lexems[i]);
+			degX = stoi(lexems[i + 4]); // 8 12
+			degY = stoi(lexems[i + 8]);
+			degZ = stoi(lexems[i + 12]);
+			i += 12;
+		}
+	}
+
+	TMonom monom(minus_next * coeff, degX, degY, degZ);
+	AddMonom(monom);
+
+	/*
 	for (int i = 0; i < lexems.size(); i++) {
 		if (lexems[i] == "x") {
 			if (i + 1 < lexems.size()) {
@@ -282,8 +307,7 @@ void TPolynom::ToMonoms(vector<string>& lexems) { // опнбепхрэ мюбхцюжхч вепег i
 			coeff = stod(lexems[i]);
 		}
 	}
-	
-	//throw "NOT IMPLEMENTED";
+	*/
 }
 
 void TPolynom::AddMonom(const TMonom& m) {
@@ -312,6 +336,8 @@ void TPolynom::AddMonom(const TMonom& m) {
 			monoms->Next();
 		}
 	}
+	
+	//TMonom* curr = &monoms->GetCurrent()->key;
 	monoms->InsertLast(m);
 }
 
@@ -455,6 +481,7 @@ string TPolynom::get_string() {
 			string monom = monoms->GetCurrent()->key.get_string();
 			if (monom[0] == '-') res += monom;
 			else res += "+" + monom;
+			monoms->Next();
 		}
 	}	
 	return res;
