@@ -1,6 +1,6 @@
 #include "tpolynom.h"
 
-map<string, int> TArithmeticExpression::priority = {
+map<string, int> TPolynom::priority = {
 	{"^", 4},
 	{"*", 3},
 	{"/", 3},
@@ -32,7 +32,7 @@ bool TPolynom::IsConst(const string& isopd) const {
 }
 
 // If found any operator, returns index. Else returns -1.
-int TPolynom::FindOperator(int pos) const {
+int TPolynom::FindOperator(const string& name, int pos) const {
 	if (pos < 0 || pos >= infix.size()) return -1;
 
 	int ind = -1;
@@ -48,7 +48,7 @@ int TPolynom::FindOperator(int pos) const {
 	return ind;
 }
 
-void TPolynom::ConvertInfix() {
+void TPolynom::ConvertInfix(string& name) {
 	string nospaces;
 	for (int i = 0; i < infix.size(); i++) {
 		if (infix[i] != ' ')
@@ -105,7 +105,7 @@ void TPolynom::ConvertInfix() {
 	infix = tmp;
 }
 
-void TPolynom::CorrectnessCheck() {
+void TPolynom::CorrectnessCheck(const string& name) const {
 	int op_bracket = 0;
 	int cl_bracket = 0;
 	int dot = 0;
@@ -144,15 +144,16 @@ void TPolynom::CorrectnessCheck() {
 	if (op_bracket != cl_bracket) throw exp;
 }
 
-void TPolynom::Parse() {
-	ConvertInfix();
-	CorrectnessCheck();
+void TPolynom::Parse(string& name) {
+	ConvertInfix(name);
+	CorrectnessCheck(name);
 
-	int firstind, secondind;;
+	vector<string> lexems;
+	int firstind, secondind;
 	string token;
 
-	firstind = FindOperator();
-	secondind = FindOperator(firstind + 1);
+	firstind = FindOperator(name);
+	secondind = FindOperator(name, firstind + 1);
 	if (firstind == -1) {
 		lexems.push_back(infix);
 		return;
@@ -168,18 +169,121 @@ void TPolynom::Parse() {
 		if (opd != "")
 			lexems.push_back(opd);
 		firstind = secondind;
-		secondind = FindOperator(firstind + 1);
+		secondind = FindOperator(name, firstind + 1);
 	}
 	lexems.push_back(infix.substr(firstind, 1));
 	if (firstind != infix.size() - 1)
 		lexems.push_back(infix.substr(firstind + 1));
+
+	ToMonoms(lexems);
 }
 
 
 // ======================================================= //
 
-void TPolynom::ToMonoms() {
-	throw "NOT IMPLEMENTED";
+void TPolynom::ToMonoms(vector<string>& lexems) { // œ–Œ¬≈–»“‹ Õ¿¬»√¿÷»ﬁ ◊≈–≈« i !!!
+	double coeff = 0;
+	int degX = 0, degY = 0, degZ = 0;
+	int minus_next = 1;
+	
+	for (int i = 0; i < lexems.size(); i++) {
+		if (lexems[i] == "x") {
+			if (i + 1 < lexems.size()) {
+				if (lexems[i + 1] == "^") {
+					degX = stoi(lexems[i + 2]);
+					i += 2;
+					continue;
+				}
+				else {
+					continue;
+				}
+			} 
+			else {
+				degX = 1;
+				continue;
+			}
+		}
+		
+		else if (lexems[i] == "y") {
+			if (i + 1 < lexems.size()) {
+				if (lexems[i + 1] == "^") {
+					degY = stoi(lexems[i + 2]);
+					i += 2;
+					continue;
+				}
+				else {
+					continue;
+				}
+			}
+			else {
+				degY = 1;
+				continue;
+			}
+		}
+
+		else if (lexems[i] == "z") {
+			if (i + 1 < lexems.size()) {
+				if (lexems[i + 1] == "^") {
+					degZ = stoi(lexems[i + 2]);
+					i += 2;
+					continue;
+				}
+				else {
+					continue;
+				}
+			}
+			else {
+				degZ = 1;
+				continue;
+			}
+		}
+
+		else if (lexems[i] == "+") {
+			TMonom monom(minus_next * coeff, degX, degY, degZ);
+			AddMonom(monom);
+
+			coeff = 0;
+			degX = 0;
+			degY = 0;
+			degZ = 0;
+			minus_next = 1;
+			if (lexems[i + 1] == "x" || lexems[i + 1] == "y" || lexems[i + 1] == "z") {
+				coeff = 1;
+			}
+			else {
+				coeff = stod(lexems[i + 1]);
+			}
+			continue;
+		}
+
+		else if (lexems[i] == "-") {
+			TMonom monom(minus_next * coeff, degX, degY, degZ);
+			AddMonom(monom);
+
+			coeff = 0;
+			degX = 0;
+			degY = 0;
+			degZ = 0;
+			minus_next = -1;
+			if (lexems[i + 1] == "x" || lexems[i + 1] == "y" || lexems[i + 1] == "z") {
+				coeff = 1;
+			}
+			else {
+				coeff = stod(lexems[i + 1]);
+			}
+			continue;
+		}
+
+		else if (lexems[i] == "*") {
+			continue;
+		}
+
+		else {
+			coeff = stod(lexems[i]);
+		}
+	}
+	
+	//throw "NOT IMPLEMENTED";
 }
 
 void TPolynom::AddMonom(const TMonom& m) {
@@ -188,8 +292,15 @@ void TPolynom::AddMonom(const TMonom& m) {
 		TMonom* curr = &monoms->GetCurrent()->key;
 		
 		if (m == *curr) {
-			(*curr).set_coeff(m.get_coeff() + (*curr).get_coeff());
-			return;
+			double coeff = m.get_coeff() + (*curr).get_coeff();
+			if (coeff == 0.0f) {
+				monoms->Remove(*curr);
+				return;
+			}
+			else {
+				(*curr).set_coeff(coeff);
+				return;
+			}
 		}
 
 		else if (m < *curr) {
@@ -206,21 +317,19 @@ void TPolynom::AddMonom(const TMonom& m) {
 
 
 TPolynom::TPolynom() {
-	name = "";
 	monoms = new TRingList<TMonom>;
 }
-TPolynom::TPolynom(const string _name) {
-	name = _name;
+TPolynom::TPolynom(const string& _name) {
 	monoms = new TRingList<TMonom>;
+	string name = _name;
 
-	Parse();
+	Parse(name);
 }
 TPolynom::TPolynom(const TRingList<TMonom>& ringlist) {
 	monoms = new TRingList<TMonom>(ringlist);
-	name = "";
+
 }
-TPolynom::TPolynom(const TPolynom& polynom) {
-	name = polynom.name;
+TPolynom::TPolynom(TPolynom& polynom) {
 	monoms = new TRingList<TMonom>(*polynom.monoms);
 }
 TPolynom::~TPolynom() {
@@ -230,9 +339,11 @@ TPolynom::~TPolynom() {
 
 
 
-const TPolynom& TPolynom::operator=(const TPolynom& polynom) {
-	TPolynom tmp(polynom);
-	return tmp;
+const TPolynom& TPolynom::operator=(TPolynom& polynom) {
+	if (monoms) delete monoms;
+	monoms = new TRingList<TMonom>(*polynom.monoms);
+
+	return (*this);
 }
 
 TPolynom TPolynom::operator+(TPolynom& polynom) {
@@ -291,15 +402,61 @@ double TPolynom::operator()(double x, double y, double z) {
 	return res;
 }
 
-TPolynom TPolynom::dif_x() const {
+TPolynom TPolynom::dif_x() {
+	TPolynom res;
+	
+	monoms->Reset();
+	while (!monoms->IsEnded()) {
+		TMonom monom = monoms->GetCurrent()->key.dif_x();
+		res.AddMonom(monom);
+		monoms->Next();
+	}
 
-	throw "NOT IMPLEMENTED";
+	return res;
 }
-TPolynom TPolynom::dif_y() const {
+TPolynom TPolynom::dif_y() {
+	TPolynom res;
 
-	throw "NOT IMPLEMENTED";
+	monoms->Reset();
+	while (!monoms->IsEnded()) {
+		TMonom monom = monoms->GetCurrent()->key.dif_y();
+		res.AddMonom(monom);
+		monoms->Next();
+	}
+
+	return res;
 }
-TPolynom TPolynom::dif_z() const {
+TPolynom TPolynom::dif_z() {
+	TPolynom res;
 
-	throw "NOT IMPLEMENTED";
+	monoms->Reset();
+	while (!monoms->IsEnded()) {
+		TMonom monom = monoms->GetCurrent()->key.dif_z();
+		res.AddMonom(monom);
+		monoms->Next();
+	}
+
+	return res;
+}
+
+
+string TPolynom::get_string() {
+	string res = "";
+	monoms->Reset();
+	if (monoms->IsEnded()) {
+		return res;
+	} 
+	else {
+		res += monoms->GetCurrent()->key.get_string();
+		monoms->Next();
+		while (!monoms->IsEnded()) {
+			string monom = monoms->GetCurrent()->key.get_string();
+			if (monom[0] == '-') res += monom;
+			else res += "+" + monom;
+		}
+	}	
+	return res;
+}
+ostream& operator<<(ostream out, TPolynom& monom) {
+	return out << monom.get_string();
 }

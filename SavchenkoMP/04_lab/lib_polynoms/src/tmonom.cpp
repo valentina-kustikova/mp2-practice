@@ -1,4 +1,5 @@
 #include "tmonom.h"
+#include <string>
 
 TMonom::TMonom() {
 	coeff = 0;
@@ -56,8 +57,8 @@ void TMonom::set_degree(int degX, int degY, int degZ) {
 }
 
 
-double TMonom::value(int x, int y, int z) {
-	int resX = 1, resY = 1, resZ = 1;
+double TMonom::value(double x, double y, double z) {
+	double resX = 1, resY = 1, resZ = 1;
 	
 	int degZ = degree % 10;
 	int degY = (degree / 10) % 10;
@@ -102,9 +103,11 @@ bool TMonom::operator!=(const TMonom& monom) const {
 }
 
 
-const TMonom& TMonom::operator=(const TMonom& monom) const {
-	TMonom res(monom);
-	return res;
+const TMonom& TMonom::operator=(const TMonom& monom) {
+	degree = monom.degree;
+	coeff = monom.coeff;
+
+	return (*this);
 }
 
 TMonom TMonom::operator*(const TMonom& monom) const {
@@ -118,4 +121,76 @@ TMonom TMonom::operator*(const TMonom& monom) const {
 	
 	TMonom res(res_coeff, res_degree);
 	return res;
+}
+
+
+TMonom TMonom::dif_x() const {
+	int degX = degree / 100;
+	
+	if (degX == 0) {
+		TMonom res(0, 0);
+		return res;
+	}
+	else {
+		double _coeff = coeff * degX;
+		int _degree = degree - 100;
+
+		TMonom res(_coeff, _degree);
+		return res;
+	}	
+}
+TMonom TMonom::dif_y() const {
+	int degY = (degree % 10) / 10;
+	
+	if (degY == 0) {
+		TMonom res(0, 0);
+		return res;
+	}
+	else {
+		double _coeff = coeff * degY;
+		int _degree = degree - 10;
+
+		TMonom res(_coeff, _degree);
+		return res;
+	}
+}
+TMonom TMonom::dif_z() const {
+	int degZ = degree % 10;
+	
+	if (degZ == 0) {
+		TMonom res(0, 0);
+		return res;
+	}
+	else {
+		double _coeff = coeff * degZ;
+		int _degree = degree - 1;
+
+		TMonom res(_coeff, _degree);
+		return res;
+	}
+}
+
+
+string TMonom::get_string() const {
+	string res;
+	int degZ = degree % 10;
+	int degY = (degree / 10) % 10;
+	int degX = degree / 100;
+
+	if (coeff == 0.0f) return "0";
+	else if (coeff != 1.0f) res += to_string(coeff);
+
+	if (degX == 1) res += "*x";
+	else if (degX != 0) res += "*x^" + to_string(degX);
+
+	if (degY == 1) res += "*y";
+	else if (degY != 0) res += "*y^" + to_string(degY);
+
+	if (degZ == 1) res += "*z";
+	else if (degZ != 0) res += "*z^" + to_string(degZ);
+
+	return res;
+}
+ostream& operator<<(ostream out, const TMonom& monom) {
+	return out << monom.get_string();
 }

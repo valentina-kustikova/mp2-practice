@@ -5,9 +5,10 @@
 #include <string>
 #include <map>
 #include <vector>
+
 #include "tringlist.h"
 #include "tmonom.h"
-#include "tarithmeticexpression.h"
+//#include "tarithmeticexpression.h"
 
 using namespace std;
 
@@ -16,40 +17,41 @@ using namespace std;
 class TPolynom {
 private:
 	TRingList<TMonom>* monoms;
-	string name;
 	
-	vector<string> lexems;
 	static map<string, int> priority;
 
-	void Parse();
-	void ToMonoms();
+	void Parse(string& name);
+	void ToMonoms(vector<string>& lexems);
 	void AddMonom(const TMonom& m);
 public:
 	TPolynom();
-	TPolynom(const string _name);
+	TPolynom(const string& _name);
 	TPolynom(const TRingList<TMonom>& ringlist);
-	TPolynom(const TPolynom& polynom);
+	TPolynom(TPolynom& polynom);
 	~TPolynom();
 
-	const TPolynom& operator=(const TPolynom& polynom);
+	const TPolynom& operator=(TPolynom& polynom);
 
 	TPolynom operator+(TPolynom& polynom);
 	TPolynom operator-(TPolynom& polynom);
 	TPolynom operator*(TPolynom& polynom);
 	double operator()(double x, double y, double z);
 
-	TPolynom dif_x() const;
-	TPolynom dif_y() const;
-	TPolynom dif_z() const;
+	TPolynom dif_x();
+	TPolynom dif_y();
+	TPolynom dif_z();
+
+	string get_string();
+	friend ostream& operator<<(ostream out, TPolynom& monom);
 
 private:
 	bool IsOperator(const string& isopr) const;
 	bool IsConst(const string& isopd) const;
 
-	int FindOperator(int pos = 0) const;
+	int FindOperator(const string& name, int pos = 0) const;
 
-	void ConvertInfix();
-	void CorrectnessCheck();
+	void ConvertInfix(string& name);
+	void CorrectnessCheck(const string& name) const;
 };
 
 #endif // !TPOLYNOM_H

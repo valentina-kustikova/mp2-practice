@@ -21,7 +21,7 @@ public:
 	void set_degree(int _degree);
 	void set_degree(int degX, int degY, int degZ);
 
-	double value(int x, int y, int z);
+	double value(double x, double y, double z);
 
 	
 	virtual bool operator<(const TMonom& monom) const;
@@ -31,12 +31,15 @@ public:
 	virtual bool operator==(const TMonom& monom) const;
 	virtual bool operator!=(const TMonom& monom) const;
 
-	const TMonom& operator=(const TMonom& data) const; // ÏÐÎÂÅÐÈÒÜ CONST
+	const TMonom& operator=(const TMonom& data); // ÏÐÎÂÅÐÈÒÜ CONST
 	TMonom operator*(const TMonom& monom) const;
 
 	TMonom dif_x() const;
 	TMonom dif_y() const;
 	TMonom dif_z() const;
+
+	string get_string() const;
+	friend ostream& operator<<(ostream out, const TMonom& monom);
 };
 
 #endif // !TMONOM_H
