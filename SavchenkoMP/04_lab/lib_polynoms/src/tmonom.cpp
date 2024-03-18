@@ -111,14 +111,23 @@ const TMonom& TMonom::operator=(const TMonom& monom) {
 }
 
 TMonom TMonom::operator*(const TMonom& monom) const {
-	int res_degree = degree + monom.degree;
-	double res_coeff = coeff * monom.coeff;
-	
-	if (res_degree < 0 || res_degree > 999) {
-		string exp = "Error: res_degree must be in [0, 999]";
+	int degZ1 = degree % 10;
+	int degY1 = (degree / 10) % 10;
+	int degX1 = degree / 100;
+
+	int degZ2 = monom.degree % 10;
+	int degY2 = (monom.degree / 10) % 10;
+	int degX2 = monom.degree / 100;
+
+	if (degZ1 + degZ2 > 9 || degY1 + degY2 > 9 || degX1 + degX2 > 9 ||
+		degZ1 + degZ2 < 0 || degY1 + degY2 < 0 || degX1 + degX2 < 0) {
+		string exp = "Error: res_degrees must be in [0, 9]";
 		throw exp;
 	}
 	
+	int res_degree = degree + monom.degree;
+	double res_coeff = coeff * monom.coeff;
+		
 	TMonom res(res_coeff, res_degree);
 	return res;
 }
@@ -140,7 +149,7 @@ TMonom TMonom::dif_x() const {
 	}	
 }
 TMonom TMonom::dif_y() const {
-	int degY = (degree % 10) / 10;
+	int degY = (degree / 10) % 10;
 	
 	if (degY == 0) {
 		TMonom res(0, 0);
@@ -172,11 +181,13 @@ TMonom TMonom::dif_z() const {
 
 
 string TMonom::get_string() const {
-	string res;
 	int degZ = degree % 10;
 	int degY = (degree / 10) % 10;
 	int degX = degree / 100;
 
+	string res = to_string(coeff) + "*x^" + to_string(degX) + "*y^" + to_string(degY) + "*z^" + to_string(degZ);
+	return res;
+	/*
 	if (coeff == 0.0f) return "0";
 	else if (coeff != 1.0f) res += to_string(coeff);
 
@@ -190,6 +201,7 @@ string TMonom::get_string() const {
 	else if (degZ != 0) res += "*z^" + to_string(degZ);
 
 	return res;
+	*/
 }
 ostream& operator<<(ostream out, const TMonom& monom) {
 	return out << monom.get_string();

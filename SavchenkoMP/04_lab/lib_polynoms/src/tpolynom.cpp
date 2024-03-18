@@ -443,6 +443,8 @@ TPolynom TPolynom::dif_z() {
 string TPolynom::get_string() {
 	string res = "";
 	monoms->Reset();
+	
+	
 	if (monoms->IsEnded()) {
 		return res;
 	} 
