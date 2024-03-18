@@ -9,7 +9,7 @@ private:
 	TNode<T>* pHead;
 public:
 	TRingList();
-	TRingList(const TNode<T>* _pFirst);
+	TRingList(TNode<T>* _pFirst);
 	TRingList(const TList<T>& list);
 	TRingList(const TRingList<T>& rlist);
 	virtual ~TRingList();
@@ -19,44 +19,61 @@ public:
 template <typename T>
 TRingList<T>::TRingList() : TList<T>()
 {
-	pHead = new TNode<T>;
-	this->pStop = pHead;
-	pHead->pNext = this->pFirst;
+	pHead = new TNode<T>();
+	pHead->pNext = pHead;
 }
 template <typename T>
-TRingList<T>::TRingList(const TNode<T>* _pFirst) : TList<T>(_pFirst)
+TRingList<T>::TRingList(TNode<T>* _pFirst) : TList<T>(_pFirst)
 {
-	pHead = new TNode<T>();
-	this->pStop = pHead;
-	pHead->pNext = this->pFirst;
+	TNode<T>* pHead = new TNode<T>();
+	pHead->pNext = pFirst;
+	SetPStop(pHead);
+	if (pFirst != nullptr)
+	{
+		TNode<T>* tmp = pFirst;
+		while (tmp->pNext != nullptr) 
+			tmp = tmp->pNext;
+
+		tmp->pNext = pHead;
+		SetPLast(tmp);
+	}
+	else
+	{
+		pFirst = pHead;
+		pLast = pHead;
+		pCurr = pHead;
+	}
 }
 template <typename T>
 TRingList<T>::TRingList(const TList<T>& list) : TList<T>(list)
 {
 	pHead = new TNode<T>();
-	this->pStop = pHead;
-	pHead->pNext = this->pFirst;
+	pHead->pNext = pFirst;
+	pLast->pNext = pHead;
+	pStop = pHead;
 }
 template <typename T>
 TRingList<T>::TRingList(const TRingList<T>& rlist)
 {
 	if (rlist.pFirst == nullptr)
 		return;
+	pHead = new TNode<T>();
+	pFirst = new TNode<T>(rlist.pFirst->data, rlist.pFirst->pNext);
+	pHead->pNext = pFirst;
+	TNode<T>* tmp = pFirst;
+	TNode<T>* tmp2 = pFirst;
+	tmp = tmp->pNext;
 
-	this->pFirst = new TNode<T>(rlist.pFirst->data);
-	TNode<T>* tmp = this->pFirst;
-	TNode<T>* tmp2 = this->pFirst;
-
-	while (tmp->pNext != rlist.pStop)
+	while (tmp->data != pHead->data)
 	{
 		tmp2->pNext = new TNode<T>(tmp->data);
 		tmp2 = tmp2->pNext;
 		tmp = tmp->pNext;
 	}
-	this->pCurr = this->pFirst;
-	pHead = new TNode<T>();
-	this->pStop = pHead;
-	pHead->pNext = this->pFirst;
+	SetPStop(pHead);
+	SetPLast(tmp2);
+	pLast->pNext = pHead;
+	pCurr = pFirst;
 }
 template <typename T>
 TRingList<T>::~TRingList()

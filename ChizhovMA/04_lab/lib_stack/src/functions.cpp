@@ -41,9 +41,8 @@ bool ArithmeticExpression::Is_Number(const string& str)
 	for (int i = 0; i< str.length(); i++)
 	{
 		char c = str[i];
-		if (!isdigit(c)) {
+		if (!isdigit(c) && c != '.')
 			return false; // если встречен не цифровой символ, возвращаем false
-		}
 	}
 	return true;
 }
@@ -79,8 +78,26 @@ bool ArithmeticExpression::isValidExpression(const string& expression)
 		char c = expression[i];
 		string s(1, c);
 		if (i == 0)
-			if (Is_Symbol(s)==1)
+		{
+			if (s == "-")
+			{
+				string num = "";
+				char c1 = expression[i + 1];
+				if (isOperand(c1))
+					continue;
+				else
+					return false;
+			}
+			else if (s == "+" || s == "*" || s == "/")
 				return false;
+		}
+		if (s == "^")
+		{
+			char c2 = expression[i + 1];
+			string s2(1, c2);
+			if (c2 == 'x' || c2 == 'y' || c2 == 'z' || Is_Symbol(s2))
+				return false;
+		}
 		if (s == "(" || s == ")")
 		{
 			if (s == "(")
@@ -90,9 +107,16 @@ bool ArithmeticExpression::isValidExpression(const string& expression)
 				k2++;
 				char c1 = expression[i + 1];
 				string s1(1, c);
-				if (isOperand(c1) || c1=='(')
+				if (isOperand(c1) || c1 == '(')
 					return false;
 			}
+		}
+		if (s == ".")
+		{
+			char c2 = expression[i + 1];
+			string s2(1, c2);
+			if (!Is_Number(s2))
+				return false;
 		}
 		else if ((Is_Symbol(s) != 0) || isOperand(c))
 		{
@@ -109,12 +133,12 @@ bool ArithmeticExpression::isValidExpression(const string& expression)
 				return false;
 			continue;
 		}
-		else 
+		else
 			return false; // обнаружен недопустимый символ
 	}
 	if (k1 != k2)
 		return false;
-	return true; 
+	return true;
 }
 
 map<string, double> ArithmeticExpression::GetVariables(TStack<string>& postfixExpression) {
@@ -156,7 +180,7 @@ TStack<string> ArithmeticExpression::Postfix_Form(const string& s)
 	{
 		char s1 = str[i];
 		string s(1,s1);
-		if (isdigit(s1))
+		if (isdigit(s1) || s == ".")
 			if (!varStr.empty())
 				varStr += s;
 			else

@@ -43,10 +43,24 @@ TEST(GetPriorityTest, get_priority_addition)
 	EXPECT_EQ(2, exp.Get_Priority(s));
 }
 
+TEST(GetPriorityTest, get_priority_degree)
+{
+	TestEx exp;
+	string s = "^";
+	EXPECT_EQ(4, exp.Get_Priority(s));
+}
+
 TEST(IsNumberTest, is_number_true)
 {
 	TestEx exp;
 	string s = "123";
+	ASSERT_TRUE(exp.Is_Number(s));
+}
+
+TEST(IsNumberTest, is_double_number_true)
+{
+	TestEx exp;
+	string s = "1.23";
 	ASSERT_TRUE(exp.Is_Number(s));
 }
 
@@ -306,10 +320,24 @@ TEST(CalculateTest, Pow_test)
 
 	EXPECT_DOUBLE_EQ(8, result);
 }
-/*TEST(CalculateTest, pow_test_input)
+TEST(CalculateTest, pow_test_input)
 {
-	string str = "a^3+b*c-c^a";
+	ArithmeticExpression exp;
+	TStack<string> s(10);
+	TStack<string> s2(10);
+	string ex = "a^3+b*c-c^a";
 	string postfix = "a 3 ^ b c * + c a ^ -";
-	ArithmeticExpression pt(str);
-	EXPECT_EQ(postfix, pt.);
-}*/
+	s2 = exp.Postfix_Form(ex);
+	s.Push("a");
+	s.Push("3");
+	s.Push("^");
+	s.Push("b");
+	s.Push("c");
+	s.Push("*");
+	s.Push("+");
+	s.Push("c");
+	s.Push("a");
+	s.Push("^");
+	s.Push("-");
+	EXPECT_EQ(s.Top(), s2.Top());
+}

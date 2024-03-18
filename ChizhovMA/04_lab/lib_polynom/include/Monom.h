@@ -56,9 +56,11 @@ public:
 	TPolynom difz() const;
 
 	double operator() (double _x, double _y, double _z);
+	TRingList<TMonom>* GetMonom()const { return monoms; }
 
 	void Parse_Polynom(const string& s);
 	void Print_Polynom();
+	string ToString();
 protected:
 	string FilteredExpression(const string& s);
 	bool isOperand(char c);
