@@ -5,11 +5,11 @@ foreach(sample_filename ${samples_list})
   # Get file name without extension
   get_filename_component(sample ${sample_filename} NAME_WE)
 
-  include_directories("${MP2_INCLUDE}")
+  include_directories("${MP2_LISTS_INCLUDE}" "${MP2_POLYNOMS_INCLUDE}" "${MP2_STACK_INCLUDE}" "${MP2_ALGORITHM_INCLUDE}")
 
-  # Add and configure executable file to be produced
+   # Add and configure executable file to be produced
   add_executable(${sample} ${sample_filename})
-  target_link_libraries(${sample} ${MP2_LIBRARY})
+  target_link_libraries(${sample} ${MP2_LISTS_LIBRARY} ${MP2_POLYNOMS_LIBRARY} ${MP2_STACK_LIBRARY}  ${MP2_ALGORITHM_LIBRARY})
   set_target_properties(${sample} PROPERTIES
     OUTPUT_NAME "${sample}"
     PROJECT_LABEL "${sample}"
