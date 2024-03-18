@@ -506,7 +506,7 @@ TEST(TRingList, inserts_and_search_after_clear) {
 	rList.insert_after(4, 5);
 
 	rList.clear();
-
+	rList.RecoveryDummyBlock();
 
 	rList.insert_first(4);
 	rList.insert_last(7);

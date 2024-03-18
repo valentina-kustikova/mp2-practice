@@ -182,7 +182,7 @@ void TList<T>::insert_before(const T& data_, const T& next_data_) {
 }
 
 template<typename T>
-void TList<T>::insert_after(const T& data_, const T& next_data_) {//доработать
+void TList<T>::insert_after(const T& data_, const T& next_data_) {
 	if (pFirst == nullptr) {
 		insert_first(data_);
 	}
@@ -253,7 +253,12 @@ void TList<T>::clear() {
 			tmp = pFirst;
 		}
 	}
-
+	pCurr = nullptr;
+	pLast = nullptr;
+	
+	if (pFirst != nullptr) {
+		pFirst = nullptr;
+	}
 }
 
 template<typename T>

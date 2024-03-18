@@ -36,7 +36,6 @@ Node<T>::Node(const Node& Node_) {
 
 template<typename T>
 Node<T>::~Node() {
-
 	delete pNext;
 	data = {};
 

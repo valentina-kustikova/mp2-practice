@@ -4,24 +4,28 @@
 #include "TList.h"
 
 template <typename T> class TRingList : public TList<T> {
-	//pHead как поле и тогда можно сделать метод создания pHead
+protected:
+	Node<T>* pHead;
 public:
 	TRingList();
 	TRingList(Node<T>* pFirst);
 	TRingList(const TRingList<T>& rList);
+	~TRingList();
+
+	void RecoveryDummyBlock();
 };
 
 	template<typename T>		
 	TRingList<T>::TRingList():TList(){
-		Node<T>* pHead = new Node<T>();
-		pHead->pNext = pHead;
+		pHead = new Node<T>();
+		pHead->pNext = GetPFirst();
 		SetPStop(pHead);
 	}
 
 	template <typename T>
 	TRingList<T>::TRingList(Node<T>* pFirst) : TList<T>(pFirst) {
 		if (pFirst != nullptr) {
-			Node<T>* pHead = new Node<T>();
+			pHead = new Node<T>();
 			pHead->pNext = GetPFirst();
 			SetPStop(pHead);
 			Node<T>* tmp = GetPFirst();
@@ -38,7 +42,7 @@ public:
 	template <typename T>
 	TRingList<T>::TRingList(const TRingList<T>& rList) : TList<T>(rList) {
 		Node<T>* pPrev = nullptr;
-		Node<T>* tmp = GetCurrent();
+		Node<T>* tmp = GetPFirst();
 		while (tmp->pNext != nullptr) {
 			pPrev = tmp;
 			tmp = tmp->pNext;
@@ -49,5 +53,17 @@ public:
 
 	}
 
+	template<typename T>
+	TRingList<T>::~TRingList() {
+		pHead = nullptr;
+	}
+
+	template<typename T>
+	void TRingList<T>::RecoveryDummyBlock() {
+		Node<T>* tmp_pStop = GetPStop();
+		if (tmp_pStop == nullptr) {
+			tmp_pStop = pHead;
+		}
+	}
 
 #endif
