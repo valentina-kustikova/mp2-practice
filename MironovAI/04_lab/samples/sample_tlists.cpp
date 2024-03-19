@@ -36,7 +36,7 @@ void list_test()
 	cout << list << endl;
 }
 
-/*
+
 void ring_list_test()
 {
 	TRingList<int> list;
@@ -70,11 +70,11 @@ void ring_list_test()
 	list.push_front(1);
 	cout << list << endl;
 }
-*/
+
 
 int main()
 {
 	list_test();
-	//ring_list_test();
+	ring_list_test();
 	return 0;
 }

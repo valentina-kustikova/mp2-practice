@@ -3,6 +3,7 @@
 #include <sstream>
 using namespace std;
 
+
 void TPolynom::del_zeros()
 {
 	int was = 0;
@@ -43,6 +44,8 @@ void TPolynom::del_zeros()
 	
 
 }
+
+
 string TPolynom::preparation(string polynom)
 {
 	string new_string, new_string1;
@@ -209,7 +212,7 @@ void TPolynom::z(string token, char& stage, int& i, double& coef, int& degreex, 
 	}
 	else
 	{
-		degreez = 1;
+		degreez += 1;
 	}
 
 	if (i >= token.size())
@@ -313,7 +316,15 @@ void TPolynom::parse(string polynom)
 		{
 
 			TMonom tmp(curr_coef, degreex, degreey, degreez);
-			monoms.push_back(tmp);
+			TNode<TMonom>* t = monoms.find(tmp);
+			if (t != nullptr)
+			{	
+				t->value.inc_coef(curr_coef);
+			}
+			else
+			{
+				monoms.push_back(tmp);
+			}
 			curr_coef = 1;
 			degreex = 0; degreey = 0; degreez = 0;
 			stage = 's';
@@ -356,29 +367,37 @@ void TPolynom::parse(string polynom)
 	if (stage != 's')
 	{
 		TMonom tmp(curr_coef, degreex, degreey, degreez);
-		monoms.push_back(tmp);
+		TNode<TMonom>* t = monoms.find(tmp);
+		if (t != nullptr)
+		{
+			t->value.inc_coef(curr_coef);
+		}
+		else
+		{
+			monoms.push_back(tmp);
+		}		
 	}
 	monoms.sort();
 }
 
 
-TPolynom::TPolynom() 
+TPolynom::TPolynom(): monoms(TRingList<TMonom>())
 {
-	monoms = TRingList<TMonom>();
 }
 
-TPolynom::TPolynom(const string& polynom_string) 
+
+TPolynom::TPolynom(const string& polynom_string): monoms(TRingList<TMonom>())
 {
-	monoms = TRingList<TMonom>();
 	parse(polynom_string);
 	this->del_zeros(); this->monoms.sort(); this->monoms.start();
 }
 
-TPolynom::TPolynom(const TRingList<TMonom>& list) 
+
+TPolynom::TPolynom(const TRingList<TMonom>& list): monoms(list)
 {
-	monoms = TRingList<TMonom>(list);
 	this->del_zeros(); this->monoms.sort(); this->monoms.start();
 }
+
 
 TPolynom::TPolynom(const TPolynom& polynom) : monoms(polynom.monoms)
 {
@@ -391,6 +410,7 @@ const TPolynom& TPolynom::operator=(const TPolynom& polynom) {
 	(*this).monoms = TRingList<TMonom>(polynom.monoms);
 	return *this;
 }
+
 
 TPolynom TPolynom::operator+(const TPolynom& polynom) {
 
@@ -423,6 +443,8 @@ TPolynom TPolynom::operator+(const TPolynom& polynom) {
 	sum.del_zeros(); sum.monoms.sort();
 	return sum;
 }
+
+
 TPolynom TPolynom::operator-(const TPolynom& polynom) {
 
 	TPolynom sum(*this);
@@ -455,6 +477,8 @@ TPolynom TPolynom::operator-(const TPolynom& polynom) {
 	return sum;
 	
 }
+
+
 TPolynom TPolynom::operator*(const TPolynom& polynom) {
 
 	
@@ -497,6 +521,8 @@ TPolynom TPolynom::operator*(const TPolynom& polynom) {
 	return prod;
 
 }
+
+
 double TPolynom::operator()(double x, double y, double z) {
 
 	double res = 0;
@@ -509,10 +535,13 @@ double TPolynom::operator()(double x, double y, double z) {
 	}
 	return res;
 }
+
+
 bool TPolynom::operator==(const TPolynom& polynom) const
 {
 	return monoms == polynom.monoms;
 }
+
 
 TPolynom TPolynom::dif_x() const {
 
@@ -543,6 +572,8 @@ TPolynom TPolynom::dif_x() const {
 	res.del_zeros(); res.monoms.sort();
 	return res;
 }
+
+
 TPolynom TPolynom::dif_y() const {
 
 	TPolynom polynom(*this);
@@ -570,6 +601,8 @@ TPolynom TPolynom::dif_y() const {
 	res.del_zeros(); res.monoms.sort();
 	return res;
 }
+
+
 TPolynom TPolynom::dif_z() const {
 
 	TPolynom polynom(*this);
@@ -600,3 +633,4 @@ TPolynom TPolynom::dif_z() const {
 	res.del_zeros(); res.monoms.sort();
 	return res;
 }
+

@@ -13,18 +13,19 @@ protected:
 	TNode<Type>* head;		// first element
 	TNode<Type>* curr;		// current node 
 	TNode<Type>* last;		// last element
+	TNode<Type>* stop;		
 
 public:
 
 	TList();
 	TList(const TList<Type>& list);
 	TList(const TNode<Type>* node);
-	
+	virtual ~TList();
 	virtual void pop_first();
 	virtual void pop_last();
 	virtual void pop_curr();
-	virtual void remove(const TNode<Type>* node);
-	virtual void remove(const Type& value);
+	void remove(const TNode<Type>* node);
+	void remove(const Type& value);
 
 	virtual void push_back(const Type& value);
 	virtual void push_front(const Type& value);
@@ -40,8 +41,9 @@ public:
 	void start();
 	bool empty() const;
 	virtual void next();
-	virtual void sort(bool reverse=true);
+	void sort(bool reverse=true);
 	virtual void clear();
+	virtual void copy(const TNode<Type>* node);
 
 	friend istream& operator>>(istream& buf, TList<Type>& list)
 	{
@@ -84,28 +86,35 @@ TList<Type>::TList()
 	head = nullptr;
 	last = nullptr;
 	curr = nullptr;
+	stop = nullptr;
 }
 
 
 template <class Type>
-TList<Type>::TList(const TList<Type>& list)
+void TList<Type>::copy(const TNode<Type>* node)
 {
-	if (list.empty())
-	{
-		*this = TList<Type>();
-		return;
-	}
-	TNode<Type>* tmp = list.head;
-	head = new TNode<Type>(list.head->value);
+	TNode<Type>* tmp = node->next;
+	head = new TNode<Type>(node->value);
 	curr = head;
 	last = head;
-
-	while (tmp->next != nullptr)
+	stop = nullptr;
+	while (tmp != nullptr)
 	{
-		last->next = new TNode<Type>(tmp->next->value);
+		last->next = new TNode<Type>(tmp->value);
 		last = last->next;
 		tmp = tmp->next;
 	}
+}
+
+
+template <class Type>
+TList<Type>::TList(const TList<Type>& list): TList<Type>()
+{
+	if (list.empty())
+	{
+		return;
+	}
+	copy(list.head);
 }
 
 
@@ -114,24 +123,17 @@ TList<Type>::TList(const TNode<Type>* node)
 {
 	if (node == nullptr)
 	{
-		*this = TList<Type>();
+		return;
 	}
-	else
-	{
-		TNode<Type>* tmp = node->next;
-		head = new TNode<Type>(node->value);
-		curr = head;
-		last = head;
-
-		while (tmp != nullptr)
-		{
-			last->next = new TNode<Type>(tmp->value);
-			last = last->next;
-			tmp = tmp->next;
-		}
-	}
+	copy(node);
 }
 
+
+template <class Type>
+TList<Type>::~TList<Type>()
+{
+	clear();
+}
 
 template <class Type>
 bool TList<Type>::empty() const
@@ -157,7 +159,7 @@ int TList<Type>::get_size() const
 {
 	TNode<Type>* tmp = head;
 	int size = 0;
-	while (tmp != nullptr)
+	while (tmp != stop)
 	{
 		size++;
 		tmp = tmp->next;
@@ -183,12 +185,15 @@ TNode<Type>* TList<Type>::find_prev(const Type& value) const
 		return nullptr;
 	}
 
-	while (tmp != nullptr)
+	while (tmp != stop)
 	{
 		if (tmp->next->value == value) break;
 		tmp = tmp->next;
 	}
-
+	if (tmp == stop)
+	{
+		return nullptr;
+	}
 	return tmp;
 }
 
@@ -196,9 +201,10 @@ TNode<Type>* TList<Type>::find_prev(const Type& value) const
 template <class Type>
 TNode<Type>* TList<Type>::find(const Type& value) const
 {
+	if (head == nullptr) return nullptr;
 	TNode<Type>* tmp = head;
-
-	while (tmp != nullptr)
+	
+	while (tmp != stop)
 	{
 		if (tmp->value == value)
 		{
@@ -206,7 +212,10 @@ TNode<Type>* TList<Type>::find(const Type& value) const
 		}
 		tmp = tmp->next;
 	}
-
+	if (tmp == stop)
+	{
+		return nullptr;
+	}
 	return tmp;
 }
 
@@ -300,12 +309,12 @@ void TList<Type>::remove(const TNode<Type>* node)
 
 	TNode<Type>* tmp = head;
 
-	while (tmp->next != node && tmp != nullptr)
+	while (tmp->next != node && tmp != stop)
 	{
 		tmp = tmp->next;
 	}
 	
-	if (tmp == nullptr)
+	if (tmp == stop)
 	{
 		return;
 	}
@@ -340,7 +349,7 @@ void TList<Type>::remove(const Type& value)
 		return;
 	}
 
-	while (tmp->next != nullptr)
+	while (tmp->next != stop)
 	{
 		if (tmp->next->value == value)
 		{
@@ -349,11 +358,11 @@ void TList<Type>::remove(const Type& value)
 		tmp = tmp->next;
 	}
 	
-	if (tmp->next == nullptr)
+	if (tmp->next == stop)
 	{
 		return;
 	}
-	if (tmp->next->next == nullptr && tmp->next->value == value)
+	if (tmp->next->next == stop && tmp->next->value == value)
 	{
 		this->pop_last();
 		return;
@@ -445,10 +454,10 @@ void TList<Type>::sort(bool reverse)
 		return;
 
 	TNode<Type>* tmp1 = head;
-	while (tmp1->next != nullptr)
+	while (tmp1->next != stop)
 	{
 		TNode<Type>* tmp2 = tmp1->next;
-		while (tmp2 != nullptr)
+		while (tmp2 != stop)
 		{
 			if (reverse)
 			{
@@ -480,7 +489,7 @@ template<class Type>
 void TList<Type>::clear()
 {
 	
-	while (head != nullptr)
+	while (head != stop)
 	{
 		TNode<Type>* tmp;
 		tmp = head;
@@ -489,6 +498,7 @@ void TList<Type>::clear()
 	}
 	curr = nullptr;
 	last = nullptr;
+	stop = nullptr;
 }
 
 
@@ -497,4 +507,6 @@ void TList<Type>::start()
 {
 	curr = head;
 }
+
+
 #endif // 

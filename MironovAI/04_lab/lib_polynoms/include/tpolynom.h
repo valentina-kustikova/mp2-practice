@@ -38,10 +38,6 @@ public:
 	TPolynom dif_y() const;
 	TPolynom dif_z() const;
 
-	TRingList<TMonom> get_monoms() const
-	{
-		return monoms;
-	}
 	friend ostream& operator<<(ostream& buf, TPolynom& polynom) {
 		if (polynom.monoms.empty())
 		{

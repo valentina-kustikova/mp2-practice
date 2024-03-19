@@ -16,18 +16,13 @@ public:
 	TRingList();
 	TRingList(const TRingList<Type>& list);
 	TRingList(const TNode<Type>* node);
-	
+	virtual ~TRingList();
 	void pop_first();
 	void pop_last();
 	void pop_curr();
-	void remove(const TNode<Type>* node);
-	void remove(const Type& value);
 
 	void next();
-	void sort(bool reverse=true);
 	void clear();
-
-	TNode<Type>* find(const Type& value) const;
 	void push_after_curr(const Type& value);
 	void push_back(const Type& value);
 	void push_front(const Type& value);
@@ -59,27 +54,25 @@ TRingList<Type>::TRingList()
 	fict_head = new TNode<Type>;
 	last = fict_head;
 	last->next = fict_head;
+	stop = fict_head;
 }
 
 
 template <class Type>
-TRingList<Type>::TRingList(const TRingList<Type>& list)
+TRingList<Type>::TRingList(const TRingList<Type>& list): TRingList<Type>()
 {
 	if (list.empty())
 	{
-		*this = TRingList<Type>();
 		return;
 	}
-	TNode<Type>* tmp = list.head;
+	TNode<Type>* tmp = list.head->next;
 	head = new TNode<Type>(list.head->value);
 	curr = head;
 	last = head;
-	fict_head = new TNode<Type>;
-	fict_head->next = head;
 
-	while (tmp->next != list.fict_head)
+	while (tmp != list.stop)
 	{
-		last->next = new TNode<Type>(tmp->next->value);
+		last->next = new TNode<Type>(tmp->value);
 		last = last->next;
 		tmp = tmp->next;
 	}
@@ -88,36 +81,48 @@ TRingList<Type>::TRingList(const TRingList<Type>& list)
 
 
 template <class Type>
-TRingList<Type>::TRingList(const TNode<Type>* node)
+TRingList<Type>::TRingList(const TNode<Type>* node) : TRingList<Type>()
 {
 	if (node == nullptr)
 	{
-		*this = TRingList<Type>();
+		return;
 	}
-	else
+	TNode<Type>* tmp = node->next;
+	head = new TNode<Type>(node->value);
+	curr = head;
+	last = head;
+
+	while (tmp != nullptr)
 	{
-		TNode<Type>* tmp = node->next;
-		head = new TNode<Type>(node->value);
-		curr = head;
-		last = head;
-		fict_head = new TNode<Type>;
-		fict_head->next = head;
-		while (tmp != nullptr)
+		if (tmp->value == Type() && tmp->next == head)
 		{
-			last->next = new TNode<Type>(tmp->value);
-			last = last->next;
-			tmp = tmp->next;
+			break;
 		}
-		last->next = fict_head;
+		last->next = new TNode<Type>(tmp->value);
+		last = last->next;
+		tmp = tmp->next;
 	}
+	last->next = fict_head;
 }
+
+
+template <class Type>
+TRingList<Type>::~TRingList()
+{
+	if (fict_head != nullptr)
+	{
+		delete fict_head;
+	}
+	if (last != nullptr) last->next = nullptr;
+	stop = nullptr;
+}
+
 
 template<class Type>
 bool TRingList<Type>::operator==(const TRingList<Type>& list) const
 {
 	TNode<Type>* t = head, *t2 = list.head;
 	if (t == nullptr || t2 == nullptr)
-
 	{
 		throw "Your polynoms must not be empty!\n";
 	}
@@ -200,6 +205,7 @@ void TRingList<Type>::pop_last()
 
 }
 
+
 template <class Type>
 void TRingList<Type>::push_back(const Type& value)
 {
@@ -236,105 +242,6 @@ void TRingList<Type>::push_front(const Type& value)
 	new_head->next = head;
 	head = new_head;
 	fict_head->next = head;
-}
-
-template <class Type>
-void TRingList<Type>::remove(const TNode<Type>* node)
-{
-	if (head == nullptr)
-	{
-		string ex = "SizeError: can`t remove empty list";
-		throw ex;
-	}
-
-	if (node == nullptr)
-	{
-		return;
-	}
-
-	if (head == node)
-	{
-		this->pop_first();
-		return;
-	}
-
-	if (last == node)
-	{
-		this->pop_last();
-		return;
-	}
-
-	TNode<Type>* tmp = head;
-
-	while (tmp->next != node && tmp->next != fict_head)
-	{
-		tmp = tmp->next;
-	}
-
-	if (tmp->next == fict_head)
-	{
-		string ex = "Element was not found\n";
-		throw ex;
-	}
-
-	TNode<Type>* tmp1 = tmp->next->next;
-
-	// rightward shift
-	if (curr == node)
-	{
-		curr = tmp1;
-	}
-
-	delete tmp->next;
-	tmp->next = tmp1;
-}
-
-
-template <class Type>
-void TRingList<Type>::remove(const Type& value)
-{
-	TNode<Type>* tmp = head;
-
-	if (head == nullptr)
-	{
-		string ex = "SizeError: can`t remove empty list";
-		throw ex;
-	}
-
-	if (head->value == value)
-	{
-		this->pop_first();
-		return;
-	}
-
-	while (tmp->next != fict_head)
-	{
-		if (tmp->next->value == value)
-		{
-			break;
-		}
-		tmp = tmp->next;
-	}
-
-	if (tmp->next == fict_head)
-	{
-		if (tmp->value == value)
-		{
-			this->pop_last();
-		}
-		return;
-	}
-
-	TNode<Type>* tmp1 = tmp->next->next;
-
-	// rightward shift
-	if (curr == tmp->next)
-	{
-		curr = tmp1;
-	}
-
-	delete tmp->next;
-	tmp->next = tmp1;
 }
 
 
@@ -378,44 +285,6 @@ void TRingList<Type>::push_after_curr(const Type& value)
 
 
 template<class Type>
-void TRingList<Type>::sort(bool reverse)
-{
-	if (head == nullptr)
-		return;
-
-	TNode<Type>* tmp1 = head;
-	while (tmp1->next != fict_head)
-	{
-		TNode<Type>* tmp2 = tmp1->next;
-		while (tmp2 != fict_head)
-		{
-			if (!reverse)
-			{
-				if (tmp1->value < tmp2->value)
-				{
-					Type tmp = tmp1->value;
-					tmp1->value = tmp2->value;
-					tmp2->value = tmp;
-				}
-				tmp2 = tmp2->next;
-			}
-			else
-			{
-				if (tmp1->value > tmp2->value)
-				{
-					Type tmp = tmp1->value;
-					tmp1->value = tmp2->value;
-					tmp2->value = tmp;
-				}
-				tmp2 = tmp2->next;
-			}
-		}
-		tmp1 = tmp1->next;
-	}
-}
-
-
-template<class Type>
 void TRingList<Type>::clear()
 {
 	if (head == nullptr)
@@ -436,27 +305,4 @@ void TRingList<Type>::clear()
 }
 
 
-template<class Type>
-TNode<Type>* TRingList<Type>::find(const Type& value) const
-{
-	if (head == nullptr)
-	{
-		return nullptr;
-	}
-	TNode<Type>* tmp = head;
-
-	while (tmp != fict_head)
-	{
-		if (tmp->value == value)
-		{
-			break;
-		}
-		tmp = tmp->next;
-	}
-	if (tmp == fict_head)
-	{
-		return nullptr;
-	}
-	return tmp;
-}
 #endif // 
