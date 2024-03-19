@@ -105,7 +105,7 @@ TEST(TStack, can_push_in_full_stack) {
 	ASSERT_NO_THROW(st.Push(3));
 }
 
-TEST(Tstack, cant_pop_from_empty_stack) {
+TEST(TStack, cant_pop_from_empty_stack) {
 	TStack<int> st(3);
 	ASSERT_ANY_THROW(st.Pop());
 }

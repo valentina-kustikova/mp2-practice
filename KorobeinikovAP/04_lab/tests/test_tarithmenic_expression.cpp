@@ -179,3 +179,18 @@ TEST(TArithmeticExpression, test_incorrect_expressions_missing_brackets)
 	map<string, double> operands = { {"a", 1}, {"ab", 2}, {"abc", 3} };
 	ASSERT_ANY_THROW(TArithmeticExpression exp(infix, operands));
 }
+
+
+TEST(TArithmeticExpression, test_correct_expressions_8)
+{
+	string infix = "a+A^3 -c";
+	string postfix = "aA3^+c-";
+
+	map<string, double> operands = { {"a", 1}, {"A", 2}, {"c", 3} };
+
+	double result = 6;
+
+	TArithmeticExpression exp(infix, operands);
+	EXPECT_EQ(postfix, exp.GetPostfix());
+	EXPECT_EQ(result, exp.Calculate());
+}

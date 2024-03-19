@@ -5,7 +5,7 @@
 //Соответственные проверки
 bool TArithmeticExpression:: IsOperator(const string& op) const
 {
-		if ((op == "(") || (op == ")") || (op == "+") || (op == "-") || (op == "*") || (op == "/"))
+		if ((op == "(") || (op == ")") || (op == "+") || (op == "-") || (op == "*") || (op == "/") || (op == "^"))
 		{
 			return true;
 		}
@@ -21,13 +21,12 @@ bool TArithmeticExpression::IsConst(const string& op) const
 			{
 				return false;
 			}
-			return true;
 		}
 	return true;
 }
 bool TArithmeticExpression::IsBinaryOperator(const char& op) const
 {
-	return (op == '*' || op == '/' || op == '+' || op == '-');
+	return (op == '*' || op == '/' || op == '+' || op == '-' || op == '^');
 }
 
 
@@ -115,7 +114,7 @@ void TArithmeticExpression::CheckCorrect() const {
 	int point_counter = 0;
 	int len = infix.size() - 1;
 
-	if (infix[0] == '*' || infix[0] == '/' || infix[0] == '+' || infix[0] == ')' || infix[0] == '.')
+	if (infix[0] == '*' || infix[0] == '/' || infix[0] == '+' || infix[0] == ')' || infix[0] == '.' || infix[0] == '^')
 		throw "Incorrest expression (first simbol isn't correct)";
 
 	 if (infix[0] == '(')
@@ -163,6 +162,9 @@ void TArithmeticExpression::CheckCorrect() const {
 			{
 				throw "Incorrect expession";
 			}
+		}
+		if (infix[i - 1] == '^' && (infix[i] < '0' || infix[i] > '9')) {
+			throw "Incorrect expr (degree does not satisfy the condition)";
 		}
 	}
 	if (open_count != closed_count || point_counter > 1)
@@ -343,7 +345,19 @@ double TArithmeticExpression::Calculate() {
 
 			st.Push(op1 + op2);
 		}
+		else if (lexem == "^") {
+			op2 = st.Top();
+			st.Pop();
 
+			op1 = st.Top();
+			st.Pop();
+
+			double res = 1;
+			for (int i = 1; i < (int)op2; ++i) {
+				res = res * op1;
+			}
+			st.Push(res);
+		}
 		else if (lexem == "-")
 		{
 
@@ -415,7 +429,7 @@ TArithmeticExpression::TArithmeticExpression(const string& infx,const map<string
 		}
 	}
 
-	priority = { {"(",1}, {"-", 2}, {"+", 2}, {"*", 3}, {"/", 3} };
+	priority = { {"(",1}, {"-", 2}, {"+", 2}, {"*", 3}, {"/", 3}, {"^", 4} };
 	
 	ToPostfix();
 }

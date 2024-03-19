@@ -14,7 +14,8 @@ public:
 	TList();
 	TList(TNode<T>* pFirst_);
 	TList(const TList<T>& obj);
-	~TList();
+	virtual ~TList();
+	void Clear();
 	TNode<T>* Search(const T& data_);
 	void InsertFirst(const T& data_);
 	void InsertBefore(const T& data_, const T& NextData);
@@ -22,13 +23,12 @@ public:
 	void InsertBefore(const T& data_); //текущего
 	void InsertAfter(const T& data_);  //текущего
 	void Remove(const T& data_);
-	void Clear();
 	int GetSize();
 	bool IsEmpty();
 	bool IsFull();
 	void Reset();
 	TNode<T>* GetCurrent();
-	void IsEnted();
+	bool IsEnded();
 };
 
 //конструкторы
@@ -45,46 +45,295 @@ TList<T>::TList() {
 
 template<typename T>
 TList<T>::TList(TNode<T>* pFirst_) {
-	pFirst = pFirst_;
+
+	if (pFirst_ == nullptr) {
+		pFirst = nullptr;
+		return;
+	}
+	pFirst = new TNode<T>(pFirst_->data);
 	pStop = nullptr;
-	TNode<T>* tmp = pFirst;
-	while (tmp->pNext != pStop) {
+	TNode<T>* tmp = pFirst_;
+	tmp = tmp->pNext;
+	TNode<T>* tmp1 = pFirst;
+	while (tmp != pStop) {
+		tmp1->pNext = new TNode<T>(tmp->data);
+		tmp1 = tmp1->pNext;
 		tmp = tmp->pNext;
 	}
+	pLast = tmp1;
+	pLast->pNext = pStop;
+	pCurr = pFirst;
+	/*
+	pStop = nullptr;
+	pFirst = pFirst_;
+	if (pFirst == pStop) {
+		pLast = pStop;
+		pCurr = pStop;
+		return;
+	}
+	TNode<T>* tmp = pFirst;
+	while (tmp->pNext != pStop)
+		tmp = tmp->pNext;
 	pLast = tmp;
 	pCurr = pFirst;
+	*/
 }
+
+
 
 
 template<typename T>
 TList<T>::TList(const TList<T>& obj) {
 	if (obj.pFirst == nullptr) { return; }
 	TNode<T>* tmp = obj.pFirst;
-	pFirst = new TNode<T>(obj.data);
+	pFirst = new TNode<T>(obj.pFirst->data);
 	TNode<T>* tmp2 = pFirst;
 	tmp = tmp->pNext;
-	while (tmp != obj.stop) {
+	while (tmp != obj.pStop) {
 		tmp2->pNext = new TNode<T>(tmp->data);
 		tmp2 = tmp2->pNext;
 		tmp = tmp->pNext;
 	}
+	pStop = nullptr;
 	pLast = tmp2;
-	pStop = pLast->pNext;
+	pLast->pNext = pStop;
 	pCurr = pFirst;
 }
 
-//деструктор
+//деструктор и метод Clear для него
 
 template<typename T>
 TList<T>::~TList()
 {
-	//Clear();
+	Clear();
 }
 
 template<typename T>
 void TList<T>::Clear() {
-
+	
+	if (IsEmpty()) {
+		return;
+	}
+	if (pFirst == pLast) {
+		delete pFirst;
+		return;
+	}
+	while (pFirst != pStop) {
+		TNode<T>* tmp = pFirst;
+		pFirst = pFirst->pNext;
+		delete tmp;                   
+		tmp = pFirst;
+	}
 }
+
+//функции класса
+
+template<typename T>
+TNode<T>* TList<T>::Search(const T& data_) {
+	TNode<T>* tmp = pFirst;
+	while ((tmp != pStop) && (tmp->data != data_)) {
+		tmp = tmp->pNext;
+	}
+	if ((tmp == pStop)) { throw "Not found"; }
+	return tmp;
+}
+
+template<typename T>
+void TList<T>::InsertFirst(const T& data_) {
+	TNode<T>* tmp = new TNode<T>(data_, pFirst);
+	if (IsEmpty()) {
+		pFirst = tmp;
+		pLast = pFirst;
+		pCurr = pFirst;
+		return;
+	}
+	if (IsFull()) {
+		throw "List is full";
+	}
+	pFirst = tmp; 
+}
+
+
+
+template<typename T>
+void TList<T>::InsertBefore(const T& data_, const T& NextData) {
+	if (IsEmpty()) {
+		throw "Node is empty";
+	}
+	if (IsFull()) {
+		throw "List is full";
+	}
+	TNode<T>* tmp = pFirst, * pPrev = nullptr;
+	while ((tmp->pNext != pStop) && (tmp->data != NextData)) {
+		pPrev = tmp;
+		tmp = tmp->pNext;
+	}
+	if ((tmp->pNext == pStop) && (tmp->data != NextData)) {
+		throw "NextData not is find";
+	}
+	TNode<T>* tmp1 = new TNode<T>(data_, tmp);
+	if (tmp == pFirst) {
+		pFirst = tmp1;
+		pCurr = pFirst;
+		return;
+	}
+	pPrev->pNext = tmp1;
+}
+
+template<typename T>
+void TList<T>::InsertAfter(const T& data_, const T& BeforeData) {
+	if (IsEmpty()) {
+		throw "Node is empty";
+	}
+	if (IsFull()) {
+		throw "List is full";
+	}
+	TNode<T>* tmp = pFirst->pNext, * pPrev = pFirst;
+	while ((tmp != pStop) && (pPrev->data != BeforeData)) {
+		pPrev = tmp;
+		tmp = tmp->pNext;
+	}
+	if ((tmp == pStop) && (pPrev->data != BeforeData)) {
+		throw "BeforeData not is find";
+	}
+	TNode<T>* tmp1 = new TNode<T>(data_, tmp);
+	pPrev->pNext = tmp1;
+} 
+
+template<typename T>
+void TList<T>::InsertBefore(const T& data_){
+	if (IsEmpty()) {
+		throw "Node is empty";
+	}
+	if (IsFull()) {
+		throw "List is full";
+	}
+	TNode<T>* tmp = pFirst, * pPrev = nullptr;
+	while ((tmp->pNext != pStop) && (tmp->data != pCurr->data)) {
+		pPrev = tmp;
+		tmp = tmp->pNext;
+	}
+	if ((tmp->pNext == pStop) && (tmp->data != pCurr->data)) {
+		throw "Current not is find";
+	}
+	TNode<T>* tmp1 = new TNode<T>(data_, tmp);
+	if (tmp == pFirst) {
+		pFirst = tmp1;
+		return;
+	}
+	pPrev->pNext = tmp1;
+
+} //додумать
+
+template<typename T>
+void TList<T>::InsertAfter(const T& data_) {
+	if (IsEmpty()) {
+		throw "Node is empty";
+	}
+	if (IsFull()) {
+		throw "List is full";
+	}
+	TNode<T>* tmp = pFirst->pNext, * pPrev = pFirst;
+	while ((tmp != pStop) && (pPrev->data != pCurr->data)) {
+		pPrev = tmp;
+		tmp = tmp->pNext;
+	}
+	if ((tmp == pStop) && (pPrev->data != pCurr->data)) {
+		throw "Current not is find";
+	}
+	TNode<T>* tmp1 = new TNode<T>(data_, tmp);
+	pPrev->pNext = tmp1;
+}
+
+
+template<typename T>
+void TList<T>::Remove(const T& data_) {
+	if (pFirst == nullptr) {
+		throw "Node is empty";
+	}
+	TNode<T>* tmp = pFirst, * pPrev = nullptr;
+	while ((tmp->pNext != pStop) && (tmp->data != data_)) {
+		pPrev = tmp;
+		tmp = tmp->pNext;
+	}
+	if ((tmp->pNext == pStop) && (tmp->data != data_)) {
+		throw "Node with this data not is find";
+	}
+	if (tmp == pFirst) {
+		pFirst = tmp->pNext;
+		delete tmp;
+		pCurr = pFirst;
+		return;
+	}
+	if (tmp == pLast) {
+		pPrev->pNext = pStop;
+		delete tmp;
+		pLast = pPrev;
+		return;
+	}
+	pPrev->pNext = tmp->pNext;
+	delete tmp;
+}
+
+
+template<typename T>
+int TList<T>::GetSize() {
+	if (IsEmpty()) {
+		return 0;
+	}
+	TNode<T>* tmp = pFirst;
+	int i = 0;
+	while (tmp != pStop) {
+		tmp = tmp->pNext;
+		i++;
+	}
+	return i;
+}
+
+template<typename T>
+bool TList<T>::IsEmpty() {
+	if (pFirst == nullptr) {
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
+template<typename T>
+bool TList<T>::IsFull() {
+	TNode <T>* tmp = new TNode<T>(1);
+	if (tmp == nullptr) {
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
+template<typename T>
+void TList<T>::Reset() {
+	pCurr = pFirst;
+}
+
+template<typename T>
+bool TList<T>::IsEnded() {
+	if (pCurr == pLast) {
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
+
+
+template<typename T>
+TNode<T>* TList<T>::GetCurrent() {
+	return pCurr;
+}
+
+
 
 
 #endif // !1

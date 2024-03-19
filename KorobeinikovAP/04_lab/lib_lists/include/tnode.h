@@ -9,8 +9,10 @@ class TNode {
 public:
 	T data;
 	TNode<T>* pNext;
+	TNode() : data(), pNext(nullptr) {};
 	TNode(const T& data_, TNode* pNext_ = nullptr) : data(data_), pNext(pNext_) { return; };
 };
 
 
-#endif // !__NODE_H__
+#endif 
+
