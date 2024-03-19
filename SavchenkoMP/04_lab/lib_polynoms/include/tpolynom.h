@@ -42,7 +42,7 @@ public:
 	TPolynom dif_z();
 
 	string get_string();
-	friend ostream& operator<<(ostream out, TPolynom& monom);
+	friend ostream& operator<<(ostream& out, TPolynom& monom);
 
 private:
 	bool IsOperator(const string& isopr) const;

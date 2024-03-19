@@ -416,9 +416,16 @@ TEST(TMonom, GetStringTest) {
 	EXPECT_EQ(exp, m.get_string());
 }
 
-TEST(TMonom, GetStringTest_ZeroDegree) {
+TEST(TMonom, GetStringTest_DegreeZero) {
 	TMonom m(10, 0);
 
-	string exp = "10.000000*x^0*y^0*z^0";
+	string exp = "10.000000";
+	EXPECT_EQ(exp, m.get_string());
+}
+
+TEST(TMonom, GetStringTest_DegreeOne) {
+	TMonom m(10, 121);
+
+	string exp = "10.000000*x*y^2*z";
 	EXPECT_EQ(exp, m.get_string());
 }

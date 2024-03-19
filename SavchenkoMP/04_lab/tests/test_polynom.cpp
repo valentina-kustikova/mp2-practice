@@ -27,6 +27,22 @@ TEST(TPolynom, ParameterizedConstructorTest_StringPolynom) {
 	EXPECT_EQ(exp_str, p.get_string());
 }
 
+// AssignmentOperatorTest
+
+// Addition
+
+// Subtraction
+
+// Multiplication
+
+// CalculateValue
+
+// DifferentiationXTest
+
+// DifferentiationYTest
+
+// DifferentiationZTest
+
 
 // TODO:
 // Constructors, op=, op+, op-, op*, op(), dif

@@ -181,6 +181,37 @@ void TPolynom::Parse(string& name) {
 
 // ======================================================= //
 
+/*
+void TPolynom::ToMonoms(vector<string>& lexems) { // FOR PERFECT POLYNOMS
+	double coeff = 0;
+	int degX = 0, degY = 0, degZ = 0;
+	int minus_next = 1;
+
+	bool monom_started = true;
+	bool coeff_readed = false;
+	bool x_readed = false;
+	bool x_readed = false;
+	bool x_readed = false;
+
+	// Checking whether operands other than x,y,z are present
+	for (const string& token : lexems) {
+		if (!IsOperator(token) && !IsConst(token)) {
+			if (token != "x" || token != "y" || token != "z") {
+				string exp = "Incorrect arithmetic expression";
+				throw exp;
+			}
+		}
+	}
+
+	for (int i = 0; i < lexems.size(); i++) {
+		if (!coeff_readed){
+			
+		}
+	}
+}
+*/
+
+
 void TPolynom::ToMonoms(vector<string>& lexems) { // FOR PERFECT POLYNOMS
 	double coeff = 0;
 	int degX = 0, degY = 0, degZ = 0;
@@ -209,106 +240,8 @@ void TPolynom::ToMonoms(vector<string>& lexems) { // FOR PERFECT POLYNOMS
 
 	TMonom monom(minus_next * coeff, degX, degY, degZ);
 	AddMonom(monom);
-
-	/*
-	for (int i = 0; i < lexems.size(); i++) {
-		if (lexems[i] == "x") {
-			if (i + 1 < lexems.size()) {
-				if (lexems[i + 1] == "^") {
-					degX = stoi(lexems[i + 2]);
-					i += 2;
-					continue;
-				}
-				else {
-					continue;
-				}
-			} 
-			else {
-				degX = 1;
-				continue;
-			}
-		}
-		
-		else if (lexems[i] == "y") {
-			if (i + 1 < lexems.size()) {
-				if (lexems[i + 1] == "^") {
-					degY = stoi(lexems[i + 2]);
-					i += 2;
-					continue;
-				}
-				else {
-					continue;
-				}
-			}
-			else {
-				degY = 1;
-				continue;
-			}
-		}
-
-		else if (lexems[i] == "z") {
-			if (i + 1 < lexems.size()) {
-				if (lexems[i + 1] == "^") {
-					degZ = stoi(lexems[i + 2]);
-					i += 2;
-					continue;
-				}
-				else {
-					continue;
-				}
-			}
-			else {
-				degZ = 1;
-				continue;
-			}
-		}
-
-		else if (lexems[i] == "+") {
-			TMonom monom(minus_next * coeff, degX, degY, degZ);
-			AddMonom(monom);
-
-			coeff = 0;
-			degX = 0;
-			degY = 0;
-			degZ = 0;
-			minus_next = 1;
-			if (lexems[i + 1] == "x" || lexems[i + 1] == "y" || lexems[i + 1] == "z") {
-				coeff = 1;
-			}
-			else {
-				coeff = stod(lexems[i + 1]);
-			}
-			continue;
-		}
-
-		else if (lexems[i] == "-") {
-			TMonom monom(minus_next * coeff, degX, degY, degZ);
-			AddMonom(monom);
-
-			coeff = 0;
-			degX = 0;
-			degY = 0;
-			degZ = 0;
-			minus_next = -1;
-			if (lexems[i + 1] == "x" || lexems[i + 1] == "y" || lexems[i + 1] == "z") {
-				coeff = 1;
-			}
-			else {
-				coeff = stod(lexems[i + 1]);
-			}
-			continue;
-		}
-
-		else if (lexems[i] == "*") {
-			continue;
-		}
-
-		else {
-			coeff = stod(lexems[i]);
-		}
-	}
-	*/
 }
+
 
 void TPolynom::AddMonom(const TMonom& m) {
 	monoms->Reset();
@@ -486,6 +419,6 @@ string TPolynom::get_string() {
 	}	
 	return res;
 }
-ostream& operator<<(ostream out, TPolynom& monom) {
+ostream& operator<<(ostream& out, TPolynom& monom) {
 	return out << monom.get_string();
 }

@@ -50,8 +50,8 @@ TList<T>::TList() {
 }
 
 template <typename T>
-TList<T>::TList(TNode<T>* _pFirst, TNode<T>* _pStop) {
-	pStop = _pStop;
+TList<T>::TList(TNode<T>* _pFirst) {
+	pStop = nullptr;
 	pFirst = _pFirst;
 	if (pFirst == pStop) {
 		pLast = pStop;
@@ -66,7 +66,7 @@ TList<T>::TList(TNode<T>* _pFirst, TNode<T>* _pStop) {
 }
 
 template <typename T>
-TList<T>::TList(const TList<T>& obj, TNode<T>* _pStop) {
+TList<T>::TList(const TList<T>& obj) {
 	if (obj.pFirst == obj.pStop) {
 		pStop = _pStop;
 		pFirst = pStop;

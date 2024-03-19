@@ -184,25 +184,22 @@ string TMonom::get_string() const {
 	int degZ = degree % 10;
 	int degY = (degree / 10) % 10;
 	int degX = degree / 100;
+	string res = "";
 
-	string res = to_string(coeff) + "*x^" + to_string(degX) + "*y^" + to_string(degY) + "*z^" + to_string(degZ);
-	return res;
-	/*
-	if (coeff == 0.0f) return "0";
-	else if (coeff != 1.0f) res += to_string(coeff);
 
-	if (degX == 1) res += "*x";
-	else if (degX != 0) res += "*x^" + to_string(degX);
+	res += to_string(coeff);
+	
+	if		(degX == 1) res += "*x";
+	else if (degX > 1)	res += "*x^" + to_string(degX);
 
 	if (degY == 1) res += "*y";
-	else if (degY != 0) res += "*y^" + to_string(degY);
+	else if (degY > 1)	res += "*y^" + to_string(degY);
 
 	if (degZ == 1) res += "*z";
-	else if (degZ != 0) res += "*z^" + to_string(degZ);
+	else if (degZ > 1)	res += "*z^" + to_string(degZ);
 
 	return res;
-	*/
 }
-ostream& operator<<(ostream out, const TMonom& monom) {
+ostream& operator<<(ostream& out, const TMonom& monom) {
 	return out << monom.get_string();
 }
