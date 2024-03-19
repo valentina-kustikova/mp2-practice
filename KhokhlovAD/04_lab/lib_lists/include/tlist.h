@@ -8,18 +8,22 @@ class TList
 private:
 	TNode<T>* pFirst;
 	TNode<T>* pLast;
-	TNode<T>* pStop;
 	TNode<T>* pCurr; 
 public:
 	TList();
-	TList(TNode<T>* pF);
+	TList(const TNode<T>* pF);
 	TList(const TList<T>& tL);
+
+	void pop_first();
+	void pop_last();
+	void pop_curr();
+	void remove(const TNode<T>* nd);
+	void remove(const T& data);
 
 	~TList();
 	void clear();
 
-	bool isEmpty()const;
-	bool isEnd()const;
+	bool IsEmpty()const;
 };
 
 template <typename T>
@@ -27,23 +31,25 @@ TList<T>::TList()
 {
 	pFirst = nullptr;
 	pLast = nullptr;
-	pStop = nullptr;
 	pCurr = nullptr;
 }
 
 template <typename T>
-TList<T>::TList(TNode<T>* pF)
+TList<T>::TList(const TNode<T>* pF)
 {
-	pFirst = pF;
-	pCurr = pFirst;
-	TNode<T>* tmp = pFirst;
-	if (pF != nullptr) {
-		while (tmp->pNext != nullptr) {
-			tmp = tmp->pNext;
-		}
+	if (pF == nullptr)
+	{
+		*this = TList<T>();
+		return;
 	}
-	pLast = tmp;
-	pStop = nullptr;
+	TNode<T>* tmp = pF->pNext;
+	pFirst = new TNode<T>(pF->data);
+	pCurr = pFirst;
+	while (tmp!= nullptr) {
+		pLast->pNext = new TNode<T>(tmp->data);
+		pLast = pLast->pNext;
+		tmp = tmp->pNext;
+	}
 }
 
 
@@ -54,7 +60,6 @@ TList<T>::TList(const TList<T>& tL)
 	{
 		pFirst = nullptr;
 		pLast = nullptr;
-		pStop = nullptr;
 		pCurr = nullptr;
 		return;
 	}
@@ -68,7 +73,6 @@ TList<T>::TList(const TList<T>& tL)
 		tmp2 = tmp2->pNext;
 	}
 	pLast = tmp2;
-	pStop = nullptr;
 	pLast->pNext = pStop;
 }
 
@@ -82,28 +86,51 @@ template <typename T>
 void TList<T>::clear()
 {
 	TNode<T>* tmp = pFirst;
-	while (tmp != pStop) {
+	while (pFirst != nullptr) {
+		TNode<T>* tmp = pFirst;
 		pFirst = pFirst->pNext;
-		tmp->pNext = nullptr;
+		tmp = tmp->pNext;
 		delete tmp;
-		if (tmp->pNext == nullptr) {
-			break;
-		}
-		tmp = pFirst;
 	}
-	pCurr = pStop;
-	pLast = pStop;
+	pCurr = nullptr;
+	pLast = nullptr;
 }
 
 template <typename T>
-bool TList<T>::isEmpty()const
+bool TList<T>::IsEmpty()const
 {
 	return pFirst == nullptr;
 }
 
 template <typename T>
-bool TList<T>::isEnd()const
+void TList<T>::pop_first()
 {
-	return pCurr->pNext == pStop;
+
+}
+
+template <typename T>
+void TList<T>::pop_last()
+{
+
+}
+
+template <typename T>
+void TList<T>::pop_curr()
+{
+
+}
+
+
+
+template <typename T>
+void TList<T>::remove(const TNode<T>* nd)
+{
+
+}
+
+template <typename T>
+void TList<T>::remove(const T& data)
+{
+
 }
 #endif

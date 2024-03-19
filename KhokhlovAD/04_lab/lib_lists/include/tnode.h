@@ -6,29 +6,40 @@ template <typename T>
 struct TNode
 {
 	T data;
-	TNode* pNext;
+	TNode<T>* pNext;
 	TNode(const T& dat) : data(dat), pNext(nullptr) {};
-	TNode();
-	TNode(const TNode& nd);
-	~TNode();
+
+	bool operator<(const TNode<T>& nd)const;
+	bool operator>(const TNode<T>& nd)const;
+	bool operator==(const TNode<T>& nd)const;
+	bool operator!=(const TNode<T>& nd)const;
 };
 
 template <typename T>
-TNode<T>::TNode()
+bool TNode<T>::operator<(const TNode<T>& nd) const
 {
-	pNext = nullptr;
+	return this->data < nd.data;
 }
 
-template <typename T>
-TNode<T>::TNode(const TNode& nd)
-{
-	data = nd.data;
-	pNext = nd.pNext;
-}
 
 template <typename T>
-TNode<T>::~TNode()
+bool TNode<T>::operator>(const TNode<T>& nd) const
 {
-	delete pNext;
+	return this->data > nd.data;
 }
+
+
+template <typename T>
+bool TNode<T>::operator==(const TNode<T>& nd) const
+{
+	return this->data == nd.data;
+}
+
+
+template <typename T>
+bool TNode<T>::operator!=(const TNode<T>& nd) const
+{
+	return this->data != nd.data;
+}
+
 #endif
