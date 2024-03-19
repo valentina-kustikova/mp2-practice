@@ -166,6 +166,9 @@ void TArithmeticExpression::CheckCorrect() const {
 		if (infix[i - 1] == '^' && (infix[i] < '0' || infix[i] > '9')) {
 			throw "Incorrect expr (degree does not satisfy the condition)";
 		}
+		if (i>=2 && infix[i - 2] == '^' && ((infix[i] > '0' && infix[i] < '9') || infix[i]== '.')) {
+			throw "Incorrect expr (degree is double or >9)";
+		}
 	}
 	if (open_count != closed_count || point_counter > 1)
 	{
@@ -353,7 +356,7 @@ double TArithmeticExpression::Calculate() {
 			st.Pop();
 
 			double res = 1;
-			for (int i = 1; i < (int)op2; ++i) {
+			for (int i = 1; i <= (int)op2; ++i) {
 				res = res * op1;
 			}
 			st.Push(res);

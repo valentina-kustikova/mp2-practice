@@ -181,6 +181,9 @@ TEST(TArithmeticExpression, test_incorrect_expressions_missing_brackets)
 }
 
 
+
+//тесты после добавления возведения в степень
+
 TEST(TArithmeticExpression, test_correct_expressions_8)
 {
 	string infix = "a+A^3 -c";
@@ -193,4 +196,58 @@ TEST(TArithmeticExpression, test_correct_expressions_8)
 	TArithmeticExpression exp(infix, operands);
 	EXPECT_EQ(postfix, exp.GetPostfix());
 	EXPECT_EQ(result, exp.Calculate());
+}
+
+TEST(TArithmeticExpression, test_correct_expressions_9)
+{
+	string infix = "A^3 - b^2 + c^1";
+	string postfix = "A3^b2^-c1^+";
+
+	map<string, double> operands = { {"A", 1}, {"b", 2}, {"c", 3} };
+
+	int result = 0;
+
+	TArithmeticExpression exp(infix, operands);
+	EXPECT_EQ(postfix, exp.GetPostfix());
+	EXPECT_EQ(result, (int)exp.Calculate());
+}
+
+TEST(TArithmeticExpression, test_correct_expressions_10)
+{
+	string infix = "A^7 - b^2 - c^9";
+	string postfix = "A7^b2^-c9^-";
+
+	map<string, double> operands = { {"A", 2}, {"b", 3}, {"c", 1} };
+
+	int result = 118;
+
+	TArithmeticExpression exp(infix, operands);
+	EXPECT_EQ(postfix, exp.GetPostfix());
+	EXPECT_EQ(result, (int)exp.Calculate());
+}
+
+
+TEST(TArithmeticExpression, test_incorrect_expressions_degree_bigger_then_9)
+{
+	string infix = "A^11 - b^2 + c^1";
+	map<string, double> operands = { {"A", 1}, {"b", 2}, {"c", 3} };
+	ASSERT_ANY_THROW(TArithmeticExpression exp(infix, operands));
+}
+
+
+
+TEST(TArithmeticExpression, test_incorrect_expressions_degree_is_char)
+{
+	string infix = "A^b - b^2 + c^1";
+	map<string, double> operands = { {"A", 1}, {"b", 2}, {"c", 3} };
+	ASSERT_ANY_THROW(TArithmeticExpression exp(infix, operands));
+}
+
+
+
+TEST(TArithmeticExpression, test_incorrect_expressions_degree_is_negative_number)
+{
+	string infix = "A^-2 - b^2 + c^1";
+	map<string, double> operands = { {"A", 1}, {"b", 2}, {"c", 3} };
+	ASSERT_ANY_THROW(TArithmeticExpression exp(infix, operands));
 }
