@@ -75,8 +75,7 @@ int main() {
 	cout << "z = ";
 	cin >> z;
 
-	U_P.SetPoint(x, y, z);
-	cout << "U_P(" << x << "," << y << "," << z << ")" << " = " << U_P(x, y, z) << endl;
+	cout << "U_P(" << x << "," << y << "," << z << ")" << " = " << U_P(x, y, z) << endl;//
 
 	cout << "Time for differentiation!" << endl;
 	cout << "Your polynom(x,y,z) = " << U_P;

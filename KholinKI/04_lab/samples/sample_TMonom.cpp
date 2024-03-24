@@ -106,12 +106,12 @@ int main(){
 
 	cout << "M1 != M2?" << endl;
 	if (M1 != M2) {
-		if (M1.GetCoeff() != M2.GetCoeff()) {
+		if (M1.coeff != M2.coeff) {
 			cout << "Yes" << endl;
 		}
 	}
 	else {
-		if (M1.GetCoeff() == M2.GetCoeff()) {
+		if (M1.coeff == M2.coeff) {
 			cout << "Yes,it`s equal monomials" << endl;
 		}
 		else {
