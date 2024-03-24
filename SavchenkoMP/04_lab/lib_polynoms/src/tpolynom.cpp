@@ -271,7 +271,7 @@ void TPolynom::ToMonoms(vector<string>& _lexems) { // FOR PERFECT POLYNOMS
 			TMonom monom(next_const_sign * coeff, degX, degY, degZ);
 			AddMonom(monom);
 
-			if (lexems[i] == "x") next_const_sign = 1;
+			if (lexems[i] == "+") next_const_sign = 1;
 			else next_const_sign = -1;
 			coeff = 1;
 			degX = 0;

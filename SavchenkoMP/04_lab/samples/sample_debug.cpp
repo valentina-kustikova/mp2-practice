@@ -11,21 +11,30 @@ using namespace std;
 
 int main() {
 	try {
-		//string name = "x*y^2 - 2*x^3*y^2*z - 3*x*z^3";
-		string name = "-y*z+x^1*y^1*z^1+2*x^2*y^2*z^2+3*x^3*y^3*z^3-x*z";
+		TPolynom p1("2*x^2 + 3*x*y + 4*y^2");
+		TPolynom p2("3*x^3 + 2*x*y - 5*y^3");
 
-		//cout << "name = ";
-		//getline(cin, name);
+		//p1 + p2;
+		TPolynom exp_add = p1 + p2;
+		TPolynom exp_sub = p1 - p2;
+		TPolynom exp_mult = p1 * p2;
 
-		TPolynom p(name);
+		TPolynom p3("x^3*y*z + x*y^3*z + x*y*z^3 + x + y + z");
+		TPolynom exp_dX = p3.dif_x();
+		TPolynom exp_dY = p3.dif_y();
+		TPolynom exp_dZ = p3.dif_z();
 
-		cout << p;
+		cout << p1 << endl;
+		cout << p2 << endl << endl;
 
-		//vector<string> v;
-		//v.push_back("abc");
+		cout << exp_add << endl;
+		cout << exp_sub << endl;
+		cout << exp_mult << endl << endl;
 
-		//cout << (1 < v.size() && v[1] == "*") << endl;
-
+		cout << p3 << endl;
+		cout << exp_dX << endl;
+		cout << exp_dY << endl;
+		cout << exp_dZ << endl << endl;
 	}
 	catch (string exp) {
 		cout << exp << endl;
