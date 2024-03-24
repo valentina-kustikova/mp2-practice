@@ -8,7 +8,6 @@
 
 #include "tlist.h"
 #include "tmonom.h"
-//#include "tarithmeticexpression.h"
 
 using namespace std;
 

@@ -184,77 +184,10 @@ void TPolynom::Parse(string& name) {
 
 // ======================================================= //
 
-/*
-void TPolynom::ToMonoms(vector<string>& lexems) { // FOR PERFECT POLYNOMS
-	double coeff = 0;
-	int degX = 0, degY = 0, degZ = 0;
-	int minus_next = 1;
-
-	bool monom_started = true;
-	bool coeff_readed = false;
-	bool x_readed = false;
-	bool x_readed = false;
-	bool x_readed = false;
-
-	// Checking whether operands other than x,y,z are present
-	for (const string& token : lexems) {
-		if (!IsOperator(token) && !IsConst(token)) {
-			if (token != "x" || token != "y" || token != "z") {
-				string exp = "Incorrect arithmetic expression";
-				throw exp;
-			}
-		}
-	}
-
-	for (int i = 0; i < lexems.size(); i++) {
-		if (!coeff_readed){
-			
-		}
-	}
-}
-*/
-
-
-// MAIN FUNC
-//void TPolynom::ToMonoms(vector<string>& lexems) { // FOR PERFECT POLYNOMS
-//	double coeff = 0;
-//	int degX = 0, degY = 0, degZ = 0;
-//	int minus_next = 1;
-//
-//	for (int i = 0; i < lexems.size(); i++) {
-//		if (lexems[i] == "+" || lexems[i] == "-") {
-//			TMonom monom(minus_next * coeff, degX, degY, degZ);
-//			AddMonom(monom);
-//
-//			if (lexems[i] == "+") minus_next = 1;
-//			else minus_next = -1;
-//			coeff = 0;
-//			degX = 0;
-//			degY = 0;
-//			degZ = 0;
-//		}
-//		else { 
-//			coeff = stod(lexems[i]);
-//			degX = stoi(lexems[i + 4]); // 8 12
-//			degY = stoi(lexems[i + 8]);
-//			degZ = stoi(lexems[i + 12]);
-//			i += 12;
-//		}
-//	}
-//
-//	TMonom monom(minus_next * coeff, degX, degY, degZ);
-//	AddMonom(monom);
-//}
-
-
-void TPolynom::ToMonoms(vector<string>& _lexems) { // FOR PERFECT POLYNOMS
+void TPolynom::ToMonoms(vector<string>& _lexems) { 
 	double coeff = 1;
 	int degX = 0, degY = 0, degZ = 0;
 	int next_const_sign = 1;
-
-	//bool was_var;
-	//bool was_const;
-
 
 	vector<string> lexems;
 	for (const string& token : _lexems) {
@@ -263,9 +196,6 @@ void TPolynom::ToMonoms(vector<string>& _lexems) { // FOR PERFECT POLYNOMS
 		}
 	}
 
-	// 0 - 3x2yz - 2xy2z3 + xyz2
-	// xy2 - 2x3y2z - 3xz3
-	// 0 - yz + x1y1z1 + 2x2y2z2 + 3x^3y^3z^3 - xz
 	for (int i = 0; i < lexems.size(); i++) {
 		if (lexems[i] == "+" || lexems[i] == "-") {
 			TMonom monom(next_const_sign * coeff, degX, degY, degZ);
@@ -369,7 +299,6 @@ void TPolynom::AddMonom(const TMonom& m) {
 		}
 	}
 	
-	//TMonom* curr = &monoms->GetCurrent()->key;
 	monoms->InsertLast(m);
 }
 
