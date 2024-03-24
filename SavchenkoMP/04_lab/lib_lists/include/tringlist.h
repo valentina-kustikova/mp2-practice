@@ -8,6 +8,8 @@ using namespace std;
 
 template <typename T>
 class TRingList : public TList<T> {
+private:
+	TNode<T>* pHead;
 public:
 	TRingList();
 	TRingList(TNode<T>* _pFirst);
@@ -17,8 +19,9 @@ public:
 
 template <typename T>
 TRingList<T>::TRingList() {
-	TNode<T>* pHead = new TNode<T>();
+	pHead = new TNode<T>();
 	pHead->pNext = pHead;
+	
 	pStop = pHead;
 	pFirst = pHead;
 	pLast = pHead;
@@ -27,7 +30,7 @@ TRingList<T>::TRingList() {
 
 template <typename T>
 TRingList<T>::TRingList(TNode<T>* _pFirst) : TList(_pFirst) {
-	TNode<T>* pHead = new TNode<T>();
+	pHead = new TNode<T>();
 	pHead->pNext = pHead;
 	pStop = pHead;
 	
@@ -49,7 +52,7 @@ TRingList<T>::TRingList(TNode<T>* _pFirst) : TList(_pFirst) {
 
 template <typename T>
 TRingList<T>::TRingList(const TRingList<T>& rlist) {
-	TNode<T>* pHead = new TNode<T>();
+	pHead = new TNode<T>();
 	pHead->pNext = pHead;
 	pStop = pHead;
 	

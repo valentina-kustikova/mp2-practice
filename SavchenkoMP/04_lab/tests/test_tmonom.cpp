@@ -47,7 +47,7 @@ TEST(TMonom, DefaultConstructorTest_Coeff) {
 TEST(TMonom, DefaultConstructorTest_Degree) {
 	TMonom m;
 
-	EXPECT_EQ(0, m.get_degree());
+	EXPECT_EQ(-1, m.get_degree());
 }
 
 

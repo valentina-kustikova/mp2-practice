@@ -6,7 +6,7 @@
 #include <map>
 #include <vector>
 
-#include "tringlist.h"
+#include "tlist.h"
 #include "tmonom.h"
 //#include "tarithmeticexpression.h"
 
@@ -16,7 +16,7 @@ using namespace std;
 
 class TPolynom {
 private:
-	TRingList<TMonom>* monoms;
+	TList<TMonom>* monoms;
 	
 	static map<string, int> priority;
 
@@ -26,7 +26,7 @@ private:
 public:
 	TPolynom();
 	TPolynom(const string& _name);
-	TPolynom(const TRingList<TMonom>& ringlist);
+	TPolynom(const TList<TMonom>& ringlist);
 	TPolynom(TPolynom& polynom);
 	~TPolynom();
 
@@ -47,6 +47,7 @@ public:
 private:
 	bool IsOperator(const string& isopr) const;
 	bool IsConst(const string& isopd) const;
+	bool IsVariable(const string& str) const;
 
 	int FindOperator(const string& name, int pos = 0) const;
 

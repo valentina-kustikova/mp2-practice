@@ -17,6 +17,11 @@ public:
 
 	double get_coeff() const;
 	int get_degree() const;
+	
+	int get_degX() const;
+	int get_degY() const;
+	int get_degZ() const;
+	
 	void set_coeff(double _coeff);
 	void set_degree(int _degree);
 	void set_degree(int degX, int degY, int degZ);

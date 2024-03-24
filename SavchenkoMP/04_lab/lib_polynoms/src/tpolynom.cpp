@@ -30,6 +30,9 @@ bool TPolynom::IsConst(const string& isopd) const {
 		}
 	return flag;
 }
+bool TPolynom::IsVariable(const string& str) const {
+	return (str == "x" || str == "y" || str == "z");
+}
 
 // If found any operator, returns index. Else returns -1.
 int TPolynom::FindOperator(const string& name, int pos) const {
@@ -212,38 +215,134 @@ void TPolynom::ToMonoms(vector<string>& lexems) { // FOR PERFECT POLYNOMS
 */
 
 
-void TPolynom::ToMonoms(vector<string>& lexems) { // FOR PERFECT POLYNOMS
-	double coeff = 0;
+// MAIN FUNC
+//void TPolynom::ToMonoms(vector<string>& lexems) { // FOR PERFECT POLYNOMS
+//	double coeff = 0;
+//	int degX = 0, degY = 0, degZ = 0;
+//	int minus_next = 1;
+//
+//	for (int i = 0; i < lexems.size(); i++) {
+//		if (lexems[i] == "+" || lexems[i] == "-") {
+//			TMonom monom(minus_next * coeff, degX, degY, degZ);
+//			AddMonom(monom);
+//
+//			if (lexems[i] == "+") minus_next = 1;
+//			else minus_next = -1;
+//			coeff = 0;
+//			degX = 0;
+//			degY = 0;
+//			degZ = 0;
+//		}
+//		else { 
+//			coeff = stod(lexems[i]);
+//			degX = stoi(lexems[i + 4]); // 8 12
+//			degY = stoi(lexems[i + 8]);
+//			degZ = stoi(lexems[i + 12]);
+//			i += 12;
+//		}
+//	}
+//
+//	TMonom monom(minus_next * coeff, degX, degY, degZ);
+//	AddMonom(monom);
+//}
+
+
+void TPolynom::ToMonoms(vector<string>& _lexems) { // FOR PERFECT POLYNOMS
+	double coeff = 1;
 	int degX = 0, degY = 0, degZ = 0;
-	int minus_next = 1;
-	
+	int next_const_sign = 1;
+
+	//bool was_var;
+	//bool was_const;
+
+
+	vector<string> lexems;
+	for (const string& token : _lexems) {
+		if (token != "*" && token != "^") {
+			lexems.push_back(token);
+		}
+	}
+
+	// 0 - 3x2yz - 2xy2z3 + xyz2
+	// xy2 - 2x3y2z - 3xz3
+	// 0 - yz + x1y1z1 + 2x2y2z2 + 3x^3y^3z^3 - xz
 	for (int i = 0; i < lexems.size(); i++) {
 		if (lexems[i] == "+" || lexems[i] == "-") {
-			TMonom monom(minus_next * coeff, degX, degY, degZ);
+			TMonom monom(next_const_sign * coeff, degX, degY, degZ);
 			AddMonom(monom);
 
-			if (lexems[i] == "+") minus_next = 1;
-			else minus_next = -1;
-			coeff = 0;
+			if (lexems[i] == "x") next_const_sign = 1;
+			else next_const_sign = -1;
+			coeff = 1;
 			degX = 0;
 			degY = 0;
 			degZ = 0;
 		}
-		else { // "1*x^1*y^1*z^1+2*x^2*y^2*z^2+3*x^3*y^3*z^3"
-			coeff = stod(lexems[i]);
-			degX = stoi(lexems[i + 4]); // 8 12
-			degY = stoi(lexems[i + 8]);
-			degZ = stoi(lexems[i + 12]);
-			i += 12;
+		else {
+			
+			if (lexems[i] == "x") {
+				if (i < lexems.size() - 1) {
+					if (!IsVariable(lexems[i + 1]) && !IsOperator(lexems[i + 1])) {
+						degX += stoi(lexems[i + 1]);
+						i++;
+					}
+					else {
+						degX += 1;
+					}
+				}
+				else {
+					degX += 1;
+				}
+			}
+
+			else if (lexems[i] == "y") {
+				if (i < lexems.size() - 1) {
+					if (!IsVariable(lexems[i + 1]) && !IsOperator(lexems[i + 1])) {
+						degY += stoi(lexems[i + 1]);
+						i++;
+					}
+					else {
+						degY += 1;
+					}
+				}
+				else {
+					degY += 1;
+				}
+			}
+
+			else if (lexems[i] == "z") {
+				if (i < lexems.size() - 1) {
+					if (!IsVariable(lexems[i + 1]) && !IsOperator(lexems[i + 1])) {
+						degZ += stoi(lexems[i + 1]);
+						i++;
+					}
+					else {
+						degZ += 1;
+					}
+				}
+				else {
+					degZ += 1;
+				}
+			}
+
+			else {
+				if (!IsConst(lexems[i])) {
+					string exp = "Error: not valid operand";
+					throw exp;
+				}
+				coeff *= stod(lexems[i]);
+			}
 		}
 	}
 
-	TMonom monom(minus_next * coeff, degX, degY, degZ);
+	TMonom monom(next_const_sign * coeff, degX, degY, degZ);
 	AddMonom(monom);
 }
 
 
 void TPolynom::AddMonom(const TMonom& m) {
+	if (m.get_coeff() == 0) return;
+	
 	monoms->Reset();
 	while (!monoms->IsEnded()) {
 		TMonom* curr = &monoms->GetCurrent()->key;
@@ -276,20 +375,20 @@ void TPolynom::AddMonom(const TMonom& m) {
 
 
 TPolynom::TPolynom() {
-	monoms = new TRingList<TMonom>;
+	monoms = new TList<TMonom>;
 }
 TPolynom::TPolynom(const string& _name) {
-	monoms = new TRingList<TMonom>;
+	monoms = new TList<TMonom>;
 	string name = _name;
 
 	Parse(name);
 }
-TPolynom::TPolynom(const TRingList<TMonom>& ringlist) {
-	monoms = new TRingList<TMonom>(ringlist);
+TPolynom::TPolynom(const TList<TMonom>& ringlist) {
+	monoms = new TList<TMonom>(ringlist);
 
 }
 TPolynom::TPolynom(TPolynom& polynom) {
-	monoms = new TRingList<TMonom>(*polynom.monoms);
+	monoms = new TList<TMonom>(*polynom.monoms);
 }
 TPolynom::~TPolynom() {
 	if (monoms) delete monoms;
@@ -300,7 +399,7 @@ TPolynom::~TPolynom() {
 
 const TPolynom& TPolynom::operator=(TPolynom& polynom) {
 	if (monoms) delete monoms;
-	monoms = new TRingList<TMonom>(*polynom.monoms);
+	monoms = new TList<TMonom>(*polynom.monoms);
 
 	return (*this);
 }

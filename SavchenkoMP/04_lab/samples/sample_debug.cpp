@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <vector>
 #include "tnode.h"
 #include "tlist.h"
 #include "tringlist.h"
@@ -10,26 +11,25 @@ using namespace std;
 
 int main() {
 	try {
-		/*string tmp = "2*x^2*y^3*z^4+3*x^1*y^2*z^3";
+		//string name = "x*y^2 - 2*x^3*y^2*z - 3*x*z^3";
+		string name = "-y*z+x^1*y^1*z^1+2*x^2*y^2*z^2+3*x^3*y^3*z^3-x*z";
 
-		TPolynom p(tmp);
+		//cout << "name = ";
+		//getline(cin, name);
 
-		cout << p.get_string();*/
+		TPolynom p(name);
 
-		TMonom m(2, 244);
-		TMonom exp(8, 234);
+		cout << p;
 
-		TMonom tmp = m.dif_y();
-		cout << tmp.get_coeff() << endl;
-		cout << tmp.get_degree() << endl;
-		cout << m.get_coeff() << endl;
-		cout << m.get_degree() << endl;
-		cout << exp.get_coeff() << endl;
-		cout << exp.get_degree() << endl;
-		
+		//vector<string> v;
+		//v.push_back("abc");
+
+		//cout << (1 < v.size() && v[1] == "*") << endl;
+
 	}
-	catch (...) {
-		cout << "Error" << endl;
+	catch (string exp) {
+		cout << exp << endl;
+		//cout << "Error" << endl;
 	}
 	
 	return 0;

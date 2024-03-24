@@ -3,7 +3,7 @@
 
 TMonom::TMonom() {
 	coeff = 0;
-	degree = 0;
+	degree = -1;
 }
 TMonom::TMonom(const TMonom& monom) {
 	coeff = monom.coeff;
@@ -36,6 +36,20 @@ double TMonom::get_coeff() const {
 int TMonom::get_degree() const {
 	return degree;
 }
+
+int TMonom::get_degX() const {
+	int degX = degree / 100;
+	return degX;
+}
+int TMonom::get_degY() const {
+	int degY = (degree / 10) % 10;
+	return degY;
+}
+int TMonom::get_degZ() const {
+	int degZ = degree % 10;
+	return degZ;
+}
+
 void TMonom::set_coeff(double _coeff) {
 	coeff = _coeff;
 }
@@ -59,10 +73,10 @@ void TMonom::set_degree(int degX, int degY, int degZ) {
 
 double TMonom::value(double x, double y, double z) {
 	double resX = 1, resY = 1, resZ = 1;
-	
-	int degZ = degree % 10;
-	int degY = (degree / 10) % 10;
-	int degX = degree / 100;
+
+	int degZ = get_degZ();
+	int degY = get_degY();
+	int degX = get_degX();
 	
 	for (int i = 0; i < degZ; i++) {
 		resZ *= z;
@@ -111,13 +125,13 @@ const TMonom& TMonom::operator=(const TMonom& monom) {
 }
 
 TMonom TMonom::operator*(const TMonom& monom) const {
-	int degZ1 = degree % 10;
-	int degY1 = (degree / 10) % 10;
-	int degX1 = degree / 100;
+	int degZ1 = get_degZ();
+	int degY1 = get_degY();
+	int degX1 = get_degX();
 
-	int degZ2 = monom.degree % 10;
-	int degY2 = (monom.degree / 10) % 10;
-	int degX2 = monom.degree / 100;
+	int degZ2 = monom.get_degZ();
+	int degY2 = monom.get_degY();
+	int degX2 = monom.get_degX();
 
 	if (degZ1 + degZ2 > 9 || degY1 + degY2 > 9 || degX1 + degX2 > 9 ||
 		degZ1 + degZ2 < 0 || degY1 + degY2 < 0 || degX1 + degX2 < 0) {
@@ -134,7 +148,7 @@ TMonom TMonom::operator*(const TMonom& monom) const {
 
 
 TMonom TMonom::dif_x() const {
-	int degX = degree / 100;
+	int degX = get_degX();
 	
 	if (degX == 0) {
 		TMonom res(0, 0);
@@ -149,7 +163,7 @@ TMonom TMonom::dif_x() const {
 	}	
 }
 TMonom TMonom::dif_y() const {
-	int degY = (degree / 10) % 10;
+	int degY = get_degY();
 	
 	if (degY == 0) {
 		TMonom res(0, 0);
@@ -164,7 +178,7 @@ TMonom TMonom::dif_y() const {
 	}
 }
 TMonom TMonom::dif_z() const {
-	int degZ = degree % 10;
+	int degZ = get_degZ();
 	
 	if (degZ == 0) {
 		TMonom res(0, 0);
@@ -181,9 +195,9 @@ TMonom TMonom::dif_z() const {
 
 
 string TMonom::get_string() const {
-	int degZ = degree % 10;
-	int degY = (degree / 10) % 10;
-	int degX = degree / 100;
+	int degZ = get_degZ();
+	int degY = get_degY();
+	int degX = get_degX();
 	string res = "";
 
 
