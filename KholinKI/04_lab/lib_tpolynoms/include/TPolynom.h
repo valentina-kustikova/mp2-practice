@@ -9,8 +9,9 @@
 class TPolynom {
 	friend istream& operator>>(istream& istr, TPolynom& Q);
 	friend ostream& operator<<(ostream& ostr, const TPolynom& Q);
-private:
+public:
 	TRingList<TMonom>* monoms;
+private:
 	string polynom;
 	map<string, double> values_xyz;
 public:
@@ -20,22 +21,17 @@ public:
 	TPolynom(const TPolynom& obj);
 	~TPolynom();
 
-	TPolynom& operator=(const TPolynom& Q);
+	const TPolynom& operator=(const TPolynom& Q);
 	bool operator==(const TPolynom& Q)const;
 	TPolynom operator+(const TPolynom& Q);
 	TPolynom operator-(const TPolynom& Q);
 	TPolynom operator*(const TPolynom& Q);
-	double operator()(double x = 1,double y = 1, double z = 1);
-	map<string, double>GetPoint()const { return values_xyz; }
-	void SetPoint(double x, double y, double z);
+	double operator()(double x,double y, double z);
 
-	TRingList<TMonom>* GetMonoms()const;
 	string GetPolynomString()const;
 
 	TPolynom differentiate_by_x()const;
 	TPolynom differentiate_by_y()const;
 	TPolynom differentiate_by_z()const;
-private:
-	void ShowStructureList(const bool& mode);
 };
 #endif

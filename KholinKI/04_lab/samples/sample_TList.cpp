@@ -5,7 +5,7 @@
 
 int main() {
 	cout << "Creating ";
-	TList<int> my_list;
+	TList<int> my_list(new Node<int>(2));
 	if (my_list.IsEmpty()) {
 		cout << "empty list" << endl;
 	}
@@ -32,6 +32,7 @@ int main() {
 	cout << my_list;
 	cout << "Quantity nodes: " << my_list.GetSize() << endl;
 	cout << endl;
+
 
 	cout << "Now let's do a data search. For example, find 3" << endl;
 	cout << "Searching 3..." << endl;
@@ -79,7 +80,7 @@ int main() {
 
 	bool mode = true;
 	int choice = 0;
-	Node<int>* tmp = my_list.GetCurrent();
+	Node<int>* tmp = my_list.pCurr;
 	cout << "Welcome to test system navigation list!" << endl;
 	do {
 		cout << "1. Get current data" << "		" << "2. Next node " << endl;
@@ -100,19 +101,19 @@ int main() {
 		case 2:{
 			if (!my_list.Is_End()) {
 				my_list.next();
-				tmp = my_list.GetCurrent();
+				tmp = my_list.pCurr;
 				}
 			else {
 				cout << "You've reached the end of the list,";
 				cout << "so you're back at the beginning" << endl;
 				my_list.reset();
-				tmp = my_list.GetCurrent();
+				tmp = my_list.pCurr;
 				}
 			break;
 			}
 		case 3:{
 			my_list.reset();
-			tmp = my_list.GetCurrent();
+			tmp = my_list.pCurr;
 			break;
 			}
 		case 4:{

@@ -2,19 +2,17 @@
 
 TMonom::TMonom(double c_val, int wd_val) {
 	coeff = c_val;
-	if (wd_val < 0 || wd_val > 999) {
-		throw "degree limit!";
-	}
+
 	wrap_degree = wd_val;
 }
 
 TMonom::TMonom(const TMonom& mon) {
-	coeff = mon.GetCoeff();
-	wrap_degree = mon.GetWD();
+	coeff = mon.coeff;
+	wrap_degree = mon.wrap_degree;
 }
 
 bool TMonom::operator<(const TMonom& monom)const {//для подобных мономов
-	if (wrap_degree < monom.GetWD()) {
+	if (wrap_degree < monom.wrap_degree) {
 		return true;
 	}
 	else {
@@ -22,10 +20,10 @@ bool TMonom::operator<(const TMonom& monom)const {//для подобных мономов
 	}
 }
 
-//сравнивать только степень
+
 
 bool TMonom::operator<=(const TMonom& monom)const {//для подобных мономов
-	if (wrap_degree <= monom.GetWD()) {
+	if (wrap_degree <= monom.wrap_degree) {
 		return true;
 	}
 	else {
@@ -34,7 +32,7 @@ bool TMonom::operator<=(const TMonom& monom)const {//для подобных мономов
 }
 
 bool TMonom::operator>(const TMonom& monom)const {
-	if (wrap_degree > monom.GetWD()) {
+	if (wrap_degree > monom.wrap_degree) {
 		return true;
 	}
 	else {
@@ -43,7 +41,7 @@ bool TMonom::operator>(const TMonom& monom)const {
 }
 
 bool TMonom::operator>=(const TMonom& monom)const {
-	if (wrap_degree >= monom.GetWD()) {
+	if (wrap_degree >= monom.wrap_degree) {
 		return true;
 	}
 	else {
@@ -52,7 +50,7 @@ bool TMonom::operator>=(const TMonom& monom)const {
 }
 
 bool TMonom::operator!=(const TMonom& monom)const {//для подобных мономов
-	if (wrap_degree != monom.GetWD()) {
+	if (wrap_degree != monom.wrap_degree) {
 		return true;
 	}
 	else {
@@ -60,8 +58,8 @@ bool TMonom::operator!=(const TMonom& monom)const {//для подобных мономов
 	}
 }
 
-bool TMonom::operator==(const TMonom& monom)const {//для равных мономов
-	if (coeff == monom.GetCoeff() && wrap_degree == monom.GetWD()) {
+bool TMonom::operator==(const TMonom& monom)const {
+	if (wrap_degree == monom.wrap_degree) {
 		return true;
 	}
 	else {
@@ -69,20 +67,15 @@ bool TMonom::operator==(const TMonom& monom)const {//для равных мономов
 	}
 }
 
-TMonom& TMonom::operator=(const TMonom& monom) {
-	coeff = monom.GetCoeff();
-	wrap_degree = monom.GetWD();
-	return *this;
-}
 
 TMonom TMonom::operator*(const TMonom& monom)const {
 	int d_x_t = wrap_degree / 100;
 	int d_y_t = (wrap_degree % 100) / 10;
 	int d_z_t = (wrap_degree % 10);
 
-	int d_x_m = monom.GetWD() / 100;
-	int d_y_m = (monom.GetWD() % 100) / 10;
-	int d_z_m = (monom.GetWD() % 10);
+	int d_x_m = monom.wrap_degree / 100;
+	int d_y_m = (monom.wrap_degree % 100) / 10;
+	int d_z_m = (monom.wrap_degree % 10);
 	if (d_x_t + d_x_m < 0 || d_x_t + d_x_m > 9) {
 		throw "Degree limit!";
 	}
@@ -92,7 +85,7 @@ TMonom TMonom::operator*(const TMonom& monom)const {
 	else if (d_z_t + d_z_m < 0 || d_z_t + d_z_m > 9) {
 		throw "Degree limit";
 	}
-	return TMonom(coeff * monom.GetCoeff(), wrap_degree + monom.GetWD());
+	return TMonom(coeff * monom.coeff, wrap_degree + monom.wrap_degree);
 }
 
 istream& operator>>(istream& istr, TMonom& monom) {
@@ -111,8 +104,8 @@ istream& operator>>(istream& istr, TMonom& monom) {
 }
 
 ostream& operator<<(ostream& ostr, const TMonom& monom) {
-	cout << "Coeff: " << monom.GetCoeff() << endl;
-	cout << "Wrap_degree: " << monom.GetWD() << endl;
+	cout << "Coeff: " << monom.coeff << endl;
+	cout << "Wrap_degree: " << monom.wrap_degree << endl;
 	cout << endl;
 	return ostr;
 }

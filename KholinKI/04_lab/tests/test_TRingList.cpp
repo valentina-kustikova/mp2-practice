@@ -13,6 +13,7 @@ TEST(TRingList, constructor_with_parameter_work) {
 	ASSERT_NO_THROW(TRingList<int>* rList = new TRingList<int>(pFirst));
 }
 
+
 TEST(TRingList, constructor_copy_work) {
 	Node<int>* pFirst = new Node<int>(10);
 	TRingList<int> rList(pFirst);
@@ -20,6 +21,7 @@ TEST(TRingList, constructor_copy_work) {
 
 	ASSERT_NO_THROW(TRingList<int> rList_copy(rList));
 }
+
 
 
 TEST(TRingList, insert_last_work) {
@@ -38,12 +40,9 @@ TEST(TRingList, insert_last_control_pLast_and_pStop) {
 	rList->insert_last(7);
 	
 	Node<int>* test = rList->search(7);
-	Node<int>* tmp_last = rList->GetPLast();
-	Node<int>* tmp_pStop = rList->GetPStop();
-	Node<int>* tmp_pFirst = rList->GetPFirst();
-
-	ASSERT_TRUE(test->data == 7 && test == tmp_last
-				&& test->pNext == tmp_pStop && tmp_pStop->pNext == tmp_pFirst);
+	
+	ASSERT_TRUE(test->data == 7 && test == rList->pLast
+				&& test->pNext == rList->pStop && rList->pStop->pNext == rList->pFirst);
 }
 
 TEST(TRingList, insert_last_control_pLast_and_pStop_when_list_empty) {
@@ -53,12 +52,9 @@ TEST(TRingList, insert_last_control_pLast_and_pStop_when_list_empty) {
 	rList->insert_last(7);
 
 	Node<int>* test = rList->search(7);
-	Node<int>* tmp_last = rList->GetPLast();
-	Node<int>* tmp_pStop = rList->GetPStop();
-	Node<int>* tmp_pFirst = rList->GetPFirst();
 
-	ASSERT_TRUE(test->data == 7 && test == tmp_last
-		&& test->pNext == tmp_pStop && tmp_pStop->pNext == tmp_pFirst);
+	ASSERT_TRUE(test->data == 7 && test == rList->pLast
+		&& test->pNext == rList->pStop && rList->pStop->pNext == rList->pFirst);
 }
 
 
@@ -148,11 +144,9 @@ TEST(TRingList, insert_first_control_pFirst_and_pStop_and_pCurr) {
 	rList->insert_first(8);
 
 	Node<int>* test = rList->search(8);
-	Node<int>* tmp_pFirst = rList->GetPFirst();
-	Node<int>* tmp_pStop = rList->GetPStop();
-	Node<int>* tmp_pCurr = rList->GetCurrent();
-	ASSERT_TRUE(test->data == 8 && test == tmp_pFirst
-				&& tmp_pStop->pNext == tmp_pFirst && tmp_pCurr == tmp_pFirst);
+
+	ASSERT_TRUE(test->data == 8 && test == rList->pFirst
+				&& rList->pStop->pNext == rList->pFirst && rList->pCurr == rList->pFirst);
 }
 
 TEST(TRingList, insert_first_control_pFirst_and_pStop_and_pCurr_when_list_empty) {
@@ -162,11 +156,9 @@ TEST(TRingList, insert_first_control_pFirst_and_pStop_and_pCurr_when_list_empty)
 	rList->insert_first(5);
 
 	Node<int>* test = rList->search(5);
-	Node<int>* tmp_pFirst = rList->GetPFirst();
-	Node<int>* tmp_pStop = rList->GetPStop();
-	Node<int>* tmp_pCurr = rList->GetCurrent();
-	ASSERT_TRUE(test->data == 5 && test == tmp_pFirst
-		&& tmp_pStop->pNext == tmp_pFirst && tmp_pCurr == tmp_pFirst);
+
+	ASSERT_TRUE(test->data == 5 && test == rList->pFirst
+		&& rList->pStop->pNext == rList->pFirst && rList->pCurr == rList->pFirst);
 }
 
 TEST(TRingList, insert_before_work){
@@ -206,13 +198,8 @@ TEST(TRingList, insert_before_first_node_and_control_pFirst_and_pStop_and_pCurr)
 
 	Node<int>* test = rList.search(7);
 
-	Node<int>* tmp_pFirst = rList.GetPFirst();
-	Node<int>* tmp_pStop = rList.GetPStop();
-	Node<int>* tmp_pCurr = rList.GetCurrent();
-	Node<int>* tmp_pLast = rList.GetPLast();
-
-	ASSERT_TRUE(test->data == 7 && test == tmp_pFirst
-		&& tmp_pStop->pNext == tmp_pFirst && tmp_pCurr == tmp_pFirst);
+	ASSERT_TRUE(test->data == 7 && test == rList.pFirst
+		&& rList.pStop->pNext == rList.pFirst && rList.pCurr == rList.pFirst);
 }
 
 TEST(TRingList, a_lot_inserts_before_control_pFirst_and_pStop_and_pCurr) {
@@ -232,13 +219,8 @@ TEST(TRingList, a_lot_inserts_before_control_pFirst_and_pStop_and_pCurr) {
 
 	Node<int>* test = rList.search(15);
 
-	Node<int>* tmp_pFirst = rList.GetPFirst();
-	Node<int>* tmp_pStop = rList.GetPStop();
-	Node<int>* tmp_pCurr = rList.GetCurrent();
-	Node<int>* tmp_pLast = rList.GetPLast();
-
-	ASSERT_TRUE(test->data == 15 && test == tmp_pFirst
-		&& tmp_pStop->pNext == tmp_pFirst && tmp_pCurr == tmp_pFirst);
+	ASSERT_TRUE(test->data == 15 && test == rList.pFirst
+		&& rList.pStop->pNext == rList.pFirst && rList.pCurr == rList.pFirst);
 }
 
 
@@ -305,13 +287,8 @@ TEST(TRingList, insert_after_last_node_and_control_pLast_and_pStop_and_pFirst) {
 
 	Node<int>* test = rList.search(20);
 
-	Node<int>* tmp_pFirst = rList.GetPFirst();
-	Node<int>* tmp_pStop = rList.GetPStop();
-	Node<int>* tmp_pCurr = rList.GetCurrent();
-	Node<int>* tmp_pLast = rList.GetPLast();
-
-	ASSERT_TRUE(test->data == 20 && test == tmp_pLast
-		&& tmp_pStop->pNext == tmp_pFirst && tmp_pCurr == tmp_pFirst);
+	ASSERT_TRUE(test->data == 20 && test == rList.pLast
+		&& rList.pStop->pNext == rList.pFirst && rList.pCurr == rList.pFirst);
 }
 
 TEST(TRingList, a_lot_inserts_after_control_pLast_and_pStop_and_pFirst) {
@@ -330,13 +307,8 @@ TEST(TRingList, a_lot_inserts_after_control_pLast_and_pStop_and_pFirst) {
 
 	Node<int>* test = rList.search(23);
 
-	Node<int>* tmp_pFirst = rList.GetPFirst();
-	Node<int>* tmp_pStop = rList.GetPStop();
-	Node<int>* tmp_pCurr = rList.GetCurrent();
-	Node<int>* tmp_pLast = rList.GetPLast();
-
-	ASSERT_TRUE(test->data == 23 && test == tmp_pLast
-		&& tmp_pStop->pNext == tmp_pFirst && tmp_pCurr == tmp_pFirst);
+	ASSERT_TRUE(test->data == 23 && test == rList.pLast
+		&& rList.pStop->pNext == rList.pFirst && rList.pCurr == rList.pFirst);
 }
 
 TEST(TRingList, remove_work) {
@@ -365,14 +337,9 @@ TEST(TRingList, remove_first_node_and_control_all_pointers) {
 	Node<int>* test = rList.search(10);
 	Node<int>* deleted_node = rList.search(6);
 
-	Node<int>* tmp_pFirst = rList.GetPFirst();
-	Node<int>* tmp_pStop = rList.GetPStop();
-	Node<int>* tmp_pCurr = rList.GetCurrent();
-	Node<int>* tmp_pLast = rList.GetPLast();
-
-	ASSERT_TRUE(test->data == 10 && test == tmp_pFirst
-				&& tmp_pStop->pNext == tmp_pFirst && tmp_pCurr == tmp_pFirst
-				&& tmp_pLast->pNext == tmp_pStop);
+	ASSERT_TRUE(test->data == 10 && test == rList.pFirst
+				&& rList.pStop->pNext == rList.pFirst && rList.pCurr == rList.pFirst
+				&& rList.pLast->pNext == rList.pStop);
 	EXPECT_EQ(nullptr, deleted_node);
 }
 
@@ -391,14 +358,9 @@ TEST(TRingList, remove_last_node_and_control_all_pointers) {
 	Node<int>* test = rList.search(5);
 	Node<int>* deleted_node = rList.search(4);
 
-	Node<int>* tmp_pFirst = rList.GetPFirst();
-	Node<int>* tmp_pStop = rList.GetPStop();
-	Node<int>* tmp_pCurr = rList.GetCurrent();
-	Node<int>* tmp_pLast = rList.GetPLast();
-
-	ASSERT_TRUE(test->data == 5 && test == tmp_pLast
-		&& tmp_pStop->pNext == tmp_pFirst && tmp_pCurr == tmp_pFirst
-		&& tmp_pLast->pNext == tmp_pStop);
+	ASSERT_TRUE(test->data == 5 && test == rList.pLast
+		&& rList.pStop->pNext == rList.pFirst && rList.pCurr == rList.pFirst
+		&& rList.pLast->pNext == rList.pStop);
 	EXPECT_EQ(nullptr, deleted_node);
 }
 
@@ -420,17 +382,12 @@ TEST(TRingList, a_lot_remove_last_node_and_control_all_pointers) {
 	Node<int>* deleted_node1 = rList.search(4);
 	Node<int>* deleted_node2 = rList.search(10);
 
-	Node<int>* tmp_pFirst = rList.GetPFirst();
-	Node<int>* tmp_pStop = rList.GetPStop();
-	Node<int>* tmp_pCurr = rList.GetCurrent();
-	Node<int>* tmp_pLast = rList.GetPLast();
-
-	ASSERT_TRUE(test->data == 5 && test == tmp_pLast
-		&& tmp_pStop->pNext == tmp_pFirst && tmp_pCurr == tmp_pFirst
-		&& tmp_pLast->pNext == tmp_pStop);
-	ASSERT_TRUE(test2->data == 6 && test2 == tmp_pFirst
-		&& tmp_pStop->pNext == tmp_pFirst && tmp_pCurr == tmp_pFirst
-		&& tmp_pLast->pNext == tmp_pStop);
+	ASSERT_TRUE(test->data == 5 && test == rList.pLast
+		&& rList.pStop->pNext == rList.pFirst && rList.pCurr == rList.pFirst
+		&& rList.pLast->pNext == rList.pStop);
+	ASSERT_TRUE(test2->data == 6 && test2 == rList.pFirst
+		&& rList.pStop->pNext == rList.pFirst && rList.pCurr == rList.pFirst
+		&& rList.pLast->pNext == rList.pStop);
 	ASSERT_TRUE(deleted_node1 == nullptr && deleted_node2 == nullptr);
 }
 
@@ -493,7 +450,7 @@ TEST(TRingList, destructor_work) {
 
 	rList->remove(5);
 
-	ASSERT_NO_THROW(delete rList;);
+	ASSERT_NO_THROW(delete rList);
 }
 
 TEST(TRingList, inserts_and_search_after_clear) {
@@ -506,7 +463,6 @@ TEST(TRingList, inserts_and_search_after_clear) {
 	rList.insert_after(4, 5);
 
 	rList.clear();
-	rList.RecoveryDummyBlock();
 
 	rList.insert_first(4);
 	rList.insert_last(7);
@@ -519,17 +475,13 @@ TEST(TRingList, inserts_and_search_after_clear) {
 	Node<int>* test = rList.search(12);
 	Node<int>* test2 = rList.search(90);
 
-	Node<int>* tmp_pFirst = rList.GetPFirst();
-	Node<int>* tmp_pStop = rList.GetPStop();
-	Node<int>* tmp_pCurr = rList.GetCurrent();
-	Node<int>* tmp_pLast = rList.GetPLast();
 	
-	ASSERT_TRUE(test->data == 12 && test == tmp_pFirst
-		&& tmp_pStop->pNext == tmp_pFirst && tmp_pCurr == tmp_pFirst
-		&& tmp_pLast->pNext == tmp_pStop);
-	ASSERT_TRUE(test2->data == 90 && test2 == tmp_pLast
-		&& tmp_pStop->pNext == tmp_pFirst && tmp_pCurr == tmp_pFirst
-		&& tmp_pLast->pNext == tmp_pStop);
+	ASSERT_TRUE(test->data == 12 && test == rList.pFirst
+		&& rList.pStop->pNext == rList.pFirst && rList.pCurr == rList.pFirst
+		&& rList.pLast->pNext == rList.pStop);
+	ASSERT_TRUE(test2->data == 90 && test2 == rList.pLast
+		&& rList.pStop->pNext == rList.pFirst && rList.pCurr == rList.pFirst
+		&& rList.pLast->pNext == rList.pStop);
 }
 
 TEST(TRingList, Is_Full_work) {
@@ -594,7 +546,7 @@ TEST(TRingList, navigation_part_1_current_data) {
 	rList->insert_first(33);
 	rList->insert_after(4, 5);
 
-	Node<int>* tmp = rList->GetCurrent();
+	Node<int>* tmp = rList->pCurr;
 
 	ASSERT_TRUE(tmp->data == 33);
 }
@@ -613,7 +565,7 @@ TEST(TRingList, navigation_part_2_next_data) {
 
 	rList->next();
 
-	Node<int>* tmp = rList->GetCurrent();
+	Node<int>* tmp = rList->pCurr;
 
 	ASSERT_TRUE(tmp->data == 80);
 }
@@ -630,11 +582,11 @@ TEST(TRingList, navigation_part_3_use_next_method_while_not_reached_end) {
 	rList->insert_first(33);
 	rList->insert_after(4, 5);
 
-	Node<int>* tmp = rList->GetCurrent();
-	Node<int>* tmp_pStop = rList->GetPStop();
+	Node<int>* tmp = rList->pCurr;
+	Node<int>* tmp_pStop = rList->pStop;
 	while (tmp != tmp_pStop) {
 		rList->next();
-		tmp = rList->GetCurrent();
+		tmp = rList->pCurr;
 	}
 
 	
@@ -651,19 +603,19 @@ TEST(TRingList, navigation_part_4_reset_current_pointer) {
 
 	rList->insert_after(4, 5);
 
-	Node<int>* tmp = rList->GetCurrent();
+	Node<int>* tmp = rList->pCurr;
 
-	while (tmp != rList->GetPStop()) {
+	while (tmp != rList->pStop) {
 		rList->next();
-		tmp = rList->GetCurrent();
+		tmp = rList->pCurr;
 	}
 
 	if (rList->Is_End()) {
 		rList->reset();
-		tmp = rList->GetCurrent();
+		tmp = rList->pCurr;
 	}
 
-	ASSERT_TRUE(rList->Is_Begin());
+	ASSERT_TRUE(rList->pCurr == rList->pFirst);
 }
 
 
