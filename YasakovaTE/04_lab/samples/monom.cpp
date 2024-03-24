@@ -1,4 +1,4 @@
-﻿/*#include<iostream>
+﻿#include<iostream>
 #include<locale>
 #include "List.h"
 #include "Monom.h"
@@ -84,4 +84,3 @@ int main() {
 	return 0;
 }
 
-*/
