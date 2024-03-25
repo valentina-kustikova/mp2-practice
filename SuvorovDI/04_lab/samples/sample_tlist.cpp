@@ -4,13 +4,9 @@
 #include <string>
 
 int main() {
-  std::string P = "5*x^3*y^1-2.5*y^2";
-  TPolynom polynomian = TPolynom(P);
-  polynomian.monoms.Reset();
-  while (!polynomian.monoms.IsEnded()) {
-    polynomian.monoms.pCurr->data->output_data();
-    polynomian.monoms.Next();
-  }
+  std::string P = "-5*z*x^3*y^1-2.5*y^2+52.4*x^3*z^7";
+  TPolynom<TMonom> polynomian = TPolynom<TMonom>(P);
+  polynomian.output_polynom();
 
   return 0;
 }
