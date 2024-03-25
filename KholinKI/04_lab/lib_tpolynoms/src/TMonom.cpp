@@ -1,6 +1,7 @@
 #include "TMonom.h"
 
 TMonom::TMonom(double c_val, int wd_val) {
+
 	coeff = c_val;
 
 	wrap_degree = wd_val;

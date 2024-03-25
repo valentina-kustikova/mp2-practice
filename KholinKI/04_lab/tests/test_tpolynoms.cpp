@@ -2,6 +2,13 @@
 
 #include <gtest.h>
 
+TEST(polynom, polynom_string_contain_0_and_1_degrees) {
+	TPolynom P("2*x^2*y^0-89*y^4*x^1");
+
+	TPolynom test("2*x^2-89*y^4*x");
+	ASSERT_TRUE(P == test);
+}
+
 TEST(polynoms, diffirintiate_y_check_values) {
 	TPolynom P("4*x^2*y*z^4+x*y^2*z^3-780+30*y^2-2*x^2*z^4");
 	TPolynom R = P.differentiate_by_y();

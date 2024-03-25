@@ -144,6 +144,4 @@ void TRingList<T>::remove(const T& data_) {
 
 
 
-
-
 #endif

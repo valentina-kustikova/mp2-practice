@@ -240,7 +240,6 @@ void TList<T>::clear() {
 	pFirst = nullptr;
 	pCurr = nullptr;
 	pLast = nullptr;
-	pStop = nullptr;
 }
 
 template<typename T>

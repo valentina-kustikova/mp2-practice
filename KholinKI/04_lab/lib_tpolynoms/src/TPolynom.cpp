@@ -97,7 +97,6 @@ TPolynom::TPolynom(const string& str) {//учесть случай для ^0,^1
 				{
 				
 				if (infix[i + 1] == '^') {
-					
 					str_test = str_test + infix[i + 2];
 					degree_x = stod(str_test);
 					if (degree_x < 0 || degree_x > 9) {
@@ -233,13 +232,23 @@ TPolynom::TPolynom(const TRingList<TMonom>* monoms_list) {
 				_polynom.append(to_string(degree_x));
 			}
 		}
-		if (degree_y != 0 && degree_y != 1) {
-			_polynom.append("*y^");
-			_polynom.append(to_string(degree_y));
+		if (degree_y != 0) {
+			if (degree_y == 1) {
+				_polynom.append("*y");
+			}
+			else {
+				_polynom.append("*y^");
+				_polynom.append(to_string(degree_y));
+			}
 		}
-		if (degree_z != 0 && degree_z != 1) {
-			_polynom.append("*z^");
-			_polynom.append(to_string(degree_z));
+		if (degree_z != 0) {
+			if (degree_z == 1) {
+				_polynom.append("*z");
+			}
+			else {
+				_polynom.append("*z^");
+				_polynom.append(to_string(degree_z));
+			}
 		}
 		monoms->next();
 		tmp = monoms->pCurr;
