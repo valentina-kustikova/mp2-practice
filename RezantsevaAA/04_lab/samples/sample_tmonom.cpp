@@ -3,6 +3,7 @@
 
 int main()
 {
+	
 	TMonom monom1(5,2);
 	std::cout << "Created monom with degree = " << monom1.GetDegree() << " and  Coeff = " << monom1.GetCoeff() << std::endl;
 	std::cout << "Our monom: " << monom1 << std::endl;
@@ -34,6 +35,9 @@ int main()
 	std::cout << "Lets compare: m1 > m3? " << (m1 > m3) << std::endl;
 	std::cout << "Lets compare: m2 > m3? " << (m2 > m3) << std::endl;
 	std::cout << "Lets compare: m4 > m3? " << (m4 > m3) << std::endl;
+
+	TMonom m6(7, 221);
+	std::cout << m6.getStringMonom();
 
 	return 0;
 }

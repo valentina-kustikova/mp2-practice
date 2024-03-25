@@ -1,5 +1,8 @@
 #include "tmonom.h"
-
+#include <iostream>
+#include <string>
+#include <sstream>
+#include <iomanip>
 TMonom::TMonom(const TMonom& m) {
 	Coeff = m.Coeff;
 	Degree = m.Degree;
@@ -49,7 +52,7 @@ bool TMonom::operator==(const TMonom& m) const {
 	return (Coeff == m.Coeff) && (Degree == m.Degree);
 }
 
-bool TMonom::operator!=(const TMonom& m) const { //
+bool TMonom::operator!=(const TMonom& m) const { 
 	return !(*this == m);
 }
 
@@ -69,7 +72,7 @@ int TMonom::GetDegree() {
 	return Degree;
 }
 
-TMonom TMonom:: operator*(const TMonom& m)const {
+TMonom TMonom::operator*(const TMonom& m)const {
 	if ((Degree + m.Degree) <= 999 && (Degree + m.Degree) >= 0) {
 		return TMonom(Coeff * m.Coeff, Degree + m.Degree);
 	}
@@ -77,11 +80,66 @@ TMonom TMonom:: operator*(const TMonom& m)const {
 		throw "Degree limit!";
 	}
 }
+
+TMonom TMonom::operator+(const TMonom& m)const {
+	TMonom result;
+	if ((*this) == m) {
+		result.SetCoeff((*this).Coeff + m.Coeff);
+		result.Degree = m.Degree;
+	}
+	else {
+		throw "Error. Can't sum monoms";
+	}
+	return result;
+}
+TMonom TMonom::monom_defX() {
+	if (Degree - 100 == 0)
+	{
+		return TMonom(Coeff, 0);
+	}
+	Coeff = Coeff * (Degree / 100);
+	Degree = Degree - 100;
+	return TMonom(Coeff, Degree);
+}
+TMonom TMonom::monom_defY() {
+	int y = (Degree % 100) / 10;
+	if (y == 0) {
+		return TMonom(0, 0);
+	}
+	if (y == 1) 
+	{
+		return TMonom(Coeff, Degree - 10);
+	}
+	Coeff = Coeff * y;
+	Degree = Degree - 10;
+	return TMonom(Coeff, Degree);
+}
+
+TMonom TMonom::monom_defZ() {
+	int z = Degree % 10;
+	if (z == 1)
+	{
+		return TMonom(Coeff, Degree - 1);
+	}
+	if (z == 0)
+	{
+		return TMonom(0, 0);
+	}
+	Coeff = Coeff * z;
+	Degree = Degree - 1;
+	return TMonom(Coeff, Degree);
+}
+
+void TMonom::ChangeCoeff() {
+	Coeff = -Coeff;
+}
+
 std::ostream& operator<<(std::ostream& out, TMonom& m) {
 	int x, y, z;
+
 	x = m.Degree / 100;
-	y = (m.Degree - x * 100) / 10;
-	z = m.Degree - x * 100 - y * 10;
+	y = (m.Degree % 100) / 10;
+	z = m.Degree % 10;
 	if (m.Coeff != 1 || m.Degree == 0)
 		out << m.Coeff;
 	if (x > 0)
@@ -110,6 +168,54 @@ double TMonom::Pow(double a, double degree) {
 	}
 	return result;
 
+}
+
+std::string TMonom::getStringMonom() const {
+	//форматирование цифр после запятой коэффициента	
+	std::ostringstream oss;
+	oss << std::fixed << std::setprecision(1) << Coeff; //выводит без запятой либо сделать 1-2 знака после запятой и + "*"
+	std::string stringMonom;
+	if (Coeff >= 0) {
+		if (Coeff == 1.0) {
+			stringMonom += "+";
+		}
+		else {
+			stringMonom = "+" + oss.str();
+		}
+	}
+	else {
+		if (Coeff == -1.0) {
+			stringMonom += "-";
+		}
+		else {
+			stringMonom = oss.str();
+		}
+	}
+
+	if (Degree > 0 && Coeff != 1.0 && Coeff != -1.0) {
+		stringMonom += "*";
+	}
+
+	int x, y, z;
+	x = Degree / 100;
+	y = (Degree % 100) / 10;
+	z = Degree % 10;
+	if (x > 1)
+		stringMonom += "x^" + std::to_string(x);
+	else if (x == 1) {
+		stringMonom += "x";
+	}
+	if (y > 1 )
+		stringMonom += "y^" + std::to_string(y);
+	else if (y == 1) {
+		stringMonom += "y";
+	}
+	if (z > 1)
+		stringMonom += "z^" + std::to_string(z);
+	else if (z == 1) {
+		stringMonom += "z";
+	}
+	return stringMonom;
 }
 
 double TMonom::calculateMonom(std::map<char, double>& variables) {

@@ -157,3 +157,58 @@ TEST(TMonom, can_duplicate_data) {
 	EXPECT_EQ(6, result.GetCoeff());
 	EXPECT_EQ(4, result.GetDegree());
 }
+
+//operator+
+TEST(TMonom, can_sum) {
+	TMonom m1(2, 2);
+	TMonom m2(2, 2);
+	ASSERT_NO_THROW(m1 + m2);
+}
+TEST(TMonom, cant_sum) {
+	TMonom m1(3, 2);
+	TMonom m2(2, 999);
+	ASSERT_ANY_THROW(m1 + m2);
+}
+TEST(TMonom, can_sum_data) {
+	TMonom m1(2, 2);
+	TMonom m2(2, 2);
+	TMonom result = m1 + m2;
+	EXPECT_EQ(4, result.GetCoeff());
+	EXPECT_EQ(2, result.GetDegree());
+}
+//defx
+TEST(TMonom, can_defx) {
+	TMonom m1(2, 102);
+	ASSERT_NO_THROW(m1.monom_defX());
+}
+
+TEST(TMonom, can_defx_data) {
+	TMonom m1(2, 200);
+	m1.monom_defX();
+	EXPECT_EQ(4, m1.GetCoeff());
+	EXPECT_EQ(100, m1.GetDegree());
+}
+//defy
+TEST(TMonom, can_defY) {
+	TMonom m1(2, 102);
+	ASSERT_NO_THROW(m1.monom_defY());
+}
+
+TEST(TMonom, can_defY_data) {
+	TMonom m1(2, 231);
+	m1.monom_defY();
+	EXPECT_EQ(6, m1.GetCoeff());
+	EXPECT_EQ(221, m1.GetDegree());
+}
+//defZ
+TEST(TMonom, can_defZ) {
+	TMonom m1(2, 102);
+	ASSERT_NO_THROW(m1.monom_defZ());
+}
+
+TEST(TMonom, can_defZ_data) {
+	TMonom m1(2, 234);
+	m1.monom_defZ();
+	EXPECT_EQ(8, m1.GetCoeff());
+	EXPECT_EQ(233, m1.GetDegree());
+}

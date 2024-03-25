@@ -1,5 +1,6 @@
 #ifndef __TLIST_H__
 #define __TLIST_H__
+//функции сделать virtual и в ringlist переопределить insrtFirst and insertLast
 
 #include <iostream>
 #include "tnode.h"
@@ -30,48 +31,49 @@ public:
         return out;
     }
 
-    void Clear();
-    ~TList();
+    virtual void Clear();
+     ~TList();
 
-    void Next();
-    void Sort();
-    bool is_Full() const;
-    bool is_Empty() const;
+    virtual void Next();
+    virtual virtual void Sort();
+     bool is_Full() const;
+     bool is_Empty() const;
 
-    TNode<TData>* Search(const TData& data_);
+    virtual TNode<TData>* Search(const TData& data_);
     //INSERT 
-    void InsertFirst(const TData& data_);
-    void InsertLast(const TData& data_);
-    void InsertBefore(const TData& data_, const TData& NextData);
-    void InsertAfter(const TData& data_, const TData& PrevData);
+    virtual void InsertFirst(const TData& data_);
+    virtual void InsertLast(const TData& data_);
+    virtual void InsertBefore(const TData& data_, const TData& NextData);
+    virtual void InsertAfter(const TData& data_, const TData& PrevData);
 
     const int GetLength() const; //
-    void Reset(); //установить на начало списка
+    virtual void Reset(); //установить на начало списка
 
-    TNode<TData>* GetCurrent() const; //возвращает текущее звено
-    TData getCurrData() const;
-    void setCurrData(const TData& _data);
+     TNode<TData>* GetCurrent() const; //возвращает текущее звено
+     TData getCurrData() const;
+     void setCurrData(const TData& _data);
 
+    virtual TList<TData>& operator=(const TList<TData>& pList);
+
+    virtual TNode<TData>* GetPStop()const;
+    virtual TNode<TData>* GetPFirst()const;
     
-
-    TNode<TData>* GetPStop()const;
-    TNode<TData>* GetPFirst()const;
-    
-    void SetPStop(TNode<TData>* _pStop);
-    void SetPLast(TNode<TData>* _pLast);
-
+    virtual void SetPStop(TNode<TData>* _pStop);
+    virtual void SetPLast(TNode<TData>* _pLast);
+    virtual void SetPFirst(TNode<TData>* _pFirst);
 
     //insert(2)
-    void InsertBeforeCurrent(const TData& data_); //вставить перед текущим
-    void InsertAfterCurrent(const TData& data_); //вставить после текущего
+    virtual void InsertBeforeCurrent(const TData& data_); //вставить перед текущим
+    virtual void InsertAfterCurrent(const TData& data_); //вставить после текущего
 
     //functions
-    void Remove(const TData& data_); //удаление по ключу 
-    void RemoveFirst();
-    void RemoveCurrent();
+    virtual void Remove(const TData& data_); //удаление по ключу 
+    virtual void RemoveFirst();
+    virtual void RemoveCurrent();
     bool is_End() const; //список завершен?
 
 };
+
 //constructors
 template <class TData> TList<TData> ::TList() {
     pFirst = pLast = pCurr = pStop = pPrev = nullptr;
@@ -111,6 +113,28 @@ template <class TData> TList<TData> ::TList(const TList& pList) {
     pStop = nullptr;
 }
 
+template <class TData>  TList<TData>& TList<TData>::operator=(const TList<TData>& pList) {
+    if (pList.pFirst == nullptr)
+    {
+        throw "Error";
+    }
+    TNode<TData>* oldCurrent = pList.pFirst;
+    pFirst = new TNode<TData>(*pList.pFirst);
+    TNode<TData>* newCurrent = pFirst;
+    oldCurrent = oldCurrent->pNext;
+    while (oldCurrent != pList.pStop)
+    {
+        newCurrent->pNext = new TNode<TData>(oldCurrent->data);
+        newCurrent = newCurrent->pNext;
+        oldCurrent = oldCurrent->pNext;
+    }
+    pLast = newCurrent;
+    pStop = pLast->pNext;
+    pCurr = pFirst;
+    pStop = nullptr;
+
+    return *this;
+}
 template <class TData> void TList<TData>::Clear() {
     if (pFirst == nullptr)
     {
@@ -136,8 +160,6 @@ template <class TData> TList<TData> ::~TList() {
 
 //sort по убыванию
 template <class TData> void TList<TData>::Sort() {
-    // if (pHead == nullptr)
-      //   return;
     TNode<TData>* elem1 = pFirst;
     while (elem1->pNext != nullptr)
     {
@@ -266,7 +288,7 @@ template <class TData> void TList<TData>::RemoveCurrent() {
            // pPrev = pPrev->pNext;
             pPrev->pNext = pCurr->pNext;
             pCurr = pCurr->pNext;
-            if (pPrev->pNext == pLast)
+            if (pPrev->pNext == pStop)
                 pLast = pPrev;
             pPrev->pNext = pCurr;
             delete tmp;
@@ -314,7 +336,6 @@ template <class TData> void TList<TData>::InsertLast(const TData& data_) {
     pLast = newNode;
     ListLen++;
 }
-
 template <class TData> void TList<TData>::InsertBefore(const TData& data_, const TData& NextData) {
     if (is_Empty()) {
         throw "Error. List is empty.";
@@ -388,6 +409,9 @@ template <class TData> void TList<TData>::SetPStop(TNode<TData>* _pStop) {  //ну
 
 template <class TData> void TList<TData>::SetPLast(TNode<TData>* _pLast) {
     pLast = _pLast;
+}
+template <class TData> void TList<TData>::SetPFirst(TNode<TData>* _pFirst) {
+    pFirst = _pFirst;
 }
 
 //insert(2)

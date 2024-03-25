@@ -6,8 +6,10 @@ TPolinom::TPolinom() {
 }
 
 TPolinom::TPolinom(const string& stringPolynom) {
-	formula = stringPolynom;
 	getListOfMonoms(stringPolynom);
+	deleteZero();
+	formula = getStringMonoms();
+
 }
 
 double TPolinom::getCoeff(const std::string& input, int& pos)
@@ -25,7 +27,7 @@ double TPolinom::getCoeff(const std::string& input, int& pos)
 		coeff = "1.0";
 	}
 	if (coeff == "-") {
-		coeff = "- 1.0";
+		coeff = "-1.0";
 	}
 	return std::stod(coeff);
 }
@@ -94,6 +96,9 @@ double TPolinom::getValue(const char& variable) {
 	std::cin >> value;
 	return value;
 }
+std::string TPolinom::getFormula() const {
+	return formula;
+}
 
 double TPolinom::calculate()
 {
@@ -131,6 +136,8 @@ TPolinom::~TPolinom()
 
 void TPolinom::Sort() {
 	monoms.Sort();
+	deleteZero();
+	formula = getStringMonoms();
 }
 
 void TPolinom::sumEqual() {
@@ -138,7 +145,7 @@ void TPolinom::sumEqual() {
 	TNode<TMonom>* i = monoms.GetPFirst();
 	if (i == nullptr) return;
 
-	while (i->pNext != nullptr)
+	while (i->pNext != monoms.GetPStop())
 	{
 		TNode<TMonom>* j = i->pNext;
 		if (i->data.GetDegree() == j->data.GetDegree())
@@ -155,52 +162,154 @@ void TPolinom::sumEqual() {
 			i = j;
 		}
 	}
+	deleteZero();
+	formula = getStringMonoms();
 }
 void TPolinom::deleteZero() {
 	if (monoms.GetPFirst() == nullptr)
 		return;
-	TNode<TMonom>* i = monoms.GetPFirst();;
-	while (i->pNext != nullptr)
+	TNode<TMonom>* current = monoms.GetCurrent();
+	while (!monoms.is_End())
 	{
-		TNode<TMonom>* j = i->pNext;
-		if (j->data.GetCoeff() == 0)
+		if (monoms.GetCurrent()->data.GetCoeff() == 0.0)
 		{
-			i->pNext = j->pNext;
-			delete j;
+			monoms.RemoveCurrent();
 		}
-		else
-		{
-			i = j;
+		else {
+			monoms.Next();
 		}
 	}
-	if (i->data.GetCoeff() == 0)
-	{
-		monoms.RemoveCurrent();
-	}
-	else
-	{
-		monoms.SetPLast(i);
-	}
+	monoms.Reset();
 }
 
-
+std::string TPolinom::getStringMonoms() const {
+	std::string stringMonoms = "";
+	TRingList<TMonom> tmp(monoms);
+	while (!tmp.is_End())
+	{
+		stringMonoms += tmp.getCurrData().getStringMonom();
+		tmp.Next();
+	}
+	return stringMonoms;
+}
 
 TPolinom::TPolinom(const TRingList<TMonom>& m) {
-	monoms = TRingList<TMonom>(m);
-	// TODO create string polynom
-
+	monoms = m;
+	deleteZero();
+	formula = getStringMonoms();
 }
 
 TPolinom::TPolinom(const TPolinom& p) {
-	TMonom* pMonom = new TMonom(0, -1);
-
-	
+	formula = p.formula;
+	uniques = p.uniques;
+	TRingList <TMonom> tmpPolynom = p.monoms;
+	while(!tmpPolynom.is_End()){
+		monoms.InsertLast(tmpPolynom.getCurrData());
+		tmpPolynom.Next();
+	}
 }
 
+TPolinom TPolinom::operator+(const TPolinom& p) {
 
-/*
-TPolinom TPolinom ::operator+(const TPolinom& p) {
-
+	std::string resultFormula = formula + p.getFormula();
+	TPolinom resultPolynom(resultFormula);
+	resultPolynom.GetNormalView();
+	return resultPolynom;
 }
 
-*/
+TPolinom TPolinom::operator-(const TPolinom& p) {
+	TPolinom subtrahendPolynom(p);
+	while (!subtrahendPolynom.monoms.is_End()) {
+		subtrahendPolynom.monoms.GetCurrent()->data.ChangeCoeff();
+		subtrahendPolynom.monoms.Next();
+	}
+	subtrahendPolynom.monoms.Reset();
+	subtrahendPolynom.formula = subtrahendPolynom.getStringMonoms();
+
+	std::string resultFormula = formula + subtrahendPolynom.getFormula();
+	TPolinom resultPolynom(resultFormula);
+	resultPolynom.GetNormalView();
+	/*
+	resultPolynom.Sort();
+	resultPolynom.deleteZero();
+	resultPolynom.sumEqual();
+	resultPolynom.getStringMonoms();
+	*/
+	return resultPolynom;
+}
+TPolinom TPolinom::operator*(const TPolinom& p) {
+	TPolinom multiplyP(p);
+	TRingList<TMonom> resultMonoms;
+	while (!multiplyP.monoms.is_End())
+	{
+		while (!monoms.is_End())
+		{
+			resultMonoms.InsertLast(multiplyP.monoms.getCurrData() * monoms.getCurrData());
+			monoms.Next();
+		}
+		monoms.Reset();
+		multiplyP.monoms.Next();
+	}
+	monoms.Reset();
+	TPolinom resultPolynom(resultMonoms);
+	resultPolynom.GetNormalView();
+	return resultPolynom;
+}
+void TPolinom::GetNormalView() {
+	Sort();
+	deleteZero();
+	sumEqual();
+	getStringMonoms();
+}
+TPolinom TPolinom::defX() const {
+	TRingList<TMonom> copy(monoms);
+	TRingList<TMonom> resultMonoms;
+	while (!copy.is_End())
+	{
+		if (copy.GetCurrent()->data.GetDegree() / 100 > 0)
+		{
+			resultMonoms.InsertLast(copy.GetCurrent()->data.monom_defX());
+			resultMonoms.Next();
+		}
+		copy.Next();
+	}
+	resultMonoms.Reset();
+	TPolinom resultPolynom(resultMonoms);
+	resultPolynom.GetNormalView();
+	return resultPolynom;
+}
+TPolinom TPolinom::defY() const {
+	TRingList<TMonom> copy(monoms);
+	TRingList<TMonom> resultMonoms;
+	while (!copy.is_End())
+	{
+		if (copy.GetCurrent()->data.GetDegree() % 100 / 10  > 0)
+		{
+			resultMonoms.InsertLast(copy.GetCurrent()->data.monom_defY());
+			resultMonoms.Next();
+		}
+		copy.Next();
+	}
+	resultMonoms.Reset();
+	TPolinom resultPolynom(resultMonoms);
+	resultPolynom.GetNormalView();
+	return resultPolynom;
+}
+
+TPolinom TPolinom::defZ() const {
+	TRingList<TMonom> copy(monoms);
+	TRingList<TMonom> resultMonoms;
+	while (!copy.is_End())
+	{
+		if (copy.GetCurrent()->data.GetDegree() % 10 > 0)
+		{
+			resultMonoms.InsertLast(copy.GetCurrent()->data.monom_defZ());
+			resultMonoms.Next();
+		}
+		copy.Next();
+	}
+	resultMonoms.Reset();
+	TPolinom resultPolynom(resultMonoms);
+	resultPolynom.GetNormalView();
+	return resultPolynom;
+}
