@@ -165,7 +165,7 @@ TEST(TList, GetSizeTest_NotEmpty) {
 }
 
 // ClearTest
-TEST(TList, GetSizeTest) {
+TEST(TList, ClearTest) {
 	TList<int> list;
 	list.InsertLast(1);
 	list.InsertLast(2);
@@ -174,7 +174,7 @@ TEST(TList, GetSizeTest) {
 	EXPECT_NO_THROW(list.Clear());
 }
 
-TEST(TList, GetSizeTest_SizeCheck) {
+TEST(TList, ClearTest_SizeCheck) {
 	TList<int> list;
 	list.InsertLast(1);
 	list.InsertLast(2);
@@ -182,6 +182,24 @@ TEST(TList, GetSizeTest_SizeCheck) {
 	list.Clear();
 
 	EXPECT_EQ(0, list.GetSize());
+}
+
+TEST(TList, ClearTest_InsertAfterClear) {
+	TList<int> list;
+	list.InsertLast(1);
+	list.InsertLast(2);
+	list.InsertLast(3);
+	list.Clear();
+
+	list.InsertLast(1);
+	list.InsertLast(2);
+	list.InsertLast(3);
+	TNode<int>* tmp = list.Search(1);
+	
+	EXPECT_EQ(1, tmp->key);
+	EXPECT_EQ(2, tmp->pNext->key);
+	EXPECT_EQ(3, tmp->pNext->pNext->key);
+	EXPECT_EQ(list.stop(), tmp->pNext->pNext->pNext);
 }
 
 

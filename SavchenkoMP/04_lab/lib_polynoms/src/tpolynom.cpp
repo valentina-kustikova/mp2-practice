@@ -1,6 +1,6 @@
 #include "tpolynom.h"
 
-map<string, int> TPolynom::priority = {
+map<string, int> TPolynom::priority = { 
 	{"^", 4},
 	{"*", 3},
 	{"/", 3},
@@ -10,7 +10,7 @@ map<string, int> TPolynom::priority = {
 	{")", 1}
 };
 
-bool TPolynom::IsOperator(const string& isopr) const {
+bool TPolynom::IsOperator(const string& isopr) const { // opr : priority can't be char 
 	bool flag = false;
 	for (const auto& opr : priority) {
 		if (isopr == opr.first) {
@@ -304,20 +304,20 @@ void TPolynom::AddMonom(const TMonom& m) {
 
 
 TPolynom::TPolynom() {
-	monoms = new TList<TMonom>;
+	monoms = new TRingList<TMonom>;
 }
 TPolynom::TPolynom(const string& _name) {
-	monoms = new TList<TMonom>;
+	monoms = new TRingList<TMonom>;
 	string name = _name;
 
 	Parse(name);
 }
-TPolynom::TPolynom(const TList<TMonom>& ringlist) {
-	monoms = new TList<TMonom>(ringlist);
+TPolynom::TPolynom(const TRingList<TMonom>& ringlist) {
+	monoms = new TRingList<TMonom>(ringlist);
 
 }
 TPolynom::TPolynom(TPolynom& polynom) {
-	monoms = new TList<TMonom>(*polynom.monoms);
+	monoms = new TRingList<TMonom>(*polynom.monoms);
 }
 TPolynom::~TPolynom() {
 	if (monoms) delete monoms;
@@ -327,8 +327,10 @@ TPolynom::~TPolynom() {
 
 
 const TPolynom& TPolynom::operator=(TPolynom& polynom) {
+	if (this == &polynom) return (*this);
+
 	if (monoms) delete monoms;
-	monoms = new TList<TMonom>(*polynom.monoms);
+	monoms = new TRingList<TMonom>(*polynom.monoms);
 
 	return (*this);
 }
@@ -345,16 +347,20 @@ TPolynom TPolynom::operator+(TPolynom& polynom) {
 
 	return res;
 }
-TPolynom TPolynom::operator-(TPolynom& polynom) {
+TPolynom TPolynom::operator-() {
 	TPolynom res(*this);
 
-	polynom.monoms->Reset();
-	while (!polynom.monoms->IsEnded()) {
-		TMonom curr_monom = polynom.monoms->GetCurrent()->key;
-		curr_monom.set_coeff((-1) * curr_monom.get_coeff());
-		res.AddMonom(curr_monom);
-		polynom.monoms->Next();
+	res.monoms->Reset();
+	while (!res.monoms->IsEnded()) {
+		int coeff = (-1) * res.monoms->GetCurrent()->key.get_coeff();
+		res.monoms->GetCurrent()->key.set_coeff(coeff);
+		res.monoms->Next();
 	}
+
+	return res;
+}
+TPolynom TPolynom::operator-(TPolynom& polynom) {
+	TPolynom res(-polynom + (*this));
 
 	return res;
 }
@@ -428,6 +434,8 @@ TPolynom TPolynom::dif_z() {
 
 
 string TPolynom::get_string() {
+	if (monoms->GetSize() == 0) return "0.000000";
+	
 	string res = "";
 	monoms->Reset();
 	

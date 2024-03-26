@@ -6,7 +6,7 @@
 #include <map>
 #include <vector>
 
-#include "tlist.h"
+#include "tringlist.h"
 #include "tmonom.h"
 
 using namespace std;
@@ -15,9 +15,9 @@ using namespace std;
 
 class TPolynom {
 private:
-	TList<TMonom>* monoms;
+	TRingList<TMonom>* monoms;
 	
-	static map<string, int> priority;
+	static map<string, int> priority; 
 
 	void Parse(string& name);
 	void ToMonoms(vector<string>& lexems);
@@ -25,13 +25,14 @@ private:
 public:
 	TPolynom();
 	TPolynom(const string& _name);
-	TPolynom(const TList<TMonom>& ringlist);
+	TPolynom(const TRingList<TMonom>& ringlist);
 	TPolynom(TPolynom& polynom);
 	~TPolynom();
 
 	const TPolynom& operator=(TPolynom& polynom);
 
 	TPolynom operator+(TPolynom& polynom);
+	TPolynom operator-();
 	TPolynom operator-(TPolynom& polynom);
 	TPolynom operator*(TPolynom& polynom);
 	double operator()(double x, double y, double z);

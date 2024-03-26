@@ -67,6 +67,38 @@ TEST(TPolynom, ParameterizedConstructorTest_StringPolynom5) {
 	EXPECT_EQ(exp_str, p.get_string());
 }
 
+TEST(TPolynom, ParameterizedConstructorTest_Throw_LargeDegree) {
+	string name = "x^2 + 2*x*y + y^2 - 3*z^10";
+
+	EXPECT_ANY_THROW(TPolynom p(name));
+}
+
+TEST(TPolynom, ParameterizedConstructorTest_Throw_VetyLargeDegree) {
+	string name = "x^2 + 2*x*y + y^200 - 3*z^3";
+
+	EXPECT_ANY_THROW(TPolynom p(name));
+}
+
+TEST(TPolynom, ParameterizedConstructorTest_Throw_NegativeDegree) {
+	string name = "x^2 + 2*x*y + y^(-2) - 3*z^10";
+
+	EXPECT_ANY_THROW(TPolynom p(name));
+}
+
+TEST(TPolynom, ParameterizedConstructorTest_Conversion) {
+	TPolynom p("0 + x^3 - y^2 - x^3");
+	TPolynom expP("-y^2");
+
+	EXPECT_EQ(expP.get_string(), p.get_string());
+}
+
+TEST(TPolynom, ParameterizedConstructorTest_Conversion_Null) {
+	TPolynom p("x^3 - x^3");
+	string exp = "0.000000";
+
+	EXPECT_EQ(exp, p.get_string());
+}
+
 // AssignmentOperatorTest
 TEST(TPolynom, AssignmentOperatorTest_NoThrow) {
 	TPolynom p1("2*x^2 + 3*x*y + 4*y^2");
@@ -114,12 +146,33 @@ TEST(TPolynom, MultiplicationTest) {
 	EXPECT_EQ(expP.get_string(), p3.get_string());
 }
 
+TEST(TPolynom, MultiplicationTest_Throw_LargeDegree) {
+	TPolynom p1("2*x^2 + 3*x*y + 4*y^2");
+	TPolynom p2("3*x^8 + 2*x*y - 5*y^3");
+
+	EXPECT_ANY_THROW(TPolynom p3(p1 * p2));
+}
+
+TEST(TPolynom, MultiplicationTest_Throw_VeryLargeDegree) {
+	TPolynom p1("2*x^9 + 3*x^9*y^9 + 4*y^9");
+	TPolynom p2("3*x^9 + 2*x^9*y^9 - 5*y^9");
+
+	EXPECT_ANY_THROW(TPolynom p3(p1 * p2));
+}
+
 // CalculateValueTest
 TEST(TPolynom, CalculateValueTest) {
 	TPolynom p("2*x^2 + 3*x*y + 4*y^2");
 
 	EXPECT_EQ(62, p(2, 3, 4));
 }
+
+TEST(TPolynom, CalculateValueTest_NullPolynom) {
+	TPolynom p("2*x^2 - 2*x^2");
+
+	EXPECT_EQ(0, p(2, 3, 4));
+}
+
 
 // DifferentiationXTest
 TEST(TPolynom, DifferentiationXTest) {

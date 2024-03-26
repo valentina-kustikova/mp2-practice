@@ -164,7 +164,7 @@ TEST(TRingList, GetSizeTest_NotEmpty) {
 }
 
 // ClearTest
-TEST(TRingList, GetSizeTest) {
+TEST(TRingList, ClearTest) {
 	TRingList<int> list;
 	list.InsertLast(1);
 	list.InsertLast(2);
@@ -173,7 +173,7 @@ TEST(TRingList, GetSizeTest) {
 	EXPECT_NO_THROW(list.Clear());
 }
 
-TEST(TRingList, GetSizeTest_SizeCheck) {
+TEST(TRingList, ClearTest_SizeCheck) {
 	TRingList<int> list;
 	list.InsertLast(1);
 	list.InsertLast(2);
@@ -181,6 +181,24 @@ TEST(TRingList, GetSizeTest_SizeCheck) {
 	list.Clear();
 
 	EXPECT_EQ(0, list.GetSize());
+}
+
+TEST(TRingList, ClearTest_InsertAfterClear) {
+	TRingList<int> list;
+	list.InsertLast(1);
+	list.InsertLast(2);
+	list.InsertLast(3);
+	list.Clear();
+
+	list.InsertLast(1);
+	list.InsertLast(2);
+	list.InsertLast(3);
+	TNode<int>* tmp = list.Search(1);
+
+	EXPECT_EQ(1, tmp->key);
+	EXPECT_EQ(2, tmp->pNext->key);
+	EXPECT_EQ(3, tmp->pNext->pNext->key);
+	EXPECT_EQ(list.stop(), tmp->pNext->pNext->pNext);
 }
 
 
