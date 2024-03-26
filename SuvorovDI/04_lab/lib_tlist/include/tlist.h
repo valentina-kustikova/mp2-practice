@@ -30,22 +30,27 @@ public:
   TList (TNode<TData>*);
   ~TList();
   TNode<TData>* Search (const TData&);
-  void InsertFirst (const TData&);
-  void InsertLast (const TData&);
-  virtual void InsertBefore (const TData&, const TData&);
-  virtual void InsertAfter (const TData&, const TData&);
+  virtual void InsertFirst (const TData&);
+  virtual void InsertLast (const TData&);
+  void InsertBefore (const TData&, const TData&);
+  void InsertAfter (const TData&, const TData&);
   virtual void Remove (const TData&);
   void Clear();
   void Reset();
   void Next();
   TNode<TData>* GetCurr() const;
+  ///
   TNode<TData>* GetFirst() const;
   TNode<TData>* GetLast() const;
   TNode<TData>* GetStop() const;
+  ///
+
+  ///
   void SetCurr(const TNode<TData>* node);
   void SetFirst(const TNode<TData>* node);
   void SetLast(const TNode<TData>* node);
   void SetStop(const TNode<TData>* node);
+  ///
   bool IsEnded() const;
   bool IsEmpty() const;
   bool IsFull() const;
@@ -61,6 +66,7 @@ public:
   THeadRingList(const THeadRingList<TData>& ringL);
   ~THeadRingList();
 
+  ///
   TNode<TData>* GetHead() const {
     return pHead;
   }
@@ -68,6 +74,7 @@ public:
     pHead->data = node->data; // copy?
     pHead->pNext = node->pNext;
   }
+  ///
 
   void Remove (const TData& data);
   void InsertFirst(const TData& data);
@@ -139,7 +146,6 @@ void TList<TData>::Clear() {
   pCurr = nullptr;
   pFirst = nullptr;
   pLast = nullptr;
-  pStop = nullptr;
 }
 
 template <typename TData>
@@ -342,6 +348,7 @@ void THeadRingList<TData>::InsertFirst(const TData& data) {
   pLast->pNext = pHead;
 }
 
+// set virtual to InsertFirst
 template <typename TData>
 void THeadRingList<TData>::InsertLast(const TData& data) {
   if (IsEmpty()) {

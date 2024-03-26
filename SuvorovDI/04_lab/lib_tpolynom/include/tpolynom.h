@@ -23,27 +23,26 @@ public:
   bool operator==(const TMonom&) const;
   bool operator!=(const TMonom&) const;
 
-  void output_data() const {
+  void output_data() const { // friend operator <<
     std::cout << coeff_ << "  " << degree_ << std::endl;
   }
 };
 
-template <typename TData>
+template <typename TData> // TData -> TMonom
 class TPolynom {
 protected:
   std::string name;
-  THeadRingList<TData> monoms;
+  THeadRingList<TMonom> monoms;
+  void tokinize_polynom(const std::string& name);
+  void InsertToSort(const TData& data);
 
 public:
-  void tokinize_polynom(const std::string& name);
-
   TPolynom() : monoms() {}
   TPolynom(const std::string& name);
   TPolynom(const THeadRingList<TData>& l);
   TPolynom(const TPolynom<TData>& p);
   ~TPolynom() = default;
-
-  void InsertToSort(const TData& data);
+  
   TPolynom<TData> operator+(const TPolynom<TData>& p);
   TPolynom<TData> operator-(const TPolynom<TData>& p);
   TPolynom<TData> operator*(TPolynom<TData>& p);
@@ -55,7 +54,7 @@ public:
 
   const TPolynom<TData>& operator=(const TPolynom<TData>& p);
 
-  void output_polynom() {
+  void output_polynom() { // friend operator <<
     monoms.Reset();
     while (!monoms.IsEnded()) {
       monoms.GetCurr()->data.output_data();// operator <<
@@ -131,7 +130,7 @@ TPolynom<TData> TPolynom<TData>::operator-(const TPolynom<TData>& p) {
 // Only that in the first case, the default constructor is called and initializes the object directly. And in the second, the default constructor is called, creates and returns a new object, which initializes our object using the copy constructor.
 
 template <typename TData>
-TPolynom<TData> TPolynom<TData>::operator*(TPolynom<TData>& p) {
+TPolynom<TData> TPolynom<TData>::operator*(TPolynom<TData>& p) { // const
   TPolynom<TData> res_pol();
 
   monoms.Reset();
@@ -234,7 +233,7 @@ TPolynom<TData> TPolynom<TData>::dz() const {
 template <typename TData>
 const TPolynom<TData>& TPolynom<TData>::operator=(const TPolynom& p) {
   name = p.name;
-  if (p.monoms.IsEmpty())
+  if (p.monoms.IsEmpty()) // operator= для HeadRingList
 	{
 		monoms.SetFirst(nullptr);
 		monoms.SetLast(nullptr);
