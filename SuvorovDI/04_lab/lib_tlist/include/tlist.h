@@ -1,5 +1,7 @@
 #pragma once
 
+// move TList and THeadRingList to different files
+
 template <typename TData>
 struct TNode {
   TData data;
@@ -11,11 +13,19 @@ struct TNode {
   }
 
   TNode(const TData& data, TNode* pNext = nullptr) {
-    this->data = data; // copy?
+    this->data = data;
     this->pNext = pNext;
   }
 };
 
+// Add pPrev
+// Rewrite Search (it should memorize previous TNode)
+
+// Add RemoveFirst
+// It will be redifined in THeadRingList
+// SO Remove - Not!
+
+// Delete Getters and Setters!!!
 template <typename TData>
 class TList {
 protected:
@@ -71,7 +81,7 @@ public:
     return pHead;
   }
   void SetHead(const TNode<TData>* node) {
-    pHead->data = node->data; // copy?
+    pHead->data = node->data;
     pHead->pNext = node->pNext;
   }
   ///
@@ -298,25 +308,25 @@ TNode<TData>* TList<TData>::GetStop() const {
 
 template <typename TData>
 void TList<TData>::SetCurr(const TNode<TData>* node) {
-  pCurr->data = node->data; // copy?
+  pCurr->data = node->data;
   pCurr->pNext = node->pNext;
 }
 
 template <typename TData>
 void TList<TData>::SetFirst(const TNode<TData>* node) {
-  pFirst->data = node->data; // copy?
+  pFirst->data = node->data;
   pFirst->pNext = node->pNext;
 }
 
 template <typename TData>
 void TList<TData>::SetLast(const TNode<TData>* node) {
-  pLast->data = node->data; // copy?
+  pLast->data = node->data;
   pLast->pNext = node->pNext;
 }
 
 template <typename TData>
 void TList<TData>::SetStop(const TNode<TData>* node) {
-  pStop->data = node->data; // copy?
+  pStop->data = node->data;
   pStop->pNext = node->pNext;
 }
 
@@ -348,7 +358,6 @@ void THeadRingList<TData>::InsertFirst(const TData& data) {
   pLast->pNext = pHead;
 }
 
-// set virtual to InsertFirst
 template <typename TData>
 void THeadRingList<TData>::InsertLast(const TData& data) {
   if (IsEmpty()) {

@@ -3,12 +3,9 @@
 #include <stdint.h>
 #include <cstring>
 
-// Maybe we can make the TPolynom class friendly to THeadRingList??
-// If so, then we won't need to create getters and setters for each pointer in the list.
+// move TMonom and TPolynom to different files
+// I should make these files into VS Code
 
-// Do we really need copy-method for TMonom
-// TMonom contains only non-pointer fields!
-// As far as I understand, earlier in TNode - "data" there was a pointer to TData (so "copy" was needed for this)
 class TMonom {
 public:
   double coeff_;
@@ -23,88 +20,83 @@ public:
   bool operator==(const TMonom&) const;
   bool operator!=(const TMonom&) const;
 
-  void output_data() const { // friend operator <<
-    std::cout << coeff_ << "  " << degree_ << std::endl;
+  friend std::ostream& operator<< (std::ostream& out, const TMonom& m) {
+    out << m.coeff_ << "  " << m.degree_ << std::endl;
+	  return out;
   }
 };
 
-template <typename TData> // TData -> TMonom
+
+// Add operator unaryminus!
 class TPolynom {
 protected:
   std::string name;
   THeadRingList<TMonom> monoms;
+
   void tokinize_polynom(const std::string& name);
-  void InsertToSort(const TData& data);
+  void InsertToSort(const TMonom& monom);
 
 public:
   TPolynom() : monoms() {}
   TPolynom(const std::string& name);
-  TPolynom(const THeadRingList<TData>& l);
-  TPolynom(const TPolynom<TData>& p);
+  TPolynom(const THeadRingList<TMonom>& l);
+  TPolynom(const TPolynom& p);
   ~TPolynom() = default;
   
-  TPolynom<TData> operator+(const TPolynom<TData>& p);
-  TPolynom<TData> operator-(const TPolynom<TData>& p);
-  TPolynom<TData> operator*(TPolynom<TData>& p);
+  TPolynom operator+(const TPolynom& p);
+  TPolynom operator-(const TPolynom& p);
+  TPolynom operator*(TPolynom& p);
 
   double operator()(double x, double y, double z) const;
-  TPolynom<TData> dx() const;
-  TPolynom<TData> dy() const;
-  TPolynom<TData> dz() const;
+  TPolynom dx() const;
+  TPolynom dy() const;
+  TPolynom dz() const;
 
-  const TPolynom<TData>& operator=(const TPolynom<TData>& p);
+  const TPolynom& operator=(const TPolynom& p);
 
-  void output_polynom() { // friend operator <<
-    monoms.Reset();
-    while (!monoms.IsEnded()) {
-      monoms.GetCurr()->data.output_data();// operator <<
-      monoms.Next();
+  friend std::ostream& operator<< (std::ostream& out, TPolynom& pol) {
+	  pol.monoms.Reset();
+    while (!pol.monoms.IsEnded()) {
+		  out << pol.monoms.GetCurr()->data;
+		  pol.monoms.Next();
     }
+	  return out;
   }
 };
 
-template <typename TData>
-TPolynom<TData>::TPolynom(const std::string& name) : monoms() {
+
+// NAVIGATIONS INSTEAD GETTERS AND SETTERS!
+TPolynom::TPolynom(const std::string& name) : monoms() {
   this->name = name;
   tokinize_polynom(name);
 }
+ 
+TPolynom::TPolynom(const THeadRingList<TMonom>& l) : monoms(l) {}
 
-// At first, parameter was a pointer to THeadRingList
-// But I don't understand is it necessary?
-// So I replaced the pointer with a reference
-template <typename TData>
-TPolynom<TData>::TPolynom(const THeadRingList<TData>& l) : monoms<TData>(l) {}
+TPolynom::TPolynom(const TPolynom& p) : monoms(p.monoms), name(p.name) {}
 
-template <typename TData>
-TPolynom<TData>::TPolynom(const TPolynom<TData>& p) : monoms<TData>(p.monoms), name(p.name) {}
-
-template <typename TData>
-void TPolynom<TData>::InsertToSort(const TData& data) {
-	if (monoms.IsEmpty() || monoms.GetFirst()->data > data) {
-		monoms.InsertFirst(data);
+void TPolynom::InsertToSort(const TMonom& monom) {
+	if (monoms.IsEmpty() || monoms.GetFirst()->data > monom) {
+		monoms.InsertFirst(monom);
 		return;
 	}
 
-	TNode<TData>* curr = monoms.GetFirst();
-	while (curr->pNext != monoms.GetStop() && curr->pNext->data <= data) {
+	TNode<TMonom>* curr = monoms.GetFirst();
+	while (curr->pNext != monoms.GetStop() && curr->pNext->data <= monom) {
 		curr = curr->pNext;
 	}
-	if (curr->data == data) {
-		curr->data.coeff_ = curr->data.coeff_ + data.coeff_;
+	if (curr->data == monom) {
+		curr->data.coeff_ = curr->data.coeff_ + monom.coeff_;
 		return;
 	}
-	monoms.InsertAfter(data, curr->data);
+	monoms.InsertAfter(monom, curr->data);
 }
 
-// Is there some difference between usage curr-variable and while AND pCurr and Next() while isEnded???
-// Which way is better???
-
-// And I can't make the following methods constant, if I use Next, 
-// because Next change object field pCurr!! Is it normal???
-template <typename TData>
-TPolynom<TData> TPolynom<TData>::operator+(const TPolynom<TData>& p) {
-  TPolynom<TData> res(this->monoms);
-  TNode<TData>* curr = p.monoms.GetFirst();
+// In following operators + - * : I should make the cop of the input TPolynom
+// Input -> will remain const, duplicate will use Next()
+TPolynom TPolynom::operator+(const TPolynom& p) {
+  TPolynom res(this->monoms);
+  TNode<TMonom>* curr = p.monoms.GetFirst();
   while (curr != p.monoms.GetStop()) {
     res.InsertToSort(curr->data);
     curr = curr->pNext;
@@ -112,34 +104,27 @@ TPolynom<TData> TPolynom<TData>::operator+(const TPolynom<TData>& p) {
 
   return res;
 }
-
-template <typename TData>
-TPolynom<TData> TPolynom<TData>::operator-(const TPolynom<TData>& p) {
-  TPolynom<TData> negativePol(p);
-  TNode* curr = negativePol.monoms.GetFirst();
+ 
+TPolynom TPolynom::operator-(const TPolynom& p) {
+  TPolynom negativePol(p);
+  TNode<TMonom>* curr = negativePol.monoms.GetFirst();
   while (curr != negativePol.monoms.GetStop()) {
     curr->data.coeff_ = curr->data.coeff_ * (-1);
     curr = curr->pNext;
   }
   return this->operator+(negativePol);
 }
-
-// Please, remind me, what difference between :
-// TPolynom<TData> res_pol();
-// TPolynom<TData> dx_pol = TPolynom<TData>();
-// Only that in the first case, the default constructor is called and initializes the object directly. And in the second, the default constructor is called, creates and returns a new object, which initializes our object using the copy constructor.
-
-template <typename TData>
-TPolynom<TData> TPolynom<TData>::operator*(TPolynom<TData>& p) { // const
-  TPolynom<TData> res_pol();
+ 
+TPolynom TPolynom::operator*(TPolynom& p) { // const
+  TPolynom res_pol;
 
   monoms.Reset();
   p.monoms.Reset();
   while (!monoms.IsEnded()) {
 
     while (!p.monoms.IsEnded()) {
-      TMonom mon1 monoms.GetCurr()->data;
-      TMonom mon2 p.monoms.GetCurr()->data;
+      TMonom mon1 = monoms.GetCurr()->data;
+      TMonom mon2 = p.monoms.GetCurr()->data;
       double newCoeff = mon1.coeff_ * mon2.coeff_;
       int16_t newDegree = mon1.degree_ + mon2.degree_;
 
@@ -155,11 +140,10 @@ TPolynom<TData> TPolynom<TData>::operator*(TPolynom<TData>& p) { // const
   return res_pol;
 }
 
-template <typename TData>
-double TPolynom<TData>::operator()(double x, double y, double z) const {
+double TPolynom::operator()(double x, double y, double z) const {
   double result = 0;
 
-  TNode<TData>* curr = monoms.GetFirst();
+  TNode<TMonom>* curr = monoms.GetFirst();
   while (curr != monoms.GetStop()) {
     double mn;
     mn = curr->data.coeff_;
@@ -173,11 +157,10 @@ double TPolynom<TData>::operator()(double x, double y, double z) const {
   return result;
 }
 
-template <typename TData>
-TPolynom<TData> TPolynom<TData>::dx() const {
-  TPolynom<TData> dx_pol = TPolynom<TData>();
+TPolynom TPolynom::dx() const {
+  TPolynom dx_pol = TPolynom();
 
-  TNode<TData>* curr = monoms.GetFirst();
+  TNode<TMonom>* curr = monoms.GetFirst();
   while (curr != monoms.GetStop()) {
     if (curr->data.degree_ / 100 != 0) {
       double newCoeff = curr->data.coeff_ * (curr->data.degree_ / 100);
@@ -191,11 +174,10 @@ TPolynom<TData> TPolynom<TData>::dx() const {
   return dx_pol;
 }
 
-template <typename TData>
-TPolynom<TData> TPolynom<TData>::dy() const {
-  TPolynom<TData> dy_pol = TPolynom<TData>();
+TPolynom TPolynom::dy() const {
+  TPolynom dy_pol = TPolynom();
 
-  TNode<TData>* curr = monoms.GetFirst();
+  TNode<TMonom>* curr = monoms.GetFirst();
   while (curr != monoms.GetStop()) {
     if (curr->data.degree_ / 10 % 10 != 0) {
       double newCoeff = (curr->data.coeff_) * (curr->data.degree_ / 10 % 10);
@@ -209,11 +191,10 @@ TPolynom<TData> TPolynom<TData>::dy() const {
   return dy_pol;
 }
 
-template <typename TData>
-TPolynom<TData> TPolynom<TData>::dz() const {
-  TPolynom<TData> dz_pol = TPolynom<TData>();
+TPolynom TPolynom::dz() const {
+  TPolynom dz_pol = TPolynom();
 
-  TNode<TData>* curr = monoms.GetFirst();
+  TNode<TMonom>* curr = monoms.GetFirst();
   while (curr != monoms.GetStop()) {
     if (curr->data.degree_ % 10 != 0) {
       double newCoeff = (curr->data.coeff_) * (curr->data.degree_ % 10);
@@ -227,33 +208,29 @@ TPolynom<TData> TPolynom<TData>::dz() const {
   return dz_pol;
 }
 
-// Can I make the following code shorter?
-// It would be better if I could call the copy constructor
-// Maybe I should make operator= in RingList
-template <typename TData>
-const TPolynom<TData>& TPolynom<TData>::operator=(const TPolynom& p) {
+const TPolynom& TPolynom::operator=(const TPolynom& p) {
   name = p.name;
   if (p.monoms.IsEmpty()) // operator= для HeadRingList
 	{
 		monoms.SetFirst(nullptr);
 		monoms.SetLast(nullptr);
 		monoms.SetCurr(nullptr);
-    monoms.SetHead(new TNode(p.monoms.GetHead()->data, monoms.GetHead()));
+    monoms.SetHead(new TNode<TMonom>(p.monoms.GetHead()->data, monoms.GetHead()));
     monoms.SetStop(monoms.GetHead());
 	}
 
-	monoms.SetFirst(new TNode(p.monoms.GetFirst()->data));
-	TNode* tmp = monoms.GetFirst(); 
-  TNode* ltmp = p.monoms.GetFirst()->pNext;
+	monoms.SetFirst(new TNode<TMonom>(p.monoms.GetFirst()->data));
+	TNode<TMonom>* tmp = monoms.GetFirst();
+  TNode<TMonom>* ltmp = p.monoms.GetFirst()->pNext;
 	while(ltmp != p.monoms.GetStop())
 	{
-		tmp->pNext = new TNode(ltmp->data);
+		tmp->pNext = new TNode<TMonom>(ltmp->data);
 		tmp = tmp->pNext;
 		ltmp = ltmp->pNext;
 	}
 	monoms.SetLast(tmp);
 	monoms.SetCurr(monoms.GetFirst());
-	monoms.SetHead(new TNode(p.monoms.GetHead()->data, monoms.GetFirst()));
+	monoms.SetHead(new TNode<TMonom>(p.monoms.GetHead()->data, monoms.GetFirst()));
   monoms.GetLast()->pNext = monoms.GetHead();
 
   return *(this);
@@ -262,8 +239,7 @@ const TPolynom<TData>& TPolynom<TData>::operator=(const TPolynom& p) {
 // ===============================================
 // FSM!!!
 
-template <typename TData>
-void TPolynom<TData>::tokinize_polynom(const std::string& name) {
+void TPolynom::tokinize_polynom(const std::string& name) {
 	std::string str = name;
 	while (!str.empty()) {
 		int degree = 0;
@@ -292,7 +268,7 @@ void TPolynom<TData>::tokinize_polynom(const std::string& name) {
 					degree += exp * 10;
 					break;
 				case 'z':
-					degree += exp * 1;
+		    		degree += exp * 1;
 					break;
 				default:
 					throw ("exp");
