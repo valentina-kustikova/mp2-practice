@@ -1,5 +1,6 @@
 #include <iostream>
 #include "Monom.h"
+#include "Polynom.h"
 #include "ListHeader.h"
 
 using namespace std;
@@ -9,40 +10,88 @@ int main()
    
     string s1;
     string s2;
+    cout << "Enter first polynom:" << endl;
     cin >> s1;
+    cout << "Enter second polynom:" << endl;
     cin >> s2;
-    TPolynom p1(s1);
-    TPolynom p2(s2);
-    p1.Parse_Polynom(s1);
-    p2.Parse_Polynom(s2);
-    p1.Print_Polynom();
-    p2.Print_Polynom();
+    try {
+        TPolynom p1(s1);
+        TPolynom p2(s2);
+        cout << p1;
+        cout << p2;
 
-    TPolynom p3;
-    p3 = p1 + p2;
-    p3.Print_Polynom();
 
-   TPolynom p4;
-    p4 = p1 - p2;
-    p4.Print_Polynom();
+        TPolynom p3;
+        p3 = p1 + p2;
+        cout << "p3 = p2+p1" << endl;
+        cout << p3;
 
-    TPolynom p5;
-    p5 = p1.difx();
-    p5.Print_Polynom();
+        TPolynom p4;
+        p4 = p1 - p2;
+        cout << "p4 = p1-p2" << endl;
+        cout << p4;
 
-    TPolynom p6;
-    p6 = p2.dify();
-    p6.Print_Polynom();
+        TPolynom p5;
+        p5 = p1 * p2;
+        cout << "p5 = p1*p2" << endl;
+        cout << p5;
 
-    TPolynom p7;
-    p7 = p2.difz();
-    p7.Print_Polynom();
+        TPolynom p6;
+        p6 = p1.difx();
+        cout << "p6 = p1.dif_x" << endl;
+        cout << p6;
 
-    TPolynom p8;
-    p8 = p1 * p2;
-    p8.Print_Polynom();
-    cout << "p3 result:" << endl;
-    double r = p3.operator()(2,3,4);
-    cout << r << endl;
+        TPolynom p7;
+        p7 = p2.dify();
+        cout << "p7 = p2.dif_y" << endl;
+        cout << p7;
+
+        TPolynom p8;
+        p8 = p2.difz();
+        cout << "p8 = p2.dif_z" << endl;
+        cout << p8;
+
+        double _x, _y, _z;
+        cout << "Enter x: ";
+        cin >> _x;
+        cout << "Enter y: ";
+        cin >> _y;
+        cout << "Enter z: ";
+        cin >> _z;
+        cout << "p3 result:" << endl;
+        double r = p3.operator()(_x, _y, _z);
+        cout << r << endl;
+
+    }
+    catch (string msg) {
+        cout << msg << endl;
+    }
+
+
+
+    /*
+    TList<int> list;
+    list.InsertFirst(42);
+    list.InsertEnd(10);
+    list.Next();
+    list.InsertAfterCurr(5);
+    list.Next();
+    list.Next();
+    TNode<int>* Node = list.GetCurrent();
+  
+   
+    TRingList<int> rl;
+    rl.InsertFirst(5);
+    rl.InsertEnd(3);
+    rl.InsertEnd(4);
+    rl.InsertFirst(10);
+    rl.InsertEnd(2);
+    rl.InsertBefore(7,4);
+    rl.InsertAfter(8,2);
+    cout << rl << endl;
+    rl.Remove(2);
+    TRingList<int> rl2(rl);
+    cout << rl2 << endl;
+    */
     return 0;
 }

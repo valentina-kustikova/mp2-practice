@@ -14,6 +14,30 @@ public:
 	TRingList(const TRingList<T>& rlist);
 	virtual ~TRingList();
 
+	TNode<T>* Search(const T& data);
+	void InsertFirst(const T& data);
+	void InsertEnd(const T& data);
+	void InsertAfter(const T& data, const T& beforedata);
+	void InsertBefore(const T& data, const T& nextdata);
+	void InsertBeforeCurr(const T& data);
+	void InsertAfterCurr(const T& data);
+	TNode<T>* GetCurrent();
+	TNode<T>* GetStop();
+	void Remove(const T& data);
+	void Next();
+	void Reset();
+	bool IsEmpty() const;
+	friend ostream& operator<<(ostream& os, const TRingList<T>& rl)
+	{
+		TNode<T>* cur = rl.pFirst;
+		while (cur != rl.pHead)
+		{
+			os << cur->data << endl;
+			cur = cur->pNext;
+		}
+
+		return os;
+	}
 };
 
 template <typename T>
@@ -21,13 +45,15 @@ TRingList<T>::TRingList() : TList<T>()
 {
 	pHead = new TNode<T>();
 	pHead->pNext = pHead;
+	pFirst = pHead;
+	pStop = pHead;
 }
 template <typename T>
 TRingList<T>::TRingList(TNode<T>* _pFirst) : TList<T>(_pFirst)
 {
-	TNode<T>* pHead = new TNode<T>();
+	pHead = new TNode<T>();
 	pHead->pNext = pFirst;
-	SetPStop(pHead);
+	pStop = pHead;
 	if (pFirst != nullptr)
 	{
 		TNode<T>* tmp = pFirst;
@@ -35,7 +61,7 @@ TRingList<T>::TRingList(TNode<T>* _pFirst) : TList<T>(_pFirst)
 			tmp = tmp->pNext;
 
 		tmp->pNext = pHead;
-		SetPLast(tmp);
+		pLast = tmp;
 	}
 	else
 	{
@@ -58,11 +84,10 @@ TRingList<T>::TRingList(const TRingList<T>& rlist)
 	if (rlist.pFirst == nullptr)
 		return;
 	pHead = new TNode<T>();
-	pFirst = new TNode<T>(rlist.pFirst->data, rlist.pFirst->pNext);
+	pFirst = new TNode<T>(rlist.pFirst->data);
 	pHead->pNext = pFirst;
-	TNode<T>* tmp = pFirst;
+	TNode<T>* tmp = rlist.pFirst->pNext;;
 	TNode<T>* tmp2 = pFirst;
-	tmp = tmp->pNext;
 
 	while (tmp->data != pHead->data)
 	{
@@ -70,16 +95,167 @@ TRingList<T>::TRingList(const TRingList<T>& rlist)
 		tmp2 = tmp2->pNext;
 		tmp = tmp->pNext;
 	}
-	SetPStop(pHead);
-	SetPLast(tmp2);
+	pStop = pHead;
+	pLast = tmp2;
 	pLast->pNext = pHead;
 	pCurr = pFirst;
 }
 template <typename T>
 TRingList<T>::~TRingList()
 {
-	if (pHead)
-		delete pHead;
+	if (pStop)
+		delete pStop;
+}
+template <typename T>
+TNode<T>* TRingList<T>::Search(const T& data)
+{
+	TNode<T>* tmp = pFirst;
+	while (tmp->data != pHead->data && tmp->data != data)
+		tmp = tmp->pNext;
+	if (tmp->data == pHead->data)
+		return nullptr;
+	return tmp;
+}
+template <typename T>
+void TRingList<T>::InsertFirst(const T& data)
+{
+	TNode<T>* pNode = new TNode<T>(data);
+	if (pFirst == pHead)
+	{
+		pLast = pNode;
+		pLast->pNext = pHead;
+	}
+	pNode->pNext = pFirst;
+	pFirst = pNode;
+	pCurr = pFirst;
+	pHead->pNext = pFirst;
+
+}
+template <typename T>
+void TRingList<T>::InsertEnd(const T& data)
+{
+	if (pFirst == pStop)
+	{
+		InsertFirst(data);
+		return;
+	}
+	TNode<T>* pNode = new TNode<T>(data, pHead);
+	pLast->pNext = pNode;
+	pLast = pNode;
+}
+template <typename T>
+void TRingList<T>::InsertAfter(const T& data, const T& beforedata)
+{
+	TNode<T>* pPrev = Search(beforedata);
+	if (pPrev != nullptr)
+	{
+		TNode<T>* pNode = new TNode<T>(data, pPrev->pNext);
+		pPrev->pNext = pNode;
+		if (pPrev == pLast)
+			pLast = pNode;
+	}
+	else
+	{
+		string msg = "Element not found!";
+		throw msg;
+	}
+}
+template <typename T>
+void TRingList<T>::InsertBefore(const T& data, const T& nextdata)
+{
+	TNode<T>* tmp = pFirst;
+	TNode<T>* pPrev = pHead;
+	while (tmp != pHead && tmp->data != nextdata)
+	{
+		pPrev = tmp;
+		tmp = tmp->pNext;
+	}
+	if (tmp != pHead)
+	{
+		TNode<T>* pNode = new TNode<T>(data, tmp);
+		pPrev->pNext = pNode;
+		if (tmp == pFirst)
+		{
+			pFirst = pNode;
+			pCurr = pFirst;
+		}
+	}
+	else
+	{
+		string msg = "Element not found!";
+		throw msg;
+	}
+}
+template <typename T>
+void TRingList<T>::InsertBeforeCurr(const T& data)
+{
+	InsertBefore(data, pCurr->data);
+}
+template <typename T>
+void TRingList<T>::InsertAfterCurr(const T& data)
+{
+	InsertAfter(data, pCurr->data);
+}
+template <typename T>
+TNode<T>* TRingList<T>::GetCurrent()
+{
+	return pCurr;
+}
+template <typename T>
+TNode<T>* TRingList<T>::GetStop()
+{
+	return pStop;
+}
+template <typename T>
+void TRingList<T>::Remove(const T& data)
+{
+	if (pFirst == pStop)
+	{
+		string msg = "Element not found!";
+		throw msg;
+	}
+
+	TNode<T>* pNode = pFirst;
+	TNode<T>* pPrev = pHead;
+
+	while (pNode != pHead && pNode->data != data)
+	{
+		pPrev = pNode;
+		pNode = pNode->pNext;
+	}
+	if (pNode != pHead)
+	{
+		pPrev->pNext = pNode->pNext;
+		if (pNode == pLast)
+			pLast = pPrev;
+		if (pNode == pFirst)
+		{
+			pFirst = pNode->pNext;
+			pCurr = pFirst;
+		}
+		delete pNode;
+	}
+	else
+	{
+		string msg = "Element not found!";
+		throw msg;
+	}
+}
+template <typename T>
+void TRingList<T>::Next()
+{
+	if (pCurr != pHead)
+		pCurr = pCurr->pNext;
+}
+template <typename T>
+void TRingList<T>::Reset()
+{
+	pCurr = pFirst;
+}
+template <typename T>
+bool TRingList<T>::IsEmpty() const
+{
+	return pFirst == pHead;
 }
 #endif
 

@@ -68,6 +68,23 @@ TEST(TList, insert_first_test)
     TNode<int>* Node = list.GetCurrent();
     EXPECT_EQ(10, Node->data);
 }
+TEST(TList, insert_first_test_before_test)
+{
+    TList<int> list;
+    list.InsertFirst(10);
+    list.InsertFirst(5);
+    TNode<int>* Node = list.GetCurrent();
+    EXPECT_EQ(5, Node->data);
+}
+TEST(TList, insert_first_test_before_test_pnext)
+{
+    TList<int> list;
+    list.InsertFirst(10);
+    list.InsertFirst(5);
+    list.Next();
+    TNode<int>* Node = list.GetCurrent();
+    EXPECT_EQ(10, Node->data);
+}
 //InsertEnd
 TEST(TList, insert_end_list)
 {
@@ -85,6 +102,15 @@ TEST(TList, insert_end_list_first_element)
     TNode<int>* Node = list.GetCurrent();
     EXPECT_EQ(10, Node->data);
 }
+TEST(TList, insert_end_list_first_element_pnext)
+{
+    TList<int> list;
+    list.InsertEnd(10);
+    list.InsertEnd(5);
+    list.Next();
+    TNode<int>* Node = list.GetCurrent();
+    EXPECT_EQ(5, Node->data);
+}
 //InsertBefore
 TEST(TList, insert_before_list)
 {
@@ -95,6 +121,17 @@ TEST(TList, insert_before_list)
     list.Next();
     TNode<int>* Node = list.GetCurrent();
     EXPECT_EQ(5, Node->data);
+}
+TEST(TList, insert_before_list_pnext)
+{
+    TList<int> list;
+    list.InsertFirst(42);
+    list.InsertEnd(10);
+    list.InsertBefore(5, 10);
+    list.Next();
+    list.Next();
+    TNode<int>* Node = list.GetCurrent();
+    EXPECT_EQ(10, Node->data);
 }
 TEST(TList, insert_before_list_error)
 {
@@ -112,6 +149,16 @@ TEST(TList, insert_before_list_first)
     TNode<int>* Node = list.GetCurrent();
     EXPECT_EQ(5, Node->data);
 }
+TEST(TList, insert_before_list_first_pnext)
+{
+    TList<int> list;
+    list.InsertFirst(42);
+    list.InsertEnd(10);
+    list.InsertBefore(5, 42);
+    list.Next();
+    TNode<int>* Node = list.GetCurrent();
+    EXPECT_EQ(42, Node->data);
+}
 //InsertAfter
 TEST(TList, insert_after_list)
 {
@@ -122,6 +169,17 @@ TEST(TList, insert_after_list)
     list.Next();
     TNode<int>* Node = list.GetCurrent();
     EXPECT_EQ(5, Node->data);
+}
+TEST(TList, insert_after_list_pnext)
+{
+    TList<int> list;
+    list.InsertFirst(42);
+    list.InsertEnd(10);
+    list.InsertAfter(5, 42);
+    list.Next();
+    list.Next();
+    TNode<int>* Node = list.GetCurrent();
+    EXPECT_EQ(10, Node->data);
 }
 TEST(TList, insert_after_list_error)
 {
@@ -140,6 +198,16 @@ TEST(TList, insert_before_current_list_first)
     TNode<int>* Node = list.GetCurrent();
     EXPECT_EQ(5, Node->data);
 }
+TEST(TList, insert_before_current_list_first_pnext)
+{
+    TList<int> list;
+    list.InsertFirst(42);
+    list.InsertEnd(10);
+    list.InsertBeforeCurr(5);
+    list.Next();
+    TNode<int>* Node = list.GetCurrent();
+    EXPECT_EQ(42, Node->data);
+}
 TEST(TList, insert_before_current_list)
 {
     TList<int> list;
@@ -152,15 +220,49 @@ TEST(TList, insert_before_current_list)
     TNode<int>* Node = list.GetCurrent();
     EXPECT_EQ(5, Node->data);
 }
-//InsertAfterCurrent
-TEST(TList, insert_after_current_list)
+TEST(TList, insert_before_current_list_pnext)
 {
     TList<int> list;
     list.InsertFirst(42);
     list.InsertEnd(10);
     list.Next();//current is 10
+    list.InsertBeforeCurr(5);
+    list.Reset();
+    list.Next();// 2 element
+    list.Next();
+    TNode<int>* Node = list.GetCurrent();
+    EXPECT_EQ(10, Node->data);
+}
+//InsertAfterCurrent
+TEST(TList, insert_after_current_first_list)
+{
+    TList<int> list;
+    list.InsertFirst(42);
+    list.InsertEnd(10);
     list.InsertAfterCurr(5);
-    list.Next();//3 element
+    list.Next();//2 element
+    TNode<int>* Node = list.GetCurrent();
+    EXPECT_EQ(5, Node->data);
+}
+TEST(TList, insert_after_current_first_list_pnext)
+{
+    TList<int> list;
+    list.InsertFirst(42);
+    list.InsertEnd(10);
+    list.InsertAfterCurr(5);
+    list.Next();//2 element
+    list.Next();
+    TNode<int>* Node = list.GetCurrent();
+    EXPECT_EQ(10, Node->data);
+}
+TEST(TList, insert_after_current_last_list)
+{
+    TList<int> list;
+    list.InsertFirst(42);
+    list.InsertEnd(10);
+    list.Next();
+    list.InsertAfterCurr(5);
+    list.Next();
     TNode<int>* Node = list.GetCurrent();
     EXPECT_EQ(5, Node->data);
 }
@@ -243,6 +345,15 @@ TEST(TList, get_current_data)
     TNode<int>* Node = list.GetCurrent();
     EXPECT_EQ(10, Node->data);
 }
+TEST(TList, get_current_data_pnext)
+{
+    TList<int> list;
+    list.InsertEnd(10);
+    list.InsertEnd(5);
+    list.Next();
+    TNode<int>* Node = list.GetCurrent();
+    EXPECT_EQ(5, Node->data);
+}
 //GetStop
 TEST(TList, get_stop_data)
 {
@@ -250,36 +361,6 @@ TEST(TList, get_stop_data)
     list.InsertEnd(10);
     TNode<int>* Node = list.GetStop();
     EXPECT_EQ(NULL, Node);
-}
-//Set_Stop
-TEST(TList, set_stop_data)
-{
-    TList<int> list;
-    list.InsertEnd(10);
-    list.InsertEnd(5);
-    list.InsertEnd(12);
-    TNode<int>* pN = list.Search(12);
-    list.SetPStop(pN);
-    TNode<int>* Node = list.GetStop();
-    EXPECT_EQ(12, Node->data);
-}
-//GetLast
-TEST(TList, get_last_data)
-{
-    TNode<int>* pNode = new TNode<int>(10);
-    TList<int>* list = new TList<int>(pNode, nullptr);
-    TNode<int>* tmp = list->GetLast();
-    EXPECT_EQ(tmp->data, pNode->data);
-}
-//Set_Last
-TEST(TList, set_last_data)
-{
-    TNode<int>* pNode = new TNode<int>(10);
-    TList<int>* list = new TList<int>(pNode, nullptr);
-    TNode<int>* pN = new TNode<int>(11);
-    list->SetPLast(pN);
-    TNode<int>* tmp = list->GetLast();
-    EXPECT_EQ(tmp->data, pN->data);
 }
 //Next
 TEST(TList, next_element)
@@ -315,7 +396,7 @@ TEST(TList, is_ended_test_true)
     EXPECT_TRUE(list.IsEnded());
 }
 //Reset
-TEST(TListResetTest, reset_test_false) {
+TEST(TList, reset_test_false) {
     TList<int> list;
     list.InsertEnd(1);
     list.InsertEnd(2);
@@ -325,7 +406,7 @@ TEST(TListResetTest, reset_test_false) {
 
     EXPECT_NE(1, current->data);
 }
-TEST(TListResetTest, reset_test_true) {
+TEST(TList, reset_test_true) {
     TList<int> list;
     list.InsertEnd(1);
     list.InsertEnd(2);
@@ -347,7 +428,8 @@ TEST(TList, get_size_test)
     EXPECT_EQ(3, list.GetSize());
 }
 //Clear
-TEST(TList, list_clear_test) {
+TEST(TList, list_clear_test)
+{
     TList<int> list;
     list.InsertEnd(1);
     list.InsertEnd(2);
