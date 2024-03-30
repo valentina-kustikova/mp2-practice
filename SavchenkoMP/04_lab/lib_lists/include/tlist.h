@@ -305,7 +305,7 @@ void TList<T>::Next(const int count) {
 	}
 
 	for (int i = 0; i < count; i++) {
-		if (!IsEnded() || pCurr != pStop) pCurr = pCurr->pNext;
+		if (!IsEnded() /*&&*/ || pCurr != pStop) pCurr = pCurr->pNext;
 		else Reset();
 	}
 }

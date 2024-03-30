@@ -15,13 +15,13 @@ TEST(TPolynom, DefaultConstructorTest) {
 
 // ParameterizedConstructorTest
 TEST(TPolynom, ParameterizedConstructorTest) {
-	string name = "- y*z + x*y*z + 2*x^2*y^2*z^2 + 3*x^3*y^3*z^3 - x*z";
+	string name = "- y*z + x*y*z + 2.2*x^2*y^2*z^2 + 3.35*x^3*y^3*z^3 - x*z";
 	EXPECT_NO_THROW(TPolynom p(name));
 }
 
 TEST(TPolynom, ParameterizedConstructorTest_StringPolynom) {
-	string name = "- y*z + x*y*z + 2*x^2*y^2*z^2 + 3*x^3*y^3*z^3 - x*z";
-	string exp_str = "-1.000000*y*z-1.000000*x*z+1.000000*x*y*z+2.000000*x^2*y^2*z^2+3.000000*x^3*y^3*z^3";
+	string name = "- y*z + x*y*z + 2.2*x^2*y^2*z^2 + 3.35*x^3*y^3*z^3 - x*z";
+	string exp_str = "-1.000000*y*z-1.000000*x*z+1.000000*x*y*z+2.200000*x^2*y^2*z^2+3.350000*x^3*y^3*z^3";
 	TPolynom p(name);
 
 	EXPECT_EQ(exp_str, p.get_string());
@@ -52,16 +52,16 @@ TEST(TPolynom, ParameterizedConstructorTest_StringPolynom3) {
 }
 
 TEST(TPolynom, ParameterizedConstructorTest_StringPolynom4) {
-	string name = "x^3 + y^3 + z^3 - 3*x*y*z";
-	string exp_str = "1.000000*z^3+1.000000*y^3-3.000000*x*y*z+1.000000*x^3";
+	string name = "x^3 + y^3 + z^3 - 3.35*x*y*z";
+	string exp_str = "1.000000*z^3+1.000000*y^3-3.350000*x*y*z+1.000000*x^3";
 	TPolynom p(name);
 
 	EXPECT_EQ(exp_str, p.get_string());
 }
 
 TEST(TPolynom, ParameterizedConstructorTest_StringPolynom5) {
-	string name = "x^2 + 2*x*y + y^2 - 3*z";
-	string exp_str = "-3.000000*z+1.000000*y^2+2.000000*x*y+1.000000*x^2";
+	string name = "x^2 + 2.2*x*y + y^2 - 3.35*z";
+	string exp_str = "-3.350000*z+1.000000*y^2+2.200000*x*y+1.000000*x^2";
 	TPolynom p(name);
 
 	EXPECT_EQ(exp_str, p.get_string());
@@ -101,26 +101,26 @@ TEST(TPolynom, ParameterizedConstructorTest_Conversion_Null) {
 
 // AssignmentOperatorTest
 TEST(TPolynom, AssignmentOperatorTest_NoThrow) {
-	TPolynom p1("2*x^2 + 3*x*y + 4*y^2");
+	TPolynom p1("2.2*x^2 + 3*x*y + 4*y^2");
 	TPolynom p2("3*x^3 + 2*x*y - 5*y^3");
 	
 	EXPECT_NO_THROW(p2 = p1);
 }
 
 TEST(TPolynom, AssignmentOperatorTest_Correctness) {
-	TPolynom p1("2*x^2 + 3*x*y + 4*y^2");
-	TPolynom p2("3*x^3 + 2*x*y - 5*y^3");
+	TPolynom p1("2.2*x^2 + 3*x*y + 4*y^2");
+	TPolynom p2("3*x^3 + 2.2*x*y - 5*y^3");
 	p2 = p1;
 
-	string exp = "4.000000*y^2+3.000000*x*y+2.000000*x^2";
+	string exp = "4.000000*y^2+3.000000*x*y+2.200000*x^2";
 	EXPECT_EQ(exp, p2.get_string());
 }
 
 // AdditionTest
 TEST(TPolynom, AdditionTest) {
-	TPolynom p1("2*x^2 + 3*x*y + 4*y^2");
-	TPolynom p2("3*x^3 + 2*x*y - 5*y^3");
-	TPolynom expP("3*x^3 + 2*x^2 + 5*x*y - 5*y^3 + 4*y^2");
+	TPolynom p1("2*x^2 + 3.3*x*y + 4*y^2");
+	TPolynom p2("3*x^3 + 2.2*x*y - 5*y^3");
+	TPolynom expP("3*x^3 + 2*x^2 + 5.5*x*y - 5*y^3 + 4*y^2");
 
 	TPolynom p3(p1 + p2);
 	EXPECT_EQ(expP.get_string(), p3.get_string());
@@ -131,6 +131,15 @@ TEST(TPolynom, SubtractionTest) {
 	TPolynom p1("2*x^2 + 3*x*y + 4*y^2");
 	TPolynom p2("3*x^3 + 2*x*y - 5*y^3");
 	TPolynom expP("-3*x^3 + 2*x^2 + x*y + 5*y^3 + 4*y^2");
+
+	TPolynom p3(p1 - p2);
+	EXPECT_EQ(expP.get_string(), p3.get_string());
+}
+
+TEST(TPolynom, SubtractionTest_Double) {
+	TPolynom p1("3.2*x*y - 1.1*x^2");
+	TPolynom p2("5.2*x*y - 2.2*x^2");
+	TPolynom expP("-2*x*y + 1.1*x^2");
 
 	TPolynom p3(p1 - p2);
 	EXPECT_EQ(expP.get_string(), p3.get_string());

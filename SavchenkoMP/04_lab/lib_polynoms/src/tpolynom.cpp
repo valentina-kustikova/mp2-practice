@@ -352,7 +352,7 @@ TPolynom TPolynom::operator-() {
 
 	res.monoms->Reset();
 	while (!res.monoms->IsEnded()) {
-		int coeff = (-1) * res.monoms->GetCurrent()->key.get_coeff();
+		double coeff = (-1) * res.monoms->GetCurrent()->key.get_coeff();
 		res.monoms->GetCurrent()->key.set_coeff(coeff);
 		res.monoms->Next();
 	}

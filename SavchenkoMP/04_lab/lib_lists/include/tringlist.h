@@ -15,6 +15,8 @@ public:
 	TRingList(TNode<T>* _pFirst);
 	TRingList(const TRingList<T>& rlist);
 	virtual ~TRingList();
+
+	void InsertFirst(const T& data);
 };
 
 template <typename T>
@@ -82,5 +84,17 @@ template <typename T>
 TRingList<T>::~TRingList() {
 	if (pStop) delete pStop;
 }
+
+template <typename T>
+void TRingList<T>::InsertFirst(const T& data) {
+	TNode<T>* tmp = new TNode<T>(data, pFirst);
+	if (pFirst == pStop) pLast = tmp;
+	pFirst = tmp;
+
+	pHead->pNext = pFirst;
+
+	if (pCurr == pStop) Reset();
+}
+
 
 #endif
