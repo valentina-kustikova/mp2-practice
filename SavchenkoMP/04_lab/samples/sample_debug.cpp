@@ -11,19 +11,7 @@ using namespace std;
 
 int main() {
 	try {
-		TRingList<int> rl;
-		cout << rl.GetCurrent()->key << endl; // 0
-		//cout << rl.IsEnded() << endl << endl;
-
-		rl.InsertLast(1);
-		rl.InsertLast(2);
-		rl.InsertLast(3);
-
-		cout << rl.GetCurrent()->key << endl; 
-		rl.Reset();
-		cout << rl.GetCurrent()->key << endl;
-
-		
+				
 
 		/*
 		TPolynom p1("3.3*x*y - 1.1*x^2");
@@ -33,7 +21,6 @@ int main() {
 		TPolynom p3(p1 - p2);
 		*/
 
-		/*
 		TPolynom p1("2*x^2 + 3*x*y + 4*y^2");
 		TPolynom p2("3*x^3 + 2*x*y - 5*y^3");
 
@@ -58,7 +45,6 @@ int main() {
 		cout << exp_dX << endl;
 		cout << exp_dY << endl;
 		cout << exp_dZ << endl << endl;
-		*/
 	}
 	catch (string exp) {
 		cout << exp << endl;

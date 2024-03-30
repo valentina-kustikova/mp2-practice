@@ -206,10 +206,10 @@ string TMonom::get_string() const {
 	if		(degX == 1) res += "*x";
 	else if (degX > 1)	res += "*x^" + to_string(degX);
 
-	if (degY == 1) res += "*y";
+	if		(degY == 1) res += "*y";
 	else if (degY > 1)	res += "*y^" + to_string(degY);
 
-	if (degZ == 1) res += "*z";
+	if		(degZ == 1) res += "*z";
 	else if (degZ > 1)	res += "*z^" + to_string(degZ);
 
 	return res;

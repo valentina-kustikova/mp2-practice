@@ -179,7 +179,6 @@ void TList<T>::InsertBefore(const T& data) {
 	if (pCurr == pStop) {
 		string exp = "Error: pCurrent is not installed, use Reset() and Next()";
 		throw exp;
-		//return;
 	}
 	
 	if (pCurr == pFirst) {
@@ -200,7 +199,6 @@ void TList<T>::InsertAfter(const T& data) {
 	if (pCurr == pStop) {
 		string exp = "Error: pCurrent is not installed, use Reset() and Next()";
 		throw exp;
-		//return;
 	}
 
 	if (IsEnded()) {
@@ -305,7 +303,7 @@ void TList<T>::Next(const int count) {
 	}
 
 	for (int i = 0; i < count; i++) {
-		if (!IsEnded() /*&&*/ || pCurr != pStop) pCurr = pCurr->pNext;
+		if (!IsEnded() || pCurr != pStop) pCurr = pCurr->pNext;
 		else Reset();
 	}
 }
