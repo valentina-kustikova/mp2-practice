@@ -26,23 +26,23 @@ public:
 	TPolynom();
 	TPolynom(const string& _name);
 	TPolynom(const TRingList<TMonom>& ringlist);
-	TPolynom(TPolynom& polynom);
+	TPolynom(const TPolynom& polynom);
 	~TPolynom();
 
 	const TPolynom& operator=(TPolynom& polynom);
 
-	TPolynom operator+(TPolynom& polynom);
-	TPolynom operator-();
-	TPolynom operator-(TPolynom& polynom);
-	TPolynom operator*(TPolynom& polynom);
-	double operator()(double x, double y, double z);
+	const TPolynom operator+(const TPolynom& polynom) const;
+	const TPolynom operator-() const;
+	const TPolynom operator-(const TPolynom& polynom) const;
+	const TPolynom operator*(const TPolynom& polynom) const;
+	double operator()(double x, double y, double z) const;
 
-	TPolynom dif_x();
-	TPolynom dif_y();
-	TPolynom dif_z();
+	TPolynom dif_x() const;
+	TPolynom dif_y() const;
+	TPolynom dif_z() const;
 
-	string get_string();
-	friend ostream& operator<<(ostream& out, TPolynom& monom);
+	string get_string() const;
+	friend ostream& operator<<(ostream& out, const TPolynom& polynom);
 
 private:
 	bool IsOperator(const string& isopr) const;

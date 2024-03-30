@@ -1,6 +1,6 @@
 #include "tpolynom.h"
 
-map<string, int> TPolynom::priority = { 
+map<string, int> TPolynom::priority = {
 	{"^", 4},
 	{"*", 3},
 	{"/", 3},
@@ -184,7 +184,7 @@ void TPolynom::Parse(string& name) {
 
 // ======================================================= //
 
-void TPolynom::ToMonoms(vector<string>& _lexems) { 
+void TPolynom::ToMonoms(vector<string>& _lexems) {
 	double coeff = 1;
 	int degX = 0, degY = 0, degZ = 0;
 	int next_const_sign = 1;
@@ -209,7 +209,7 @@ void TPolynom::ToMonoms(vector<string>& _lexems) {
 			degZ = 0;
 		}
 		else {
-			
+
 			if (lexems[i] == "x") {
 				if (i < lexems.size() - 1) {
 					if (!IsVariable(lexems[i + 1]) && !IsOperator(lexems[i + 1])) {
@@ -272,35 +272,96 @@ void TPolynom::ToMonoms(vector<string>& _lexems) {
 
 void TPolynom::AddMonom(const TMonom& m) {
 	if (m.get_coeff() == 0) return;
-	
-	monoms->Reset();
-	while (!monoms->IsEnded()) {
-		TMonom* curr = &monoms->GetCurrent()->key;
-		
-		if (m == *curr) {
-			double coeff = m.get_coeff() + (*curr).get_coeff();
+
+	TNode<TMonom>* tmp = monoms->first();
+	while (tmp != monoms->stop()) {
+
+		if (m == tmp->key) {
+			double coeff = m.get_coeff() + tmp->key.get_coeff();
 			if (coeff == 0.0f) {
-				monoms->Remove(*curr);
+				monoms->Remove(tmp->key);
 				return;
 			}
 			else {
-				(*curr).set_coeff(coeff);
+				tmp->key.set_coeff(coeff);
 				return;
 			}
 		}
 
-		else if (m < *curr) {
-			monoms->InsertBefore(m);
+		else if (m < tmp->key) {
+			monoms->InsertBefore(m, tmp->key);
 			return;
 		}
 
 		else {
-			monoms->Next();
+			tmp = tmp->pNext;
 		}
 	}
-	
+
 	monoms->InsertLast(m);
 }
+//void TPolynom::AddMonom(const TMonom& m) {
+//	if (m.get_coeff() == 0) return;
+//
+//	TNode<TMonom>* tmp = monoms->first();
+//	while (tmp != monoms->stop()) {
+//		TMonom* curr = &(tmp->key);
+//
+//		if (m == *curr) {
+//			double coeff = m.get_coeff() + (*curr).get_coeff();
+//			if (coeff == 0.0f) {
+//				monoms->Remove(*curr);
+//				return;
+//			}
+//			else {
+//				(*curr).set_coeff(coeff);
+//				return;
+//			}
+//		}
+//
+//		else if (m < *curr) {
+//			monoms->InsertBefore(m);
+//			return;
+//		}
+//
+//		else {
+//			tmp = tmp->pNext;
+//		}
+//	}
+//
+//	monoms->InsertLast(m);
+//}
+//void TPolynom::AddMonom(const TMonom& m) {
+//	if (m.get_coeff() == 0) return;
+//
+//	monoms->Reset();
+//	while (!monoms->IsEnded()) {
+//		TMonom* curr = &monoms->GetCurrent()->key;
+//
+//		if (m == *curr) {
+//			double coeff = m.get_coeff() + (*curr).get_coeff();
+//			if (coeff == 0.0f) {
+//				monoms->Remove(*curr);
+//				return;
+//			}
+//			else {
+//				(*curr).set_coeff(coeff);
+//				return;
+//			}
+//		}
+//
+//		else if (m < *curr) {
+//			monoms->InsertBefore(m);
+//			return;
+//		}
+//
+//		else {
+//			monoms->Next();
+//		}
+//	}
+//
+//	monoms->InsertLast(m);
+//}
 
 
 TPolynom::TPolynom() {
@@ -316,7 +377,7 @@ TPolynom::TPolynom(const TRingList<TMonom>& ringlist) {
 	monoms = new TRingList<TMonom>(ringlist);
 
 }
-TPolynom::TPolynom(TPolynom& polynom) {
+TPolynom::TPolynom(const TPolynom& polynom) {
 	monoms = new TRingList<TMonom>(*polynom.monoms);
 }
 TPolynom::~TPolynom() {
@@ -335,126 +396,239 @@ const TPolynom& TPolynom::operator=(TPolynom& polynom) {
 	return (*this);
 }
 
-TPolynom TPolynom::operator+(TPolynom& polynom) {
+const TPolynom TPolynom::operator+(const TPolynom& polynom) const {
 	TPolynom res(*this);
 
 	polynom.monoms->Reset();
-	while (!polynom.monoms->IsEnded()) {
-		TMonom curr_monom = polynom.monoms->GetCurrent()->key;
+	TNode<TMonom>* tmp_p = polynom.monoms->first();
+	while (tmp_p != polynom.monoms->stop()) {
+		TMonom curr_monom = tmp_p->key;
 		res.AddMonom(curr_monom);
-		polynom.monoms->Next();
+		tmp_p = tmp_p->pNext;
 	}
 
 	return res;
 }
-TPolynom TPolynom::operator-() {
+//TPolynom TPolynom::operator+(TPolynom& polynom) {
+//	TPolynom res(*this);
+//
+//	polynom.monoms->Reset();
+//	while (!polynom.monoms->IsEnded()) {
+//		TMonom curr_monom = polynom.monoms->GetCurrent()->key;
+//		res.AddMonom(curr_monom);
+//		polynom.monoms->Next();
+//	}
+//
+//	return res;
+//}
+const TPolynom TPolynom::operator-() const {
 	TPolynom res(*this);
 
-	res.monoms->Reset();
-	while (!res.monoms->IsEnded()) {
-		double coeff = (-1) * res.monoms->GetCurrent()->key.get_coeff();
-		res.monoms->GetCurrent()->key.set_coeff(coeff);
-		res.monoms->Next();
+	TNode<TMonom>* tmp = res.monoms->first();
+	while (tmp != res.monoms->stop()) {
+		double coeff = (-1) * tmp->key.get_coeff();
+		tmp->key.set_coeff(coeff);
+		tmp = tmp->pNext;
 	}
 
 	return res;
 }
-TPolynom TPolynom::operator-(TPolynom& polynom) {
+//TPolynom TPolynom::operator-() {
+//	TPolynom res(*this);
+//
+//	res.monoms->Reset();
+//	while (!res.monoms->IsEnded()) {
+//		double coeff = (-1) * res.monoms->GetCurrent()->key.get_coeff();
+//		res.monoms->GetCurrent()->key.set_coeff(coeff);
+//		res.monoms->Next();
+//	}
+//
+//	return res;
+//}
+const TPolynom TPolynom::operator-(const TPolynom& polynom) const {
 	TPolynom res(-polynom + (*this));
 
 	return res;
 }
-TPolynom TPolynom::operator*(TPolynom& polynom) {
+const TPolynom TPolynom::operator*(const TPolynom& polynom) const {
 	TPolynom res;
-	
-	monoms->Reset();
-	while (!monoms->IsEnded()) {
-		TMonom curr1 = monoms->GetCurrent()->key;
-		
-		polynom.monoms->Reset();
-		while (!polynom.monoms->IsEnded()) {
-			TMonom curr2 = polynom.monoms->GetCurrent()->key;
+
+	TNode<TMonom>* tmp = monoms->first();
+	while (tmp != monoms->stop()) {
+		TMonom curr1 = tmp->key;
+
+		TNode<TMonom>* tmp_p = polynom.monoms->first();
+		while (tmp_p != polynom.monoms->stop()) {
+			TMonom curr2 = tmp_p->key;
 			res.AddMonom(curr1 * curr2);
-			polynom.monoms->Next();
+			tmp_p = tmp_p->pNext;
 		}
-		
-		monoms->Next();
+
+		tmp = tmp->pNext;
 	}
 
 	return res;
 }
-double TPolynom::operator()(double x, double y, double z) {
+//TPolynom TPolynom::operator*(TPolynom& polynom) {
+//	TPolynom res;
+//
+//	monoms->Reset();
+//	while (!monoms->IsEnded()) {
+//		TMonom curr1 = monoms->GetCurrent()->key;
+//
+//		polynom.monoms->Reset();
+//		while (!polynom.monoms->IsEnded()) {
+//			TMonom curr2 = polynom.monoms->GetCurrent()->key;
+//			res.AddMonom(curr1 * curr2);
+//			polynom.monoms->Next();
+//		}
+//
+//		monoms->Next();
+//	}
+//
+//	return res;
+//}
+double TPolynom::operator()(double x, double y, double z) const {
 	double res = 0;
 
-	monoms->Reset();
-	while (!monoms->IsEnded()) {
-		res += monoms->GetCurrent()->key.value(x, y, z);
-		monoms->Next();
+	TNode<TMonom>* tmp = monoms->first();
+	while (tmp != monoms->stop()) {
+		res += tmp->key.value(x, y, z);
+		tmp = tmp->pNext;
 	}
 
 	return res;
 }
+//double TPolynom::operator()(double x, double y, double z) {
+//	double res = 0;
+//
+//	monoms->Reset();
+//	while (!monoms->IsEnded()) {
+//		res += monoms->GetCurrent()->key.value(x, y, z);
+//		monoms->Next();
+//	}
+//
+//	return res;
+//}
 
-TPolynom TPolynom::dif_x() {
-	TPolynom res;
-	
-	monoms->Reset();
-	while (!monoms->IsEnded()) {
-		TMonom monom = monoms->GetCurrent()->key.dif_x();
-		res.AddMonom(monom);
-		monoms->Next();
-	}
-
-	return res;
-}
-TPolynom TPolynom::dif_y() {
-	TPolynom res;
-
-	monoms->Reset();
-	while (!monoms->IsEnded()) {
-		TMonom monom = monoms->GetCurrent()->key.dif_y();
-		res.AddMonom(monom);
-		monoms->Next();
-	}
-
-	return res;
-}
-TPolynom TPolynom::dif_z() {
+TPolynom TPolynom::dif_x() const {
 	TPolynom res;
 
-	monoms->Reset();
-	while (!monoms->IsEnded()) {
-		TMonom monom = monoms->GetCurrent()->key.dif_z();
+	TNode<TMonom>* tmp = monoms->first();
+	while (tmp != monoms->stop()) {
+		TMonom monom = tmp->key.dif_x();
 		res.AddMonom(monom);
-		monoms->Next();
+		tmp = tmp->pNext;
 	}
 
 	return res;
 }
+TPolynom TPolynom::dif_y() const {
+	TPolynom res;
+
+	TNode<TMonom>* tmp = monoms->first();
+	while (tmp != monoms->stop()) {
+		TMonom monom = tmp->key.dif_y();
+		res.AddMonom(monom);
+		tmp = tmp->pNext;
+	}
+
+	return res;
+}
+TPolynom TPolynom::dif_z() const {
+	TPolynom res;
+
+	TNode<TMonom>* tmp = monoms->first();
+	while (tmp != monoms->stop()) {
+		TMonom monom = tmp->key.dif_z();
+		res.AddMonom(monom);
+		tmp = tmp->pNext;
+	}
+
+	return res;
+}
+//TPolynom TPolynom::dif_x() {
+//	TPolynom res;
+//
+//	monoms->Reset();
+//	while (!monoms->IsEnded()) {
+//		TMonom monom = monoms->GetCurrent()->key.dif_x();
+//		res.AddMonom(monom);
+//		monoms->Next();
+//	}
+//
+//	return res;
+//}
+//TPolynom TPolynom::dif_y() {
+//	TPolynom res;
+//
+//	monoms->Reset();
+//	while (!monoms->IsEnded()) {
+//		TMonom monom = monoms->GetCurrent()->key.dif_y();
+//		res.AddMonom(monom);
+//		monoms->Next();
+//	}
+//
+//	return res;
+//}
+//TPolynom TPolynom::dif_z() {
+//	TPolynom res;
+//
+//	monoms->Reset();
+//	while (!monoms->IsEnded()) {
+//		TMonom monom = monoms->GetCurrent()->key.dif_z();
+//		res.AddMonom(monom);
+//		monoms->Next();
+//	}
+//
+//	return res;
+//}
 
 
-string TPolynom::get_string() {
+string TPolynom::get_string() const {
 	if (monoms->GetSize() == 0) return "0.000000";
-	
+
 	string res = "";
-	monoms->Reset();
-	
-	
-	if (monoms->IsEnded()) {
+	TNode<TMonom>* tmp = monoms->first();
+
+
+	if (tmp == monoms->stop()) {
 		return res;
-	} 
+	}
 	else {
-		res += monoms->GetCurrent()->key.get_string();
-		monoms->Next();
-		while (!monoms->IsEnded()) {
-			string monom = monoms->GetCurrent()->key.get_string();
+		res += tmp->key.get_string();
+		tmp = tmp->pNext;
+		while (tmp != monoms->stop()) {
+			string monom = tmp->key.get_string();
 			if (monom[0] == '-') res += monom;
 			else res += "+" + monom;
-			monoms->Next();
+			tmp = tmp->pNext;
 		}
-	}	
+	}
 	return res;
 }
-ostream& operator<<(ostream& out, TPolynom& monom) {
+//string TPolynom::get_string() {
+//	if (monoms->GetSize() == 0) return "0.000000";
+//
+//	string res = "";
+//	monoms->Reset();
+//
+//
+//	if (monoms->IsEnded()) {
+//		return res;
+//	}
+//	else {
+//		res += monoms->GetCurrent()->key.get_string();
+//		monoms->Next();
+//		while (!monoms->IsEnded()) {
+//			string monom = monoms->GetCurrent()->key.get_string();
+//			if (monom[0] == '-') res += monom;
+//			else res += "+" + monom;
+//			monoms->Next();
+//		}
+//	}
+//	return res;
+//}
+ostream& operator<<(ostream& out, const TPolynom& monom) {
 	return out << monom.get_string();
 }
