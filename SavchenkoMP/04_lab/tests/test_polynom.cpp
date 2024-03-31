@@ -209,7 +209,3 @@ TEST(TPolynom, DifferentiationZTest) {
 	TPolynom res(p.dif_z());
 	EXPECT_EQ(expP.get_string(), res.get_string());
 }
-
-
-// TODO:
-// Constructors, op=, op+, op-, op*, op(), dif

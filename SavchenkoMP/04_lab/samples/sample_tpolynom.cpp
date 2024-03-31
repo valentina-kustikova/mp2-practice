@@ -21,11 +21,8 @@ int main() {
 
 		*/
 		
-		// samples
-		// 2*x^3*y^5*z^1-3*x^4*y^1*z^0+5*x^1*y^0*z^0
-		// 7*x^1*y^3*z^5+3*x^4*y^1*z^0
-		cout << "2*x^3*y^5*z^1-3*x^4*y^1*z^0+5*x^1*y^0*z^0" << endl;
-		cout << "7*x^1*y^3*z^5+3*x^4*y^1*z^0\n" << endl;
+		cout << "2*x^3*y^5*z - 3*x^4*y*z + 5*x" << endl;
+		cout << "7*x*y^3*z^5 + 3*x^4*y\n" << endl;
 
 		string name1;
 		string name2;
@@ -71,19 +68,10 @@ int main() {
 		cout << "p2(x, y, z) = " << p2(x, y, z) << endl;
 
 
-		/*string name = "2*x^2*y^2*z^2+1*x^1*y^1*z^1+3*x^3*y^3*z^3";
-		string exp_str = "1.000000*x^1*y^1*z^1+2.000000*x^2*y^2*z^2+3.000000*x^3*y^3*z^3";
-		
-		TPolynom p(name);
-
-		cout << p.get_string() << endl;*/
-
-
 		system("pause");
 	}
 	catch (string exp) {
 		cout << exp << endl;
-		system("pause");
 	}
 	return 0;
 }
