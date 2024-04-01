@@ -18,7 +18,7 @@ map<string, double> TPolynom::symbolDict = {
 TMonom::TMonom()
 {
 	coef = 0.0;
-	degree = 0;
+	degree = -1;
 };
 TMonom::TMonom(double c, int d)
 {
@@ -173,8 +173,7 @@ TPolynom TPolynom::operator-(const TPolynom& p)
 		else if (m1 > m2)
 		{
 			double t = m2.coef;
-			//double t2 = -t;
-			m2.coef = -2;
+			m2.coef = -t;
 			list->InsertEnd(m2);
 			p.monoms->Next();
 		}
@@ -229,7 +228,6 @@ TPolynom TPolynom::operator*(const TPolynom& p)
 		}
 		monoms->Next();
 	}
-	//TRingList<TMonom>* res = new TRingList<TMonom>(*list);
 	TPolynom result;
 	result.monoms = list;
 	result.name = result.ToString();
@@ -245,7 +243,6 @@ const TPolynom& TPolynom::operator=(const TPolynom& p)
 		list->InsertEnd(p.monoms->GetCurrent()->data);
 		p.monoms->Next();
 	}
-	//TRingList<TMonom>* res = new TRingList<TMonom>(*list);
 	delete monoms;
 	this->monoms = list;
 	return *this;
@@ -269,7 +266,6 @@ TPolynom TPolynom::difx() const
 		}
 		monoms->Next();
 	}
-	//TRingList<TMonom>* res = new TRingList<TMonom>(*list);
 	TPolynom result;
 	result.monoms = list;
 	result.name = result.ToString();
@@ -297,7 +293,6 @@ TPolynom TPolynom::dify() const
 		}
 		monoms->Next();
 	}
-	//TRingList<TMonom>* res = new TRingList<TMonom>(*list);
 	TPolynom result;
 	result.monoms = list;
 	result.name = result.ToString();
@@ -325,7 +320,7 @@ TPolynom TPolynom::difz() const
 		}
 		monoms->Next();
 	}
-	//TRingList<TMonom>* res = new TRingList<TMonom>(*list);
+
 	TPolynom result;
 	result.monoms = list;
 	result.name = result.ToString();
@@ -342,7 +337,6 @@ double TPolynom::operator()(double _x, double _y, double _z)
 	};
 	TStack<string> st(5);
 	st = ArithmeticExpression::Postfix_Form(pol_name);
-	//cout << st << endl;
 	double result = ArithmeticExpression::Calculate(st, variableDict);
 	return result;
 }
@@ -605,23 +599,11 @@ void TPolynom::Parse_Polynom(const string& s)
 			else
 				flag = 1;
 		}
-		//TRingList<TMonom>* polynomList = new TRingList<TMonom>(*monomList);
+		
 		this->monoms = monomList;
 	}
 }
-/*
-void TPolynom::Print_Polynom()
-{
-	cout << name << endl;
-	cout << "Monoms:" << endl;
-	monoms->Reset();
-	while (monoms->GetCurrent() != monoms->GetStop())
-	{
-		cout << monoms->GetCurrent()->data << endl;
-		monoms->Next();
-	}
-}
-*/
+
 string TPolynom::ToString()
 {
 	string st = "";

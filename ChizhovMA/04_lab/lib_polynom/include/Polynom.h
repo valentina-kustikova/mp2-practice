@@ -40,8 +40,6 @@ public:
 		os << *p.monoms << endl;
 		return os;
 	}
-	//void Print_Polynom();
-	//void Parse_Polynom(const string& s); 
 
 protected:
 	string FilteredExpression(const string& s);
