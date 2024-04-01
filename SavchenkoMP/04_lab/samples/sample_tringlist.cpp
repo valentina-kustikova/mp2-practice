@@ -71,12 +71,14 @@ void InsertInterface(TRingList<T>& rl) {
 		case 5:
 			cout << "Insert: ";
 			cin >> ins;
+			if (rl.IsEnded()) rl.Reset();
 			rl.InsertBefore(ins);
 			break;
 		
 		case 6:
 			cout << "Insert: ";
 			cin >> ins;
+			if (rl.IsEnded()) rl.Reset();
 			rl.InsertAfter(ins);
 			break;
 		

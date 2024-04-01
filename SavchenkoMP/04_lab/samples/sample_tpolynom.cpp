@@ -20,7 +20,7 @@ int main() {
 		35.000000*x^2*y^3*z^5+15.000000*x^5*y+14.000000*x^4*y^8*z^6+6.000000*x^7*y^6*z-21.000000*x^5*y^4*z^5-9.000000*x^8*y^2
 
 		*/
-		
+		cout << "Samples:" << endl;
 		cout << "2*x^3*y^5*z - 3*x^4*y*z + 5*x" << endl;
 		cout << "7*x*y^3*z^5 + 3*x^4*y\n" << endl;
 
@@ -66,9 +66,6 @@ int main() {
 
 		cout << "p1(x, y, z) = " << p1(x, y, z) << endl;
 		cout << "p2(x, y, z) = " << p2(x, y, z) << endl;
-
-
-		system("pause");
 	}
 	catch (string exp) {
 		cout << exp << endl;
