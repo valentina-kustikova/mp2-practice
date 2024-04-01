@@ -29,7 +29,7 @@ public:
 	TPolynom(const TPolynom& polynom);
 	~TPolynom();
 
-	const TPolynom& operator=(TPolynom& polynom);
+	const TPolynom& operator=(const TPolynom& polynom);
 
 	const TPolynom operator+(const TPolynom& polynom) const;
 	const TPolynom operator-() const;

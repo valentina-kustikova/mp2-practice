@@ -325,7 +325,7 @@ TPolynom::~TPolynom() {
 
 
 
-const TPolynom& TPolynom::operator=(TPolynom& polynom) {
+const TPolynom& TPolynom::operator=(const TPolynom& polynom) {
 	if (this == &polynom) return (*this);
 
 	if (monoms) delete monoms;
