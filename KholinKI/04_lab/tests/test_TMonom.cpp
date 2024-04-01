@@ -37,65 +37,6 @@ TEST(monom, different_memory) {
 	ASSERT_TRUE(&m1 != &m2);
 }
 
-TEST(monom, operation_more_when_different_degrees) {
-	TMonom m1(2.92, 62);
-	TMonom m2(6.95, 104);
-
-	bool res1 = 104 > 62 && 6.95 > 2.92;
-
-	ASSERT_TRUE(m2 > m1 && res1 == true);
-}
-
-TEST(monom, operation_more_when_equal_degrees_1) {
-	TMonom m1(2.92, 104);
-	TMonom m2(6.95, 104);
-
-	bool res1 = m2 > m1;
-	if (m2.coeff > m1.coeff && m1.wrap_degree == m2.wrap_degree){
-		res1 = true;//доп.условие
-	}
-	else {
-		res1 = false;
-	}
-
-	bool res2 = 104 == 104 && 6.95 > 2.92;
-
-	ASSERT_TRUE(res1 == res2);
-}
-
-TEST(monom, operation_more_when_equal_degrees_2) {
-	TMonom m1(9.92, 104);
-	TMonom m2(6.95, 104);
-
-	bool res1 = m2 > m1;
-	if (m2.coeff > m1.coeff && m1.wrap_degree == m2.wrap_degree) {
-		res1 = true;//доп.условие
-	}
-	else {
-		res1 = false;
-	}
-
-	bool res2 = 104 == 104 && 6.95 > 9.92;
-
-	ASSERT_TRUE(res1 == res2);
-}
-
-TEST(monom, operation_more_when_equal_monoms) {
-	TMonom m1(6.95, 104);
-	TMonom m2(6.95, 104);
-
-	bool res2 = 104 == 104 && 6.95 > 6.95;
-	bool res1 = m2 > m1;
-	if (m1.coeff == m2.coeff && m1.wrap_degree == m2.wrap_degree) {
-		res1 = false;
-	}
-	else {
-		res1 = true;
-	}
-
-	ASSERT_TRUE(res1 == res2);
-}
-
 TEST(monom, operation_less_with_different_degrees) {
 	TMonom m1(6.95, 114);
 	TMonom m2(6.95, 104);
@@ -224,71 +165,6 @@ TEST(Monom, operation_no_more_when_equal_degrees_3) {
 	}
 
 	ASSERT_TRUE(res1 == res2);
-}
-
-TEST(Monom, operation_no_less_with_different_degrees) {
-	TMonom m1(2.95, 114);
-	TMonom m2(12.95, 104);
-
-	//>=
-	bool res1 = 114 > 104 && 12.95 != 2.95;
-	bool res2 = m1 >= m2;
-
-
-	ASSERT_TRUE(res1 == res2);
-}
-
-TEST(Monom, operation_no_less_with_equal_degrees_1) {
-	TMonom m1(12.95, 104);
-	TMonom m2(7.95, 104);
-
-	//>=
-	bool res1 = 114 > 104 && 12.95 >= 7.95;
-	bool res2 = m1 >= m2;
-	if (m1.coeff >= m2.coeff && m1.wrap_degree == m2.wrap_degree) {
-		res2 = true; 
-	}
-	else {
-		res2 = false;
-	}
-
-
-	ASSERT_TRUE(res1 == res2);
-}
-
-TEST(Monom, operation_no_less_with_equal_degrees_2) {
-	TMonom m1(12.95, 104);
-	TMonom m2(12.95, 104);
-
-	//>=
-	bool res1 = 104 >= 104 && 12.95 >= 12.95;
-	bool res2 = m1 >= m2;
-	if (m1.coeff >= m2.coeff && m1.wrap_degree == m2.wrap_degree) {
-		res2 = true;
-	}
-	else {
-		res2 = false;
-	}
-
-	ASSERT_TRUE(res1 == res2);
-}
-
-TEST(Monom, operation_no_less_when_equal_degrees_3) {
-	TMonom m1(7.95, 104);
-	TMonom m2(12.95, 104);
-
-	//>=
-	bool res1 = 104 == 104 && 7.95 <= 12.95;
-	bool res2 = m1 >= m2;
-	if (m1.coeff <= m2.coeff && m1.wrap_degree == m2.wrap_degree)res2 = false;
-
-	ASSERT_TRUE(res1 != res2);
-}
-
-TEST(monom, assign_work) {
-	TMonom m1(7.95, 124);
-	TMonom m2(12.95, 104);
-	ASSERT_NO_THROW(m1 = m2);
 }
 
 TEST(monom, assign_check_values) {

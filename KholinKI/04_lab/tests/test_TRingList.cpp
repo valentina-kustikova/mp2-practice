@@ -286,6 +286,7 @@ TEST(TRingList, insert_after_last_node_and_control_pLast_and_pStop_and_pFirst) {
 	rList.insert_after(20, 5);
 
 	Node<int>* test = rList.search(20);
+	rList.reset();
 
 	ASSERT_TRUE(test->data == 20 && test == rList.pLast
 		&& rList.pStop->pNext == rList.pFirst && rList.pCurr == rList.pFirst);
@@ -306,6 +307,7 @@ TEST(TRingList, a_lot_inserts_after_control_pLast_and_pStop_and_pFirst) {
 	rList.insert_after(23, 20);
 
 	Node<int>* test = rList.search(23);
+	rList.reset();
 
 	ASSERT_TRUE(test->data == 23 && test == rList.pLast
 		&& rList.pStop->pNext == rList.pFirst && rList.pCurr == rList.pFirst);
@@ -336,6 +338,7 @@ TEST(TRingList, remove_first_node_and_control_all_pointers) {
 
 	Node<int>* test = rList.search(10);
 	Node<int>* deleted_node = rList.search(6);
+	rList.reset();
 
 	ASSERT_TRUE(test->data == 10 && test == rList.pFirst
 				&& rList.pStop->pNext == rList.pFirst && rList.pCurr == rList.pFirst
@@ -357,6 +360,7 @@ TEST(TRingList, remove_last_node_and_control_all_pointers) {
 
 	Node<int>* test = rList.search(5);
 	Node<int>* deleted_node = rList.search(4);
+	rList.reset();
 
 	ASSERT_TRUE(test->data == 5 && test == rList.pLast
 		&& rList.pStop->pNext == rList.pFirst && rList.pCurr == rList.pFirst
@@ -378,17 +382,14 @@ TEST(TRingList, a_lot_remove_last_node_and_control_all_pointers) {
 	rList.remove(10);
 
 	Node<int>* test = rList.search(5);
-	Node<int>* test2 = rList.search(6);
-	Node<int>* deleted_node1 = rList.search(4);
-	Node<int>* deleted_node2 = rList.search(10);
+	Node<int>* deleted_node = rList.search(4);
+	rList.reset();
 
 	ASSERT_TRUE(test->data == 5 && test == rList.pLast
 		&& rList.pStop->pNext == rList.pFirst && rList.pCurr == rList.pFirst
 		&& rList.pLast->pNext == rList.pStop);
-	ASSERT_TRUE(test2->data == 6 && test2 == rList.pFirst
-		&& rList.pStop->pNext == rList.pFirst && rList.pCurr == rList.pFirst
-		&& rList.pLast->pNext == rList.pStop);
-	ASSERT_TRUE(deleted_node1 == nullptr && deleted_node2 == nullptr);
+
+	EXPECT_EQ(deleted_node,nullptr);
 }
 
 TEST(TRingList, count_nodes) {
@@ -453,7 +454,7 @@ TEST(TRingList, destructor_work) {
 	ASSERT_NO_THROW(delete rList);
 }
 
-TEST(TRingList, inserts_and_search_after_clear) {
+TEST(TRingList, inserts_and_search_after_clear_variant_1) {
 	Node<int>* pFirst = new Node<int>(10);
 	TRingList<int> rList(pFirst);
 
@@ -473,12 +474,36 @@ TEST(TRingList, inserts_and_search_after_clear) {
 	rList.insert_after(99,9);
 
 	Node<int>* test = rList.search(12);
-	Node<int>* test2 = rList.search(90);
-
+	rList.reset();
 	
 	ASSERT_TRUE(test->data == 12 && test == rList.pFirst
 		&& rList.pStop->pNext == rList.pFirst && rList.pCurr == rList.pFirst
 		&& rList.pLast->pNext == rList.pStop);
+}
+
+TEST(TRingList, inserts_and_search_after_clear_variant_2) {
+	Node<int>* pFirst = new Node<int>(10);
+	TRingList<int> rList(pFirst);
+
+	rList.insert_last(2);
+	rList.insert_last(5);
+	rList.insert_before(6, 10);
+	rList.insert_after(4, 5);
+
+	rList.clear();
+
+	rList.insert_first(4);
+	rList.insert_last(7);
+	rList.insert_first(9);
+	rList.insert_first(12);
+	rList.insert_last(90);
+	rList.insert_before(40, 90);
+	rList.insert_after(99, 9);
+
+	Node<int>* test2 = rList.search(90);
+	rList.reset();
+
+
 	ASSERT_TRUE(test2->data == 90 && test2 == rList.pLast
 		&& rList.pStop->pNext == rList.pFirst && rList.pCurr == rList.pFirst
 		&& rList.pLast->pNext == rList.pStop);
@@ -590,7 +615,7 @@ TEST(TRingList, navigation_part_3_use_next_method_while_not_reached_end) {
 	}
 
 	
-	ASSERT_TRUE(rList->Is_End());
+	ASSERT_TRUE(rList->Is_Ended());
 }
 
 
@@ -610,7 +635,7 @@ TEST(TRingList, navigation_part_4_reset_current_pointer) {
 		tmp = rList->pCurr;
 	}
 
-	if (rList->Is_End()) {
+	if (rList->Is_Ended()) {
 		rList->reset();
 		tmp = rList->pCurr;
 	}

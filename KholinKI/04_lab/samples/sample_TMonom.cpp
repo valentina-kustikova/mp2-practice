@@ -39,25 +39,6 @@ int main(){
 	cout << "M3" << endl;
 	cout << M3;
 
-	cout << "M1 > M2?" << endl;
-	if (M1 > M2) {
-		cout << "Yes" << endl;
-
-	}
-	else{
-		cout << "No" << endl;
-		cout << endl;
-		cout << "M1 == M2?" << endl;
-		if (M1 == M2) {
-			cout << "Yes, it`s equal monomials" << endl;
-		}
-		else {
-			cout << "No" << endl;
-		}
-		cout << endl;
-	}
-	cout << endl;
-
 	cout << "M1 < M2?" << endl;
 	if (M1 < M2) {
 		cout << "Yes" << endl;
@@ -83,20 +64,6 @@ int main(){
 		}
 		else{
 			cout << "Yes, M2 < M3" << endl;
-		}
-	}
-	else {
-		cout << "No" << endl;
-	}
-	cout << endl;
-
-	cout << "M2 >= M3?" << endl;
-	if (M2 >= M3) {
-		if (M2 == M3) {
-			cout << "Yes,it`s equal monomials" << endl;
-		}
-		else {
-			cout << "Yes, M2 > M3" << endl;
 		}
 	}
 	else {

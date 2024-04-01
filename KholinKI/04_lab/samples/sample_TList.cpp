@@ -99,7 +99,7 @@ int main() {
 			break;
 			}
 		case 2:{
-			if (!my_list.Is_End()) {
+			if (!my_list.Is_Ended()) {
 				my_list.next();
 				tmp = my_list.pCurr;
 				}

@@ -18,11 +18,11 @@ public:
 
 	bool operator<(const TMonom& monom)const;
 	bool operator<=(const TMonom& monom)const;
-	bool operator>(const TMonom& monom)const;
-	bool operator>=(const TMonom& monom)const;
 	bool operator!=(const TMonom& monom)const;
 	bool operator==(const TMonom& monom)const;
 	TMonom operator*(const TMonom& monom)const;
+	TMonom operator+(const TMonom& monom)const;
+	TMonom operator-(const TMonom& monom)const;
 };
 
 

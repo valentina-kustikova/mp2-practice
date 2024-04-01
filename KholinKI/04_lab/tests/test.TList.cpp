@@ -36,6 +36,7 @@ TEST(List, insert_last_control_pLast_and_pStop) {
 	List->insert_last(7);
 
 	Node<int>* test = List->search(7);
+	List->reset();
 
 	ASSERT_TRUE(test->data == 7 && test == List->pLast
 		&& test->pNext == List->pStop);
@@ -280,7 +281,7 @@ TEST(List, insert_after_last_node_and_control_pLast_and_pStop_and_pFirst) {
 	List.insert_after(20, 5);
 
 	Node<int>* test = List.search(20);
-
+	List.reset();
 
 
 	ASSERT_TRUE(test->data == 20 && test == List.pLast && List.pCurr == List.pFirst);
@@ -331,6 +332,7 @@ TEST(List, remove_first_node_and_control_all_pointers) {
 
 	Node<int>* test = List.search(10);
 	Node<int>* deleted_node = List.search(6);
+	List.reset();
 
 	ASSERT_TRUE(test->data == 10 && test == List.pFirst
 				&& List.pCurr == List.pFirst && List.pLast->pNext == List.pStop);
@@ -351,7 +353,7 @@ TEST(List, remove_last_node_and_control_all_pointers) {
 
 	Node<int>* test = List.search(5);
 	Node<int>* deleted_node = List.search(4);
-
+	List.reset();
 
 	ASSERT_TRUE(test->data == 5 && test == List.pLast
 		&& List.pCurr == List.pFirst && List.pLast->pNext == List.pStop);
@@ -372,18 +374,15 @@ TEST(List, a_lot_remove_last_node_and_control_all_pointers) {
 	List.remove(10);
 
 	Node<int>* test = List.search(5);
-	Node<int>* test2 = List.search(6);
-	Node<int>* deleted_node1 = List.search(4);
-	Node<int>* deleted_node2 = List.search(10);
+	Node<int>* deleted_node = List.search(4);
+	List.reset();
 
 	ASSERT_TRUE(test->data == 5 && test == List.pLast
 		&& List.pCurr == List.pFirst && List.pLast->pNext == List.pStop);
-	ASSERT_TRUE(test2->data == 6 && test2 == List.pFirst
-		&& List.pCurr == List.pFirst && List.pLast->pNext == List.pStop);
-	ASSERT_TRUE(deleted_node1 == nullptr && deleted_node2 == nullptr);
+	EXPECT_EQ(deleted_node,nullptr);
 }
 
-TEST(TList, inserts_and_search_after_clear) {
+TEST(TList, inserts_and_search_after_clear_variant_1) {
 	Node<int>* pFirst = new Node<int>(10);
 	TList<int> List(pFirst);
 
@@ -403,11 +402,34 @@ TEST(TList, inserts_and_search_after_clear) {
 	List.insert_after(99, 9);
 
 	Node<int>* test = List.search(12);
-	Node<int>* test2 = List.search(90);
-
+	List.reset();
 
 	ASSERT_TRUE(test->data == 12 && test == List.pFirst
 		&& List.pCurr == List.pFirst && List.pLast->pNext == List.pStop);
+}
+
+TEST(TList, inserts_and_search_after_clear_variant_2) {
+	Node<int>* pFirst = new Node<int>(10);
+	TList<int> List(pFirst);
+
+	List.insert_last(2);
+	List.insert_last(5);
+	List.insert_before(6, 10);
+	List.insert_after(4, 5);
+
+	List.clear();
+
+	List.insert_first(4);
+	List.insert_last(7);
+	List.insert_first(9);
+	List.insert_first(12);
+	List.insert_last(90);
+	List.insert_before(40, 90);
+	List.insert_after(99, 9);
+
+	Node<int>* test2 = List.search(90);
+	List.reset();
+
 	ASSERT_TRUE(test2->data == 90 && test2 == List.pLast
 		&& List.pCurr == List.pFirst && List.pLast->pNext == List.pStop);
 }
@@ -580,7 +602,7 @@ TEST(TList, navigation_part_3_use_next_method_while_not_reached_end) {
 	}
 
 
-	ASSERT_TRUE(List->Is_End());
+	ASSERT_TRUE(List->Is_Ended());
 }
 
 
@@ -600,7 +622,7 @@ TEST(TList, navigation_part_4_reset_current_pointer) {
 		tmp = List->pCurr;
 	}
 
-	if (List->Is_End()) {
+	if (List->Is_Ended()) {
 		List->reset();
 		tmp = List->pCurr;
 	}

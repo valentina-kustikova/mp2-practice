@@ -12,7 +12,9 @@ TMonom::TMonom(const TMonom& mon) {
 	wrap_degree = mon.wrap_degree;
 }
 
-bool TMonom::operator<(const TMonom& monom)const {//для подобных мономов
+//Как правильно определить операции сравнения?(при поиске, при сравнении мономов)
+
+bool TMonom::operator<(const TMonom& monom)const {
 	if (wrap_degree < monom.wrap_degree) {
 		return true;
 	}
@@ -23,7 +25,7 @@ bool TMonom::operator<(const TMonom& monom)const {//для подобных мономов
 
 
 
-bool TMonom::operator<=(const TMonom& monom)const {//для подобных мономов
+bool TMonom::operator<=(const TMonom& monom)const {
 	if (wrap_degree <= monom.wrap_degree) {
 		return true;
 	}
@@ -32,25 +34,8 @@ bool TMonom::operator<=(const TMonom& monom)const {//для подобных мономов
 	}
 }
 
-bool TMonom::operator>(const TMonom& monom)const {
-	if (wrap_degree > monom.wrap_degree) {
-		return true;
-	}
-	else {
-		return false;
-	}
-}
 
-bool TMonom::operator>=(const TMonom& monom)const {
-	if (wrap_degree >= monom.wrap_degree) {
-		return true;
-	}
-	else {
-		return false;
-	}
-}
-
-bool TMonom::operator!=(const TMonom& monom)const {//для подобных мономов
+bool TMonom::operator!=(const TMonom& monom)const {
 	if (wrap_degree != monom.wrap_degree) {
 		return true;
 	}
@@ -87,6 +72,17 @@ TMonom TMonom::operator*(const TMonom& monom)const {
 		throw "Degree limit";
 	}
 	return TMonom(coeff * monom.coeff, wrap_degree + monom.wrap_degree);
+}
+
+TMonom TMonom::operator+(const TMonom& monom)const {
+	TMonom res(*this);
+	res.coeff = coeff + monom.coeff;
+	return res;
+}
+TMonom TMonom::operator-(const TMonom& monom)const {
+	TMonom res(*this);
+	res.coeff = coeff - monom.coeff;
+	return res;
 }
 
 istream& operator>>(istream& istr, TMonom& monom) {

@@ -5,8 +5,9 @@
 template<typename T> class TList {
 public:
 	Node<T>* pFirst;
-	Node<T>* pLast;
 	Node<T>* pCurr;
+	Node<T>* pPrev;
+	Node<T>* pLast;
 	Node<T>* pStop;
 public:
 	TList();
@@ -20,14 +21,16 @@ public:
 	virtual void insert_last(const T& data_);
 	virtual void insert_before(const T& data_, const T& next_data_);
 	virtual void insert_after(const T& data_, const T& next_data_);
+	virtual void insertion_sort(const T& data);
 	virtual void remove(const T& data_);
-	virtual int GetSize()const;
+	virtual int  GetSize()const;
 	virtual bool IsEmpty()const;
 	virtual bool IsFull()const;
 	virtual void clear();
 	virtual void reset();
 	virtual void next();
-	virtual bool Is_End() const;
+	virtual bool Is_Ended() const;
+	Node<T>* getCurrent() const{ return pCurr; }
 	
 	friend ostream& operator<<(ostream& ostr, const TList<T>& l) {
 		Node<T>* tmp = l.pCurr;
@@ -50,11 +53,12 @@ public:
 
 
 template<typename T>
-TList<T>::TList() {
+TList<T>::TList() { // pPrev
 	pFirst = nullptr;
 	pLast = nullptr;
 	pCurr = nullptr;
 	pStop = nullptr;
+	pPrev = nullptr;
 }
 
 template<typename T>
@@ -75,11 +79,12 @@ TList<T>::TList(Node<T>* pFirst_) {
 	pLast = pCurr;
 	pStop = nullptr;
 	pCurr = pFirst;
+	pPrev = nullptr;
 }
 
 template<typename T>
-TList<T>::TList(const TList<T>& list) {
-	if (list.pFirst == list.pStop) {
+TList<T>::TList(const TList<T>& list) { 
+	if (list.pFirst == nullptr) {
 		return;
 	}
 	pFirst = new Node<T>(list.pFirst->data);
@@ -93,6 +98,7 @@ TList<T>::TList(const TList<T>& list) {
 	pStop = nullptr;
 	pLast = pCurr;
 	pCurr = pFirst;
+	pPrev = nullptr;
 }
 
 template<typename T>
@@ -103,14 +109,19 @@ TList<T>::~TList() {
 
 template<typename T>
 Node<T>* TList<T>::search(const T& data_) {
-	Node<T>* tmp = pFirst;
-	while (tmp->pNext != pStop && tmp->data != data_) {
-		tmp = tmp->pNext;
+	pCurr = pFirst;
+	pPrev = nullptr;
+
+	while (pCurr != pStop && pCurr->data != data_) {
+		pPrev = pCurr;
+		pCurr = pCurr->pNext;
 	}
-	if (tmp->pNext == pStop && tmp->data != data_) {
+
+	if (pCurr == pStop) {
 		return nullptr;
 	}
-	return tmp;
+
+	return pCurr;
 }
 
 
@@ -134,15 +145,13 @@ void TList<T>::insert_last(const T& data_) {
 	if (pFirst == nullptr) {
 		insert_first(data_);
 	}
-	Node<T>* tmp = pFirst;
-	while (tmp->pNext != pStop) {
-		tmp = tmp->pNext;
-	}
+	
+	Node<T>* tmp = pLast;
+
 	Node<T>* new_node = new Node<T>(data_);
 	new_node->pNext = pStop;
 	tmp->pNext = new_node;
-	
-	pLast = tmp->pNext;
+	pLast = new_node;
 }
 
 template<typename T>
@@ -150,15 +159,12 @@ void TList<T>::insert_before(const T& data_, const T& next_data_) {
 	if (pFirst == nullptr) {
 		insert_first(data_);
 	}
-	Node<T>* tmp = pFirst;
-	Node<T>* pPrev = nullptr;
-	while (tmp->data != next_data_ && tmp != pStop) {
-		pPrev = tmp;
-		tmp = tmp->pNext;
-	}
-	if (tmp->data != next_data_ && tmp == pStop) {
+
+	Node<T>* tmp = search(next_data_);
+	if (tmp == nullptr) {
 		throw "Data not found!";
 	}
+
 	Node<T>* node = new Node<T>(data_);
 	if (tmp == pFirst) {
 		insert_first(data_);
@@ -167,6 +173,7 @@ void TList<T>::insert_before(const T& data_, const T& next_data_) {
 		node->pNext = tmp;
 		pPrev->pNext = node;
 	}
+	reset();
 }
 
 template<typename T>
@@ -174,13 +181,11 @@ void TList<T>::insert_after(const T& data_, const T& next_data_) {
 	if (pFirst == nullptr) {
 		insert_first(data_);
 	}
-	Node<T>* tmp = pFirst;
-	while (tmp->data != next_data_ && tmp != pStop) {
-		tmp = tmp->pNext;
-	}
-	if (tmp->data != next_data_ && tmp == pStop) {
+	Node<T>* tmp = search(next_data_);
+	if (tmp == nullptr) {
 		throw "Data not found!";
 	}
+
 	if (tmp->pNext == pStop) {
 		insert_last(data_);
 	}
@@ -189,6 +194,24 @@ void TList<T>::insert_after(const T& data_, const T& next_data_) {
 		node->pNext = tmp->pNext;
 		tmp->pNext = node;
 	}
+	reset();
+}
+
+template<typename T>
+void TList<T>::insertion_sort(const T& data) {
+	while (!Is_Ended()) {
+		T comp_data = getCurrent()->data;
+		if (data <= comp_data) {
+			insert_before(data, comp_data);
+			reset();
+			break;
+		}
+		next();
+	}
+	if (Is_Ended()) {
+		insert_last(data);
+		reset();
+	}
 }
 
 template<typename T>
@@ -196,32 +219,25 @@ void TList<T>::remove(const T& data_) {
 	if (pFirst == nullptr) {
 		return;
 	}
+	Node<T>* tmp = search(data_);
+	if (tmp == nullptr) {
+		throw "Data not found!";
+	}
+	reset();
+	
+	if (tmp == pFirst) {
+		pFirst = pFirst->pNext;
+		pCurr = pFirst;
+		tmp->pNext = nullptr;
+		delete tmp;
+	}
 	else {
-		Node<T>* tmp = pFirst;
-		Node<T>* pPrev = nullptr;
-
-		while (tmp->data != data_ && tmp != pStop) {
-			pPrev = tmp;
-			tmp = tmp->pNext;
+		if (tmp->pNext == pStop) {
+			pLast = pPrev;
 		}
-		if (tmp->data != data_ && tmp == pStop) {
-			throw "Data not found!";
-		}
-		if (pPrev == nullptr) {
-			pFirst = pFirst->pNext;
-			pCurr = pFirst;
-			tmp->pNext = nullptr;
-			delete tmp;
-		}
-		else {
-			pPrev->pNext = tmp->pNext;
-			if (tmp->pNext == pStop) {
-				pLast = pPrev;
-			}
-			tmp->pNext = nullptr;
-			delete tmp;
-			
-		}
+		pPrev->pNext = tmp->pNext;
+		tmp->pNext = nullptr;
+		delete tmp;
 	}
 }
 
@@ -239,6 +255,7 @@ void TList<T>::clear() {
 	}
 	pFirst = nullptr;
 	pCurr = nullptr;
+	pPrev = nullptr;
 	pLast = nullptr;
 }
 
@@ -281,7 +298,7 @@ void TList<T>::next() {
 }
 
 template<typename T>
-bool TList<T>::Is_End()const {
+bool TList<T>::Is_Ended()const {
 	return pCurr == pStop ? true : false;
 }
 
