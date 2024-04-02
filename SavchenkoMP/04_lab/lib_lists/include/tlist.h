@@ -25,20 +25,20 @@ public:
 	virtual void InsertBefore(const T& data);
 	virtual void InsertAfter(const T& data);
 	virtual void Remove(const T& data);
-	virtual void Clear();
+	void Clear();
 
-	virtual size_t GetSize() const;
-	virtual bool IsFull() const;
-	virtual bool IsEmpty() const;
+	size_t GetSize() const;
+	bool IsFull() const;
+	bool IsEmpty() const;
 
-	virtual void Reset();
-	virtual TNode<T>* GetCurrent() const;
-	virtual void Next(const int count = 1);
-	virtual bool IsEnded() const;
+	void Reset();
+	TNode<T>* GetCurrent() const;
+	void Next(const int count = 1);
+	bool IsEnded() const;
 
-	virtual TNode<T>* first() const;
-	virtual TNode<T>* last() const;
-	virtual TNode<T>* stop() const;
+	TNode<T>* first() const;
+	TNode<T>* last() const;
+	TNode<T>* stop() const;
 };
 
 template <typename T>
