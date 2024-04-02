@@ -12,16 +12,6 @@ public:
   THeadRingList(const THeadRingList<TData>& ringL);
   ~THeadRingList();
 
-  ///
-  TNode<TData>* GetHead() const {
-    return pHead;
-  }
-  void SetHead(const TNode<TData>* node) {
-    pHead->data = node->data;
-    pHead->pNext = node->pNext;
-  }
-  ///
-
   const THeadRingList<TData>& operator=(const THeadRingList<TData>& l);
 
   void RemoveFirst();
@@ -84,6 +74,8 @@ const THeadRingList<TData>& THeadRingList<TData>::operator=(const THeadRingList<
 		pStop=nullptr;
     return *(this);
 	}
+	
+	Clear();
 
 	pFirst = new TNode<TData>(l.pFirst->data);
 	TNode<TData>* tmp = pFirst; 

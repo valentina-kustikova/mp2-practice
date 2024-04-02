@@ -6,20 +6,15 @@
 #include "tlist.h"
 #include "theadringlist.h"
 
-// move TMonom and TPolynom to different files
-// I should make these files into VS Code
-
-// Add operator unaryminus!
 class TPolynom {
 protected:
   std::string name;
+  THeadRingList<TMonom> monoms;
 
   void tokinize_polynom(const std::string& name);
   void InsertToSort(const TMonom& monom);
 
 public:
-  THeadRingList<TMonom> monoms;
-
   TPolynom() : monoms() {}
   TPolynom(const std::string& name);
   TPolynom(const THeadRingList<TMonom>& l);
@@ -31,8 +26,6 @@ public:
   TPolynom operator+(const TPolynom& p);
   TPolynom operator-(const TPolynom& p);
   TPolynom operator*(const TPolynom& p);
-
-  const std::string& GetName() const {return name;}
 
   double operator()(double x, double y, double z) const;
   TPolynom dx() const;

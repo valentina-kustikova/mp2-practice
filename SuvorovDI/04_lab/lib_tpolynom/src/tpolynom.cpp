@@ -30,7 +30,7 @@ void TPolynom::InsertToSort(const TMonom& monom) {
 }
 
 TPolynom operator-(const TPolynom& p) {
-  std::string nm = p.GetName();
+  std::string nm = p.name;
   if (nm[0] != '-') nm = '+' + nm;
   for (char& c : nm) {
     if (c == '-') c = '+';
@@ -47,7 +47,7 @@ TPolynom operator-(const TPolynom& p) {
 }
 
 TPolynom TPolynom::operator+(const TPolynom& p) {
-  std::string nm = p.GetName();
+  std::string nm = p.name;
   if (nm[0] != '-' && nm[0] != '+') nm = '+' + nm;
   TPolynom res(name + nm, p);
   
@@ -92,17 +92,17 @@ TPolynom TPolynom::operator*(const TPolynom& p) { // const
 
 double TPolynom::operator()(double x, double y, double z) const {
   double result = 0;
+  TPolynom tmp_this(*this);
 
-  TNode<TMonom>* curr = monoms.GetFirst();
-  while (curr != monoms.GetStop()) {
+  while (tmp_this.monoms.IsEnded()) {
     double mn;
-    mn = curr->data.coeff_;
-    mn *= pow(x, curr->data.degree_ / 100);
-    mn *= pow(y, curr->data.degree_ / 10 % 10);
-    mn *= pow(z, curr->data.degree_ % 10);
+    mn = tmp_this.monoms.GetCurr()->data.coeff_;
+    mn *= pow(x, tmp_this.monoms.GetCurr()->data.degree_ / 100);
+    mn *= pow(y, tmp_this.monoms.GetCurr()->data.degree_ / 10 % 10);
+    mn *= pow(z, tmp_this.monoms.GetCurr()->data.degree_ % 10);
 
     result += mn;
-    curr = curr->pNext;
+    tmp_this.monoms.Next();
   }
   return result;
 }

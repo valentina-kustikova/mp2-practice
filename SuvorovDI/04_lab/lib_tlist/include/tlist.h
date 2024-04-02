@@ -23,7 +23,7 @@ struct TNode {
 // It will be redifined in THeadRingList
 // SO Remove - Not!
 
-// Delete Getters and Setters!!!
+// Delete Getters and Setters!!! DONE
 template <typename TData>
 class TList {
 protected:
@@ -37,7 +37,7 @@ public:
   TList();
   TList (const TList<TData>&);
   TList (TNode<TData>*);
-  ~TList();
+  virtual ~TList();
   TNode<TData>* Search (const TData&);
   virtual void InsertFirst (const TData&);
   virtual void InsertLast (const TData&);
@@ -49,18 +49,6 @@ public:
   void Reset();
   void Next();
   TNode<TData>* GetCurr() const;
-  ///
-  TNode<TData>* GetFirst() const;
-  TNode<TData>* GetLast() const;
-  TNode<TData>* GetStop() const;
-  ///
-
-  ///
-  void SetCurr(const TNode<TData>* node);
-  void SetFirst(const TNode<TData>* node);
-  void SetLast(const TNode<TData>* node);
-  void SetStop(const TNode<TData>* node);
-  ///
   bool IsEnded() const;
   bool IsEmpty() const;
   bool IsFull() const;
@@ -239,7 +227,7 @@ void TList<TData>::RemoveFirst() {
 }
 
 template <typename TData>
-void TList<TData>::Remove(const TData& v)
+void TList<TData>::Remove(const TData& where)
 {
 	TNode<TData>* pWhere = Search(where);
   if (pWhere == nullptr) {
@@ -289,41 +277,41 @@ TNode<TData>* TList<TData>::GetCurr() const {
   return pCurr;
 }
 
-template <typename TData>
-TNode<TData>* TList<TData>::GetFirst() const {
-  return pFirst;
-}
+// template <typename TData>
+// TNode<TData>* TList<TData>::GetFirst() const {
+  // return pFirst;
+// }
 
-template <typename TData>
-TNode<TData>* TList<TData>::GetLast() const {
-  return pLast;
-}
+// template <typename TData>
+// TNode<TData>* TList<TData>::GetLast() const {
+  // return pLast;
+// }
 
-template <typename TData>
-TNode<TData>* TList<TData>::GetStop() const {
-  return pStop;
-}
+// template <typename TData>
+// TNode<TData>* TList<TData>::GetStop() const {
+  // return pStop;
+// }
 
-template <typename TData>
-void TList<TData>::SetCurr(const TNode<TData>* node) {
-  pCurr->data = node->data;
-  pCurr->pNext = node->pNext;
-}
+// template <typename TData>
+// void TList<TData>::SetCurr(const TNode<TData>* node) {
+  // pCurr->data = node->data;
+  // pCurr->pNext = node->pNext;
+// }
 
-template <typename TData>
-void TList<TData>::SetFirst(const TNode<TData>* node) {
-  pFirst->data = node->data;
-  pFirst->pNext = node->pNext;
-}
+// template <typename TData>
+// void TList<TData>::SetFirst(const TNode<TData>* node) {
+  // pFirst->data = node->data;
+  // pFirst->pNext = node->pNext;
+// }
 
-template <typename TData>
-void TList<TData>::SetLast(const TNode<TData>* node) {
-  pLast->data = node->data;
-  pLast->pNext = node->pNext;
-}
+// template <typename TData>
+// void TList<TData>::SetLast(const TNode<TData>* node) {
+  // pLast->data = node->data;
+  // pLast->pNext = node->pNext;
+// }
 
-template <typename TData>
-void TList<TData>::SetStop(const TNode<TData>* node) {
-  pStop->data = node->data;
-  pStop->pNext = node->pNext;
-}
+// template <typename TData>
+// void TList<TData>::SetStop(const TNode<TData>* node) {
+  // pStop->data = node->data;
+  // pStop->pNext = node->pNext;
+// }
