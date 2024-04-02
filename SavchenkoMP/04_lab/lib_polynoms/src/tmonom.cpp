@@ -71,13 +71,13 @@ void TMonom::set_degree(int degX, int degY, int degZ) {
 }
 
 
-double TMonom::value(double x, double y, double z) {
+double TMonom::operator()(double x, double y, double z) const {
 	double resX = 1, resY = 1, resZ = 1;
 
 	int degZ = get_degZ();
 	int degY = get_degY();
 	int degX = get_degX();
-	
+
 	for (int i = 0; i < degZ; i++) {
 		resZ *= z;
 	}

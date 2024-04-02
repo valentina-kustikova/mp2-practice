@@ -26,7 +26,7 @@ public:
 	void set_degree(int _degree);
 	void set_degree(int degX, int degY, int degZ);
 
-	double value(double x, double y, double z);
+	double operator()(double x, double y, double z) const;
 
 	
 	virtual bool operator<(const TMonom& monom) const;

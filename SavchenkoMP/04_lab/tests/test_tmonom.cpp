@@ -214,7 +214,7 @@ TEST(TMonom, SetDegreeTest_Convolution_NotValidDegree_More999) {
 TEST(TMonom, ValueCalculationTest) {
 	TMonom m(2, 234);
 
-	EXPECT_EQ(720000, m.value(3, 4, 5));
+	EXPECT_EQ(720000, m(3, 4, 5)); 
 }
 
 

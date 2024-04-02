@@ -389,7 +389,7 @@ double TPolynom::operator()(double x, double y, double z) const {
 
 	TNode<TMonom>* tmp = monoms->first();
 	while (tmp != monoms->stop()) {
-		res += tmp->key.value(x, y, z);
+		res += tmp->key(x, y, z);
 		tmp = tmp->pNext;
 	}
 
