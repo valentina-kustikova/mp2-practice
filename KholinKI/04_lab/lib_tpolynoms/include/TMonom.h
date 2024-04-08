@@ -4,10 +4,9 @@
 #include <string>
 
 using namespace std;
-class TMonom {//все операции для степеней
+class TMonom {
 	friend ostream& operator<<(ostream& ostr, const TMonom& monom);
 	friend istream& operator>>(istream& istr, TMonom& monom);
-
 public:
 	double coeff;
 	int wrap_degree;
@@ -15,14 +14,13 @@ public:
 	TMonom(double c_val = 0, int wd_val = -1);
 	TMonom(const TMonom& mon);
 
-
 	bool operator<(const TMonom& monom)const;
 	bool operator<=(const TMonom& monom)const;
 	bool operator!=(const TMonom& monom)const;
 	bool operator==(const TMonom& monom)const;
 	TMonom operator*(const TMonom& monom)const;
 	TMonom operator+(const TMonom& monom)const;
-	TMonom operator-(const TMonom& monom)const;
+	TMonom operator-()const;
 };
 
 

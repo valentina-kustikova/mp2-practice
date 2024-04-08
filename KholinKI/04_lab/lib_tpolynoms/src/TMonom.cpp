@@ -12,7 +12,6 @@ TMonom::TMonom(const TMonom& mon) {
 	wrap_degree = mon.wrap_degree;
 }
 
-//Как правильно определить операции сравнения?(при поиске, при сравнении мономов)
 
 bool TMonom::operator<(const TMonom& monom)const {
 	if (wrap_degree < monom.wrap_degree) {
@@ -75,13 +74,17 @@ TMonom TMonom::operator*(const TMonom& monom)const {
 }
 
 TMonom TMonom::operator+(const TMonom& monom)const {
+	if (this->wrap_degree != monom.wrap_degree) {
+		throw "Monomialss have different degrees!";
+	}
 	TMonom res(*this);
 	res.coeff = coeff + monom.coeff;
 	return res;
 }
-TMonom TMonom::operator-(const TMonom& monom)const {
+
+TMonom TMonom::operator-()const {
 	TMonom res(*this);
-	res.coeff = coeff - monom.coeff;
+	res.coeff = -coeff;
 	return res;
 }
 

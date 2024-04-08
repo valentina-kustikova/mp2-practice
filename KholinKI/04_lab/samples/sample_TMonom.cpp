@@ -98,10 +98,19 @@ int main(){
 	cout << endl;
 
 	cout << "Operation * M1 and M3" << endl;
-	TMonom res = M1 * M3;
-	cout << res;
+	TMonom res1 = M1 * M3;
+	cout << res1;
 	cout << endl;
 
+	cout << "Operation + M1 and M3" << endl;
+	TMonom res2 = M1 + M3;
+	cout << res2;
+	cout << endl;
+
+	cout << "Operation - M1 and M3" << endl;
+	TMonom res3 = M1 + (-M3);
+	cout << res3;
+	cout << endl;
 
 	return 0;
 }

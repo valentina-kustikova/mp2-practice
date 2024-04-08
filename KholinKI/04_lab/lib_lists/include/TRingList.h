@@ -111,10 +111,10 @@ void TRingList<T>::remove(const T& data_) {
 		if (tmp->pNext == pStop) {
 			pLast = pPrev;
 		}
+		pCurr = pCurr->pNext;
 		pPrev->pNext = tmp->pNext;
 		tmp->pNext = nullptr;
 		delete tmp;
-		reset();
 	}
 }
 

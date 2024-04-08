@@ -115,7 +115,7 @@ TEST(polynom, operator_minus_with_polynoms_zero_degree_orderly_1_сheck_equality)
 	ASSERT_TRUE(test == R);
 }
 
-TEST(polynom, operator_minus_with_polynoms_not_equal_degree_check_equality) {//учесть, когда получатся нулевые мономы
+TEST(polynom, operator_minus_with_polynoms_not_equal_degree_check_equality) {
 	TPolynom P("3*x^5*y^2*z^5-5*x^4*y^3*z^3+7*x^7*y^5*z");
 	TPolynom Q("4*x^6*y^2*z^6-6*x^2*y*z^8");
 	TPolynom R = Q - P;

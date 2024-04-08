@@ -3,9 +3,10 @@
 #include "Node.h"
 
 template<typename T> class TList {
+protected:
+	Node<T>* pCurr;
 public:
 	Node<T>* pFirst;
-	Node<T>* pCurr;
 	Node<T>* pPrev;
 	Node<T>* pLast;
 	Node<T>* pStop;
@@ -15,21 +16,20 @@ public:
 	TList(const TList<T>& list);
 	virtual ~TList();
 
-	virtual Node<T>* search(const T& data_);
-
+	Node<T>* search(const T& data_);
  	virtual void insert_first(const T& data_);
-	virtual void insert_last(const T& data_);
-	virtual void insert_before(const T& data_, const T& next_data_);
-	virtual void insert_after(const T& data_, const T& next_data_);
-	virtual void insertion_sort(const T& data);
+	void insert_last(const T& data_);
+	void insert_before(const T& data_, const T& next_data_);
+	void insert_after(const T& data_, const T& next_data_);
+	void insertion_sort(const T& data);
 	virtual void remove(const T& data_);
-	virtual int  GetSize()const;
-	virtual bool IsEmpty()const;
-	virtual bool IsFull()const;
-	virtual void clear();
-	virtual void reset();
-	virtual void next();
-	virtual bool Is_Ended() const;
+	int  GetSize()const;
+	bool IsEmpty()const;
+	bool IsFull()const;
+	void clear();
+	void reset();
+	void next();
+	bool Is_Ended() const;
 	Node<T>* getCurrent() const{ return pCurr; }
 	
 	friend ostream& operator<<(ostream& ostr, const TList<T>& l) {
@@ -112,6 +112,10 @@ Node<T>* TList<T>::search(const T& data_) {
 	pCurr = pFirst;
 	pPrev = nullptr;
 
+	if (pFirst == nullptr) {
+		return nullptr;
+	}
+
 	while (pCurr != pStop && pCurr->data != data_) {
 		pPrev = pCurr;
 		pCurr = pCurr->pNext;
@@ -144,6 +148,7 @@ template<typename T>
 void TList<T>::insert_last(const T& data_) {
 	if (pFirst == nullptr) {
 		insert_first(data_);
+		return;
 	}
 	
 	Node<T>* tmp = pLast;
@@ -158,6 +163,7 @@ template<typename T>
 void TList<T>::insert_before(const T& data_, const T& next_data_) {
 	if (pFirst == nullptr) {
 		insert_first(data_);
+		return;
 	}
 
 	Node<T>* tmp = search(next_data_);
@@ -180,6 +186,7 @@ template<typename T>
 void TList<T>::insert_after(const T& data_, const T& next_data_) {
 	if (pFirst == nullptr) {
 		insert_first(data_);
+		return;
 	}
 	Node<T>* tmp = search(next_data_);
 	if (tmp == nullptr) {
@@ -223,7 +230,6 @@ void TList<T>::remove(const T& data_) {
 	if (tmp == nullptr) {
 		throw "Data not found!";
 	}
-	reset();
 	
 	if (tmp == pFirst) {
 		pFirst = pFirst->pNext;
@@ -235,6 +241,7 @@ void TList<T>::remove(const T& data_) {
 		if (tmp->pNext == pStop) {
 			pLast = pPrev;
 		}
+
 		pPrev->pNext = tmp->pNext;
 		tmp->pNext = nullptr;
 		delete tmp;

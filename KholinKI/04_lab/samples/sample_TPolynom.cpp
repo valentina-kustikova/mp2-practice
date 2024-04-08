@@ -39,6 +39,8 @@ int main() {
 	cout << "Before we start performing operations on polynomials," << endl;
 	cout << "create your own polynomial: " << endl;
 	cin >> U_P;
+	cout << "User polynom: " << endl;
+	cout << "U_P(x,y,z) = ";
 	cout << U_P;
 
 	TPolynom res1; TPolynom res2;     

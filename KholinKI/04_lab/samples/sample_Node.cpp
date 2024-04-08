@@ -1,14 +1,14 @@
 #include "Node.h"
 
 int main() {
-	cout << "Creating object Node with name sample_node" << endl;
+	cout << "Creating object Node with name sample_node..." << endl;
 	Node<double> sample_node;
 
 	cout << endl;
 	cout << "The node does not contain any data at this time" << endl;
 	cout << endl;
 
-	cout << "Let`s add something. For example, value type double 4" << endl;
+	cout << "Let`s add something. For example, value type double 4" << endl << endl;
 	sample_node.data = 4;
 	cout << "sample_node" << endl;
 	cout << "Data: "  << sample_node.data << endl;

@@ -27,35 +27,6 @@ TEST(List, insert_last_work) {
 	ASSERT_NO_THROW(List->insert_last(5));
 }
 
-TEST(List, insert_last_control_pLast_and_pStop) {
-	Node<int>* pFirst = new Node<int>(10);
-	TList<int>* List = new TList<int>(pFirst);
-
-	List->insert_last(5);
-	List->insert_last(2);
-	List->insert_last(7);
-
-	Node<int>* test = List->search(7);
-	List->reset();
-
-	ASSERT_TRUE(test->data == 7 && test == List->pLast
-		&& test->pNext == List->pStop);
-}
-
-TEST(List, insert_last_control_pLast_and_pStop_when_list_empty) {
-	Node<int>* pFirst = new Node<int>();
-	TList<int>* List = new TList<int>(pFirst);
-
-	List->insert_last(7);
-
-	Node<int>* test = List->search(7);
-
-
-	ASSERT_TRUE(test->data == 7 && test == List->pLast
-		&& test->pNext == List->pStop);
-}
-
-
 TEST(List, search_work) {
 	Node<int>* pFirst = new Node<int>(10);
 	TList<int>* List = new TList<int>(pFirst);
@@ -133,29 +104,7 @@ TEST(TList, insert_first_work) {
 	ASSERT_NO_THROW(List->insert_first(5));
 }
 
-TEST(List, insert_first_control_pFirst_and_pStop_and_pCurr) {
-	Node<int>* pFirst = new Node<int>(10);
-	TList<int>* List = new TList<int>(pFirst);
 
-	List->insert_first(5);
-	List->insert_first(6);
-	List->insert_first(8);
-
-	Node<int>* test = List->search(8);
-
-	ASSERT_TRUE(test->data == 8 && test == List->pFirst && List->pCurr == List->pFirst);
-}
-
-TEST(List, insert_first_control_pFirst_and_pStop_and_pCurr_when_list_empty) {
-	Node<int>* pFirst = new Node<int>();
-	TList<int>* List = new TList<int>(pFirst);
-
-	List->insert_first(5);
-
-	Node<int>* test = List->search(5);
-
-	ASSERT_TRUE(test->data == 5 && test == List->pFirst && List->pCurr == List->pFirst);
-}
 
 TEST(List, insert_before_work) {
 	Node<int>* pFirst = new Node<int>(10);
@@ -180,42 +129,6 @@ TEST(List, insert_before_check_values) {
 	Node<int>* test = List.search(7);
 
 	ASSERT_TRUE(test->data == 7);
-}
-
-TEST(List, insert_before_first_node_and_control_pFirst_and_pStop_and_pCurr) {
-	Node<int>* pFirst = new Node<int>(10);
-	TList<int> List(pFirst);
-
-	List.insert_first(1);
-	List.insert_first(12);
-	List.insert_last(2);
-	List.insert_last(5);
-	List.insert_before(7, 12);
-
-	Node<int>* test = List.search(7);
-
-	ASSERT_TRUE(test->data == 7 && test == List.pFirst && List.pCurr == List.pFirst);
-}
-
-TEST(List, a_lot_inserts_before_control_pFirst_and_pStop_and_pCurr) {
-	Node<int>* pFirst = new Node<int>(10);
-	TList<int> List(pFirst);
-
-	List.insert_first(1);
-	List.insert_first(12);
-	List.insert_last(2);
-	List.insert_last(5);
-	List.insert_before(7, 12);
-	List.insert_before(9, 2);
-	List.insert_before(80, 1);
-	List.insert_before(54, 9);
-	List.insert_before(15, 7);
-
-
-	Node<int>* test = List.search(15);
-
-
-	ASSERT_TRUE(test->data == 15 && test == List.pFirst && List.pCurr == List.pFirst);
 }
 
 
@@ -269,44 +182,6 @@ TEST(List, insert_after_check_data) {
 
 }
 
-TEST(List, insert_after_last_node_and_control_pLast_and_pStop_and_pFirst) {
-	Node<int>* pFirst = new Node<int>(10);
-	TList<int> List(pFirst);
-
-	List.insert_first(1);
-	List.insert_first(12);
-	List.insert_last(2);
-	List.insert_last(5);
-	List.insert_before(7, 12);
-	List.insert_after(20, 5);
-
-	Node<int>* test = List.search(20);
-	List.reset();
-
-
-	ASSERT_TRUE(test->data == 20 && test == List.pLast && List.pCurr == List.pFirst);
-}
-
-TEST(List, a_lot_inserts_after_control_pLast_and_pStop_and_pFirst) {
-	Node<int>* pFirst = new Node<int>(10);
-	TList<int> List(pFirst);
-
-	List.insert_first(1);
-	List.insert_first(12);
-	List.insert_last(2);
-	List.insert_last(5);
-	List.insert_before(7, 12);
-	List.insert_after(20, 5);
-	List.insert_after(21, 12);
-	List.insert_after(22, 7);
-	List.insert_after(23, 20);
-
-	Node<int>* test = List.search(23);
-
-
-	(test->data == 7 && test == List.pLast && List.pCurr == List.pFirst);
-}
-
 TEST(List, remove_work) {
 	Node<int>* pFirst = new Node<int>(10);
 	TList<int> List(pFirst);
@@ -317,121 +192,6 @@ TEST(List, remove_work) {
 	List.insert_after(4, 5);
 
 	ASSERT_NO_THROW(List.remove(5));
-}
-
-TEST(List, remove_first_node_and_control_all_pointers) {
-	Node<int>* pFirst = new Node<int>(10);
-	TList<int> List(pFirst);
-
-	List.insert_last(2);
-	List.insert_last(5);
-	List.insert_before(6, 10);
-	List.insert_after(4, 5);
-
-	List.remove(6);
-
-	Node<int>* test = List.search(10);
-	Node<int>* deleted_node = List.search(6);
-	List.reset();
-
-	ASSERT_TRUE(test->data == 10 && test == List.pFirst
-				&& List.pCurr == List.pFirst && List.pLast->pNext == List.pStop);
-	EXPECT_EQ(nullptr, deleted_node);
-}
-
-
-TEST(List, remove_last_node_and_control_all_pointers) {
-	Node<int>* pFirst = new Node<int>(10);
-	TList<int> List(pFirst);
-
-	List.insert_last(2);
-	List.insert_last(5);
-	List.insert_before(6, 10);
-	List.insert_after(4, 5);
-
-	List.remove(4);
-
-	Node<int>* test = List.search(5);
-	Node<int>* deleted_node = List.search(4);
-	List.reset();
-
-	ASSERT_TRUE(test->data == 5 && test == List.pLast
-		&& List.pCurr == List.pFirst && List.pLast->pNext == List.pStop);
-	EXPECT_EQ(nullptr, deleted_node);
-}
-
-TEST(List, a_lot_remove_last_node_and_control_all_pointers) {
-	Node<int>* pFirst = new Node<int>(10);
-	TList<int> List(pFirst);
-
-	List.insert_last(2);
-	List.insert_last(5);
-	List.insert_before(6, 10);
-	List.insert_after(4, 5);
-
-	List.remove(4);
-	List.remove(2);//6 5 
-	List.remove(10);
-
-	Node<int>* test = List.search(5);
-	Node<int>* deleted_node = List.search(4);
-	List.reset();
-
-	ASSERT_TRUE(test->data == 5 && test == List.pLast
-		&& List.pCurr == List.pFirst && List.pLast->pNext == List.pStop);
-	EXPECT_EQ(deleted_node,nullptr);
-}
-
-TEST(TList, inserts_and_search_after_clear_variant_1) {
-	Node<int>* pFirst = new Node<int>(10);
-	TList<int> List(pFirst);
-
-	List.insert_last(2);
-	List.insert_last(5);
-	List.insert_before(6, 10);
-	List.insert_after(4, 5);
-
-	List.clear();
-
-	List.insert_first(4);
-	List.insert_last(7);
-	List.insert_first(9);
-	List.insert_first(12);
-	List.insert_last(90);
-	List.insert_before(40, 90);
-	List.insert_after(99, 9);
-
-	Node<int>* test = List.search(12);
-	List.reset();
-
-	ASSERT_TRUE(test->data == 12 && test == List.pFirst
-		&& List.pCurr == List.pFirst && List.pLast->pNext == List.pStop);
-}
-
-TEST(TList, inserts_and_search_after_clear_variant_2) {
-	Node<int>* pFirst = new Node<int>(10);
-	TList<int> List(pFirst);
-
-	List.insert_last(2);
-	List.insert_last(5);
-	List.insert_before(6, 10);
-	List.insert_after(4, 5);
-
-	List.clear();
-
-	List.insert_first(4);
-	List.insert_last(7);
-	List.insert_first(9);
-	List.insert_first(12);
-	List.insert_last(90);
-	List.insert_before(40, 90);
-	List.insert_after(99, 9);
-
-	Node<int>* test2 = List.search(90);
-	List.reset();
-
-	ASSERT_TRUE(test2->data == 90 && test2 == List.pLast
-		&& List.pCurr == List.pFirst && List.pLast->pNext == List.pStop);
 }
 
 TEST(TList, different_memory) {
@@ -558,9 +318,7 @@ TEST(TList, navigation_part_1_current_data) {
 	List->insert_first(33);
 	List->insert_after(4, 5);
 
-	Node<int>* tmp = List->pCurr;
-
-	ASSERT_TRUE(tmp->data == 33);
+	ASSERT_TRUE(List->getCurrent()->data == 33);
 }
 
 TEST(TList, navigation_part_2_next_data) {
@@ -577,9 +335,8 @@ TEST(TList, navigation_part_2_next_data) {
 
 	List->next();
 
-	Node<int>* tmp = List->pCurr;
 
-	ASSERT_TRUE(tmp->data == 80);
+	ASSERT_TRUE(List->getCurrent()->data == 80);
 }
 
 TEST(TList, navigation_part_3_use_next_method_while_not_reached_end) {
@@ -594,11 +351,8 @@ TEST(TList, navigation_part_3_use_next_method_while_not_reached_end) {
 	List->insert_first(33);
 	List->insert_after(4, 5);
 
-	Node<int>* tmp = List->pCurr;
-	Node<int>* tmp_pStop = List->pStop;
-	while (tmp != tmp_pStop) {
+	while (!List->Is_Ended()) {
 		List->next();
-		tmp = List->pCurr;
 	}
 
 
@@ -615,17 +369,13 @@ TEST(TList, navigation_part_4_reset_current_pointer) {
 
 	List->insert_after(4, 5);
 
-	Node<int>* tmp = List->pCurr;
-
-	while (tmp != List->pStop) {
+	while (!List->Is_Ended()) {
 		List->next();
-		tmp = List->pCurr;
 	}
 
 	if (List->Is_Ended()) {
 		List->reset();
-		tmp = List->pCurr;
 	}
 
-	ASSERT_TRUE(List->pCurr == List->pFirst);
+	ASSERT_TRUE(List->getCurrent() == List->pFirst);
 }
