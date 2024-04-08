@@ -22,11 +22,11 @@ public:
 	void InsertBeforeCurr(const T& data);
 	void InsertAfterCurr(const T& data);
 	TNode<T>* GetCurrent();
-	TNode<T>* GetStop();
 	void Remove(const T& data);
 	void Next();
 	void Reset();
 	bool IsEmpty() const;
+	bool IsEnded() const;
 	friend ostream& operator<<(ostream& os, const TRingList<T>& rl)
 	{
 		TNode<T>* cur = rl.pFirst;
@@ -65,9 +65,7 @@ TRingList<T>::TRingList(TNode<T>* _pFirst) : TList<T>(_pFirst)
 	}
 	else
 	{
-		pFirst = pHead;
-		pLast = pHead;
-		pCurr = pHead;
+		pHead->pNext = pHead;
 	}
 }
 template <typename T>
@@ -110,9 +108,9 @@ template <typename T>
 TNode<T>* TRingList<T>::Search(const T& data)
 {
 	TNode<T>* tmp = pFirst;
-	while (tmp->data != pHead->data && tmp->data != data)
+	while (tmp != pHead && tmp->data != data)
 		tmp = tmp->pNext;
-	if (tmp->data == pHead->data)
+	if (tmp == pHead)
 		return nullptr;
 	return tmp;
 }
@@ -202,11 +200,6 @@ TNode<T>* TRingList<T>::GetCurrent()
 	return pCurr;
 }
 template <typename T>
-TNode<T>* TRingList<T>::GetStop()
-{
-	return pStop;
-}
-template <typename T>
 void TRingList<T>::Remove(const T& data)
 {
 	if (pFirst == pStop)
@@ -256,6 +249,11 @@ template <typename T>
 bool TRingList<T>::IsEmpty() const
 {
 	return pFirst == pHead;
+}
+template <typename T>
+bool TRingList<T>::IsEnded() const
+{
+	return pCurr == pHead;
 }
 #endif
 

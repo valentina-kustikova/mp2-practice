@@ -354,14 +354,6 @@ TEST(TList, get_current_data_pnext)
     TNode<int>* Node = list.GetCurrent();
     EXPECT_EQ(5, Node->data);
 }
-//GetStop
-TEST(TList, get_stop_data)
-{
-    TList<int> list;
-    list.InsertEnd(10);
-    TNode<int>* Node = list.GetStop();
-    EXPECT_EQ(NULL, Node);
-}
 //Next
 TEST(TList, next_element)
 {

@@ -8,7 +8,7 @@
 class TestEx : public TPolynom
 {
 public:
-	TRingList<TMonom>* GetMonom() const {return TPolynom::monoms;}
+
 	using TPolynom::Is_Symbol;
 	using TPolynom::isValidExpression;
 	using TPolynom::isOperand;
@@ -47,6 +47,7 @@ TEST(TPolynom, create_polynom_with_polynom)
 	TPolynom p(*rl);
 	ASSERT_NO_THROW(TPolynom p2(p));
 }
+
 //Parsing
 TEST(TPolynom, parsing_test)
 {
@@ -54,10 +55,8 @@ TEST(TPolynom, parsing_test)
 	TPolynom p(s);
 	TestEx p1;
 	p1 = p;
-	//p.Parse_Polynom(s);
-	TMonom m = p1.GetMonom()->GetCurrent()->data;
-	int d = m.degree;
-	EXPECT_EQ(311, d);
+	string n = p.ToString();
+	EXPECT_EQ(s,n);
 }
 TEST(TPolynom, parsing_test_monom_error)
 {
@@ -82,20 +81,11 @@ TEST(TPolynom, assignment_test_degree)
 {
 	string s = "2*x^3*y*z";
 	TPolynom p(s);
-	TestEx p2;
+	TPolynom p2;
 	p2 = p;
-	TMonom m = p2.GetMonom()->GetCurrent()->data;
-	int d = m.degree;
-	EXPECT_EQ(311, d);
-}
-TEST(TPolynom, assignment_test_coef)
-{
-	string s = "2*x^3*y*z";
-	TPolynom p(s);
-	TestEx p2;
-	p2 = p;
-	TMonom m = p2.GetMonom()->GetCurrent()->data;
-	EXPECT_EQ(2, m.coef);
+	string n1 = p.ToString();
+	string n2 = p2.ToString();
+	EXPECT_EQ(n1, n2);
 }
 //operator +
 TEST(TPolynom, addition_test)
@@ -104,9 +94,13 @@ TEST(TPolynom, addition_test)
 	string s2 = "4*x*y";
 	TPolynom p(s);
 	TPolynom p2(s2);
-	TestEx p3;
+	TPolynom p3;
+	string n1 = p.ToString();
+	string n2 = p2.ToString();
+	string add = s2 + "+" + s;
 	p3 = p2 + p;
-	EXPECT_EQ(2, p3.GetMonom()->GetSize());
+	string n3 = p3.ToString();
+	EXPECT_EQ(add, n3);
 }
 TEST(TPolynom, addition_test_with_opposite_monomes)
 {
@@ -114,9 +108,13 @@ TEST(TPolynom, addition_test_with_opposite_monomes)
 	string s2 = "4*x*y";
 	TPolynom p(s);
 	TPolynom p2(s2);
-	TestEx p3;
+	TPolynom p3;
+	string n1 = p.ToString();
+	string n2 = p2.ToString();
+	string add = "2*x^3*y*z";
 	p3 = p2 + p;
-	EXPECT_EQ(1, p3.GetMonom()->GetSize());
+	string n3 = p3.ToString();
+	EXPECT_EQ(add, n3);
 }
 TEST(TPolynom, addition_test_with_same_monomes)
 {
@@ -124,12 +122,13 @@ TEST(TPolynom, addition_test_with_same_monomes)
 	string s2 = "4*x*y";
 	TPolynom p(s);
 	TPolynom p2(s2);
-	TestEx p3;
+	TPolynom p3;
+	string add = "8*x*y+2*x^3*y*z";
 	p3 = p2 + p;
-	TRingList<TMonom>* rl = p3.GetMonom();
-	TMonom c = rl->GetCurrent()->data;
-	EXPECT_EQ(8, c.coef);
+	string n3 = p3.ToString();
+	EXPECT_EQ(add, n3);
 }
+
 //Operator -
 TEST(TPolynom, substraction_test)
 {
@@ -137,9 +136,11 @@ TEST(TPolynom, substraction_test)
 	string s2 = "4*x*y";
 	TPolynom p(s);
 	TPolynom p2(s2);
-	TestEx p3;
+	TPolynom p3;
+	string sub = "4*x*y-2*x^3*y*z";
 	p3 = p2 - p;
-	EXPECT_EQ(2, p3.GetMonom()->GetSize());
+	string n3 = p3.ToString();
+	EXPECT_EQ(sub, n3);
 }
 TEST(TPolynom, substraction_test_with_opposite_monomes)
 {
@@ -147,23 +148,23 @@ TEST(TPolynom, substraction_test_with_opposite_monomes)
 	string s2 = "4*x*y";
 	TPolynom p(s);
 	TPolynom p2(s2);
-	TestEx p3;
-
+	TPolynom p3;
+	string sub = "-2*x^3*y*z";
 	p3 = p2 - p;
-	EXPECT_EQ(1, p3.GetMonom()->GetSize());
+	string n3 = p3.ToString();
+	EXPECT_EQ(sub, n3);
 }
 TEST(TPolynom, substraction_test_with_same_monomes)
 {
-	string s = "2*x^3*y*z-4*x*y";
-	string s2 = "4*x*y";
+	string s = "2*x^3*y*z+4*x*y";
+	string s2 = "-4*x*y";
 	TPolynom p(s);
 	TPolynom p2(s2);
-	TestEx p3;
-
+	TPolynom p3;
+	string sub = "-8*x*y-2*x^3*y*z";
 	p3 = p2 - p;
-	TRingList<TMonom>* rl = p3.GetMonom();
-	TMonom c = rl->GetCurrent()->data;
-	EXPECT_EQ(8, c.coef);
+	string n3 = p3.ToString();
+	EXPECT_EQ(sub, n3);
 }
 //Operator *
 TEST(TPolynom, multiplication_test)
@@ -172,37 +173,22 @@ TEST(TPolynom, multiplication_test)
 	string s2 = "4*x*y-z";
 	TPolynom p(s);
 	TPolynom p2(s2);
-	TestEx p3;
+	TPolynom p3;
+	string mul = "4*x*y*z-16*x^2*y^2-2*x^3*y*z^2+8*x^4*y^2*z";
 	p3 = p * p2;
-	TRingList<TMonom>* rl = p3.GetMonom();
-	TMonom c = rl->GetCurrent()->data;
-	EXPECT_EQ(4, p3.GetMonom()->GetSize());
+	string n3 = p3.ToString();
+	EXPECT_EQ(mul, n3);
 }
-TEST(TPolynom, multiplication_test_coef)
+//operatop-()
+TEST(TPolynom, change_signs_test)
 {
 	string s = "2*x^3*y*z-4*x*y";
-	string s2 = "4*x*y";
 	TPolynom p(s);
-	TPolynom p2(s2);
-	TestEx p3;
-	p3 = p * p2;
-	TRingList<TMonom>* rl = p3.GetMonom();
-	rl->Next();
-	TMonom c = rl->GetCurrent()->data;
-	EXPECT_EQ(8, c.coef);
-}
-TEST(TPolynom, multiplication_test_degree)
-{
-	string s = "2*x^3*y*z-4*x*y";
-	string s2 = "4*x*y";
-	TPolynom p(s);
-	TPolynom p2(s2);
-	TestEx p3;
-	p3 = p * p2;
-	TRingList<TMonom>* rl = p3.GetMonom();
-	rl->Next();
-	TMonom c = rl->GetCurrent()->data;
-	EXPECT_EQ(421, c.degree);
+	TPolynom p2;
+	p2 = -p;
+	string n2 = p2.ToString();
+	string m = "4*x*y-2*x^3*y*z";
+	EXPECT_EQ(m, n2);
 }
 //operator()
 TEST(TPolynom, result_operator_test)
@@ -236,63 +222,39 @@ TEST(TPolynom, result_operator_test_diff)
 TEST(TPolynom, differentiation_x_degree)
 {
 	string s = "2*x^3*y*z";
+	string dif_x = "6*x^2*y*z";
 	TPolynom p(s);
-	TestEx p2;
+	TPolynom p2;
 	p2 = p.difx();
-	TMonom m = p2.GetMonom()->GetCurrent()->data;
-	EXPECT_EQ(211, m.degree);
-}
-TEST(TPolynom, differentiation_x_coef)
-{
-	string s = "2*x^3*y*z";
-	TPolynom p(s);
-	TestEx p2;
-	p2 = p.difx();
-	TMonom m = p2.GetMonom()->GetCurrent()->data;
-	EXPECT_EQ(6, m.coef);
+	string n = p2.ToString();
+	EXPECT_EQ(dif_x, n);
 }
 //dif_y
 TEST(TPolynom, differentiation_y_degree)
 {
 	string s = "2*x^3*y*z";
+	string dif_y = "2*x^3*z";
 	TPolynom p(s);
-	TestEx p2;
+	TPolynom p2;
 	p2 = p.dify();
-	TMonom m = p2.GetMonom()->GetCurrent()->data;
-	EXPECT_EQ(301, m.degree);
-}
-TEST(TPolynom, differentiation_y_coef)
-{
-	string s = "2*x^3*y*z";
-	TPolynom p(s);
-	TestEx p2;
-	p2 = p.dify();
-	TMonom m = p2.GetMonom()->GetCurrent()->data;
-	EXPECT_EQ(2, m.coef);
+	string n = p2.ToString();
+	EXPECT_EQ(dif_y, n);
 }
 //dif_z
 TEST(TPolynom, differentiation_z_degree)
 {
-	string s = "2*x^3*y*z";
+	string s = "2*x^3*y*z^2";
+	string dif_z = "4*x^3*y*z";
 	TPolynom p(s);
-	TestEx p2;
+	TPolynom p2;
 	p2 = p.difz();
-	TMonom m = p2.GetMonom()->GetCurrent()->data;
-	EXPECT_EQ(310, m.degree);
-}
-TEST(TPolynom, differentiation_z_coef)
-{
-	string s = "2*x^3*y*z";
-	TPolynom p(s);
-	TestEx p2;
-	p2 = p.difz();
-	TMonom m = p2.GetMonom()->GetCurrent()->data;
-	EXPECT_EQ(2, m.coef);
+	string n = p2.ToString();
+	EXPECT_EQ(dif_z, n);
 }
 //To_String
 TEST(TPolynom, to_string_test)
 {
-	string s = "4.000000*x*y+5.000000*x^3*y";
+	string s = "4*x*y+5*x^3*y";
 	TPolynom p(s);
 	string s2 = p.ToString();
 	EXPECT_EQ(s, s2);

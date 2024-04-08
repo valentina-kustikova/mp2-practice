@@ -7,7 +7,7 @@ using namespace std;
 
 int main()
 {
-   
+    
     string s1;
     string s2;
     cout << "Enter first polynom:" << endl;
@@ -66,8 +66,7 @@ int main()
     catch (string msg) {
         cout << msg << endl;
     }
-
-
+    
 
     /*
     TList<int> list;
@@ -75,10 +74,9 @@ int main()
     list.InsertEnd(10);
     list.Next();
     list.InsertAfterCurr(5);
-    list.Next();
-    list.Next();
-    TNode<int>* Node = list.GetCurrent();
-  
+
+    TRingList<int> rlist(list);
+    TRingList<int> rlist2(rlist);
    
     TRingList<int> rl;
     rl.InsertFirst(5);

@@ -4,6 +4,7 @@
 #include "stack.h"
 #include <iostream>
 #include <string>
+#include <sstream>
 
 using namespace std;
 map<string, double> TPolynom::symbolDict = {
@@ -89,13 +90,29 @@ TPolynom::~TPolynom()
 	delete monoms;
 	name = "";
 }
+TPolynom TPolynom::operator-() const
+{
+	TRingList<TMonom>* list = new TRingList<TMonom>();
+	monoms->Reset(); 
+	while (!monoms->IsEnded())
+	{
+		TMonom m = monoms->GetCurrent()->data;
+		m.coef *= -1;
+		list->InsertEnd(m);
+		monoms->Next(); 
+	}
+	TPolynom result;
+	result.monoms = list;
+	result.name = result.ToString();
+	return result;
+}
 TPolynom TPolynom::operator+(const TPolynom& p)
 {
 	TRingList<TMonom>* list = new TRingList<TMonom>();
 	monoms->Reset();
 	p.monoms->Reset();
 
-	while (monoms->GetCurrent() != monoms->GetStop() && p.monoms->GetCurrent() != p.monoms->GetStop())
+	while (!monoms->IsEnded() && !p.monoms->IsEnded())
 	{
 		TMonom m1 = monoms->GetCurrent()->data;
 		TMonom m2 = p.monoms->GetCurrent()->data;
@@ -127,13 +144,13 @@ TPolynom TPolynom::operator+(const TPolynom& p)
 		}
 	}
 
-	while (monoms->GetCurrent() != monoms->GetStop())
+	while (!monoms->IsEnded())
 	{
 		list->InsertEnd(monoms->GetCurrent()->data);
 		monoms->Next();
 	}
 
-	while (p.monoms->GetCurrent() != p.monoms->GetStop())
+	while (!p.monoms->IsEnded())
 	{
 		list->InsertEnd(p.monoms->GetCurrent()->data);
 		p.monoms->Next();
@@ -144,76 +161,20 @@ TPolynom TPolynom::operator+(const TPolynom& p)
 	result.name = result.ToString();
 	return result;
 }
-TPolynom TPolynom::operator-(const TPolynom& p)
+TPolynom TPolynom::operator-(const TPolynom& p) 
 {
-	TRingList<TMonom>* list = new TRingList<TMonom>();
-	monoms->Reset();
-	p.monoms->Reset();
-
-	while (monoms->GetCurrent() != monoms->GetStop() && p.monoms->GetCurrent() != p.monoms->GetStop())
-	{
-		TMonom m1 = monoms->GetCurrent()->data;
-		TMonom m2 = p.monoms->GetCurrent()->data;
-
-		if (m1 == m2)
-		{
-			double k = m1.coef;
-			double k2 = m2.coef;
-			double k3 = k - k2;
-
-			if (k3 != 0)
-			{
-				m2.coef = k3;
-				list->InsertEnd(m2);
-			}
-
-			monoms->Next();
-			p.monoms->Next();
-		}
-		else if (m1 > m2)
-		{
-			double t = m2.coef;
-			m2.coef = -t;
-			list->InsertEnd(m2);
-			p.monoms->Next();
-		}
-		else
-		{
-			list->InsertEnd(m1);
-			monoms->Next();
-		}
-	}
-
-	while (monoms->GetCurrent() != monoms->GetStop())
-	{
-		list->InsertEnd(monoms->GetCurrent()->data);
-		monoms->Next();
-	}
-
-	while (p.monoms->GetCurrent() != p.monoms->GetStop())
-	{
-		TMonom mon = p.monoms->GetCurrent()->data;
-		double coef = mon.coef;
-		mon.coef = -coef;
-		list->InsertEnd(mon);
-		p.monoms->Next();
-	}
-
-	TPolynom result;
-	result.monoms = list;
-	result.name = result.ToString();
-	return result;
+	return *this + (-p);
 }
 TPolynom TPolynom::operator*(const TPolynom& p)
 {
 	TRingList<TMonom>* list = new TRingList<TMonom>();
 	monoms->Reset();
 	p.monoms->Reset();
-	while (monoms->GetCurrent() != monoms->GetStop())
+	while (!monoms->IsEnded())
 	{
 		TMonom m = monoms->GetCurrent()->data;
 		p.monoms->Reset();
-		while (p.monoms->GetCurrent() != p.monoms->GetStop())
+		while (!p.monoms->IsEnded())
 		{
 			TMonom m2 = p.monoms->GetCurrent()->data;
 			double k = m.coef;
@@ -235,10 +196,12 @@ TPolynom TPolynom::operator*(const TPolynom& p)
 }
 const TPolynom& TPolynom::operator=(const TPolynom& p)
 {
+	if (this == &p)
+		return *this;
 	name = p.name;
 	TRingList<TMonom>* list = new TRingList<TMonom>();
 	p.monoms->Reset();
-	while (p.monoms->GetCurrent() != p.monoms->GetStop())
+	while (!p.monoms->IsEnded())
 	{
 		list->InsertEnd(p.monoms->GetCurrent()->data);
 		p.monoms->Next();
@@ -251,7 +214,7 @@ TPolynom TPolynom::difx() const
 {
 	TRingList<TMonom>* list = new TRingList<TMonom>();
 	monoms->Reset();
-	while (monoms->GetCurrent() != monoms->GetStop())
+	while (!monoms->IsEnded())
 	{
 		TMonom m = monoms->GetCurrent()->data;
 		double k = m.coef;
@@ -275,7 +238,7 @@ TPolynom TPolynom::dify() const
 {
 	TRingList<TMonom>* list = new TRingList<TMonom>();
 	monoms->Reset();
-	while (monoms->GetCurrent() != monoms->GetStop())
+	while (!monoms->IsEnded())
 	{
 		TMonom m = monoms->GetCurrent()->data;
 		double k = m.coef;
@@ -302,7 +265,7 @@ TPolynom TPolynom::difz() const
 {
 	TRingList<TMonom>* list = new TRingList<TMonom>();
 	monoms->Reset();
-	while (monoms->GetCurrent() != monoms->GetStop())
+	while (!monoms->IsEnded())
 	{
 		TMonom m = monoms->GetCurrent()->data;
 		double k = m.coef;
@@ -563,7 +526,7 @@ void TPolynom::Parse_Polynom(const string& s)
 			else
 			{
 				monomList->Reset();
-				while (monomList->GetCurrent() != monomList->GetStop())
+				while (!monomList->IsEnded())
 				{
 					TMonom m = monomList->GetCurrent()->data;
 					int deg = m.degree;
@@ -590,7 +553,7 @@ void TPolynom::Parse_Polynom(const string& s)
 					}
 					monomList->Next();
 				}
-				if (monomList->GetCurrent() == monomList->GetStop())
+				if (monomList->IsEnded())
 					monomList->InsertEnd(monom);
 			}
 
@@ -608,31 +571,41 @@ string TPolynom::ToString()
 {
 	string st = "";
 	monoms->Reset();
-	while (monoms->GetCurrent() != monoms->GetStop())
+	while (!monoms->IsEnded())
 	{
 		TMonom m = monoms->GetCurrent()->data;
 		double k = m.coef;
 		int d = m.degree;
 		int flag = 0;
+
+		stringstream coef_stream;
+		coef_stream << k;
+		string coef_str = coef_stream.str();
+
+		// Удаляем конечные нули из строки коэффициента
+		coef_str.erase(coef_str.find_last_not_of('0') + 1, string::npos);
+		if (coef_str.back() == '.')
+			coef_str.pop_back();
+
 		if (d == 0)
 		{
 			if (st == "")
-				st += to_string(k);
+				st += coef_str;
 			else
 				if (k > 0)
-					st += "+" + to_string(k);
+					st += "+" + coef_str;
 				else
-					st += to_string(k);
+					st += coef_str;
 		}
 		if (d >= 100)
 		{
 			if (st == "")
-				st += to_string(k);
+				st += coef_str;
 			else
 				if(k>0)
-					st += "+" + to_string(k);
+					st += "+" + coef_str;
 				else
-					st += to_string(k);
+					st += coef_str;
 
 			int deg_x = d / 100;
 			if (deg_x == 1)
@@ -647,12 +620,12 @@ string TPolynom::ToString()
 			if (flag == 0)
 			{
 				if (st == "")
-					st += to_string(k);
+					st += coef_str;
 				else
 					if (k > 0)
-						st += "+" + to_string(k);
+						st += "+" + coef_str;
 					else
-						st += to_string(k);
+						st += coef_str;
 			}
 
 			int deg_y = d / 10;
@@ -667,12 +640,12 @@ string TPolynom::ToString()
 			if (flag == 0)
 			{
 				if (st == "")
-					st += to_string(k);
+					st += coef_str;
 				else
 					if (k > 0)
-						st += "+" + to_string(k);
+						st += "+" + coef_str;
 					else
-						st += to_string(k);
+						st += coef_str;
 			}
 
 			int deg_z = d;

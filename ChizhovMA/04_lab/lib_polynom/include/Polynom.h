@@ -10,7 +10,7 @@ using namespace std;
 
 class TPolynom
 {
-protected:
+private:
 	TRingList<TMonom>* monoms;
 	string name;
 
@@ -26,6 +26,7 @@ public:
 	TPolynom operator+(const TPolynom& p);
 	TPolynom operator-(const TPolynom& p);
 	TPolynom operator*(const TPolynom& p);
+	TPolynom operator-() const;
 	const TPolynom& operator=(const TPolynom& p);
 
 	TPolynom difx() const;

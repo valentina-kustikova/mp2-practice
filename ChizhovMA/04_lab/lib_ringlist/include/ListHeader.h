@@ -40,13 +40,12 @@ public:
 	virtual void InsertBeforeCurr(const T& data);
 	virtual void InsertAfterCurr(const T& data);
 	virtual void Remove(const T& data);
-	virtual void Clear();
-	virtual int GetSize() const;
+	void Clear();
+	int GetSize() const;
 	virtual bool IsEmpty() const;
-	virtual bool IsFull() const;
-	virtual bool IsEnded() const;
+	bool IsFull() const;
+	virtual bool IsEnded() const; //через него делаем обход
 	virtual TNode<T>* GetCurrent();
-	virtual TNode<T>* GetStop();
 	virtual void Next();  //переход к следующему эл
 	virtual void Reset(); //текущий становится первым
 };
@@ -266,11 +265,6 @@ template <typename T>
 TNode<T>* TList<T>::GetCurrent()
 {
 	return pCurr;
-}
-template <typename T>
-TNode<T>* TList<T>::GetStop()
-{
-	return pStop;
 }
 template <typename T>
 void TList<T>::Next()

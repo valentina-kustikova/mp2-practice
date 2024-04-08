@@ -400,14 +400,6 @@ TEST(TRingList, get_current_data_pnext)
     TNode<int>* Node = list.GetCurrent();
     EXPECT_EQ(5, Node->data);
 }
-//GetStop
-TEST(TRingList, get_stop_data)
-{
-    TRingList<int> list;
-    list.InsertEnd(10);
-    TNode<int>* Node = list.GetStop();
-    EXPECT_EQ(0, Node->data);
-}
 //Next
 TEST(TRingList, next_element)
 {
