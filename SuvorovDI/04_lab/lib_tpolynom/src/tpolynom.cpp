@@ -33,6 +33,43 @@ void TPolynom::InsertToSort(const TMonom& monom) {
 	monoms.InsertBefore(monom, monoms.GetCurr()->data);
 }
 
+std::string TPolynom::ToString() const {
+	std::string str;
+	TPolynom new_this(*this);
+	if (new_this.monoms.IsEmpty()) {
+		return "0";
+	}
+	bool firstTerm = true;
+	new_this.monoms.Reset();
+	while (!new_this.monoms.IsEnded()) {
+		int deg = new_this.monoms.GetCurr()->data.degree_;
+		double coeff = new_this.monoms.GetCurr()->data.coeff_;
+		int x = deg / 100;
+		int y = (deg % 100) / 10;
+		int z = deg % 10;
+		if (coeff != 0) {
+			if (!firstTerm) {
+				str += ((coeff > 0) ? "+" : "-");
+			}
+			else {
+				if (coeff < 0) str += '-';
+				firstTerm = false;
+			}
+			if (abs(coeff) != 1 || deg == 0) {
+				char buf[15];
+				sprintf(buf, "%.2f", abs(coeff));
+				str += std::string(buf);
+			}
+			std::string mul_symbol = ((abs(coeff) == 1) ? "" : "*");
+			if (x != 0) str += (mul_symbol + "x") + ((x != 1) ? "^" + std::to_string(x) : "");
+			if (y != 0) str += "*y" + ((y != 1) ? "^" + std::to_string(y) : "");
+			if (z != 0) str += "*z" + ((z != 1) ? "^" + std::to_string(z) : "");
+		}
+		new_this.monoms.Next();
+	}
+	return str;
+}
+
 TPolynom operator-(const TPolynom& p) {
   std::string nm = p.name;
   if (nm[0] != '-') nm = '+' + nm;

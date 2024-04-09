@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <string>
+#include <cstdio>
 #include "tmonom.h"
 #include "tlist.h"
 #include "theadringlist.h"
@@ -13,7 +14,6 @@ protected:
 
   void tokinize_polynom(const std::string& name);
   void InsertToSort(const TMonom& monom);
-
 public:
   TPolynom() : monoms() {}
   TPolynom(const std::string& name);
@@ -27,6 +27,8 @@ public:
   TPolynom operator-(const TPolynom& p);
   TPolynom operator*(const TPolynom& p);
   bool operator==(const TPolynom& p) const;
+  
+  std::string TPolynom::ToString() const;
 
   double operator()(double x, double y, double z) const;
   TPolynom dx() const;
