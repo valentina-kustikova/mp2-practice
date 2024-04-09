@@ -151,6 +151,7 @@ void TList<T>::InsertFirst(const T& data_) {
 		throw "List is full";
 	}
 	pFirst = tmp; 
+	pCurr = pFirst;
 }
 
 
@@ -178,6 +179,7 @@ void TList<T>::InsertBefore(const T& data_, const T& NextData) {
 		return;
 	}
 	pPrev->pNext = tmp1;
+	pCurr = pPrev->pNext;
 }
 
 template<typename T>
@@ -198,6 +200,7 @@ void TList<T>::InsertAfter(const T& data_, const T& BeforeData) {
 	}
 	TNode<T>* tmp1 = new TNode<T>(data_, tmp);
 	pPrev->pNext = tmp1;
+	pCurr = pPrev->pNext;
 } 
 
 template<typename T>
@@ -222,8 +225,9 @@ void TList<T>::InsertBefore(const T& data_){
 		return;
 	}
 	pPrev->pNext = tmp1;
+	pCurr = pPrev->pNext;
 
-} //додумать
+} 
 
 template<typename T>
 void TList<T>::InsertAfter(const T& data_) {
@@ -243,6 +247,7 @@ void TList<T>::InsertAfter(const T& data_) {
 	}
 	TNode<T>* tmp1 = new TNode<T>(data_, tmp);
 	pPrev->pNext = tmp1;
+	pCurr = pPrev->pNext;
 }
 
 
@@ -302,7 +307,7 @@ bool TList<T>::IsEmpty() {
 
 template<typename T>
 bool TList<T>::IsFull() {
-	TNode <T>* tmp = new TNode<T>(1);
+	TNode <T>* tmp = new TNode<T>();
 	if (tmp == nullptr) {
 		return true;
 	}

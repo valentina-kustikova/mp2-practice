@@ -9,8 +9,12 @@ struct TMonom {
 	TMonom();
 	TMonom(int st_, double koef_);
 	TMonom(const TMonom& obj);
-	TMonom operator + (const TMonom& obj);
-
+	bool operator != (const TMonom& obj) {
+		if (obj.st != st || obj.koef != koef) {
+			return true;
+		}
+		return false;
+	}
 };
 
 

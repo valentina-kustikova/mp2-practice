@@ -72,3 +72,35 @@ TEST(TRingList, copied_ringlist_from_ringlist_has_its_own_memory)
 	TRingList<int> rl2(rl1);
 	EXPECT_NE(rl1.Search(53), rl2.Search(53));
 }
+
+
+//доп тесты
+
+
+TEST(TRingList, can_insert_pFirst)
+{
+	TNode<int>* c = new TNode<int>(54, nullptr);
+	TNode<int>* b = new TNode<int>(53, c);
+	TNode<int>* a = new TNode<int>(52, b);
+
+	TRingList<int> rl(a);
+	rl.InsertFirst(51);
+	EXPECT_EQ(51, rl.GetCurrent()->data);
+	EXPECT_EQ(4, rl.GetSize());
+}
+
+
+
+TEST(TRingList, can_insert_after_current)
+{
+	TNode<int>* c = new TNode<int>(54, nullptr);
+	TNode<int>* b = new TNode<int>(53, c);
+	TNode<int>* a = new TNode<int>(52, b);
+
+	TRingList<int> rl(a);
+	rl.InsertFirst(51);
+	ASSERT_NO_THROW(rl.InsertAfter(100));
+
+	EXPECT_EQ(100, rl.GetCurrent()->data);
+	EXPECT_EQ(52, rl.GetCurrent()->pNext->data);
+}

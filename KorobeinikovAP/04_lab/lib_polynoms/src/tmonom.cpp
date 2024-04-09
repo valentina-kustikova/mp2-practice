@@ -8,11 +8,12 @@ TMonom::TMonom() {
 
 
 TMonom::TMonom(int st_, double koef_) {
-	if (st < 0 || st >999) {
+	if ((st_ < 0) || (st_ >999)) {
 		throw "Incorrect st";
 	}
-	st = st_;
-	koef = koef_;
+
+	this->st = st_;
+	this->koef = koef_;
 }
 
 
@@ -21,6 +22,3 @@ TMonom::TMonom(const TMonom& obj) {
 	koef = obj.koef;
 }		
 
-TMonom TMonom:: operator+ (const TMonom& obj) {
-	
-}

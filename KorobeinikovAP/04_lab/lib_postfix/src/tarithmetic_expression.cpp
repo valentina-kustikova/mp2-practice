@@ -3,7 +3,16 @@
 
 
 //Соответственные проверки
-bool TArithmeticExpression:: IsOperator(const string& op) const
+bool IsVariable(const string& op)
+{
+	if ((op == "x") || (op == "y") || (op == "z"))
+	{
+		return true;
+	}
+	return false;
+}
+
+bool IsOperator(const string& op) 
 {
 		if ((op == "(") || (op == ")") || (op == "+") || (op == "-") || (op == "*") || (op == "/") || (op == "^"))
 		{
@@ -11,7 +20,8 @@ bool TArithmeticExpression:: IsOperator(const string& op) const
 		}
 	return false;
 }
-bool TArithmeticExpression::IsConst(const string& op) const
+
+bool IsConst(const string& op) 
 {
 	for (int i = 0; i < op.size(); i++)
 
@@ -24,7 +34,7 @@ bool TArithmeticExpression::IsConst(const string& op) const
 		}
 	return true;
 }
-bool TArithmeticExpression::IsBinaryOperator(const char& op) const
+bool IsBinaryOperator(const char& op) 
 {
 	return (op == '*' || op == '/' || op == '+' || op == '-' || op == '^');
 }
@@ -436,12 +446,3 @@ TArithmeticExpression::TArithmeticExpression(const string& infx,const map<string
 	
 	ToPostfix();
 }
-
-
-
-
-
-
-
-
-

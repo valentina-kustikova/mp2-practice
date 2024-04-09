@@ -20,9 +20,9 @@ template <typename T>
 TRingList<T>::TRingList() {
 	pHead = new TNode<T>();
 	pStop = pHead;
-	pFirst = pHead;
-	pCurr = pHead;
-	pLast = pHead;
+	pFirst = nullptr;
+	pCurr = nullptr;
+	pLast = nullptr;
 }
 
 template <typename T>
@@ -33,9 +33,9 @@ template <typename T>
 	pLast->pNext = pHead;
 
 	if (pFirst == nullptr) {
-		pFirst = pHead;
-		pLast = pHead;
-		pCurr = pHead;
+		pFirst = nullptr;
+		pLast = nullptr;
+		pCurr = nullptr;
 	}
 	/*
 	else {
