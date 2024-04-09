@@ -1,6 +1,7 @@
-#include "polynom.h"
 #include <gtest.h>
-const string str="x+y+z";
+#include "tpolynom.h"
+
+const std::string str="x+y+z";
 
 TEST(TPolynom, create_empty_polinom)
 {
@@ -22,6 +23,7 @@ TEST(TPolynom, equality_operator_is_correct)
 {
 	TPolynom p1(str);
 	TPolynom p2(str);
+  
 	EXPECT_EQ(p1, p2);
 }
 
@@ -40,6 +42,7 @@ TEST(TPolynom, no_throw_when_polynom_will_be_empty)
 TEST(TPolynom, conversation_test) {
 	TPolynom p1("x+x-x+x+y+y+z+z+z");
 	TPolynom p2("2x+2y+3z");
+
 	EXPECT_EQ(p1, p2);
 }
 
@@ -47,6 +50,7 @@ TEST(TPolynom, can_create_polynom_in_different_order)
 {
 	TPolynom p("x+y+z");
 	TPolynom p_reordered("z+y+x");
+
 	EXPECT_EQ(p, p_reordered);
 }
 
@@ -59,7 +63,7 @@ TEST(TPolynom, calculate_is_correct1)
 {
 	TPolynom pol(str);
 	double res = pol(1,2,3);
-	EXPECT_EQ(6, pol(1, 2, 3));
+	EXPECT_EQ(6, res);
 }
 
 TEST(TPolynom, calculate_is_correct2)
@@ -114,10 +118,9 @@ TEST(TPolynom,sum_is_correct )
 	TPolynom pol1("x^3+y^2+y+x+1");
 	TPolynom pol2("x^3+y+z+1");
 	TPolynom pol3("2x^3+y^2+2y+x+2+z");
+
 	EXPECT_EQ(pol1+pol2, pol3);
 }
-
-
 
 TEST(TPolynom, diff_is_correct) 
 {
@@ -140,6 +143,7 @@ TEST(TPolynom, mult_is_correct1)
 	TPolynom pol1("x^2+y");
 	TPolynom pol2("x^3+x");
 	TPolynom pol3("x^5+x^3+x^3*y+x*y");
+
 	EXPECT_EQ(pol1*pol2, pol3);
 }
 

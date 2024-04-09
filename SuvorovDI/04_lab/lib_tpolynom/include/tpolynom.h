@@ -26,6 +26,7 @@ public:
   TPolynom operator+(const TPolynom& p);
   TPolynom operator-(const TPolynom& p);
   TPolynom operator*(const TPolynom& p);
+  bool operator==(const TPolynom& p) const;
 
   double operator()(double x, double y, double z) const;
   TPolynom dx() const;

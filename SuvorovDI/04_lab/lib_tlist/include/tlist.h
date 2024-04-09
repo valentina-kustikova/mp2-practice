@@ -49,6 +49,7 @@ public:
   void Reset();
   void Next();
   TNode<TData>* GetCurr() const;
+  TNode<TData>* GetPrev() const;
   bool IsEnded() const;
   bool IsEmpty() const;
   bool IsFull() const;
@@ -275,6 +276,11 @@ void TList<TData>::Next() {
 template <typename TData>
 TNode<TData>* TList<TData>::GetCurr() const {
   return pCurr;
+}
+
+template <typename TData>
+TNode<TData>* TList<TData>::GetPrev() const {
+	return pPrev;
 }
 
 // template <typename TData>

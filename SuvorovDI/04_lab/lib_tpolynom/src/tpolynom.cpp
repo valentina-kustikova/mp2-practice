@@ -1,5 +1,4 @@
 #include "tpolynom.h"
-#include "tmonom.h"
 
 TPolynom::TPolynom(const std::string& name) : monoms() {
   this->name = name;
@@ -19,14 +18,19 @@ void TPolynom::InsertToSort(const TMonom& monom) {
 		return;
 	}
 
-	while (monoms.IsEnded() && monoms.GetCurr()->pNext->data <= monom) {
+	while (!monoms.IsEnded() && monoms.GetCurr()->data < monom) {
 		monoms.Next();
 	}
+	if (monoms.IsEnded()) {
+		monoms.InsertLast(monom);
+		return;
+	}
+  
 	if (monoms.GetCurr()->data == monom) {
 		monoms.GetCurr()->data.coeff_ = monoms.GetCurr()->data.coeff_ + monom.coeff_;
 		return;
 	}
-	monoms.InsertAfter(monom, monoms.GetCurr()->data);
+	monoms.InsertBefore(monom, monoms.GetCurr()->data);
 }
 
 TPolynom operator-(const TPolynom& p) {
@@ -38,7 +42,7 @@ TPolynom operator-(const TPolynom& p) {
   }
   TPolynom negativePol(nm, p);
 
-  while (negativePol.monoms.IsEnded()) {
+  while (!negativePol.monoms.IsEnded()) {
     negativePol.monoms.GetCurr()->data.coeff_ = negativePol.monoms.GetCurr()->data.coeff_ * (-1);
     negativePol.monoms.Next();
   }
@@ -52,7 +56,7 @@ TPolynom TPolynom::operator+(const TPolynom& p) {
   TPolynom res(name + nm, p);
   
   monoms.Reset();
-  while (monoms.IsEnded()) {
+  while (!monoms.IsEnded()) {
     res.InsertToSort(monoms.GetCurr()->data);
     monoms.Next();
   }
@@ -69,10 +73,9 @@ TPolynom TPolynom::operator*(const TPolynom& p) { // const
   TPolynom tmp_p(p);
 
   monoms.Reset();
-  tmp_p.monoms.Reset();
   while (!monoms.IsEnded()) {
-
-    while (!p.monoms.IsEnded()) {
+	  tmp_p.monoms.Reset();
+    while (!tmp_p.monoms.IsEnded()) {
       TMonom mon1 = monoms.GetCurr()->data;
       TMonom mon2 = tmp_p.monoms.GetCurr()->data;
       double newCoeff = mon1.coeff_ * mon2.coeff_;
@@ -90,11 +93,25 @@ TPolynom TPolynom::operator*(const TPolynom& p) { // const
   return res_pol;
 }
 
+bool TPolynom::operator==(const TPolynom& p) const {
+  TPolynom new_this(*this);
+  TPolynom new_p(p);
+
+  while (!new_p.monoms.IsEnded() && !new_this.monoms.IsEnded()) {
+    if (new_p.monoms.GetCurr()->data != new_this.monoms.GetCurr()->data) return false;
+    new_p.monoms.Next();
+    new_this.monoms.Next();
+  }
+  if (new_p.monoms.IsEnded() && new_this.monoms.IsEnded()) return true;
+
+  return false;
+}
+
 double TPolynom::operator()(double x, double y, double z) const {
   double result = 0;
   TPolynom tmp_this(*this);
 
-  while (tmp_this.monoms.IsEnded()) {
+  while (!tmp_this.monoms.IsEnded()) {
     double mn;
     mn = tmp_this.monoms.GetCurr()->data.coeff_;
     mn *= pow(x, tmp_this.monoms.GetCurr()->data.degree_ / 100);
@@ -111,7 +128,7 @@ TPolynom TPolynom::dx() const {
   TPolynom dx_pol;
   TPolynom tmp_this(*this);
 
-  while (tmp_this.monoms.IsEnded()) {
+  while (!tmp_this.monoms.IsEnded()) {
     if (tmp_this.monoms.GetCurr()->data.degree_ / 100 != 0) {
       double newCoeff = tmp_this.monoms.GetCurr()->data.coeff_ * (tmp_this.monoms.GetCurr()->data.degree_ / 100);
       int16_t newDegree = tmp_this.monoms.GetCurr()->data.degree_ - 100;
@@ -128,7 +145,7 @@ TPolynom TPolynom::dy() const {
   TPolynom dy_pol;
   TPolynom tmp_this(*this);
 
-  while (tmp_this.monoms.IsEnded()) {
+  while (!tmp_this.monoms.IsEnded()) {
     if (tmp_this.monoms.GetCurr()->data.degree_ / 10 % 10 != 0) {
       double newCoeff = tmp_this.monoms.GetCurr()->data.coeff_ * (tmp_this.monoms.GetCurr()->data.degree_ / 10 % 10);
       int16_t newDegree = tmp_this.monoms.GetCurr()->data.degree_ - 10;
@@ -145,7 +162,7 @@ TPolynom TPolynom::dz() const {
   TPolynom dz_pol;
   TPolynom tmp_this(*this);
 
-  while (tmp_this.monoms.IsEnded()) {
+  while (!tmp_this.monoms.IsEnded()) {
     if (tmp_this.monoms.GetCurr()->data.degree_  % 10 != 0) {
       double newCoeff = tmp_this.monoms.GetCurr()->data.coeff_ * (tmp_this.monoms.GetCurr()->data.degree_  % 10);
       int16_t newDegree = tmp_this.monoms.GetCurr()->data.degree_ - 1;
