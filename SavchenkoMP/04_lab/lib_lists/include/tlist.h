@@ -38,7 +38,7 @@ public:
 
 	TNode<T>* first() const;
 	TNode<T>* last() const;
-	TNode<T>* stop() const;
+	TNode<T>* stop() const; // TODO: remove
 };
 
 template <typename T>

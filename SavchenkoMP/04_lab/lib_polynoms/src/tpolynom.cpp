@@ -340,7 +340,7 @@ const TPolynom TPolynom::operator+(const TPolynom& polynom) const {
 
 	polynom.monoms->Reset();
 	TNode<TMonom>* tmp_p = polynom.monoms->first();
-	while (tmp_p != polynom.monoms->stop()) {
+	while (tmp_p != polynom.monoms->stop()) { // !this->monoms.IsEnded()
 		TMonom curr_monom = tmp_p->key;
 		res.AddMonom(curr_monom);
 		tmp_p = tmp_p->pNext;
@@ -352,7 +352,7 @@ const TPolynom TPolynom::operator-() const {
 	TPolynom res(*this);
 
 	TNode<TMonom>* tmp = res.monoms->first();
-	while (tmp != res.monoms->stop()) {
+	while (tmp != res.monoms->stop()) { // !this->monoms.IsEnded()
 		double coeff = (-1) * tmp->key.get_coeff();
 		tmp->key.set_coeff(coeff);
 		tmp = tmp->pNext;
@@ -369,11 +369,11 @@ const TPolynom TPolynom::operator*(const TPolynom& polynom) const {
 	TPolynom res;
 
 	TNode<TMonom>* tmp = monoms->first();
-	while (tmp != monoms->stop()) {
+	while (tmp != monoms->stop()) { // !this->monoms.IsEnded()
 		TMonom curr1 = tmp->key;
 
 		TNode<TMonom>* tmp_p = polynom.monoms->first();
-		while (tmp_p != polynom.monoms->stop()) {
+		while (tmp_p != polynom.monoms->stop()) { // !this->monoms.IsEnded()
 			TMonom curr2 = tmp_p->key;
 			res.AddMonom(curr1 * curr2);
 			tmp_p = tmp_p->pNext;
