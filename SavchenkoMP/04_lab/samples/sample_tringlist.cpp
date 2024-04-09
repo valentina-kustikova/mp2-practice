@@ -5,12 +5,12 @@ using namespace std;
 
 template<typename T>
 void PrintList(TRingList<T>& rl) {
-	TNode<T>* tmp = rl.first();
-
-	while (tmp != rl.stop()) {
-		cout << tmp->key << " ";
-		tmp = tmp->pNext;
+	rl.Reset();
+	while (!rl.IsEnded()) {
+		cout << rl.GetCurrent()->key << " ";
+		rl.Next();
 	}
+	rl.Reset();
 }
 
 template<typename T>

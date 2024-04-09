@@ -93,7 +93,7 @@ void TRingList<T>::InsertFirst(const T& data) {
 
 	pHead->pNext = pFirst;
 
-	if (pCurr == pStop) Reset();
+	Reset();
 }
 
 

@@ -20,10 +20,10 @@ public:
 	virtual TNode<T>* Search(const T& data);
 	virtual void InsertFirst(const T& data);
 	virtual void InsertLast(const T& data);
-	virtual void InsertBefore(const T& data, const T& before);
-	virtual void InsertAfter(const T& data, const T& after);
 	virtual void InsertBefore(const T& data);
 	virtual void InsertAfter(const T& data);
+	virtual void InsertBefore(const T& data, const T& before);
+	virtual void InsertAfter(const T& data, const T& after);
 	virtual void Remove(const T& data);
 	void Clear();
 
@@ -38,7 +38,7 @@ public:
 
 	TNode<T>* first() const;
 	TNode<T>* last() const;
-	TNode<T>* stop() const; // TODO: remove
+	//TNode<T>* stop() const; // TODO: remove
 };
 
 template <typename T>
@@ -47,6 +47,8 @@ TList<T>::TList() {
 	pFirst = pStop;
 	pLast = pStop;
 	pCurr = pStop;
+
+	Reset();
 }
 
 template <typename T>
@@ -56,6 +58,8 @@ TList<T>::TList(TNode<T>* _pFirst) {
 	if (pFirst == pStop) {
 		pLast = pStop;
 		pCurr = pStop;
+		
+		Reset();
 		return;
 	}
 
@@ -63,6 +67,8 @@ TList<T>::TList(TNode<T>* _pFirst) {
 	while (tmp->pNext != pStop)
 		tmp = tmp->pNext;
 	pLast = tmp;
+	
+	Reset();
 }
 
 template <typename T>
@@ -72,6 +78,8 @@ TList<T>::TList(const TList<T>& obj) {
 		pFirst = pStop;
 		pLast = pStop;
 		pCurr = pFirst;
+		
+		Reset();
 		return;
 	}
 
@@ -87,6 +95,8 @@ TList<T>::TList(const TList<T>& obj) {
 	pLast = pNode;
 	pStop = pLast->pNext;
 	pCurr = pFirst;
+	
+	Reset();
 }
 
 template <typename T>
@@ -101,6 +111,7 @@ TNode<T>* TList<T>::Search(const T& data) { // if (obj.Search(data) == obj.stop)
 	TNode<T>* tmp = pFirst;
 	while (tmp != pStop && tmp->key != data)
 		tmp = tmp->pNext;
+	if (tmp == pStop) tmp = nullptr; /**/
 	return tmp;
 }
 
@@ -110,7 +121,7 @@ void TList<T>::InsertFirst(const T& data) {
 	if (pFirst == pStop) pLast = tmp;
 	pFirst = tmp;
 
-	if (pCurr == pStop) Reset();
+	Reset();
 }
 
 template <typename T>
@@ -123,11 +134,70 @@ void TList<T>::InsertLast(const T& data) {
 	pLast->pNext = tmp;
 	pLast = pLast->pNext;
 
-	if (pCurr == pStop) Reset();
+	Reset();
+}
+
+/////////////////////////////////
+template <typename T>
+void TList<T>::InsertBefore(const T& data) {
+	/*if (pCurr == pStop) {
+		string exp = "Error: pCurrent is not installed, use Reset() and Next()";
+		throw exp;
+	}*/
+
+	if (pCurr == nullptr) {
+		string exp = "Error: key not found";
+		throw exp;
+	}
+
+	if (pCurr == pFirst) {
+		InsertFirst(data);
+		return;
+	}
+
+	TNode<T>* before = pFirst;
+	while (before->pNext != pCurr)
+		before = before->pNext;
+
+	TNode<T>* tmp = new TNode<T>(data, pCurr);
+	before->pNext = tmp;
+
+	Reset();
 }
 
 template <typename T>
+void TList<T>::InsertAfter(const T& data) {
+	/*if (pCurr == pStop) {
+		string exp = "Error: pCurrent is not installed, use Reset() and Next()";
+		throw exp;
+	}*/
+
+	if (pCurr == nullptr) {
+		string exp = "Error: key not found";
+		throw exp;
+	}
+
+	if (IsEnded()) {
+		InsertLast(data);
+		return;
+	}
+
+	TNode<T>* tmp = new TNode<T>(data, pCurr->pNext);
+	pCurr->pNext = tmp;
+
+	Reset();
+}
+/////////////////////////////////
+
+template <typename T>
 void TList<T>::InsertBefore(const T& data, const T& before) {
+	pCurr = Search(before);
+	
+	InsertBefore(data);
+
+	Reset();
+
+	/*
 	TNode<T>* pBefore = nullptr;
 	TNode<T>* pNode = pFirst;
 
@@ -149,12 +219,18 @@ void TList<T>::InsertBefore(const T& data, const T& before) {
 	TNode<T>* tmp = new TNode<T>(data, pNode);
 	pBefore->pNext = tmp;
 
-	if (pCurr == pStop) Reset();
+	if (pCurr == pStop) Reset();*/
 }
 
 template <typename T>
 void TList<T>::InsertAfter(const T& data, const T& after) {
-	TNode<T>* pNode = Search(after);
+	pCurr = Search(after);
+
+	InsertAfter(data);
+
+	Reset();
+	
+	/*TNode<T>* pNode = Search(after);
 
 	if (pNode == pStop) {
 		string exp = "Error: key not found";
@@ -169,47 +245,11 @@ void TList<T>::InsertAfter(const T& data, const T& after) {
 	TNode<T>* tmp = new TNode<T>(data, pNode->pNext);
 	pNode->pNext = tmp;
 
-	if (pCurr == pStop) Reset();
+	if (pCurr == pStop) Reset();*/
 }
-
 
 /////////////////////////////////
-template <typename T>
-void TList<T>::InsertBefore(const T& data) {
-	if (pCurr == pStop) {
-		string exp = "Error: pCurrent is not installed, use Reset() and Next()";
-		throw exp;
-	}
-	
-	if (pCurr == pFirst) {
-		InsertFirst(data);
-		return;
-	}
 
-	TNode<T>* before = pFirst;
-	while (before->pNext != pCurr)
-		before = before->pNext;
-
-	TNode<T>* tmp = new TNode<T>(data, pCurr);
-	before->pNext = tmp;
-}
-
-template <typename T>
-void TList<T>::InsertAfter(const T& data) {
-	if (pCurr == pStop) {
-		string exp = "Error: pCurrent is not installed, use Reset() and Next()";
-		throw exp;
-	}
-
-	if (IsEnded()) {
-		InsertLast(data);
-		return;
-	}
-
-	TNode<T>* tmp = new TNode<T>(data, pCurr->pNext);
-	pCurr->pNext = tmp;
-}
-/////////////////////////////////
 
 template <typename T>
 void TList<T>::Remove(const T& data) {
@@ -303,7 +343,8 @@ void TList<T>::Next(const int count) {
 	}
 
 	for (int i = 0; i < count; i++) {
-		if (!IsEnded() || pCurr != pStop) pCurr = pCurr->pNext;
+		//if (!IsEnded() || pCurr != pStop) pCurr = pCurr->pNext;
+		if (!IsEnded()) pCurr = pCurr->pNext;
 		else Reset();
 	}
 }
@@ -323,9 +364,9 @@ template <typename T>
 TNode<T>* TList<T>::last() const {
 	return pLast;
 }
-template <typename T>
-TNode<T>* TList<T>::stop() const {
-	return pStop;
-}
+//template <typename T>
+//TNode<T>* TList<T>::stop() const {
+//	return pStop;
+//}
 
 #endif // !TLIST_H
