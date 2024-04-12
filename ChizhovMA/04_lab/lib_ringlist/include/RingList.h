@@ -17,10 +17,6 @@ public:
 	TNode<T>* Search(const T& data);
 	void InsertFirst(const T& data);
 	void InsertEnd(const T& data);
-	void InsertAfter(const T& data, const T& beforedata);
-	void InsertBefore(const T& data, const T& nextdata);
-	void InsertBeforeCurr(const T& data);
-	void InsertAfterCurr(const T& data);
 	TNode<T>* GetCurrent();
 	void Remove(const T& data);
 	void Next();
@@ -140,59 +136,6 @@ void TRingList<T>::InsertEnd(const T& data)
 	TNode<T>* pNode = new TNode<T>(data, pHead);
 	pLast->pNext = pNode;
 	pLast = pNode;
-}
-template <typename T>
-void TRingList<T>::InsertAfter(const T& data, const T& beforedata)
-{
-	TNode<T>* pPrev = Search(beforedata);
-	if (pPrev != nullptr)
-	{
-		TNode<T>* pNode = new TNode<T>(data, pPrev->pNext);
-		pPrev->pNext = pNode;
-		if (pPrev == pLast)
-			pLast = pNode;
-	}
-	else
-	{
-		string msg = "Element not found!";
-		throw msg;
-	}
-}
-template <typename T>
-void TRingList<T>::InsertBefore(const T& data, const T& nextdata)
-{
-	TNode<T>* tmp = pFirst;
-	TNode<T>* pPrev = pHead;
-	while (tmp != pHead && tmp->data != nextdata)
-	{
-		pPrev = tmp;
-		tmp = tmp->pNext;
-	}
-	if (tmp != pHead)
-	{
-		TNode<T>* pNode = new TNode<T>(data, tmp);
-		pPrev->pNext = pNode;
-		if (tmp == pFirst)
-		{
-			pFirst = pNode;
-			pCurr = pFirst;
-		}
-	}
-	else
-	{
-		string msg = "Element not found!";
-		throw msg;
-	}
-}
-template <typename T>
-void TRingList<T>::InsertBeforeCurr(const T& data)
-{
-	InsertBefore(data, pCurr->data);
-}
-template <typename T>
-void TRingList<T>::InsertAfterCurr(const T& data)
-{
-	InsertAfter(data, pCurr->data);
 }
 template <typename T>
 TNode<T>* TRingList<T>::GetCurrent()

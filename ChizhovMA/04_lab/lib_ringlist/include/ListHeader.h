@@ -35,10 +35,10 @@ public:
 	virtual TNode<T>* Search(const T& data);
 	virtual void InsertFirst(const T& data);
 	virtual void InsertEnd(const T& data);
-	virtual void InsertAfter(const T& data, const T& beforedata);
-	virtual void InsertBefore(const T& data, const T& nextdata);
-	virtual void InsertBeforeCurr(const T& data);
-	virtual void InsertAfterCurr(const T& data);
+	void InsertAfter(const T& data, const T& beforedata);
+	void InsertBefore(const T& data, const T& nextdata);
+	void InsertBeforeCurr(const T& data);
+	void InsertAfterCurr(const T& data);
 	virtual void Remove(const T& data);
 	void Clear();
 	int GetSize() const;
