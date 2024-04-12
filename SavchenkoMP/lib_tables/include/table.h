@@ -31,46 +31,40 @@ public:
 
 template <class TKey, class TData>
 bool Table<TKey, TData>::IsFull() const {
-
-	throw "NOT IMPLEMENTED";
+	return (count == max_size);
 }
 
 template <class TKey, class TData>
 bool Table<TKey, TData>::IsEmpty() const {
-
-	throw "NOT IMPLEMENTED";
+	return (count == 0);
 }
 
 template <class TKey, class TData>
 bool Table<TKey, TData>::IsTabEnded() const {
-
-	throw "NOT IMPLEMENTED";
+	return (curr_pos >= max_size);
 }
 
 
 template <class TKey, class TData>
 bool Table<TKey, TData>::Reset() {
-
-	throw "NOT IMPLEMENTED";
+	curr_pos = 0;
 }
 
 template <class TKey, class TData>
 bool Table<TKey, TData>::Next() {
-
-	throw "NOT IMPLEMENTED";
+	curr_pos++;
+	if (IsTabEnded()) Reset();
 }
 
 
 template <class TKey, class TData>
 int Table<TKey, TData>::GetDataCount() const {
-
-	throw "NOT IMPLEMENTED";
+	return count;
 }
 
 template <class TKey, class TData>
 int Table<TKey, TData>::GetMaxSize() const {
-
-	throw "NOT IMPLEMENTED";
+	return max_size;
 }
 
 

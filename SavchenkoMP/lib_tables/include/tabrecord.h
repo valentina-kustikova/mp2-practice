@@ -7,28 +7,33 @@ class TabRecord {
 	TData* data;
 
 public:
-	TabRecord(const TKey& _key, const TData* _data);
+	TabRecord(const TKey& _key, TData* _data);
+	TabRecord(const TabRecord<TKey, TData>& tr);
 	TKey get_key() const;
 	TData* get_data() const;
 };
 
 
 template <class TKey, class TData>
-TabRecord<TKey, TData>::TabRecord(const TKey& _key, const TData* _data) {
+TabRecord<TKey, TData>::TabRecord(const TKey& _key, TData* _data) {
+	key = _key;
+	data = _data;
+}
 
-	throw "NOT IMPLEMENTED";
+template <class TKey, class TData>
+TabRecord<TKey, TData>::TabRecord(const TabRecord<TKey, TData>& tr) {
+	key = tr.key;
+	data = tr.data;
 }
 
 template <class TKey, class TData>
 TKey TabRecord<TKey, TData>::get_key() const {
-
-	throw "NOT IMPLEMENTED";
+	return key;
 }
 
 template <class TKey, class TData>
 TData* TabRecord<TKey, TData>::get_data() const {
-
-	throw "NOT IMPLEMENTED";
+	return data;
 }
 
 
