@@ -1,0 +1,48 @@
+05_lab "Table"
+ChangeLog
+==========
+
+## 2024.04.12
+
+### Добавлено
+ 
+ - Начало ведения списка изменений "ChangeLog"
+ 
+ - Описание классов
+	- TabRecord
+	- Table
+	- ScanTable
+	- SortedTable
+	- HashTable
+	- ArrayHashTable
+
+ - Библиотеки
+	- sortings
+	- xxh3
+	- lists
+	- polunoms
+
+ - Файлы для тестов
+
+
+
+==========
+ChangeLog.template
+
+## ГГГГ.ММ.ДД
+
+### Добавлено
+ 
+ - 
+
+### Изменено
+ 
+ - 
+
+### Исправлено
+ 
+ - 
+
+### Удалено
+ 
+ - 
