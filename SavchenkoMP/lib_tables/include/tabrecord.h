@@ -26,7 +26,7 @@ public:
 template <class TKey, class TData>
 TabRecord<TKey, TData>::TabRecord(const TKey& _key, TData* _data) {
 	key = _key;
-	data = _data;
+	data = _data; // ÍÀÄÎ ËÈ ÂÛÄÅËßÒÜ ÍÎÂÓŞ ÏÀÌßÒÜ?
 }
 
 template <class TKey, class TData>
@@ -48,7 +48,7 @@ TData* TabRecord<TKey, TData>::GetData() const {
 template <class TKey, class TData>
 const TabRecord<TKey, TData>& TabRecord<TKey, TData>::operator=(const TabRecord<TKey, TData>& tr) {
 	key = tr.key;
-	data = tr.data;
+	data = tr.data; // ÍÀÄÎ ËÈ ÂÛÄÅËßÒÜ ÍÎÂÓŞ ÏÀÌßÒÜ?
 
 	return (*this);
 }
