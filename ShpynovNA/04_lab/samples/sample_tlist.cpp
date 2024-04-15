@@ -17,33 +17,33 @@ void main() {
 	cout << "got ";
 	list.reset();
 	while (!list.IsEnded()) {
-		cout << list.pCurrent->data << " ";
+		cout << list.GetCurrent()->data << " ";
 		list.next();
 	}
 	cout << endl;
 	list.reset();
 	try { list.next(); }
 	catch(...){}
-	cout << "now lets put a new integer after " << list.pCurrent->data<<": ";
-	int tmp = list.pCurrent->data;
+	cout << "now lets put a new integer after " << list.GetCurrent()->data<<": ";
+	int tmp = list.GetCurrent()->data;
 	cin >> a;
 	list.InsertAfter(tmp, a);
 	cout << "got ";
 	list.reset();
 	while (!list.IsEnded()) {
-		cout << list.pCurrent->data << " ";
+		cout << list.GetCurrent()->data << " ";
 		list.next();
 	}
 	list.reset();
 	list.next();
-	cout << "now lets put a new integer before " << list.pCurrent->data<<": ";
-	tmp = list.pCurrent->data;
+	cout << "now lets put a new integer before " << list.GetCurrent()->data<<": ";
+	tmp = list.GetCurrent()->data;
 	cin >> a;
 	list.InsertBefore(tmp, a);
 	cout << "got ";
 	list.reset();
 	while (!list.IsEnded()) {
-		cout << list.pCurrent->data << " ";
+		cout << list.GetCurrent()->data << " ";
 		list.next();
 	}
 	list.reset();

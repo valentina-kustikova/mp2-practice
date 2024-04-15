@@ -40,6 +40,22 @@ TEST(TPolynomial, can_create_default_polynomial) {
 TEST(TPolynomial, can_create_polynomial_from_string) {
 	EXPECT_NO_THROW(TPolynomial("5x^2*y^3*z^4+11*x^3+7"));
 }
+TEST(TPolynomial, can_create_constant) {
+	EXPECT_NO_THROW(TPolynomial("7"));
+}
+TEST(TPolynomial, constant_correct) {
+	TestPolynomial tmp = TPolynomial("7");
+	tmp.monomials.reset();
+	EXPECT_EQ(tmp.monomials.GetCurrent()->data.coef, 7);
+}
+TEST(TPolynomial, can_create_zero) {
+	EXPECT_NO_THROW(TPolynomial("0"));
+}
+TEST(TPolynomial, zero_correct) {
+	TestPolynomial tmp = TPolynomial("0");
+	tmp.monomials.reset();
+	EXPECT_EQ(tmp.monomials.GetCurrent()->data.coef, 0);
+}
 TEST(TPolynomial, can_create_polynomial_from_list) {
 	TestPolynomial tmp = TPolynomial("5x^2*y^3*z^4+11*x^3+7");
 
@@ -110,14 +126,44 @@ TEST(TPolynomial, can_deriv_x) {
 	TPolynomial tmp1 = TPolynomial("10*x^1*y^3*z^4+33*x^2");
 	EXPECT_EQ(tmp.DerivativeX(), tmp1);
 }
+TEST(TPolynomial, can_deriv_x_if_no_x_is_present) {
+	TPolynomial tmp = TPolynomial("5*y^3*z^4+11");
+	TPolynomial tmp1 = TPolynomial("0");
+	EXPECT_EQ(tmp.DerivativeX(), tmp1);
+}
+TEST(TPolynomial, can_deriv_x_if_no_variables_is_present) {
+	TPolynomial tmp = TPolynomial("5+11");
+	TPolynomial tmp1 = TPolynomial("0");
+	EXPECT_EQ(tmp.DerivativeX(), tmp1);
+}
 TEST(TPolynomial, can_deriv_y) {
 	TPolynomial tmp = TPolynomial("5x^2*y^3*z^4+11*x^3+7");
 	TPolynomial tmp1 = TPolynomial("15x^2*y^2*z^4");
 	EXPECT_EQ(tmp.DerivativeY(), tmp1);
 }
+TEST(TPolynomial, can_deriv_y_if_no_y_is_present) {
+	TPolynomial tmp = TPolynomial("5*x^3*z^4+11");
+	TPolynomial tmp1 = TPolynomial("0");
+	EXPECT_EQ(tmp.DerivativeY(), tmp1);
+}
+TEST(TPolynomial, can_deriv_y_if_no_variables_is_present) {
+	TPolynomial tmp = TPolynomial("5+11");
+	TPolynomial tmp1 = TPolynomial("0");
+	EXPECT_EQ(tmp.DerivativeY(), tmp1);
+}
 TEST(TPolynomial, can_deriv_z) {
 	TPolynomial tmp = TPolynomial("5x^2*y^3*z^4+11*x^3+7");
 	TPolynomial tmp1 = TPolynomial("20*x^2*y^3*z^3");
+	EXPECT_EQ(tmp.DerivativeZ(), tmp1);
+}
+TEST(TPolynomial, can_deriv_z_if_no_z_is_present) {
+	TPolynomial tmp = TPolynomial("5*y^3*x^4+11");
+	TPolynomial tmp1 = TPolynomial("0");
+	EXPECT_EQ(tmp.DerivativeZ(), tmp1);
+}
+TEST(TPolynomial, can_deriv_z_if_no_variables_is_present) {
+	TPolynomial tmp = TPolynomial("5+11");
+	TPolynomial tmp1 = TPolynomial("0");
 	EXPECT_EQ(tmp.DerivativeZ(), tmp1);
 }
 TEST(TPolynomial, can_assign_polynomial) {
