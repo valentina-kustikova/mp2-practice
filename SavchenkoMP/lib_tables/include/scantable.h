@@ -64,7 +64,7 @@ ScanTable<TKey, TData>::~ScanTable() {
 		delete recs;
 	}*/
 	if (recs != nullptr) {
-		for (int i = 0; i < count; i++)
+		for (int i = 0; i < count; i++) // ÏÐÀÂÈËÜÍÎ ÈÄÒÈ ÄÎ count? ÍÅ ÁÓÄÅÒ ËÈ ÓÒÅ×ÊÈ ÏÀÌßÒÈ?
 			if (recs[i] != nullptr) delete recs[i];
 		delete recs;
 	}
