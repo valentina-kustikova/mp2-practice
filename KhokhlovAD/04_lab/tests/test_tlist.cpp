@@ -1,22 +1,33 @@
 #include "tlist.h"
 #include <gtest.h>
 
-//constructors/destructor
-/////////////////////////////////////////////////
-TEST(TList, can_create_emrty_list)
+/*
+virtual void Sort();
+
+virtual void DeleteBefore(const TNode<T>* before_node);
+virtual void DeleteAfter(const TNode<T>* after_node);
+virtual void DeleteData(const T& data);
+
+virtual TList<T>& operator=(const TList<T>& pList);
+*/
+
+
+//constructors
+///////////////////////////////////////
+TEST(TList, can_create_list)
 {
 	ASSERT_NO_THROW(TList<int> a);
-}
-
-TEST(TList, can_copy_node)
-{
-	TNode<int>* a = new TNode<int>(2);
-	ASSERT_NO_THROW(TList<int> b(a));
 }
 
 TEST(TList, can_copy_list)
 {
 	TList<int> a;
+	ASSERT_NO_THROW(TList<int> b(a));
+}
+
+TEST(TList, can_copy_node)
+{
+	TNode<int>* a = new TNode<int>(2);
 	ASSERT_NO_THROW(TList<int> b(a));
 }
 
@@ -26,26 +37,166 @@ TEST(TList, destructor)
 	TList<int> b(a);
 	ASSERT_NO_THROW(b.clear());
 }
-/////////////////////////////////////////////////
+///////////////////////////////////////
 
 
-//empty
-/////////////////////////////////////////////////
+//bool
+///////////////////////////////////////
 TEST(TList, empty_list_is_empty)
 {
-	TList<int> b;
-	ASSERT_TRUE(b.isEmpty());
+	TList<int> a;
+	ASSERT_TRUE(a.IsEmpty());
 }
 
 TEST(TList, not_empty_list_isnt_empty)
 {
 	TNode<int>* a = new TNode<int>(2);
 	TList<int> b(a);
-	ASSERT_FALSE(b.isEmpty());
+	ASSERT_FALSE(b.IsEmpty());
 }
-/////////////////////////////////////////////////
 
-//end
-/////////////////////////////////////////////////
+TEST(TList, empty_list_isnt_fool)
+{
+	TList<int> a;
+	ASSERT_FALSE(a.IsFool());
+}
 
-/////////////////////////////////////////////////
+TEST(TList, not_empty_list_isnt_fool)
+{
+	TNode<int>* a = new TNode<int>(2);
+	TList<int> b(a);
+	ASSERT_FALSE(b.IsFool());
+}
+
+TEST(TList, empty_list_isend)
+{
+	TList<int> a;
+	ASSERT_TRUE(a.IsEnd());
+}
+
+TEST(TList, one_elem_list_isntend)
+{
+	TNode<int>* a = new TNode<int>(2);
+	TList<int> b(a);
+	ASSERT_FALSE(b.IsEnd());
+}
+
+TEST(TList, one_elem_list_isend)
+{
+	TNode<int>* a = new TNode<int>(2);
+	TList<int> b(a);
+	b.Next();
+	ASSERT_TRUE(b.IsEnd());
+}
+///////////////////////////////////////
+
+
+//search
+///////////////////////////////////////
+TEST(TList, search)
+{
+	TNode<int>* a = new TNode<int>(2);
+	TList<int> b(a);
+	b.InsertLast(3);
+	ASSERT_NO_THROW(b.search(2));
+}
+///////////////////////////////////////
+
+//insert
+///////////////////////////////////////
+TEST(TList, insert_first)
+{
+	TNode<int>* a = new TNode<int>(2);
+	TList<int> b(a);
+	int c = 3;
+	b.InsertFirst(c);
+	ASSERT_EQ(b.get_pFirst(), c);
+}
+
+TEST(TList, insert_last)
+{
+	TNode<int>* a = new TNode<int>(2);
+	TList<int> b(a);
+	int c = 3;
+	b.InsertLast(c);
+	ASSERT_EQ(b.get_pLast(), c);
+}
+
+TEST(TList, insert_before)
+{
+	TNode<int>* a = new TNode<int>(2);
+	TList<int> c(a);
+	c.InsertFirst(3);
+	c.InsertBefore(4, c.search(a->data));
+	c.Next();
+	ASSERT_EQ(4, c.get_pCurr());
+}
+
+TEST(TList, insert_after)
+{
+	TNode<int>* a = new TNode<int>(2);
+	TList<int> c(a);
+	c.InsertLast(3);
+	c.InsertAfter(4, c.search(a->data));
+	c.Next();
+	ASSERT_EQ(4, c.get_pCurr());
+}
+
+TEST(TList, insert_before_current)
+{
+	TNode<int>* a = new TNode<int>(2);
+	TList<int> c(a);
+	c.InsertLast(3);
+	c.Next();
+	c.InsertBeforeCurrent(4);
+	c.Next();
+	ASSERT_EQ(4, c.get_pCurr());
+}
+
+TEST(TList, insert_after_current)
+{
+	TNode<int>* a = new TNode<int>(2);
+	TList<int> c(a);
+	c.InsertLast(3);
+	c.InsertAfterCurrent(4);
+	c.Next();
+	ASSERT_EQ(4, c.get_pCurr());
+}
+///////////////////////////////////////
+
+//delete
+///////////////////////////////////////
+TEST(TList, delete_first)
+{
+	TNode<int>* a = new TNode<int>(2);
+	TList<int> c(a);
+	c.InsertFirst(3);
+	ASSERT_NO_THROW(c.DeleteFirst());
+}
+
+TEST(TList, delete_first1)
+{
+	TNode<int>* a = new TNode<int>(2);
+	TList<int> c(a);
+	c.InsertFirst(3);
+	c.DeleteFirst();
+	ASSERT_ANY_THROW(c.search(3));
+}
+
+TEST(TList, delete_last)
+{
+	TNode<int>* a = new TNode<int>(2);
+	TList<int> c(a);
+	c.InsertLast(3);
+	ASSERT_NO_THROW(c.DeleteLast());
+}
+
+TEST(TList, delete_last1)
+{
+	TNode<int>* a = new TNode<int>(2);
+	TList<int> c(a);
+	c.InsertLast(3);
+	c.DeleteLast();
+	ASSERT_ANY_THROW(c.search(3));
+}
+///////////////////////////////////////

@@ -7,6 +7,7 @@ struct TNode
 {
 	T data;
 	TNode<T>* pNext;
+	TNode() { pNext = nullptr; };
 	TNode(const T& dat) : data(dat), pNext(nullptr) {};
 
 	bool operator<(const TNode<T>& nd)const;
