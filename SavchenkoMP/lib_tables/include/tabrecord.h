@@ -30,9 +30,9 @@ TabRecord<TKey, TData>::TabRecord(const TKey& _key, TData* _data) {
 }
 
 template <class TKey, class TData>
-TabRecord<TKey, TData>::TabRecord(const TabRecord<TKey, TData>& tr) {
+TabRecord<TKey, TData>::TabRecord(const TabRecord<TKey, TData>& tr) { 
 	key = tr.key;
-	data = tr.data;
+	data = tr.data; // ÍÀÄÎ ËÈ ÂÛÄÅËßÒÜ ÍÎÂÓŞ ÏÀÌßÒÜ?
 }
 
 template <class TKey, class TData>

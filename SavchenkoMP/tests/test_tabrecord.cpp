@@ -16,7 +16,7 @@ TEST(TabRecord, TEST_NAME) {
 //	int key = 1;
 //	string* data = new string("a");
 //	
-//	ASSERT_NO_THROW(TabRecord<int, string> tr(key, data));
+//	ASSERT_NO_THROW(TabRecord<int, string> tr(key, data)); // йюй гюохумсрэ б ASSERT_NO_THROW йкюяя я дбслъ рхоюлх?
 //}
 
 // CopyConstructorTest

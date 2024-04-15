@@ -125,7 +125,7 @@ TabRecord<TKey, TData>* ScanTable<TKey, TData>::Find(const TKey& key) {
 
 
 template <class TKey, class TData>
-TKey ScanTable<TKey, TData>::GetKey() const { // recs[curr_pos]->key ???
+TKey ScanTable<TKey, TData>::GetKey() const { // recs[curr_pos]->key ??? 
 	if (IsEmpty()) {
 		std::string exp = "ERROR: Table is empty.";
 		//string exp = "ERROR: Table is empty.";
@@ -138,7 +138,7 @@ TKey ScanTable<TKey, TData>::GetKey() const { // recs[curr_pos]->key ???
 		throw exp;
 	}
 
-	return recs[curr_pos]->GetKey();
+	return recs[curr_pos]->GetKey(); // бнгбпюыюеряъ рейсыхи йкчв?
 }
 
 template <class TKey, class TData>
@@ -155,7 +155,7 @@ TData* ScanTable<TKey, TData>::GetData() const { // recs[curr_pos]->data ???
 		throw exp;
 	}
 
-	return recs[curr_pos]->GetData();
+	return recs[curr_pos]->GetData(); // бнгбпюыюеряъ рейсыхе дюммше?
 }
 
 #endif // !SCANTABLE_H
