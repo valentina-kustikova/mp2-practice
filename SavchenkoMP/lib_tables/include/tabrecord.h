@@ -9,8 +9,17 @@ class TabRecord {
 public:
 	TabRecord(const TKey& _key, TData* _data);
 	TabRecord(const TabRecord<TKey, TData>& tr);
-	TKey get_key() const;
-	TData* get_data() const;
+	TKey GetKey() const;
+	TData* GetData() const;
+
+	const TabRecord<TKey, TData>& operator=(const TabRecord<TKey, TData>& tr);
+
+	/*bool operarator==(const TabRecord<TKey, TData>&tr) const;
+	bool operarator!=(const TabRecord<TKey, TData>&tr) const;
+	bool operarator<(const TabRecord<TKey, TData>&tr) const;
+	bool operarator>(const TabRecord<TKey, TData>& tr) const;
+	bool operarator<(const TabRecord<TKey, TData>& tr) const;
+	bool operarator>(const TabRecord<TKey, TData>& tr) const;*/
 };
 
 
@@ -27,13 +36,21 @@ TabRecord<TKey, TData>::TabRecord(const TabRecord<TKey, TData>& tr) {
 }
 
 template <class TKey, class TData>
-TKey TabRecord<TKey, TData>::get_key() const {
+TKey TabRecord<TKey, TData>::GetKey() const {
 	return key;
 }
 
 template <class TKey, class TData>
-TData* TabRecord<TKey, TData>::get_data() const {
+TData* TabRecord<TKey, TData>::GetData() const {
 	return data;
+}
+
+template <class TKey, class TData>
+const TabRecord<TKey, TData>& TabRecord<TKey, TData>::operator=(const TabRecord<TKey, TData>& tr) {
+	key = tr.key;
+	data = tr.data;
+
+	return (*this);
 }
 
 

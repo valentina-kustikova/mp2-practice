@@ -8,60 +8,155 @@ template <class TKey, class TData>
 class SortedTable : public ScanTable<TKey, TData> {
 private:
 	void Sort();
+	int partition(int start, int pivot);
+	void quick_sort(int start, int end);
+	
+	void swap(TabRecord<TKey, TData>& a, TabRecord<TKey, TData>& b);
+	bool is_sorted();
 
 public:
 	SortedTable(int _max_size);
 	SortedTable(const ScanTable<TKey, TData>* st);
 	SortedTable(const SortedTable<TKey, TData>& srt);
 
+	TabRecord<TKey, TData>* Find(const TKey& key);
 	void Insert(const TKey& _key, const TData* _data);
 	void Remove(const TKey& _key);
-	TabRecord<TKey, TData>* Find(const TKey& key);
 };
 
 
 template <class TKey, class TData>
 void SortedTable<TKey, TData>::Sort() {
+	quick_sort(0, count);
+}
 
-	throw "NOT IMPLEMENTED";
+template <class TKey, class TData>
+int SortedTable<TKey, TData>::partition(int start, int pivot) {
+	int i = start;
+	while (i < pivot) {
+		if (recs[i]->GetKey() > recs[pivot]->GetKey() && i == pivot - 1) {
+			swap(recs[i], recs[pivot]);
+			pivot--;
+		}
+
+		else if (recs[i]->GetKey() > recs[pivot]->GetKey()) {
+			swap(recs[pivot - 1], recs[pivot]);
+			swap(recs[i], recs[pivot]);
+			i--;
+		}
+
+		else i++
+	}
+	return pivot
+}
+
+template <class TKey, class TData>
+void SortedTable<TKey, TData>::quick_sort(int start, int end) {
+	if (start < end)
+	{
+		int pivot = partition(start, end);
+
+		quick_sort(start, pivot - 1);
+		quick_sort(pivot + 1, end);
+	}
 }
 
 
 template <class TKey, class TData>
-SortedTable<TKey, TData>::SortedTable(int _max_size) {
-
-	throw "NOT IMPLEMENTED";
+void SortedTable<TKey, TData>::swap(TabRecord<TKey, TData>& a, TabRecord<TKey, TData>& b) {
+	srt::swap(a, b);
+	//TabRecord<TKey, TData> tmp = a;
+	//a = b;
+	//b = tmp;
 }
 
 template <class TKey, class TData>
-SortedTable<TKey, TData>::SortedTable(const ScanTable<TKey, TData>* st) {
+bool SortedTable<TKey, TData>::is_sorted() {
+	bool flag = true;
+	for (int i = 0; i < max_size - 1; i++) {
+		if (recs[i]->GetKey() > recs[i + 1]->GetKey()) {
+			flag = false;
+			break;
+		}
+	}
+	return flag;
+}
 
-	throw "NOT IMPLEMENTED";
+
+template <class TKey, class TData>
+SortedTable<TKey, TData>::SortedTable(int _max_size) : ScanTable(_max_size) {}
+
+template <class TKey, class TData>
+SortedTable<TKey, TData>::SortedTable(const ScanTable<TKey, TData>* st) : ScanTable(*st) {
+	if (!is_sorted()) Sort();
 }
 
 template <class TKey, class TData>
 SortedTable<TKey, TData>::SortedTable(const SortedTable<TKey, TData>& srt) {
+	count = srt.count;
+	max_size = srt.max_size;
+	curr_pos = srt.max_size;
 
-	throw "NOT IMPLEMENTED";
+	recs = new TabRecord<TKey, TData>* [max_size];
+	for (int i = 0; i < count; i++) {
+		recs[i] = new TabRecord<TKey, TData>(*recs[i]);
+	}
 }
 
 
 template <class TKey, class TData>
-void SortedTable<TKey, TData>::Insert(const TKey& _key, const TData* _data) {
+TabRecord<TKey, TData>* SortedTable<TKey, TData>::Find(const TKey& key) {
+	int left = 0, right = count - 1;
+	TabRecord<TKey, TData>* search = nullptr;
 
-	throw "NOT IMPLEMENTED";
+	while (left <= right) {
+		int mid = (right + left) / 2;
+		
+		if (recs[mid]->key == key) {
+			search = recs[mid];
+			right = mid;
+			left = mid + 1;
+		}
+		else if (recs[mid]->key < key) left = mid + 1;
+		else right = mid - 1;
+	}
+	curr_pos = right;
+	return search;
+}
+
+template <class TKey, class TData>
+void SortedTable<TKey, TData>::Insert(const TKey& _key, const TData* _data) {
+	if (IsFull()) {
+		std::string exp = "ERROR: Table is full.";
+		throw exp;
+	}
+
+	Find(_key);
+	for (int i = count - 1; i >= currpos; i--) {
+		recs[i + 1] = recs[i];
+	}
+	recs[curr_pos] = new TabRecord<TKey, TData>(_key, _data);
 }
 
 template <class TKey, class TData>
 void SortedTable<TKey, TData>::Remove(const TKey& _key) {
+	if (IsEmpty()) {
+		std::string exp = "ERROR: Table is empty.";
+		throw exp;
+	}
 
-	throw "NOT IMPLEMENTED";
-}
-
-template <class TKey, class TData>
-TabRecord<TKey, TData>* SortedTable<TKey, TData>::Find(const TKey& key) {
-
-	throw "NOT IMPLEMENTED";
+	TabRecord<TKey, TData>* rec = Find(_key);
+	if (rec == nullptr) {
+		std::string exp = "ERROR: Key nod found.";
+		throw exp;
+	}
+	else {
+		delete rec;
+		for (int i = curr_pos; i < count - 1; i++) {
+			recs[i] = recs[i + 1];
+		}
+		count--;
+	}
 }
 
 #endif // !SORTEDTABLE_H

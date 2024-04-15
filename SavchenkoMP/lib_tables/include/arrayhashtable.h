@@ -13,7 +13,6 @@ protected:
 	int free_pos_ind;
 
 	size_t get_next_pos(size_t ind);
-	size_t hash_func(const TKey& key);
 
 public:
 	ArrayHashTable(size_t _max_size, size_t _hash_step);
@@ -34,12 +33,6 @@ public:
 
 template <class TKey, class TData>
 size_t ArrayHashTable<TKey, TData>::get_next_pos(size_t ind) {
-
-	throw "NOT IMPLEMENTED";
-}
-
-template <class TKey, class TData>
-size_t ArrayHashTable<TKey, TData>::hash_func(const TKey& key) {
 
 	throw "NOT IMPLEMENTED";
 }
