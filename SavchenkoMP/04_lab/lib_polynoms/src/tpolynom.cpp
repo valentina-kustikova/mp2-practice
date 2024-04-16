@@ -195,12 +195,16 @@ void TPolynom::ToMonoms(vector<string>& _lexems) {
 			lexems.push_back(token);
 		}
 	}
-
+	int flag = 1;
 	for (int i = 0; i < lexems.size(); i++) {
 		if (lexems[i] == "+" || lexems[i] == "-") {
 			TMonom monom(next_const_sign * coeff, degX, degY, degZ);
-			AddMonom(monom);
-
+			if (flag == 1) {
+				monoms->InsertFirst(monom);
+			}
+			else {
+				AddMonom(monom);
+			}
 			if (lexems[i] == "+") next_const_sign = 1;
 			else next_const_sign = -1;
 			coeff = 1;
@@ -266,7 +270,12 @@ void TPolynom::ToMonoms(vector<string>& _lexems) {
 	}
 
 	TMonom monom(next_const_sign * coeff, degX, degY, degZ);
-	AddMonom(monom);
+	if (flag == 1) {
+		monoms->InsertFirst(monom);
+	}
+	else {
+		AddMonom(monom);
+	}
 }
 
 
@@ -315,11 +324,19 @@ TPolynom::TPolynom(const string& _name) {
 TPolynom::TPolynom(TRingList<TMonom>& ringlist) {
 	//monoms = new TRingList<TMonom>(ringlist); // опнбепхрэ мю сонпъднвеммнярэ
 	monoms = new TRingList<TMonom>;
+	int flag = 1;
 
 	ringlist.Reset();
 	while (!ringlist.IsEnded()) {
-		AddMonom(ringlist.GetCurrent()->key);
-		ringlist.Next();
+		if (flag == 1) {
+			monoms->InsertFirst(ringlist.GetCurrent()->key);
+			ringlist.Next();
+		}
+		else {
+			AddMonom(ringlist.GetCurrent()->key);
+			ringlist.Next();
+		}
+		
 	}
 	ringlist.Reset();
 }

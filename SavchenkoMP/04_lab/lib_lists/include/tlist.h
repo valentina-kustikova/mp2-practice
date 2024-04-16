@@ -299,7 +299,7 @@ template <typename T>
 size_t TList<T>::GetSize() const {
 	size_t size = 0;
 	TNode<T>* tmp = pFirst;
-	while (tmp != pStop) {
+	while (tmp != pStop || tmp != nullptr) {
 		tmp = tmp->pNext;
 		++size;
 	}
@@ -309,7 +309,7 @@ size_t TList<T>::GetSize() const {
 template <typename T>
 bool TList<T>::IsFull() const {
 	TNode<T>* tmp = new TNode<T>;
-	if (tmp != pStop) {
+	if (tmp != pStop || tmp != nullptr) {
 		return false;
 	}
 	else {
@@ -319,7 +319,7 @@ bool TList<T>::IsFull() const {
 
 template <typename T>
 bool TList<T>::IsEmpty() const {
-	if (pFirst == pStop) return true;
+	if (pFirst == pStop || pFirst == nullptr) return true;
 	else return false;
 }
 
@@ -351,9 +351,7 @@ void TList<T>::Next(const int count) {
 
 template <typename T>
 bool TList<T>::IsEnded() const {
-	if (pCurr == pStop) return true;
-	//if (pCurr->pNext == pStop) return true;
-	else return false;
+	return (pCurr == pStop || pCurr == nullptr);
 }
 
 template <typename T>
