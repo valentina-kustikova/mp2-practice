@@ -16,14 +16,6 @@ struct TNode {
   }
 };
 
-// Add pPrev DONE
-// Rewrite Search (it should memorize previous TNode) DONE
-
-// Add RemoveFirst DONE
-// It will be redifined in THeadRingList
-// SO Remove - Not!
-
-// Delete Getters and Setters!!! DONE
 template <typename TData>
 class TList {
 protected:
@@ -50,7 +42,7 @@ public:
   void Next();
   TNode<TData>* GetCurr() const;
   TNode<TData>* GetPrev() const;
-  bool IsEnded() const;
+  virtual bool IsEnded() const;
   bool IsEmpty() const;
   bool IsFull() const;
 };
@@ -249,6 +241,7 @@ void TList<TData>::Remove(const TData& where)
 	if (pWhere == pLast)
 	{
 		pPrev->pNext = pStop;
+    pLast = pPrev;
     pCurr = pStop;
 		delete pWhere;
 		return;
@@ -282,42 +275,3 @@ template <typename TData>
 TNode<TData>* TList<TData>::GetPrev() const {
 	return pPrev;
 }
-
-// template <typename TData>
-// TNode<TData>* TList<TData>::GetFirst() const {
-  // return pFirst;
-// }
-
-// template <typename TData>
-// TNode<TData>* TList<TData>::GetLast() const {
-  // return pLast;
-// }
-
-// template <typename TData>
-// TNode<TData>* TList<TData>::GetStop() const {
-  // return pStop;
-// }
-
-// template <typename TData>
-// void TList<TData>::SetCurr(const TNode<TData>* node) {
-  // pCurr->data = node->data;
-  // pCurr->pNext = node->pNext;
-// }
-
-// template <typename TData>
-// void TList<TData>::SetFirst(const TNode<TData>* node) {
-  // pFirst->data = node->data;
-  // pFirst->pNext = node->pNext;
-// }
-
-// template <typename TData>
-// void TList<TData>::SetLast(const TNode<TData>* node) {
-  // pLast->data = node->data;
-  // pLast->pNext = node->pNext;
-// }
-
-// template <typename TData>
-// void TList<TData>::SetStop(const TNode<TData>* node) {
-  // pStop->data = node->data;
-  // pStop->pNext = node->pNext;
-// }

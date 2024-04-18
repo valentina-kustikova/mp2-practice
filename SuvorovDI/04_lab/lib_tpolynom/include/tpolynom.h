@@ -13,16 +13,16 @@ protected:
   THeadRingList<TMonom> monoms;
 
   void tokinize_polynom(const std::string& name);
+  bool check_each_char_is_correct(const std::string& name);
   void InsertToSort(const TMonom& monom);
 public:
   TPolynom() : monoms() {}
   TPolynom(const std::string& name);
   TPolynom(const THeadRingList<TMonom>& l);
-  TPolynom(const std::string& name, const TPolynom& p);
   TPolynom(const TPolynom& p);
   ~TPolynom() = default;
   
-  friend TPolynom operator-(const TPolynom& i);
+  friend TPolynom operator-(const TPolynom& p);
   TPolynom operator+(const TPolynom& p);
   TPolynom operator-(const TPolynom& p);
   TPolynom operator*(const TPolynom& p);
@@ -38,6 +38,10 @@ public:
   const TPolynom& operator=(const TPolynom& p);
 
   friend std::ostream& operator<< (std::ostream& out, TPolynom& pol) {
+    if (pol.monoms.IsEmpty()) {
+      out << "Empty!" << "\n";
+      return out;
+    }
 	  pol.monoms.Reset();
     while (!pol.monoms.IsEnded()) {
 		  out << pol.monoms.GetCurr()->data;

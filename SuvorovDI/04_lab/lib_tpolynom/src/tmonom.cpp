@@ -6,7 +6,7 @@ TMonom::TMonom() {
 }
 
 TMonom::TMonom(double coeff, int16_t degree) {
-  if (degree > 999) throw std::exception("BadDegree!\n");
+  if (degree > 999 || degree < 0) throw std::exception("BadDegree!\n");
   coeff_ = coeff;
   degree_ = degree;
 }

@@ -2,14 +2,22 @@
 
 TPolynom::TPolynom(const std::string& name) : monoms() {
   this->name = name;
+  bool res = check_each_char_is_correct(name);
   tokinize_polynom(name);
 }
  
 TPolynom::TPolynom(const THeadRingList<TMonom>& l) : monoms(l) {}
 
-TPolynom::TPolynom(const std::string& name, const TPolynom& p) : monoms(p.monoms), name(p.name) {}
-
 TPolynom::TPolynom(const TPolynom& p) : monoms(p.monoms), name(p.name) {}
+
+bool TPolynom::check_each_char_is_correct(const std::string& name) {
+  std::string correct = "0123456789xyz*^+-";
+  for (char ch : name) {
+    if (correct.find(ch) == std::string::npos) return false;
+  }
+
+  return true;
+}
 
 void TPolynom::InsertToSort(const TMonom& monom) {
   monoms.Reset();
@@ -28,6 +36,9 @@ void TPolynom::InsertToSort(const TMonom& monom) {
   
 	if (monoms.GetCurr()->data == monom) {
 		monoms.GetCurr()->data.coeff_ = monoms.GetCurr()->data.coeff_ + monom.coeff_;
+    if (monoms.GetCurr()->data.coeff_ == 0) {
+      monoms.Remove(monoms.GetCurr()->data);
+    }
 		return;
 	}
 	monoms.InsertBefore(monom, monoms.GetCurr()->data);
@@ -37,10 +48,18 @@ std::string TPolynom::ToString() const {
 	std::string str;
 	TPolynom new_this(*this);
 	if (new_this.monoms.IsEmpty()) {
-		return "0";
+		return "EMPTY!";
 	}
 	bool firstTerm = true;
 	new_this.monoms.Reset();
+
+  if (new_this.monoms.GetCurr()->data.coeff_ == 0 
+      &&
+      new_this.monoms.GetCurr()->data.degree_ == 0
+    ) {
+    return "0";
+  }
+
 	while (!new_this.monoms.IsEnded()) {
 		int deg = new_this.monoms.GetCurr()->data.degree_;
 		double coeff = new_this.monoms.GetCurr()->data.coeff_;
@@ -61,9 +80,17 @@ std::string TPolynom::ToString() const {
 				str += std::string(buf);
 			}
 			std::string mul_symbol = ((abs(coeff) == 1) ? "" : "*");
-			if (x != 0) str += (mul_symbol + "x") + ((x != 1) ? "^" + std::to_string(x) : "");
-			if (y != 0) str += "*y" + ((y != 1) ? "^" + std::to_string(y) : "");
-			if (z != 0) str += "*z" + ((z != 1) ? "^" + std::to_string(z) : "");
+      if (x != 0) {
+        str += (mul_symbol + "x") + ((x != 1) ? "^" + std::to_string(x) : "");
+      }
+      if (y != 0) {
+        mul_symbol = (x == 0) ? mul_symbol : "*";
+        str += (mul_symbol + "y") + ((y != 1) ? "^" + std::to_string(y) : "");
+      }
+      if (z != 0) {
+        mul_symbol = (x == 0 && y == 0) ? mul_symbol : "*";
+        str += (mul_symbol + "z") + ((z != 1) ? "^" + std::to_string(z) : "");
+      }
 		}
 		new_this.monoms.Next();
 	}
@@ -71,41 +98,41 @@ std::string TPolynom::ToString() const {
 }
 
 TPolynom operator-(const TPolynom& p) {
-  std::string nm = p.name;
-  if (nm[0] != '-') nm = '+' + nm;
-  for (char& c : nm) {
-    if (c == '-') c = '+';
-    else if (c == '+') c = '-';
-  }
-  TPolynom negativePol(nm, p);
+  TPolynom negativePol(p);
 
   while (!negativePol.monoms.IsEnded()) {
     negativePol.monoms.GetCurr()->data.coeff_ = negativePol.monoms.GetCurr()->data.coeff_ * (-1);
     negativePol.monoms.Next();
   }
-
+  negativePol.name = negativePol.ToString();
   return negativePol;
 }
 
 TPolynom TPolynom::operator+(const TPolynom& p) {
-  std::string nm = p.name;
-  if (nm[0] != '-' && nm[0] != '+') nm = '+' + nm;
-  TPolynom res(name + nm, p);
+  TPolynom res(p);
   
   monoms.Reset();
   while (!monoms.IsEnded()) {
     res.InsertToSort(monoms.GetCurr()->data);
     monoms.Next();
   }
-
+  if (res.monoms.IsEmpty()) {
+    res = TPolynom("0");
+  }
+  res.name = res.ToString();
   return res;
 }
  
 TPolynom TPolynom::operator-(const TPolynom& p) {
-  return this->operator+(-p);
+  TPolynom res = (*this) + (-p);
+  if (res.monoms.IsEmpty()) {
+    res = TPolynom("0");
+  }
+  res.name = res.ToString();
+  return res;
 }
  
-TPolynom TPolynom::operator*(const TPolynom& p) { // const
+TPolynom TPolynom::operator*(const TPolynom& p) {
   TPolynom res_pol;
   TPolynom tmp_p(p);
 
@@ -121,12 +148,17 @@ TPolynom TPolynom::operator*(const TPolynom& p) { // const
       if (newDegree > 999) throw std::exception("invalid_degree");
 
       res_pol.InsertToSort(TMonom(newCoeff, newDegree));
-
       tmp_p.monoms.Next();
     }
 
     monoms.Next();
   }
+  
+  if (res_pol.monoms.IsEmpty()) {
+    res_pol = TPolynom("0");
+  }
+  
+  res_pol.name = res_pol.ToString();
   return res_pol;
 }
 
@@ -175,6 +207,10 @@ TPolynom TPolynom::dx() const {
 
     tmp_this.monoms.Next();
   }
+  if (dx_pol.monoms.IsEmpty()) {
+    dx_pol = TPolynom("0");
+  }
+
   return dx_pol;
 }
 
@@ -192,6 +228,10 @@ TPolynom TPolynom::dy() const {
 
     tmp_this.monoms.Next();
   }
+  if (dy_pol.monoms.IsEmpty()) {
+    dy_pol = TPolynom("0");
+  }
+
   return dy_pol;
 }
 
@@ -209,6 +249,10 @@ TPolynom TPolynom::dz() const {
 
     tmp_this.monoms.Next();
   }
+  if (dz_pol.monoms.IsEmpty()) {
+    dz_pol = TPolynom("0");
+  }
+
   return dz_pol;
 }
 
@@ -227,11 +271,16 @@ void TPolynom::tokinize_polynom(const std::string& name) {
 		int degree = 0;
 		size_t j = str.find_first_of("+-", 1);
 		std::string monom = str.substr(0, j);
+    if (monom[monom.length() - 1] == '^') {
+      throw std::exception("Negative degree");
+    }
 		str.erase(0, j);
+
 		std::string coefficent = monom.substr(0, monom.find_first_of("xyz"));
-		TMonom tmp(0.0, -1);
+		TMonom tmp;
 		tmp.coeff_ = (coefficent == "" || coefficent == "+") ? 1 : (coefficent == "-") ? -1 : stod(coefficent);
 		monom.erase(0, monom.find_first_of("xyz"));
+    
 		for (size_t i = 0; i < monom.size(); ++i) {
 			if (isalpha(monom[i])) {
 				int exp = 1;
@@ -259,7 +308,7 @@ void TPolynom::tokinize_polynom(const std::string& name) {
 			}
 		}
 		tmp.degree_ = degree;
-		if (tmp.coeff_ != 0) {
+		if (tmp.coeff_ != 0 || name == "0") {
 			this->InsertToSort(tmp);
 		}
 	}

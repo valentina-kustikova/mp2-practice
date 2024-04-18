@@ -17,6 +17,7 @@ public:
   void RemoveFirst();
   void InsertFirst(const TData& data);
   void InsertLast(const TData& data);
+  bool IsEnded() const;
 };
 
 template <typename TData>
@@ -92,4 +93,11 @@ const THeadRingList<TData>& THeadRingList<TData>::operator=(const THeadRingList<
 	pStop = nullptr;
 
   return *(this);
+}
+
+template <typename TData>
+bool THeadRingList<TData>::IsEnded() const {
+  if (IsEmpty())
+    return true;
+  return pCurr == pStop;
 }
