@@ -30,6 +30,7 @@ public:
 	void reset();
 	void next();
 	bool Is_Ended() const;
+	void swap(Node<T>*& pNode1, Node<T>*& pNode2);
 	Node<T>* getCurrent() const{ return pCurr; }
 	
 	friend ostream& operator<<(ostream& ostr, const TList<T>& l) {
@@ -84,7 +85,7 @@ TList<T>::TList(Node<T>* pFirst_) {
 
 template<typename T>
 TList<T>::TList(const TList<T>& list) { 
-	if (list.pFirst == nullptr) {
+	if (list.IsEmpty()) {
 		return;
 	}
 	pFirst = new Node<T>(list.pFirst->data);
@@ -146,7 +147,7 @@ void TList<T>::insert_first(const T& data_) {
 
 template<typename T>
 void TList<T>::insert_last(const T& data_) {
-	if (pFirst == nullptr) {
+	if (IsEmpty()) {
 		insert_first(data_);
 		return;
 	}
@@ -161,9 +162,8 @@ void TList<T>::insert_last(const T& data_) {
 
 template<typename T>
 void TList<T>::insert_before(const T& data_, const T& next_data_) {
-	if (pFirst == nullptr) {
-		insert_first(data_);
-		return;
+	if (IsEmpty()) {
+		throw "Data not found!";
 	}
 
 	Node<T>* tmp = search(next_data_);
@@ -184,10 +184,6 @@ void TList<T>::insert_before(const T& data_, const T& next_data_) {
 
 template<typename T>
 void TList<T>::insert_after(const T& data_, const T& next_data_) {
-	if (pFirst == nullptr) {
-		insert_first(data_);
-		return;
-	}
 	Node<T>* tmp = search(next_data_);
 	if (tmp == nullptr) {
 		throw "Data not found!";
@@ -206,26 +202,23 @@ void TList<T>::insert_after(const T& data_, const T& next_data_) {
 
 template<typename T>
 void TList<T>::insertion_sort(const T& data) {
-	while (!Is_Ended()) {
-		T comp_data = getCurrent()->data;
-		if (data <= comp_data) {
-			insert_before(data, comp_data);
-			reset();
-			break;
-		}
+	while (!Is_Ended() && getCurrent()->data <= data)
+	{
 		next();
 	}
-	if (Is_Ended()) {
+	if (Is_Ended())
+	{
 		insert_last(data);
-		reset();
 	}
+	else
+	{
+		insert_before(data, getCurrent()->data);
+	}
+	reset();
 }
 
 template<typename T>
 void TList<T>::remove(const T& data_) {
-	if (pFirst == nullptr) {
-		return;
-	}
 	Node<T>* tmp = search(data_);
 	if (tmp == nullptr) {
 		throw "Data not found!";
@@ -250,7 +243,7 @@ void TList<T>::remove(const T& data_) {
 
 template<typename T>
 void TList<T>::clear() {
-	if (pFirst == nullptr) {
+	if (IsEmpty()) {
 		return;
 	}
 	Node<T>* tmp = pFirst;
@@ -267,8 +260,15 @@ void TList<T>::clear() {
 }
 
 template<typename T>
+void TList<T>::swap(Node<T>*& pNode1, Node<T>*& pNode2) {
+	T tmp = pNode1->data;
+	pNode1->data = pNode2->data;
+	pNode2->data = tmp;
+}
+
+template<typename T>
 int TList<T>::GetSize()const {
-	if (pFirst == nullptr) {
+	if (IsEmpty()) {
 		return 0;
 	}
 	int count = 0;
@@ -282,14 +282,14 @@ int TList<T>::GetSize()const {
 
 template<typename T>
 bool TList<T>::IsEmpty()const {
-	return pFirst == nullptr ? true : false;
+	return (pFirst == nullptr) ? true : false;
 }
 
 template<typename T>
 bool TList<T>::IsFull()const {
 	Node<T>* tmp = new Node<T>();
 	if (tmp == nullptr) {
-		throw "Failed allocate memory!";
+		return true;
 	}
 	else { return false; }
 }
@@ -297,17 +297,18 @@ bool TList<T>::IsFull()const {
 template<typename T>
 void TList<T>::reset() {
 	pCurr = pFirst;
+	pPrev = nullptr;
 }
 
 template<typename T>
 void TList<T>::next() {
+	pPrev = pCurr;
 	pCurr = pCurr->pNext;
 }
 
 template<typename T>
 bool TList<T>::Is_Ended()const {
-	return pCurr == pStop ? true : false;
+	return (pCurr == pStop) ? true : false;
 }
-
 
 #endif

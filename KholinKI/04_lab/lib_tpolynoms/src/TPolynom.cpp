@@ -1,11 +1,10 @@
 ﻿#include "TPolynom.h"
-
 #include <string>
+
 TPolynom::TPolynom() {
 	monoms = new TRingList<TMonom>();
 	polynom = "";
 }
-
 
 
 TPolynom::TPolynom(const string& str) {
@@ -161,20 +160,7 @@ TPolynom::TPolynom(const string& str) {
 			else {
 				wrap_degree = degree_x * 100 + degree_y * 10 + degree_z;
 				TMonom m(coeff_monom, wrap_degree);
-				Node<TMonom>* found = monoms->search(m);
-				monoms->reset();
-				if (found != nullptr&& found != monoms->pStop) {
-					TMonom result = found->data + m;
-					if (result.coeff != 0) {
-						found->data = result;
-					}
-					if (result.coeff == 0) {
-						monoms->remove(found->data);
-					}
-				}
-				else {
-					monoms->insertion_sort(m);
-				}
+				monoms->insertion_sort(m);
 			}
 		}
 		degree_x = 0;
@@ -190,14 +176,24 @@ TPolynom::TPolynom(const string& str) {
 	if (monoms == nullptr && size != 0) {
 		monoms = new TRingList<TMonom>();
 	}
+	cite_similars();
 }
 
 TPolynom::TPolynom(const TRingList<TMonom>* monoms_list) {
 	monoms = new TRingList<TMonom>(*monoms_list);
-	string _polynom = "";
-	if (monoms->pFirst == nullptr) {
+	if (monoms->IsEmpty()) {
 		return;
 	}
+	Corrector();
+	CreatePolynomString();
+}
+
+string TPolynom::GetPolynomString()const {
+	return polynom;
+}
+
+void TPolynom::CreatePolynomString() {
+	string _polynom = "";
 	int degree_x = 0;
 	int degree_y = 0;
 	int degree_z = 0;
@@ -252,120 +248,59 @@ TPolynom::TPolynom(const TRingList<TMonom>* monoms_list) {
 	polynom = _polynom;
 }
 
-string TPolynom::GetPolynomString()const {
-	return polynom;
-}
-
 TPolynom::TPolynom(const TPolynom& obj) {
 	monoms = new TRingList<TMonom>(*obj.monoms);
-	polynom = obj.GetPolynomString();
+	polynom = obj.polynom;
 }
 
 TPolynom::~TPolynom() {
 	delete monoms;
-	polynom = "";
 }
-
-
 
 TPolynom TPolynom::operator+(const TPolynom& Q) {
 	TPolynom R;
 
-	while (!this->monoms->Is_Ended() && !Q.monoms->Is_Ended()) {
+	while (!this->monoms->Is_Ended() && !Q.monoms->Is_Ended()) 
+	{
 		TMonom mThis = this->monoms->getCurrent()->data;
 		TMonom mQ = Q.monoms->getCurrent()->data;
-		if (mThis.wrap_degree < mQ.wrap_degree) {
-			Node<TMonom>* pNode = R.monoms->search(mThis);
-			if (pNode == nullptr) {
-				R.monoms->insert_last(mThis);
-			}
-			this->monoms->next();
-		}
-		else if (mThis.wrap_degree > mQ.wrap_degree) {
-			Node<TMonom>* pNode = R.monoms->search(mQ);
-			if (pNode == nullptr) {
-				R.monoms->insert_last(mQ);
-			}
-			Q.monoms->next();
-		}
-		else{
+		if (mThis.wrap_degree == mQ.wrap_degree)
+		{
 			TMonom result = mThis + mQ;
-			Node<TMonom>* pNode = R.monoms->search(result);
-			if ( pNode == nullptr && result.coeff != 0) {
+			if (result.coeff != 0)
+			{
 				R.monoms->insert_last(result);
 			}
 			this->monoms->next();
 			Q.monoms->next();
 		}
-	}
-	if (this->monoms->Is_Ended() && !Q.monoms->Is_Ended()) {
-		while (!Q.monoms->Is_Ended()) {
-			TMonom mQ = Q.monoms->getCurrent()->data;
+		else if (mThis.wrap_degree < mQ.wrap_degree) 
+		{
+			R.monoms->insert_last(mThis);
+			this->monoms->next();
+		}
+		else
+		{
 			R.monoms->insert_last(mQ);
 			Q.monoms->next();
 		}
 	}
-	else if(Q.monoms->Is_Ended() && !this->monoms->Is_Ended()){
-		while (!this->monoms->Is_Ended()) {
-			TMonom mThis= this->monoms->getCurrent()->data;
-			R.monoms->insert_last(mThis);
-			this->monoms->next();
-		}
-	}
-	Q.monoms->reset();
-	this->monoms->reset();
-	return TPolynom(R.monoms);
-}
-
-TPolynom TPolynom::operator-(const TPolynom& Q) {
-	TPolynom R;
-
-	while (!this->monoms->Is_Ended() && !Q.monoms->Is_Ended()) {
-		TMonom mThis = this->monoms->getCurrent()->data;
+	while (!Q.monoms->Is_Ended()) 
+	{
 		TMonom mQ = Q.monoms->getCurrent()->data;
-		if (mThis.wrap_degree < mQ.wrap_degree) {
-			Node<TMonom>* pNode = R.monoms->search(mThis);
-			if (pNode == nullptr) {
-				R.monoms->insert_last(mThis);
-			}
-			this->monoms->next();
-		}
-		else if (mThis.wrap_degree > mQ.wrap_degree) {
-			Node<TMonom>* pNode = R.monoms->search(mQ);
-			if (pNode == nullptr) {
-				mQ = -mQ;
-				R.monoms->insert_last(mQ);
-			}
-			Q.monoms->next();
-		}
-		else {
-			TMonom result = mThis + (-mQ);
-			Node<TMonom>* pNode = R.monoms->search(result);
-			if (pNode == nullptr && result.coeff != 0) {
-				R.monoms->insert_last(result);
-			}
-			this->monoms->next();
-			Q.monoms->next();
-		}
+		R.monoms->insert_last(mQ);
+		Q.monoms->next();
 	}
-	if (this->monoms->Is_Ended() && !Q.monoms->Is_Ended()) {
-		while (!Q.monoms->Is_Ended()) {
-			TMonom mQ = Q.monoms->getCurrent()->data;
-			mQ = -mQ;
-			R.monoms->insert_last(mQ);
-			Q.monoms->next();
-		}
-	}
-	else if (Q.monoms->Is_Ended() && !this->monoms->Is_Ended()) {
-		while (!this->monoms->Is_Ended()) {
-			TMonom mThis = this->monoms->getCurrent()->data;
-			R.monoms->insert_last(mThis);
-			this->monoms->next();
-		}
+	while (!this->monoms->Is_Ended()) 
+	{
+		TMonom mThis= this->monoms->getCurrent()->data;
+		R.monoms->insert_last(mThis);
+		this->monoms->next();
 	}
 	Q.monoms->reset();
 	this->monoms->reset();
-	return TPolynom(R.monoms);
+	R.CreatePolynomString();
+	return R;
 }
 
 TPolynom TPolynom::operator*(const TPolynom& Q) {
@@ -374,49 +309,40 @@ TPolynom TPolynom::operator*(const TPolynom& Q) {
 		TMonom mThis = this->monoms->getCurrent()->data;
 		while(!Q.monoms->Is_Ended()) {
 			TMonom mQ = Q.monoms->getCurrent()->data;
+			TMonom m = mThis * mQ;
 			if (R.monoms->IsEmpty()) {
-				TMonom m = mThis * mQ;
-				R.monoms = new TRingList<TMonom>();
 				R.monoms->insert_first(m);
 				Q.monoms->next();
 			}
 			else {
-				TMonom result = mThis * mQ;
-				Node<TMonom>* pNode = R.monoms->search(result);
-				R.monoms->reset();
-				if (pNode != nullptr) {
-					pNode->data = pNode->data + result;
-					Q.monoms->next();
-				}
-				else {
-					R.monoms->insertion_sort(result);
-					Q.monoms->next();
-				}
+				R.monoms->insertion_sort(m);
+				Q.monoms->next();
 			}
 		}
 		Q.monoms->reset();
 		this->monoms->next();
 	}
 	this->monoms->reset();
-	return TPolynom(R.monoms);
+	R.cite_similars();
+	R.CreatePolynomString();
+	return R;
 }
 
 const TPolynom& TPolynom::operator=(const TPolynom& Q) {
-	polynom = Q.GetPolynomString();
-	int size = polynom.size();
-	if (size == 0) {
-		monoms = new TRingList<TMonom>();
+	if (this == &Q)
+	{
 		return *this;
 	}
-	TMonom mQ = Q.monoms->getCurrent()->data;
-	monoms = new TRingList<TMonom>(new Node<TMonom>(mQ));
-	Q.monoms->next();
-	Node<TMonom>* tmp_this = monoms->getCurrent();
+	polynom = Q.GetPolynomString();
+	monoms = new TRingList<TMonom>();
 	while (!Q.monoms->Is_Ended()) {
 		TMonom mQ = Q.monoms->getCurrent()->data;
 		monoms->insert_last(mQ);
 		Q.monoms->next();
+		monoms->next();
 	}
+	monoms->reset();
+	Q.monoms->reset();
 	return *this;
 }
 
@@ -427,7 +353,7 @@ bool TPolynom::operator==(const TPolynom& Q)const {
 	while (!Q.monoms->Is_Ended()) {
 		TMonom mThis = this->monoms->getCurrent()->data;
 		TMonom mQ = Q.monoms->getCurrent()->data;
-		if (mThis == mQ && mThis.coeff == mQ.coeff) {
+		if (mThis.wrap_degree == mQ.wrap_degree && mThis.coeff == mQ.coeff) {
 			monoms->next();
 			Q.monoms->next();
 		}
@@ -474,81 +400,84 @@ double TPolynom::operator()(double x, double y, double z) {
 
 
 TPolynom TPolynom::differentiate_by_x()const {
-	TPolynom R(*this);
+	TPolynom R;
 	int degree_x = 0;
 	int degree_y = 0;
 	int degree_z = 0;
 	int new_wrap_degree = 0;
-	while (!R.monoms->Is_Ended()) {
-		TMonom mR = R.monoms->getCurrent()->data;
-		degree_x = mR.wrap_degree / 100;
+	while (!this->monoms->Is_Ended()) {
+		TMonom mThis = this->monoms->getCurrent()->data;
+		degree_x = mThis.wrap_degree / 100;
 		if (degree_x == 0) {
-			R.monoms->remove(mR);
+			this->monoms->next();
 		}
 		else {
-			mR.coeff= mR.coeff * degree_x;
+			mThis.coeff= mThis.coeff * degree_x;
 			degree_x--;
-			degree_y = (mR.wrap_degree % 100) / 10;
-			degree_z = (mR.wrap_degree % 10);
-			mR.wrap_degree= degree_x * 100 + degree_y * 10 + degree_z;
-			R.monoms->getCurrent()->data = mR;
-			R.monoms->next();
+			degree_y = (mThis.wrap_degree % 100) / 10;
+			degree_z = (mThis.wrap_degree % 10);
+			mThis.wrap_degree= degree_x * 100 + degree_y * 10 + degree_z;
+			R.monoms->insert_last(mThis);
+			this->monoms->next();
 		}
 	}
-	R.monoms->reset();
-	return TPolynom(R.monoms);
+	this->monoms->reset();
+	R.CreatePolynomString();
+	return R;
 }
 
 TPolynom TPolynom::differentiate_by_y()const {
-	TPolynom R(*this);
+	TPolynom R;
 	int degree_x = 0;
 	int degree_y = 0;
 	int degree_z = 0;
 	int new_wrap_degree = 0;
-	while (!R.monoms->Is_Ended()) {
-		TMonom mR = R.monoms->getCurrent()->data;
-		degree_y = (mR.wrap_degree % 100) / 10;
+	while (!this->monoms->Is_Ended()) {
+		TMonom mThis = this->monoms->getCurrent()->data;
+		degree_y = (mThis.wrap_degree % 100) / 10;
 		if (degree_y == 0) {
-			R.monoms->remove(mR);
+			this->monoms->next();
 		}
 		else {
-			mR.coeff= mR.coeff * degree_y;
+			mThis.coeff= mThis.coeff * degree_y;
 			degree_y--;
-			degree_x = mR.wrap_degree / 100;
-			degree_z = (mR.wrap_degree % 10);
-			mR.wrap_degree= degree_x * 100 + degree_y * 10 + degree_z;
-			R.monoms->getCurrent()->data = mR;
-			R.monoms->next();
+			degree_x = mThis.wrap_degree / 100;
+			degree_z = (mThis.wrap_degree % 10);
+			mThis.wrap_degree= degree_x * 100 + degree_y * 10 + degree_z;
+			R.monoms->insert_last(mThis);
+			this->monoms->next();
 		}
 	}
-	R.monoms->reset();
-	return TPolynom(R.monoms);
+	this->monoms->reset();
+	R.CreatePolynomString();
+	return R;
 }
 TPolynom TPolynom::differentiate_by_z()const {
-	TPolynom R(*this);
+	TPolynom R;
 	int degree_x = 0;
 	int degree_y = 0;
 	int degree_z = 0;
 	int new_wrap_degree = 0;
-	while (!R.monoms->Is_Ended()) {
-		TMonom mR = R.monoms->getCurrent()->data;
-		degree_z = (mR.wrap_degree % 10);
+	while (!this->monoms->Is_Ended()) {
+		TMonom mThis = this->monoms->getCurrent()->data;
+		degree_z = (mThis.wrap_degree % 10);
 		if (degree_z == 0) {
-			R.monoms->remove(mR);
+			this->monoms->next();
 		}
 		else {
-			mR.coeff= mR.coeff * degree_z;
+			mThis.coeff= mThis.coeff * degree_z;
 			degree_z--;
-			degree_x = mR.wrap_degree / 100;
-			degree_y = (mR.wrap_degree % 100) / 10;
+			degree_x = mThis.wrap_degree / 100;
+			degree_y = (mThis.wrap_degree % 100) / 10;
 			new_wrap_degree = degree_x * 100 + degree_y * 10 + degree_z;
-			mR.wrap_degree=new_wrap_degree;
-			R.monoms->getCurrent()->data = mR;
-			R.monoms->next();
+			mThis.wrap_degree=new_wrap_degree;
+			R.monoms->insert_last(mThis);
+			this->monoms->next();
 		}
 	}
-	R.monoms->reset();
-	return TPolynom(R.monoms);
+	this->monoms->reset();
+	R.CreatePolynomString();
+	return R;
 }
 
 istream& operator>>(istream& istr, TPolynom& Q) {
@@ -643,5 +572,57 @@ ostream& operator<<(ostream& ostr, const TPolynom& Q) {
 	cout << endl;
 
 	return ostr;
+}
+
+void TPolynom::Corrector() {
+	if (!monoms->Is_Sorted()) {
+		monoms->Sort();
+	}
+	cite_similars();
+}
+
+void TPolynom::cite_similars() {
+	if (monoms->IsEmpty()) {
+		return;
+	}
+	int size = monoms->GetSize();
+	while (!monoms->Is_Ended()) {
+		Node<TMonom>* edit = monoms->getCurrent();
+		Node<TMonom>* comp = monoms->getCurrent()->pNext;
+		TMonom m1 = monoms->getCurrent()->data;
+		while (comp != monoms->pStop) {
+			TMonom m2 = comp->data;
+			if (m1.wrap_degree == m2.wrap_degree) {
+				edit->data += m2;
+				comp = comp->pNext;
+				monoms->remove(m2);
+			}
+			else {
+				if (monoms->getCurrent() != comp) {
+					monoms->next();
+				}
+				if (edit->data.coeff == 0) {
+					monoms->remove(edit->data);
+				}
+				break;
+			}
+		}
+		if (comp == monoms->pStop) {
+			break;
+		}
+	}
+	monoms->reset();
+}
+
+TPolynom TPolynom::operator-() {
+	TPolynom Q;
+	while (!this->monoms->Is_Ended()) {
+		TMonom m = monoms->getCurrent()->data;
+		m = -m;
+		Q.monoms->insert_last(m);
+		this->monoms->next();
+	}
+	this->monoms->reset();
+	return Q;
 }
 

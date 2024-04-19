@@ -5,8 +5,6 @@
 
 using namespace std;
 class TMonom {
-	friend ostream& operator<<(ostream& ostr, const TMonom& monom);
-	friend istream& operator>>(istream& istr, TMonom& monom);
 public:
 	double coeff;
 	int wrap_degree;
@@ -18,9 +16,13 @@ public:
 	bool operator<=(const TMonom& monom)const;
 	bool operator!=(const TMonom& monom)const;
 	bool operator==(const TMonom& monom)const;
-	TMonom operator*(const TMonom& monom)const;
-	TMonom operator+(const TMonom& monom)const;
-	TMonom operator-()const;
+	TMonom operator*(const TMonom& monom);
+	TMonom operator+(const TMonom& monom);
+	TMonom& operator+=(const TMonom& monom);
+	TMonom operator-();
+
+	friend ostream& operator<<(ostream& ostr, const TMonom& monom);
+	friend istream& operator>>(istream& istr, TMonom& monom);
 };
 
 

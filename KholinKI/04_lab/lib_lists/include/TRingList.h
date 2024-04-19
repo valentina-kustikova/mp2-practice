@@ -15,6 +15,8 @@ public:
 
 	void insert_first(const T& data_) override;
 	void remove(const T& data_) override;
+	void Sort();
+	bool Is_Sorted();
 };
 
 template<typename T>		
@@ -31,8 +33,8 @@ TRingList<T>::TRingList(Node<T>* pFirst_):TRingList<T>(){
 		return;
 	}
 	pFirst = new Node<T>(pFirst_->data);
-	pHead->pNext = pFirst;//почему менять местами нельзя?
-	Node<T>* tmp = pFirst->pNext;
+	pHead->pNext = pFirst;
+	Node<T>* tmp = pFirst_->pNext;
 	pCurr = pFirst;
 	while (tmp != nullptr) {
 		pCurr->pNext = new Node<T>(tmp->data);
@@ -95,11 +97,7 @@ void TRingList<T>::insert_first(const T& data_) {
 
 template<typename T>
 void TRingList<T>::remove(const T& data_) {
-	if (pFirst == nullptr) {
-		return;
-	}
 	Node<T>* tmp = search(data_);
-	//if
 	if (tmp == pFirst) {
 		pFirst = pFirst->pNext;
 		pHead->pNext = pFirst;
@@ -118,8 +116,38 @@ void TRingList<T>::remove(const T& data_) {
 	}
 }
 
+template<typename T>
+bool TRingList<T>::Is_Sorted() {
+	next();
+	while (!Is_Ended()) {
+		if (pPrev->data <= pCurr->data) {
+			next();
+		}
+		else {
+			reset();
+			return false;
+		}
+	}
+	reset();
+	return true;
+}
 
-
-
+template<typename T>
+void TRingList<T>::Sort() {
+	int size = GetSize();
+	while(pCurr != pStop){
+		Node<T>* min = getCurrent();
+		Node<T>* pJ = getCurrent()->pNext;
+		while(pJ != pStop){
+			if (pJ->data <= min->data) {
+				min = pJ;
+			}
+			pJ = pJ->pNext;
+		}
+		swap(pCurr, min);//указатели
+		next();
+	}
+	reset();
+}
 
 #endif

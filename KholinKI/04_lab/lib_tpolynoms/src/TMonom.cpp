@@ -39,13 +39,23 @@ bool TMonom::operator!=(const TMonom& monom)const {
 		return true;
 	}
 	else {
-		return false;
+		if (coeff != monom.coeff) {
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 }
 
 bool TMonom::operator==(const TMonom& monom)const {
 	if (wrap_degree == monom.wrap_degree) {
-		return true;
+		if (coeff == monom.coeff) {
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 	else {
 		return false;
@@ -53,7 +63,7 @@ bool TMonom::operator==(const TMonom& monom)const {
 }
 
 
-TMonom TMonom::operator*(const TMonom& monom)const {
+TMonom TMonom::operator*(const TMonom& monom) {
 	int d_x_t = wrap_degree / 100;
 	int d_y_t = (wrap_degree % 100) / 10;
 	int d_z_t = (wrap_degree % 10);
@@ -73,7 +83,7 @@ TMonom TMonom::operator*(const TMonom& monom)const {
 	return TMonom(coeff * monom.coeff, wrap_degree + monom.wrap_degree);
 }
 
-TMonom TMonom::operator+(const TMonom& monom)const {
+TMonom TMonom::operator+(const TMonom& monom) {
 	if (this->wrap_degree != monom.wrap_degree) {
 		throw "Monomialss have different degrees!";
 	}
@@ -81,8 +91,15 @@ TMonom TMonom::operator+(const TMonom& monom)const {
 	res.coeff = coeff + monom.coeff;
 	return res;
 }
+TMonom& TMonom::operator+=(const TMonom& monom) {
+	if (this->wrap_degree != monom.wrap_degree) {
+		throw "Monomialss have different degrees!";
+	}
+	coeff += monom.coeff;
+	return *this;
+}
 
-TMonom TMonom::operator-()const {
+TMonom TMonom::operator-() {
 	TMonom res(*this);
 	res.coeff = -coeff;
 	return res;

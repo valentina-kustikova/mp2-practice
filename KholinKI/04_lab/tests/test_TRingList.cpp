@@ -308,6 +308,21 @@ TEST(TRingList, Is_Empty_false) {
 	ASSERT_FALSE(rList->IsEmpty());
 }
 
+TEST(TRingList, check_sort_work) {
+	Node<int>* pFirst = new Node<int>(10);
+	TRingList<int> rList(pFirst);
+
+	rList.insert_last(2);
+	rList.insert_last(5);
+
+	rList.insert_before(6, 2);
+	rList.insert_before(4, 2);
+	rList.insert_before(20, 10);
+	rList.insert_before(30, 10);
+
+	ASSERT_NO_THROW(rList.Sort());
+}
+
 TEST(TRingList, navigation_part_1_current_data) {
 	Node<int>* pFirst = new Node<int>(10);
 	TRingList<int>* rList = new TRingList<int>(pFirst);

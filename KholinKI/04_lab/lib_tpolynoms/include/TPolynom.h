@@ -7,11 +7,8 @@
 #include "SupFunctions.h"
 
 class TPolynom {
-	friend istream& operator>>(istream& istr, TPolynom& Q);
-	friend ostream& operator<<(ostream& ostr, const TPolynom& Q);
-public:
-	TRingList<TMonom>* monoms;
 private:
+	TRingList<TMonom>* monoms;
 	string polynom;
 	map<string, double> values_xyz;
 public:
@@ -24,14 +21,22 @@ public:
 	const TPolynom& operator=(const TPolynom& Q);
 	bool operator==(const TPolynom& Q)const;
 	TPolynom operator+(const TPolynom& Q);
-	TPolynom operator-(const TPolynom& Q);
+	TPolynom operator-();
 	TPolynom operator*(const TPolynom& Q);
 	double operator()(double x,double y, double z);
 
 	string GetPolynomString()const;
+	TRingList<TMonom>* GetMonoms()const { return monoms; }
 
 	TPolynom differentiate_by_x()const;
 	TPolynom differentiate_by_y()const;
 	TPolynom differentiate_by_z()const;
+
+	friend istream& operator>>(istream& istr, TPolynom& Q);
+	friend ostream& operator<<(ostream& ostr, const TPolynom& Q);
+private:
+	void Corrector();
+	void cite_similars();
+	void CreatePolynomString();
 };
 #endif

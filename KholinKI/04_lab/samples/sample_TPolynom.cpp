@@ -58,7 +58,7 @@ int main() {
 	cout << endl;
 
 	cout << "Operation -:" << endl;
-	res2 = P - Q;
+	res2 = P + (- Q);
 	cout << res2;
 	cout << endl;
 
