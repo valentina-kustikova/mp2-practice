@@ -16,6 +16,7 @@ public:
 	TList(const TList<T>& obj);
 	virtual ~TList();
 	void Clear();
+
 	TNode<T>* Search(const T& data_);
 	void InsertFirst(const T& data_);
 	void InsertBefore(const T& data_, const T& NextData);
@@ -23,12 +24,17 @@ public:
 	void InsertBefore(const T& data_); //текущего
 	void InsertAfter(const T& data_);  //текущего
 	void Remove(const T& data_);
+
+
 	int GetSize();
 	bool IsEmpty();
 	bool IsFull();
-	void Reset();
-	TNode<T>* GetCurrent();
 	bool IsEnded();
+
+	void Reset();
+	void Next(const int count = 1);
+	TNode<T>* GetCurrent();
+
 };
 
 //конструкторы
@@ -140,9 +146,9 @@ TNode<T>* TList<T>::Search(const T& data_) {
 
 template<typename T>
 void TList<T>::InsertFirst(const T& data_) {
-	TNode<T>* tmp = new TNode<T>(data_, pFirst);
+	
 	if (IsEmpty()) {
-		pFirst = tmp;
+		pFirst = new TNode<T>(data_, pStop);
 		pLast = pFirst;
 		pCurr = pFirst;
 		return;
@@ -150,8 +156,9 @@ void TList<T>::InsertFirst(const T& data_) {
 	if (IsFull()) {
 		throw "List is full";
 	}
+	TNode<T>* tmp = new TNode<T>(data_, pFirst);
 	pFirst = tmp; 
-	pCurr = pFirst;
+	Reset();
 }
 
 
@@ -175,11 +182,11 @@ void TList<T>::InsertBefore(const T& data_, const T& NextData) {
 	TNode<T>* tmp1 = new TNode<T>(data_, tmp);
 	if (tmp == pFirst) {
 		pFirst = tmp1;
-		pCurr = pFirst;
+		Reset();
 		return;
 	}
 	pPrev->pNext = tmp1;
-	pCurr = pPrev->pNext;
+	Reset();
 }
 
 template<typename T>
@@ -200,7 +207,7 @@ void TList<T>::InsertAfter(const T& data_, const T& BeforeData) {
 	}
 	TNode<T>* tmp1 = new TNode<T>(data_, tmp);
 	pPrev->pNext = tmp1;
-	pCurr = pPrev->pNext;
+	Reset();
 } 
 
 template<typename T>
@@ -222,10 +229,11 @@ void TList<T>::InsertBefore(const T& data_){
 	TNode<T>* tmp1 = new TNode<T>(data_, tmp);
 	if (tmp == pFirst) {
 		pFirst = tmp1;
+		Reset();
 		return;
 	}
 	pPrev->pNext = tmp1;
-	pCurr = pPrev->pNext;
+	Reset();
 
 } 
 
@@ -245,9 +253,19 @@ void TList<T>::InsertAfter(const T& data_) {
 	if ((tmp == pStop) && (pPrev->data != pCurr->data)) {
 		throw "Current not is find";
 	}
+
+	if (tmp == pStop) {
+		TNode<T>* tmp1 = new TNode<T>(data_, tmp);
+		pPrev->pNext = tmp1;
+		pLast = pPrev->pNext;
+		Reset();
+		return;
+	}
+
 	TNode<T>* tmp1 = new TNode<T>(data_, tmp);
 	pPrev->pNext = tmp1;
-	pCurr = pPrev->pNext;
+
+	Reset();
 }
 
 
@@ -339,6 +357,19 @@ TNode<T>* TList<T>::GetCurrent() {
 }
 
 
+template <typename T>
+void TList<T>::Next(const int count) {
+	if (count <= 0) {
+		string exp = "Error: count can't be less than 0";
+		throw exp;
+	}
+
+	for (int i = 0; i < count; i++) {
+		//if (!IsEnded() || pCurr != pStop) pCurr = pCurr->pNext;
+		if (!IsEnded()) pCurr = pCurr->pNext;
+		else Reset();
+	}
+}
 
 
 #endif // !1

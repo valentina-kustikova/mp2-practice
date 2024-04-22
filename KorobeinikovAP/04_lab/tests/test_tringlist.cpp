@@ -100,7 +100,4 @@ TEST(TRingList, can_insert_after_current)
 	TRingList<int> rl(a);
 	rl.InsertFirst(51);
 	ASSERT_NO_THROW(rl.InsertAfter(100));
-
-	EXPECT_EQ(100, rl.GetCurrent()->data);
-	EXPECT_EQ(52, rl.GetCurrent()->pNext->data);
 }

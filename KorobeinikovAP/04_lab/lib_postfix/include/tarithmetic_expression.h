@@ -35,7 +35,7 @@ private:
 public:
 	//TArithmeticExpression(const string& infx);
 	TArithmeticExpression(const string& infx, const map<string, double> operands_ = map<string, double>());
-
+	TArithmeticExpression();
 	string GetInfix() const {
 		return infix;
 	}

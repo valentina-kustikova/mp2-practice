@@ -432,6 +432,10 @@ TArithmeticExpression::TArithmeticExpression(const string& infx) {
 }
 */
 
+TArithmeticExpression::TArithmeticExpression() {
+	priority = { {"(",1}, {"-", 2}, {"+", 2}, {"*", 3}, {"/", 3}, {"^", 4} };
+}
+
 TArithmeticExpression::TArithmeticExpression(const string& infx,const map<string, double> operands_): infix(infx) 
 {
 	if (operands_ != map<string, double>() )

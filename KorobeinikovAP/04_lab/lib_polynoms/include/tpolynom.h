@@ -7,19 +7,23 @@
 
 class TPolynom{
 private:
-	TArithmeticExpression polynom = TArithmeticExpression("\n");
+	TArithmeticExpression polynom;
 	TRingList<TMonom>* monoms;
 
 
-	TRingList<TMonom>* GetRingListFromString();  
-	//TArithmeticExpression GetTArethmeticExpressionFromRingList();
+	void GetRingListFromString();  
+	string GetStringFromRingList();
+	void AddMonom(TMonom& m);
+
+	
+	
 public:
 	TPolynom();
 	TPolynom(string name);
-	//TPolynom(const TRingList<TMonom>* obj);
-	/*
+	TPolynom(TRingList<TMonom>* obj);
 	TPolynom(const TPolynom& obj);
 	~TPolynom();
+	/*
 	TPolynom operator + (const TPolynom& obj);
 	TPolynom operator -(const TPolynom& obj);
 	TPolynom operator * (const TPolynom& obj);
@@ -29,6 +33,12 @@ public:
 	TPolynom dif_z();
 	double operator () (double x, double y, double z);
 	*/
+
+
+	TNode<TMonom>* GetCurrent();
+	string GetString() {
+		return polynom.GetInfix();
+	}
 };
 
 
