@@ -7,7 +7,7 @@ template<typename T>
 void PrintList(TRingList<T>& rl) {
 	rl.Reset();
 	while (!rl.IsEnded()) {
-		cout << rl.GetCurrent()->key << " ";
+		cout << rl.GetCurrent()->data << " ";
 		rl.Next();
 	}
 	rl.Reset();
@@ -23,7 +23,7 @@ void InsertInterface(TRingList<T>& rl) {
 
 		PrintList(rl);
 		cout << endl;
-		cout << "Current: " << rl.GetCurrent()->key << endl;
+		cout << "Current: " << rl.GetCurrent()->data << endl;
 
 		cout << endl;
 		cout << "1. Insert First" << endl;
@@ -35,7 +35,7 @@ void InsertInterface(TRingList<T>& rl) {
 		cout << "7. Next element" << endl;
 		cout << "8. Reset list" << endl;
 		cout << "0. EXIT\n" << endl;
-		
+
 		cin >> ans;
 		cout << endl;
 
@@ -45,13 +45,13 @@ void InsertInterface(TRingList<T>& rl) {
 			cin >> ins;
 			rl.InsertFirst(ins);
 			break;
-		
+
 		case 2:
 			cout << "Insert: ";
 			cin >> ins;
 			rl.InsertLast(ins);
 			break;
-		
+
 		case 3:
 			cout << "Insert: ";
 			cin >> ins;
@@ -59,7 +59,7 @@ void InsertInterface(TRingList<T>& rl) {
 			cin >> find;
 			rl.InsertBefore(ins, find);
 			break;
-		
+
 		case 4:
 			cout << "Insert: ";
 			cin >> ins;
@@ -67,29 +67,29 @@ void InsertInterface(TRingList<T>& rl) {
 			cin >> find;
 			rl.InsertAfter(ins, find);
 			break;
-		
+
 		case 5:
 			cout << "Insert: ";
 			cin >> ins;
 			if (rl.IsEnded()) rl.Reset();
 			rl.InsertBefore(ins);
 			break;
-		
+
 		case 6:
 			cout << "Insert: ";
 			cin >> ins;
 			if (rl.IsEnded()) rl.Reset();
 			rl.InsertAfter(ins);
 			break;
-		
+
 		case 7:
 			rl.Next();
 			break;
-		
+
 		case 8:
 			rl.Reset();
 			break;
-		
+
 		default:
 
 			break;
@@ -101,7 +101,7 @@ void InsertInterface(TRingList<T>& rl) {
 
 int main() {
 	cout << "TRingList\n" << endl;
-	
+
 	try {
 		TRingList<int> rl;
 		int ans = 0;
@@ -110,7 +110,7 @@ int main() {
 
 			PrintList(rl);
 			cout << endl;
-			cout << "Current: " << rl.GetCurrent()->key << endl;
+			cout << "Current: " << rl.GetCurrent()->data << endl;
 
 			cout << endl;
 			cout << "1. Insert" << endl;
@@ -127,29 +127,29 @@ int main() {
 			case 1:
 				InsertInterface(rl);
 				break;
-			
+
 			case 2:
 				int rm;
 				cout << "Remove: ";
 				cin >> rm;
 				rl.Remove(rm);
 				break;
-			
+
 			case 3:
 				int sure;
 				cout << "Are you sure? (1/0): ";
 				cin >> sure;
 				if (sure == 1) rl.Clear();
 				break;
-			
+
 			case 4:
 				rl.Next();
 				break;
-			
+
 			case 5:
 				rl.Reset();
 				break;
-			
+
 			default:
 
 				break;
