@@ -36,12 +36,33 @@ TEST(TPolynom, copied_polinom_is_correct)
 
 TEST(TPolynom, no_throw_when_polynom_will_be_empty) 
 {
-   ASSERT_NO_THROW(TPolynom p("x-x+y-y+z-z"));
+  ASSERT_NO_THROW(TPolynom p("x-x+y-y+z-z"));
+}
+
+TEST(TPolynom, correct_to_string_method) 
+{
+  TPolynom p("x^2-y*z^3+3");
+  std::string nm = "3.00-y*z^3+x^2";
+  EXPECT_EQ(p.ToString(), nm);
+}
+
+TEST(TPolynom, collecting_terms_test) {
+	TPolynom p1("x+x-x+x+y+y+z+z+z");
+	TPolynom p2("2*x+2*y+3*z");
+	EXPECT_EQ(p1, p2);
+}
+
+TEST(TPolynom, collecting_terms_to_zero) {
+	TPolynom p1("x+x-x-x+y-y");
+	TPolynom p2("0");
+	std::cout << p1;
+	std::cout << p2;
+	EXPECT_EQ(p1, p2);
 }
 
 TEST(TPolynom, conversation_test) {
 	TPolynom p1("x+x-x+x+y+y+z+z+z");
-	TPolynom p2("2x+2y+3z");
+	TPolynom p2("2*x+2*y+3*z");
 
 	EXPECT_EQ(p1, p2);
 }
@@ -56,7 +77,7 @@ TEST(TPolynom, can_create_polynom_in_different_order)
 
 TEST(TPolynom, can_create_polynom_with_negative_coefficient)
 {
-	ASSERT_NO_THROW(TPolynom p("-2x^2"));
+	ASSERT_NO_THROW(TPolynom p("-10*x^4"));
 }
 
 TEST(TPolynom, calculate_is_correct1) 
@@ -68,9 +89,9 @@ TEST(TPolynom, calculate_is_correct1)
 
 TEST(TPolynom, calculate_is_correct2)
 {
-	TPolynom pol("x^3+x^2+y+z+1");
-	double res = pol(0.1, 0.2, 0.3);
-	ASSERT_NEAR(1.511, res, 1);
+	TPolynom pol("x^3*z+x^2+y+y+1");
+	double res = pol(0.9, 0.2, 0.7);
+	ASSERT_NEAR(2.7203, res, 0.001f);
 }
 
 TEST(TPolynom, calculate_is_correct3)
@@ -81,15 +102,15 @@ TEST(TPolynom, calculate_is_correct3)
 
 TEST(TPolynom, calculate_is_correct4)
 {
-	TPolynom pol("x^3+x^2+y+z+1");
+	TPolynom pol("x+x^2+y+x+1");
 	double res = pol(1, 2, 3);
-	EXPECT_EQ(8, pol(1, 2, 3));
+	EXPECT_EQ(6, pol(1, 2, 3));
 }
 
 TEST(TPolynom, dx_is_correct) 
 {
-	TPolynom pol("x^3+x^2+y+z+1");
-	TPolynom tmp("3x^2+2x^1");
+	TPolynom pol("5*x^4+x^2+y+z+1");
+	TPolynom tmp("20*x^3+2x^1");
 	EXPECT_EQ(pol.dx(), tmp);
 }
 
@@ -107,10 +128,25 @@ TEST(TPolynom, dz_is_correct)
 	EXPECT_EQ(pol.dz(), tmp);
 }
 
-TEST(TPolynom,no_throw_when_no_monomials_to_derive)
+TEST(TPolynom, empty_dx) 
 {
-	TPolynom pol("z^3+z^2+y+1");
-	ASSERT_NO_THROW(pol.dx());
+	TPolynom pol("z+y*z");
+	TPolynom tmp("0");
+	EXPECT_EQ(pol.dx(), tmp);
+}
+
+TEST(TPolynom, empty_dy) 
+{
+	TPolynom pol("z*x^4+z");
+	TPolynom tmp("0");
+	EXPECT_EQ(pol.dy() , tmp);
+}
+
+TEST(TPolynom, empty_dz) 
+{
+	TPolynom pol("3*y+2*x^2+0*z");
+	TPolynom tmp("0");
+	EXPECT_EQ(pol.dz(), tmp);
 }
 
 TEST(TPolynom,sum_is_correct ) 
@@ -118,23 +154,30 @@ TEST(TPolynom,sum_is_correct )
 	TPolynom pol1("x^3+y^2+y+x+1");
 	TPolynom pol2("x^3+y+z+1");
 	TPolynom pol3("2x^3+y^2+2y+x+2+z");
+	EXPECT_EQ(pol1+pol2, pol3);
+}
 
+TEST(TPolynom, empty_sum) 
+{
+	TPolynom pol1("x^3-y^2+4");
+	TPolynom pol2("-x^3+y^2-4");
+	TPolynom pol3("0");
 	EXPECT_EQ(pol1+pol2, pol3);
 }
 
 TEST(TPolynom, diff_is_correct) 
 {
-	TPolynom pol1("2x^3+y^2+y+x");
+	TPolynom pol1("2*x^3+y^2+y+x");
 	TPolynom pol2("x^3-2y^2+z");
-	TPolynom pol3("x^3+3y^2+y^1+x-z");
+	TPolynom pol3("x^3+3*y^2+y^1+x-z");
 	EXPECT_EQ(pol1-pol2, pol3);
 }
 
-TEST(TPolynom, diff_is_with_negative_coefficients)
+TEST(TPolynom, empty_diff)
 {
-	TPolynom p1("-3x^2-2y+5");
-	TPolynom p2("-x^2-4y-3");
-	TPolynom p3("2x^2+2y+8");
+	TPolynom p1("-3*x^2-2*y+5");
+	TPolynom p2("-3*x^2-4*y+2*y+5");
+	TPolynom p3("0");
 	EXPECT_EQ(p1 - p2, p3);
 }
 
@@ -147,18 +190,10 @@ TEST(TPolynom, mult_is_correct1)
 	EXPECT_EQ(pol1*pol2, pol3);
 }
 
-TEST(TPolynom, mult_is_correct2)
+TEST(TPolynom, mult_by_zero) 
 {
-	TPolynom p1("x^2+y");
-	TPolynom p2("x^1/2");
-	TPolynom p_mult("x^3/2+yx^1/2");
-	EXPECT_EQ(p1 * p2, p_mult);
-}
-
-TEST(TPolynom, mult_is_correct_with_1)
-{
-	TPolynom p1("x+1");
-	TPolynom p2("y+1");
-	TPolynom p_mult("x*y+x+y+1");
-	EXPECT_EQ(p1 * p2, p_mult);
+	TPolynom pol1("x^2+y");
+	TPolynom pol2("0");
+	TPolynom pol3("0");
+	EXPECT_EQ(pol1*pol2, pol3);
 }

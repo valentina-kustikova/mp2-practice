@@ -66,6 +66,8 @@ void THeadRingList<TData>::RemoveFirst() {
 
 template <typename TData>
 const THeadRingList<TData>& THeadRingList<TData>::operator=(const THeadRingList<TData>& l) {
+  if (this == &l) return (*this);
+
   if (l.IsEmpty())
 	{
 		pFirst=nullptr;

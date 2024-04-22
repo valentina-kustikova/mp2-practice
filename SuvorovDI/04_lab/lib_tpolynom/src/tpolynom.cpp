@@ -1,3 +1,4 @@
+#include "theadringlist.h"
 #include "tpolynom.h"
 
 TPolynom::TPolynom(const std::string& name) : monoms() {
@@ -6,7 +7,24 @@ TPolynom::TPolynom(const std::string& name) : monoms() {
   tokinize_polynom(name);
 }
  
-TPolynom::TPolynom(const THeadRingList<TMonom>& l) : monoms(l) {}
+TPolynom::TPolynom(const THeadRingList<TMonom>& l) {
+  if (l.IsEmpty()) {
+    name = "";
+    monoms = THeadRingList<TMonom>();
+    return;
+  }
+  THeadRingList<TMonom> tmp_l(l);
+  tmp_l.Reset();
+  while (!tmp_l.IsEnded()) {
+    InsertToSort(tmp_l.GetCurr()->data);
+    tmp_l.Next();
+  }
+  if (monoms.IsEmpty()) {
+    TMonom zero(0, 0);
+    monoms.InsertFirst(zero);
+  }
+  name = ToString();
+}
 
 TPolynom::TPolynom(const TPolynom& p) : monoms(p.monoms), name(p.name) {}
 
@@ -21,10 +39,17 @@ bool TPolynom::check_each_char_is_correct(const std::string& name) {
 
 void TPolynom::InsertToSort(const TMonom& monom) {
   monoms.Reset();
+  if (monom.coeff_ == 0 && monom.degree_ != 0) { return; }
+  if (monom.coeff_ == 0 && monom.degree_ == 0 && !monoms.IsEmpty()) { return; }
+
 	if (monoms.IsEmpty() || monoms.GetCurr()->data > monom) {
 		monoms.InsertFirst(monom);
 		return;
 	}
+
+  if (monoms.GetCurr()->data.coeff_ == 0 && monoms.GetCurr()->data.degree_ == 0) {
+    monoms.Remove(monoms.GetCurr()->data);
+  }
 
 	while (!monoms.IsEnded() && monoms.GetCurr()->data < monom) {
 		monoms.Next();
@@ -117,7 +142,8 @@ TPolynom TPolynom::operator+(const TPolynom& p) {
     monoms.Next();
   }
   if (res.monoms.IsEmpty()) {
-    res = TPolynom("0");
+    TMonom zero(0, 0);
+    res.monoms.InsertFirst(zero);
   }
   res.name = res.ToString();
   return res;
@@ -125,9 +151,6 @@ TPolynom TPolynom::operator+(const TPolynom& p) {
  
 TPolynom TPolynom::operator-(const TPolynom& p) {
   TPolynom res = (*this) + (-p);
-  if (res.monoms.IsEmpty()) {
-    res = TPolynom("0");
-  }
   res.name = res.ToString();
   return res;
 }
@@ -155,7 +178,8 @@ TPolynom TPolynom::operator*(const TPolynom& p) {
   }
   
   if (res_pol.monoms.IsEmpty()) {
-    res_pol = TPolynom("0");
+    TMonom zero(0, 0);
+    res_pol.monoms.InsertFirst(zero);
   }
   
   res_pol.name = res_pol.ToString();
@@ -257,6 +281,10 @@ TPolynom TPolynom::dz() const {
 }
 
 const TPolynom& TPolynom::operator=(const TPolynom& p) {
+  if (this == &p) {
+    return (*this);
+  }
+
   name = p.name;
   monoms = p.monoms;
 
@@ -312,4 +340,8 @@ void TPolynom::tokinize_polynom(const std::string& name) {
 			this->InsertToSort(tmp);
 		}
 	}
+  if (this->monoms.IsEmpty()) {
+    TMonom zero(0, 0);
+    this->monoms.InsertFirst(zero);
+  }
 }
