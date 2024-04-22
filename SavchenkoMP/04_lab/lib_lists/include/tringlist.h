@@ -25,9 +25,9 @@ TRingList<T>::TRingList() {
 	pHead->pNext = pHead;
 	
 	pStop = pHead;
-	pFirst = nullptr; // nullptr
-	pLast = nullptr; // nullptr
-	pCurr = nullptr; // nullptr
+	pFirst = pHead; // nullptr
+	pLast = pHead; // nullptr
+	pCurr = pHead; // nullptr
 } // !!! IF pFirst = nullptr (etc.), THEN WHOLE PROJECT BREAKS DOWN !!! 
 
 template <typename T>
@@ -37,9 +37,9 @@ TRingList<T>::TRingList(TNode<T>* _pFirst) : TList(_pFirst) {
 	pStop = pHead;
 	
 	if (pFirst == nullptr) {
-		pFirst = nullptr; //nullptr
-		pLast = nullptr; // nullptr
-		pCurr = nullptr; // nullptr
+		pFirst = pHead; //nullptr
+		pLast = pHead; // nullptr
+		pCurr = pHead; // nullptr
 	}
 	else {
 		TNode<T>* tmp = pFirst;
@@ -58,11 +58,10 @@ TRingList<T>::TRingList(const TRingList<T>& rlist) {
 	pHead->pNext = pHead;
 	pStop = pHead;
 	
-	//if (rlist.pFirst == rlist.pStop) { //nullptr
-	if (rlist.pFirst == nullptr) {
-		pFirst = nullptr; // nullptr
-		pLast = nullptr; // nullptr
-		pCurr = nullptr; // nullptr
+	if (rlist.pFirst == rlist.pStop) { //nullptr
+		pFirst = pHead; // nullptr
+		pLast = pHead; // nullptr
+		pCurr = pHead; // nullptr
 	}
 	else {
 		pFirst = new TNode<T>(rlist.pFirst->key);
