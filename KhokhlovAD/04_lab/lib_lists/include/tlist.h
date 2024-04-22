@@ -23,6 +23,7 @@ public:
 	virtual void clear();
 
 	virtual void Next();
+	virtual void Reset();
 
 	bool IsEmpty()const;
 	bool IsFool()const;
@@ -30,10 +31,10 @@ public:
 
 	virtual void Sort();
 
-	T get_pFirst()const { return pFirst->data; };
-	T get_pLast()const { return pLast->data; };
-	T get_pCurr()const { return pCurr->data; };
-	T get_pPrev()const { return pPrev->data; };
+	virtual T get_pFirst()const { return pFirst->data; };
+	virtual T get_pLast()const { return pLast->data; };
+	virtual T get_pCurr()const { return pCurr->data; };
+	virtual T get_pPrev()const { return pPrev->data; };
 
 	virtual void InsertFirst(const T& data);
 	virtual void InsertLast(const T& data);
@@ -50,14 +51,14 @@ public:
 
 	virtual TList<T>& operator=(const TList<T>& pList);
 
-	friend std::ostream& operator<<(std::ostream& out, const TList<T>& list) {
-		TNode<T>* tmp = list.GetPFirst();
+	friend std::ostream& operator<<(std::ostream& out, TList<T>& list) {
 		int num = 1;
-		while (tmp != nullptr) {
-			out << num << " node " << tmp->data << std::endl;
-			tmp = tmp->pNext;
+		while (!list.IsEnd()) {
+			out << num << " node " << list.get_pCurr() << std::endl;
+			list.Next();
 			num++;
 		}
+		list.Reset();
 		return out;
 	}
 };
@@ -110,15 +111,15 @@ TList<T>::TList(const TList<T>& TList)
 	TNode<T>* tmp1 = TList.pFirst;
 	TNode<T>* tmp2 = pFirst;
 	pCurr = tmp2;
-	while (tmp1 != TList.pStop) {
+	while (tmp1 ->pNext != TList.pStop) {
 		tmp1 = tmp1->pNext;
 		tmp2->pNext = new TNode<T>(tmp1->data);
 		pPrev = tmp2;
 		tmp2 = tmp2->pNext;
 	}
+	pStop = TList.pStop;
 	pLast = tmp2;
 	pLast->pNext = pStop;
-	pStop = TList.pStop;
 }
 
 template <typename T>
@@ -154,7 +155,7 @@ void TList<T>::Next()
 template <typename T>
 bool TList<T>::IsEmpty()const
 {
-	return pFirst == nullptr;
+	return pFirst == pStop;
 }
 
 template <typename T>
@@ -201,6 +202,7 @@ void TList<T>::InsertFirst(const T& data)
 		pFirst = node;
 		pLast = pFirst;
 		pCurr = pFirst;
+		pLast->pNext = pStop;
 	}
 	else
 	{
@@ -208,6 +210,7 @@ void TList<T>::InsertFirst(const T& data)
 		TNode<T>* tmp = pFirst;
 		pFirst = node;
 		pFirst->pNext = tmp;
+		Reset();
 	}
 }
 
@@ -223,6 +226,7 @@ void TList<T>::InsertLast(const T& data)
 	}
 	pLast->pNext = new TNode<T>(data);
 	pLast = pLast->pNext;
+	pLast->pNext = pStop;
 }
 
 template <typename T>
@@ -327,6 +331,7 @@ void TList<T>::DeleteFirst()
 	TNode<T>* tmp = pFirst->pNext;
 	delete pFirst;
 	pFirst = tmp;
+	pCurr = pFirst;
 }
 
 
@@ -355,12 +360,16 @@ void TList<T>::DeleteBefore(const TNode<T>* before_node)
 	if (IsEmpty())
 		throw std::exception("empty list(DelB)");
 	pCurr = pFirst;
-	while (pCurr->pNext != pStop || pCurr->pNext != before_node)
+	while (pCurr->pNext != pStop && pCurr->pNext != before_node)
 		Next();
 	if (pCurr->pNext == pStop && pCurr->pNext != before_node)
 		throw std::exception("node not found(DelB)");
 	if (pPrev == pStop)
+	{
+		DeleteFirst();
+		pCurr = pFirst;
 		return;
+	}
 	else
 	{
 		pPrev->pNext = pCurr->pNext;
@@ -379,20 +388,15 @@ void TList<T>::DeleteAfter(const TNode<T>* after_node)
 	if (pLast == after_node)
 		return;
 	pCurr = pFirst;
-	while (pCurr->pNext != pStop || pCurr != after_node)
+	while (pCurr->pNext != pStop && pCurr != after_node)
 		Next();
 	if (pCurr->pNext == pStop && pCurr != after_node)
 		throw std::exception("node not found(DelB)");
-	if (pPrev == pStop)
-		return;
-	else 
-	{
-		Next();
-		pPrev->pNext = pCurr->pNext;
-		delete pCurr;
-		pPrev = pStop;
-		pCurr = pFirst;
-	}
+	Next();
+	pPrev->pNext = pCurr->pNext;
+	delete pCurr;
+	pPrev = pStop;
+	pCurr = pFirst;
 }
 
 template <typename T>
@@ -420,12 +424,12 @@ template <typename T>
 void TList<T>::Sort() 
 {
 	TNode<T>* elem1 = pFirst;
-	while (elem1->pNext != nullptr)
+	while (elem1->pNext != pStop)
 	{
 		TNode<T>* elem2 = elem1->pNext;
-		while (elem2 != nullptr)
+		while (elem2 != pStop)
 		{
-			if (elem1->data < elem2->data)
+			if (elem1->data > elem2->data)
 			{
 				T tmp = elem1->data;
 				elem1->data = elem2->data;
@@ -440,23 +444,30 @@ void TList<T>::Sort()
 template <typename T>
 TList<T>& TList<T>::operator=(const TList<T>& pList)
 {
-	if (pList.pFirst == nullptr)
+	if (pList.pFirst == pList.pStop)
 		throw std::exception("Invalid pList (=)");
-	TNode<T>* oldCurrent = pList.pFirst;
-	pFirst = new TNode<T>(*pList.pFirst);
-	TNode<T>* newCurrent = pFirst;
-	oldCurrent = oldCurrent->pNext;
-	while (oldCurrent != pList.pStop)
+	if (this == &pList)
+		return *this;
+	clear();
+	TNode<T>* pNode = pList.pFirst;
+	while (pNode != pList.pStop)
 	{
-		newCurrent->pNext = new TNode<T>(oldCurrent->data);
-		newCurrent = newCurrent->pNext;
-		oldCurrent = oldCurrent->pNext;
+		InsertLast(pNode->data);
+		pNode = pNode->pNext;
 	}
-	pLast = newCurrent;
-	pStop = pLast->pNext;
-	pCurr = pFirst;
-	pStop = nullptr;
-
 	return *this;
+}
+
+template <typename T>
+void TList<T>::Reset()
+{
+	if (IsEmpty()) {
+		pCurr = pStop;
+	}
+	else {
+		pCurr = pFirst;
+		pPrev = pStop;
+	}
+	return;
 }
 #endif

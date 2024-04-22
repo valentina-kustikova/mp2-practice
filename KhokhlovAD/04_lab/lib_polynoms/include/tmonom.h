@@ -6,9 +6,10 @@ private:
 	double coeff;
 	int degree;
 public:
-	TMonom();
 	TMonom(const TMonom& monom);
-	TMonom(double coeff, int degree);
+	TMonom(double coeff = 1, int degree = 0);
+
+
 	bool operator<(const TMonom& data) const;
 	bool operator>(const TMonom& data) const;
 	bool operator==(const TMonom& data) const;

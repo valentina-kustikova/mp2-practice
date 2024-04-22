@@ -1,17 +1,6 @@
 #include "tlist.h"
 #include <gtest.h>
 
-/*
-virtual void Sort();
-
-virtual void DeleteBefore(const TNode<T>* before_node);
-virtual void DeleteAfter(const TNode<T>* after_node);
-virtual void DeleteData(const T& data);
-
-virtual TList<T>& operator=(const TList<T>& pList);
-*/
-
-
 //constructors
 ///////////////////////////////////////
 TEST(TList, can_create_list)
@@ -198,5 +187,92 @@ TEST(TList, delete_last1)
 	c.InsertLast(3);
 	c.DeleteLast();
 	ASSERT_ANY_THROW(c.search(3));
+}
+
+TEST(TList, delete_before)
+{
+	TNode<int>* a = new TNode<int>(2);
+	TList<int> c(a);
+	c.InsertLast(3);
+	TNode<int>* d = c.search(3);
+	ASSERT_NO_THROW(c.DeleteBefore(d));
+}
+
+TEST(TList, delete_before1)
+{
+	TNode<int>* a = new TNode<int>(2);
+	TList<int> c(a);
+	c.InsertLast(3);
+	TNode<int>* d = c.search(3);
+	c.DeleteBefore(d);
+	ASSERT_ANY_THROW(c.search(2));
+}
+
+
+TEST(TList, delete_after)
+{
+	TNode<int>* a = new TNode<int>(2);
+	TList<int> c(a);
+	c.InsertFirst(3);
+	TNode<int>* d = c.search(3);
+	ASSERT_NO_THROW(c.DeleteAfter(d));
+}
+
+TEST(TList, delete_after1)
+{
+	TNode<int>* a = new TNode<int>(2);
+	TList<int> c(a);
+	c.InsertFirst(3);
+	TNode<int>* d = c.search(3);
+	c.DeleteAfter(d);
+	ASSERT_ANY_THROW(c.search(2));
+}
+
+TEST(TList, delete_data)
+{
+	TNode<int>* a = new TNode<int>(2);
+	TList<int> c(a);
+	c.InsertFirst(3);
+	ASSERT_NO_THROW(c.DeleteData(2));
+}
+
+TEST(TList, delete_data1)
+{
+	TNode<int>* a = new TNode<int>(2);
+	TList<int> c(a);
+	c.InsertFirst(3);
+	c.DeleteData(2);
+	ASSERT_ANY_THROW(c.search(2));
+}
+///////////////////////////////////////
+
+
+//=
+///////////////////////////////////////
+TEST(TList, operato )
+{
+	TNode<int>* a = new TNode<int>(2);
+	TList<int> b(a);
+	ASSERT_NO_THROW(TList<int> c = b);
+}
+///////////////////////////////////////
+
+//sort
+///////////////////////////////////////
+TEST(TList, sort)
+{
+	TNode<int>* a = new TNode<int>(2);
+	TList<int> b(a);
+	b.InsertFirst(3);
+	ASSERT_NO_THROW(b.Sort());
+}
+
+TEST(TList, sort1)
+{
+	TNode<int>* a = new TNode<int>(2);
+	TList<int> b(a);
+	b.InsertFirst(3);
+	b.Sort();
+	ASSERT_TRUE(b.get_pFirst() <= b.get_pLast());
 }
 ///////////////////////////////////////
