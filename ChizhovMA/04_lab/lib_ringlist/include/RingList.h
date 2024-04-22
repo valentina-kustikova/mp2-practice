@@ -14,15 +14,9 @@ public:
 	TRingList(const TRingList<T>& rlist);
 	virtual ~TRingList();
 
-	TNode<T>* Search(const T& data);
 	void InsertFirst(const T& data);
 	void InsertEnd(const T& data);
-	TNode<T>* GetCurrent();
 	void Remove(const T& data);
-	void Next();
-	void Reset();
-	bool IsEmpty() const;
-	bool IsEnded() const;
 	friend ostream& operator<<(ostream& os, const TRingList<T>& rl)
 	{
 		TNode<T>* cur = rl.pFirst;
@@ -73,42 +67,20 @@ TRingList<T>::TRingList(const TList<T>& list) : TList<T>(list)
 	pStop = pHead;
 }
 template <typename T>
-TRingList<T>::TRingList(const TRingList<T>& rlist)
+TRingList<T>::TRingList(const TRingList<T>& rlist)  : TList<T>(rlist)
 {
 	if (rlist.pFirst == nullptr)
 		return;
 	pHead = new TNode<T>();
-	pFirst = new TNode<T>(rlist.pFirst->data);
 	pHead->pNext = pFirst;
-	TNode<T>* tmp = rlist.pFirst->pNext;;
-	TNode<T>* tmp2 = pFirst;
-
-	while (tmp->data != pHead->data)
-	{
-		tmp2->pNext = new TNode<T>(tmp->data);
-		tmp2 = tmp2->pNext;
-		tmp = tmp->pNext;
-	}
-	pStop = pHead;
-	pLast = tmp2;
 	pLast->pNext = pHead;
-	pCurr = pFirst;
+	pStop = pHead;
 }
 template <typename T>
 TRingList<T>::~TRingList()
 {
 	if (pStop)
 		delete pStop;
-}
-template <typename T>
-TNode<T>* TRingList<T>::Search(const T& data)
-{
-	TNode<T>* tmp = pFirst;
-	while (tmp != pHead && tmp->data != data)
-		tmp = tmp->pNext;
-	if (tmp == pHead)
-		return nullptr;
-	return tmp;
 }
 template <typename T>
 void TRingList<T>::InsertFirst(const T& data)
@@ -136,11 +108,6 @@ void TRingList<T>::InsertEnd(const T& data)
 	TNode<T>* pNode = new TNode<T>(data, pHead);
 	pLast->pNext = pNode;
 	pLast = pNode;
-}
-template <typename T>
-TNode<T>* TRingList<T>::GetCurrent()
-{
-	return pCurr;
 }
 template <typename T>
 void TRingList<T>::Remove(const T& data)
@@ -176,27 +143,6 @@ void TRingList<T>::Remove(const T& data)
 		string msg = "Element not found!";
 		throw msg;
 	}
-}
-template <typename T>
-void TRingList<T>::Next()
-{
-	if (pCurr != pHead)
-		pCurr = pCurr->pNext;
-}
-template <typename T>
-void TRingList<T>::Reset()
-{
-	pCurr = pFirst;
-}
-template <typename T>
-bool TRingList<T>::IsEmpty() const
-{
-	return pFirst == pHead;
-}
-template <typename T>
-bool TRingList<T>::IsEnded() const
-{
-	return pCurr == pHead;
 }
 #endif
 

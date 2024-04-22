@@ -75,8 +75,8 @@ TPolynom::TPolynom(const string& s)
 
 TPolynom::TPolynom(const TRingList<TMonom>& rlist)
 {
-	name = "";
 	monoms = new TRingList<TMonom>(rlist);
+	name = ToString();
 }
 
 TPolynom::TPolynom(const TPolynom& p)
@@ -92,23 +92,20 @@ TPolynom::~TPolynom()
 }
 TPolynom TPolynom::operator-() const
 {
-	TRingList<TMonom>* list = new TRingList<TMonom>();
+	TRingList<TMonom> list;
 	monoms->Reset(); 
 	while (!monoms->IsEnded())
 	{
 		TMonom m = monoms->GetCurrent()->data;
 		m.coef *= -1;
-		list->InsertEnd(m);
+		list.InsertEnd(m);
 		monoms->Next(); 
 	}
-	TPolynom result;
-	result.monoms = list;
-	result.name = result.ToString();
-	return result;
+	return TPolynom(list);
 }
 TPolynom TPolynom::operator+(const TPolynom& p)
 {
-	TRingList<TMonom>* list = new TRingList<TMonom>();
+	TRingList<TMonom> list; 
 	monoms->Reset();
 	p.monoms->Reset();
 
@@ -126,7 +123,7 @@ TPolynom TPolynom::operator+(const TPolynom& p)
 			if (k3 != 0)
 			{
 				m2.coef = k3;
-				list->InsertEnd(m2);
+				list.InsertEnd(m2);
 			}
 
 			monoms->Next();
@@ -134,32 +131,28 @@ TPolynom TPolynom::operator+(const TPolynom& p)
 		}
 		else if (m1 > m2)
 		{
-			list->InsertEnd(m2);
+			list.InsertEnd(m2);
 			p.monoms->Next();
 		}
 		else
 		{
-			list->InsertEnd(m1);
+			list.InsertEnd(m1);
 			monoms->Next();
 		}
 	}
 
 	while (!monoms->IsEnded())
 	{
-		list->InsertEnd(monoms->GetCurrent()->data);
+		list.InsertEnd(monoms->GetCurrent()->data);
 		monoms->Next();
 	}
 
 	while (!p.monoms->IsEnded())
 	{
-		list->InsertEnd(p.monoms->GetCurrent()->data);
+		list.InsertEnd(p.monoms->GetCurrent()->data);
 		p.monoms->Next();
 	}
-
-	TPolynom result;
-	result.monoms = list;
-	result.name = result.ToString();
-	return result;
+	return TPolynom(list);
 }
 TPolynom TPolynom::operator-(const TPolynom& p) 
 {
@@ -167,7 +160,7 @@ TPolynom TPolynom::operator-(const TPolynom& p)
 }
 TPolynom TPolynom::operator*(const TPolynom& p)
 {
-	TRingList<TMonom>* list = new TRingList<TMonom>();
+	TRingList<TMonom> list; 
 	monoms->Reset();
 	p.monoms->Reset();
 	while (!monoms->IsEnded())
@@ -184,15 +177,31 @@ TPolynom TPolynom::operator*(const TPolynom& p)
 			int d2 = m2.degree;
 			int deg = d + d2;
 			TMonom mon(k3, deg);
-			list->InsertEnd(mon);
+			bool inserted = false;
+			list.Reset();
+
+			while (!list.IsEnded())
+			{
+				if (deg < list.GetCurrent()->data.degree)
+				{
+					list.InsertBeforeCurr(mon); 
+					inserted = true;
+					break;
+				}
+				list.Next();
+			}
+
+			if (!inserted)
+			{
+				list.InsertEnd(mon);
+			}
+
 			p.monoms->Next();
 		}
+
 		monoms->Next();
 	}
-	TPolynom result;
-	result.monoms = list;
-	result.name = result.ToString();
-	return result;
+	return TPolynom(list);
 }
 const TPolynom& TPolynom::operator=(const TPolynom& p)
 {
@@ -212,7 +221,7 @@ const TPolynom& TPolynom::operator=(const TPolynom& p)
 }
 TPolynom TPolynom::difx() const
 {
-	TRingList<TMonom>* list = new TRingList<TMonom>();
+	TRingList<TMonom> list; 
 	monoms->Reset();
 	while (!monoms->IsEnded())
 	{
@@ -225,18 +234,15 @@ TPolynom TPolynom::difx() const
 			d -= 100;
 			k *= d0;
 			TMonom newM(k, d);
-			list->InsertEnd(newM);
+			list.InsertEnd(newM);
 		}
 		monoms->Next();
 	}
-	TPolynom result;
-	result.monoms = list;
-	result.name = result.ToString();
-	return result;
+	return TPolynom(list);
 }
 TPolynom TPolynom::dify() const
 {
-	TRingList<TMonom>* list = new TRingList<TMonom>();
+	TRingList<TMonom> list;
 	monoms->Reset();
 	while (!monoms->IsEnded())
 	{
@@ -252,18 +258,15 @@ TPolynom TPolynom::dify() const
 			k *= d0;
 			d += intdeg * 100;
 			TMonom newM(k, d);
-			list->InsertEnd(newM);
+			list.InsertEnd(newM);
 		}
 		monoms->Next();
 	}
-	TPolynom result;
-	result.monoms = list;
-	result.name = result.ToString();
-	return result;
+	return TPolynom(list);
 }
 TPolynom TPolynom::difz() const
 {
-	TRingList<TMonom>* list = new TRingList<TMonom>();
+	TRingList<TMonom> list;
 	monoms->Reset();
 	while (!monoms->IsEnded())
 	{
@@ -279,16 +282,11 @@ TPolynom TPolynom::difz() const
 			k *= d0;
 			d += intdeg * 10;
 			TMonom newM(k, d);
-			list->InsertEnd(newM);
+			list.InsertEnd(newM);
 		}
 		monoms->Next();
 	}
-
-	TPolynom result;
-	result.monoms = list;
-	result.name = result.ToString();
-	result.name = result.ToString();
-	return result;
+	return TPolynom(list);
 }
 double TPolynom::operator()(double _x, double _y, double _z)
 {
@@ -298,10 +296,9 @@ double TPolynom::operator()(double _x, double _y, double _z)
 		{"y", _y},
 		{"z", _z},
 	};
-	TStack<string> st(5);
-	st = ArithmeticExpression::Postfix_Form(pol_name);
-	double result = ArithmeticExpression::Calculate(st, variableDict);
-	return result;
+	TStack<string> st = ArithmeticExpression::Postfix_Form(pol_name);
+	return ArithmeticExpression::Calculate(st, variableDict);
+	//return result;
 }
 string TPolynom::FilteredExpression(const string& s)
 {
@@ -419,107 +416,105 @@ void TPolynom::Parse_Polynom(const string& s)
 		string msg = "Input error";
 		throw msg;
 	}
-	else
+	TRingList<TMonom>* monomList = new TRingList<TMonom>();
+	int flag = 1;
+	for (int i = 0; i < str.length(); i++)
 	{
-		TRingList<TMonom>* monomList = new TRingList<TMonom>();
-		int flag = 1;
-		for (int i = 0; i < str.length(); i++)
+		string numStr = "";
+		string deg = "0";
+		if (str[i] == '-')
 		{
-			string numStr = "";
-			string deg = "0";
-			if (str[i] == '-')
+			flag = 0;
+			i++;
+		}
+		while (str[i] != '+' && str[i] != '-' && i != str.length())
+		{
+			char s1 = str[i];
+			string s(1, s1);
+			if (isdigit(s1) || s == ".")
 			{
-				flag = 0;
+				numStr += s;
 				i++;
 			}
-			while (str[i] != '+' && str[i] != '-' && i != str.length())
+			else
 			{
-				char s1 = str[i];
-				string s(1, s1);
-				if (isdigit(s1) || s == ".")
+				if (isOperand(str[i]))
 				{
-					numStr += s;
-					i++;
-				}
-				else
-				{
-					if (isOperand(str[i]))
+					if (str[i] == 'x')
 					{
-						if (str[i] == 'x')
+						i++;
+						if (str[i] == '^')
 						{
 							i++;
-							if (str[i] == '^')
-							{
-								i++;
-								char k = str[i];
-								int n = k - '0';
-								n = n * 100;
-								string x = to_string(n);
-								deg += x;
-								i++;
-							}
-							else
-								deg = "100";
+							char k = str[i];
+							int n = k - '0';
+							n = n * 100;
+							string x = to_string(n);
+							deg += x;
+							i++;
 						}
-						else if (str[i] == 'y')
+						else
+							deg = "100";
+					}
+					else if (str[i] == 'y')
+					{
+						i++;
+						if (str[i] == '^')
 						{
 							i++;
-							if (str[i] == '^')
-							{
-								i++;
-								char k = str[i];
-								int n = k - '0';
-								int N = stoi(deg);
-								N += n * 10;
-								string y = to_string(N);
-								deg = y;
-								i++;
-							}
-							else
-							{
-								int N = stoi(deg);
-								N += 10;
-								string y = to_string(N);
-								deg = y;
-							}
+							char k = str[i];
+							int n = k - '0';
+							int N = stoi(deg);
+							N += n * 10;
+							string y = to_string(N);
+							deg = y;
+							i++;
 						}
 						else
 						{
-							i++;
-							if (str[i] == '^')
-							{
-								i++;
-								char k = str[i];
-								int n = k - '0';
-								int N = stoi(deg);
-								N += n;
-								string z = to_string(N);
-								deg = z;
-								i++;
-							}
-							else
-							{
-								int N = stoi(deg);
-								N += 1;
-								string z = to_string(N);
-								deg = z;
-							}
+							int N = stoi(deg);
+							N += 10;
+							string y = to_string(N);
+							deg = y;
 						}
 					}
-					if (str[i] == '*' || str[i] == '/')
+					else
+					{
 						i++;
-
-
+						if (str[i] == '^')
+						{
+							i++;
+							char k = str[i];
+							int n = k - '0';
+							int N = stoi(deg);
+							N += n;
+							string z = to_string(N);
+							deg = z;
+							i++;
+						}
+						else
+						{
+							int N = stoi(deg);
+							N += 1;
+							string z = to_string(N);
+							deg = z;
+						}
+					}
 				}
+				if (str[i] == '*' || str[i] == '/')
+					i++;
 			}
-			int degree = stoi(deg);
-			double koef = 0.0;
-			if (numStr == "")
-				koef = 1.0;
-			else
-				koef = stod(numStr);
-			if (flag == 0)
-				koef = -koef;
+		}
+		int degree = stoi(deg);
+		double koef = 0.0;
+		if (numStr == "")
+			koef = 1.0;
+		else
+			koef = stod(numStr);
+		if (flag == 0)
+			koef = -koef;
+		if (koef != 0.0)
+		{
 			TMonom monom(koef, degree);
 			if (monomList->IsEmpty())
 				monomList->InsertFirst(monom);
@@ -556,15 +551,14 @@ void TPolynom::Parse_Polynom(const string& s)
 				if (monomList->IsEnded())
 					monomList->InsertEnd(monom);
 			}
-
-			if (str[i] == '-')
-				flag = 0;
-			else
-				flag = 1;
 		}
-		
-		this->monoms = monomList;
+		if (str[i] == '-')
+			flag = 0;
+		else
+			flag = 1;
 	}
+		
+	this->monoms = monomList;
 }
 
 string TPolynom::ToString()

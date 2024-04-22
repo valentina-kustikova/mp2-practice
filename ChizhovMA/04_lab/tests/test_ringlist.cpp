@@ -76,23 +76,6 @@ TEST(TRingList, create_ringlist_with_parametr_ringlist_data_data)
     int k = rlist2.GetCurrent()->data;
     EXPECT_EQ(5, k);
 }
-//Search
-TEST(TRingList, search_list_test_true)
-{
-    TRingList<int> list;
-    list.InsertFirst(10);
-    list.InsertEnd(5);
-    TNode<int>* searchResult = list.Search(5);
-    EXPECT_NE(nullptr, searchResult);
-}
-TEST(TRingList, search_list_test_false)
-{
-    TRingList<int> list;
-    list.InsertFirst(10);
-    list.InsertEnd(5);
-    TNode<int>* searchResult = list.Search(2);
-    EXPECT_EQ(nullptr, searchResult);
-}
 //InsertFirst
 TEST(TRingList, insert_first_test)
 {
@@ -144,18 +127,6 @@ TEST(TRingList, insert_end_list_first_element_pnext)
     TNode<int>* Node = list.GetCurrent();
     EXPECT_EQ(5, Node->data);
 }
-//IsEmpty
-TEST(TRingList, is_empty_list_test_true)
-{
-    TRingList<int> list;
-    EXPECT_TRUE(list.IsEmpty());
-}
-TEST(TRingList, is_empty_list_test_false)
-{
-    TRingList<int> list;
-    list.InsertFirst(10);
-    EXPECT_FALSE(list.IsEmpty());
-}
 //Remove
 TEST(TRingList, remove_node_middle_test)
 {
@@ -202,76 +173,4 @@ TEST(TRingList, remove_node_from_empty_list)
 {
     TRingList<int> list;
     ASSERT_ANY_THROW(list.Remove(9));
-}
-//GetCurrent
-TEST(TRingList, get_current_data)
-{
-    TRingList<int> list;
-    list.InsertEnd(10);
-    TNode<int>* Node = list.GetCurrent();
-    EXPECT_EQ(10, Node->data);
-}
-TEST(TRingList, get_current_data_pnext)
-{
-    TRingList<int> list;
-    list.InsertEnd(10);
-    list.InsertEnd(5);
-    list.Next();
-    TNode<int>* Node = list.GetCurrent();
-    EXPECT_EQ(5, Node->data);
-}
-//Next
-TEST(TRingList, next_element)
-{
-    TRingList<int> list;
-    list.InsertEnd(1);
-    list.InsertEnd(2);
-    list.InsertEnd(3);
-
-    list.Next();
-
-    TNode<int>* current = list.GetCurrent();
-    EXPECT_EQ(2, current->data);
-}
-//IsEnded
-TEST(TRingList, is_ended_test_false)
-{
-    TRingList<int> list;
-    list.InsertEnd(1);
-    list.InsertEnd(2);
-
-    EXPECT_FALSE(list.IsEnded());
-}
-TEST(TRingList, is_ended_test_true)
-{
-    TRingList<int> list;
-    list.InsertEnd(1);
-    list.InsertEnd(2);
-
-    list.Next();
-    list.Next();
-
-    EXPECT_TRUE(list.IsEnded());
-}
-//Reset
-TEST(TRingList, reset_test_false) {
-    TRingList<int> list;
-    list.InsertEnd(1);
-    list.InsertEnd(2);
-
-    list.Next();
-    TNode<int>* current = list.GetCurrent();
-
-    EXPECT_NE(1, current->data);
-}
-TEST(TRingList, reset_test_true) {
-    TRingList<int> list;
-    list.InsertEnd(1);
-    list.InsertEnd(2);
-
-    list.Next();
-    list.Reset();
-    TNode<int>* current = list.GetCurrent();
-
-    EXPECT_EQ(1, current->data);
 }

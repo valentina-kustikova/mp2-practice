@@ -32,7 +32,7 @@ public:
 	TList(const TList<T>& list);
 	~TList();
 
-	virtual TNode<T>* Search(const T& data);
+	TNode<T>* Search(const T& data);
 	virtual void InsertFirst(const T& data);
 	virtual void InsertEnd(const T& data);
 	void InsertAfter(const T& data, const T& beforedata);
@@ -42,12 +42,12 @@ public:
 	virtual void Remove(const T& data);
 	void Clear();
 	int GetSize() const;
-	virtual bool IsEmpty() const;
+	bool IsEmpty() const;
 	bool IsFull() const;
-	virtual bool IsEnded() const; //через него делаем обход
-	virtual TNode<T>* GetCurrent();
-	virtual void Next();  //переход к следующему эл
-	virtual void Reset(); //текущий становится первым
+	bool IsEnded() const; //через него делаем обход
+	TNode<T>* GetCurrent() const;
+	void Next();  //переход к следующему эл
+	void Reset(); //текущий становится первым
 };
 
 
@@ -262,7 +262,7 @@ bool TList<T>::IsEnded() const
 	return pCurr == pStop;
 }
 template <typename T>
-TNode<T>* TList<T>::GetCurrent()
+TNode<T>* TList<T>::GetCurrent() const
 {
 	return pCurr;
 }
