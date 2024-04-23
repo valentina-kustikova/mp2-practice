@@ -64,19 +64,19 @@ bool TList<TData>::IsEmpty() const {
 
 template <typename TData>
 TList<TData>::TList(const TList& l) {
-  if (l.IsEmpty())
+    if (l.IsEmpty())
 	{
 		pFirst=nullptr;
 		pLast=nullptr;
 		pCurr=nullptr;
-    pPrev=nullptr;
+        pPrev=nullptr;
 		pStop=nullptr;
-    return;
+        return;
 	}
 
 	pFirst = new TNode<TData>(l.pFirst->data);
 	TNode<TData>* tmp = pFirst; 
-  TNode<TData>* ltmp = l.pFirst->pNext;
+	TNode<TData>* ltmp = l.pFirst->pNext;
 	while(ltmp != l.pStop)
 	{
 		tmp->pNext = new TNode<TData>(ltmp->data);
@@ -85,7 +85,7 @@ TList<TData>::TList(const TList& l) {
 	}
 	pLast = tmp;
 	pCurr = pFirst;
-  pPrev = nullptr;
+	pPrev = nullptr;
 	pStop = nullptr;
 }
 

@@ -39,7 +39,7 @@ TEST(TPolynom, no_throw_when_polynom_will_be_empty)
   ASSERT_NO_THROW(TPolynom p("x-x+y-y+z-z"));
 }
 
-TEST(TPolynom, correct_to_string_method) 
+TEST(TPolynom, correct_to_string_method) // ???
 {
   TPolynom p("x^2-y*z^3+3");
   std::string nm = "3.00-y*z^3+x^2";
@@ -55,8 +55,6 @@ TEST(TPolynom, collecting_terms_test) {
 TEST(TPolynom, collecting_terms_to_zero) {
 	TPolynom p1("x+x-x-x+y-y");
 	TPolynom p2("0");
-	std::cout << p1;
-	std::cout << p2;
 	EXPECT_EQ(p1, p2);
 }
 

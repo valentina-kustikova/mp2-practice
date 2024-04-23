@@ -39,7 +39,7 @@ TEST(TList, can_Remove_element)
 	list.InsertLast(2);
 	list.InsertLast(3);
 	list.Remove(3);
-	EXPECT_EQ(true, list.IsEnded());
+	EXPECT_EQ(true, list.IsEnded()); // list search
 }
 
 TEST(TList, can_get_current_elemet)
@@ -78,13 +78,15 @@ TEST(TList, can_InsertFirst_element)
 	ASSERT_NO_THROW(list.InsertFirst(2));
 }
 
-TEST(TList, can_insert_after_element)
+TEST(TList, can_insert_after_element) // + 2
 {
 	TList<int> list;
 	list.InsertFirst(1);
 	list.InsertFirst(2);
 	ASSERT_NO_THROW(list.InsertAfter(3,2));
 }
+
+// tests for insert
 
 TEST(TList, next_element)
 {

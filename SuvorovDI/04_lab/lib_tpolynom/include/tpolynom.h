@@ -16,13 +16,13 @@ protected:
   bool check_each_char_is_correct(const std::string& name);
   void InsertToSort(const TMonom& monom);
 public:
-  TPolynom() : monoms() {}
+  TPolynom() : monoms() {} // Polynomial "0"
   TPolynom(const std::string& name);
   TPolynom(const THeadRingList<TMonom>& l);
   TPolynom(const TPolynom& p);
   ~TPolynom() = default;
   
-  friend TPolynom operator-(const TPolynom& p);
+  TPolynom operator-() const;
   TPolynom operator+(const TPolynom& p);
   TPolynom operator-(const TPolynom& p);
   TPolynom operator*(const TPolynom& p);

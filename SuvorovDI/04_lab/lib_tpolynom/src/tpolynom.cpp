@@ -122,8 +122,8 @@ std::string TPolynom::ToString() const {
 	return str;
 }
 
-TPolynom operator-(const TPolynom& p) {
-  TPolynom negativePol(p);
+TPolynom TPolynom::operator-() const {
+  TPolynom negativePol(*this);
 
   while (!negativePol.monoms.IsEnded()) {
     negativePol.monoms.GetCurr()->data.coeff_ = negativePol.monoms.GetCurr()->data.coeff_ * (-1);
@@ -299,9 +299,9 @@ void TPolynom::tokinize_polynom(const std::string& name) {
 		int degree = 0;
 		size_t j = str.find_first_of("+-", 1);
 		std::string monom = str.substr(0, j);
-    if (monom[monom.length() - 1] == '^') {
-      throw std::exception("Negative degree");
-    }
+		if (monom[monom.length() - 1] == '^') {
+			throw std::exception("Negative degree");
+		}
 		str.erase(0, j);
 
 		std::string coefficent = monom.substr(0, monom.find_first_of("xyz"));
@@ -336,7 +336,7 @@ void TPolynom::tokinize_polynom(const std::string& name) {
 			}
 		}
 		tmp.degree_ = degree;
-		if (tmp.coeff_ != 0 || name == "0") {
+		if (tmp.coeff_ != 0) {
 			this->InsertToSort(tmp);
 		}
 	}
@@ -344,4 +344,5 @@ void TPolynom::tokinize_polynom(const std::string& name) {
     TMonom zero(0, 0);
     this->monoms.InsertFirst(zero);
   }
+  this->name = this->ToString();
 }
