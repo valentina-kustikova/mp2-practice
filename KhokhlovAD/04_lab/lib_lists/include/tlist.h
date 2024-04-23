@@ -20,34 +20,34 @@ public:
 	virtual TNode<T>* search(const T& data);
 
 	~TList();
-	virtual void clear();
+	void clear();
 
-	virtual void Next();
-	virtual void Reset();
+	void Next();
+	void Reset();
 
 	bool IsEmpty()const;
 	bool IsFool()const;
 	bool IsEnd()const;
 
-	virtual void Sort();
+	void Sort();
 
-	virtual T get_pFirst()const { return pFirst->data; };
-	virtual T get_pLast()const { return pLast->data; };
-	virtual T get_pCurr()const { return pCurr->data; };
-	virtual T get_pPrev()const { return pPrev->data; };
+	T get_pFirst()const { return pFirst->data; };
+	T get_pLast()const { return pLast->data; };
+	T get_pCurr()const { return pCurr->data; };
+	T get_pPrev()const { return pPrev->data; };
 
 	virtual void InsertFirst(const T& data);
-	virtual void InsertLast(const T& data);
-	virtual void InsertBefore(const T& data, const TNode<T>* before_node);
-	virtual void InsertAfter(const T& data, const TNode<T>* after_node);
-	virtual void InsertBeforeCurrent(const T& data);
-	virtual void InsertAfterCurrent(const T& data);
+	void InsertLast(const T& data);
+	void InsertBefore(const T& data, const TNode<T>* before_node);
+	void InsertAfter(const T& data, const TNode<T>* after_node);
+	void InsertBeforeCurrent(const T& data);
+	void InsertAfterCurrent(const T& data);
 
 	virtual void DeleteFirst();
-	virtual void DeleteLast();
-	virtual void DeleteBefore(const TNode<T>* before_node);
-	virtual void DeleteAfter(const TNode<T>* after_node);
-	virtual void DeleteData(const T& data);
+	void DeleteLast();
+	void DeleteBefore(const TNode<T>* before_node);
+	void DeleteAfter(const TNode<T>* after_node);
+	void DeleteData(const T& data);
 
 	virtual TList<T>& operator=(const TList<T>& pList);
 
