@@ -84,12 +84,128 @@ TEST(ScanTable, ParameterizedConstructorTest_GetData_throw) {
 }
 
 // InsertTest
-TEST(ScanTable, InsertTest) {
+TEST(ScanTable, InsertTest_Empty) {
+	int size = 3;
+	ScanTable<int, string> st(3);
 
+	int key = 1;
+	string data = "a";
+
+	EXPECT_NO_THROW(st.Insert(key, &data));
+}
+
+TEST(ScanTable, InsertTest_NotEmpty) {
+	int size = 3;
+	ScanTable<int, string> st(3);
+
+	int key1 = 1;
+	int key2 = 2;
+	string data1 = "a";
+	string data2 = "b";
+	st.Insert(key1, &data1);
+
+	EXPECT_NO_THROW(st.Insert(key2, &data2));
+}
+
+TEST(ScanTable, InsertTest_Full) {
+	int size = 3;
+	ScanTable<int, string> st(3);
+
+	int key1 = 1;
+	int key2 = 2;
+	int key3 = 3;
+	int key4 = 4;
+	string data1 = "a";
+	string data2 = "b";
+	string data3 = "c";
+	string data4 = "d";
+	st.Insert(key1, &data1);
+	st.Insert(key2, &data2);
+	st.Insert(key3, &data3);
+
+	EXPECT_ANY_THROW(st.Insert(key4, &data4));
 }
 
 // FindTest
 TEST(ScanTable, FindTest) {
+	int size = 3;
+	ScanTable<int, string> st(3);
+
+	int key1 = 1;
+	int key2 = 2;
+	string data1 = "a";
+	string data2 = "b";
+	st.Insert(key1, &data1);
+	st.Insert(key2, &data2);
+
+	EXPECT_NO_THROW(st.Find(1));
+}
+
+TEST(ScanTable, FindTest_Key) {
+	int size = 3;
+	ScanTable<int, string> st(3);
+
+	int key = 1;
+	string data = "a";
+	st.Insert(key, &data);
+
+	TabRecord<int, string>* find = st.Find(1);
+
+	EXPECT_EQ(key, find->GetKey());
+}
+
+TEST(ScanTable, FindTest_Data) {
+	int size = 3;
+	ScanTable<int, string> st(3);
+
+	int key = 1;
+	string data = "a";
+	st.Insert(key, &data);
+
+	TabRecord<int, string>* find = st.Find(1);
+
+	EXPECT_EQ(data, *find->GetData());
+}
+
+TEST(ScanTable, FindTest_DataPointer) {
+	int size = 3;
+	ScanTable<int, string> st(3);
+
+	int key = 1;
+	string data = "a";
+	st.Insert(key, &data);
+
+	TabRecord<int, string>* find = st.Find(1);
+
+	EXPECT_NE(&data, find->GetData());
+}
+
+TEST(ScanTable, FindTest_NotFound) {
+	int size = 3;
+	ScanTable<int, string> st(3);
+
+	int key = 1;
+	string data = "a";
+	st.Insert(key, &data);
+
+	EXPECT_NO_THROW(st.Find(2));
+}
+
+TEST(ScanTable, FindTest_NotFound_Pointer) {
+	int size = 3;
+	ScanTable<int, string> st(3);
+
+	int key = 1;
+	string data = "a";
+	st.Insert(key, &data);
+
+	TabRecord<int, string>* find = st.Find(3);
+
+	EXPECT_EQ(nullptr, find);
+}
+
+// IndexingOperatorTest
+TEST(ScanTable, IndexingOperatorTest) {
 
 }
 

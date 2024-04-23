@@ -11,15 +11,15 @@ TEST(TabRecord, TEST_NAME) {
 }
 */
 
-// DefaultConstructorTest
+//// DefaultConstructorTest
 //TEST(TabRecord, DefaultConstructorTest) {
 //	int key = 1;
 //	string* data = new string("a");
 //	
-//	ASSERT_NO_THROW(TabRecord<int, string> tr(key, data)); //  ¿  «¿œ»’Õ”“‹ ¬ ASSERT_NO_THROW  À¿—— — ƒ¬”Ãﬂ “»œ¿Ã»?
+//	ASSERT_NO_THROW(TabRecord<int,string> tr(key, data)); //  ¿  «¿œ»’Õ”“‹ ¬ ASSERT_NO_THROW  À¿—— — ƒ¬”Ãﬂ “»œ¿Ã»?
 //}
 
-// CopyConstructorTest
+//// CopyConstructorTest
 //TEST(TabRecord, CopyConstructorTest) {
 //	int key = 1;
 //	string* data = new string("a");
@@ -43,7 +43,7 @@ TEST(TabRecord, CopyConstructorTest_DataPointer) {
 	TabRecord<int, string> tr1(key, data);
 	TabRecord<int, string> tr2(tr1);
 
-	EXPECT_EQ(tr1.GetData(), tr2.GetData());
+	EXPECT_NE(tr1.GetData(), tr2.GetData());
 }
 
 TEST(TabRecord, CopyConstructorTest_Data) {
@@ -70,7 +70,7 @@ TEST(TabRecord, GetDataTest_Pointer) {
 	string* data = new string("a");
 	TabRecord<int, string> tr(key, data);
 
-	EXPECT_EQ(data, tr.GetData());
+	EXPECT_NE(data, tr.GetData());
 }
 
 TEST(TabRecord, GetDataTest_Data) {
@@ -78,5 +78,5 @@ TEST(TabRecord, GetDataTest_Data) {
 	string* data = new string("a");
 	TabRecord<int, string> tr(key, data);
 
-	EXPECT_EQ("a", *tr.GetData());
+	EXPECT_EQ(*data, *tr.GetData());
 }
