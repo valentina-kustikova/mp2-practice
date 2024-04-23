@@ -58,7 +58,7 @@ TList<T>::TList(TNode<T>* _pFirst) {
 	if (pFirst == pStop) {
 		pLast = pStop;
 		pCurr = pStop;
-		
+
 		Reset();
 		return;
 	}
@@ -67,7 +67,7 @@ TList<T>::TList(TNode<T>* _pFirst) {
 	while (tmp->pNext != pStop)
 		tmp = tmp->pNext;
 	pLast = tmp;
-	
+
 	Reset();
 }
 
@@ -78,24 +78,24 @@ TList<T>::TList(const TList<T>& obj) {
 		pFirst = pStop;
 		pLast = pStop;
 		pCurr = pFirst;
-		
+
 		Reset();
 		return;
 	}
 
-	pFirst = new TNode<T>(obj.pFirst->key);
+	pFirst = new TNode<T>(obj.pFirst->data);
 	TNode<T>* tmp = obj.pFirst;
 	TNode<T>* pNode = pFirst;
 
 	while (tmp->pNext != obj.pStop) {
-		pNode->pNext = new TNode<T>(tmp->pNext->key);
+		pNode->pNext = new TNode<T>(tmp->pNext->data);
 		pNode = pNode->pNext;
 		tmp = tmp->pNext;
 	}
 	pLast = pNode;
 	pStop = pLast->pNext;
 	pCurr = pFirst;
-	
+
 	Reset();
 }
 
@@ -109,7 +109,7 @@ TList<T>::~TList() {
 template <typename T>
 TNode<T>* TList<T>::Search(const T& data) { // if (obj.Search(data) == obj.stop) - NOT FOUND
 	TNode<T>* tmp = pFirst;
-	while (tmp != pStop && tmp->key != data)
+	while (tmp != pStop && tmp->data != data)
 		tmp = tmp->pNext;
 	if (tmp == pStop) tmp = nullptr; /**/
 	return tmp;
@@ -146,7 +146,7 @@ void TList<T>::InsertBefore(const T& data) {
 	}*/
 
 	if (pCurr == nullptr) {
-		string exp = "Error: key not found";
+		string exp = "Error: data not found";
 		throw exp;
 	}
 
@@ -173,7 +173,7 @@ void TList<T>::InsertAfter(const T& data) {
 	}*/
 
 	if (pCurr == nullptr) {
-		string exp = "Error: key not found";
+		string exp = "Error: data not found";
 		throw exp;
 	}
 
@@ -192,7 +192,7 @@ void TList<T>::InsertAfter(const T& data) {
 template <typename T>
 void TList<T>::InsertBefore(const T& data, const T& before) {
 	pCurr = Search(before);
-	
+
 	InsertBefore(data);
 
 	Reset();
@@ -201,13 +201,13 @@ void TList<T>::InsertBefore(const T& data, const T& before) {
 	TNode<T>* pBefore = nullptr;
 	TNode<T>* pNode = pFirst;
 
-	while (pNode != pStop && pNode->key != before) {
+	while (pNode != pStop && pNode->data != before) {
 		pBefore = pNode;
 		pNode = pNode->pNext;
 	}
 
 	if (pNode == pStop) {
-		string exp = "Error: key not found";
+		string exp = "Error: data not found";
 		throw exp;
 	}
 
@@ -229,11 +229,11 @@ void TList<T>::InsertAfter(const T& data, const T& after) {
 	InsertAfter(data);
 
 	Reset();
-	
+
 	/*TNode<T>* pNode = Search(after);
 
 	if (pNode == pStop) {
-		string exp = "Error: key not found";
+		string exp = "Error: data not found";
 		throw exp;
 	}
 
@@ -258,14 +258,14 @@ void TList<T>::Remove(const T& data) {
 		throw exp;
 	}
 
-	TNode<T>* pNode = pFirst, *pPrev = nullptr;
-	while (pNode->pNext != pStop && pNode->key != data) {
+	TNode<T>* pNode = pFirst, * pPrev = nullptr;
+	while (pNode->pNext != pStop && pNode->data != data) {
 		pPrev = pNode;
 		pNode = pNode->pNext;
 	}
 
-	if (pNode->pNext == pStop && pNode->key != data) {
-		string exp = "Error: key not found";
+	if (pNode->pNext == pStop && pNode->data != data) {
+		string exp = "Error: data not found";
 		throw exp;
 	}
 

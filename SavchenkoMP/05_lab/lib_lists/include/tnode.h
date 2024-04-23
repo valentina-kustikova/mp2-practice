@@ -7,13 +7,13 @@ using namespace std;
 
 template <typename T>
 struct TNode {
-	T key;
+	T data;
 	TNode<T>* pNext;
 
-	TNode() : key(), pNext(nullptr) {};
-	TNode(const T& data) : key(data), pNext(nullptr) {};
-	TNode(TNode<T>* _pNext) : key(), pNext(_pNext) {};
-	TNode(const T& data, TNode<T>* _pNext) : key(data), pNext(_pNext) {};
+	TNode() : data(), pNext(nullptr) {};
+	TNode(const T& _data) : data(_data), pNext(nullptr) {};
+	TNode(TNode<T>* _pNext) : data(), pNext(_pNext) {};
+	TNode(const T& _data, TNode<T>* _pNext) : data(_data), pNext(_pNext) {};
 };
 
 #endif // !TNODE_H
