@@ -204,6 +204,11 @@ void TPolynomial::DividePolynomialName(const string& str1) {
 				kostyl2 = 0;
 			n++;
 		}
+		if ((subdiv[i][0] == 'x') || (subdiv[i][0] == 'y') || (subdiv[i][0] == 'z')) {
+			coef = 1;
+			if (kostyl[i] == -1)
+				coef *= -1;
+		}
 		if (tmpstr != "") {
 			coef = stod(tmpstr);
 			if (kostyl2 == -1)

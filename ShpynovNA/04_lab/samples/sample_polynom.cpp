@@ -4,8 +4,8 @@ int main() {
 	try {
 		cout << "enter 1st polynomial: \n";
 		string s1;
-		//cin >> s1;
-		s1 = "5x ^ 2 * y ^ 3 * z ^ 4 + 11 * x ^ 3 + 7";
+		//cin >> s1;  5x^2*y^3*z^4 + 11*x^3 + 7 + 0 - 2x^3 
+		s1 = " 5x^2*y^3*z^4 + 11*x^3 + 7 + 0 2 11x^3 - 2x + 3 - 0 -2 +x";
 		TPolynomial P1 = TPolynomial(s1);
 		cout << "got " << P1 << "\n";
 
