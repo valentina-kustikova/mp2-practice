@@ -166,7 +166,12 @@ TPolynomial TPolynomial::DerivativeZ() const {
 	return tmpdx;
 }
 
-void TPolynomial::DividePolynomialName(const string& str) {
+void TPolynomial::DividePolynomialName(const string& str1) {
+	string str;
+	for (int i = 0; i < str1.length(); i++) {
+		if (str1[i] != ' ')
+			str.push_back(str1[i]);
+	}
 	string subdiv[30];
 	int k = 0;
 	int kostyl[30] = { 0 };
@@ -185,6 +190,8 @@ void TPolynomial::DividePolynomialName(const string& str) {
 	}
 	k++;
 	for (int i = 0; i < k; i++) {
+		if (subdiv[i][subdiv[i].length() - 1] == '^')
+			throw;
 		short degr = 0;
 		double coef = 1.0;
 		int n = 0;
