@@ -13,9 +13,9 @@ TEST(TNode, DefaultConstructorTest_Constructor) {
 	ASSERT_NO_THROW(TNode<int>*node = new TNode<int>);
 }
 
-TEST(TNode, DefaultConstructorTest_key) {
+TEST(TNode, DefaultConstructorTest_data) {
 	TNode<int>* node = new TNode<int>;
-	EXPECT_EQ(0, node->key);
+	EXPECT_EQ(0, node->data);
 }
 
 TEST(TNode, DefaultConstructorTest_pointer) {
@@ -26,12 +26,12 @@ TEST(TNode, DefaultConstructorTest_pointer) {
 // ParameterizedConstructorTests
 // DataParameter
 TEST(TNode, ParameterizedConstructorTest_DataParameter_Constructor) {
-	ASSERT_NO_THROW(TNode<int>* node = new TNode<int>(3));
+	ASSERT_NO_THROW(TNode<int>*node = new TNode<int>(3));
 }
 
 TEST(TNode, ParameterizedConstructorTest_DataOperand_data) {
 	TNode<int>* node = new TNode<int>(3);
-	EXPECT_EQ(3, node->key);
+	EXPECT_EQ(3, node->data);
 }
 
 TEST(TNode, ParameterizedConstructorTest_DataOperand_pointer) {
@@ -42,14 +42,14 @@ TEST(TNode, ParameterizedConstructorTest_DataOperand_pointer) {
 // PointerParameter
 TEST(TNode, ParameterizedConstructorTest_PointerParameter_Constructor) {
 	TNode<int>* tmp = new TNode<int>(3);
-	ASSERT_NO_THROW(TNode<int>* node = new TNode<int>(tmp));
+	ASSERT_NO_THROW(TNode<int>*node = new TNode<int>(tmp));
 }
 
 TEST(TNode, ParameterizedConstructorTest_PointerParameter_data) {
 	TNode<int>* tmp = new TNode<int>(3);
 	TNode<int>* node = new TNode<int>(tmp);
 
-	EXPECT_EQ(0, node->key);
+	EXPECT_EQ(0, node->data);
 }
 
 TEST(TNode, ParameterizedConstructorTest_PointerParameter_pointer) {
@@ -63,7 +63,7 @@ TEST(TNode, ParameterizedConstructorTest_PointerParameter_pointer_data) {
 	TNode<int>* tmp = new TNode<int>(3);
 	TNode<int>* node = new TNode<int>(tmp);
 
-	EXPECT_EQ(3, node->pNext->key);
+	EXPECT_EQ(3, node->pNext->data);
 }
 
 TEST(TNode, ParameterizedConstructorTest_PointerParameter_pointer_pointer) {
@@ -84,7 +84,7 @@ TEST(TNode, ParameterizedConstructorTest_DataAndPointerParameter_data) {
 	TNode<int>* tmp = new TNode<int>(3);
 	TNode<int>* node = new TNode<int>(1, tmp);
 
-	EXPECT_EQ(1, node->key);
+	EXPECT_EQ(1, node->data);
 }
 
 TEST(TNode, ParameterizedConstructorTest_DataAndPointerParameter_pointer) {
@@ -98,7 +98,7 @@ TEST(TNode, ParameterizedConstructorTest_DataAndPointerParameter_pointer_data) {
 	TNode<int>* tmp = new TNode<int>(3);
 	TNode<int>* node = new TNode<int>(1, tmp);
 
-	EXPECT_EQ(3, node->pNext->key);
+	EXPECT_EQ(3, node->pNext->data);
 }
 
 TEST(TNode, ParameterizedConstructorTest_DataAndPointerParameter_pointer_pointer) {

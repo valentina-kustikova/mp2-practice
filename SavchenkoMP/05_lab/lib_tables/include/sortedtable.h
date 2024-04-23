@@ -112,12 +112,12 @@ TabRecord<TKey, TData>* SortedTable<TKey, TData>::Find(const TKey& key) {
 	while (left <= right) {
 		int mid = (right + left) / 2;
 		
-		if (recs[mid]->key == key) {
+		if (recs[mid]->key == key) { // GetKey()
 			search = recs[mid];
 			right = mid;
 			left = mid + 1;
 		}
-		else if (recs[mid]->key < key) left = mid + 1;
+		else if (recs[mid]->key < key) left = mid + 1; // GetKey()
 		else right = mid - 1;
 	}
 	curr_pos = right;
@@ -135,7 +135,7 @@ void SortedTable<TKey, TData>::Insert(const TKey& _key, const TData* _data) {
 	for (int i = count - 1; i >= currpos; i--) {
 		recs[i + 1] = recs[i];
 	}
-	recs[curr_pos] = new TabRecord<TKey, TData>(_key, _data);
+	recs[curr_pos + 1] = new TabRecord<TKey, TData>(_key, _data); // curr_pos
 }
 
 template <class TKey, class TData>

@@ -14,6 +14,7 @@ public:
 	virtual void Insert(const TKey& _key, TData* _data) = 0;
 	virtual void Remove(const TKey& _key) = 0;
 	virtual TabRecord<TKey, TData>* Find(const TKey& _key) = 0;
+	virtual TData* operator[](const TKey& _key) = 0;
 
 	bool IsFull() const;
 	bool IsEmpty() const;

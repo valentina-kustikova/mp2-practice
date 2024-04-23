@@ -19,6 +19,7 @@ public:
 	virtual void  Insert(const TKey& _key, TData* _data);
 	virtual void Remove(const TKey& _key);
 	virtual TabRecord<TKey, TData>* Find(const TKey& key);
+	virtual TData* operator[](const TKey& _key);
 
 	virtual TKey GetKey() const;
 	virtual TData* GetData() const;
@@ -121,6 +122,12 @@ TabRecord<TKey, TData>* ScanTable<TKey, TData>::Find(const TKey& key) {
 	}
 
 	return res;
+}
+
+template <class TKey, class TData>
+TData* ScanTable<TKey, TData>::operator[](const TKey& _key) {
+	if (Find(_key) != nullptr) return GetData();
+	else return nullptr;
 }
 
 

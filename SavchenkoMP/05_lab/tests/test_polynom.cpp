@@ -182,6 +182,24 @@ TEST(TPolynom, CalculateValueTest_NullPolynom) {
 	EXPECT_EQ(0, p(2, 3, 4));
 }
 
+TEST(TPolynom, CalculateValueTest_Null) {
+	TPolynom p("0");
+
+	EXPECT_EQ(0, p(2, 3, 4));
+}
+
+//TEST(TPolynom, CalculateValueTest_EmptyPolynom) {
+//	TPolynom p("");
+//
+//	EXPECT_EQ(0, p(2, 3, 4));
+//}
+
+TEST(TPolynom, CalculateValueTest_WithoutVariables) {
+	TPolynom p("4");
+
+	EXPECT_EQ(4, p(2, 3, 4));
+}
+
 
 // DifferentiationXTest
 TEST(TPolynom, DifferentiationXTest) {

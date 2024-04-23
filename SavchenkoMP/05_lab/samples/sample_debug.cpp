@@ -1,11 +1,4 @@
 #include <iostream>
-#include <string>
-#include <vector>
-#include "tnode.h"
-#include "tlist.h"
-#include "tringlist.h"
-#include "tmonom.h"
-#include "tpolynom.h"
 #include "tableslib.h"
 
 using namespace std;
@@ -15,15 +8,13 @@ int main() {
 		int size = 3;
 		ScanTable<int, string> st(3);
 
-		/*cout << st.IsFull() << endl;
-		cout << st.IsEmpty() << endl;
-		cout << st.IsTabEnded() << endl;
-		cout << st.Reset() << endl;
-		cout << st.Next() << endl;
-		cout << st.GetDataCount() << endl;
-		cout << st.GetMaxSize() << endl;*/
-		//cout << st.GetKey() << endl;
-		//cout << st.GetData() << endl;
+		int key = 1;
+		string data = "a";
+		st.Insert(key, &data);
+
+		TabRecord<int, string>* find = st.Find(2);
+
+		cout << (find == nullptr) << endl;
 	}
 	catch (string exp) {
 		cout << exp << endl;

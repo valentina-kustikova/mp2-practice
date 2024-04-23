@@ -27,7 +27,7 @@ TEST(TRingList, InsertionFirstTest_EmptyList) {
 	list.InsertFirst(1);
 	tmp = list.Search(1);
 
-	EXPECT_EQ(1, tmp->key);
+	EXPECT_EQ(1, tmp->data);
 	//EXPECT_EQ(list.stop(), tmp->pNext);
 }
 
@@ -38,8 +38,8 @@ TEST(TRingList, InsertionFirstTest_NotEmptyList) {
 	list.InsertFirst(1);
 
 	tmp = list.Search(1);
-	EXPECT_EQ(1, tmp->key);
-	EXPECT_EQ(2, tmp->pNext->key);
+	EXPECT_EQ(1, tmp->data);
+	EXPECT_EQ(2, tmp->pNext->data);
 	//EXPECT_EQ(list.stop(), tmp->pNext->pNext);
 }
 
@@ -67,9 +67,9 @@ TEST(TRingList, SearchTest_FirstInList) {
 	list.InsertFirst(1);
 
 	tmp = list.Search(1);
-	EXPECT_EQ(1, tmp->key);
-	EXPECT_EQ(2, tmp->pNext->key);
-	EXPECT_EQ(3, tmp->pNext->pNext->key);
+	EXPECT_EQ(1, tmp->data);
+	EXPECT_EQ(2, tmp->pNext->data);
+	EXPECT_EQ(3, tmp->pNext->pNext->data);
 	//EXPECT_EQ(list.stop(), tmp->pNext->pNext->pNext);
 }
 
@@ -81,8 +81,8 @@ TEST(TRingList, SearchTest_SecondInList) {
 	list.InsertFirst(1);
 
 	tmp = list.Search(2);
-	EXPECT_EQ(2, tmp->key);
-	EXPECT_EQ(3, tmp->pNext->key);
+	EXPECT_EQ(2, tmp->data);
+	EXPECT_EQ(3, tmp->pNext->data);
 	//EXPECT_EQ(list.stop(), tmp->pNext->pNext);
 }
 
@@ -94,7 +94,7 @@ TEST(TRingList, SearchTest_ThirdInList) {
 	list.InsertFirst(1);
 
 	tmp = list.Search(3);
-	EXPECT_EQ(3, tmp->key);
+	EXPECT_EQ(3, tmp->data);
 	//EXPECT_EQ(list.stop(), tmp->pNext);
 }
 
@@ -112,7 +112,7 @@ TEST(TRingList, InsertionLastTest_EmptyList) {
 	list.InsertLast(1);
 	tmp = list.Search(1);
 
-	EXPECT_EQ(1, tmp->key);
+	EXPECT_EQ(1, tmp->data);
 	//EXPECT_EQ(list.stop(), tmp->pNext);
 }
 
@@ -125,9 +125,9 @@ TEST(TRingList, InsertionLastTest_NotEmptyList) {
 	list.InsertLast(3);
 	tmp = list.Search(1);
 
-	EXPECT_EQ(1, tmp->key);
-	EXPECT_EQ(2, tmp->pNext->key);
-	EXPECT_EQ(3, tmp->pNext->pNext->key);
+	EXPECT_EQ(1, tmp->data);
+	EXPECT_EQ(2, tmp->pNext->data);
+	EXPECT_EQ(3, tmp->pNext->pNext->data);
 	//EXPECT_EQ(list.stop(), tmp->pNext->pNext->pNext);
 }
 
@@ -195,9 +195,9 @@ TEST(TRingList, ClearTest_InsertAfterClear) {
 	list.InsertLast(3);
 	TNode<int>* tmp = list.Search(1);
 
-	EXPECT_EQ(1, tmp->key);
-	EXPECT_EQ(2, tmp->pNext->key);
-	EXPECT_EQ(3, tmp->pNext->pNext->key);
+	EXPECT_EQ(1, tmp->data);
+	EXPECT_EQ(2, tmp->pNext->data);
+	EXPECT_EQ(3, tmp->pNext->pNext->data);
 	//EXPECT_EQ(list.stop(), tmp->pNext->pNext->pNext);
 }
 
@@ -225,9 +225,9 @@ TEST(TRingList, InsertionBeforeTest_Found) {
 	list.InsertBefore(10, 2);
 	tmp = list.Search(1);
 
-	EXPECT_EQ(1, tmp->key);
-	EXPECT_EQ(10, tmp->pNext->key);
-	EXPECT_EQ(2, tmp->pNext->pNext->key);
+	EXPECT_EQ(1, tmp->data);
+	EXPECT_EQ(10, tmp->pNext->data);
+	EXPECT_EQ(2, tmp->pNext->pNext->data);
 }
 
 TEST(TRingList, InsertionBeforeTest_FoundFirst) {
@@ -241,9 +241,9 @@ TEST(TRingList, InsertionBeforeTest_FoundFirst) {
 	list.InsertBefore(10, 1);
 	tmp = list.Search(10);
 
-	EXPECT_EQ(10, tmp->key);
-	EXPECT_EQ(1, tmp->pNext->key);
-	EXPECT_EQ(2, tmp->pNext->pNext->key);
+	EXPECT_EQ(10, tmp->data);
+	EXPECT_EQ(1, tmp->pNext->data);
+	EXPECT_EQ(2, tmp->pNext->pNext->data);
 }
 
 // InsertionAfterTest
@@ -269,9 +269,9 @@ TEST(TRingList, InsertionAfterTest_Found) {
 	list.InsertAfter(10, 2);
 	tmp = list.Search(2);
 
-	EXPECT_EQ(2, tmp->key);
-	EXPECT_EQ(10, tmp->pNext->key);
-	EXPECT_EQ(3, tmp->pNext->pNext->key);
+	EXPECT_EQ(2, tmp->data);
+	EXPECT_EQ(10, tmp->pNext->data);
+	EXPECT_EQ(3, tmp->pNext->pNext->data);
 }
 
 TEST(TRingList, InsertionAfterTest_FoundLast) {
@@ -285,8 +285,8 @@ TEST(TRingList, InsertionAfterTest_FoundLast) {
 	list.InsertAfter(10, 3);
 	tmp = list.Search(3);
 
-	EXPECT_EQ(3, tmp->key);
-	EXPECT_EQ(10, tmp->pNext->key);
+	EXPECT_EQ(3, tmp->data);
+	EXPECT_EQ(10, tmp->pNext->data);
 	//EXPECT_EQ(list.stop(), tmp->pNext->pNext);
 }
 
@@ -310,9 +310,9 @@ TEST(TRingList, CopyConstructorTest_List_NotEmpty) {
 	TRingList<int> list(expl);
 	TNode<int>* tmp = list.Search(1);
 
-	EXPECT_EQ(1, tmp->key);
-	EXPECT_EQ(2, tmp->pNext->key);
-	EXPECT_EQ(3, tmp->pNext->pNext->key);
+	EXPECT_EQ(1, tmp->data);
+	EXPECT_EQ(2, tmp->pNext->data);
+	EXPECT_EQ(3, tmp->pNext->pNext->data);
 	//EXPECT_EQ(list.stop(), tmp->pNext->pNext->pNext);
 }
 
@@ -332,9 +332,9 @@ TEST(TRingList, CopyConstructorTest_Node_NotEmpty) {
 	TRingList<int> list(pFirst);
 	TNode<int>* tmp = list.Search(1);
 
-	EXPECT_EQ(1, tmp->key);
-	EXPECT_EQ(2, tmp->pNext->key);
-	EXPECT_EQ(3, tmp->pNext->pNext->key);
+	EXPECT_EQ(1, tmp->data);
+	EXPECT_EQ(2, tmp->pNext->data);
+	EXPECT_EQ(3, tmp->pNext->pNext->data);
 	//EXPECT_EQ(list.stop(), tmp->pNext->pNext->pNext);
 }
 
@@ -351,8 +351,8 @@ TEST(TRingList, RemovalTest_First) {
 	tmp = list.Search(2);
 
 	EXPECT_EQ(nullptr, list.Search(1));
-	EXPECT_EQ(2, tmp->key);
-	EXPECT_EQ(3, tmp->pNext->key);
+	EXPECT_EQ(2, tmp->data);
+	EXPECT_EQ(3, tmp->pNext->data);
 	//EXPECT_EQ(nullptr, tmp->pNext->pNext);
 }
 
@@ -369,9 +369,9 @@ TEST(TRingList, RemovalTest_Middle) {
 	tmp = list.Search(1);
 
 	EXPECT_EQ(nullptr, list.Search(2));
-	EXPECT_EQ(1, tmp->key);
-	EXPECT_EQ(3, tmp->pNext->key);
-	EXPECT_EQ(4, tmp->pNext->pNext->key);
+	EXPECT_EQ(1, tmp->data);
+	EXPECT_EQ(3, tmp->pNext->data);
+	EXPECT_EQ(4, tmp->pNext->pNext->data);
 	//EXPECT_EQ(nullptr, tmp->pNext->pNext->pNext);
 }
 
@@ -387,8 +387,8 @@ TEST(TRingList, RemovalTest_Last) {
 	tmp = list.Search(1);
 
 	EXPECT_EQ(nullptr, list.Search(3));
-	EXPECT_EQ(1, tmp->key);
-	EXPECT_EQ(2, tmp->pNext->key);
+	EXPECT_EQ(1, tmp->data);
+	EXPECT_EQ(2, tmp->pNext->data);
 	//EXPECT_EQ(nullptr, tmp->pNext->pNext);
 }
 
@@ -418,7 +418,7 @@ TEST(TRingList, GetCurrentTest_BeforeReset) {
 
 	TNode<int>* tmp = list.GetCurrent();
 
-	EXPECT_EQ(1, tmp->key);
+	EXPECT_EQ(1, tmp->data);
 }
 
 TEST(TRingList, GetCurrentTest_AfterReset) {
@@ -430,7 +430,7 @@ TEST(TRingList, GetCurrentTest_AfterReset) {
 	list.Reset();
 	TNode<int>* tmp = list.GetCurrent();
 
-	EXPECT_EQ(1, tmp->key);
+	EXPECT_EQ(1, tmp->data);
 }
 
 // ResetTest
@@ -457,7 +457,7 @@ TEST(TRingList, ResetTest_NotEmpty) {
 
 	TNode<int>* tmp = list.GetCurrent();
 
-	EXPECT_EQ(1, tmp->key);
+	EXPECT_EQ(1, tmp->data);
 }
 
 // NextTest
@@ -470,7 +470,7 @@ TEST(TRingList, NextTest_BeforeReset) {
 	list.Next();
 	TNode<int>* tmp = list.GetCurrent();
 
-	EXPECT_EQ(2, tmp->key);
+	EXPECT_EQ(2, tmp->data);
 }
 
 TEST(TRingList, NextTest_AfterReset) {
@@ -484,7 +484,7 @@ TEST(TRingList, NextTest_AfterReset) {
 	list.Next();
 	TNode<int>* tmp = list.GetCurrent();
 
-	EXPECT_EQ(3, tmp->key);
+	EXPECT_EQ(3, tmp->data);
 }
 
 TEST(TRingList, NextTest_MultipleNext) {
@@ -497,7 +497,7 @@ TEST(TRingList, NextTest_MultipleNext) {
 	list.Next(3);
 	TNode<int>* tmp = list.GetCurrent();
 
-	EXPECT_EQ(4, tmp->key);
+	EXPECT_EQ(4, tmp->data);
 }
 
 // IsEndedTest
@@ -549,10 +549,10 @@ TEST(TRingList, InsertBeforeTest_BeforeNext) {
 	list.InsertBefore(10);
 	TNode<int>* tmp = list.Search(10);
 
-	EXPECT_EQ(10, tmp->key);
-	EXPECT_EQ(1, tmp->pNext->key);
-	EXPECT_EQ(2, tmp->pNext->pNext->key);
-	EXPECT_EQ(3, tmp->pNext->pNext->pNext->key);
+	EXPECT_EQ(10, tmp->data);
+	EXPECT_EQ(1, tmp->pNext->data);
+	EXPECT_EQ(2, tmp->pNext->pNext->data);
+	EXPECT_EQ(3, tmp->pNext->pNext->pNext->data);
 }
 
 TEST(TRingList, InsertBeforeTest_AfterNext) {
@@ -565,10 +565,10 @@ TEST(TRingList, InsertBeforeTest_AfterNext) {
 	list.InsertBefore(10);
 	TNode<int>* tmp = list.Search(1);
 
-	EXPECT_EQ(1, tmp->key);
-	EXPECT_EQ(10, tmp->pNext->key);
-	EXPECT_EQ(2, tmp->pNext->pNext->key);
-	EXPECT_EQ(3, tmp->pNext->pNext->pNext->key);
+	EXPECT_EQ(1, tmp->data);
+	EXPECT_EQ(10, tmp->pNext->data);
+	EXPECT_EQ(2, tmp->pNext->pNext->data);
+	EXPECT_EQ(3, tmp->pNext->pNext->pNext->data);
 }
 
 // InsertAfterTest
@@ -581,10 +581,10 @@ TEST(TRingList, InsertAfterTest_BeforeNext) {
 	list.InsertAfter(10);
 	TNode<int>* tmp = list.Search(1);
 
-	EXPECT_EQ(1, tmp->key);
-	EXPECT_EQ(10, tmp->pNext->key);
-	EXPECT_EQ(2, tmp->pNext->pNext->key);
-	EXPECT_EQ(3, tmp->pNext->pNext->pNext->key);
+	EXPECT_EQ(1, tmp->data);
+	EXPECT_EQ(10, tmp->pNext->data);
+	EXPECT_EQ(2, tmp->pNext->pNext->data);
+	EXPECT_EQ(3, tmp->pNext->pNext->pNext->data);
 }
 
 TEST(TRingList, InsertAfterTest_AfterNext_AtMiddle) {
@@ -597,10 +597,10 @@ TEST(TRingList, InsertAfterTest_AfterNext_AtMiddle) {
 	list.InsertAfter(10);
 	TNode<int>* tmp = list.Search(1);
 
-	EXPECT_EQ(1, tmp->key);
-	EXPECT_EQ(2, tmp->pNext->key);
-	EXPECT_EQ(10, tmp->pNext->pNext->key);
-	EXPECT_EQ(3, tmp->pNext->pNext->pNext->key);
+	EXPECT_EQ(1, tmp->data);
+	EXPECT_EQ(2, tmp->pNext->data);
+	EXPECT_EQ(10, tmp->pNext->pNext->data);
+	EXPECT_EQ(3, tmp->pNext->pNext->pNext->data);
 }
 
 TEST(TRingList, InsertAfterTest_AfterNext_AtEnd) {
@@ -614,10 +614,10 @@ TEST(TRingList, InsertAfterTest_AfterNext_AtEnd) {
 	list.InsertAfter(10);
 	TNode<int>* tmp = list.Search(1);
 
-	EXPECT_EQ(1, tmp->key);
-	EXPECT_EQ(2, tmp->pNext->key);
-	EXPECT_EQ(3, tmp->pNext->pNext->key);
-	EXPECT_EQ(10, tmp->pNext->pNext->pNext->key);
+	EXPECT_EQ(1, tmp->data);
+	EXPECT_EQ(2, tmp->pNext->data);
+	EXPECT_EQ(3, tmp->pNext->pNext->data);
+	EXPECT_EQ(10, tmp->pNext->pNext->pNext->data);
 }
 
 TEST(TRingList, RingTest) {
@@ -629,8 +629,8 @@ TEST(TRingList, RingTest) {
 
 	tmp = list.Search(1);
 
-	EXPECT_EQ(1, tmp->key);
-	EXPECT_EQ(2, tmp->pNext->key);
+	EXPECT_EQ(1, tmp->data);
+	EXPECT_EQ(2, tmp->pNext->data);
 	//EXPECT_EQ(list.stop(), tmp->pNext->pNext);
-	EXPECT_EQ(1, tmp->pNext->pNext->pNext->key);
+	EXPECT_EQ(1, tmp->pNext->pNext->pNext->data);
 }
