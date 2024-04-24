@@ -15,12 +15,12 @@ TEST(monom, constructor_copy_work) {
 
 TEST(monom, different_memory) {
 	TMonom m1(2.92, 4);
-	m1.coeff = 6;
-	m1.wrap_degree = 9;
+	m1.SetCoeff(6);
+	m1.SetWP(9);
 
 	TMonom m2(m1);
-	m2.coeff = 6;
-	m2.wrap_degree = 9;
+	m2.SetCoeff(6);
+	m2.SetWP(9);
 
 	ASSERT_TRUE(&m1 != &m2);
 }
@@ -58,7 +58,7 @@ TEST(monom, assign_check_values) {
 	TMonom m1(7.95, 124);
 	TMonom m2(12.95, 104);
 	TMonom m3 = m1;
-	ASSERT_NO_THROW(m3.coeff == 7.95 && m3.wrap_degree == 124 || m3 == m1);
+	ASSERT_NO_THROW(m3.GetCoeff() == 7.95 && m3.GetWP() == 124 || m3 == m1);
 }
 
 TEST(monom, triple_assign) {
@@ -79,7 +79,7 @@ TEST(monom, multiplication_check_values) {
 	TMonom m1(5, 124);
 	TMonom m2(4, 104);
 	TMonom m3 = m1 * m2;
-	ASSERT_TRUE(m3.coeff == 20 && m3.wrap_degree == 228);
+	ASSERT_TRUE(m3.GetCoeff() == 20 && m3.GetWP() == 228);
 }
 
 TEST(monom, multiplication_degree_limit_is_OK) {
@@ -114,7 +114,7 @@ TEST(monom, operator_plus_check_values) {
 
 	TMonom res = m1 + m2;
 
-	EXPECT_EQ(15, res.coeff);
+	EXPECT_EQ(15, res.GetCoeff());
 }
 
 TEST(monom, operator_unary_minus_work) {
@@ -128,5 +128,5 @@ TEST(monom, monom_subtraction) {
 
 	TMonom res = m1 + (-m2);
 
-	EXPECT_EQ(-21, res.coeff);
+	EXPECT_EQ(-21, res.GetCoeff());
 }

@@ -206,6 +206,60 @@ TEST(TList, different_memory) {
 	ASSERT_TRUE(&List != &List_copy);
 }
 
+
+TEST(TList, clear_work) {
+	Node<int>* pFirst = new Node<int>(10);
+	TList<int> List(pFirst);
+
+	List.insert_last(2);
+	List.insert_last(5);
+
+	List.insert_before(6, 2);
+	List.insert_before(4, 2);
+	List.insert_before(20, 10);
+	List.insert_before(30, 10);
+
+	ASSERT_NO_THROW(List.clear());
+}
+
+TEST(TList, work_after_clear) {
+	Node<int>* pFirst = new Node<int>(10);
+	TList<int> List(pFirst);
+
+	List.insert_last(2);
+	List.insert_last(5);
+
+	List.insert_before(6, 2);
+	List.insert_before(4, 2);
+	List.insert_before(20, 10);
+	List.insert_before(30, 10);
+
+	List.clear();
+
+	ASSERT_NO_THROW(List.insert_last(5));
+}
+
+TEST(TList, count_nodes_after_clear) {
+	Node<int>* pFirst = new Node<int>(10);
+	TList<int> List(pFirst);
+
+	List.insert_last(2);
+	List.insert_last(5);
+
+	List.insert_before(6, 2);
+	List.insert_before(4, 2);
+	List.insert_before(20, 10);
+	List.insert_before(30, 10);
+
+	List.clear();
+
+	int test_size = List.GetSize();
+
+	EXPECT_EQ(0,test_size);
+}
+
+
+
 TEST(TList, count_nodes) {
 	Node<int>* pFirst = new Node<int>(10);
 	TList<int> List(pFirst);

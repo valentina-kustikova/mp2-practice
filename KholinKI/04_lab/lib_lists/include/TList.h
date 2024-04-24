@@ -26,12 +26,14 @@ public:
 	int  GetSize()const;
 	bool IsEmpty()const;
 	bool IsFull()const;
-	void clear();
+	virtual void clear();
 	void reset();
+	void Sort();
 	void next();
 	bool Is_Ended() const;
 	void swap(Node<T>*& pNode1, Node<T>*& pNode2);
 	Node<T>* getCurrent() const{ return pCurr; }
+	Node<T>* getPFirst()const { return pFirst; }
 	
 	friend ostream& operator<<(ostream& ostr, const TList<T>& l) {
 		Node<T>* tmp = l.pCurr;
@@ -54,7 +56,7 @@ public:
 
 
 template<typename T>
-TList<T>::TList() { // pPrev
+TList<T>::TList() {
 	pFirst = nullptr;
 	pLast = nullptr;
 	pCurr = nullptr;
@@ -242,7 +244,25 @@ void TList<T>::remove(const T& data_) {
 }
 
 template<typename T>
-void TList<T>::clear() {
+void TList<T>::Sort() {
+	int size = GetSize();
+	while (pCurr != pStop) {
+		Node<T>* min = getCurrent();
+		Node<T>* pJ = getCurrent()->pNext;
+		while (pJ != pStop) {
+			if (pJ->data <= min->data) {
+				min = pJ;
+			}
+			pJ = pJ->pNext;
+		}
+		swap(pCurr, min);
+		next();
+	}
+	reset();
+}
+
+template<typename T>
+void TList<T>::clear() { 
 	if (IsEmpty()) {
 		return;
 	}

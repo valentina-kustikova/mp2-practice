@@ -15,8 +15,7 @@ public:
 
 	void insert_first(const T& data_) override;
 	void remove(const T& data_) override;
-	void Sort();
-	bool Is_Sorted();
+	void clear() override;
 };
 
 template<typename T>		
@@ -117,37 +116,23 @@ void TRingList<T>::remove(const T& data_) {
 }
 
 template<typename T>
-bool TRingList<T>::Is_Sorted() {
-	next();
-	while (!Is_Ended()) {
-		if (pPrev->data <= pCurr->data) {
-			next();
-		}
-		else {
-			reset();
-			return false;
-		}
+void TRingList<T>::clear() {
+	if (IsEmpty()) {
+		return;
 	}
-	reset();
-	return true;
+	Node<T>* tmp = pFirst;
+	while (tmp != pStop) {
+		pFirst = pFirst->pNext;
+		pHead->pNext = pFirst;
+		tmp->pNext = nullptr;
+		delete tmp;
+		tmp = pFirst;
+	}
+	pFirst = nullptr;
+	pCurr = nullptr;
+	pPrev = nullptr;
+	pLast = nullptr;
 }
 
-template<typename T>
-void TRingList<T>::Sort() {
-	int size = GetSize();
-	while(pCurr != pStop){
-		Node<T>* min = getCurrent();
-		Node<T>* pJ = getCurrent()->pNext;
-		while(pJ != pStop){
-			if (pJ->data <= min->data) {
-				min = pJ;
-			}
-			pJ = pJ->pNext;
-		}
-		swap(pCurr, min);//указатели
-		next();
-	}
-	reset();
-}
 
 #endif

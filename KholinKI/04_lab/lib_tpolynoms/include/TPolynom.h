@@ -10,20 +10,20 @@ class TPolynom {
 private:
 	TRingList<TMonom>* monoms;
 	string polynom;
-	map<string, double> values_xyz;
 public:
 	TPolynom();
 	TPolynom(const string& str);
 	TPolynom(const TRingList<TMonom>* monoms_list);
+	TPolynom(const TRingList<TMonom>& monoms_list);
 	TPolynom(const TPolynom& obj);
 	~TPolynom();
 
 	const TPolynom& operator=(const TPolynom& Q);
 	bool operator==(const TPolynom& Q)const;
 	TPolynom operator+(const TPolynom& Q);
-	TPolynom operator-();
+	TPolynom operator-()const;
 	TPolynom operator*(const TPolynom& Q);
-	double operator()(double x,double y, double z);
+	double operator()(double x,double y, double z)const;
 
 	string GetPolynomString()const;
 	TRingList<TMonom>* GetMonoms()const { return monoms; }
@@ -36,7 +36,11 @@ public:
 	friend ostream& operator<<(ostream& ostr, const TPolynom& Q);
 private:
 	void Corrector();
+	int Find_const(const string& str,const int& pos);
+	double Read_const(const string& str, int& pos);
+	int Read_degrees(const string& str, int& pos);
+	string CreatePolynomString();
+	string CreateMonomString(double coeff,int degree_x,int degree_y, int degree_z);
 	void cite_similars();
-	void CreatePolynomString();
 };
 #endif

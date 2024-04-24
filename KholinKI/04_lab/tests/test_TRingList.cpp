@@ -195,6 +195,39 @@ TEST(TRingList, remove_work) {
 	ASSERT_NO_THROW(rList.remove(5));
 }
 
+TEST(TRingList, clear_work) {
+	Node<int>* pFirst = new Node<int>(10);
+	TRingList<int> rList(pFirst);
+
+	rList.insert_last(2);
+	rList.insert_last(5);
+
+	rList.insert_before(6, 2);
+	rList.insert_before(4, 2);
+	rList.insert_before(20, 10);
+	rList.insert_before(30, 10);
+
+	ASSERT_NO_THROW(rList.clear());
+}
+
+TEST(TRingList, work_after_clear) {
+	Node<int>* pFirst = new Node<int>(10);
+	TRingList<int> rList(pFirst);
+
+	rList.insert_last(2);
+	rList.insert_last(5);
+
+	rList.insert_before(6, 2);
+	rList.insert_before(4, 2);
+	rList.insert_before(20, 10);
+	rList.insert_before(30, 10);
+
+	rList.clear();
+
+	ASSERT_NO_THROW(rList.insert_last(5));
+}
+
+
 
 TEST(TRingList, count_nodes) {
 	Node<int>* pFirst = new Node<int>(10);
