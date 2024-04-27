@@ -4,20 +4,17 @@
 #include "TPolynom.h"
 #include "Data.h"
 
-template<typename T1, typename T2> class TTabRecord {
-private:
-	T1 key;
-	Data<T2>* data;
-public:
-	TTabRecord(const T1& key_, const Data<T2>* data_);
-	T1 GetKey()const { return key; }
-	T2 GetData()const { return data; }
+template<typename TKey, typename TData> struct TTabRecord {
+	TKey key;//ключ
+	Data<TData>* data;//данные
+
+	TTabRecord(const TKey& key_, const Data<TData>* data_);
 };
 
-template<typename T1, typename T2>
-TTabRecord<T1, T2>::TTabRecord(const T1& key_, const Data<T2>* data_) {
+template<typename TKey, typename TData>
+TTabRecord<TKey, TData>::TTabRecord(const TKey& key_, const Data<TData>* data_) {
 	key = key_;
-	data = new Data<T2>(data_->value);
+	data = new Data<TData>(data_->value);
 }
 
 

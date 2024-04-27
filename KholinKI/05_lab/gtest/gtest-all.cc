@@ -1978,7 +1978,7 @@ bool UnitTestOptions::FilterMatchesTest(const std::string &test_case_name,
     positive = std::string(p, dash);   // Everything up to the dash
     negative = std::string(dash + 1);  // Everything after the dash
     if (positive.empty()) {
-      // Treat '-test1' as the same as '*-test1'
+      // Treat '-tesTKey' as the same as '*-tesTKey'
       positive = kUniversalFilter;
     }
   }
@@ -2891,10 +2891,10 @@ AssertionResult IsHRESULTFailure(const char* expr, long hr) {  // NOLINT
 //  17 - 21 bits       11110xxx 10xxxxxx 10xxxxxx 10xxxxxx
 
 // The maximum code-point a one-byte UTF-8 sequence can represent.
-const UInt32 kMaxCodePoint1 = (static_cast<UInt32>(1) <<  7) - 1;
+const UInt32 kMaxCodePoinTKey = (static_cast<UInt32>(1) <<  7) - 1;
 
 // The maximum code-point a two-byte UTF-8 sequence can represent.
-const UInt32 kMaxCodePoint2 = (static_cast<UInt32>(1) << (5 + 6)) - 1;
+const UInt32 kMaxCodePoinTData = (static_cast<UInt32>(1) << (5 + 6)) - 1;
 
 // The maximum code-point a three-byte UTF-8 sequence can represent.
 const UInt32 kMaxCodePoint3 = (static_cast<UInt32>(1) << (4 + 2*6)) - 1;
@@ -2923,10 +2923,10 @@ std::string CodePointToUtf8(UInt32 code_point) {
   }
 
   char str[5];  // Big enough for the largest valid code point.
-  if (code_point <= kMaxCodePoint1) {
+  if (code_point <= kMaxCodePoinTKey) {
     str[1] = '\0';
     str[0] = static_cast<char>(code_point);                          // 0xxxxxxx
-  } else if (code_point <= kMaxCodePoint2) {
+  } else if (code_point <= kMaxCodePoinTData) {
     str[2] = '\0';
     str[1] = static_cast<char>(0x80 | ChopLowBits(&code_point, 6));  // 10xxxxxx
     str[0] = static_cast<char>(0xC0 | code_point);                   // 110xxxxx

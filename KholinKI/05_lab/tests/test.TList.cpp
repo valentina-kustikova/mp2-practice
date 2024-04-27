@@ -144,10 +144,10 @@ TEST(List, insert_before_check_data) {
 	List.insert_before(20, 10);
 	List.insert_before(30, 10);
 
-	Node<int>* t1 = List.search(6);
-	Node<int>* t2 = List.search(30);
+	Node<int>* TKey = List.search(6);
+	Node<int>* TData = List.search(30);
 
-	ASSERT_TRUE(t1->data == 6 && t2->data == 30);
+	ASSERT_TRUE(TKey->data == 6 && TData->data == 30);
 }
 
 TEST(List, insert_after_work) {
@@ -175,10 +175,10 @@ TEST(List, insert_after_check_data) {
 	List.insert_after(7, 5);
 	List.insert_after(8, 5);
 
-	Node<int>* t1 = List.search(6);
-	Node<int>* t2 = List.search(8);
+	Node<int>* TKey = List.search(6);
+	Node<int>* TData = List.search(8);
 
-	ASSERT_TRUE(t1->data == 6 && t2->data == 8);
+	ASSERT_TRUE(TKey->data == 6 && TData->data == 8);
 
 }
 

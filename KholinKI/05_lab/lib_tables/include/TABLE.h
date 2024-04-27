@@ -3,29 +3,26 @@
 
 #include "TabRecord.h"
 
-template<typename T1, typename T2> class Table {
+template<typename TKey, typename TData> class Table {
 protected:
-	int count;
-	int max_size;
-	int curr_pos;
+	int count;//индекс последней незанятой записи
 public:
-	Table(int max_size_);
-	virtual void Insert(T1 key, const Data<T2>* data_) = 0;
-	//virtual TTabRecord* Find(T1 key) = 0;
-	//virtual void Remove(T1 key) = 0;
-	bool IsFull()const;
-	bool IsEmpty()const;
+	Table();
+	virtual void Insert(TKey key, const Data<TData>* data_) = 0;
+	virtual TTabRecord<TKey,TData>* Find(TKey key) = 0;
+	virtual void Remove(TKey key) = 0;
+	virtual bool IsFull()const = 0;
+	virtual bool IsEmpty()const = 0;
+	virtual bool IsTabEnded()const = 0;
+	/*virtual bool Next() = 0;
+	virtual bool Reset() = 0;*/
+	virtual int GetCount()const = 0;
+	virtual TKey GetKey()const = 0;
+	virtual Data<TData>* GetData()const = 0;
 };
 
-template<typename T1, typename T2>
-Table<T1,T2>::Table(int max_size_) {
-	max_size = max_size_;
-	count = -1;
-	curr_pos = 0;
+template<typename TKey, typename TData>
+Table<TKey,TData>::Table() {
+	count = 0;
 }
-template<typename T1, typename T2>
-bool Table<T1,T2>::IsFull()const { return count == max_size ? true : false; }
-
-template<typename T1, typename T2>
-bool Table<T1,T2>::IsEmpty()const { return count == -1 ? true : false; }
 #endif

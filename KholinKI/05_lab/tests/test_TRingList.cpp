@@ -145,10 +145,10 @@ TEST(TRingList, insert_before_check_data) {
 	rList.insert_before(20, 10);
 	rList.insert_before(30, 10);
 
-	Node<int>* t1 = rList.search(6);
-	Node<int>* t2 = rList.search(30);
+	Node<int>* TKey = rList.search(6);
+	Node<int>* TData = rList.search(30);
 
-	ASSERT_TRUE(t1->data == 6 && t2->data == 30);
+	ASSERT_TRUE(TKey->data == 6 && TData->data == 30);
 }
 
 TEST(TRingList, insert_after_work) {
@@ -176,10 +176,10 @@ TEST(TRingList, insert_after_check_data) {
 	rList.insert_after(7, 5);
 	rList.insert_after(8, 5);
 
-	Node<int>* t1 = rList.search(6);
-	Node<int>* t2 = rList.search(8);
+	Node<int>* TKey = rList.search(6);
+	Node<int>* TData = rList.search(8);
 
-	ASSERT_TRUE(t1->data == 6 && t2->data == 8);
+	ASSERT_TRUE(TKey->data == 6 && TData->data == 8);
 	
 }
 

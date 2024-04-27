@@ -2,8 +2,7 @@
 #define DATA_H
 
 template<typename T> struct Data {
-	T value;
-
+	T value;//значение
 	Data(const T& val);
 };
 
