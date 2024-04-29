@@ -6,9 +6,9 @@
 template<typename TKey, typename TData> class TArrayScanTable : public TArrayTable<TKey,TData>{
 public:
 	TArrayScanTable(int max_size_);
-	void Insert(TKey Key, const Data<TData>* data_);
-	TTabRecord<TKey,TData>* Find(TKey Key) override;
-	void Remove(TKey key);
+	virtual  void Insert(TKey Key, const Data<TData>* data_);
+	virtual TTabRecord<TKey,TData>* Find(TKey Key);
+	virtual void Remove(TKey key);
 };
 
 template<typename TKey,typename TData>
