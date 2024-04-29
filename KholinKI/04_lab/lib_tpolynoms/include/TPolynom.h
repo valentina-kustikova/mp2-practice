@@ -35,12 +35,11 @@ public:
 	friend istream& operator>>(istream& istr, TPolynom& Q);
 	friend ostream& operator<<(ostream& ostr, const TPolynom& Q);
 private:
-	void Corrector();
 	int Find_const(const string& str,const int& pos);
 	double Read_const(const string& str, int& pos);
 	int Read_degrees(const string& str, int& pos);
 	string CreatePolynomString();
 	string CreateMonomString(double coeff,int degree_x,int degree_y, int degree_z);
-	void cite_similars();
+	TPolynom cite_similars(TRingList<TMonom>* list_monoms);
 };
 #endif

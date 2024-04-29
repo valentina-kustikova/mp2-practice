@@ -58,7 +58,16 @@ TPolynom::TPolynom(const string& str) {
 			}
 			else {
 				TMonom m(coeff_monom, wrap_degree);
-				monoms->insertion_sort(m);
+				Node<TMonom>* search_monom = monoms->search(m);
+				monoms->reset();
+				if (search_monom != nullptr) {
+					if ((search_monom->data.GetCoeff() + m.GetCoeff()) != 0) {
+						search_monom->data += m;
+					}
+				}
+				else {
+					monoms->insertion_sort(m);
+				}
 			}
 		}
 		coeff_monom = 1;
@@ -71,16 +80,18 @@ TPolynom::TPolynom(const string& str) {
 	if (monoms == nullptr && size != 0) {
 		monoms = new TRingList<TMonom>();
 	}
-	cite_similars();
+
 }
 
 TPolynom::TPolynom(const TRingList<TMonom>* monoms_list) {
-	monoms = new TRingList<TMonom>(*monoms_list);
-	if (monoms->IsEmpty()) {
+	if (monoms_list->IsEmpty()) {
 		return;
 	}
-	Corrector();
-	CreatePolynomString();
+	TRingList<TMonom>* copy_monoms_list = new TRingList<TMonom>(*monoms_list);
+	copy_monoms_list->Sort();
+	TPolynom P = cite_similars(copy_monoms_list);
+	monoms = new TRingList<TMonom>(*P.monoms);
+	polynom = CreatePolynomString();
 }
 
 int TPolynom::Find_const(const string& str,const int& pos) {
@@ -341,9 +352,9 @@ TPolynom TPolynom::operator*(const TPolynom& Q) {
 		this->monoms->next();
 	}
 	this->monoms->reset();
-	R.cite_similars();
-	R.polynom = R.CreatePolynomString();
-	return R;
+	TPolynom cite_R = R.cite_similars(R.monoms);
+	cite_R.polynom = R.CreatePolynomString();
+	return cite_R;
 }
 
 const TPolynom& TPolynom::operator=(const TPolynom& Q) {
@@ -429,7 +440,7 @@ TPolynom TPolynom::differentiate_by_x()const {
 			this->monoms->next();
 		}
 		else {
-			coeff= coeff * degree_x; // coeff == 0 ? y*z проверка,что у нас нет степени икса
+			coeff= coeff * degree_x;
 			degree_x--;
 			degree_y = (wp % 100) / 10;
 			degree_z = (wp % 10);
@@ -514,7 +525,7 @@ istream& operator>>(istream& istr, TPolynom& Q) {
 	int wrap_degree = 0;
 	int count = 0;
 	int d_x = 0; int d_y = 0; int d_z = 0;
-	TRingList<TMonom>* new_list_monoms = nullptr;
+	TRingList<TMonom>* new_monoms = nullptr;
 	cout << "Welcome to the polynomial builder!" << endl;
 	cout << "To create a polynomial you will need to enter " << endl;
 	cout << "corresponding coefficients of the monomial and degree ";
@@ -576,19 +587,19 @@ istream& operator>>(istream& istr, TPolynom& Q) {
 		cout << "|										" << endl;
 		cout << "|										" << endl;
 		cout << "===========================================================================" << endl;
-		if (new_list_monoms == nullptr) {
+		if (new_monoms == nullptr) {
 			TMonom m(coeff, wrap_degree);
-			new_list_monoms = new TRingList<TMonom>();
-			new_list_monoms->insert_first(m);
+			new_monoms = new TRingList<TMonom>();
+			new_monoms->insert_first(m);
 		}
 		else {
 			TMonom m(coeff, wrap_degree);
-			new_list_monoms->insertion_sort(m);
+			new_monoms->insertion_sort(m);
 		}
 		number++;
 		i++;
 	}
-	TPolynom new_polynom(new_list_monoms);
+	TPolynom new_polynom(new_monoms);
 	Q = new_polynom;
 	cout << "FLAG END" << endl;
 	return istr;
@@ -601,42 +612,28 @@ ostream& operator<<(ostream& ostr, const TPolynom& Q) {
 	return ostr;
 }
 
-void TPolynom::Corrector() {
-	monoms->Sort();
-	cite_similars();
-}
-
-void TPolynom::cite_similars() {
+TPolynom TPolynom::cite_similars(TRingList<TMonom>* list_monoms) {
 	TPolynom R;
-	if (monoms->IsEmpty()) {
-		return;
-	}
-	while (!monoms->Is_Ended()) {
-		Node<TMonom>* edit = monoms->getCurrent();
-		Node<TMonom>* comp = monoms->getCurrent()->pNext;
-		TMonom m1 = monoms->getCurrent()->data;
-		while (comp != monoms->pStop) { // ???
-			TMonom m2 = comp->data;
-			if (m1.GetWP() == m2.GetWP()) {
-				edit->data += m2;
-				comp = comp->pNext;
-				monoms->remove(m2);
-			}
-			else {
-				if (monoms->getCurrent() != comp) {
-					monoms->next();
-				}
-				if (edit->data.GetCoeff() == 0) {
-					monoms->remove(edit->data);
-				}
-				break;
-			}
-		}
-		if (comp == monoms->pStop) {
+	while (!list_monoms->Is_Ended()) {
+		TMonom m = list_monoms->getCurrent()->data;
+		list_monoms->next();
+		if (list_monoms->Is_Ended()) {
+			R.monoms->insert_last(m);
 			break;
 		}
+		TMonom nextM = list_monoms->getCurrent()->data;
+		while (m.GetWP() == nextM.GetWP()) {
+			m += nextM;
+			list_monoms->next();
+			nextM = list_monoms->getCurrent()->data;
+		}
+		if (m.GetWP() != nextM.GetWP() && m.GetCoeff() != 0) {
+			R.monoms->insert_last(m);
+		}
 	}
-	monoms->reset();
+	R.monoms->reset();
+	list_monoms->reset();
+	return R;
 }
 
 TPolynom TPolynom::operator-()const{

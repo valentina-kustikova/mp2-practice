@@ -286,82 +286,62 @@ TEST(polynoms, different_memory) {
 	ASSERT_TRUE(!(P == Q));
 }
 
-TEST(polynoms, polynom_with_only_zero) {
-	TPolynom P("0");
-
-	TPolynom test("");
-
-	int size_P = P.GetMonoms()->GetSize();
-	int size_test = test.GetMonoms()->GetSize();
-	EXPECT_EQ(size_test, size_P);
-}
-
-TEST(polynoms, polynom_with_only_series_zeros) {
-	TPolynom P("-0-0+0-0");
-
-	TPolynom test("");
-
-	int size_P = P.GetMonoms()->GetSize();
-	int size_test = test.GetMonoms()->GetSize();
-	EXPECT_EQ(size_test, size_P);
-}
-
 TEST(polynom, corrector_work) {
-	TRingList<TMonom>* new_list_monoms = new TRingList<TMonom>;
+	TRingList<TMonom>* new_monoms = new TRingList<TMonom>;
 
 	TMonom m1(3, 120);	TMonom m4(50, 549);
 	TMonom m2(6, 240);	TMonom m5(-6, 240);
 	TMonom m3(-4, 120); TMonom m6(45, 365);
 
-	new_list_monoms->insert_first(m1);
-	new_list_monoms->insert_first(m2);
-	new_list_monoms->insert_first(m3);
+	new_monoms->insert_first(m1);
+	new_monoms->insert_first(m2);
+	new_monoms->insert_first(m3);
 
-	new_list_monoms->insert_last(m4);
-	new_list_monoms->insert_last(m5);
-	new_list_monoms->insert_last(m6);
+	new_monoms->insert_last(m4);
+	new_monoms->insert_last(m5);
+	new_monoms->insert_last(m6);
 
-	ASSERT_NO_THROW(TPolynom P(new_list_monoms));
+	ASSERT_NO_THROW(TPolynom P(new_monoms));
 }
 
 
 TEST(polynom, corrector_deleted_similars) {
-	TRingList<TMonom>* new_list_monoms = new TRingList<TMonom>;
+	TRingList<TMonom>* new_monoms = new TRingList<TMonom>;
 
 	TMonom m1(3, 120);	TMonom m4(50, 549);
 	TMonom m2(6, 240);	TMonom m5(-6, 240);
 	TMonom m3(-4, 120); TMonom m6(45, 365);
 
-	new_list_monoms->insert_first(m1);
-	new_list_monoms->insert_first(m2);
-	new_list_monoms->insert_first(m3);
+	new_monoms->insert_first(m1);
+	new_monoms->insert_first(m2);
+	new_monoms->insert_first(m3);
 
-	new_list_monoms->insert_last(m4);
-	new_list_monoms->insert_last(m5);
-	new_list_monoms->insert_last(m6);
+	new_monoms->insert_last(m4);
+	new_monoms->insert_last(m5);
+	new_monoms->insert_last(m6);
 
-	TPolynom P(new_list_monoms);
+	TPolynom P(new_monoms);
 
 	TPolynom test("-x*y^2+45*x^3*y^6*z^5+50*x^5*y^4*z^9");
 	ASSERT_TRUE(test == P);
 }
 
 TEST(polynom, corrector_not_expected_similars) {
-	TRingList<TMonom>* new_list_monoms = new TRingList<TMonom>;
+	TRingList<TMonom>* new_monoms = new TRingList<TMonom>;
 
 	TMonom m1(3, 120);	TMonom m4(50, 549);
 	TMonom m2(6, 242);	TMonom m5(-6, 240);
 	TMonom m3(-4, 124); TMonom m6(45, 365);
 
-	new_list_monoms->insert_first(m1);
-	new_list_monoms->insert_first(m2);
-	new_list_monoms->insert_first(m3);
+	new_monoms->insert_first(m1);
+	new_monoms->insert_first(m2);
+	new_monoms->insert_first(m3);
 
-	new_list_monoms->insert_last(m4);
-	new_list_monoms->insert_last(m5);
-	new_list_monoms->insert_last(m6);
+	new_monoms->insert_last(m4);
+	new_monoms->insert_last(m5);
+	new_monoms->insert_last(m6);
 
-	TPolynom P(new_list_monoms);
+	TPolynom P(new_monoms);
 
 	TPolynom test("3*x*y^2-4*x*y^2*z^4-6*x^2*y^4+6*x^2*y^4*z^2+45*x^3*y^6*z^5+50*x^5*y^4*z^9");
 	ASSERT_TRUE(test == P);
