@@ -1,0 +1,116 @@
+﻿#ifndef SCAN_TABLE_H_
+#define SCAN_TABLE_H_
+
+#include <iostream>
+#include <vector>
+#include "table.h"
+using namespace std;
+
+TabTemplate
+class ScanTable : public Table<Key, Value> {
+protected:
+	Record<Key, Value>** recs;
+
+public:
+	ScanTable(size_t _max_size=DefaultSize);
+	ScanTable(const ScanTable<Key, Value>& table);
+	virtual ~ScanTable();
+	
+	Record<Key, Value>* find(const Key& key, const Value& value);
+	void insert(const Key& key, const Value& value);
+	void remove(const Key& key);
+	virtual Record<Key, Value>* find(const Key& key);
+	virtual void insert(const Key& key, const Value& value);
+	virtual void remove(const Key& key);
+};
+
+
+TabTemplate
+ScanTable<Key, Value>::ScanTable(size_t _max_size) : max_size(_max_size), size(0), curr(-1)
+{
+	if (!_max_size)
+	{
+		throw string("size should be > 0");
+	}
+	recs = new Record<Key, Value>*[max_size];
+
+}
+
+TabTemplate
+ScanTable<Key, Value>::ScanTable(const ScanTable<Key, Value>& table): 
+	max_size(table.max_size), size(table.size), curr(table.curr) 
+{ 
+	recs = new Record<Key, Value>*[max_size];
+	for (int i = 0; i < max_size; ++i)
+	{
+		if (table.recs[i])
+		{
+			recs[i] = new Record<Key, Value>(*table.recs[i]);
+		}
+	}
+}
+
+TabTemplate
+ScanTable<Key, Value>::~ScanTable() 
+{
+	for (int i = 0; i < max_size; ++i)
+	{
+		if (recs[i]) delete recs[i];
+	}	
+}
+
+
+TabTemplate
+void ScanTable<Key, Value>::insert(const Key& _key, const Value& _data)
+{
+	if (this->full())
+	{
+		throw string("Table is full\n");
+	}
+
+	Record<Key,Value>* exist = find(_key);
+	if (exist) 
+	{
+		/// ------- ??????? 
+		delete exist->data;
+		*(exist->data) = Value(*_data);	
+	}
+	else
+	{
+		recs[size++] = new Record<Key, Value>(_key, _data);
+	}
+}
+
+TabTemplate
+void ScanTable<Key, Value>::remove(const Key& _key)
+{
+	if (this->empty())
+	{
+		throw string("Table is empty\n");
+	}
+	Record<Key, Value>* exist = find(_key);
+	if (!exist) throw string("Key doesn`t exist\n");
+
+	delete recs[curr];
+	--size;
+	for (int i = curr; i < size; ++i)
+	{
+		recs[i] = recs[i + 1];
+	}
+}
+
+TabTemplate
+Record<Key, Value>* ScanTable<Key, Value>::find(const Key& key, const Value& value) 
+{
+	for (int i = 0; i < size; ++i)
+	{
+		if (recs[i] == Record(key, value))
+		{
+			curr = i;
+			return recs[i];
+		}
+	}
+	return nullptr;
+}
+
+#endif // !SCAN_TABLE_H_
