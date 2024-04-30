@@ -109,6 +109,7 @@ bool TMonom::operator>=(const TMonom& monom) const {
 	return false;
 }
 bool TMonom::operator==(const TMonom& monom) const {
+	//if (&monom == nullptr) return false;
 	if (degree == monom.degree) return true;
 	return false;
 }
