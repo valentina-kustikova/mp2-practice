@@ -104,7 +104,8 @@ void TPolynom::ConvertInfix(string& name) {
 	}
 	if (infix[infix.size() - 1] == '.') tmp += ".0";
 	else if (infix[infix.size() - 1] == ')') tmp += ')';
-	else tmp += infix[infix.size() - 1];
+	//else tmp += infix[infix.size() - 1];
+	else if (tmp.size() != 1) tmp += infix[infix.size() - 1];
 	infix = tmp;
 }
 
@@ -159,6 +160,7 @@ void TPolynom::Parse(string& name) {
 	secondind = FindOperator(name, firstind + 1);
 	if (firstind == -1) {
 		lexems.push_back(infix);
+		ToMonoms(lexems);
 		return;
 	}
 	if (firstind > 0) {
@@ -195,6 +197,18 @@ void TPolynom::ToMonoms(vector<string>& _lexems) {
 			lexems.push_back(token);
 		}
 	}
+
+	// case: only one coeff or variable
+	//if (lexems.size() == 1) {
+	//	if (lexems[0] == "x") degX = 1;
+	//	else if (lexems[0] == "y") degY = 1;
+	//	else if (lexems[0] == "z") degZ = 1;
+	//	else coeff = stod(lexems[0]);
+
+	//	TMonom monom(next_const_sign * coeff, degX, degY, degZ);
+	//	AddMonom(monom);
+	//	return;
+	//}
 
 	for (int i = 0; i < lexems.size(); i++) {
 		if (lexems[i] == "+" || lexems[i] == "-") {
@@ -307,13 +321,17 @@ TPolynom::TPolynom() {
 	monoms = new TRingList<TMonom>;
 }
 TPolynom::TPolynom(const string& _name) {
+	if (_name.size() == 0) {
+		string exp = "ERROR: Polynom's string can't be empty.";
+		throw exp;
+	}
+	
 	monoms = new TRingList<TMonom>;
 	string name = _name;
 
 	Parse(name);
 }
 TPolynom::TPolynom(TRingList<TMonom>& ringlist) {
-	//monoms = new TRingList<TMonom>(ringlist); // опнбепхрэ мю сонпъднвеммнярэ
 	monoms = new TRingList<TMonom>;
 
 	ringlist.Reset();
