@@ -200,6 +200,30 @@ TEST(TPolynom, CalculateValueTest_WithoutVariables) {
 	EXPECT_EQ(4, p(2, 3, 4));
 }
 
+TEST(TPolynom, CalculateValueTest_WithoutVariables_Negative) {
+	TPolynom p("-4");
+
+	EXPECT_EQ(-4, p(2, 3, 4));
+}
+
+TEST(TPolynom, CalculateValueTest_OneVariable) {
+	TPolynom p("y");
+
+	EXPECT_EQ(3, p(2, 3, 4));
+}
+
+TEST(TPolynom, CalculateValueTest_OneVariable_Negative) {
+	TPolynom p("-y");
+
+	EXPECT_EQ(-3, p(2, 3, 4));
+}
+
+TEST(TPolynom, CalculateValueTest_OneVariable_WithDegree) {
+	TPolynom p("y^2");
+
+	EXPECT_EQ(9, p(2, 3, 4));
+}
+
 
 // DifferentiationXTest
 TEST(TPolynom, DifferentiationXTest) {
