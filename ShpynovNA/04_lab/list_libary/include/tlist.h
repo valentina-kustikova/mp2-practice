@@ -47,6 +47,10 @@ public:
 	virtual void InsertLast(const TData&);
 	void InsertBefore(const TData& after, const TData& ND);
 	void InsertAfter(const TData& previous, const TData& ND);
+	virtual void DeleteNode(TNode<TData>* node);
+	virtual void DeleteCurrentNode() {DeleteNode(pCurrent);}
+
+	TList<TData>& operator==(const TList<TData>& l) const;
 
 	TNode<TData>* GetCurrent() {return pCurrent;}
 
@@ -63,6 +67,7 @@ public:
 	void reset() {pCurrent = pFirst;}
 	void clear();
 };
+
 
 template <typename TData> TList<TData>::TList(const TList<TData>& l) {
 	if (l.IsEmpty())
@@ -152,6 +157,29 @@ template <typename TData> void TList<TData>::InsertAfter(const TData& prev, cons
 		TNow->pNext = nNode;
 	}
 }
+template <typename TData> void TList<TData>::DeleteNode(TNode<TData>* node) {
+	if (pFirst == nullptr)
+		return;
+	if (pFirst == node)
+	{
+		pFirst = pFirst->pNext;
+		return;
+	}
+	TNode<TData>* TNow = pFirst;
+	TNode<TData>* TNext = pFirst->pNext;
+
+	while (TNext != node) {
+		if (TNext == nullptr)
+			return;
+		TNow = TNext;
+		TNext = TNext->pNext;
+	}
+	TNow->pNext = TNext->pNext;
+	TNow = nullptr;
+	TNext = nullptr;
+	return;
+}
+
 
 template <typename TData> void TList<TData>::clear() {
 	if (pFirst == nullptr)
@@ -168,5 +196,20 @@ template <typename TData> void TList<TData>::clear() {
 	pLast = nullptr;
 	pCurrent = nullptr;
 	pStop = nullptr;
+}
+template <typename TData> TList<TData>& TList<TData>::operator==(const TList<TData>& l) const {
+	TList<TData> tmpThis = TList<TData>(*this);
+	TList<TData> tmpL = TList<TData>(l);
+	tmpThis.reset();
+	tmpL.reset();
+	while ((!tmpThis.IsEnded()) && (!tmpL.IsEnded())) {
+		if (tmpThis.GetCurrent() != tmpL.GetCurrent())
+			return false;
+		tmpThis.next();
+		tmpL.next();
+		if (((!tmpThis.IsEnded()) && (tmpL.IsEnded())) || ((tmpThis.IsEnded()) && (!tmpL.IsEnded())))
+			return false;
+		return true;
+	}
 }
 #endif

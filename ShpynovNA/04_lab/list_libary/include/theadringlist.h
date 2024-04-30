@@ -22,6 +22,8 @@ public:
 
 	void InsertFirst(const TData& d);
 	void InsertLast(const TData& d);
+	void DeleteNode(TNode<TData>* node);
+	void DeleteCurrentNode() { DeleteNode(pCurrent); }
 
 	THeadRingList<TData>& operator=(const THeadRingList<TData>& l);
 };
@@ -61,5 +63,29 @@ template <typename TData> THeadRingList<TData>& THeadRingList<TData>::operator=(
 	return (*this);
 }
 
+template <typename TData> void THeadRingList<TData>::DeleteNode(TNode<TData>* node) {
+	if (pFirst == nullptr)
+		return;
+	if (pFirst == node)
+	{
+		pHead ->pNext = pFirst->pNext;
+		pFirst = pFirst->pNext;
+		return;
+	}
+	this->reset();
+	TNode<TData>* TNow = pFirst;
+	TNode<TData>* TNext = pFirst->pNext;
+
+	while (TNext != node) {
+		if (TNext == nullptr)
+			return;
+		TNow = TNext;
+		TNext = TNext->pNext;
+	}
+	TNow->pNext = TNext->pNext;
+	TNow = nullptr;
+	TNext = nullptr;
+	return;
+}
 
 #endif

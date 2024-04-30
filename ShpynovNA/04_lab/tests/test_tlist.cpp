@@ -108,6 +108,15 @@ TEST(TList, list_clear_correct) {
 	list.clear();
 	EXPECT_EQ(list.pFirst, nullptr);
 }
+TEST(TList, eq_is_right) {
+	TestTList<int> list;
+	list.InsertFirst(1);
+	list.InsertFirst(3);
+	list.InsertFirst(5);
+	TestTList<int> list2 = TestTList<int>(list);
+	EXPECT_EQ(list, list2);
+}
+
 
 
 

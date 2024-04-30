@@ -22,7 +22,7 @@ void TPolynomial::PutNewMonomialInPlace(TMonomial& m) {
 		monomials.InsertFirst(m);
 		return;
 	}
-	if (monomials.GetCurrent()->data.coef == 0) {
+	if ((monomials.GetCurrent()->data.coef == 0) &&(monomials.GetCurrent()->data.degr == 0)){
 		monomials.clear();
 		monomials.InsertFirst(m);
 		return;
@@ -35,6 +35,9 @@ void TPolynomial::PutNewMonomialInPlace(TMonomial& m) {
 		monomials.next();
 	if (monomials.GetCurrent()->data.degr == m.degr) {
 		monomials.GetCurrent()->data.coef += m.coef;
+		if (monomials.GetCurrent()->data.coef == 0) {
+			monomials.DeleteCurrentNode();
+		}
 		return;
 	}
 	if (!monomials.IsEnded())
