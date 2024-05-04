@@ -31,7 +31,7 @@ public:
 	void Sort();
 	void next();
 	bool Is_Ended() const;
-	void swap(Node<T>*& pNode1, Node<T>*& pNode2);
+	void swap(Node<T>* pNode1, Node<T>* pNode2);
 	Node<T>* getCurrent() const{ return pCurr; }
 	Node<T>* getPFirst()const { return pFirst; }
 	
@@ -280,7 +280,7 @@ void TList<T>::clear() {
 }
 
 template<typename T>
-void TList<T>::swap(Node<T>*& pNode1, Node<T>*& pNode2) {
+void TList<T>::swap(Node<T>* pNode1, Node<T>* pNode2) {
 	T tmp = pNode1->data;
 	pNode1->data = pNode2->data;
 	pNode2->data = tmp;

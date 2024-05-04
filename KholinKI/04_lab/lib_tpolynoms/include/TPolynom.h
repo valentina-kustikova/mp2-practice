@@ -38,6 +38,7 @@ private:
 	int Find_const(const string& str,const int& pos);
 	double Read_const(const string& str, int& pos);
 	int Read_degrees(const string& str, int& pos);
+	void Add_monom(const TMonom& m);
 	string CreatePolynomString();
 	string CreateMonomString(double coeff,int degree_x,int degree_y, int degree_z);
 	TPolynom cite_similars(TRingList<TMonom>* list_monoms);

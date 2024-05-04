@@ -2,7 +2,15 @@
 
 #include <gtest.h>
 
+TEST(polynom, operator_plus_with_simple_polynoms) {
+	TPolynom P("1+x");
+	TPolynom Q("1-y");
 
+	TPolynom R = P + Q;
+
+	TPolynom test("2+x-y");
+	ASSERT_TRUE(R == test);
+}
 
 
 TEST(polynom, polynom_string_contain_0_and_1_degrees) {

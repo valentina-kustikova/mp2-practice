@@ -16,59 +16,37 @@ TPolynom::TPolynom(const string& str) {
 		infix = expr.GetInfix();
 	}
 	polynom = infix;
-	int i = -1;
 	string tmp;
-	bool minus_status = false;
 	string str_test;
 	int wrap_degree = 0;
 	double coeff_monom = 1;
 	int size = infix.size();
 	bool stop = false;
 	bool create_monom = true;
+	bool minus_status = false;
+	int i = -1;
 	while (i < size && size != 0){
-		i = Find_const(infix,i);
+		i = Find_const(infix,i);//поиск константы
 		tmp = infix[i];
 		if ((i - 1) >= 0) {
-			if (infix[i - 1] == '-') {
-				coeff_monom = -1;
-			}
-			else if (infix[i - 1] == '+') {
-				coeff_monom = 1;
-			}
+			if (infix[i - 1] == '-') {coeff_monom = -1;}
+			else if (infix[i - 1] == '+') {coeff_monom = 1;}
 		}
 		if(tmp[0] >= 48 && tmp[0] <= 57) {
-			coeff_monom = Read_const(infix, i);
+			coeff_monom = Read_const(infix, i);//считывание константы
 			tmp = infix[i];
-			if (coeff_monom == 0) {
-				create_monom = false;
-			}
+			if (coeff_monom == 0) {create_monom = false;}
 		}
 		if (tmp[0] == '\0') {
 			stop = true;
 		}
 		if (stop == false && create_monom == true) {
-			wrap_degree = Read_degrees(infix,i);
+			wrap_degree = Read_degrees(infix,i);//считывание степеней монома
 			tmp = str[i];
 		}
 		if (create_monom == true) {
-			if (monoms == nullptr) {
-				TMonom m(coeff_monom, wrap_degree);
-				monoms = new TRingList<TMonom>();
-				monoms->insert_first(m);
-			}
-			else {
-				TMonom m(coeff_monom, wrap_degree);
-				Node<TMonom>* search_monom = monoms->search(m);
-				monoms->reset();
-				if (search_monom != nullptr) {
-					if ((search_monom->data.GetCoeff() + m.GetCoeff()) != 0) {
-						search_monom->data += m;
-					}
-				}
-				else {
-					monoms->insertion_sort(m);
-				}
-			}
+			TMonom m(coeff_monom, wrap_degree);
+			Add_monom(m);//добавление монома
 		}
 		coeff_monom = 1;
 		stop = false;
@@ -163,42 +141,34 @@ int TPolynom::Read_degrees(const string& str, int& pos) {
 		}
 		switch (tmp[0]) {
 		case 'x':
-		{
+			{
 			if (str[pos + 1] == '^') {
 				str_test = str_test + str[pos + 2];
 				degree_x = stod(str_test);
-				str_test = "";
-			}
-			else {
-				degree_x = 1;
-			}
+				}
+			else {degree_x = 1;}
 			break;
-		}
+			}
 		case 'y':
-		{
+			{
 			if (str[pos + 1] == '^') {
 				str_test = str_test + str[pos + 2];
 				degree_y = stod(str_test);
-				str_test = "";
-			}
-			else {
-				degree_y = 1;
-			}
+				}
+			else {degree_y = 1;}
 			break;
-		}
+			}
 		case 'z':
-		{
+			{
 			if (str[pos + 1] == '^') {
 				str_test = str_test + str[pos + 2];
 				degree_z = stod(str_test);
-				str_test = "";
-			}
-			else {
-				degree_z = 1;
-			}
+				}
+			else {degree_z = 1;}
 			break;
+			}
 		}
-		}
+		str_test = "";
 		pos++;
 		tmp = str[pos];
 	}
@@ -440,7 +410,7 @@ TPolynom TPolynom::differentiate_by_x()const {
 			this->monoms->next();
 		}
 		else {
-			coeff= coeff * degree_x;
+			coeff= coeff * degree_x;//how get coeff = 0?
 			degree_x--;
 			degree_y = (wp % 100) / 10;
 			degree_z = (wp % 10);
@@ -471,7 +441,7 @@ TPolynom TPolynom::differentiate_by_y()const {
 			this->monoms->next();
 		}
 		else {
-			coeff= coeff * degree_y; // coeff == 0 ? x*z
+			coeff= coeff * degree_y; // coeff == 0 ? x*z //how get coeff = 0?
 			degree_y--;
 			degree_x = wp / 100;
 			degree_z = (wp % 10);
@@ -501,8 +471,8 @@ TPolynom TPolynom::differentiate_by_z()const {
 			this->monoms->next();
 		}
 		else {
-			coeff = coeff * degree_z; // coeff == 0 ? x*y
-			degree_z--;
+			coeff = coeff * degree_z; // coeff == 0 ? x*y  //how get coeff = 0?
+			degree_z--;		
 			degree_x = wp / 100;
 			degree_y = (wp % 100) / 10;
 			new_wrap_degree = degree_x * 100 + degree_y * 10 + degree_z;
@@ -648,3 +618,21 @@ TPolynom TPolynom::operator-()const{
 	return Q;
 }
 
+void TPolynom::Add_monom(const TMonom& m) {
+	if (monoms == nullptr) {
+		monoms = new TRingList<TMonom>();
+		monoms->insert_first(m);
+	}
+	else {
+		Node<TMonom>* search_monom = monoms->search(m);
+		monoms->reset();
+		if (search_monom != nullptr) {
+			if ((search_monom->data.GetCoeff() + m.GetCoeff()) != 0) {
+				search_monom->data += m;
+			}
+		}
+		else {
+			monoms->insertion_sort(m);
+		}
+	}
+}
