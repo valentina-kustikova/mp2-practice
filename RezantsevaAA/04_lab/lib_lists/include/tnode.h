@@ -4,10 +4,6 @@
 
 using namespace std;
 
-//звено
-
-using namespace std;
-
 template<class TData>
 class TNode {
 public:
@@ -25,7 +21,7 @@ TNode<TData>::TNode() {
 template<class TData>
 TNode<TData>::TNode(const TData& data_, const TNode* pNext_) {
 	data = data_;
-	pNext = nullptr;
+	pNext = (TNode*)pNext_;
 }
 
 template<class TData>

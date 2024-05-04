@@ -36,13 +36,13 @@ TEST(TPolinom, can_sum_polynoms)
 {
 	TPolinom p1("x^3+y");
 	TPolinom p2("x^3+y+xz");
-	ASSERT_NO_THROW(p1 + p2);
+	ASSERT_NO_THROW(p1+p2);
 }
 TEST(TPolinom, right_sum_polynoms)
 {
 	TPolinom p1("x^3+y");
 	TPolinom p2("x^3+y+xz");
-	EXPECT_EQ("+2.0*x^3+xz+2.0*y", (p1 + p2).getFormula());
+	EXPECT_EQ("+2.000*x^3+xz+2.000*y", (p1+p2).getFormula());
 }
 
 TEST(TPolinom, can_mult_polynoms)
@@ -54,7 +54,7 @@ TEST(TPolinom, can_mult_polynoms)
 TEST(TPolinom, right_mult_polynoms) {
 	TPolinom p1("x^3+y");
 	TPolinom p2("x^3+y+xz");
-	EXPECT_EQ("+x^6+x^4z+2.0*x^3y+xyz+y^2", (p1 * p2).getFormula());
+	EXPECT_EQ("+x^6+x^4z+2.000*x^3y+xyz+y^2", (p1 * p2).getFormula());
 }
 
 TEST(TPolinom, can_subtract_polynoms)
@@ -75,7 +75,7 @@ TEST(TPolinom, right_sum_polynoms_w_zero_coeff_and_equals)
 	TPolinom p1("2*x^2-yz-x+0*z+0*y");
 	TPolinom p2("3*x^2+2*x^3+xyz+4*x");
 
-	EXPECT_EQ("+2.0*x^3+5.0*x^2+xyz+3.0*x-yz", (p1 + p2).getFormula());
+	EXPECT_EQ("+2.000*x^3+5.000*x^2+xyz+3.000*x-yz", (p1 + p2).getFormula());
 }
 
 TEST(TPolinom, can_defX)
@@ -86,7 +86,7 @@ TEST(TPolinom, can_defX)
 TEST(TPolinom, right_defX)
 {
 	TPolinom p3("x^4+3*x+yz+3*y^3z+x^2yz^5");
-	EXPECT_EQ("+4.0*x^3+2.0*xyz^5+3.0", p3.defX().getFormula());
+	EXPECT_EQ("+4.000*x^3+2.000*xyz^5+3.000", p3.defX().getFormula());
 }
 TEST(TPolinom, can_defY)
 {
@@ -96,7 +96,7 @@ TEST(TPolinom, can_defY)
 TEST(TPolinom, right_defY)
 {
 	TPolinom p3("x^4+3*x+yz+3*y^3z+x^2yz^5");
-	EXPECT_EQ("+x^2z^5+9.0*y^2z+z", p3.defY().getFormula());
+	EXPECT_EQ("+x^2z^5+9.000*y^2z+z", p3.defY().getFormula());
 }
 TEST(TPolinom, can_defZ)
 {
@@ -106,5 +106,5 @@ TEST(TPolinom, can_defZ)
 TEST(TPolinom, right_defZ)
 {
 	TPolinom p3("x^4+3*x+yz+3*y^3z+x^2yz^5");
-	EXPECT_EQ("+5.0*x^2yz^4+3.0*y^3+y", p3.defZ().getFormula());
+	EXPECT_EQ("+5.000*x^2yz^4+3.000*y^3+y", p3.defZ().getFormula());
 }

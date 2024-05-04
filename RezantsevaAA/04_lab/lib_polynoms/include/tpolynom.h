@@ -14,11 +14,11 @@ private:
 	void deleteZero();
 	void Sort();
 
-
-	bool isMonomOperator(char op);
-	bool isSeparator(char op);
-	bool isOperator(char op);
-	bool isVariable(char var);
+	bool isMonomOperator(char op) const;
+	bool isSeparator(char op) const;
+	bool isOperator(char op) const;
+	bool isVariable(char var) const;
+	void fillUniques(const std::string& f);
 	
 	void getListOfMonoms(const std::string& input);
 	double getCoeff(const std::string& input, int& pos);
@@ -38,11 +38,14 @@ public:
 	TPolinom operator+(const TPolinom& p);
 	TPolinom operator-(const TPolinom& p);
 	TPolinom operator*(const TPolinom& p); 
-	void GetNormalView();
+	TPolinom operator*(const double c); //умножние полинома на число
+
+	const TPolinom& operator=(const TPolinom& p);
+	
 	TPolinom defX() const; //производная по x
 	TPolinom defY() const; //производная по y
 	TPolinom defZ() const; //производная по z
 	double calculate();
-	
+	friend std::ostream& operator<<(std::ostream& out,TPolinom& p);
 };
 #endif

@@ -16,14 +16,12 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEAS
 
 set(MP2_LISTS_LIBRARY "${PROJECT_NAME}_lists")
 set(MP2_POLYNOMS_LIBRARY "${PROJECT_NAME}_polynoms")
-set(MP2_STACK_LIBRARY "${PROJECT_NAME}_stack")
-set(MP2_ALGORITHM_LIBRARY "${PROJECT_NAME}_algorithm")
+
 set(MP2_TESTS   "tests_${PROJECT_NAME}")
 
 set(MP2_LISTS_INCLUDE "${CMAKE_CURRENT_SOURCE_DIR}/lib_lists/include")
 set(MP2_POLYNOMS_INCLUDE "${CMAKE_CURRENT_SOURCE_DIR}/lib_polynoms/include")
-set(MP2_STACK_INCLUDE "${CMAKE_CURRENT_SOURCE_DIR}/lib_stack/include")
-set(MP2_ALGORITHM_INCLUDE "${CMAKE_CURRENT_SOURCE_DIR}/lib_algorithm/include")
+
 
 # BUILD
 add_subdirectory(samples)
@@ -31,8 +29,7 @@ add_subdirectory(gtest)
 add_subdirectory(tests)
 add_subdirectory(lib_lists)
 add_subdirectory(lib_polynoms)
-add_subdirectory(lib_stack)
-add_subdirectory(lib_algorithm)
+
 
 # REPORT
 message( STATUS "")

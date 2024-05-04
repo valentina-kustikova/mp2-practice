@@ -41,11 +41,6 @@ TEST(TList, can_Search_data) {
 	list.InsertFirst(firstData->data);
 	ASSERT_NO_THROW(list.Search(888));
 }
-TEST(TList, cant_find_data) {
-	TList<int> list;
-	list.InsertFirst(9);
-	ASSERT_ANY_THROW(list.Search(7));
-}
 
 TEST(TList, can_delete_list) {
 	TList<int> list;
@@ -113,7 +108,6 @@ TEST(TList, can_insert_last_true) {
 	TList<int> list;
 	list.InsertFirst(1);
 	list.InsertLast(7);
-	list.Next();
 	EXPECT_EQ(7, list.getCurrData());
 }
 TEST(TList, can_insert_last_false) {
@@ -182,16 +176,8 @@ TEST(TList, cant_insert_after_list_empty) {
 	ASSERT_ANY_THROW(list.InsertAfter(1, 1));
 }
 
-//functions GetLength, Reset, GetCur, getCurrData
-TEST(TList, can_Get_len_list_empty) {
-	TList<int> list;
-	EXPECT_EQ(0, list.GetLength());
-}
-TEST(TList, can_Get_len_list_not_empty) {
-	TList<int> list;
-	list.InsertFirst(3);
-	EXPECT_EQ(1, list.GetLength());
-}
+//functions Reset, GetCur, getCurrData
+
 TEST(TList, can_Reset_data) {
 	TList<int> list;
 	list.InsertFirst(3);
@@ -214,7 +200,7 @@ TEST(TList, can_getCurrent_wd) {
 	list.InsertFirst(1); 
 	list.InsertLast(7);//137
 	TNode<int>* tmp = list.GetCurrent();
-	EXPECT_EQ(1, tmp->data);
+	EXPECT_EQ(7, tmp->data);
 
 }
 TEST(TList, can_getCurrent) {
@@ -242,34 +228,8 @@ TEST(TList, can_set_cur_data) {
 	list.setCurrData(8);
 	EXPECT_EQ(8, list.getCurrData());
 }
-//GetPStop, pFirst, SetPLast
-TEST(TList, can_get_pStop_data) {
-	TList<int> list;
-	list.InsertFirst(3);
-	EXPECT_EQ(0, list.GetPStop());
-}
-TEST(TList, can_get_pStop) {
-	TList<int> list;
-	list.InsertFirst(3);
-	ASSERT_NO_THROW(list.GetPStop());
-}
-TEST(TList, can_get_pFirst_data) {
-	TList<int> list;
-	list.InsertFirst(3);
-	EXPECT_EQ(3, list.GetPFirst()->data);
-}
-TEST(TList, can_get_pFirst) {
-	TList<int> list;
-	list.InsertFirst(3);
-	ASSERT_NO_THROW(list.GetPFirst());
-}
-//SetPLast(TNode<TData>* _pLast)
-TEST(TList, can_set_pLast) {
-	TList<int> list;
-	list.InsertFirst(3);
-	TNode<int>* tmp = new TNode<int>(6, nullptr);
-	ASSERT_NO_THROW(list.SetPLast(tmp));
-}
+
+
 
 //Remove, isEnd
 TEST(TList, can_Remove_data) {
@@ -277,7 +237,8 @@ TEST(TList, can_Remove_data) {
 	list.InsertFirst(3);
 	list.InsertFirst(7);
 	list.Remove(7);
-	EXPECT_EQ(3, list.GetPFirst()->data);
+	list.Reset();
+	EXPECT_EQ(3, list.getCurrData());
 }
 TEST(TList, can_Remove) {
 	TList<int> list;

@@ -1,6 +1,5 @@
 #ifndef __TRINGLIST_H__
 #define __TRINGLIST_H__
-
 #include <iostream>
 #include "tlist.h"
 
@@ -14,102 +13,131 @@ public:
 	TRingList();
 	TRingList(const TNode<TData>* pFirst);
 	TRingList(const TRingList<TData>& ringList);
-	virtual void InsertFirst(const TData& data_) override; //вставить после pHead
-	virtual void InsertLast(const TData& data_) override;
-	virtual void DeleteFirst();
-	TRingList<TData>& operator=(const TRingList<TData>& ringList);
-	virtual void Sort() override;
+	
+	TNode<TData>* GetPStop() const
+	{
+		return pStop;
+	}
+
+	void InsertFirst(const TData& data_) override; //вставить после pHead
+	void RemoveFirst() override;
+	void Clear() override;
+	bool is_Empty() const override;
+	const TRingList<TData>& operator=(const TRingList<TData>& ringList);
+
 	friend std::ostream& operator<<(std::ostream& out, TRingList<TData>& ringList) {
-		TNode<TData>* tmp = ringList.GetPFirst();
+		TNode<TData>* tmp = ringList.pFirst;
 		int num = 1;
-		while (tmp != ringList.GetPStop()) {
+		while (tmp != ringList.pHead) {
 			out << num << " node " << tmp->data << std::endl;
 			tmp = tmp->pNext;
 			num++;
 		}
 		return out;
 	}
+	
 };
-//убрать setPStop & getpStop тк у нас pstop = phead  plast.pNext = pHead
+template <class TData> void TRingList<TData>::Clear() {
+	if (pFirst == nullptr)
+	{
+		return;
+	}
+	pCurr = pFirst;
+	while (pCurr != pHead) {
+		TNode<TData>* tmp = pCurr;
+		pCurr = pCurr->pNext;
+		delete tmp;
+	}
+	pCurr = pStop;
+	pLast = pStop;
+	pFirst = pStop;
+	pPrev = pStop;
+	pHead->pNext = pHead;
+}
+template <class TData> bool TRingList<TData>::is_Empty() const {
+	return (pHead->pNext == pHead);
+}
+
 template <class TData> TRingList<TData>::TRingList() {
 	this->pHead = new TNode<TData>();
-	this->pHead->pNext = pFirst;
-	this->pCurr = this->pPrev = this->pLast = this->pFirst;
+	this->pHead->pNext = pHead;
+	this->pCurr = this->pPrev = this->pLast = this->pFirst = nullptr;
 	this->pStop = this->pHead;
-	//this->pStop->pNext = pHead;
-	this->ListLen = 0;
-	TList<TData>::Reset();
 }
 
 template <class TData> TRingList<TData>::TRingList(const TNode<TData>* _pFirst) {
-	/*pHead = new TNode<TData>();
+	pHead = new TNode<TData>();
+	pHead->pNext = pHead;
+
 	if (_pFirst != nullptr) {
 		pFirst = (TNode<TData>*)_pFirst;
 		pHead->pNext = pFirst;
 		pCurr = pFirst;
-		TList<TData>::SetPStop(pHead);
+		pStop= pHead;
 		TNode<TData>* tmp = pCurr;
-		while (tmp->pNext != nullptr) {
+		while (tmp->pNext != nullptr) { 
 			tmp = tmp->pNext;
 		}
 		tmp->pNext = pHead;
-		TList<TData>::SetPLast(tmp);
-	}*/
-	pHead = new TNode<TData>();
-	pCurr = nullptr;
-	if (_pFirst != nullptr) {
-		pFirst = new TNode<TData>(_pFirst->data, nullptr);
-		pHead->pNext = pFirst;
-		pCurr = pFirst;
-		TList<TData>::SetPStop(pHead);
-		TNode<TData>* tmp = pFirst;
-		while (tmp->pNext != nullptr && tmp->pNext != pFirst) {
-			tmp = new TNode<TData>(tmp->pNext->data, nullptr);
-			pCurr->pNext = tmp;
-			pCurr = tmp;
-		}
-		if (tmp->pNext == nullptr) {
-			tmp->pNext = pHead;
-			TList<TData>::SetPLast(tmp);
-		}
+		pLast = tmp;
+
 	}
 }
 template <class TData> TRingList<TData>::TRingList(const TRingList<TData>& ringList) {
 	pHead = new TNode<TData>();
-	pFirst = new TNode<TData>(*ringList.GetPFirst());
-	pHead->pNext = pFirst;
-	// Set new pStop
-	TList<TData>::SetPStop(pHead);
-	pCurr = pFirst;
-	TNode<TData>* tmp = ringList.GetCurrent();
-	while (tmp->pNext != ringList.GetPStop()) {
-		pCurr->pNext = new TNode<TData>(*tmp->pNext);
-		pCurr = pCurr->pNext;
-		tmp = tmp->pNext;
+	if (ringList.pFirst != nullptr)
+	{
+		pFirst = new TNode<TData>(*ringList.pFirst);
+		pHead->pNext = pFirst;
+		// Set new pStop
+		pStop = pHead;
+		pCurr = pFirst;
+		TNode<TData>* tmp(ringList.GetCurrent());
+		while (tmp->pNext != ringList.pStop) {
+			pCurr->pNext = new TNode<TData>(*tmp->pNext);
+			pCurr = pCurr->pNext;
+			tmp = tmp->pNext;
+		}
+		pCurr->pNext = pStop;
+		pLast = pCurr;
+		TList<TData>::Reset();
 	}
-	pCurr->pNext = pStop;
-	TList<TData>::SetPLast(pCurr);
-	ListLen = ringList.ListLen;
-	TList<TData>::Reset();
+	else
+	{
+		pFirst = pCurr = pLast = pStop = pPrev = pHead;
+		pHead->pNext = pHead;
+	}
+
+
 }
 
-template <class TData> TRingList<TData>& TRingList<TData>::operator=(const TRingList<TData>& ringList)  {
-	pHead = new TNode<TData>();
-	pFirst = new TNode<TData>(*ringList.GetPFirst());
-	pHead->pNext = pFirst;
-	// Set new pStop
-	TList<TData>::SetPStop(pHead);
-	pCurr = pFirst;
-	TNode<TData>* tmp = ringList.GetCurrent();
-	while (tmp->pNext != ringList.GetPStop()) {
-		pCurr->pNext = new TNode<TData>(*tmp->pNext);
-		pCurr = pCurr->pNext;
-		tmp = tmp->pNext;
+template <class TData> const TRingList<TData>& TRingList<TData>::operator=(const TRingList<TData>& ringList)  {
+	if (this == &ringList)
+	{
+		return *this;
 	}
-	pCurr->pNext = pStop;
-	TList<TData>::SetPLast(pCurr);
-	ListLen = ringList.ListLen;
-	TList<TData>::Reset();
+	pHead = new TNode<TData>();
+	if (ringList.pFirst != nullptr)
+	{
+		pFirst = new TNode<TData>(*ringList.pFirst);
+		pHead->pNext = pFirst;
+		// Set new pStop
+		pStop = pHead;
+		pCurr = pFirst;
+		TNode<TData>* tmp = ringList.GetCurrent();
+		while (tmp->pNext != ringList.pStop) {
+			pCurr->pNext = new TNode<TData>(*tmp->pNext);
+			pCurr = pCurr->pNext;
+			tmp = tmp->pNext;
+		}
+		pCurr->pNext = pStop;
+		pLast = pCurr;
+		TList<TData>::Reset();
+	}
+	else {
+		pFirst = pCurr = pLast = pStop = pPrev = pHead;
+		pHead->pNext = pHead;
+	}
 	return *this;
 }
 
@@ -132,47 +160,12 @@ template <class TData> void TRingList<TData>::InsertFirst(const TData& data_) {
 		pLast = pFirst;
 	}
 	pCurr = pFirst;
-	ListLen++;;
 	pHead->pNext = pFirst;
 }
-template <class TData> void TRingList<TData>::InsertLast(const TData& data_) {
-	if (is_Empty())
-	{
-		InsertFirst(data_);
-		pLast = pFirst;
-		pLast->pNext = pStop;
-		return;
-	}
-	TNode<TData>* newNode = new TNode<TData>(data_, nullptr);
-	pLast->pNext = newNode;
-	pLast = newNode;
-	pLast->pNext = pStop;
-	ListLen++;
-}
 
-template <class TData> void TRingList<TData>::DeleteFirst() {
+template <class TData> void TRingList<TData>::RemoveFirst() {
 	TList<TData>::RemoveFirst();
 	pHead->pNext = this->pFirst;
-}
-
-
-template <class TData> void TRingList<TData>::Sort() {
-	TNode<TData>* elem1 = pFirst;
-	while (elem1->pNext != pStop)
-	{
-		TNode<TData>* elem2 = elem1->pNext;
-		while (elem2 != pStop)
-		{
-			if (elem1->data < elem2->data)
-			{
-				TData tmp = elem1->data;
-				elem1->data = elem2->data;
-				elem2->data = tmp;
-			}
-			elem2 = elem2->pNext;
-		}
-		elem1 = elem1->pNext;
-	}
 }
 
 #endif

@@ -3,18 +3,24 @@
 using namespace std;
 int main()
 {
-    TNode<int>* _pFirst = new TNode<int>(2, nullptr);
-    TRingList<int> rl(_pFirst);
     TRingList<int> ringList;
-    std::cout << rl << std::endl;
-    ringList.InsertFirst(8);
-    ringList.InsertFirst(9);
-    std::cout << "Created with InsrtFirst ringlist " << std::endl;
-    std::cout << ringList << std::endl;
+	int size, data, data2;
+	std::cout << "Let's create a new ringlist with insert First! Enter numbers of ringlist's elements" << endl;
+	std::cin >> size;
+	std::cout << "Now let's fill our ringlist:" << endl;
+	std::cout << "Please enter data " << endl;
+	for (int i = 0; i < size; i++)
+	{
+		std::cin >> data;
+		ringList.InsertFirst(data);
+	}
+	std::cout << "Our ringlist:" << endl;
+	std::cout << ringList << std::endl;
+	ringList.Reset();
 
-    std::cout << "Lets delete first node in our ringlist " << std::endl;
-    ringList.DeleteFirst();
-    std::cout << ringList << std::endl;
-    ringList.Reset();
+	std::cout << "Let's remove first element" << endl;
+	ringList.RemoveFirst();
+	std::cout << "Our ringlist:" << endl;
+	std::cout << ringList << std::endl;
     return 0;
 }

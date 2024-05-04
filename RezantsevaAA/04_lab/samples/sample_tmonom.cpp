@@ -3,41 +3,45 @@
 
 int main()
 {
-	
-	TMonom monom1(5,2);
-	std::cout << "Created monom with degree = " << monom1.GetDegree() << " and  Coeff = " << monom1.GetCoeff() << std::endl;
-	std::cout << "Our monom: " << monom1 << std::endl;
-	std::cout << "Lets set new coeff and new degree" << std::endl;
-	monom1.SetCoeff(8);
-	monom1.SetDegree(20);
-	std::cout << "Changed monom: " << monom1 << std::endl;
-	
-	TMonom monom2(5, 21);
-	std::cout << "Monom2: " << monom2 << std::endl;
-	std::cout << "Lets multiply monom1 and monom2: " << monom1 * monom2 << std::endl;
+	TMonom monom1, monom2;
+	std::cout << "Let's create first monom" << std::endl;
+	std::cin >> monom1;
+	std::cout << "First monom: " << monom1 << std::endl;
 
-	TMonom m1(5, 4);
-	TMonom m2(2, 4);
-	TMonom m3(2, 2);
-	TMonom m4(3, 20);
-	TMonom m5(5, 4);
+	std::cout << "Let's create second monom" << std::endl;
+	std::cin >> monom2;
+	std::cout << "Second monom: " << monom2 << std::endl;
 
-	std::cout << "m1: " << m1 << std::endl;
-	std::cout << "m2: " << m2 << std::endl;
-	std::cout << "m3: " << m3 << std::endl;
-	std::cout << "m4: " << m4 << std::endl;
-	std::cout << "m4: " << m5 << std::endl;
-	std::cout << "Lets compare: m1 > m2? " << (m1 > m2) << std::endl;
-	std::cout << "Lets compare: m1 == m2? " << (m1 == m2) << std::endl;
-	std::cout << "Lets compare: m1 == m5? " << (m1 == m5) << std::endl;
-	std::cout << "Lets compare: m1 != m2? " << (m1 != m2) << std::endl;
-	std::cout << "Lets compare: m1 < m2? " << (m1 < m2) << std::endl;
-	std::cout << "Lets compare: m1 > m3? " << (m1 > m3) << std::endl;
-	std::cout << "Lets compare: m2 > m3? " << (m2 > m3) << std::endl;
-	std::cout << "Lets compare: m4 > m3? " << (m4 > m3) << std::endl;
+	std::cout << "Let's compare our monoms: " << std::endl;
+	std::cout << "m1 > m2 ? " << (monom1 > monom2) << std::endl;
+	std::cout << "m1 < m2 ? " << (monom1 < monom2) << std::endl;
+	std::cout << "m1 == m2 ? " << (monom1 == monom2) << std::endl;
+	std::cout << "m1 != m2 ? " << (monom1 != monom2) << std::endl;
 
-	TMonom m6(7, 221);
-	std::cout << m6.getStringMonom();
-
+	try {
+		std::cout << "Let's multiply our monoms: m1 * m2 = " << monom1 * monom2 << std::endl;
+	}
+	catch (const char* error_message)
+	{
+		std::cout << "Error. Result degree out of range. Please, enter monoms with different degrees" << std::endl;
+		std::cin >> monom1;
+		std::cin >> monom2;
+		std::cout << "First monom: " << monom1 << std::endl;
+		std::cout << "Second monom: " << monom2 << std::endl;
+		std::cout << "Let's multiply our monoms: m1 * m2 = " << monom1 * monom2 << std::endl;
+	}
+	try {
+		std::cout << "Let's add up our monoms:  m1 + m2 = " << monom1 + monom2 << std::endl;
+		std::cout << "Let's add up our monoms: m1 - m2 = " << monom1 - monom2 << std::endl;
+	}
+	catch (const char* error_message) {
+		std::cout << "Monoms degrees aren't equal. Can't add and substract. Please, enter monoms with equal degrees " << std::endl;
+		std::cin >> monom1;
+		std::cin >> monom2;
+		std::cout << "First monom: " << monom1 << std::endl;
+		std::cout << "Second monom: " << monom2 << std::endl;
+		std::cout << "Let's add up our monoms:  m1 + m2 = " << monom1 + monom2 << std::endl;
+		std::cout << "Let's substract up our monoms: m1 - m2 = " << monom1 - monom2 << std::endl;
+	}
 	return 0;
 }

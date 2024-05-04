@@ -1,7 +1,9 @@
 #ifndef __TLIST_H__
 #define __TLIST_H__
-//функции сделать virtual и в ringlist переопределить insrtFirst and insertLast
 
+//изменить сэмплы, чтобы работа происходила с пользовательскими данными, +++
+//  изменить в отчете рисунки списка звеньями с указателями, 
+// стрелочками и тд, операции +-* и тд  написать описание самого алгоритм: полино представилен списком с головой мономов и ....
 #include <iostream>
 #include "tnode.h"
 
@@ -14,70 +16,61 @@ protected:
     TNode<TData>* pStop = nullptr; //значение указателя конца списка =null
     TNode<TData>* pCurr = nullptr;  //pCurrent текущий
     TNode<TData>* pPrev = nullptr;
-    int ListLen = 0;   //длина списка (кол-во звеньев)
 public:
     TList();
     TList(const TNode<TData>* pFirst_); //конструктор  с параметром
     TList(const TList& pList);   //конструктор копирования
+    
+    virtual void Clear();
+     ~TList();
+    
+     bool is_Full() const;
+    void Next();
+
+    void Sort();
+    virtual  bool is_Empty() const;
+ 
+
+    TNode<TData>* Search(const TData& data_);
+    //INSERT 
+    virtual void InsertFirst(const TData& data_);
+    void InsertLast(const TData& data_);
+    void InsertBefore(const TData& data_, const TData& NextData);
+    void InsertAfter(const TData& data_, const TData& PrevData);
+
+    void Reset(); //установить на начало списка
+
+    TNode<TData>* GetCurrent() const; //возвращает текущее звено
+    TData getCurrData() const;
+    void setCurrData(const TData& _data);
+
+    const TList<TData>& operator=(const TList<TData>& pList) ; // TODO: const
+
+    //insert(2)
+    void InsertBeforeCurrent(const TData& data_); //вставить перед текущим
+    void InsertAfterCurrent(const TData& data_); //вставить после текущего
+
+    //functions
+    void Remove(const TData& data_); //удаление по данным 
+    virtual void RemoveFirst();
+    void RemoveCurrent();
+    bool is_End() const; //список завершен?
 
     friend std::ostream& operator<<(std::ostream& out, const TList<TData>& list) {
-        TNode<TData>* tmp = list.GetPFirst();
+        TNode<TData>* tmp = list.pFirst;
         int num = 1;
         while (tmp != nullptr) {
-            out << num << " node "<<tmp->data << std::endl;
+            out << num << " node " << tmp->data << std::endl;
             tmp = tmp->pNext;
             num++;
         }
         return out;
     }
-
-    virtual void Clear();
-     ~TList();
-
-    virtual void Next();
-    virtual virtual void Sort();
-     bool is_Full() const;
-     bool is_Empty() const;
-
-    virtual TNode<TData>* Search(const TData& data_);
-    //INSERT 
-    virtual void InsertFirst(const TData& data_);
-    virtual void InsertLast(const TData& data_);
-    virtual void InsertBefore(const TData& data_, const TData& NextData);
-    virtual void InsertAfter(const TData& data_, const TData& PrevData);
-
-    const int GetLength() const; //
-    virtual void Reset(); //установить на начало списка
-
-     TNode<TData>* GetCurrent() const; //возвращает текущее звено
-     TData getCurrData() const;
-     void setCurrData(const TData& _data);
-
-    virtual TList<TData>& operator=(const TList<TData>& pList);
-
-    virtual TNode<TData>* GetPStop()const;
-    virtual TNode<TData>* GetPFirst()const;
-    
-    virtual void SetPStop(TNode<TData>* _pStop);
-    virtual void SetPLast(TNode<TData>* _pLast);
-    virtual void SetPFirst(TNode<TData>* _pFirst);
-
-    //insert(2)
-    virtual void InsertBeforeCurrent(const TData& data_); //вставить перед текущим
-    virtual void InsertAfterCurrent(const TData& data_); //вставить после текущего
-
-    //functions
-    virtual void Remove(const TData& data_); //удаление по ключу 
-    virtual void RemoveFirst();
-    virtual void RemoveCurrent();
-    bool is_End() const; //список завершен?
-
 };
 
 //constructors
 template <class TData> TList<TData> ::TList() {
     pFirst = pLast = pCurr = pStop = pPrev = nullptr;
-    ListLen = 0;
     Reset();
 }
 
@@ -90,6 +83,7 @@ template <class TData> TList<TData> ::TList(const TNode<TData>* pFirst_) {
     }
     pLast = pCurr;
     pCurr = pFirst;
+    pLast->pNext = pStop;
     pStop = pPrev = nullptr;
 }
 template <class TData> TList<TData> ::TList(const TList& pList) {
@@ -108,15 +102,20 @@ template <class TData> TList<TData> ::TList(const TList& pList) {
         oldCurrent = oldCurrent->pNext;
     }
     pLast = newCurrent;
-    pStop = pLast->pNext;
+    pLast->pNext = pStop;
     pCurr = pFirst;
     pStop = nullptr;
 }
 
-template <class TData>  TList<TData>& TList<TData>::operator=(const TList<TData>& pList) {
+template <class TData> const TList<TData>& TList<TData>::operator=(const TList<TData>& pList) {
+    if (this == &pList)
+    {
+        return *this;
+    }
     if (pList.pFirst == nullptr)
     {
-        throw "Error";
+        pFirst = pStop = pCurr = pPrev = pLast = nullptr;
+        return;
     }
     TNode<TData>* oldCurrent = pList.pFirst;
     pFirst = new TNode<TData>(*pList.pFirst);
@@ -129,7 +128,6 @@ template <class TData>  TList<TData>& TList<TData>::operator=(const TList<TData>
         oldCurrent = oldCurrent->pNext;
     }
     pLast = newCurrent;
-    pStop = pLast->pNext;
     pCurr = pFirst;
     pStop = nullptr;
 
@@ -141,15 +139,15 @@ template <class TData> void TList<TData>::Clear() {
         return;
     }
     pCurr = pFirst;
-    TNode<TData>* tmp = pCurr;
     while (pCurr != pStop) {
+        TNode<TData>* tmp = pCurr;
         pCurr = pCurr->pNext;
         delete tmp;
-        tmp = pCurr;
     }
     pCurr = pStop;
     pLast = pStop;
     pFirst = pStop;
+    pPrev = pStop;
 }
 
 template <class TData> TList<TData> ::~TList() {
@@ -161,10 +159,14 @@ template <class TData> TList<TData> ::~TList() {
 //sort по убыванию
 template <class TData> void TList<TData>::Sort() {
     TNode<TData>* elem1 = pFirst;
-    while (elem1->pNext != nullptr)
+    if (is_Empty())
+    {
+        return; //
+    }
+    while (elem1->pNext != pStop)
     {
         TNode<TData>* elem2 = elem1->pNext;
-        while (elem2 != nullptr)
+        while (elem2 != pStop)
         {
             if (elem1->data < elem2->data)
             {
@@ -176,6 +178,8 @@ template <class TData> void TList<TData>::Sort() {
         }
         elem1 = elem1->pNext;
     }
+    pPrev = pLast;
+    pCurr = pFirst;
 }
 template <class TData> void TList<TData> ::Next() {
     if (pCurr == pStop)
@@ -201,26 +205,23 @@ template <class TData> bool TList<TData> ::is_Full() const {
     try
     {
         TNode<TData>* tmp = new TNode<TData>();
-        if (tmp == 0)
-            return 1;
+        if (tmp == nullptr)
+            return true;
         else
         {
             delete tmp;
-            return 0;
+            return false;
         }
     }
     catch (...)
     {
-        return 0;
+        return true;
     }
     return true;
 }
 
 template <class TData> bool TList<TData> ::is_Empty() const {
-    if (pFirst == pStop || ListLen == 0)
-        return true;
-    else
-        return false;
+    return pFirst == pStop;
 }
 
 template <class TData> bool TList<TData> ::is_End() const {
@@ -232,11 +233,12 @@ template <class TData> bool TList<TData> ::is_End() const {
 
 template <class TData> TNode<TData>* TList<TData> ::Search(const TData& data_) {
     TNode<TData>* tmp = pFirst;
+
     while ((tmp != pStop) && (tmp->data != data_)) {
         tmp = tmp->pNext; 
     }
     if (tmp == pStop) {
-       throw "Error. Data not found";
+        return nullptr;
     }
     return tmp;
 }
@@ -259,8 +261,6 @@ template <class TData> void TList<TData>::Remove(const TData& data_) {
     }
     // Освобождение памяти, выделенной для звена
     delete pCurr;
-    // Уменьшение длины списка
-    ListLen--;
 
 }
 
@@ -271,10 +271,6 @@ template <class TData> void TList<TData>::RemoveFirst()
         pFirst = pFirst->pNext;
         pCurr = pFirst;
         delete tmp;
-        ListLen--;
-        if (ListLen == 0) {
-            pLast = pStop;
-        }
     }
 }
 
@@ -285,20 +281,15 @@ template <class TData> void TList<TData>::RemoveCurrent() {
         }
         else {
             TNode<TData>* tmp = pCurr;
-           // pPrev = pPrev->pNext;
+           
             pPrev->pNext = pCurr->pNext;
             pCurr = pCurr->pNext;
             if (pPrev->pNext == pStop)
                 pLast = pPrev;
             pPrev->pNext = pCurr;
             delete tmp;
-            ListLen--;
         }
-}
-template <class TData> const int TList<TData>::GetLength() const
-{
-    return ListLen;
-}
+} 
 
 //INSERT 
 template <class TData> void TList<TData>::InsertFirst(const TData& data_) {
@@ -320,8 +311,7 @@ template <class TData> void TList<TData>::InsertFirst(const TData& data_) {
     pCurr = pFirst;
     if (pLast == pStop) {
         pLast = pFirst;
-    };
-    ListLen++;
+    }
 }
 
 template <class TData> void TList<TData>::InsertLast(const TData& data_) {
@@ -331,10 +321,11 @@ template <class TData> void TList<TData>::InsertLast(const TData& data_) {
         pLast = pFirst;
         return;
     }
-    TNode<TData>* newNode = new TNode<TData>(data_, nullptr);
+    TNode<TData>* newNode = new TNode<TData>(data_, pStop);
     pLast->pNext = newNode;
     pLast = newNode;
-    ListLen++;
+    pCurr = pLast;
+
 }
 template <class TData> void TList<TData>::InsertBefore(const TData& data_, const TData& NextData) {
     if (is_Empty()) {
@@ -361,7 +352,7 @@ template <class TData> void TList<TData>::InsertBefore(const TData& data_, const
         pPrev->pNext = newNode;
     }
     pCurr = pFirst;
-    ListLen++;
+
 }
 
 template <class TData> void TList<TData>::InsertAfter(const TData& data_, const TData& PrevData) {
@@ -370,12 +361,12 @@ template <class TData> void TList<TData>::InsertAfter(const TData& data_, const 
     TNode<TData>* prNode = Search(PrevData);
     if (prNode == pStop)
     {
-        return;
+        throw "Error. Can't insert after";
     }
     TNode<TData>* tmp = new TNode<TData>(data_, prNode->pNext);
     tmp->pNext = prNode->pNext;
     prNode->pNext = tmp;
-    ListLen++;
+   
 }
 
 // Set & Get
@@ -395,25 +386,6 @@ template <class TData> void TList<TData>::setCurrData(const TData& _data)
     pCurr->data = _data;
 }
 
-template <class TData> TNode<TData>* TList<TData>::GetPStop()const {
-    return pStop;
-}
-
-template <class TData> TNode<TData>* TList<TData>::GetPFirst()const {
-    return pFirst;
-}
-
-template <class TData> void TList<TData>::SetPStop(TNode<TData>* _pStop) {  //нужен ли
-    pStop = _pStop;
-}
-
-template <class TData> void TList<TData>::SetPLast(TNode<TData>* _pLast) {
-    pLast = _pLast;
-}
-template <class TData> void TList<TData>::SetPFirst(TNode<TData>* _pFirst) {
-    pFirst = _pFirst;
-}
-
 //insert(2)
 //pCur на вставленный элемент
 template <class TData> void TList<TData>::InsertBeforeCurrent(const TData& data_) //вставить перед текущим
@@ -426,16 +398,16 @@ template <class TData> void TList<TData>::InsertBeforeCurrent(const TData& data_
     }
     else {
         TNode<TData>* newNode = new TNode<TData>(data_, pCurr); //pCur->pNext;
-        if (newNode == NULL) {
+        if (newNode == nullptr) {
             throw "Error. List doesn't have memory";
         }
         else {
             pCurr = newNode;
             pPrev->pNext = newNode;
-            ListLen++;
+         
         }
     }
-    //pCurr = pFirst;
+    
 }
 //pCur на вставленный элемент
 template <class TData> void TList<TData>::InsertAfterCurrent(const TData& data_) //вставить после текущего
@@ -448,7 +420,7 @@ template <class TData> void TList<TData>::InsertAfterCurrent(const TData& data_)
     }
     else {
         TNode<TData>* newNode = new TNode<TData>(data_); 
-        if (newNode == NULL) {
+        if (newNode == nullptr) {
             throw "Error. List doesn't have memory";
         }
         else {
@@ -456,7 +428,7 @@ template <class TData> void TList<TData>::InsertAfterCurrent(const TData& data_)
             pCurr->pNext = newNode; 
             pCurr = newNode;
             pPrev = pPrev->pNext;
-            ListLen++;
+           
         }
     }
 }

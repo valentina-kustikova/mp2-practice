@@ -118,11 +118,6 @@ TEST(TMonom, check_comparison3_true) {
 	TMonom m2(2, 2);
 	EXPECT_EQ(true,m2 == m1);
 }
-TEST(TMonom, check_comparison3_false) {
-	TMonom m1(2, 2);
-	TMonom m2(3, 2);
-	EXPECT_NE(true, m2 == m1);
-}
 //operator!=
 TEST(TMonom, check_comparison4) {
 	TMonom m1(2, 2);

@@ -18,6 +18,7 @@ TEST(TRingList, right_copy_ringlist) {
 	ringList1.InsertFirst(4);
 	ringList1.InsertFirst(6);
 	ringList1.InsertLast(-1000);
+	ringList1.Reset();
 	TRingList<int> ringlist2(ringList1);
 	while (!ringList1.is_End())
 	{
@@ -40,13 +41,13 @@ TEST(TRingList, can_insrt_first_data) {
 TEST(TRingList, can_del_first) {
 	TRingList<int> ringList;
 	ringList.InsertFirst(8);
-	ASSERT_NO_THROW(ringList.DeleteFirst());
+	ASSERT_NO_THROW(ringList.RemoveFirst());
 }
 TEST(TRingList, can_del_first_data) {
 	TRingList<int> ringList;
 	ringList.InsertFirst(8);
 	ringList.InsertFirst(9);
-	ringList.DeleteFirst();
+	ringList.RemoveFirst();
 	ringList.Reset();
 	EXPECT_EQ(8, ringList.GetCurrent()->data);
 }

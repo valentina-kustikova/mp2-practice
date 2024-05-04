@@ -4,42 +4,76 @@ using namespace std;
 
 int main()
 {
- 
-   TList<int> list;
-   list.InsertFirst(3);
-   list.InsertFirst(8);
-   list.InsertFirst(7); //783
-   
-   std::cout << "Created with InsertFirst list with list length " << list.GetLength() <<" and this data:" << std::endl;
-   std::cout << list << std::endl;
-   list.Reset();
-  
-   std::cout << "Let's insert 9 before 8 and insert 4 after 8" << std::endl;
-   list.InsertBefore(9, 8); //7983
-   list.InsertAfter(4, 8); //79843
-   list.Reset();
-   std::cout << list << std::endl;
-  
-   std::cout << "Lets sort our list " << std::endl;
-   list.Sort(); //98743
-   std::cout << list << std::endl;
- 
-   std::cout << "Lets insert last 5  in our sorted list and set new data = 6 for current node = 7" << std::endl;
-   list.InsertLast(5);
-   list.Next();
-   list.Next();
-   list.setCurrData(6);
+	TList<int> list;
+	int size, data, data2;
+	std::cout << "Let's create a new list! Enter numbers of list's elements" << endl;
+	std::cin >> size;
+	std::cout << "Now let's fill our list:" << endl;
+	std::cout << "Please enter data " << endl;
+	for (int i = 0; i < size; i++)
+	{
+		std::cin >> data;
+		list.InsertLast(data);
+	}
+	std::cout << "Our list:" << endl;
+	std::cout << list << std::endl;
+	list.Reset();
+	//insert first and last
+	std::cout << "Let's insert something to the beginning of the list  and in the end" << endl;
+	std::cout << "Please enter data to insert to the beginning " << endl;
+	std::cin >> data;
+	list.InsertFirst(data);
+	std::cout << "Please enter data to insert in the end " << endl;
+	std::cin >> data;
+	list.InsertLast(data);
+	std::cout << "Our list:" << endl;
+	std::cout << list << std::endl;
+	list.Reset();
+	//insert before and after
 
-   std::cout << list << std::endl;
-   std::cout << "Lets insert 7 after current with data = " << list.getCurrData() << std::endl;
-   list.InsertAfterCurrent(7);
-   std::cout << list << std::endl;
+	std::cout << "Let's insert something before element you want. At first, enter the element before which you want to insert " << endl;
+	std::cin >> data2;
+	while (list.Search(data2) == nullptr)
+	{
+		std::cout << "Error. List don't have this element. Please, enter correct element" << endl;
+		std::cin >> data2;
+	}
 
-   std::cout << "Lets remove node with data = 7 use RemoveCurrent and remove first node" << std::endl;
-   list.RemoveCurrent();
-   list.GetLength();
-   list.RemoveFirst();
-   std::cout << list << std::endl;
+	std::cout << "Please enter data to insert" << endl;
+	std::cin >> data;
+	list.InsertBefore(data, data2);
+	std::cout << "Our list:" << endl;
+	std::cout << list << std::endl;
+	list.Reset();
 
+	std::cout << "Let's insert something after element you want. At first, enter the element after which you want to insert " << endl;
+	std::cin >> data2;
+	while (list.Search(data2) == nullptr)
+	{
+		std::cout << "Error. List don't have this element. Please, enter correct element" << endl;
+		std::cin >> data2;
+	}
+	std::cout << "Please enter data to insert" << endl;
+	std::cin >> data;
+	list.InsertAfter(data, data2);
+	std::cout << "Our list:" << endl;
+	std::cout << list << std::endl;
+	list.Reset();
+
+	//remove and sort
+	std::cout << "Let's sort list:" << endl;
+	list.Sort();
+	std::cout << "Our list:" << endl;
+	std::cout << list << std::endl;
+	list.Reset();
+
+	std::cout << "Let's remove first element in our list" << endl;
+	list.RemoveFirst();
+	std::cout << "Our list:" << endl;
+	std::cout << list << std::endl;
+	std::cout << "Let's remove current element in our list, which is : " << list.GetCurrent()->data << endl;
+	list.RemoveCurrent();
+	std::cout << "Our list:" << endl;
+	std::cout << list << std::endl;
    return 0;
 }
