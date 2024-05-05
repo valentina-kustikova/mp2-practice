@@ -38,7 +38,7 @@ public:
 	TNode<Type>* get_curr() const;
 	int get_size() const;
 	
-	void start();
+	virtual void start();
 	bool empty() const;
 	virtual void next();
 	void sort(bool reverse=true);

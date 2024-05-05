@@ -5,11 +5,11 @@ template <class Key, class Value>
 struct Record
 {
 	Key key;
-	Value* data;
-
-	Record(const Key& _key, Value& _data);
-	Record(const Record<Key, Value>& record);
-
+	Value data;
+	Record();
+	Record(const Key& _key, const Value& _data);
+	Record(const Record<Key, const Value>& record);
+	~Record();
 	bool operator==(const Key& key) const;
 	bool operator==(const Record<Key, Value>& record) const;
 	bool operator<(const Record<Key, Value>& record) const;
@@ -17,23 +17,33 @@ struct Record
 };
 
 template <class Key, class Value>
-Record<Key, Value>::Record(const Key& _key, Value& _data) : key(_key)
+Record<Key, Value>::Record() :data(Value()), key(Key())
 {
-	data = new Value; *data = _data
+}
+template <class Key, class Value>
+Record<Key, Value>::Record(const Key& _key, const Value& _data) : key(_key)
+{
+	data = _data;
 }
 
+
 template <class Key, class Value>
-Record<Key, Value>::Record(const Record<Key, Value>& record)
+Record<Key, Value>::Record(const Record<Key, const Value>& record)
 {
 	key = record.key;
 	data = record.data;
 }
 
 template <class Key, class Value>
+Record<Key, Value>::~Record()
+{
+	
+}
+
+template <class Key, class Value>
 bool Record<Key, Value>::operator==(const Record<Key, Value>& record) const
 {
-	if (!data || !record.data) return data == record.data && key == record.key;
-	return key == record.key && *data == *record.data;
+	return key == record.key && data == *record.data;
 }
 
 template <class Key, class Value>

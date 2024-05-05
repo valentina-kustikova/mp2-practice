@@ -9,62 +9,205 @@
 #define DELETE 2
 #define FIND 3
 
-ScanTable<TPolynom, bool> scan_table;
-SortedTable<TPolynom, bool> sorted_table;
-HashTable<TPolynom, bool> hash_table;
+ScanTable<TPolynom, bool> scan_table(101);
+SortedTable<TPolynom, bool> sorted_table(101);
+HashTable<TPolynom, bool> hash_table(101);
 
-void scan1(int teg)
+
+void action(int table, int tag)
 {
+	std::cout << "input a polynom:\n";
+	TPolynom polynom; cin >> polynom;
+	cout << "\n";
+	if (tag == INSERT)
+	{
+		if (table == 1 || table == 4)
+		{
+			try
+			{
+				scan_table.insert(polynom, true);
+				cout << "OK\n";
+			}
+			catch (string ex)
+			{
+				throw string("insert scan table\n");
+			}
+		}
+		if (table == 2 || table == 4)
+		{
+			try
+			{
+				sorted_table.insert(polynom, true);
+				cout << "OK\n";
+			}
+			catch (string ex)
+			{
+				throw string("insert sorted table\n");
+			}
+		}
+		if (table == 3 || table == 4)
+		{
+			try
+			{
+				hash_table.insert(polynom, true);
+				cout << "OK\n";
+			}
+			catch (string ex)
+			{
+				throw string("insert hash table\n");
+			}
+		}
+	}
+	else if (tag == FIND)
+	{
+		if (table == 1 || table == 4)
+		{
+			try
+			{
+				Record<TPolynom, bool>* t = scan_table.find(polynom);
+				if (!t)
+				{
+					cout << "Polynom wasn`t found\n";
+				}
+				else cout << "Polynom was found\n";
+			}
+			catch (string ex)
+			{
+				throw string("find scan table\n");
+			}
+		}
+		if (table == 2 || table == 4)
+		{
+			try
+			{
+				Record<TPolynom, bool>* t = sorted_table.find(polynom);
+				if (!t)
+				{
+					cout << "Polynom wasn`t found\n";
+				}
+				else cout << "Polynom was found";
+			}
+			catch (string ex)
+			{
+				throw string("find sorted table\n");
+			}
+		}
+		if (table == 3 || table == 4)
+		{
+			try
+			{
+				Record<TPolynom, bool>* t = hash_table.find(polynom);
+				if (!t)
+				{
+					cout << "Polynom wasn`t found\n";
+				}
+				else cout << "Polynom was found";
+			}
+			catch (string ex)
+			{
+				throw string("find hash table\n");
+			}
+		}
+	}
+	else if (tag == DELETE)
+	{
+		if (table == 1 || table == 4)
+		{
+			try
+			{
+				scan_table.remove(polynom);
+				cout << "OK\n";
+			}
+			catch (string ex)
+			{
+				throw string("remove scan table\n");
+			}
+		}
+		if (table == 2 || table == 4)
+		{
+			try
+			{
+				sorted_table.remove(polynom);
+				cout << "OK\n";
+			}
+			catch (string ex)
+			{
+				throw string("remove sorted table\n");
+			}
+		}
+		if (table == 3 || table == 4)
+		{
+			try
+			{
+				hash_table.remove(polynom);
+				cout << "OK\n";
+			}
+			catch (string ex)
+			{
+				throw string("remove hash table\n");
+			}
+		}
+	}
+
 
 }
 
-
-void sorted1(int teg)
+void kind(int table_tag)
 {
-
+	int teg = 0;
+	std::cout << "1.Insert\n2.Remove\n3.Find\n";
+	int option; cin >> option;
+	if (option == 1)
+	{
+		teg = INSERT;
+	}
+	else if (option == 2)
+	{
+		teg = DELETE;
+	}
+	else if (option == 3)
+	{
+		teg = FIND;
+	}
+	else if (option == 0)
+	{
+		return;
+	}
+	else
+	{
+		throw string("wrong tag\n");
+	}
+	try
+	{
+		action(table_tag, teg);
+	}
+	catch (string ex)
+	{
+		throw ex;
+	}
 }
-
-void hash1(int teg)
-{
-
-}
-
 
 void user()
 {
 	while (1)
 	{
-		std::cout << "1.Add\n2.Erase\n3.Print\n4.PrintAll\n5.find\n6.Action with polynom\n";
+		std::cout << "0.Kill the programm\n1.scan table\n2.sorted table\n3.hash table\n4.All tables\n";
 		int option; std::cin >> option;
 		if (option == 1)
 		{
-			Add();
-			continue;
+			kind(1);
 		}
 		else if (option == 2)
 		{
-			Erase();
-			continue;
+			kind(2);
 		}
 		else if (option == 3)
 		{
-			Print();
-			continue;
+			kind(3);
 		}
 		else if (option == 4)
 		{
-			PrintAll();
-			continue;
-		}
-		else if (option == 5)
-		{
-			Find();
-			continue;
-		}
-		else if (option == 6)
-		{
-			Actions_with_polynom();
-			continue;
+			kind(4);
 		}
 		else if (option == 0)
 		{
@@ -77,143 +220,17 @@ void user()
 	}
 }
 
-void Add()
-{
-	TPolynom polynom; std::cin >> polynom;
-	std::cout << "Where to add?\n";
-	std::cout << "1.Scan table\n2.Sorted table\n3.Hash table\n4.All tables\n";
-	int option; std::cin >> option;
-	if (option == 1)
-	{
-		scan(INSERT);
-	}
-	else if (option == 2)
-	{
-		sorted(INSERT);
-	}
-	else if (option == 3)
-	{
-		hash(INSERT);
-	}
-	else if (option == 4)
-	{
-		scan(INSERT);
-		hash(INSERT);
-		sorted(INSERT);
-	}
-	else
-	{
-		cout << "Wrong\n";
-	}
-	
-	for (int i = 0; i < 3; ++i)
-	{
-		Tables[i]->add(name, polynom);
-	}
-	wait();
-}
-
-void Erase()
-{
-	std::string name;
-	std::cout << "Input name:";
-	std::cin >> name;
-	for (int i = 0; i < 3; ++i)
-	{
-		Tables[i]->erase(name);
-	}
-	wait();
-}
-
-void Print()
-{
-	std::string name;
-	std::cout << "Input name:";
-	std::cin >> name;
-	for (int i = 0; i < 3; ++i)
-	{
-		Tables[i]->print(name);
-	}
-	wait();
-}
-
-void PrintAll()
-{
-	for (int i = 0; i < 3; ++i)
-	{
-		Tables[i]->print_all();
-	}
-	wait();
-}
-
-void Find()
-{
-	std::string name;
-	std::cout << "Input name:";
-	std::cin >> name;
-	for (int i = 0; i < 3; ++i)
-	{
-		std::cout << Tables[i]->find(name) << "\n";
-	}
-	wait();
-}
-
-void Actions_with_polynom()
-{
-	std::cout << "The polinoms you have:";
-	Tables[0]->print_all();
-	std::cout << "\nType name of two polynoms which ones you what to sum/multiply\n";
-	std::string name1, name2;
-	std::cin >> name1 >> name2;
-	while (!Tables[1]->find(name1) || !Tables[1]->find(name2))
-	{
-		std::cout << "Wrong Input!\n";
-		std::cin >> name1 >> name2;
-	}
-	Polynom t1 = Tables[1]->get_polynom(name1);
-	Polynom t2 = Tables[1]->get_polynom(name2);
-	std::cout << "Input what you want to do(+/* another symbol will be interpreted as *):";
-	char c; std::cin >> c;
-	Polynom tmp;
-	if (c == '+')
-	{
-		tmp = t1 + t2;
-	}
-	else
-	{
-		tmp = t1 * t2;
-	}
-	std::cout << "Your polynom is: " << tmp << "\nYou want to save it? (Y/N another symbol = N)";
-	std::cin >> c;
-	if (c == 'Y')
-	{
-		std::string name;
-		std::cout << "Input name:";
-		std::cin >> name;
-		while (Tables[1]->find(name))
-		{
-			std::cout << "Table with this name is exist!";
-			std::cin >> name;
-		}
-		for (int i = 0; i < 3; ++i)
-		{
-			Tables[i]->add(name, tmp);
-		}
-	}
-	else
-		tmp.clear();
-}
 
 int main()
 {
-	
-
-
-}
-
-int main()
-{
-	return 0;
-
-	std::unordered_map<int, int> k;
+	try
+	{
+		user();
+		return 0;
+	}
+	catch (string ex)
+	{
+		cout << ex << endl;
+		return -1;
+	}
 }

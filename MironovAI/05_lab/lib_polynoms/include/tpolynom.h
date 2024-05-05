@@ -12,6 +12,7 @@ using namespace std;
 class TPolynom {
 private:
 	TRingList<TMonom> monoms;
+	string name;
 
 	void del_zeros();
 	void parse(string polynom);
@@ -20,6 +21,7 @@ private:
 	void z(string token, char& stage, int& i, double& coef, int& degreex, int& degreey, int& degreez);
 	void c(string token, char& stage, int& i, double& coef, int& degreex, int& degreey, int& degreez);
 	string preparation(string polynom);
+	void set_string();
 
 public:
 	TPolynom();
@@ -33,7 +35,8 @@ public:
 	TPolynom operator-(const TPolynom& polynom);
 	TPolynom operator*(const TPolynom& polynom);
 	double operator()(double x, double y, double z);
-
+	bool operator<(const TPolynom& polynom) const;
+	string get_name() const { return name; }
 	TPolynom dif_x() const;
 	TPolynom dif_y() const;
 	TPolynom dif_z() const;
@@ -57,6 +60,34 @@ public:
 		}
 		return buf;
 	}
+	friend istream& operator >> (istream& buf, TPolynom& polynom)
+	{
+		string poly; 
+		cout << "input a polynom\n";
+		cin >> poly;
+		try
+		{
+			TPolynom t(poly);
+			TRingList<TMonom> k(t.monoms);
+			polynom.monoms = k;
+			polynom.name = t.name;
+		}
+		catch (string ex)
+		{
+			throw ex;
+		}
+	}
 };
 
+namespace std
+{
+	template <>
+	struct hash<TPolynom>
+	{
+		size_t operator()(const TPolynom& obj) const
+		{
+			return std::hash<std::string>()(obj.get_name());
+		}
+	};
+}
 #endif // !TPOLYNOM_H

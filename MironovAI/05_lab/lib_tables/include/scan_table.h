@@ -16,9 +16,6 @@ public:
 	ScanTable(const ScanTable<Key, Value>& table);
 	virtual ~ScanTable();
 	
-	Record<Key, Value>* find(const Key& key, const Value& value);
-	void insert(const Key& key, const Value& value);
-	void remove(const Key& key);
 	virtual Record<Key, Value>* find(const Key& key);
 	virtual void insert(const Key& key, const Value& value);
 	virtual void remove(const Key& key);
@@ -26,13 +23,16 @@ public:
 
 
 TabTemplate
-ScanTable<Key, Value>::ScanTable(size_t _max_size) : max_size(_max_size), size(0), curr(-1)
+ScanTable<Key, Value>::ScanTable(size_t _max_size)
 {
+	max_size = _max_size;
+	size = 0;
+	curr = 0;
 	if (!_max_size)
 	{
 		throw string("size should be > 0");
 	}
-	recs = new Record<Key, Value>*[max_size];
+	recs = new Record<Key, Value>*[max_size]();
 
 }
 
@@ -71,9 +71,7 @@ void ScanTable<Key, Value>::insert(const Key& _key, const Value& _data)
 	Record<Key,Value>* exist = find(_key);
 	if (exist) 
 	{
-		/// ------- ??????? 
-		delete exist->data;
-		*(exist->data) = Value(*_data);	
+		exist->data = _data;	
 	}
 	else
 	{
@@ -100,11 +98,11 @@ void ScanTable<Key, Value>::remove(const Key& _key)
 }
 
 TabTemplate
-Record<Key, Value>* ScanTable<Key, Value>::find(const Key& key, const Value& value) 
+Record<Key, Value>* ScanTable<Key, Value>::find(const Key& key) 
 {
 	for (int i = 0; i < size; ++i)
 	{
-		if (recs[i] == Record(key, value))
+		if (recs[i]->key == key)
 		{
 			curr = i;
 			return recs[i];

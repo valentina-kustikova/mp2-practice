@@ -13,7 +13,7 @@ using namespace std;
 TabTemplate
 class Table {
 protected:
-	size_t curr_size;
+	size_t size;
 	size_t max_size;
 	int curr;
 
@@ -23,9 +23,9 @@ public:
 	bool full() const;
 	bool reset();
 	bool next();
-	size_t size() const;
+	size_t get_size() const;
 
-	virtual Record<Key, Value>* find(const Key& key, const Value& value) = 0;
+	virtual Record<Key, Value>* find(const Key& key) = 0;
 	virtual void insert(const Key& key, const Value& value) = 0;
 	virtual void remove(const Key& key) = 0; 
 
@@ -35,13 +35,13 @@ public:
 TabTemplate
 bool Table<Key, Value>::full() const 
 {
-	return (curr_size == max_size);
+	return (size == max_size);
 }
 
 TabTemplate
 bool Table<Key, Value>::empty() const
 {
-	return (curr_size == 0);
+	return (size == 0);
 }
 
 TabTemplate
@@ -73,9 +73,9 @@ bool Table<Key, Value>::next()
 }
 
 TabTemplate
-size_t Table<Key, Value>::size() const
+size_t Table<Key, Value>::get_size() const
 {
-	return curr_size;
+	return size;
 }
 
 #endif // !TABLE_H_

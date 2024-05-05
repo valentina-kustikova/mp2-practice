@@ -381,33 +381,65 @@ void TPolynom::parse(string polynom)
 }
 
 
-TPolynom::TPolynom(): monoms(TRingList<TMonom>())
+TPolynom::TPolynom() : monoms(TRingList<TMonom>())
 {
+	name = "*";
 }
 
 
-TPolynom::TPolynom(const string& polynom_string): monoms(TRingList<TMonom>())
+TPolynom::TPolynom(const string& polynom_string): monoms(TRingList<TMonom>()), name(polynom_string)
 {
 	parse(polynom_string);
 	this->del_zeros(); this->monoms.sort(); this->monoms.start();
+	set_string();
 }
 
 
-TPolynom::TPolynom(const TRingList<TMonom>& list): monoms(list)
+TPolynom::TPolynom(const TRingList<TMonom>& list): monoms(list), name(string())
 {
 	this->del_zeros(); this->monoms.sort(); this->monoms.start();
+	set_string();
 }
 
+void TPolynom::set_string()
+{
+	string new_name = "";
+	monoms.start();
+	TNode<TMonom>* t = monoms.get_curr();
+	bool f = false;
+	while (t->value != TMonom())
+	{
+		if (t->value.get_coef() >= 0)
+		{
+			if (f)
+				new_name += " + ";
+			new_name += t->value.to_str();
+		}
+		else
+		{
+			if (f)
+				new_name += "-";
+			else new_name += " - ";
+			new_name += t->value.to_str();
+		}
+		t = t->next;
+		f = true;
+	}
+	name = new_name;
+}
 
-TPolynom::TPolynom(const TPolynom& polynom) : monoms(polynom.monoms)
+TPolynom::TPolynom(const TPolynom& polynom) : monoms(polynom.monoms), name(polynom.name)
 {
 }
 
+const TPolynom& TPolynom::operator=(const TPolynom& polynom) 
+{
+	if (this == &polynom) return *this;
 
-const TPolynom& TPolynom::operator=(const TPolynom& polynom) {
-
-	(*this).monoms.clear();
-	(*this).monoms = TRingList<TMonom>(polynom.monoms);
+	TRingList<TMonom> new_monom(polynom.monoms);
+	this->monoms = new_monom;
+	this->name = polynom.name;
+	
 	return *this;
 }
 
@@ -441,6 +473,7 @@ TPolynom TPolynom::operator+(const TPolynom& polynom) {
 		tmp1 = tmp1->next;
 	}
 	sum.del_zeros(); sum.monoms.sort();
+	sum.set_string();
 	return sum;
 }
 
@@ -474,6 +507,7 @@ TPolynom TPolynom::operator-(const TPolynom& polynom) {
 		tmp1 = tmp1->next;
 	}
 	sum.del_zeros(); sum.monoms.sort();
+	sum.set_string();
 	return sum;
 	
 }
@@ -518,6 +552,7 @@ TPolynom TPolynom::operator*(const TPolynom& polynom) {
 		t1 = t1->next;
 	}
 	prod.del_zeros(); prod.monoms.sort();
+	prod.set_string();
 	return prod;
 
 }
@@ -539,9 +574,26 @@ double TPolynom::operator()(double x, double y, double z) {
 
 bool TPolynom::operator==(const TPolynom& polynom) const
 {
-	return monoms == polynom.monoms;
+	return name == polynom.name;
 }
 
+
+bool TPolynom::operator<(const TPolynom& polynom) const
+{
+	int l2 = polynom.monoms.get_size(), l1 = monoms.get_size();
+	TRingList<TMonom> fl = monoms, fr = polynom.monoms;
+	fl.start(); fr.start();
+	TNode<TMonom>* t = fl.get_curr(), *c = fr.get_curr();
+	while (t->value != TMonom() && c->value != TMonom())
+	{
+		if (!(t->value.equal(c->value)))
+		{
+			return t->value.greater(c->value);
+		}
+		t = t->next; c = c->next;
+	}
+	return t->value == TMonom();
+}
 
 TPolynom TPolynom::dif_x() const {
 

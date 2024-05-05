@@ -14,20 +14,22 @@ public:
 	SortedTable(const ScanTable<Key, Value>& table);
 	SortedTable(const SortedTable<Key, Value>& table);
 
-	Record<Key, Value>* find(const Key& key, const Value& value);
-	void insert(const Key& _key, const Value* _data);
+	Record<Key, Value>* find(const Key& key);
+	void insert(const Key& _key, const Value& _data);
+	// we dont need it because we have "find"
+	//void remove(const Key& _key);
 };
 
-template <class Key, class Value>
+TabTemplate
 SortedTable<Key, Value>::SortedTable(size_t _max_size) : ScanTable(_max_size) {}
 
-template <class Key, class Value>
+TabTemplate
 SortedTable<Key, Value>::SortedTable(const ScanTable<Key, Value>& table) : ScanTable(st)
 {
-	sort();
+	this->sort();
 }
 
-template <class Key, class Value>
+TabTemplate
 SortedTable<Key, Value>::SortedTable(const SortedTable<Key, Value>& table): 
 	size(table.size), max_size(table.max_size), curr(table.curr)
 {
@@ -37,37 +39,43 @@ SortedTable<Key, Value>::SortedTable(const SortedTable<Key, Value>& table):
 	}
 }
 
-
-template <class Key, class Value>
-Record<Key, Value>* SortedTable<Key, Value>::find(const Key& key, const Value& value) 
+TabTemplate
+Record<Key, Value>* SortedTable<Key, Value>::find(const Key& key) 
 {
 	int l = 0, r = size - 1;
 	while (l <= r) {
 		
 		int mid = (l + r) / 2;
 		
-		if (recs[mid] == Record(key, value)) 
+		if (recs[mid]->key == key) 
 		{
 			curr = mid;
 			return recs[mid];
 		}
-		(recs[mid]->key < key) ? l = mid + 1 : r = mid - 1;
-	
+		if (recs[mid]->key < key) 
+		{
+			curr = mid;
+			l = mid + 1;
+		}
+		else
+		{
+			r = mid - 1;
+		}
 	}
 	return nullptr;
 }
 
-template <class Key, class Value>
-void SortedTable<Key, Value>::insert(const Key& _key, const Value* _data) {
+TabTemplate
+void SortedTable<Key, Value>::insert(const Key& _key, const Value& _data) {
 	
 	if (this->full()) {
 		throw string("Table is full\n");
 	}
 
-	Record<Key, Value> exist = find(_key);
+	Record<Key, Value>* exist = find(_key);
 	if (exist)
 	{
-		*(exist.data) = Value(*_data);
+		exist->data = _data;
 	}
 	else
 	{
@@ -76,12 +84,12 @@ void SortedTable<Key, Value>::insert(const Key& _key, const Value* _data) {
 			recs[i + 1] = recs[i];
 		}
 		
-		recs[curr] = new Record<Key, Value>(_key, *_data);
+		recs[curr] = new Record<Key, Value>(_key, _data);
+		size++;
 	}
 }
 
-
-template <class Key, class Value>
+TabTemplate
 void SortedTable<Key, Value>::sort()
 {
 	for (int i = 0; i < size; ++i)
@@ -90,7 +98,7 @@ void SortedTable<Key, Value>::sort()
 		{
 			if (recs[i] > recs[j])
 			{
-				Record* t = recs[i];
+				Record<Key, Value>* t = recs[i];
 				recs[i] = recs[j];
 				recs[j] = t;
 			}

@@ -23,11 +23,13 @@ public:
 	bool operator==(const TMonom& monom) const;
 	bool operator!=(const TMonom& monom) const;
 	TMonom operator*(const TMonom& monom) const;
+	bool greater(const TMonom& monom) const;
+	bool equal(const TMonom& monom) const;
 
 	double get_coef() const;
 	void set_coef(double num);
 	void inc_coef(double digit);
-
+	string to_str();
 	double eval(double x, double y, double z);
 	TMonom dif_x() const;
 	TMonom dif_y() const;

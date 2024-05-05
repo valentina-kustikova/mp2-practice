@@ -20,12 +20,13 @@ public:
 	void pop_first();
 	void pop_last();
 	void pop_curr();
-
+	void start();
 	void next();
 	void clear();
 	void push_after_curr(const Type& value);
 	void push_back(const Type& value);
 	void push_front(const Type& value);
+	TRingList<Type>& operator=(const TRingList<Type>& list);
 	bool operator==(const TRingList<Type>& list) const;
 	friend ostream& operator<<(ostream& buf, TRingList<Type>& list)
 	{
@@ -51,7 +52,7 @@ public:
 template <class Type>
 TRingList<Type>::TRingList()
 {
-	fict_head = new TNode<Type>;
+	fict_head = new TNode<Type>();
 	last = fict_head;
 	last->next = fict_head;
 	stop = fict_head;
@@ -59,8 +60,14 @@ TRingList<Type>::TRingList()
 
 
 template <class Type>
-TRingList<Type>::TRingList(const TRingList<Type>& list): TRingList<Type>()
+TRingList<Type>::TRingList(const TRingList<Type>& list)
 {
+
+	fict_head = new TNode<Type>();
+	last = fict_head;
+	last->next = fict_head;
+	stop = fict_head;
+
 	if (list.empty())
 	{
 		return;
@@ -81,8 +88,13 @@ TRingList<Type>::TRingList(const TRingList<Type>& list): TRingList<Type>()
 
 
 template <class Type>
-TRingList<Type>::TRingList(const TNode<Type>* node) : TRingList<Type>()
+TRingList<Type>::TRingList(const TNode<Type>* node)
 {
+	fict_head = new TNode<Type>();
+	last = fict_head;
+	last->next = fict_head;
+	stop = fict_head;
+
 	if (node == nullptr)
 	{
 		return;
@@ -109,14 +121,44 @@ TRingList<Type>::TRingList(const TNode<Type>* node) : TRingList<Type>()
 template <class Type>
 TRingList<Type>::~TRingList()
 {
-	if (fict_head != nullptr)
-	{
-		delete fict_head;
-	}
-	if (last != nullptr) last->next = nullptr;
+	clear();
 	stop = nullptr;
+	if (fict_head) delete fict_head;
+	last = nullptr;
 }
 
+template<class Type>
+TRingList<Type>& TRingList<Type>::operator=(const TRingList<Type>& list)
+{
+	if (this == &list)
+	{
+		return *this;
+	}
+
+	fict_head = new TNode<Type>();
+	last = fict_head;
+	last->next = fict_head;
+	stop = fict_head;
+
+	if (list.empty())
+	{
+		return *this;
+	}
+	TNode<Type>* tmp = list.head->next;
+	head = new TNode<Type>(list.head->value);
+	curr = head;
+	last = head;
+
+	while (tmp != list.stop)
+	{
+		last->next = new TNode<Type>(tmp->value);
+		last = last->next;
+		tmp = tmp->next;
+	}
+	last->next = fict_head;
+
+	return *this;
+}
 
 template<class Type>
 bool TRingList<Type>::operator==(const TRingList<Type>& list) const
@@ -287,6 +329,7 @@ void TRingList<Type>::push_after_curr(const Type& value)
 template<class Type>
 void TRingList<Type>::clear()
 {
+
 	if (head == nullptr)
 	{
 		return;
@@ -304,5 +347,9 @@ void TRingList<Type>::clear()
 	last->next = fict_head;
 }
 
-
+template<class Type>
+void TRingList<Type>::start()
+{
+	curr = head;
+}
 #endif // 
