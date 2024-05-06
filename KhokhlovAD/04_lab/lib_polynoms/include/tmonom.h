@@ -2,6 +2,7 @@
 #define _TMONOM_
 
 #include <iostream>
+#include <map>
 
 class TMonom {
 private:
@@ -23,9 +24,16 @@ public:
 	TMonom operator-(const TMonom& data);
 	TMonom operator*(const TMonom& data);
 
+	const TMonom& operator=(const TMonom& monom);
+
 	TMonom def_X();
 	TMonom def_Y();
 	TMonom def_Z();
+
+	double calculate(std::map<char, double>& xyz);
+
+	friend std::ostream& operator<<(std::ostream out, TMonom& monom);
+	friend std::istream& operator>>(std::istream in, TMonom& monom);
 };
 
 #endif

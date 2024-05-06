@@ -3,7 +3,6 @@
 #include <iostream>
 #include "tringlist.h"
 #include "tmonom.h"
-#include "postfix.h"
 
 using namespace std;
 

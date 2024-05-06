@@ -448,7 +448,7 @@ TList<T>& TList<T>::operator=(const TList<T>& pList)
 		throw std::exception("Invalid pList (=)");
 	if (this == &pList)
 		return *this;
-	clear();
+	clear();î 
 	TNode<T>* pNode = pList.pFirst;
 	while (pNode != pList.pStop)
 	{
