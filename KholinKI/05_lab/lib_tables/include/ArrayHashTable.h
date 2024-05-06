@@ -18,8 +18,10 @@ public:
 	void Insert(TKey key, const Data<TData>* data_);
 	TTabRecord<TKey, TData>* Find(TKey key);
 	void Remove(TKey key);
-	virtual TKey GetKey()const;
-	virtual Data<TData>* GetData()const;
+	TKey GetKey()const;
+	Data<TData>* GetData()const;
+	bool next()override;
+	bool reset()override;
 };
 
 template<typename TKey, typename TData>
@@ -71,6 +73,7 @@ void TArrayHashTable<TKey, TData>::Insert(TKey key, const Data<TData>* data_) {
 	records[curr_pos] = new TTabRecord<TKey, TData>(key, data_);
 	count++;
 	index_free_pos = -1;
+	reset();
 }
 
 
@@ -90,13 +93,36 @@ void TArrayHashTable<TKey, TData>::Remove(TKey key) {
 	}
 }
 
-//template<typename TKey, typename TData>
-//TKey TArrayHashTable<TKey,TData>::GetKey()const {
-//	
-//}
-//
-//template<typename TKey, typename TData>
-//Data<TData>* TArrayHashTable<TKey,TData>::GetData()const {
-//
-//}
+template<typename TKey, typename TData>
+TKey TArrayHashTable<TKey,TData>::GetKey()const {
+	return records[curr_pos]->key;
+}
+
+template<typename TKey, typename TData>
+Data<TData>* TArrayHashTable<TKey,TData>::GetData()const {
+	return records[curr_pos]->data;
+}
+
+template<typename TKey, typename TData>
+bool TArrayHashTable<TKey, TData>::next() {
+	while(!IsTabEnded()) {
+		if (records[curr_pos] != pMark && records[curr_pos] != nullptr) {
+			return IsTabEnded();
+		}
+		curr_pos++;
+	}
+	return IsTabEnded();
+}
+
+template<typename TKey, typename TData>
+bool TArrayHashTable<TKey, TData>::reset() {
+	curr_pos = 0;
+	while (!IsTabEnded()) {
+		if (records[curr_pos] != pMark && records[curr_pos] != nullptr) {
+			return IsTabEnded();
+		}
+		curr_pos++;
+	}
+	return IsTabEnded();
+}
 #endif

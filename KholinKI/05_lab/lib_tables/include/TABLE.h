@@ -14,12 +14,14 @@ public:
 	virtual void Insert(TKey key, const Data<TData>* data_) = 0;
 	virtual TTabRecord<TKey,TData>* Find(TKey key) = 0;
 	virtual void Remove(TKey key) = 0;
-	virtual bool IsFull()const;
-	virtual bool IsEmpty()const;
-	virtual bool IsTabEnded()const;
+	bool IsFull()const;
+	bool IsEmpty()const;
+	bool IsTabEnded()const;
 	virtual bool next();
 	virtual bool reset();
-	virtual int GetCount()const;
+	int GetCount()const;
+	int GetSize()const;
+	int GetCurrPos()const;
 	virtual TKey GetKey()const = 0;
 	virtual Data<TData>* GetData()const = 0;
 };
@@ -58,5 +60,15 @@ bool Table<TKey, TData>::reset() {
 template<typename TKey, typename TData>
 int Table<TKey, TData>::GetCount()const {
 	return count;
+}
+
+template<typename TKey, typename TData>
+int Table<TKey, TData>::GetCurrPos()const {
+	return curr_pos;
+}
+
+template<typename TKey, typename TData>
+int Table<TKey, TData>::GetSize()const {
+	return max_size;
 }
 #endif

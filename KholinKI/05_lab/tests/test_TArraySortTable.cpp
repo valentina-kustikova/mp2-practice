@@ -4,14 +4,9 @@
 
 #define MAX_SIZE 25
 
-TEST(ArraySortTable, insert_work) {
-	TArraySortTable<int, string> table(MAX_SIZE);
-	Data<string>* d = new Data<string>("Ivan");
-	ASSERT_NO_THROW(table.Insert(1, d));
-}
 
-TEST(ArraySortTable, find_work) {
-	TArraySortTable<int, string> table(MAX_SIZE);
+TEST(ArraySortTable, constructor_transformation_to_SortTable_work) {
+	TArrayScanTable<int, string> table(MAX_SIZE);
 
 	Data<string>** names = new Data<string>*[3];
 	names[0] = new Data<string>("Ivan");
@@ -22,12 +17,80 @@ TEST(ArraySortTable, find_work) {
 	table.Insert(2, names[1]);
 	table.Insert(3, names[2]);
 
-	ASSERT_NO_THROW(table.Find(2));
+	TArraySortTable<int, string> sort_table(table);
 }
 
-//TEST(ArraySortTable, constructor_transformation_to_SortTable_work) {
-//
-//}
+TEST(ArraySortTable, find_work) {
+	TArrayScanTable<int, string> table(MAX_SIZE);
+
+	Data<string>** names = new Data<string>*[3];
+	names[0] = new Data<string>("Ivan");
+	names[1] = new Data<string>("Nikolay");
+	names[2] = new Data<string>("Aleksandr");
+
+	table.Insert(1, names[0]);
+	table.Insert(2, names[1]);
+	table.Insert(3, names[2]);
+
+	TArraySortTable<int, string> sort_table(table);
+
+	ASSERT_NO_THROW(sort_table.Find(2));
+}
+
+TEST(ArraySortTable, insert_with_exist_key_after_sort) {
+	TArrayScanTable<int, string> table(MAX_SIZE);
+
+	Data<string>** names = new Data<string>*[3];
+	names[0] = new Data<string>("Ivan");
+	names[1] = new Data<string>("Nikolay");
+	names[2] = new Data<string>("Aleksandr");
+
+	table.Insert(1, names[0]);
+	table.Insert(2, names[1]);
+	table.Insert(3, names[2]);
+
+	TArraySortTable<int, string> sort_table(table);
+	ASSERT_ANY_THROW(sort_table.Insert(3,names[0]));
+}
+
+TEST(ArraySortTable, insert_with_no_exist_key_after_sort) {
+	TArrayScanTable<int, string> table(MAX_SIZE);
+
+	Data<string>** names = new Data<string>*[3];
+	names[0] = new Data<string>("Ivan");
+	names[1] = new Data<string>("Nikolay");
+	names[2] = new Data<string>("Aleksandr");
+
+	table.Insert(1, names[0]);
+	table.Insert(2, names[1]);
+	table.Insert(3, names[2]);
+
+
+	TArraySortTable<int, string> sort_table(table);
+	sort_table.Insert(8, names[0]);
+
+	TTabRecord<int, string>* test = sort_table.Find(8);
+	EXPECT_EQ(8,test->key);
+}
+
+TEST(ArraySortTable, find_check_record) {
+	TArrayScanTable<int, string> table(MAX_SIZE);
+
+	Data<string>** names = new Data<string>*[3];
+	names[0] = new Data<string>("Ivan");
+	names[1] = new Data<string>("Nikolay");
+	names[2] = new Data<string>("Aleksandr");
+
+	table.Insert(1, names[0]);
+	table.Insert(2, names[1]);
+	table.Insert(3, names[2]);
+
+	TArraySortTable<int, string> sort_table(table);
+
+	TTabRecord<int, string>* test = table.Find(2);
+
+	EXPECT_EQ(2, test->key);
+}
 
 //TEST(ArraySortTable, SimpleSort_work) {
 //	TArraySortTable<int, string> table(MAX_SIZE);

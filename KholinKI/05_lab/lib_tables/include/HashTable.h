@@ -7,7 +7,7 @@ template<typename TKey, typename TData> class THashTable:public Table<TKey,TData
 protected:
 	virtual size_t HashFunction(const TKey& Key);
 public:
-	THashTable(int max_size_);
+	THashTable(int max_size_ = 25);
 };
 
 template<typename TKey, typename TData>

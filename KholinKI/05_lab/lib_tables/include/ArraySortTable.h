@@ -15,16 +15,16 @@ protected:
 	void BubbleSort();
 	void MergeSort(int _first, int _last);//тест
 	void Merge(int _first, int _mid, int _last);
-	void QuickSort();//тест
+	void QuickSort(int _first, int _last);
 	void QuickSplit(int& i, int& j, TTabRecord<TKey, TData>* _mid);
 public:
-	TArraySortTable(int max_size_);
+	TArraySortTable(int max_size_ = 25);
 	TArraySortTable(const TArrayScanTable& ScanTable);
 	void Insert(TKey Key, const Data<TData>* data_)override;
 	TTabRecord<TKey, TData>* Find(TKey Key)override;
 	void Remove(TKey key)override;
 
-	void SetSortMethod(SortMethod n) { number = n; }
+	void SetSortMethod(SortMethod n = SELECT) { number = n; }
 	SortMethod GetSortMethod()const { return number; }
 	
 	
@@ -34,16 +34,15 @@ template<typename TKey,typename TData>
 TArraySortTable<TKey,TData>::TArraySortTable(int max_size_):TArrayScanTable<TKey,TData>(max_size_){}
 
 template<typename TKey,typename TData>
-TArraySortTable<TKey, TData>::TArraySortTable(const TArrayScanTable<TKey,TData>& ScanTable) {//тест
-	max_size = ScanTable.max_size;
+TArraySortTable<TKey, TData>::TArraySortTable(const TArrayScanTable<TKey,TData>& ScanTable) {
+	max_size = ScanTable.GetSize();
 	count = ScanTable.GetCount();
-	curr_pos = ScanTable.curr_pos;
+	curr_pos = ScanTable.GetCurrPos();
 	records = new TTabRecord<TKey, TData>*[max_size];
+	TTabRecord<TKey,TData>** scan_records = ScanTable.GetRecords();
 	for (int i = 0; i < count; i++) {
-		records[i] = new TTabRecord<TKey, TData>(ScanTable.GetKey(), ScanTable.GetData());
-		next();
+		records[i] = new TTabRecord<TKey, TData>(scan_records[i]->key, scan_records[i]->data);
 	}
-	reset();
 	SortData();
 }
 
@@ -52,13 +51,15 @@ void TArraySortTable<TKey,TData>::Insert(TKey Key, const Data<TData>* data_) {
 	if(IsFull()){
 		throw "table is full!";
 	}
-	Find(Key);
+	TTabRecord<TKey,TData>* search = Find(Key);
+	if (search != nullptr)throw "Key already exist!";
 
-	for (int i = count - 1; i >= curr_pos; i--) {
+	for (int i = count - 1; i > curr_pos; i--) {
 		records[i + 1] = records[i];
 	}
 	records[curr_pos] = new TTabRecord<TKey, TData>(Key, data_);
 	count++;
+	reset();
 }
 
 template<typename TKey, typename TData>
@@ -77,6 +78,7 @@ TTabRecord<TKey, TData>* TArraySortTable<TKey, TData>::Find(TKey Key) {
 		if (records[mid]->key == Key) {
 			i1 = mid + 1;
 			i2 = mid;
+			search = records[i2];
 		}
 		else if (Key > records[mid]->key) {
 			i1 = mid + 1;
@@ -86,9 +88,6 @@ TTabRecord<TKey, TData>* TArraySortTable<TKey, TData>::Find(TKey Key) {
 		}
 	}
 	curr_pos = i2;
-	if (curr_pos == -1) {
-		curr_pos++;
-	}
 	return search;
 }
 
@@ -108,11 +107,13 @@ void TArraySortTable<TKey, TData>::Remove(TKey key) {
 			records[i] = records[i+1];
 		}
 		count--;
+		reset();
 	}
 }
 
 template<typename TKey, typename TData>
 void TArraySortTable<TKey, TData>::SortData() {
+	SetSortMethod();
 	switch (number) {
 		case SIMPLE:
 		{
@@ -135,12 +136,6 @@ void TArraySortTable<TKey, TData>::SortData() {
 		case BUBBLE:
 		{
 			BubbleSort();
-			break;
-		}
-
-		case QUICK:
-		{
-			QuickSort();
 			break;
 		}
 	}
@@ -199,7 +194,7 @@ void TArraySortTable<TKey, TData>::BubbleSort() {
 }
 
 template<typename TKey, typename TData>
-void TArraySortTable<TKey, TData>::QuickSort() {
+void TArraySortTable<TKey, TData>::QuickSort(int _first, int _last) {
 	int i = _first;
 	int j = _last;
 	int mid = (_last + _first) / 2;
