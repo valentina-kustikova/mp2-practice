@@ -6,16 +6,12 @@ TPolinom::TPolinom() {
 
 TPolinom::TPolinom(const string& stringPolynom) {
 	getListOfMonoms(stringPolynom);
-	monoms.Sort(); 
-	deleteZero();
-	monoms.Reset();
+	Sort();
 	formula = getStringMonoms();
 }
 TPolinom::TPolinom(const TRingList<TMonom>& m) {
 	monoms = m;
-	monoms.Sort();
-	deleteZero();
-	monoms.Reset();
+	Sort();
 	formula = getStringMonoms();
 	fillUniques(formula);
 }
@@ -35,8 +31,13 @@ TPolinom::TPolinom(const TPolinom& p) {
 double TPolinom::getCoeff(const std::string& input, int& pos)
 {
 	std::string coeff = "";
+	
+	if (isSeparator(input[pos]))
+	{
+		coeff += input[pos++];
+	}
 
-	while (pos < input.size() && !isMonomOperator(input[pos]) && !isVariable(input[pos]))
+	while (pos < input.size() && !isMonomOperator(input[pos]) && !isVariable(input[pos]) && !isSeparator(input[pos]))
 	{
 		coeff += input[pos];
 		pos++;
@@ -94,6 +95,7 @@ void TPolinom::getListOfMonoms(const std::string& input) {
 			else {
 				throw "Uncorrect polynom";
 			}
+			
 		}
 		TMonom monom(currentCoef, currentDegree);
 		monoms.InsertLast(monom);
@@ -170,6 +172,8 @@ TPolinom::~TPolinom()
 void TPolinom::Sort() {
 	monoms.Sort();
 	deleteZero();
+	sumEqual();
+	monoms.Reset();
 	formula = getStringMonoms();
 	fillUniques(formula);
 }
@@ -353,8 +357,6 @@ TPolinom TPolinom::operator*(const TPolinom& p) {
 	monoms.Reset();
 	resultMonoms.Reset();
 	TPolinom resultPolynom(resultMonoms);
-	resultPolynom.Sort();
-	resultPolynom.sumEqual();
 	resultPolynom.formula = resultPolynom.getStringMonoms();
 	return resultPolynom;
 }

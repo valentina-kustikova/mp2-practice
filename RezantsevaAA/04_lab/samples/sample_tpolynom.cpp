@@ -34,12 +34,12 @@ int main()
 	std::cout << "Derivatives with respect to x, y, z for the first polynom: " << std::endl;
 
 	std::cout << "p1 dif x = " << polynom1.defX() << std::endl;
-	std::cout << "p1 dif y = " << polynom1.defY() << std::endl;
+	std::cout << "p1 dif y = " << polynom1.defY() << "\n";
 	std::cout << "p1 dif z = " << polynom1.defZ() << std::endl;
 
 	std::cout << "Derivatives with respect to x, y, z for the second polynom: " << std::endl;
 	std::cout << "p2 dif x = " << polynom2.defX() << std::endl;
-	std::cout << "p2 dif y = " << polynom2.defY() << std::endl;
+	std::cout << "p2 dif y = " << polynom2.defY() << "\n";
 	std::cout << "p2 dif z = " << polynom2.defZ() << std::endl;
 
 	std::cout << "Let's calculate our first polynom:  " <<  polynom1 << std::endl;
