@@ -5,6 +5,8 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <string>
+#include <iomanip>
 
 using namespace std;
 map<string, double> TPolynom::symbolDict = {
@@ -140,17 +142,20 @@ TPolynom TPolynom::operator+(const TPolynom& p)
 			monoms->Next();
 		}
 	}
-
 	while (!monoms->IsEnded())
 	{
 		list.InsertEnd(monoms->GetCurrent()->data);
 		monoms->Next();
 	}
-
 	while (!p.monoms->IsEnded())
 	{
 		list.InsertEnd(p.monoms->GetCurrent()->data);
 		p.monoms->Next();
+	}
+	if (list.IsEmpty())
+	{
+		TMonom m(0, 0);
+		list.InsertEnd(m);
 	}
 	return TPolynom(list);
 }
@@ -161,6 +166,7 @@ TPolynom TPolynom::operator-(const TPolynom& p)
 TPolynom TPolynom::operator*(const TPolynom& p)
 {
 	TRingList<TMonom> list; 
+	int flag = 0;
 	monoms->Reset();
 	p.monoms->Reset();
 	while (!monoms->IsEnded())
@@ -182,23 +188,39 @@ TPolynom TPolynom::operator*(const TPolynom& p)
 
 			while (!list.IsEnded())
 			{
+				if (deg == list.GetCurrent()->data.degree)
+				{
+					TMonom m_curr = list.GetCurrent()->data;
+					double k_curr = m_curr.coef;
+					k3 = k_curr + k3;
+					if (k3 != 0)
+						flag = 1;
+					else
+					{
+						list.Remove(m_curr);
+						inserted = true;
+						break;
+					}
+				}
 				if (deg < list.GetCurrent()->data.degree)
 				{
-					list.InsertBeforeCurr(mon); 
+					if (flag == 1)
+					{
+						TMonom mon_new(k3, deg);
+						list.InsertBeforeCurr(mon_new);
+					}
+					else
+						list.InsertBeforeCurr(mon); 
 					inserted = true;
 					break;
 				}
 				list.Next();
 			}
-
 			if (!inserted)
-			{
 				list.InsertEnd(mon);
-			}
 
 			p.monoms->Next();
 		}
-
 		monoms->Next();
 	}
 	return TPolynom(list);
@@ -238,6 +260,11 @@ TPolynom TPolynom::difx() const
 		}
 		monoms->Next();
 	}
+	if (list.IsEmpty())
+	{
+		TMonom m(0, 0);
+		list.InsertEnd(m);
+	}
 	return TPolynom(list);
 }
 TPolynom TPolynom::dify() const
@@ -261,6 +288,11 @@ TPolynom TPolynom::dify() const
 			list.InsertEnd(newM);
 		}
 		monoms->Next();
+	}
+	if (list.IsEmpty())
+	{
+		TMonom m(0, 0);
+		list.InsertEnd(m);
 	}
 	return TPolynom(list);
 }
@@ -286,6 +318,11 @@ TPolynom TPolynom::difz() const
 		}
 		monoms->Next();
 	}
+	if (list.IsEmpty())
+	{
+		TMonom m(0, 0);
+		list.InsertEnd(m);
+	}
 	return TPolynom(list);
 }
 double TPolynom::operator()(double _x, double _y, double _z)
@@ -298,7 +335,6 @@ double TPolynom::operator()(double _x, double _y, double _z)
 	};
 	TStack<string> st = ArithmeticExpression::Postfix_Form(pol_name);
 	return ArithmeticExpression::Calculate(st, variableDict);
-	//return result;
 }
 string TPolynom::FilteredExpression(const string& s)
 {
@@ -408,7 +444,122 @@ bool TPolynom::isValidExpression(const string& expression)
 		return false;
 	return true;
 }
-void TPolynom::Parse_Polynom(const string& s)
+void TPolynom::HandleX(const string& str, int& i, string& deg)
+{
+	i++;
+	if (str[i] == '^')
+	{
+		i++;
+		char k = str[i];
+		int n = k - '0';
+		n = n * 100;
+		string x = to_string(n);
+		deg += x;
+		i++;
+	}
+	else
+		deg = "100";
+}
+void TPolynom::HandleY(const string& str, int& i, string& deg) 
+{
+	i++;
+	if (str[i] == '^')
+	{
+		i++;
+		char k = str[i];
+		int n = k - '0';
+		int N = stoi(deg);
+		N += n * 10;
+		string y = to_string(N);
+		deg = y;
+		i++;
+	}
+	else
+	{
+		int N = stoi(deg);
+		N += 10;
+		string y = to_string(N);
+		deg = y;
+	}
+}
+void TPolynom::HandleZ(const string& str, int& i, string& deg)
+{
+	i++;
+	if (str[i] == '^')
+	{
+		i++;
+		char k = str[i];
+		int n = k - '0';
+		int N = stoi(deg);
+		N += n;
+		string z = to_string(N);
+		deg = z;
+		i++;
+	}
+	else
+	{
+		int N = stoi(deg);
+		N += 1;
+		string z = to_string(N);
+		deg = z;
+	}
+}
+void TPolynom::CreateAndInsertMonom(double koef, int degree, TRingList<TMonom>* monomList) {
+	TMonom monom(koef, degree);
+	if (monomList->IsEmpty())
+		monomList->InsertFirst(monom);
+	else
+	{
+		monomList->Reset();
+		while (!monomList->IsEnded())
+		{
+			TMonom m = monomList->GetCurrent()->data;
+			int deg = m.degree;
+			int deg2 = monom.degree;
+			if (deg2 < deg)
+			{
+				monomList->InsertBeforeCurr(monom);
+				break;
+			}
+			else if (deg2 == deg)
+			{
+				double k = m.coef;
+				double k2 = monom.coef;
+				if (k2 < k)
+				{
+					monomList->InsertBeforeCurr(monom);
+					break;
+				}
+				else
+				{
+					monomList->InsertAfterCurr(monom);
+					break;
+				}
+			}
+			monomList->Next();
+		}
+		if (monomList->IsEnded())
+			monomList->InsertEnd(monom);
+	}
+}
+void TPolynom::ProcessMonom(const string& numStr, const string& str, int& i, const string& deg, int& flag, TRingList<TMonom>* monomList) 
+{
+	int degree = stoi(deg);
+	double koef = 0.0;
+	if (numStr == "")
+		koef = 1.0;
+	else
+		koef = stod(numStr);
+	if (flag == 0)
+		koef = -koef;
+	if (koef != 0.0)
+		CreateAndInsertMonom(koef, degree, monomList);
+	if (str[i] == '-')
+		flag = 0;
+	else
+		flag = 1;
+}
+void TPolynom::Parse_Polynom(const string& s) // ??? разбить на функции
 {
 	string str = FilteredExpression(s);
 	if (!isValidExpression(str))
@@ -441,126 +592,138 @@ void TPolynom::Parse_Polynom(const string& s)
 				if (isOperand(str[i]))
 				{
 					if (str[i] == 'x')
-					{
-						i++;
-						if (str[i] == '^')
-						{
-							i++;
-							char k = str[i];
-							int n = k - '0';
-							n = n * 100;
-							string x = to_string(n);
-							deg += x;
-							i++;
-						}
-						else
-							deg = "100";
-					}
+						HandleX(str, i, deg);
 					else if (str[i] == 'y')
-					{
-						i++;
-						if (str[i] == '^')
-						{
-							i++;
-							char k = str[i];
-							int n = k - '0';
-							int N = stoi(deg);
-							N += n * 10;
-							string y = to_string(N);
-							deg = y;
-							i++;
-						}
-						else
-						{
-							int N = stoi(deg);
-							N += 10;
-							string y = to_string(N);
-							deg = y;
-						}
-					}
+						HandleY(str, i, deg);
 					else
-					{
-						i++;
-						if (str[i] == '^')
-						{
-							i++;
-							char k = str[i];
-							int n = k - '0';
-							int N = stoi(deg);
-							N += n;
-							string z = to_string(N);
-							deg = z;
-							i++;
-						}
-						else
-						{
-							int N = stoi(deg);
-							N += 1;
-							string z = to_string(N);
-							deg = z;
-						}
-					}
+						HandleZ(str, i, deg);
 				}
 				if (str[i] == '*' || str[i] == '/')
 					i++;
 			}
 		}
-		int degree = stoi(deg);
-		double koef = 0.0;
-		if (numStr == "")
-			koef = 1.0;
-		else
-			koef = stod(numStr);
-		if (flag == 0)
-			koef = -koef;
-		if (koef != 0.0)
-		{
-			TMonom monom(koef, degree);
-			if (monomList->IsEmpty())
-				monomList->InsertFirst(monom);
-			else
-			{
-				monomList->Reset();
-				while (!monomList->IsEnded())
-				{
-					TMonom m = monomList->GetCurrent()->data;
-					int deg = m.degree;
-					int deg2 = monom.degree;
-					if (deg2 < deg)
-					{
-						monomList->InsertBeforeCurr(monom);
-						break;
-					}
-					else if (deg2 == deg)
-					{
-						double k = m.coef;
-						double k2 = monom.coef;
-						if (k2 < k)
-						{
-							monomList->InsertBeforeCurr(monom);
-							break;
-						}
-						else
-						{
-							monomList->InsertAfterCurr(monom);
-							break;
-						}
-					}
-					monomList->Next();
-				}
-				if (monomList->IsEnded())
-					monomList->InsertEnd(monom);
-			}
-		}
-		if (str[i] == '-')
-			flag = 0;
-		else
-			flag = 1;
+		ProcessMonom(numStr, str, i, deg, flag, monomList);
 	}
-		
 	this->monoms = monomList;
 }
+string TPolynom::ProcessDegreeZero(const string& str, const string& coef_str, double& k)
+{
+	string st = str;
+	if (st == "")
+		st += coef_str;
+	else
+		if (k > 0)
+			st += "+" + coef_str;
+		else
+			st += coef_str;
+	return st;
+}
+string TPolynom::ProcessDegreeNonZero(const string& str, const string& coef_str, double& k, int& f)
+{
+	string st = str;
+	if (coef_str == "1" || coef_str == "-1")
+		f = 1;
+	if (k > 0)
+	{
+		if (coef_str == "1")
+		{
+			if (st != "")
+				st += "+";
+		}
+		else
+		{
+			if (st != "")
+				st += "+" + coef_str;
+			else
+				st += coef_str;
+		}
+	}
+	else
+	{
+		if (coef_str == "-1")
+			st += "-";
+		else
+			st += coef_str;
+	}
+	return st;
+}
+string TPolynom::ProcessDegreeX(const string& str, const string& coef_str, double& k, int& d, int& flag)
+{
+	int f = 0;
+	string st = ProcessDegreeNonZero(str,coef_str,k, f);
 
+	int deg_x = d / 100;
+	if (f == 0)
+	{
+		if (deg_x == 1)
+			st += "*x";
+		else
+			st += "*x^" + to_string(deg_x);
+	}
+	else
+	{
+		if (deg_x == 1)
+			st += "x";
+		else
+			st += "x^" + to_string(deg_x);
+	}
+	d = d % 100;
+	flag++;
+	return st;
+}
+string TPolynom::ProcessDegreeY(const string& str, const string& coef_str, double& k, int& d, int& flag)
+{
+	string st = str;
+	int f = 0;
+	if (flag == 0)
+		st = ProcessDegreeNonZero(str, coef_str, k, f);
+	
+
+	int deg_y = d / 10;
+	if (f == 0)
+	{
+		if (deg_y == 1)
+			st += "*y";
+		else
+			st += "*y^" + to_string(deg_y);
+	}
+	else
+	{
+		if (deg_y == 1)
+			st += "y";
+		else
+			st += "y^" + to_string(deg_y);
+	}
+	d = d % 10;
+	flag++;
+	return st;
+}
+string TPolynom::ProcessDegreeZ(const string& str, const string& coef_str, double& k, int& d, int& flag)
+{
+	string st = str;
+	int f = 0;
+	if (flag == 0)
+		st = ProcessDegreeNonZero(str, coef_str, k, f);
+	
+
+	int deg_z = d;
+	if (f == 0)
+	{
+		if (deg_z == 1)
+			st += "*z";
+		else
+			st += "*z^" + to_string(deg_z);
+	}
+	else
+	{
+		if (deg_z == 1)
+			st += "z";
+		else
+			st += "z^" + to_string(deg_z);
+	}
+	d = 0;
+	return st;
+}
 string TPolynom::ToString()
 {
 	string st = "";
@@ -572,82 +735,31 @@ string TPolynom::ToString()
 		int d = m.degree;
 		int flag = 0;
 
-		stringstream coef_stream;
-		coef_stream << k;
-		string coef_str = coef_stream.str();
+		ostringstream oss;
+		oss << fixed << setprecision(8) << k; // Устанавливаем точность вывода
 
-		// Удаляем конечные нули из строки коэффициента
-		coef_str.erase(coef_str.find_last_not_of('0') + 1, string::npos);
-		if (coef_str.back() == '.')
-			coef_str.pop_back();
+		string coef_str = oss.str();
+		coef_str.erase(coef_str.find_last_not_of('0') + 1, string::npos); // Удаляем конечные нули
+		if (coef_str.back() == '.') {
+			coef_str.pop_back(); // Удаляем десятичную точку, если она осталась в конце
+		}
+		
 
 		if (d == 0)
 		{
-			if (st == "")
-				st += coef_str;
-			else
-				if (k > 0)
-					st += "+" + coef_str;
-				else
-					st += coef_str;
+			st = ProcessDegreeZero(st, coef_str, k);
 		}
 		if (d >= 100)
 		{
-			if (st == "")
-				st += coef_str;
-			else
-				if(k>0)
-					st += "+" + coef_str;
-				else
-					st += coef_str;
-
-			int deg_x = d / 100;
-			if (deg_x == 1)
-				st += "*x";
-			else
-				st += "*x^" + to_string(deg_x);
-			d = d % 100;
-			flag++;
+			st = ProcessDegreeX(st, coef_str, k, d, flag);
 		}
 		if (d >= 10)
 		{
-			if (flag == 0)
-			{
-				if (st == "")
-					st += coef_str;
-				else
-					if (k > 0)
-						st += "+" + coef_str;
-					else
-						st += coef_str;
-			}
-
-			int deg_y = d / 10;
-			if (deg_y == 1)
-				st += "*y";
-			else
-				st += "*y^" + to_string(deg_y);
-			d = d % 10;
+			st = ProcessDegreeY(st, coef_str, k, d, flag);
 		}
 		if (d >= 1)
 		{
-			if (flag == 0)
-			{
-				if (st == "")
-					st += coef_str;
-				else
-					if (k > 0)
-						st += "+" + coef_str;
-					else
-						st += coef_str;
-			}
-
-			int deg_z = d;
-			if (deg_z == 1)
-				st += "*z";
-			else
-				st += "*z^" + to_string(deg_z);
-			d = 0;
+			st = ProcessDegreeZ(st, coef_str, k, d, flag);
 		}
 		
 		monoms->Next();

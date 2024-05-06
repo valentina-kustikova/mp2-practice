@@ -231,6 +231,10 @@ void TList<T>::Remove(const T& data)
 		delete pNode;
 		return;
 	}
+	if (pNode->pNext == pStop)
+	{
+		pLast = pPrev;
+	}
 	pPrev->pNext = pNode->pNext;
 	delete pNode;
 }

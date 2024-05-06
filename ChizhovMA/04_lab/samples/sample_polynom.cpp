@@ -20,7 +20,6 @@ int main()
         cout << p1;
         cout << p2;
 
-
         TPolynom p3;
         p3 = p1 + p2;
         cout << "p3 = p2+p1" << endl;

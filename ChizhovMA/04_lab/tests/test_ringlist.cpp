@@ -10,7 +10,7 @@ TEST(TRingList, create_ringlist)
 //With parametr
 TEST(TRingList, create_ring_list_with_parametr)
 {
-    TNode<int>* pFirst = nullptr;
+    TNode<int>* pFirst = new TNode<int>(10);
     ASSERT_NO_THROW(TRingList<int>* list = new TRingList<int>(pFirst));
 }
 TEST(TRingList, create_list_with_parametr_data_check)
