@@ -55,7 +55,7 @@ TPolynom::TPolynom(const string& str) {
 	if (size == 0) {
 		monoms = new TRingList<TMonom>();
 	}
-	if (monoms == nullptr && size != 0) {
+	else if (monoms == nullptr && size != 0) {
 		monoms = new TRingList<TMonom>();
 	}
 
@@ -410,7 +410,7 @@ TPolynom TPolynom::differentiate_by_x()const {
 			this->monoms->next();
 		}
 		else {
-			coeff= coeff * degree_x;//how get coeff = 0?
+			coeff= coeff * degree_x;
 			degree_x--;
 			degree_y = (wp % 100) / 10;
 			degree_z = (wp % 10);
@@ -422,6 +422,11 @@ TPolynom TPolynom::differentiate_by_x()const {
 		}
 	}
 	this->monoms->reset();
+	if (R.monoms->IsEmpty()) {
+		//identification empty polynom
+		TMonom monom(0, 0);
+		R.Add_monom(monom);
+	}
 	R.polynom = R.CreatePolynomString();
 	return R;
 }
@@ -441,7 +446,7 @@ TPolynom TPolynom::differentiate_by_y()const {
 			this->monoms->next();
 		}
 		else {
-			coeff= coeff * degree_y; // coeff == 0 ? x*z //how get coeff = 0?
+			coeff= coeff * degree_y;
 			degree_y--;
 			degree_x = wp / 100;
 			degree_z = (wp % 10);
@@ -453,6 +458,11 @@ TPolynom TPolynom::differentiate_by_y()const {
 		}
 	}
 	this->monoms->reset();
+	if (R.monoms->IsEmpty()) {
+		//identification empty polynom
+		TMonom monom(0, 0);
+		R.Add_monom(monom);
+	}
 	R.polynom = R.CreatePolynomString();
 	return R;
 }
@@ -471,7 +481,7 @@ TPolynom TPolynom::differentiate_by_z()const {
 			this->monoms->next();
 		}
 		else {
-			coeff = coeff * degree_z; // coeff == 0 ? x*y  //how get coeff = 0?
+			coeff = coeff * degree_z;
 			degree_z--;		
 			degree_x = wp / 100;
 			degree_y = (wp % 100) / 10;
@@ -484,6 +494,11 @@ TPolynom TPolynom::differentiate_by_z()const {
 		}
 	}
 	this->monoms->reset();
+	if (R.monoms->IsEmpty()) {
+		//identification empty polynom
+		TMonom monom(0, 0);
+		R.Add_monom(monom);
+	}
 	R.polynom = R.CreatePolynomString();
 	return R;
 }
@@ -621,6 +636,9 @@ TPolynom TPolynom::operator-()const{
 void TPolynom::Add_monom(const TMonom& m) {
 	if (monoms == nullptr) {
 		monoms = new TRingList<TMonom>();
+		monoms->insert_first(m);
+	}
+	else if (monoms->IsEmpty() && monoms != nullptr) {
 		monoms->insert_first(m);
 	}
 	else {

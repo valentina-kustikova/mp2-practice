@@ -2,6 +2,30 @@
 
 #include <gtest.h>
 
+TEST(polynom, zero_polynom_when_differentiate) {
+	TPolynom P("1+x-1-z");
+
+	TPolynom R = P.differentiate_by_y();
+
+	TPolynom test("");
+	TMonom monom(0, 0);
+	test.Add_monom(monom);
+
+	ASSERT_TRUE(test == R);
+}
+
+TEST(polynom, zero_polynom_when_plus) {
+	TPolynom P("1+x-1-z");
+
+	TPolynom R1 = P.differentiate_by_y();
+
+	TPolynom R2 = P + R1;
+
+	TPolynom test("1+x-1-z");
+
+	ASSERT_TRUE(test == R2);
+}
+
 TEST(polynom, operator_plus_with_simple_polynoms) {
 	TPolynom P("1+x");
 	TPolynom Q("1-y");
@@ -9,6 +33,16 @@ TEST(polynom, operator_plus_with_simple_polynoms) {
 	TPolynom R = P + Q;
 
 	TPolynom test("2+x-y");
+	ASSERT_TRUE(R == test);
+}
+
+TEST(polynom, operator_multiplication_with_simple_polynoms) {
+	TPolynom P("1+x");
+	TPolynom Q("1-y");
+
+	TPolynom R = P * Q;
+
+	TPolynom test("1-y+x-xy");
 	ASSERT_TRUE(R == test);
 }
 
@@ -241,8 +275,6 @@ TEST(polynoms, constructor_parameter_with_list_work_1) {
 	TPolynom P("3*x^5*y^2*z^5-5*x^4*y^3*z^3+7*x^3*y^5*z");
 	ASSERT_NO_THROW(TPolynom Q = P.GetMonoms());
 }
-
-
 
 TEST(polynoms, constructor_parameter_with_string_work_4) {
 	ASSERT_NO_THROW(TPolynom P("4"));
