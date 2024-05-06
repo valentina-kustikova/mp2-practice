@@ -8,10 +8,18 @@ template<typename TKey, typename TData> struct TTabRecord {
 	TKey key;//ключ
 	Data<TData>* data;//данные
 
+	TTabRecord();
 	TTabRecord(const TKey& key_, const Data<TData>* data_);
 
 	const TTabRecord& operator=(const TTabRecord& record);
 };
+
+
+template<typename TKey, typename TData>
+TTabRecord<TKey, TData>::TTabRecord() {
+	key = {};
+	data = nullptr;
+}
 
 template<typename TKey, typename TData>
 TTabRecord<TKey, TData>::TTabRecord(const TKey& key_, const Data<TData>* data_) {

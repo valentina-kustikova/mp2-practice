@@ -3,25 +3,49 @@
 
 #include "ArrayScanTable.h"
 
+enum SortMethod { SIMPLE, SELECT, INSERT, BUBBLE,QUICK,MERGE };
 
 template<typename TKey, typename TData> class TArraySortTable : public TArrayScanTable<TKey, TData> {
-
-public:
-	TArraySortTable(int max_size_);
-	void Insert(TKey Key, const Data<TData>* data_)override;
-	TTabRecord<TKey, TData>* Find(TKey Key)override;
-	void Remove(TKey key)override;
-
+protected:
+	SortMethod number;
+	void SortData();
 	void SimpleSort();
 	void SelectSort();
 	void InsertSort();
 	void BubbleSort();
-	//void MergeSort();
-	//void QuickSort();
+	void MergeSort(int _first, int _last);//тест
+	void Merge(int _first, int _mid, int _last);
+	void QuickSort();//тест
+	void QuickSplit(int& i, int& j, TTabRecord<TKey, TData>* _mid);
+public:
+	TArraySortTable(int max_size_);
+	TArraySortTable(const TArrayScanTable& ScanTable);
+	void Insert(TKey Key, const Data<TData>* data_)override;
+	TTabRecord<TKey, TData>* Find(TKey Key)override;
+	void Remove(TKey key)override;
+
+	void SetSortMethod(SortMethod n) { number = n; }
+	SortMethod GetSortMethod()const { return number; }
+	
+	
 };
 
 template<typename TKey,typename TData>
 TArraySortTable<TKey,TData>::TArraySortTable(int max_size_):TArrayScanTable<TKey,TData>(max_size_){}
+
+template<typename TKey,typename TData>
+TArraySortTable<TKey, TData>::TArraySortTable(const TArrayScanTable<TKey,TData>& ScanTable) {//тест
+	max_size = ScanTable.max_size;
+	count = ScanTable.GetCount();
+	curr_pos = ScanTable.curr_pos;
+	records = new TTabRecord<TKey, TData>*[max_size];
+	for (int i = 0; i < count; i++) {
+		records[i] = new TTabRecord<TKey, TData>(ScanTable.GetKey(), ScanTable.GetData());
+		next();
+	}
+	reset();
+	SortData();
+}
 
 template<typename TKey, typename TData>
 void TArraySortTable<TKey,TData>::Insert(TKey Key, const Data<TData>* data_) {
@@ -88,6 +112,41 @@ void TArraySortTable<TKey, TData>::Remove(TKey key) {
 }
 
 template<typename TKey, typename TData>
+void TArraySortTable<TKey, TData>::SortData() {
+	switch (number) {
+		case SIMPLE:
+		{
+			SimpleSort();
+			break;
+		}
+
+		case SELECT:
+		{
+			SelectSort();
+			break;
+		}
+
+		case INSERT:
+		{
+			InsertSort();
+			break;
+		}
+
+		case BUBBLE:
+		{
+			BubbleSort();
+			break;
+		}
+
+		case QUICK:
+		{
+			QuickSort();
+			break;
+		}
+	}
+}
+
+template<typename TKey, typename TData>
 void TArraySortTable<TKey, TData>::SimpleSort() {
 	for (int i = 0; i < count; i++) {
 		for (int j = 0; j < count; j++) {
@@ -138,4 +197,73 @@ void TArraySortTable<TKey, TData>::BubbleSort() {
 		}
 	}
 }
+
+template<typename TKey, typename TData>
+void TArraySortTable<TKey, TData>::QuickSort() {
+	int i = _first;
+	int j = _last;
+	int mid = (_last + _first) / 2;
+
+	QuickSplit(i, j, records[mid]);
+
+	if (j > _first)
+		QuickSort(_first, j);
+	if (i < _last)
+		QuickSort(i, _last);
+}
+
+template<typename TKey, class TData>
+void TArraySortTable<TKey, TData>::QuickSplit(int& i, int& j, TTabRecord<TKey, TData>* _mid)
+{
+	do
+	{
+		while (*records[i] < *_mid)i++;
+		while (*records[j] > *_mid)j--;
+
+		if (i <= j)
+		{
+			std::swap<TTabRecord<TKey, TData>*>(records[i], records[j]);
+			i++;
+			j--;
+		}
+	} while (i <= j);
+};
+
+template<typename TKey, class TData>
+void TArraySortTable<TKey, TData>::MergeSort(int _first, int _last)
+{
+	if (_first >= _last)
+		return;
+
+	int mid = (_last + _first) / 2;
+	MergeSort(_first, mid);
+	MergeSort(mid + 1, _last);
+	Merge(_first, mid, _last);
+};
+
+template<typename TKey, class TData>
+void TArraySortTable<TKey, TData>::Merge(int _first, int _mid, int _last)
+{
+	int i = _first;
+	int j = _mid + 1;
+	TTabRecord<TKey, TData>** pBuff = new TTabRecord<TKey, TData>* [_last - _first + 1];
+
+	for (int ind = 0; ind < _last - _first + 1; ind++) {
+		if ((j > _last) || ((i <= _mid) && (*records[i] < *records[j]))) {
+			pBuff[ind] = records[i++];
+		}
+		else {
+			pBuff[ind] = records[j++];
+		}
+	}
+
+	for (ind = _first; ind < _last + 1; ind++) {
+		{
+			records[ind] = pBuff[ind - _first];
+			pBuff[ind - _first] = nullptr;
+		}
+	}
+
+	delete[] pBuff;
+};
 #endif
