@@ -7,4 +7,4 @@ file(GLOB srcs "*.cpp")
 include_directories("${MP2_INCLUDE_LISTS}" "${MP2_INCLUDE_POLYNOMS}" "${MP2_INCLUDE_TABLES}" "../gtest")
 
 add_executable(${target} ${srcs} ${hdrs})
-target_link_libraries(${target} gtest ${MP2_LIBRARY_LISTS} ${MP2_LIBRARY_POLYNOMS})
+target_link_libraries(${target} gtest ${MP2_LIBRARY_LISTS} ${MP2_LIBRARY_POLYNOMS} ${MP2_LIBRARY_TABLES})

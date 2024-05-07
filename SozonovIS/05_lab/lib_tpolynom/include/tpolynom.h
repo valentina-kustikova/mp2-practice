@@ -4,7 +4,6 @@
 #include "theadringlist.h"
 #include "tmonom.h"
 
-#include <map>
 #include <iostream>
 
 using namespace std;

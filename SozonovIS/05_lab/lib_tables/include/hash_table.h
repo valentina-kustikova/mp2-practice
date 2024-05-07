@@ -1,11 +1,22 @@
 #ifndef __HASH_TABLE_H__
 #define __HASH_TABLE_H__
 
-class HashTable : public Table {
+#include "table.h"
+
+template <typename TKey, typename TData>
+class HashTable : public Table<TKey, TData> {
 protected:
-	int hashFunc(const Tkey key);
+	int hashFunc(const TKey _key);
 public:
-	HashTable(int n) : Table(n) {}
+	HashTable(int max_size);
 };
+
+template <typename TKey, typename TData>
+int HashTable<TKey, TData>::hashFunc(const TKey _key) {
+	return  _key % maxSize;
+}
+
+template <typename TKey, typename TData>
+HashTable<TKey, TData>::HashTable(int max_size) : Table<TKey, TData>(max_size) {}
 
 #endif

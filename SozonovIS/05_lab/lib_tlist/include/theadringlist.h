@@ -4,8 +4,6 @@
 #include "tlist.h"						
 #include "tnode.h"	
 
-#include <iostream>
-
 using namespace std;
 
 template <typename ValueType>
