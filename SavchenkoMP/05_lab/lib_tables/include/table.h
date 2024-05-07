@@ -14,7 +14,7 @@ public:
 	virtual void Insert(const TKey& _key, TData* _data) = 0;
 	virtual void Remove(const TKey& _key) = 0;
 	virtual TabRecord<TKey, TData>* Find(const TKey& _key) = 0;
-	virtual TData* operator[](const TKey& _key) = 0;
+	virtual TabRecord<TKey, TData>* operator[](const TKey& _key) = 0;
 
 	bool IsFull() const;
 	bool IsEmpty() const;
@@ -50,17 +50,21 @@ template <class TKey, class TData>
 bool Table<TKey, TData>::Reset() { // ×ÒÎ ÈÌÅÍÍÎ ÂÎÇÂĞÀÙÀÅÒÑß?
 	if (!IsEmpty()) {
 		curr_pos = 0;
-		return true;
+		return IsTabEnded();
 	}
 	else {
 		curr_pos = -1;
-		return false;
+		return IsTabEnded();
 	}
 	// curr_pos = 0;
 }
 
 template <class TKey, class TData>
 bool Table<TKey, TData>::Next() { // ×ÒÎ ÈÌÅÍÍÎ ÂÎÇÂĞÀÙÀÅÒÑß?
+	curr_pos++;
+	return IsTabEnded();
+	
+	/*
 	if (!IsTabEnded() && !IsEmpty()) {
 		curr_pos++;
 		return true;
@@ -68,9 +72,7 @@ bool Table<TKey, TData>::Next() { // ×ÒÎ ÈÌÅÍÍÎ ÂÎÇÂĞÀÙÀÅÒÑß?
 	else {
 		return false;
 	}
-	
-	//curr_pos++;
-	//if (IsTabEnded()) Reset();
+	*/
 }
 
 

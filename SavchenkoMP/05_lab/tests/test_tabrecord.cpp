@@ -33,7 +33,7 @@ TEST(TabRecord, CopyConstructorTest_Key) {
 	string* data = new string("a");
 	TabRecord<int, string> tr1(key, data);
 	TabRecord<int, string> tr2(tr1);
-	
+
 	EXPECT_EQ(tr1.GetKey(), tr2.GetKey());
 }
 

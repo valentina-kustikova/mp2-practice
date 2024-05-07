@@ -7,7 +7,7 @@
 template <class TKey, class TData>
 class SortedTable : public ScanTable<TKey, TData> {
 private:
-	void Sort();
+	void sort();
 	int partition(int start, int pivot);
 	void quick_sort(int start, int end);
 	
@@ -20,13 +20,14 @@ public:
 	SortedTable(const SortedTable<TKey, TData>& srt);
 
 	TabRecord<TKey, TData>* Find(const TKey& key);
+	TabRecord<TKey, TData>* operator[](const TKey& _key);
 	void Insert(const TKey& _key, const TData* _data);
 	void Remove(const TKey& _key);
 };
 
 
 template <class TKey, class TData>
-void SortedTable<TKey, TData>::Sort() {
+void SortedTable<TKey, TData>::sort() {
 	quick_sort(0, count);
 }
 
@@ -88,7 +89,7 @@ SortedTable<TKey, TData>::SortedTable(int _max_size) : ScanTable(_max_size) {}
 
 template <class TKey, class TData>
 SortedTable<TKey, TData>::SortedTable(const ScanTable<TKey, TData>* st) : ScanTable(*st) {
-	if (!is_sorted()) Sort();
+	if (!is_sorted()) sort();
 }
 
 template <class TKey, class TData>
@@ -112,16 +113,21 @@ TabRecord<TKey, TData>* SortedTable<TKey, TData>::Find(const TKey& key) {
 	while (left <= right) {
 		int mid = (right + left) / 2;
 		
-		if (recs[mid]->key == key) { // GetKey()
+		if (recs[mid]->key == key) {
 			search = recs[mid];
 			right = mid;
 			left = mid + 1;
 		}
-		else if (recs[mid]->key < key) left = mid + 1; // GetKey()
+		else if (recs[mid]->key < key) left = mid + 1;
 		else right = mid - 1;
 	}
 	curr_pos = right;
 	return search;
+}
+
+template <class TKey, class TData>
+TabRecord<TKey, TData>* SortedTable<TKey, TData>::operator[](const TKey& _key) {
+	return Find(_key);
 }
 
 template <class TKey, class TData>
@@ -135,7 +141,7 @@ void SortedTable<TKey, TData>::Insert(const TKey& _key, const TData* _data) {
 	for (int i = count - 1; i >= currpos; i--) {
 		recs[i + 1] = recs[i];
 	}
-	recs[curr_pos + 1] = new TabRecord<TKey, TData>(_key, _data); // curr_pos
+	recs[curr_pos] = new TabRecord<TKey, TData>(_key, _data);
 }
 
 template <class TKey, class TData>
