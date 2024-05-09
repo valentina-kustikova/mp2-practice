@@ -621,7 +621,7 @@ TPolynom TPolynom::dif_x() const {
 		}
 		t = t->next;
 	}
-	res.del_zeros(); res.monoms.sort();
+	res.del_zeros(); res.monoms.sort(); res.set_string();
 	return res;
 }
 
@@ -650,7 +650,7 @@ TPolynom TPolynom::dif_y() const {
 		}
 		t = t->next;
 	}
-	res.del_zeros(); res.monoms.sort();
+	res.del_zeros(); res.monoms.sort(); res.set_string();
 	return res;
 }
 
@@ -682,7 +682,7 @@ TPolynom TPolynom::dif_z() const {
 		}
 		t = t->next;
 	}
-	res.del_zeros(); res.monoms.sort();
+	res.del_zeros(); res.monoms.sort(); res.set_string();
 	return res;
 }
 

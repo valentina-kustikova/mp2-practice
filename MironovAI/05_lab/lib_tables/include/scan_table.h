@@ -12,32 +12,46 @@ protected:
 	Record<Key, Value>** recs;
 
 public:
-	ScanTable(size_t _max_size=DefaultSize);
-	ScanTable(const ScanTable<Key, Value>& table);
+	ScanTable(int _max_size=DefaultSize) noexcept;
+	ScanTable(const ScanTable<Key, Value>& table) noexcept;
 	virtual ~ScanTable();
 	
 	virtual Record<Key, Value>* find(const Key& key);
 	virtual void insert(const Key& key, const Value& value);
 	virtual void remove(const Key& key);
+	friend ostream& operator<<(ostream& buf, const ScanTable& table)
+	{
+		cout << table.size << endl;
+		for (int i = 0; i < table.max_size; ++i)
+		{
+			if (table.recs[i])
+				cout << "(" << table.recs[i]->key << ", " << table.recs[i]->data << "), ";
+		}
+		cout << endl;
+		return buf;
+	}
+	
 };
 
 
 TabTemplate
-ScanTable<Key, Value>::ScanTable(size_t _max_size)
+ScanTable<Key, Value>::ScanTable(int _max_size) noexcept
 {
+	if (_max_size <= 0)
+	{
+		max_size = -1;
+		return;
+	}
 	max_size = _max_size;
 	size = 0;
 	curr = 0;
-	if (!_max_size)
-	{
-		throw string("size should be > 0");
-	}
-	recs = new Record<Key, Value>*[max_size]();
+	recs = new Record<Key, Value>*[max_size];
+	for (int i = 0; i < _max_size; ++i) recs[i] = nullptr;
 
 }
 
 TabTemplate
-ScanTable<Key, Value>::ScanTable(const ScanTable<Key, Value>& table): 
+ScanTable<Key, Value>::ScanTable(const ScanTable<Key, Value>& table) noexcept :
 	max_size(table.max_size), size(table.size), curr(table.curr) 
 { 
 	recs = new Record<Key, Value>*[max_size];
@@ -53,10 +67,12 @@ ScanTable<Key, Value>::ScanTable(const ScanTable<Key, Value>& table):
 TabTemplate
 ScanTable<Key, Value>::~ScanTable() 
 {
+	if (max_size == -1) return;
 	for (int i = 0; i < max_size; ++i)
 	{
 		if (recs[i]) delete recs[i];
-	}	
+	}
+	if (recs != nullptr) delete recs;
 }
 
 
@@ -90,11 +106,12 @@ void ScanTable<Key, Value>::remove(const Key& _key)
 	if (!exist) throw string("Key doesn`t exist\n");
 
 	delete recs[curr];
-	--size;
+
 	for (int i = curr; i < size; ++i)
 	{
 		recs[i] = recs[i + 1];
 	}
+	--size;
 }
 
 TabTemplate

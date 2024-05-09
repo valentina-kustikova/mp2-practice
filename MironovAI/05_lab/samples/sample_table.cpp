@@ -8,24 +8,32 @@
 #define INSERT 1
 #define DELETE 2
 #define FIND 3
+#define PRINT 4
 
-ScanTable<TPolynom, bool> scan_table(101);
-SortedTable<TPolynom, bool> sorted_table(101);
-HashTable<TPolynom, bool> hash_table(101);
+ScanTable<TPolynom, string> scan_table(101);
+SortedTable<TPolynom, string> sorted_table(101);
+HashTable<TPolynom, string> hash_table(101);
 
 
 void action(int table, int tag)
 {
-	std::cout << "input a polynom:\n";
-	TPolynom polynom; cin >> polynom;
-	cout << "\n";
+	TPolynom polynom;
+	string polynom_string;
+	if (tag != PRINT)
+	{
+		std::cout << "input a polynom:\n";
+		cin >> polynom_string;
+		cout << "\n";
+		polynom = TPolynom(polynom_string);
+	}
+	
 	if (tag == INSERT)
 	{
 		if (table == 1 || table == 4)
 		{
 			try
 			{
-				scan_table.insert(polynom, true);
+				scan_table.insert(polynom, polynom_string);
 				cout << "OK\n";
 			}
 			catch (string ex)
@@ -37,7 +45,7 @@ void action(int table, int tag)
 		{
 			try
 			{
-				sorted_table.insert(polynom, true);
+				sorted_table.insert(polynom, polynom_string);
 				cout << "OK\n";
 			}
 			catch (string ex)
@@ -49,7 +57,7 @@ void action(int table, int tag)
 		{
 			try
 			{
-				hash_table.insert(polynom, true);
+				hash_table.insert(polynom, polynom_string);
 				cout << "OK\n";
 			}
 			catch (string ex)
@@ -64,7 +72,7 @@ void action(int table, int tag)
 		{
 			try
 			{
-				Record<TPolynom, bool>* t = scan_table.find(polynom);
+				Record<TPolynom, string>* t = scan_table.find(polynom);
 				if (!t)
 				{
 					cout << "Polynom wasn`t found\n";
@@ -80,7 +88,7 @@ void action(int table, int tag)
 		{
 			try
 			{
-				Record<TPolynom, bool>* t = sorted_table.find(polynom);
+				Record<TPolynom, string>* t = sorted_table.find(polynom);
 				if (!t)
 				{
 					cout << "Polynom wasn`t found\n";
@@ -96,7 +104,7 @@ void action(int table, int tag)
 		{
 			try
 			{
-				Record<TPolynom, bool>* t = hash_table.find(polynom);
+				Record<TPolynom, string>* t = hash_table.find(polynom);
 				if (!t)
 				{
 					cout << "Polynom wasn`t found\n";
@@ -148,14 +156,51 @@ void action(int table, int tag)
 			}
 		}
 	}
-
-
+	else if (tag == PRINT)
+	{
+		if (table == 1 || table == 4)
+		{
+			try
+			{
+				cout << scan_table << endl;
+				cout << "OK\n";
+			}
+			catch (string ex)
+			{
+				throw string("cout scan table\n");
+			}
+		}
+		if (table == 2 || table == 4)
+		{
+			try
+			{
+				cout << sorted_table << endl;
+				cout << "OK\n";
+			}
+			catch (string ex)
+			{
+				throw string("cout sorted table\n");
+			}
+		}
+		if (table == 3 || table == 4)
+		{
+			try
+			{
+				cout << hash_table << endl;
+				cout << "OK\n";
+			}
+			catch (string ex)
+			{
+				throw string("cout hash table\n");
+			}	
+		}
+	}
 }
 
 void kind(int table_tag)
 {
 	int teg = 0;
-	std::cout << "1.Insert\n2.Remove\n3.Find\n";
+	std::cout << "1.Insert\n2.Remove\n3.Find\n4.Print\n";
 	int option; cin >> option;
 	if (option == 1)
 	{
@@ -169,6 +214,10 @@ void kind(int table_tag)
 	{
 		teg = FIND;
 	}
+	else if (option == 4)
+	{
+		teg = PRINT;
+	}
 	else if (option == 0)
 	{
 		return;
@@ -177,6 +226,7 @@ void kind(int table_tag)
 	{
 		throw string("wrong tag\n");
 	}
+
 	try
 	{
 		action(table_tag, teg);

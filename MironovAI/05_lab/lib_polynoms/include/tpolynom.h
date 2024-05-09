@@ -52,7 +52,7 @@ public:
 		{
 			if (t->next->value == TMonom())
 			{
-				buf << t->value << endl;
+				buf << t->value;
 				break;
 			}
 			buf << t->value << " + ";
@@ -64,19 +64,21 @@ public:
 	{
 		string poly; 
 		cout << "input a polynom\n";
-		cin >> poly;
+		buf >> poly;
 		try
 		{
 			TPolynom t(poly);
 			TRingList<TMonom> k(t.monoms);
 			polynom.monoms = k;
 			polynom.name = t.name;
+			return buf;
 		}
 		catch (string ex)
 		{
 			throw ex;
 		}
 	}
+
 };
 
 namespace std

@@ -10,27 +10,25 @@ private:
 	void sort();
 
 public:
-	SortedTable(size_t _max_size=DefaultSize);
-	SortedTable(const ScanTable<Key, Value>& table);
-	SortedTable(const SortedTable<Key, Value>& table);
+	SortedTable(int _max_size=DefaultSize) noexcept;
+	SortedTable(const ScanTable<Key, Value>& table) noexcept;
+	SortedTable(const SortedTable<Key, Value>& table) noexcept;
 
 	Record<Key, Value>* find(const Key& key);
 	void insert(const Key& _key, const Value& _data);
-	// we dont need it because we have "find"
-	//void remove(const Key& _key);
 };
 
 TabTemplate
-SortedTable<Key, Value>::SortedTable(size_t _max_size) : ScanTable(_max_size) {}
+SortedTable<Key, Value>::SortedTable(int _max_size) noexcept : ScanTable(_max_size) {}
 
 TabTemplate
-SortedTable<Key, Value>::SortedTable(const ScanTable<Key, Value>& table) : ScanTable(st)
+SortedTable<Key, Value>::SortedTable(const ScanTable<Key, Value>& table) noexcept : ScanTable(st)
 {
 	this->sort();
 }
 
 TabTemplate
-SortedTable<Key, Value>::SortedTable(const SortedTable<Key, Value>& table): 
+SortedTable<Key, Value>::SortedTable(const SortedTable<Key, Value>& table) noexcept :
 	size(table.size), max_size(table.max_size), curr(table.curr)
 {
 	recs = new Record<Key, Value>*[max_size];
@@ -79,11 +77,11 @@ void SortedTable<Key, Value>::insert(const Key& _key, const Value& _data) {
 	}
 	else
 	{
+		if (recs[curr] != nullptr) if (recs[curr]->key < _key) curr++;
 		for (int i = size - 1; i >= curr; i--)
 		{
 			recs[i + 1] = recs[i];
 		}
-		
 		recs[curr] = new Record<Key, Value>(_key, _data);
 		size++;
 	}

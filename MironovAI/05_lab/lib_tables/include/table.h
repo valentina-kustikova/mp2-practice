@@ -13,18 +13,18 @@ using namespace std;
 TabTemplate
 class Table {
 protected:
-	size_t size;
-	size_t max_size;
+	int size;
+	int max_size;
 	int curr;
 
 public:
 
-	bool empty() const;
-	bool full() const;
-	bool reset();
-	bool next();
-	size_t get_size() const;
-
+	bool empty() const noexcept;
+	bool full() const noexcept;
+	bool reset() noexcept;
+	bool next() noexcept;
+	size_t get_size() const noexcept;
+	size_t get_max_size() const noexcept;
 	virtual Record<Key, Value>* find(const Key& key) = 0;
 	virtual void insert(const Key& key, const Value& value) = 0;
 	virtual void remove(const Key& key) = 0; 
@@ -33,19 +33,20 @@ public:
 
 
 TabTemplate
-bool Table<Key, Value>::full() const 
+bool Table<Key, Value>::full() const noexcept
 {
 	return (size == max_size);
 }
 
 TabTemplate
-bool Table<Key, Value>::empty() const
+bool Table<Key, Value>::empty() const noexcept
 {
 	return (size == 0);
 }
 
 TabTemplate
-bool Table<Key, Value>::reset() {
+bool Table<Key, Value>::reset() noexcept
+{
 	if (!empty()) {
 		curr = 0;
 		return true;
@@ -58,7 +59,7 @@ bool Table<Key, Value>::reset() {
 }
 
 TabTemplate
-bool Table<Key, Value>::next()
+bool Table<Key, Value>::next() noexcept
 {
 
 	if (curr < max_size && !empty())
@@ -73,9 +74,14 @@ bool Table<Key, Value>::next()
 }
 
 TabTemplate
-size_t Table<Key, Value>::get_size() const
+size_t Table<Key, Value>::get_size() const noexcept
 {
 	return size;
 }
 
+TabTemplate
+size_t Table<Key, Value>::get_max_size() const noexcept
+{
+	return max_size;
+}
 #endif // !TABLE_H_
