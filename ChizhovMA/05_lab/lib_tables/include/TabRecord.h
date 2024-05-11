@@ -7,7 +7,7 @@ class TabRecord
 	TKey key;
 	TData* data;
 public:
-	TabRecord(); //под вопросом
+	TabRecord();
 	TabRecord(const TKey& _key, TData* _data);
 	TabRecord(const TabRecord<TKey, TData>& tr);
 	TKey GetKey() const;
@@ -15,23 +15,19 @@ public:
 };
 
 template <class TKey, class TData>
-TabRecord<TKey, TData>::TabRecord()
-{
-	key = nullptr;
-	data = nullptr;
-}
+TabRecord<TKey, TData>::TabRecord(){}
 template <class TKey, class TData>
 TabRecord<TKey, TData>::TabRecord(const TKey& _key, TData* _data) 
 {
 	key = _key;
-	data = _data;
+	data = new TData(*_data);
 }
 
 template <class TKey, class TData>
 TabRecord<TKey, TData>::TabRecord(const TabRecord<TKey, TData>& tr)
 {
 	key = tr.key;
-	data = tr.data;
+	data = new TData(*tr.data);
 }
 
 template <class TKey, class TData>

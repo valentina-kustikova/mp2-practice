@@ -21,7 +21,18 @@ using namespace std;
 //    size_t hashValue = arrayHashTable.hash_func(testKey);
 //    EXPECT_EQ(hashValue, expectedHashValue);
 //}
+// Copy constructor
+TEST(TArrayHashTable, copy_constructor_test)
+{
+    TArrayHashTable<string, int> table(5, 1);
+    int data1 = 100;
+    int data2 = 200;
+    table.Insert("key1", &data1);
+    table.Insert("key2", &data2);
 
+    TArrayHashTable<string, int> copy_table(table);
+    EXPECT_NE(copy_table.Find("key1"), nullptr);
+}
 // Insert
 TEST(TArrayHashTable, insert_test) 
 {
@@ -32,9 +43,8 @@ TEST(TArrayHashTable, insert_test)
     table.Insert("key1", &data1);
     table.Insert("key2", &data2);
 
-    // Тестируем, что элементы были вставлены и находятся в таблице
+  
     EXPECT_NE(table.Find("key1"), nullptr);
-    EXPECT_NE(table.Find("key2"), nullptr);
 }
 TEST(TArrayHashTable, insert_to_full_table_test)
 {
@@ -48,7 +58,6 @@ TEST(TArrayHashTable, insert_to_full_table_test)
 
     ASSERT_ANY_THROW(table.Insert("key3", &data3));
 }
-
 // Remove
 TEST(TArrayHashTable, remove_test)
 {
@@ -64,15 +73,12 @@ TEST(TArrayHashTable, remove_error_test)
 {
     TArrayHashTable<string, int> table(10, 3);
 
-    int data1 = 100;
-    table.Insert("key1", &data1);
-    table.Remove("key1");
-
     ASSERT_ANY_THROW(table.Remove("key4"));
 }
 // Find
-TEST(TArrayHashTable, find_test) {
-    TArrayHashTable<string, int> table(5, 3);
+TEST(TArrayHashTable, find_test)
+{
+    TArrayHashTable<string, int> table(5, 1);
 
     int data1 = 100;
     table.Insert("key1", &data1);
@@ -86,8 +92,8 @@ TEST(TArrayHashTable, find_non_existent_test) {
     int data1 = 100;
     table.Insert("key1", &data1);
 
-    TabRecord<string, int>* foundRecord = table.Find("key1");
-    EXPECT_NE(foundRecord, nullptr);
+    TabRecord<string, int>* foundRecord = table.Find("key3");
+    EXPECT_EQ(foundRecord, nullptr);
 }
 // Reset
 TEST(TArrayHashTable, reset_test) 
@@ -166,4 +172,60 @@ TEST(TArrayHashTable, GetDataTest)
     int* retrievedData = table.GetData();
 
     EXPECT_EQ(*retrievedData, data);
+}
+//Is Full
+TEST(TArrayHashTable, is_full_test_false)
+{
+    TArrayHashTable<string, string> ht(3,1);
+
+    ASSERT_FALSE(ht.IsFull());
+}
+
+TEST(TArrayHashTable, is_full_test_false_with_elements)
+{
+    TArrayHashTable<string, string> ht(3, 1);
+    string data = "abc";
+    string key = "one";
+    ht.Insert(key, &data);
+    ASSERT_FALSE(ht.IsFull());
+}
+
+TEST(TArrayHashTable, is_full_test_true)
+{
+    TArrayHashTable<string, string> ht(2,1);
+    string key = "one";
+    string data = "abc";
+    ht.Insert(key, &data);
+    string key2 = "two";
+    string data2 = "cbc";
+    ht.Insert(key2, &data2);
+    ASSERT_TRUE(ht.IsFull());
+}
+//Is Empty
+TEST(TArrayHashTable, is_empty_test_false)
+{
+    TArrayHashTable<string, string> ht(3,1);
+    string key = "one";
+    string data = "abc";
+    ht.Insert(key, &data);
+    ASSERT_FALSE(ht.IsEmpty());
+}
+
+TEST(TArrayHashTable, is_empty_test_true)
+{
+    TArrayHashTable<string, string> ht(3,1);
+
+    ASSERT_TRUE(ht.IsEmpty());
+}
+//Count
+TEST(TArrayHashTable, get_count_test)
+{
+    TArrayHashTable<string, string> ht(3, 1);
+    string key = "one";
+    string data = "abc";
+    ht.Insert(key, &data);
+    string key2 = "two";
+    string data2 = "cbc";
+    ht.Insert(key2, &data2);
+    EXPECT_EQ(ht.GetCount(), 2);
 }

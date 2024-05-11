@@ -2,6 +2,7 @@
 #define SCANTABLE_H
 
 #include "Tables.h"
+//#include "SortTable.h"
 #include <iostream>
 using namespace std;
 
@@ -19,10 +20,16 @@ public:
 	TabRecord<TKey, TData>* Find(TKey k);
 	TKey GetKey() const;
 	TData* GetData() const;
-    friend ostream& operator<<(ostream& out, const TScanTable<TKey, TData>& t)
+    //TScanTable operator=(const TSortTable<Tkey, TData>& st);
+    friend ostream& operator<<(ostream& out, const TScanTable<TKey, TData>& st)
     {
+        TScanTable<TKey, TData> t(st);
+        if(!t.Reset());
         for (int i = 0; i < t.GetCount(); i++)
-            out << *(t.recs[i]->GetData());
+        {
+            out << *(t.GetData());
+            t.Next();
+        }
         return out;
     }
 };
@@ -125,11 +132,5 @@ TData* TScanTable<TKey, TData>::GetData() const
         throw msg;
     }
 }
-//template <class TKey, class TData>
-//void TScanTable<TKey, TData>::Print()
-//{
-//    for (int i = 0; i < count; i++)
-//        cout << *(recs[i]->GetData());
-//}
 
 #endif //! SCANTABLE_H

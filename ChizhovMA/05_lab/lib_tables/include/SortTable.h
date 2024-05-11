@@ -21,8 +21,13 @@ public:
 
 	friend ostream& operator<<(ostream& out, const TSortTable<TKey, TData>& st)
 	{
-		for (int i = 0; i < st.GetCount(); i++)
-			out << *(st.recs[i]->GetData());
+		TSortTable<TKey, TData> t(st);
+		if (!t.Reset());
+		for (int i = 0; i < t.GetCount(); i++)
+		{
+			out << *(t.GetData());
+			t.Next();
+		}
 		return out;
 	}
 };
@@ -113,10 +118,4 @@ void TSortTable<TKey, TData>::Sort()
 		}
 	}
 }
-//template <class TKey, class TData>
-//void TSortTable<TKey, TData>::Print()
-//{
-//	for (int i = 0; i < count; i++)
-//		cout << *(recs[i]->GetData());
-//}
 #endif //! SORT_TABLE_H

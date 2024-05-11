@@ -23,7 +23,6 @@ public:
 	int GetCount() const;
 	virtual TKey GetKey() const = 0;
 	virtual TData* GetData() const = 0;
-	//virtual void Print() = 0;
 };
 
 template <class TKey, class TData>
@@ -51,9 +50,12 @@ bool Table<TKey, TData>::IsTabEnded() const
 template <class TKey, class TData>
 bool Table<TKey, TData>::Reset()
 {
-	if (!IsTabEnded())
+	if (!IsEmpty())
 		currPos = 0;
+	else 
+		currPos = -1;
 	return IsTabEnded();
+	
 }
 template <class TKey, class TData>
 bool Table<TKey, TData>::Next()

@@ -1,4 +1,6 @@
 #include <iostream>
+#include <cstdlib>
+#include <thread>
 #include "ScanTable.h"
 #include "TabRecord.h"
 #include "SortTable.h"
@@ -6,6 +8,18 @@
 #include "Polynom.h"
 
 using namespace std;
+void Print(TScanTable<string, TPolynom>& table, TSortTable<string, TPolynom>& stable, TArrayHashTable<string, TPolynom>& htable)
+{
+    cout << "ScanTable:" << endl;
+    cout << table;
+    cout << endl;
+    cout << "SortTable:" << endl;
+    cout << stable;
+    cout << endl;
+    cout << "HashTable:" << endl;
+    cout << htable;
+    cout << endl;
+}
 void Insert(const string& k, TScanTable<string, TPolynom>& table, TSortTable<string, TPolynom>& stable, TArrayHashTable<string, TPolynom>& htable) {
     try {
         int n = 0;
@@ -20,7 +34,7 @@ void Insert(const string& k, TScanTable<string, TPolynom>& table, TSortTable<str
         do {
             cout << "Enter a number: ";
             cin >> n;
-        } while (n > 4 || n < 1);
+        } while (n != 1 && n!= 2 && n != 3 && n != 4);
         if (n == 1) {
             table.Insert(k, p);
         }
@@ -35,14 +49,19 @@ void Insert(const string& k, TScanTable<string, TPolynom>& table, TSortTable<str
             stable.Insert(k, p);
             htable.Insert(k, p);
         }
-        //cout << "Successfully" << endl;
+        cout << "Successfully" << endl;
+        this_thread::sleep_for(chrono::seconds(3));
     }
     catch (const string msg) {
         cout << msg << endl;
+        this_thread::sleep_for(chrono::seconds(3));
     }
 }
 void Remove(const string& input, TScanTable<string, TPolynom>& table, TSortTable<string, TPolynom>& stable, TArrayHashTable<string, TPolynom>& htable) {
     try {
+        Print(table, stable, htable);
+        system("cls");
+        Print(table, stable, htable);
         int n = 0;
         string k;
         cout << "Enter key: "; // ввод полинома
@@ -56,7 +75,7 @@ void Remove(const string& input, TScanTable<string, TPolynom>& table, TSortTable
         do {
             cout << "Enter a number: ";
             cin >> n;
-        } while (n > 4 || n < 1);
+        } while (n != 1 && n != 2 && n != 3 && n != 4);
         if (n == 1) {
             try {
                 table.Remove(k);
@@ -76,10 +95,12 @@ void Remove(const string& input, TScanTable<string, TPolynom>& table, TSortTable
             stable.Remove(k);
             htable.Remove(k);
         }
-        //cout << "Successfully" << endl;
+        cout << "Successfully" << endl;
+        this_thread::sleep_for(chrono::seconds(3));
     }
     catch (const string msg) {
         cout << msg << endl;
+        this_thread::sleep_for(chrono::seconds(3));
     }
 }
 void Dif(TScanTable<string, TPolynom>& table, TSortTable<string, TPolynom>& stable, TArrayHashTable<string, TPolynom>& htable)
@@ -105,7 +126,18 @@ void Dif(TScanTable<string, TPolynom>& table, TSortTable<string, TPolynom>& stab
         else if (v == "z")
             pd = p.difz();
         string in = pd.ToString();
-        Insert(in, table, stable, htable);
+        if (in != "0")
+            Insert(in, table, stable, htable);
+        else
+        {
+            cout << "The polynom is zero" << endl;
+            this_thread::sleep_for(chrono::seconds(3));
+        }
+    }
+    else
+    {
+        cout << "The polynomial is not contained in all tables" << endl;
+        this_thread::sleep_for(chrono::seconds(3));
     }
 }
 void Arithmetic(TScanTable<string, TPolynom>& table, TSortTable<string, TPolynom>& stable, TArrayHashTable<string, TPolynom>& htable)
@@ -130,7 +162,8 @@ void Arithmetic(TScanTable<string, TPolynom>& table, TSortTable<string, TPolynom
                 cout << "Select  an operation:" << endl;
                 cout << "Enter '+' if you want to add polynomials" << endl;
                 cout << "Enter '-' if you want to subtrsct polynomials" << endl;
-                cout << "Enter '+' if you want to multiply polynomials" << endl;
+                cout << "Enter '*' if you want to multiply polynomials" << endl;
+                cout << "Input: ";
                 cin >> o;
             } while (o != "+" && o != "-" && o != "*");
             if (o == "+")
@@ -148,15 +181,28 @@ void Arithmetic(TScanTable<string, TPolynom>& table, TSortTable<string, TPolynom
             string in = pd.ToString();
             Insert(in, table, stable, htable);
         }
+        else
+        {
+            cout << "The polynomial is not contained in all tables" << endl;
+            this_thread::sleep_for(chrono::seconds(3));
+        }
+    }
+    else
+    {
+        cout << "The polynomial is not contained in all tables" << endl;
+        this_thread::sleep_for(chrono::seconds(3));
     }
 }
 void Operations(TScanTable<string, TPolynom>& table, TSortTable<string, TPolynom>& stable, TArrayHashTable<string, TPolynom>& htable)
 {
+    system("cls");
+    Print(table, stable, htable);
     string s = "";
     do{
         cout << "Choose an action:" << endl;
         cout << "Enter 'arithmetic' if you want to add, subtract or multiply polynomials" << endl;
         cout << "Enter 'dif' if you want to take the derivative of a polynomial" << endl;
+        cout << "Input: ";
         cin >> s;
     } while (s != "arithmetic" && s != "dif");
 
@@ -169,40 +215,57 @@ void Operations(TScanTable<string, TPolynom>& table, TSortTable<string, TPolynom
         Dif(table, stable, htable);
     }
 }
-void Print(TScanTable<string, TPolynom>& table, TSortTable<string, TPolynom>& stable, TArrayHashTable<string, TPolynom>& htable) {
-    cout << "ScanTable:" << endl;
-    cout << table;
-    cout << endl;
-    cout << "SortTable:" << endl;
-    cout << stable;
-    cout << endl;
-    cout << "HashTable:" << endl;
-    htable.Print();
+void Sort(TScanTable<string, TPolynom>& table)
+{
+    TSortTable<string, TPolynom> new_table(&table);
+    table.Reset();
+    int k = table.GetCount();
+    for (int j = 0; j < k; j++)
+    {
+        string str = table.GetKey();
+        table.Remove(str);
+        //table.Next();
+    }
+    new_table.Reset();
+    for (int i = 0; i < new_table.GetCount(); i++)
+    {
+        TPolynom* p = new_table.GetData();
+        string s = new_table.GetKey();
+        table.Insert(s, p);
+        new_table.Next();
+    }
 }
+
 int main() 
 { 
-    TScanTable<string, TPolynom> table(5);
-    TSortTable<string, TPolynom> stable(5);
-    TArrayHashTable<string, TPolynom> htable(5,1);
+    int max_size = 5;
+    int step = 1;
+    TScanTable<string, TPolynom> table(max_size);
+    TSortTable<string, TPolynom> stable(max_size);
+    TArrayHashTable<string, TPolynom> htable(max_size,step);
 
     string input = "";
 
     while (input != "exit")
     {
+        system("cls");
+        Print(table, stable, htable);
         cout << "Choose an action:" << endl;
         cout << "Enter 'insert' if you want to insert an element into the table" << endl;
         cout << "Enter 'remove' if you want to remove an element from the table" << endl;
         cout << "Enter 'operations' if you want to perform arithmetic operations on polynomials" << endl;
-        cout << "Enter 'print' to print tables" << endl;
+        cout << "Enter 'sort' to sort scan tables" << endl;
         cout << "Enter 'exit' to exit the program" << endl;
         cout << "Input: ";
         cin >> input;
 
         if (input == "insert")
         {
+            system("cls");
+            Print(table, stable, htable);
             string k;
 
-            cout << "Enter key: "; // ввод полинома
+            cout << "Enter key: ";
             cin >> k;
             Insert(k, table, stable, htable);
         }
@@ -210,9 +273,24 @@ int main()
             Remove(input, table, stable, htable);
         else if (input == "operations")
             Operations(table, stable, htable);
-        else if (input == "print")
-            Print(table, stable, htable);
+        else if (input == "sort")
+            Sort(table);
     }
 
     return 0;
 }
+//
+//int main()
+//{
+//	TArrayHashTable<string, string> ht(3, 1);
+//
+//	string data = "abc";
+//	string data2 = "def";
+//
+//	ht.Insert("key1", &data);
+//	ht.Insert("key2", &data2);
+//
+//	cout << ht;
+//
+//	return 0;
+//}

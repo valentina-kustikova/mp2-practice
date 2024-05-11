@@ -3,6 +3,7 @@
 
 #include "HashTable.h"
 #include <iostream>
+using namespace std;
 
 
 template<class TKey, class TData>
@@ -11,9 +12,12 @@ class TArrayHashTable : public THashTable<TKey, TData>
 protected:
 	size_t hash_step;
 	TabRecord<TKey, TData>** recs;
-	size_t GetNextPos(size_t ind) { return (ind + hash_step) % maxsize; }
 	TabRecord<TKey, TData>* pMark;
 	int freePos;
+
+	size_t hash_func(const TKey& key);
+	size_t GetNextPos(size_t ind) { return (ind + hash_step) % maxsize; }
+
 public:
 	TArrayHashTable(size_t _maxsize, size_t _step);
 	TArrayHashTable(const TArrayHashTable& ht);
@@ -28,46 +32,54 @@ public:
 
 	TKey GetKey() const ;
 	TData* GetData() const;
-	/*friend ostream& operator<<(ostream& out, const TArrayHashTable<TKey, TData>& ht)
+
+	friend ostream& operator<<(ostream& out, const TArrayHashTable<TKey, TData>& h)
 	{
-		ht.Reset();
-		while (!ht.IsTabEnded())
-		{
-			out << *(ht.recs[currPos]->GetData());
-			ht.Next();
+		TArrayHashTable<TKey, TData> ht(h);
+		if (!ht.Reset())
+		{ 
+			while (!ht.IsTabEnded())
+			{
+				if (ht.recs[ht.currPos] != nullptr && ht.recs[ht.currPos] != ht.pMark) 
+					out << *(ht.GetData()); 
+				ht.Next();
+			}
 		}
 		return out;
-	};*/
-	void Print();
+	};
+
 };
 
 template<class TKey, class TData>
-TArrayHashTable<TKey, TData>::TArrayHashTable(size_t _maxsize, size_t _step) : THashTable(_maxsize)
+TArrayHashTable<TKey, TData>::TArrayHashTable(size_t _maxsize, size_t _step) : THashTable<TKey, TData>(_maxsize)
 {
 	recs = new TabRecord<TKey, TData>* [_maxsize];
 	hash_step = _step;
-	pMark = nullptr;
+	pMark = new TabRecord<TKey, TData> ();
 	freePos = -1;
 	for (int i = 0; i < _maxsize; i++)
 		recs[i] = nullptr;
 }
 template<class TKey, class TData>
-TArrayHashTable<TKey, TData>::TArrayHashTable(const TArrayHashTable& ht)
+TArrayHashTable<TKey, TData>::TArrayHashTable(const TArrayHashTable& ht) : THashTable<TKey, TData>(ht.maxsize) //
 {
 	maxsize = ht.maxsize;
 	currPos = ht.currPos;
 	hash_step = ht.hash_step;
 	freePos = ht.freePos;
 	recs = new TabRecord<TKey, TData>* [maxsize];
+	pMark = new TabRecord<TKey, TData> ();
 	for (int i = 0; i < maxsize; i++)
 	{
-		TabRecord<TKey,TData>* tmp = ht.recs[i];
-		if (tmp == pMark)
+		TabRecord<TKey, TData>* tmp = ht.recs[i];
+		if (ht.recs[i] == ht.pMark) {
 			recs[i] = pMark;
-		else if (tmp == nullptr)
+		}
+		else if (ht.recs[i] == nullptr) {
 			recs[i] = nullptr;
-		else
-			recs[i] = new TabRecord<TKey, TData>(tmp);
+		}
+		else 
+			recs[i] = new TabRecord<TKey, TData>(*tmp);
 	}
 }
 template<class TKey, class TData>
@@ -79,7 +91,7 @@ TArrayHashTable<TKey, TData>::~TArrayHashTable()
 			delete recs[i];
 	}
 	if (recs)
-		delete recs;
+		delete[] recs;
 	if (pMark)
 		delete pMark;
 }
@@ -98,6 +110,15 @@ TabRecord<TKey, TData>* TArrayHashTable<TKey, TData>::Find(TKey k)
 		currPos = GetNextPos(currPos);
 	}
 	return nullptr;
+}
+template<class TKey, class TData>
+size_t TArrayHashTable<TKey, TData>::hash_func(const TKey& key)
+{
+	size_t hash = 0;
+	for (char c : key)
+		hash += c;
+
+	return hash % maxsize;
 }
 template<class TKey, class TData>
 void TArrayHashTable<TKey, TData>::Insert(TKey k, TData* d)
@@ -170,16 +191,6 @@ TData* TArrayHashTable<TKey,TData>::GetData() const
 	{
 		string msg = "Error: Current position is out of range";
 		throw msg;
-	}
-}
-template<class TKey, class TData>
-void TArrayHashTable<TKey, TData>::Print()
-{
-	Reset();
-	while (!IsTabEnded())
-	{
-		cout << *(recs[currPos]->GetData());
-		Next();
 	}
 }
 
