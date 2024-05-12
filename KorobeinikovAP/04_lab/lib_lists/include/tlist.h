@@ -15,25 +15,26 @@ public:
 	TList(TNode<T>* pFirst_);
 	TList(const TList<T>& obj);
 	virtual ~TList();
-	void Clear();
+	void Clear(); // virtual
 
 	TNode<T>* Search(const T& data_);
-	void InsertFirst(const T& data_);
+	virtual void InsertFirst(const T& data_);
 	void InsertBefore(const T& data_, const T& NextData);
 	void InsertAfter(const T& data_, const T& BeforeData);
 	void InsertBefore(const T& data_); //текущего
 	void InsertAfter(const T& data_);  //текущего
-	void Remove(const T& data_);
+	virtual void Remove(const T& data_);
 
 
-	int GetSize();
-	bool IsEmpty();
-	bool IsFull();
-	bool IsEnded();
+	int GetSize() const; // const
+	bool IsEmpty() const; // const
+	bool IsFull() const; // const
+	bool IsEnded() const; // const
+	bool IsLast() const;
 
 	void Reset();
 	void Next(const int count = 1);
-	TNode<T>* GetCurrent();
+	TNode<T>* GetCurrent() const; // const
 
 };
 
@@ -53,7 +54,7 @@ template<typename T>
 TList<T>::TList(TNode<T>* pFirst_) {
 
 	if (pFirst_ == nullptr) {
-		pFirst = nullptr;
+		pFirst = nullptr; // pCurr, ....
 		return;
 	}
 	pFirst = new TNode<T>(pFirst_->data);
@@ -90,7 +91,7 @@ TList<T>::TList(TNode<T>* pFirst_) {
 
 template<typename T>
 TList<T>::TList(const TList<T>& obj) {
-	if (obj.pFirst == nullptr) { return; }
+	if (obj.pFirst == nullptr) { return; } // pFirtst,...
 	TNode<T>* tmp = obj.pFirst;
 	pFirst = new TNode<T>(obj.pFirst->data);
 	TNode<T>* tmp2 = pFirst;
@@ -120,15 +121,10 @@ void TList<T>::Clear() {
 	if (IsEmpty()) {
 		return;
 	}
-	if (pFirst == pLast) {
-		delete pFirst;
-		return;
-	}
 	while (pFirst != pStop) {
 		TNode<T>* tmp = pFirst;
 		pFirst = pFirst->pNext;
-		delete tmp;                   
-		tmp = pFirst;
+		delete tmp; 
 	}
 }
 
@@ -146,16 +142,16 @@ TNode<T>* TList<T>::Search(const T& data_) {
 
 template<typename T>
 void TList<T>::InsertFirst(const T& data_) {
-	
+	if (IsFull()) {
+		throw "List is full";
+	}
 	if (IsEmpty()) {
 		pFirst = new TNode<T>(data_, pStop);
 		pLast = pFirst;
 		pCurr = pFirst;
 		return;
 	}
-	if (IsFull()) {
-		throw "List is full";
-	}
+
 	TNode<T>* tmp = new TNode<T>(data_, pFirst);
 	pFirst = tmp; 
 	Reset();
@@ -166,7 +162,7 @@ void TList<T>::InsertFirst(const T& data_) {
 template<typename T>
 void TList<T>::InsertBefore(const T& data_, const T& NextData) {
 	if (IsEmpty()) {
-		throw "Node is empty";
+		throw "List is empty";
 	}
 	if (IsFull()) {
 		throw "List is full";
@@ -283,10 +279,18 @@ void TList<T>::Remove(const T& data_) {
 		throw "Node with this data not is find";
 	}
 	if (tmp == pFirst) {
-		pFirst = tmp->pNext;
-		delete tmp;
-		pCurr = pFirst;
-		return;
+		if (IsLast()) {
+			delete pFirst;
+			pFirst = nullptr;
+			pCurr = nullptr;
+			pLast = nullptr;
+		}
+		else {
+			pFirst = tmp->pNext;
+			delete tmp;
+			pCurr = pFirst;
+			return;
+		}
 	}
 	if (tmp == pLast) {
 		pPrev->pNext = pStop;
@@ -300,7 +304,7 @@ void TList<T>::Remove(const T& data_) {
 
 
 template<typename T>
-int TList<T>::GetSize() {
+int TList<T>::GetSize() const{
 	if (IsEmpty()) {
 		return 0;
 	}
@@ -314,7 +318,7 @@ int TList<T>::GetSize() {
 }
 
 template<typename T>
-bool TList<T>::IsEmpty() {
+bool TList<T>::IsEmpty() const{
 	if (pFirst == nullptr) {
 		return true;
 	}
@@ -324,7 +328,7 @@ bool TList<T>::IsEmpty() {
 }
 
 template<typename T>
-bool TList<T>::IsFull() {
+bool TList<T>::IsFull() const{
 	TNode <T>* tmp = new TNode<T>();
 	if (tmp == nullptr) {
 		return true;
@@ -340,7 +344,18 @@ void TList<T>::Reset() {
 }
 
 template<typename T>
-bool TList<T>::IsEnded() {
+bool TList<T>::IsEnded() const{
+	if (pCurr == pStop) {
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
+
+template<typename T>
+bool TList<T>::IsLast() const{
 	if (pCurr == pLast) {
 		return true;
 	}
@@ -350,9 +365,8 @@ bool TList<T>::IsEnded() {
 }
 
 
-
 template<typename T>
-TNode<T>* TList<T>::GetCurrent() {
+TNode<T>* TList<T>::GetCurrent() const {
 	return pCurr;
 }
 

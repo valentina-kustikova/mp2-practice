@@ -36,9 +36,7 @@ public:
 	//TArithmeticExpression(const string& infx);
 	TArithmeticExpression(const string& infx, const map<string, double> operands_ = map<string, double>());
 	TArithmeticExpression();
-	string GetInfix() const {
-		return infix;
-	}
+	string GetInfix() const;
 	string GetPostfix()  const {
 		string postfix_str = postfix[0];
 		for (int i = 1; i < postfix.size(); i++) postfix_str  += postfix[i];

@@ -19,24 +19,28 @@ private:
 	
 public:
 	TPolynom();
-	TPolynom(string name);
+	TPolynom(const string &name);
 	TPolynom(TRingList<TMonom>* obj);
 	TPolynom(const TPolynom& obj);
 	~TPolynom();
-	/*
-	TPolynom operator + (const TPolynom& obj);
-	TPolynom operator -(const TPolynom& obj);
-	TPolynom operator * (const TPolynom& obj);
-	const TPolynom operator = (const TPolynom& obj);
-	TPolynom dif_x();
-	TPolynom dif_y();
-	TPolynom dif_z();
+
+	const TPolynom& operator=(const TPolynom& obj);
+
+
+	TPolynom operator + (const TPolynom& obj) const;
+	TPolynom operator -(const TPolynom& obj) const;
+	TPolynom operator - () const;
+	TPolynom operator * (const TPolynom& obj) const;
+	
+	TPolynom dif_x() const;
+	TPolynom dif_y() const;
+	TPolynom dif_z() const;
 	double operator () (double x, double y, double z);
-	*/
+	
 
 
-	TNode<TMonom>* GetCurrent();
-	string GetString() {
+	TNode<TMonom>* GetCurrent() const;
+	string GetString() const {
 		return polynom.GetInfix();
 	}
 };

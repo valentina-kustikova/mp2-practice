@@ -450,3 +450,12 @@ TArithmeticExpression::TArithmeticExpression(const string& infx,const map<string
 	
 	ToPostfix();
 }
+
+
+string TArithmeticExpression::GetInfix() const {
+	string infix_for_out = infix;
+	if (infix_for_out[0] == '0' && infix_for_out[1] == '-') {
+		infix_for_out.erase(0, 1);
+	}
+	return infix_for_out;
+}

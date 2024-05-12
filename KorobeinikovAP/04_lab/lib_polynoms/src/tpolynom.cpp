@@ -11,8 +11,9 @@ TPolynom::TPolynom(): polynom("\n") {
 }
 
 
-TPolynom::TPolynom(string name): polynom(name) {
+TPolynom::TPolynom(const string &name): polynom(name) {
 	GetRingListFromString();
+	polynom = TArithmeticExpression(GetStringFromRingList());
 }
 
 TPolynom::TPolynom(TRingList<TMonom>* obj){
@@ -32,21 +33,7 @@ TPolynom::TPolynom(TRingList<TMonom>* obj){
 		}
 
 	}
-	/*
-	while (!obj->IsEnded()) {
-		AddMonom(obj->GetCurrent()->data);
-		obj->Next();
-	}
-	*/
-	if (flag == 1) {
-		monoms->InsertFirst(obj->GetCurrent()->data);
-		obj->Next();
-		flag = 0;
-	}
-	else {
-		AddMonom(obj->GetCurrent()->data);
-		obj->Next();
-	}
+
 
 	obj->Reset();
 	
@@ -54,14 +41,15 @@ TPolynom::TPolynom(TRingList<TMonom>* obj){
 }
 
 
-TPolynom::TPolynom(const TRingList<TMonom>* obj) {
-	monoms = &TRingList<TMonom>(*obj);
-
-
-
+TPolynom::TPolynom(const TPolynom& obj) {
+	monoms = new TRingList<TMonom>(*obj.monoms);
+	polynom = TArithmeticExpression(obj.polynom.GetInfix());
 }
 
 
+TPolynom::~TPolynom() {
+	if (monoms) delete monoms;
+}
 
 
 void TPolynom::GetRingListFromString() {
@@ -174,18 +162,19 @@ void TPolynom::GetRingListFromString() {
 void TPolynom::AddMonom(TMonom& m) {
 	if (m.get_koef() == 0) return;
 
-	//TNode<TMonom>* tmp = monoms->first();
- 	while (!monoms->IsEnded()) {
+ 	while (!monoms->IsLast()) {
 		TNode<TMonom>* curr = monoms->GetCurrent();
 
 		if (m == curr->data) {
 			double coeff = m.get_koef() + curr->data.get_koef();
 			if (coeff == 0.0f) {
 				monoms->Remove(curr->data);
+				monoms->Reset();
 				return;
 			}
 			else {
-				curr->data.koef = coeff;
+				curr->data.set_koef(coeff);
+				monoms->Reset();
 				return;
 			}
 		}
@@ -207,10 +196,12 @@ void TPolynom::AddMonom(TMonom& m) {
 		double coeff = m.get_koef() + curr->data.get_koef();
 		if (coeff == 0.0f) {
 			monoms->Remove(curr->data);
+			monoms->Reset();
 			return;
 		}
 		else {
-			curr->data.koef = coeff;
+			curr->data.set_koef(coeff);
+			monoms->Reset();
 			return;
 		}
 	}
@@ -223,7 +214,7 @@ void TPolynom::AddMonom(TMonom& m) {
 	else {
 		monoms->InsertAfter(m);
 	}
-	
+
 }
 
 
@@ -233,24 +224,22 @@ string TPolynom:: GetStringFromRingList() {
 
 	string res = "";
 	monoms->Reset();
+	int flag = 0;
 	if (monoms->GetCurrent() == nullptr) {
 		return res;
 	}
 	else {
 		res += monoms->GetCurrent()->data.get_string();
 		monoms->Next();
+		flag = 1;
 		while (!monoms->IsEnded()) {
 			string monom = monoms->GetCurrent()->data.get_string();
 			if (monom[0] == '-') res += monom;
 			else res += "+" + monom;
+			flag = 0;
 			monoms->Next();
 		}
 	}
-
-	string monom = monoms->GetCurrent()->data.get_string();
-	if (monom[0] == '-') res += monom;
-	else res += "+" + monom;
-	monoms->Next();
 
 	monoms->Reset();
 
@@ -258,6 +247,219 @@ string TPolynom:: GetStringFromRingList() {
 }
 
 
-TNode<TMonom>* TPolynom::GetCurrent() {
+TNode<TMonom>* TPolynom::GetCurrent() const {
 	return monoms->GetCurrent();
+}
+
+
+//операторы
+
+const TPolynom&  TPolynom:: operator=(const TPolynom& obj) {
+	if (this == &obj) return (*this);
+
+	if (monoms) delete monoms;
+	monoms = new TRingList<TMonom>(*obj.monoms);
+	polynom = TArithmeticExpression(obj.GetString());
+
+	return (*this);
+}
+
+TPolynom TPolynom:: operator + (const TPolynom& obj) const{
+	TPolynom res(*this);
+
+	obj.monoms->Reset();
+	while (!obj.monoms->IsEnded()) {
+		TMonom curr_monom = obj.GetCurrent()->data;
+		if (res.monoms->IsEmpty()) {
+			res.monoms->InsertFirst(curr_monom);
+		}
+		else {
+			res.AddMonom(curr_monom);
+		}
+		obj.monoms->Next();
+	}
+
+	obj.monoms->Reset();
+
+	res.polynom = TArithmeticExpression(res.GetStringFromRingList());
+	return res;
+}
+
+TPolynom TPolynom:: operator - () const {
+	TPolynom res(*this);
+
+	res.monoms->Reset();
+	while (!res.monoms->IsEnded()) {
+		TNode<TMonom>* curr = res.GetCurrent();
+		double koef_ = (-1) * curr->data.get_koef();
+		curr->data.set_koef(koef_);
+		res.monoms->Next();
+	}
+
+	res.monoms->Reset();
+	res.polynom = TArithmeticExpression(res.GetStringFromRingList());
+
+
+	return res;
+}
+
+
+
+TPolynom TPolynom::operator-(const TPolynom& obj) const{
+	TPolynom res(-obj + (*this));
+
+	return res;
+}
+	
+
+
+TPolynom TPolynom::operator*(const TPolynom& obj) const{
+	TPolynom res;
+	int flag = 1;
+	monoms->Reset();
+	while (!monoms->IsEnded()) {
+		TMonom curr1 = monoms->GetCurrent()->data;
+
+		obj.monoms->Reset();
+		while (!obj.monoms->IsEnded()) {
+			if (flag == 1) {
+				TMonom curr2 = obj.GetCurrent()->data;
+				res.monoms->InsertFirst(curr1 * curr2);
+				flag = 0;
+				obj.monoms->Next();
+			}
+			else {
+				TMonom curr2 = obj.GetCurrent()->data;
+				res.AddMonom(curr1 * curr2);
+				obj.monoms->Next();
+			}
+		}
+
+		monoms->Next();
+	}	
+
+	obj.monoms->Reset();
+	monoms->Reset();
+	res.polynom = TArithmeticExpression(res.GetStringFromRingList());
+
+	return res;
+}
+
+
+
+//дифференцирование
+
+
+TPolynom TPolynom::dif_x() const {
+	TPolynom res;
+	int flag = 1;
+	monoms->Reset();
+	while (!monoms->IsEnded()) {
+		if (flag == 1) {
+			TMonom tmp = GetCurrent()->data.dif_x();
+			if (tmp.get_koef() != 0) {
+				res.monoms->InsertFirst(tmp);
+				monoms->Next();
+				flag = 0;
+			}
+			else {
+				monoms->Next();
+			}
+		}
+		else {
+			TMonom tmp = GetCurrent()->data.dif_x();
+			if (tmp.get_koef() != 0) {
+				res.AddMonom(tmp);
+				monoms->Next();
+			}
+			else {
+				monoms->Next();
+			}
+		}
+
+	}
+	monoms->Reset();
+	res.polynom = TArithmeticExpression(res.GetStringFromRingList());
+	return res;
+}
+
+TPolynom TPolynom::dif_y() const {
+	TPolynom res;
+	int flag = 1;
+	monoms->Reset();
+	while (!monoms->IsEnded()) {
+		if (flag == 1) {
+			TMonom tmp = GetCurrent()->data.dif_y();
+			if (tmp.get_koef() != 0) {
+				res.monoms->InsertFirst(tmp);
+				monoms->Next();
+				flag = 0;
+			}
+			else {
+				monoms->Next();
+			}
+		}
+		else {
+			TMonom tmp = GetCurrent()->data.dif_y();
+			if (tmp.get_koef() != 0) {
+				res.AddMonom(tmp);
+				monoms->Next();
+			}
+			else {
+				monoms->Next();
+			}
+		}
+
+	}
+	monoms->Reset();
+	res.polynom = TArithmeticExpression(res.GetStringFromRingList());
+	return res;
+}
+
+
+TPolynom TPolynom::dif_z() const {
+	TPolynom res;
+	int flag = 1;
+	monoms->Reset();
+	while (!monoms->IsEnded()) {
+		if (flag == 1) {
+			TMonom tmp = GetCurrent()->data.dif_z();
+			if (tmp.get_koef() != 0) {
+				res.monoms->InsertFirst(tmp);
+				monoms->Next();
+				flag = 0;
+			}
+			else {
+				monoms->Next();
+			}
+		}
+		else {
+			TMonom tmp = GetCurrent()->data.dif_z();
+			if (tmp.get_koef() != 0) {
+				res.AddMonom(tmp);
+				monoms->Next();
+			}
+			else {
+				monoms->Next();
+			}
+		}
+
+	}
+	monoms->Reset();
+	res.polynom = TArithmeticExpression(res.GetStringFromRingList());
+	return res;
+}
+
+
+
+double TPolynom:: operator () (double x, double y, double z) {
+	map<string, double> map_tmp;
+	map_tmp["x"] = x;
+	map_tmp["y"] = y;
+	map_tmp["z"] = z;
+
+	string tmp = GetString();
+	polynom = TArithmeticExpression(tmp, map_tmp);
+
+	return polynom.Calculate();
 }

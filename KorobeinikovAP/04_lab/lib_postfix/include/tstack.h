@@ -26,7 +26,7 @@ public:
 //конструкторы 
 
 template <typename T>
-TStack<T>::TStack(int maxsize = 10) {
+TStack<T>::TStack(int maxsize) {
 	if (maxsize <= 0) {
 		throw "maxsize < 0";
 	}

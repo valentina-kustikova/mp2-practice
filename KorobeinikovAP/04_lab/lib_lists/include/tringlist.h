@@ -1,7 +1,7 @@
 #ifndef __TRINGLIST_H__
 #define __TRINGLIST_H__
 
-#include "tlist.h""
+#include "tlist.h"
 
 
 template <typename T>
@@ -13,16 +13,21 @@ public:
 	TRingList(TNode<T>* pFirst_);
 	TRingList(const TList<T>& obj);
 	TRingList(const TRingList<T>& obj);
+
+	virtual void InsertFirst(const T& data_);
 	virtual ~TRingList();
+	virtual void Remove(const T& data_);
 };
 
 template <typename T>
 TRingList<T>::TRingList() {
-	pHead = new TNode<T>();
-	pStop = pHead;
 	pFirst = nullptr;
 	pCurr = nullptr;
 	pLast = nullptr;
+	pHead = new TNode<T>(T());
+	pHead->pNext = pHead;
+	pStop = pHead;
+	
 }
 
 template <typename T>
@@ -33,9 +38,7 @@ template <typename T>
 	pLast->pNext = pHead;
 
 	if (pFirst == nullptr) {
-		pFirst = nullptr;
-		pLast = nullptr;
-		pCurr = nullptr;
+		pHead->pNext = pHead;
 	}
 	/*
 	else {
@@ -54,23 +57,35 @@ template <typename T>
 template <typename T>
 TRingList<T>::TRingList(const TList<T>& obj) : TList<T>(obj) {
 	pHead = new TNode<T>();
-	pHead->pNext = pFirst;
 	pStop = pHead;
-	pLast->pNext = pHead;
-}
+
+	if (pFirst == nullptr) {
+		pHead->pNext = pHead;
+	}
+	else {
+		pHead->pNext = pFirst;
+		pLast->pNext = pHead;
+	}
+
+
+} 
 
 
 
 template <typename T>
-TRingList<T>::TRingList(const TRingList<T>& obj){
+TRingList<T>::TRingList(const TRingList<T>& obj) : TList(obj) { //??
 	pHead = new TNode<T>();
 	pStop = pHead;
-
+	
 	if	(obj.pFirst == obj.pStop) {
-		pFirst = pHead;
-		pLast = pHead;
-		pCurr = pHead;
+		pHead->pNext = pHead;
 	}
+	
+	else {
+		pHead->pNext = pFirst;
+		pLast->pNext = pHead;
+	}
+	/*
 	else {
 		pFirst = new TNode<T>(obj.pFirst->data);
 		TNode<T>* tmp = obj.pFirst;
@@ -86,13 +101,58 @@ TRingList<T>::TRingList(const TRingList<T>& obj){
 		pLast->pNext = pStop;
 		pCurr = pFirst;
 	}
+	*/
 }
-
 
 
 template <typename T>
 TRingList<T>::~TRingList() {
+	TList<T>::Clear();
 	if (pStop) delete pStop;
+}
+template <typename T>
+void TRingList<T>::InsertFirst(const T& data_) {
+	TList<T>::InsertFirst(data_);
+	pHead->pNext = pFirst;
+}
+
+template<typename T>
+void TRingList<T>::Remove(const T& data_) {
+	if (pFirst == nullptr) {
+		throw "Node is empty";
+	}
+	TNode<T>* tmp = pFirst, * pPrev = nullptr;
+	while ((tmp->pNext != pStop) && (tmp->data != data_)) {
+		pPrev = tmp;
+		tmp = tmp->pNext;
+	}
+	if ((tmp->pNext == pStop) && (tmp->data != data_)) {
+		throw "Node with this data not is find";
+	}
+	if (tmp == pFirst) {
+		if (IsLast()) {
+			delete pFirst;
+			pFirst = nullptr;
+			pCurr = nullptr;
+			pLast = nullptr;
+			pHead->pNext = pHead;
+			return;
+		}
+		else {
+			pFirst = tmp->pNext;
+			delete tmp;
+			pCurr = pFirst;
+			return;
+		}
+	}
+	if (tmp == pLast) {
+		pPrev->pNext = pStop;
+		delete tmp;
+		pLast = pPrev;
+		return;
+	}
+	pPrev->pNext = tmp->pNext;
+	delete tmp;
 }
 
 #endif 

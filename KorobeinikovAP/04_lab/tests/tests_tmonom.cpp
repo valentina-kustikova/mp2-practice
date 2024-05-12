@@ -10,8 +10,8 @@ TEST(TMonom, can_create_empty_monom)
 TEST(TMonom, check_correct_empty_monom)
 {
 	TMonom monom;
-	monom.st = 0;
-	EXPECT_EQ(monom.st, int());
+	monom.set_degree(0);
+	EXPECT_EQ(monom.get_degree(), int());
 }
 
 
@@ -27,7 +27,7 @@ TEST(TMonom, check_correct_create_monom_with_parametrs)
 	int tmp_st = 654;
 	double tmp_coef = 34.2;
 	TMonom mn(tmp_st, tmp_coef);
-	EXPECT_EQ(mn.st, 654);
+	EXPECT_EQ(mn.get_degree(), 654);
 }
 
 

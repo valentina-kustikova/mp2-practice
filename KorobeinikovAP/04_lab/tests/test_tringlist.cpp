@@ -3,7 +3,9 @@
 #include <gtest.h>
 
 TEST(TRingList, can_create_ringlist) {
-	ASSERT_NO_THROW(TRingList<int> rl());
+	ASSERT_NO_THROW(TRingList<int> rl);
+	TRingList<int> rl_1;
+	EXPECT_EQ(rl_1.GetCurrent(), nullptr);
 }
 
 
@@ -90,6 +92,32 @@ TEST(TRingList, can_insert_pFirst)
 }
 
 
+TEST(TRingList, correct_insert_pFirst_1)
+{
+	TNode<int>* c = new TNode<int>(54, nullptr);
+	TNode<int>* b = new TNode<int>(53, c);
+	TNode<int>* a = new TNode<int>(52, b);
+
+	TRingList<int> rl(a);
+	rl.InsertFirst(51);
+	EXPECT_EQ(51, rl.GetCurrent()->pNext->pNext->pNext->pNext->pNext->data);
+
+}
+
+
+TEST(TRingList, correct_insert_pFirst_2)
+{
+	TNode<int>* c = new TNode<int>(54, nullptr);
+
+	TRingList<int> rl(c);
+	rl.InsertFirst(53);
+	EXPECT_EQ(54, rl.GetCurrent()->pNext->pNext->pNext->pNext->data);
+	EXPECT_EQ(53, rl.GetCurrent()->pNext->pNext->pNext->pNext->pNext->pNext->data);
+
+}
+
+
+
 
 TEST(TRingList, can_insert_after_current)
 {
@@ -100,4 +128,17 @@ TEST(TRingList, can_insert_after_current)
 	TRingList<int> rl(a);
 	rl.InsertFirst(51);
 	ASSERT_NO_THROW(rl.InsertAfter(100));
+}
+
+
+
+//завиртуаленный remove
+
+TEST(TRingList, correct_remove_only_one_element)
+{
+	TNode<int>* a = new TNode<int>(52);
+
+	TRingList<int> rl(a);
+	rl.Remove(52);
+	EXPECT_EQ(rl.GetCurrent(), nullptr);
 }
