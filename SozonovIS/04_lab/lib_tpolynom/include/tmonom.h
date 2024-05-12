@@ -1,9 +1,6 @@
 #ifndef __MONOM_H__
 #define __MONOM_H__
 
-#include "tdata.h"
-
-#include <map>
 #include <iostream>
 
 using namespace std;
@@ -11,7 +8,7 @@ using namespace std;
 class TMonom {
 public:
 	double coeff;
-	int degree; // 0 ... 999
+	int degree; 
 	TMonom(const TMonom& monom);
 	TMonom(double coef = 0, int deg = -1);
 	bool operator<(const TMonom& monom)const;

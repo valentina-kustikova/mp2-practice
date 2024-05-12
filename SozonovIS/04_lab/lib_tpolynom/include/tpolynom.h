@@ -1,8 +1,8 @@
 #ifndef __POLYNOM_H__
 #define __POLYNOM_H__
 
-#include "theadringlist.h"
 #include "tmonom.h"
+#include "theadringlist.h"
 
 #include <map>
 #include <iostream>

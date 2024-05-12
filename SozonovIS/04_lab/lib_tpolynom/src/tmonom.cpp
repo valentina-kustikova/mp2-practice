@@ -1,5 +1,4 @@
 #include "tmonom.h"
-#include "tdata.h"
 
 #include <iostream>
 
