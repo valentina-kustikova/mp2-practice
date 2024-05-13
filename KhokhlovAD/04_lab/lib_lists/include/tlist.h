@@ -31,6 +31,10 @@ public:
 
 	void Sort();
 
+	TNode<T>* getpF()const { return pFirst; };
+	TNode<T>* getpS()const { return pStop; };
+	TNode<T>* getpC()const { return pCurr; };
+
 	T get_pFirst()const { return pFirst->data; };
 	T get_pLast()const { return pLast->data; };
 	T get_pCurr()const { return pCurr->data; };
@@ -48,6 +52,7 @@ public:
 	void DeleteBefore(const TNode<T>* before_node);
 	void DeleteAfter(const TNode<T>* after_node);
 	void DeleteData(const T& data);
+	void DeleteCurrent();
 
 	virtual TList<T>& operator=(const TList<T>& pList);
 
@@ -354,6 +359,29 @@ void TList<T>::DeleteLast()
 	pCurr = pFirst;
 	pPrev = pStop;
 }
+
+template <typename T>
+void TList<T>::DeleteCurrent()
+{
+	if (IsEmpty())
+		throw std::exception("empty list(DelC)");
+	if (pCurr != pStop)
+	{
+		if (pCurr == pFirst) {
+			DeleteFirst();
+		}
+		else {
+			TNode<TData>* tmp = pCurr;
+			pPrev->pNext = pCurr->pNext;
+			pCurr = pCurr->pNext;
+			if (pPrev->pNext == pStop)
+				pLast = pPrev;
+			pPrev->pNext = pCurr;
+			delete tmp;
+		}
+	}
+}
+
 template <typename T>
 void TList<T>::DeleteBefore(const TNode<T>* before_node)
 {
@@ -448,7 +476,7 @@ TList<T>& TList<T>::operator=(const TList<T>& pList)
 		throw std::exception("Invalid pList (=)");
 	if (this == &pList)
 		return *this;
-	clear();î 
+	clear();
 	TNode<T>* pNode = pList.pFirst;
 	while (pNode != pList.pStop)
 	{

@@ -1,5 +1,11 @@
 #include "tmonom.h"
 
+TMonom::TMonom()
+{
+	degree = -1;
+	coeff = 0;
+}
+
 TMonom::TMonom(double coeff, int degree)
 {
 	this->coeff = coeff;
@@ -10,6 +16,113 @@ TMonom::TMonom(const TMonom& monom)
 {
 	coeff = monom.coeff;
 	degree = monom.degree;
+}
+
+TMonom::TMonom(const string& monom)
+{
+	string str = monom;
+	string strcoeff = "";
+	degree = 0;
+	coeff = 1;
+	int tmpdegree = 0;
+	int i = 0;
+	while (str[i] != '*')
+	{
+		strcoeff += str[i];
+		i++;
+	}
+	while (i < str.length())
+	{
+		if (str[i] == 'x')
+		{
+			if (i == str.length() - 1)
+			{
+				tmpdegree += 100;
+				break;
+			}
+			if (str[i + 1] == '*')
+			{
+				tmpdegree += 100;
+				i++;
+				continue;
+			}
+			if (str[i + 1] == '^')
+			{
+				i++;
+				continue;
+			}
+			i++;
+			continue;
+		}
+		if (str[i] == 'y')
+		{
+			if (i == str.length() - 1)
+			{
+				tmpdegree += 10;
+				break;
+			}
+			if (str[i + 1] == '*')
+			{
+				tmpdegree += 10;
+				i++;
+				continue;
+			}
+			if (str[i + 1] == '^')
+			{
+				i++;
+				continue;
+			}
+			i++;
+			continue;
+		}
+		if (str[i] == 'z')
+		{
+			if (i == str.length() - 1)
+			{
+				tmpdegree += 1;
+				break;
+			}
+			if (str[i + 1] == '*')
+			{
+				tmpdegree += 1;
+				i++;
+				continue;
+			}
+			if (str[i + 1] == '^')
+			{
+				i++;
+				continue;
+			}
+			i++;
+			continue;
+		}
+		else if (str[i] == '^')
+		{
+			i++;
+			continue;
+		}
+		else if (str[i] == '*')
+		{
+			i++;
+			continue;
+		}
+		else if (isdigit(str[i]))
+		{
+			if (str[i - 2] == 'x' && str[i - 1] == '^')
+				tmpdegree += (str[i] -48) * 100;
+			if (str[i - 2] == 'y' && str[i - 1] == '^')
+				tmpdegree += (str[i]-48) * 10;
+			if (str[i - 2] == 'z' && str[i - 1] == '^')
+				tmpdegree += (str[i]-48);
+			i++;
+		}
+		else 
+			throw std::exception("invalid string");
+	}
+	coeff = stod(strcoeff);
+	if (tmpdegree > 999)
+		throw std::exception("invalid string");
+	degree = tmpdegree;
 }
 
 
@@ -89,18 +202,18 @@ TMonom TMonom::def_Z()
 	return TMonom(coeff * (degree % 10), degree - 1);
 }
 
-double TMonom::calculate(std::map<char, double>& xyz)
+double TMonom::calculate(double x, double y, double z)
 {
 	double res = coeff;
 	if (degree / 100 != 0)
 		for (int i = 0; i < degree / 100; i++)
-			res *= xyz.at('x');
+			res *= x;
 	if ((degree % 100) / 10 != 0)
 		for (int i = 0; i < (degree % 100) / 10; i++)
-			res *= xyz.at('y');
+			res *= y;
 	if (degree % 10 != 0)
 		for (int i = 0; i < degree % 10; i++)
-			res *= xyz.at('z');
+			res *= z;
 	return res;
 }
 
@@ -109,7 +222,7 @@ const TMonom& TMonom::operator=(const TMonom& monom)
 	if (*this == monom)
 		return *this;
 	coeff = monom.coeff;
-	degree = monom.coeff;
+	degree = monom.degree;
 	return *this;
 }
 
@@ -148,22 +261,31 @@ std::ostream& operator<<(std::ostream out, TMonom& monom)
 	z = monom.degree % 10;
 	if (monom.coeff == 0)
 		return out << "0";
-	if (monom.coeff == -1)
-		out << "-";
-	if (monom.coeff != 1 || monom.degree == 0)
-		out << monom.coeff;
+	if (monom.coeff > 0)
+		out << "+";
+	out << monom.coeff;
 	if (x == 1)
-		out << "x";
+		out << "*x";
 	else  if (x > 0)
-		out << "x^" << x;
+		out << "*x^" << x;
 	if (y == 1)
-		out << "y";
+		out << "*y";
 	else  if (y > 0)
-		out << "y^" << y;
+		out << "*y^" << y;
 	if (z == 1)
-		out << "z";
+		out << "*z";
 	else  if (z > 0)
-		out << "z^" << z;
+		out << "*z^" << z;
 	return out;
 
+}
+
+
+void TMonom::SetCoeff(const double cf)
+{
+	coeff = cf;
+}
+void TMonom::SetDegree(const int dgr)
+{
+	degree = dgr;
 }

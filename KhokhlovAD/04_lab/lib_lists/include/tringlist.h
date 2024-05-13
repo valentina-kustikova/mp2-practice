@@ -10,11 +10,14 @@ private:
 	TNode<T>* pHead;
 public:
 	TRingList();
+	TRingList(const T& data);
 	TRingList(const TNode<T>* pF);
 	TRingList(const TRingList<T>& ringList);
-	virtual ~TRingList();
+	~TRingList();
 	void InsertFirst(const T& data);
 	void DeleteFirst();
+	TRingList<T>& operator=(const TRingList<T>& pRingList);
+	TRingList<T>&  Copy();
 };
 
 template <typename T> 
@@ -25,6 +28,19 @@ TRingList<T>::TRingList() {
 	this->pFirst = pHead;
 	this->pLast = pHead;
 	this->pCurr = pHead;
+	this->pPrev = pHead;
+}
+
+template <typename T>
+TRingList<T>::TRingList(const T& data)
+{
+	pHead = new TNode<T>(T());
+	this->pStop = pHead;
+	pHead->pNext = this->pFirst;
+	this->pFirst = new TNode<T>(data);
+	this->pLast = pHead;
+	this->pFirst->pNext = pLast;
+	this->pCurr = pFirst;
 	this->pPrev = pHead;
 }
 
@@ -143,5 +159,41 @@ void TRingList<T>::DeleteFirst()
 	pFirst = tmp;
 	pCurr = pFirst;
 	pHead->pNext = pFirst;
+}
+template <typename T>
+TRingList<T>& TRingList<T>::operator=(const TRingList<T>& pRingList)
+{
+	if (this == &pRingList)
+	{
+		return *this;
+	}
+	pHead = new TNode<T>(T());
+	if (pRingList.pFirst != nullptr)
+	{
+		pFirst = new TNode<T>(*pRingList.pFirst);
+		pHead->pNext = pFirst;
+		pStop = pHead;
+		pCurr = pFirst;
+		TNode<T>* tmp = pRingList.pFirst->pNext;
+		while (tmp->pNext != pRingList.pStop) {
+			pCurr->pNext = new TNode<T>(*tmp->pNext);
+			pCurr = pCurr->pNext;
+			tmp = tmp->pNext;
+		}
+		pCurr->pNext = pStop;
+		pLast = pCurr;
+		TList<T>::Reset();
+	}
+	else {
+		pFirst = pCurr = pLast = pStop = pPrev = pHead;
+		pHead->pNext = pHead;
+	}
+	return *this;
+}
+
+template <typename T>
+TRingList<T>& TRingList<T>::Copy()
+{
+	return *this;
 }
 #endif

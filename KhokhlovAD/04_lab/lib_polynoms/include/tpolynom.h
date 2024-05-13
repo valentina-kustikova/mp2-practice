@@ -9,20 +9,31 @@ using namespace std;
 class TPolynom
 {
 private:
-	TRingList<TMonom>* monoms;
-	string name;
+	TRingList<TMonom> monoms;
+	void update();
 public:
 	TPolynom();
 	TPolynom(const string& name);
-	TPolynom(const TRingList<TMonom>* monoms);
+	TPolynom(const TRingList<TMonom> monoms);
 	TPolynom(const TPolynom& p);
-	~TPolynom();
 	TPolynom operator+(const TPolynom& polynom);
 	TPolynom operator-(const TPolynom& polynom);
 	TPolynom operator*(const TPolynom& polynom);
+	TPolynom operator*(const double c);
 	const TPolynom& operator=(const TPolynom& polynom);
 	TPolynom dif()const;
+	TPolynom dif_x()const;
+	TPolynom dif_y()const;
+	TPolynom dif_z()const;
 	double operator()(double x, double y, double z)const;
+	friend ostream& operator<< (ostream& out, const TPolynom& polynom);
+	friend istream& operator>> (istream& in, TPolynom& polynom)
+	{
+		string s;
+		in >> s;
+		polynom = TPolynom(s);
+		return in;
+	}
 };
 
 #endif
