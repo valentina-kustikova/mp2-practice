@@ -3,41 +3,40 @@
 
 #include "TList.h"
 
-template <typename T>
+template <typename TKey,typename TData>
 class TRingList : public TList<T> {
 protected:
-	Node<T>* pHead;
+	Node<TKey,TData>* pHead;
 public:
 	TRingList();
-	TRingList(Node<T>* pFirst_);
-	TRingList(const TRingList<T>& rList);
+	TRingList(Node<TKey,TData>* pFirst_);
+	TRingList(const TRingList<TKey,TData>& rList);
 	virtual ~TRingList();
 
-	void insert_first(const T& data_) override;
-	void remove(const T& data_) override;
-	void Sort();
-	bool Is_Sorted();
+	void insert_first(const TKey& hey_,const TData* data_) override;
+	void remove(const TKey& key_) override;
+	void Clear()override;
 };
 
-template<typename T>		
-TRingList<T>::TRingList(){ 
-	pHead = new Node<T>();
+template <typename TKey, typename TData>
+TRingList<TKey,TData>::TRingList(){ 
+	pHead = new Node<TKey,TData>();
 	pHead->pNext = pHead;
 	pStop = pHead;
 }
 
-template <typename T>
-TRingList<T>::TRingList(Node<T>* pFirst_):TRingList<T>(){
+template <typename TKey, typename TData>
+TRingList<TKey,TData>::TRingList(Node<TKey,TData>* pFirst_):TRingList<TKey,TData>(){
 	if (pFirst_ == nullptr)
 	{
 		return;
 	}
-	pFirst = new Node<T>(pFirst_->data);
+	pFirst = new Node<TKey,TData>(pFirst_->key,pFirst_->data);
 	pHead->pNext = pFirst;
 	Node<T>* tmp = pFirst_->pNext;
 	pCurr = pFirst;
 	while (tmp != nullptr) {
-		pCurr->pNext = new Node<T>(tmp->data);
+		pCurr->pNext = new Node<TKey,TData>(tmp->key,tmp->data);
 		pCurr = pCurr->pNext;
 		tmp = tmp->pNext;
 	}
@@ -48,18 +47,18 @@ TRingList<T>::TRingList(Node<T>* pFirst_):TRingList<T>(){
 	pStop = pHead;
 }
 
-template <typename T>
-TRingList<T>::TRingList(const TRingList<T>& rList){
+template <typename TKey, typename TData>
+TRingList<TKey,TData>::TRingList(const TRingList<TKey,TData>& rList){
 	if (rList.pFirst == nullptr) {
 		return;
 	}
-	pHead = new Node<T>();
-	pFirst = new Node<T>(rList.pFirst->data);
+	pHead = new Node<TKey,TData>();
+	pFirst = new Node<TKey,TData>(rList.pFirst->key,rList.pFirst->data);
 	pHead->pNext = pFirst;
-	Node<T>* tmp = rList.pFirst->pNext;
+	Node<TKey,TData>* tmp = rList.pFirst->pNext;
 	pCurr = pFirst;
 	while (tmp != rList.pStop) {
-		pCurr->pNext = new Node<T>(tmp->data);
+		pCurr->pNext = new Node<TKey,TData>(tmp->key,tmp->data);
 		pCurr = pCurr->pNext;
 		tmp = tmp->pNext;
 	}
@@ -70,15 +69,15 @@ TRingList<T>::TRingList(const TRingList<T>& rList){
 	pStop = pHead;
 }
 
-template<typename T>
-TRingList<T>::~TRingList() {
+template <typename TKey, typename TData>
+TRingList<TKey,TData>::~TRingList() {
 	pHead->pNext = nullptr;
 	delete pHead;
 }
 
-template<typename T>
-void TRingList<T>::insert_first(const T& data_) {
-	Node<T>* tmp = new Node<T>(data_);
+template <typename TKey, typename TData>
+void TRingList<TKey,TData>::insert_first(const TKey& key_,const TData* data_) {
+	Node<TKey,TData>* tmp = new Node<TKey,TData>(key_,data_);
 	tmp->pNext = pFirst;
 	if (pFirst == nullptr) {
 		pFirst = tmp;
@@ -95,9 +94,9 @@ void TRingList<T>::insert_first(const T& data_) {
 }
 
 
-template<typename T>
-void TRingList<T>::remove(const T& data_) {
-	Node<T>* tmp = search(data_);
+template <typename TKey, typename TData>
+void TRingList<TKey,TData>::remove(const TKey& key_) {
+	Node<TKey,TData>* tmp = search(key_);
 	if (tmp == pFirst) {
 		pFirst = pFirst->pNext;
 		pHead->pNext = pFirst;
@@ -116,38 +115,23 @@ void TRingList<T>::remove(const T& data_) {
 	}
 }
 
-template<typename T>
-bool TRingList<T>::Is_Sorted() {
-	next();
-	while (!Is_Ended()) {
-		if (pPrev->data <= pCurr->data) {
-			next();
-		}
-		else {
-			reset();
-			return false;
-		}
+template<typename TKey,typename TData>
+void TRingList<TKey,TData>::Clear(){
+	if (IsEmpty()) {
+		return;
 	}
-	reset();
-	return true;
-}
-
-template<typename T>
-void TRingList<T>::Sort() {
-	int size = GetSize();
-	while(pCurr != pStop){
-		Node<T>* min = getCurrent();
-		Node<T>* pJ = getCurrent()->pNext;
-		while(pJ != pStop){
-			if (pJ->data <= min->data) {
-				min = pJ;
-			}
-			pJ = pJ->pNext;
-		}
-		swap(pCurr, min);//указатели
-		next();
+	Node<TKey,TData>* tmp = pFirst;
+	while (tmp != pStop) {
+		pFirst = pFirst->pNext;
+		pHead->pNext = pFirst;
+		tmp->pNext = nullptr;
+		delete tmp;
+		tmp = pFirst;
 	}
-	reset();
+	pFirst = nullptr;
+	pCurr = nullptr;
+	pPrev = nullptr;
+	pLast = nullptr;
 }
 
 #endif
