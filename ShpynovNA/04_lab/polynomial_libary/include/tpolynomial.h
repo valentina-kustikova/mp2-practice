@@ -23,6 +23,7 @@ public:
 		name = p.name;
 		monomials = p.monomials;
 }
+	string ToString() const;
 
 	~TPolynomial() {};
 
@@ -39,32 +40,7 @@ public:
 	TPolynomial DerivativeZ() const;
 
 	friend ostream& operator<<(ostream& out, TPolynomial& p) {
-		p.monomials.reset();
-		if ((p.monomials.GetCurrent()->data.coef == 0) && (p.monomials.GetCurrent()->data.degr == 0))
-			out << "0";
-		else if ((p.monomials.GetCurrent()->data.coef == 0) && (p.monomials.GetCurrent()->data.degr != 0)){}
-		else if (p.monomials.GetCurrent()->data.coef < 0)
-			out<< "-" << p.monomials.GetCurrent()->data;
-		else 
-			out << p.monomials.GetCurrent()->data;
-		try { p.monomials.next(); }
-		catch  (...) { return out; }
-		int k = -1;
-		while (!p.monomials.IsEnded()) {
-			k++;
-			if (p.monomials.GetCurrent()->data.coef < 0)
-				out << " - ";
-			else if (p.monomials.GetCurrent()->data.coef > 0)
-				out << " + ";
-			else if ((p.monomials.GetCurrent()->data.coef == 0) && (k == 0))
-				return out;
-			else if ((p.monomials.GetCurrent()->data.coef == 0) && (k != 0)) {
-				p.monomials.next();
-				continue;
-			}
-			out << p.monomials.GetCurrent()->data;
-			p.monomials.next();
-		}
+		out << p.ToString();
 		return out;
 	}
 };

@@ -55,22 +55,12 @@ TEST(TList, can_insert_into_list) {
 }
 TEST(TList, list_copy_correct) {
 	TList<int> tmp;
-	std::vector<int> A;
-	std::vector<int> B;
-	for (int i = 1; i < 8; i += 2) {
-		tmp.InsertLast(i);
-		A.push_back(i);
-	}
-	TList<int> tmp1;
-	tmp1 = tmp;
-	tmp1.reset();
-	int i = 0;
-	while (!tmp1.IsEnded()) {
-		B.push_back(tmp1.GetCurrent()->data);
-		i++;
-		tmp1.next();
-	}
-	EXPECT_EQ(A, B);
+	tmp.InsertLast(1);
+	tmp.InsertLast(2);
+	tmp.InsertLast(3);
+	tmp.InsertLast(4);
+	TList<int> tmp1 = tmp;
+	EXPECT_EQ(tmp, tmp1);
 }
 TEST(TList, list_insert_first_correct) {
 	TestTList<int> list;
@@ -117,7 +107,14 @@ TEST(TList, el_delete_correct) {
 	list.DeleteNode(tmp);
 	EXPECT_EQ(list.pFirst->pNext->data, 1);
 }
-
+TEST(TList, list_compare_correct) {
+	TList<int> list;
+	list.InsertFirst(1);
+	list.InsertFirst(3);
+	list.InsertFirst(5);
+	TList<int> list1 = list;
+	ASSERT_TRUE(list == list1);
+}
 
 
 
@@ -155,4 +152,13 @@ TEST(THeadRingList, can_assign_Ring_list) {
 		tmp1.next();
 	}
 	EXPECT_EQ(A, B);
+}
+TEST(THeadRingList, el_delete_correct) {
+	TestRingTList<int> list;
+	list.InsertFirst(1);
+	list.InsertFirst(3);
+	list.InsertFirst(5);
+	TNode<int>* tmp = list.pFirst->pNext;
+	list.DeleteNode(tmp);
+	EXPECT_EQ(list.pFirst->pNext->data, 1);
 }

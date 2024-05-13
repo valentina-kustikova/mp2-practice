@@ -16,6 +16,42 @@ bool TPolynomial::operator==(const TPolynomial& p) const {
 	return true;
 }
 
+
+string TPolynomial::ToString() const {
+	string S;
+	TPolynomial p(*this);
+	p.monomials.reset();
+	if ((p.monomials.GetCurrent()->data.coef == 0) && (p.monomials.GetCurrent()->data.degr == 0))
+		S.push_back('0');
+	else if ((p.monomials.GetCurrent()->data.coef == 0) && (p.monomials.GetCurrent()->data.degr != 0)) {}
+	else if (p.monomials.GetCurrent()->data.coef < 0) {
+		S.push_back('-');
+		S.append(p.monomials.GetCurrent()->data.ToString());
+	}
+	else
+		S.append(p.monomials.GetCurrent()->data.ToString());
+	try { p.monomials.next(); }
+	catch (...) { return S; }
+	int k = -1;
+	while (!p.monomials.IsEnded()) {
+		k++;
+		if (p.monomials.GetCurrent()->data.coef < 0)
+			S.append(" - ");
+		else if (p.monomials.GetCurrent()->data.coef > 0)
+			S.append(" + ");
+		else if ((p.monomials.GetCurrent()->data.coef == 0) && (k == 0))
+			return S;
+		else if ((p.monomials.GetCurrent()->data.coef == 0) && (k != 0)) {
+			p.monomials.next();
+			continue;
+		}
+		S.append(p.monomials.GetCurrent()->data.ToString());
+		p.monomials.next();
+	}
+	return S;
+}
+
+
 void TPolynomial::PutNewMonomialInPlace(TMonomial& m) {
 	monomials.reset();
 	if (monomials.IsEmpty()) {
@@ -138,6 +174,7 @@ TPolynomial TPolynomial::DerivativeX() const {
 		}
 		tmp.monomials.next();
 	}
+	tmpdx.name = tmpdx.ToString();
 	return tmpdx;
 }
 TPolynomial TPolynomial::DerivativeY() const {

@@ -9,6 +9,7 @@ public:
 
 	THeadRingList() :TList<TData>() {
 		pHead = new TNode<TData>();
+		pHead->pNext = pHead;
 		pStop = pHead;
 	}
 	THeadRingList(const THeadRingList<TData>& l) :TList<TData>(l) {
@@ -21,38 +22,29 @@ public:
 	~THeadRingList() { delete pHead;}
 
 	void InsertFirst(const TData& d);
-	void InsertLast(const TData& d);
-	void DeleteNode(TNode<TData>* node);
-	void DeleteCurrentNode() { DeleteNode(pCurrent); }
+	void clear();
 
-	THeadRingList<TData>& operator=(const THeadRingList<TData>& l);
+	const THeadRingList<TData>& operator=(const THeadRingList<TData>& l);
 };
 
 template <typename TData> void THeadRingList<TData>::InsertFirst(const TData& d){
 	TList<TData>::InsertFirst(d);
-	pHead->pNext = pFirst;
-	pStop = pHead;
 	pLast->pNext = pHead;
+	pHead->pNext = pFirst;
 }
 
-template <typename TData> void THeadRingList<TData>::InsertLast(const TData& d){
-	if (IsEmpty()) {
-		THeadRingList<TData>::InsertFirst(d);
-		return;
-	}
-	TList<TData>::InsertLast(d);
-}
-
-template <typename TData> THeadRingList<TData>& THeadRingList<TData>::operator=(const THeadRingList<TData>& l) {
+template <typename TData>
+const THeadRingList<TData>& THeadRingList<TData>::operator=(const THeadRingList<TData>& l) {
 	if (this == &l)
 		return *this;
 	pFirst = new TNode<TData>(*l.pFirst);
 	pHead = new TNode<TData>();
+	pHead->pNext = pFirst;
 	pStop = pHead;
-	(*this).reset();
-	TNode<TData>* tmp = l.pFirst;
-	while (tmp->pNext != l.pStop) {
-		pCurrent->pNext = new TNode<TData>(*tmp->pNext);
+	pCurrent = pFirst;
+	TNode<TData>* tmp = l.pFirst->pNext;
+	while (tmp != l.pStop) {
+		pCurrent->pNext = new TNode<TData>(*tmp);
 		pCurrent = pCurrent->pNext;
 		tmp = tmp->pNext;
 	}
@@ -63,29 +55,9 @@ template <typename TData> THeadRingList<TData>& THeadRingList<TData>::operator=(
 	return (*this);
 }
 
-template <typename TData> void THeadRingList<TData>::DeleteNode(TNode<TData>* node) {
-	if (pFirst == nullptr)
-		return;
-	if (pFirst == node)
-	{
-		pHead ->pNext = pFirst->pNext;
-		pFirst = pFirst->pNext;
-		return;
-	}
-	this->reset();
-	TNode<TData>* TNow = pFirst;
-	TNode<TData>* TNext = pFirst->pNext;
-
-	while (TNext != node) {
-		if (TNext == nullptr)
-			return;
-		TNow = TNext;
-		TNext = TNext->pNext;
-	}
-	TNow->pNext = TNext->pNext;
-	TNow = nullptr;
-	TNext = nullptr;
-	return;
+template <typename TData> void THeadRingList<TData>::clear() {
+	TList<TData>::clear();
+	pHead->pNext = pHead;
+	pStop = pHead;
 }
-
 #endif
