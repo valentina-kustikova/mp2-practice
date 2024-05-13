@@ -18,16 +18,16 @@ public:
 	void insert(const Key& _key, const Value& _data);
 };
 
-TabTemplate
+template <class Key, class Value>
 SortedTable<Key, Value>::SortedTable(int _max_size) noexcept : ScanTable(_max_size) {}
 
-TabTemplate
+template <class Key, class Value>
 SortedTable<Key, Value>::SortedTable(const ScanTable<Key, Value>& table) noexcept : ScanTable(st)
 {
 	this->sort();
 }
 
-TabTemplate
+template <class Key, class Value>
 SortedTable<Key, Value>::SortedTable(const SortedTable<Key, Value>& table) noexcept :
 	size(table.size), max_size(table.max_size), curr(table.curr)
 {
@@ -37,7 +37,7 @@ SortedTable<Key, Value>::SortedTable(const SortedTable<Key, Value>& table) noexc
 	}
 }
 
-TabTemplate
+template <class Key, class Value>
 Record<Key, Value>* SortedTable<Key, Value>::find(const Key& key) 
 {
 	int l = 0, r = size - 1;
@@ -63,7 +63,7 @@ Record<Key, Value>* SortedTable<Key, Value>::find(const Key& key)
 	return nullptr;
 }
 
-TabTemplate
+template <class Key, class Value>
 void SortedTable<Key, Value>::insert(const Key& _key, const Value& _data) {
 	
 	if (this->full()) {
@@ -87,7 +87,7 @@ void SortedTable<Key, Value>::insert(const Key& _key, const Value& _data) {
 	}
 }
 
-TabTemplate
+template <class Key, class Value>
 void SortedTable<Key, Value>::sort()
 {
 	for (int i = 0; i < size; ++i)

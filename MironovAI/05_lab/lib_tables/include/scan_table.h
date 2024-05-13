@@ -6,7 +6,7 @@
 #include "table.h"
 using namespace std;
 
-TabTemplate
+template <class Key, class Value>
 class ScanTable : public Table<Key, Value> {
 protected:
 	Record<Key, Value>** recs;
@@ -34,7 +34,7 @@ public:
 };
 
 
-TabTemplate
+template <class Key, class Value>
 ScanTable<Key, Value>::ScanTable(int _max_size) noexcept
 {
 	if (_max_size <= 0)
@@ -50,7 +50,7 @@ ScanTable<Key, Value>::ScanTable(int _max_size) noexcept
 
 }
 
-TabTemplate
+template <class Key, class Value>
 ScanTable<Key, Value>::ScanTable(const ScanTable<Key, Value>& table) noexcept :
 	max_size(table.max_size), size(table.size), curr(table.curr) 
 { 
@@ -64,7 +64,7 @@ ScanTable<Key, Value>::ScanTable(const ScanTable<Key, Value>& table) noexcept :
 	}
 }
 
-TabTemplate
+template <class Key, class Value>
 ScanTable<Key, Value>::~ScanTable() 
 {
 	if (max_size == -1) return;
@@ -76,7 +76,7 @@ ScanTable<Key, Value>::~ScanTable()
 }
 
 
-TabTemplate
+template <class Key, class Value>
 void ScanTable<Key, Value>::insert(const Key& _key, const Value& _data)
 {
 	if (this->full())
@@ -95,7 +95,7 @@ void ScanTable<Key, Value>::insert(const Key& _key, const Value& _data)
 	}
 }
 
-TabTemplate
+template <class Key, class Value>
 void ScanTable<Key, Value>::remove(const Key& _key)
 {
 	if (this->empty())
@@ -114,7 +114,7 @@ void ScanTable<Key, Value>::remove(const Key& _key)
 	--size;
 }
 
-TabTemplate
+template <class Key, class Value>
 Record<Key, Value>* ScanTable<Key, Value>::find(const Key& key) 
 {
 	for (int i = 0; i < size; ++i)

@@ -4,13 +4,12 @@
 #include "record.h"
 #include <iostream>
 
-#define TabTemplate template <class Key, class Value>
 #define DefaultSize 101
 
 using namespace std;
 
 
-TabTemplate
+template <class Key, class Value>
 class Table {
 protected:
 	int size;
@@ -32,19 +31,19 @@ public:
 };
 
 
-TabTemplate
+template <class Key, class Value>
 bool Table<Key, Value>::full() const noexcept
 {
 	return (size == max_size);
 }
 
-TabTemplate
+template <class Key, class Value>
 bool Table<Key, Value>::empty() const noexcept
 {
 	return (size == 0);
 }
 
-TabTemplate
+template <class Key, class Value>
 bool Table<Key, Value>::reset() noexcept
 {
 	if (!empty()) {
@@ -58,7 +57,7 @@ bool Table<Key, Value>::reset() noexcept
 
 }
 
-TabTemplate
+template <class Key, class Value>
 bool Table<Key, Value>::next() noexcept
 {
 
@@ -73,13 +72,13 @@ bool Table<Key, Value>::next() noexcept
 
 }
 
-TabTemplate
+template <class Key, class Value>
 size_t Table<Key, Value>::get_size() const noexcept
 {
 	return size;
 }
 
-TabTemplate
+template <class Key, class Value>
 size_t Table<Key, Value>::get_max_size() const noexcept
 {
 	return max_size;

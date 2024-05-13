@@ -4,15 +4,16 @@
 #include "scan_table.h"
 
 template <class Key, class Value>
-class HashTable : public ScanTable<Key, Value> 
+class HashTable : public Table<Key, Value> 
 {
 protected:
+	Record<Key, Value>** recs;
 	Record<Key, Value>* pMark = new Record<Key, Value>();
 	size_t step;
 
 	virtual size_t hash(const Key& key) const;
 public:
-	HashTable<Key, Value>(int max_size=DefaultSize) noexcept;
+	HashTable<Key, Value>(int _max_size=DefaultSize) noexcept;
 	HashTable<Key, Value>(const HashTable& table) noexcept;
 	virtual ~HashTable<Key, Value>();
 
@@ -20,6 +21,17 @@ public:
 	void insert(const Key& key, const Value& value);
 	void remove(const Key& key);
 	void next(int pos);
+	friend ostream& operator<<(ostream& buf, const HashTable& table)
+	{
+		cout << table.size << endl;
+		for (int i = 0; i < table.max_size; ++i)
+		{
+			if (table.recs[i])
+				cout << "(" << table.recs[i]->key << ", " << table.recs[i]->data << "), ";
+		}
+		cout << endl;
+		return buf;
+	}
 };
 
 template <class Key, class Value>
@@ -30,13 +42,24 @@ size_t HashTable<Key, Value>::hash(const Key& key) const
 	
 }
 
-TabTemplate
-HashTable<Key, Value>::HashTable(int max_size) noexcept : ScanTable(max_size)
+template <class Key, class Value>
+HashTable<Key, Value>::HashTable(int _max_size) noexcept
 {
+	if (_max_size <= 0)
+	{
+		max_size = -1;
+		return;
+	}
+	max_size = _max_size;
+	size = 0;
+	curr = 0;
+	recs = new Record<Key, Value>*[max_size];
+	for (int i = 0; i < _max_size; ++i) recs[i] = nullptr;
+
 	step = (max_size == 13) ? 11 : 13;
 }
 
-TabTemplate
+template <class Key, class Value>
 HashTable<Key, Value>::HashTable(const HashTable& table) noexcept
 {
 	this->max_size = table.max_size;
@@ -52,17 +75,18 @@ HashTable<Key, Value>::HashTable(const HashTable& table) noexcept
 	}
 }
 
-TabTemplate
+template <class Key, class Value>
 HashTable<Key, Value>::~HashTable()
 {
 	for (int i = 0; i < max_size; ++i)
 	{
 		if (recs[i] == pMark) recs[i] = nullptr;
+		else if (recs[i] != nullptr) delete recs[i];
 	}
 	delete pMark;
 }
 
-TabTemplate
+template <class Key, class Value>
 Record<Key, Value>* HashTable<Key, Value>::find(const Key& key)
 {
 	int hs = hash(key), t = (hs + step) % max_size, c = 1;
@@ -94,7 +118,7 @@ Record<Key, Value>* HashTable<Key, Value>::find(const Key& key)
 	return nullptr;
 }
 
-TabTemplate
+template <class Key, class Value>
 void HashTable<Key, Value>::insert(const Key& key, const Value& value)
 {
 	if (size == max_size)
@@ -114,7 +138,7 @@ void HashTable<Key, Value>::insert(const Key& key, const Value& value)
 	}
 }
 
-TabTemplate
+template <class Key, class Value>
 void HashTable<Key, Value>::remove(const Key& key)
 {
 	if (size == 0)
@@ -134,7 +158,7 @@ void HashTable<Key, Value>::remove(const Key& key)
 	}
 }
 
-TabTemplate
+template <class Key, class Value>
 void HashTable<Key, Value>::next(int pos)
 {
 	if (size == max_size) curr = 0;
