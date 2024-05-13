@@ -26,7 +26,7 @@ TMonom::TMonom(const string& monom)
 	coeff = 1;
 	int tmpdegree = 0;
 	int i = 0;
-	while (str[i] != '*')
+	while (isdigit(str[i]))
 	{
 		strcoeff += str[i];
 		i++;
@@ -119,7 +119,10 @@ TMonom::TMonom(const string& monom)
 		else 
 			throw std::exception("invalid string");
 	}
-	coeff = stod(strcoeff);
+	if (strcoeff.length() != 0)
+		coeff = stod(strcoeff);
+	else
+		coeff = 1;
 	if (tmpdegree > 999)
 		throw std::exception("invalid string");
 	degree = tmpdegree;

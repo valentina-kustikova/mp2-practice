@@ -126,6 +126,7 @@ TPolynom TPolynom::operator*(const double c)
 		monoms.Next();
 	}
 	monoms.Reset();
+	return *this;
 }
 
 TPolynom TPolynom::operator*(const TPolynom& polynom)
@@ -153,42 +154,52 @@ TPolynom TPolynom::operator*(const TPolynom& polynom)
 TPolynom TPolynom::dif()const
 {
 	TPolynom tmp(*this);
-	tmp.dif_x();
-	tmp.dif_y();
-	tmp.dif_z();
+	tmp = tmp.dif_x();
+	tmp = tmp.dif_y();
+	tmp =tmp.dif_z();
+	tmp.update();
 	return tmp;
 }
 
 
 TPolynom TPolynom::dif_x()const
 {
-	TPolynom tmp(*this);
+	TPolynom tmp(monoms);
+	TPolynom newp;
+	TMonom tp;
 	while (!tmp.monoms.IsEnd())
 	{
-		tmp.monoms.getpC()->data.def_X();
+		tp = tmp.monoms.getpC()->data.def_X();
+		newp.monoms.InsertLast(tp);
 		tmp.monoms.Next();
 	}
-	return tmp;
+	return newp;
 }
 TPolynom TPolynom::dif_y()const
 {
-	TPolynom tmp(*this);
+	TPolynom tmp(monoms);
+	TPolynom newp;
+	TMonom tp;
 	while (!tmp.monoms.IsEnd())
 	{
-		tmp.monoms.getpC()->data.def_Y();
+		tp = tmp.monoms.getpC()->data.def_Y();
+		newp.monoms.InsertLast(tp);
 		tmp.monoms.Next();
 	}
-	return tmp;
+	return newp;
 }
 TPolynom TPolynom::dif_z()const
 {
-	TPolynom tmp(*this);
+	TPolynom tmp(monoms);
+	TPolynom newp;
+	TMonom tp;
 	while (!tmp.monoms.IsEnd())
 	{
-		tmp.monoms.getpC()->data.def_Z();
+		tp = tmp.monoms.getpC()->data.def_Z();
+		newp.monoms.InsertLast(tp);
 		tmp.monoms.Next();
 	}
-	return tmp;
+	return newp;
 }
 
 double TPolynom::operator()(double x, double y, double z)const
@@ -204,8 +215,33 @@ double TPolynom::operator()(double x, double y, double z)const
 }
 ostream& operator<< (ostream& out, const TPolynom& polynom)
 {
-	while (!polynom.monoms.IsEnd())
+	TPolynom tmppolynom(polynom);
+	tmppolynom.update();
+	TMonom tmpmonom;
+	int flag = 0;
+	while (!tmppolynom.monoms.IsEnd())
 	{
-		
+		tmpmonom = tmppolynom.monoms.get_pCurr();
+		if (tmpmonom.GetDegree() == 0)
+			return out << tmpmonom.GetCoeff();
+		if (tmpmonom.GetCoeff() > 0 && flag != 0)
+			out << "+";
+		out << tmpmonom.GetCoeff();
+		if (tmpmonom.GetDegree() / 100 > 0)
+		{
+			out << "*x^" << tmpmonom.GetDegree() / 100;
+		}
+		if ((tmpmonom.GetDegree() % 100) / 10 > 0)
+		{
+			out << "*y^" << (tmpmonom.GetDegree() % 100) / 10;
+		}
+		if (tmpmonom.GetDegree() % 10 > 0)
+		{
+			out << "*z^" << tmpmonom.GetDegree() % 10;
+		}
+		flag++;
+		tmppolynom.monoms.Next();
 	}
+	out << endl;
+	return out;
 }

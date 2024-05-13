@@ -371,7 +371,7 @@ void TList<T>::DeleteCurrent()
 			DeleteFirst();
 		}
 		else {
-			TNode<TData>* tmp = pCurr;
+			TNode<T>* tmp = pCurr;
 			pPrev->pNext = pCurr->pNext;
 			pCurr = pCurr->pNext;
 			if (pPrev->pNext == pStop)
