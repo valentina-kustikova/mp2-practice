@@ -88,16 +88,30 @@ TEST(TPolinom, right_defX)
 	TPolinom p3("x^4+3*x+yz+3*y^3z+x^2yz^5");
 	EXPECT_EQ("+4.000*x^3+2.000*xyz^5+3.000", p3.defX().getFormula());
 }
+TEST(TPolinom, right_defX_without_x)
+{
+	TPolinom p3("1+y");
+	EXPECT_EQ("+0.000", p3.defX().getFormula());
+}
+
 TEST(TPolinom, can_defY)
 {
 	TPolinom p3("x^4+3*x+yz+3*y^3z+x^2yz^5");
 	ASSERT_NO_THROW(p3.defY());
 }
+
 TEST(TPolinom, right_defY)
 {
 	TPolinom p3("x^4+3*x+yz+3*y^3z+x^2yz^5");
 	EXPECT_EQ("+x^2z^5+9.000*y^2z+z", p3.defY().getFormula());
 }
+
+TEST(TPolinom, right_defY_without_y)
+{
+	TPolinom p3("1-x");
+	EXPECT_EQ("+0.000", p3.defY().getFormula());
+}
+
 TEST(TPolinom, can_defZ)
 {
 	TPolinom p3("x^4+3*x+yz+3*y^3z+x^2yz^5");
@@ -107,4 +121,10 @@ TEST(TPolinom, right_defZ)
 {
 	TPolinom p3("x^4+3*x+yz+3*y^3z+x^2yz^5");
 	EXPECT_EQ("+5.000*x^2yz^4+3.000*y^3+y", p3.defZ().getFormula());
+}
+
+TEST(TPolinom, right_defZ_without_z)
+{
+	TPolinom p3("1-x");
+	EXPECT_EQ("+0.000", p3.defZ().getFormula());
 }
