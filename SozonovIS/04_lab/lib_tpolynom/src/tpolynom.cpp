@@ -143,7 +143,6 @@ TPolynom TPolynom::operator-()const {
 
 TPolynom TPolynom::operator-(const TPolynom& p) {
 	TPolynom dif = (*this) + (-p);
-	dif.Cancellation();
 	return dif;
 }
 
