@@ -13,7 +13,7 @@ public:
 
 template <typename TKey, typename TData>
 int HashTable<TKey, TData>::hashFunc(const TKey _key) {
-	return  _key % maxSize;
+	return  _key.length() % maxSize;
 }
 
 template <typename TKey, typename TData>

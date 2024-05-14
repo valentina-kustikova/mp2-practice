@@ -14,18 +14,24 @@ public:
 	ScanTable(int max_size);
 	ScanTable(const ScanTable<TKey, TData>& t);
 	~ScanTable();
-	virtual TabRecord<TKey, TData>* Search(Tkey _key);
-	virtual void Insert(TKey _key, TData* _data);
-	virtual void Remove(TKey _key);
+	TabRecord<TKey, TData>* Search(TKey _key);
+	void Insert(TKey _key, TData* _data);
+	void Remove(TKey _key);
+	friend ostream& operator<<(ostream& out, const ScanTable<TKey, TData>& t) {
+		if (t.IsEmpty()) {
+			out << "table is empty";
+			return out;
+		}
+		for (int i = 0; i < t.count; i++) {
+			if (t.recs[i] != nullptr)
+				out << "| " << table.recs[i]->key << " | " << table.recs[i]->data << " |" << endl;
+		}
+		return out;
+	};
 };
 
 template <typename TKey, typename TData>
-ScanTable<TKey, TData>::ScanTable(int max_size) {
-	if (max_size <= 0)
-		throw exception("negative or zero max size");
-	count = 0;
-	maxSize = max_size;
-	currPos = -1;
+ScanTable<TKey, TData>::ScanTable(int max_size) : Table<TKey, TData>(max_size) {
 	recs = new TabRecord<TKey, TData>*[maxSize];
 }
 
@@ -42,13 +48,17 @@ ScanTable<TKey, TData>::ScanTable(const ScanTable<TKey, TData>& t) {
 
 template <typename TKey, typename TData>
 ScanTable<TKey, TData>::~ScanTable() {
-	for (int i = 0; i < maxSize; i++) {
-		delete recs[i];
+	if (!IsEmpty()) {
+		for (int i = 0; i < count; i++)
+			delete recs[i];
 	}
+	delete[] recs;
 }
 
 template <typename TKey, typename TData>
-TabRecord<TKey, TData>* ScanTable<TKey, TData>::Search(Tkey _key) {
+TabRecord<TKey, TData>* ScanTable<TKey, TData>::Search(TKey _key) {
+	if (IsEmpty())
+		return nullptr;
 	for (int i = 0; i < maxSize; i++)
 		if (recs[i]->key == _key) {
 			currPos = i;
@@ -61,6 +71,8 @@ template <typename TKey, typename TData>
 void ScanTable<TKey, TData>::Insert(TKey _key, TData* _data) {
 	if (IsFull())
 		throw exception("table if full");
+	if (Search(_key) != nullptr)
+		throw exception("record with this key already existed");
 	recs[count++] = new TabRecord<TKey, TData>(_key, _data);
 }
 
@@ -74,4 +86,4 @@ void ScanTable<TKey, TData>::Remove(TKey _key) {
 	recs[currPos] = recs[--count];
 }
 
-#endif
+#endif 

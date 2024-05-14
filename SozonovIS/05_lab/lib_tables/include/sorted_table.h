@@ -16,7 +16,7 @@ private:
 	void Merge(int& left, int& mid, int& right);
 public:
 	SortedTable(int max_size);
-	SortedTable(const SortedTable<TKey, TData>& t);
+	SortedTable(const ScanTable<TKey, TData>& t);
 	TabRecord<TKey, TData>* Search(TKey _key);
 	void Insert(TKey _key, TData* _data);
 	void Remove(TKey _key);
@@ -97,7 +97,9 @@ template <typename TKey, typename TData>
 SortedTable<TKey, TData>::SortedTable(int max_size) : ScanTable<TKey, TData>(max_size) {}
 
 template <typename TKey, typename TData>
-SortedTable<TKey, TData>::SortedTable(const SortedTable<TKey, TData>& t) : ScanTable<TKey, TData>(t) {
+SortedTable<TKey, TData>::SortedTable(const ScanTable<TKey, TData>& t) : ScanTable<TKey, TData>(t) {
+	if (IsEmpty())
+		return;
 	this->Sort();
 }
 
@@ -126,11 +128,12 @@ template <typename TKey, typename TData>
 void SortedTable<TKey, TData>::Insert(TKey _key, TData* _data) {
 	if (IsFull())
 		throw exception("table is full");
-	Search(_key);
+	if (Search(_key) != nullptr)
+		throw exception("record with this key already existed");
 	for (int i = count - 1; i >= currpos; i--) {
 		resc[i++] = recs[i];
 	}
-	recs[currPos] = new TabRecord<TKey, TData>(_key, _data);
+	recs[++currPos] = new TabRecord<TKey, TData>(_key, _data);
 	count++;
 }
 
