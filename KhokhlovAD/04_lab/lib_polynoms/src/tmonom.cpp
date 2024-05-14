@@ -256,32 +256,7 @@ C:	std::cout << "z = ";
 	return in;
 }
 
-std::ostream& operator<<(std::ostream out, TMonom& monom)
-{
-	int x, y, z;
-	x = monom.degree / 100;
-	y = (monom.degree % 100) / 10;
-	z = monom.degree % 10;
-	if (monom.coeff == 0)
-		return out << "0";
-	if (monom.coeff > 0)
-		out << "+";
-	out << monom.coeff;
-	if (x == 1)
-		out << "*x";
-	else  if (x > 0)
-		out << "*x^" << x;
-	if (y == 1)
-		out << "*y";
-	else  if (y > 0)
-		out << "*y^" << y;
-	if (z == 1)
-		out << "*z";
-	else  if (z > 0)
-		out << "*z^" << z;
-	return out;
 
-}
 
 
 void TMonom::SetCoeff(const double cf)

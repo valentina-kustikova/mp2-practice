@@ -3,7 +3,7 @@
 
 TPolynom::TPolynom()
 {
-	;
+	monoms = TRingList<TMonom>();
 }
 
 TPolynom::TPolynom(const string& name)
@@ -102,7 +102,7 @@ TPolynom TPolynom::operator+(const TPolynom& polynom)
 	TPolynom tmp(polynom);
 	while (!tmp.monoms.IsEnd() && !tmp.monoms.IsEmpty())
 	{
-		monoms.InsertLast(tmp.monoms.getpC()->data);
+		monoms.InsertLast(tmp.monoms.getpC()->data); // InsertSort внутри полиномов
 		tmp.monoms.Next();
 	}
 	update();
@@ -113,7 +113,6 @@ TPolynom TPolynom::operator-(const TPolynom& polynom)
 {
 	TPolynom tmp(polynom);
 	*this = *this + tmp * (-1);
-	update();
 	return *this;
 }
 
@@ -212,36 +211,4 @@ double TPolynom::operator()(double x, double y, double z)const
 		tmp.monoms.Next();
 	}
 	return res;
-}
-ostream& operator<< (ostream& out, const TPolynom& polynom)
-{
-	TPolynom tmppolynom(polynom);
-	tmppolynom.update();
-	TMonom tmpmonom;
-	int flag = 0;
-	while (!tmppolynom.monoms.IsEnd())
-	{
-		tmpmonom = tmppolynom.monoms.get_pCurr();
-		if (tmpmonom.GetDegree() == 0)
-			return out << tmpmonom.GetCoeff();
-		if (tmpmonom.GetCoeff() > 0 && flag != 0)
-			out << "+";
-		out << tmpmonom.GetCoeff();
-		if (tmpmonom.GetDegree() / 100 > 0)
-		{
-			out << "*x^" << tmpmonom.GetDegree() / 100;
-		}
-		if ((tmpmonom.GetDegree() % 100) / 10 > 0)
-		{
-			out << "*y^" << (tmpmonom.GetDegree() % 100) / 10;
-		}
-		if (tmpmonom.GetDegree() % 10 > 0)
-		{
-			out << "*z^" << tmpmonom.GetDegree() % 10;
-		}
-		flag++;
-		tmppolynom.monoms.Next();
-	}
-	out << endl;
-	return out;
 }

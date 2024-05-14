@@ -17,7 +17,6 @@ public:
 	void InsertFirst(const T& data);
 	void DeleteFirst();
 	const TRingList<T>& operator=(const TRingList<T>& pRingList);
-	TRingList<T>&  Copy();
 };
 
 template <typename T> 
@@ -99,9 +98,10 @@ TRingList<T>::TRingList(const TRingList<T>& obj)
 	}
 }
 
+// Clear() TList::Clear() + pHead->pNext = pHead
 
 template <typename T>
-TRingList<T>::~TRingList() {
+TRingList<T>::~TRingList() { // delete pHead
 	if (pFirst == nullptr) 
 		throw std::exception("ERROR: list already empty");
 	TNode<T>* tmp = pFirst;
@@ -132,7 +132,7 @@ TRingList<T>::~TRingList() {
 }
 
 template<typename T>
-void TRingList<T>::InsertFirst(const T& data)
+void TRingList<T>::InsertFirst(const T& data) // TList::InsertFirst + pHead
 {
 	TNode<T>* tmp = new TNode<T>(data);
 	tmp->pNext = pFirst;
@@ -145,7 +145,7 @@ void TRingList<T>::InsertFirst(const T& data)
 }
 
 template <typename T>
-void TRingList<T>::DeleteFirst()
+void TRingList<T>::DeleteFirst() // TList::DeleteFirst + pHead
 {
 	if (IsEmpty())
 		throw std::exception("empty list(DelF)");
@@ -161,7 +161,7 @@ void TRingList<T>::DeleteFirst()
 	pHead->pNext = pFirst;
 }
 template <typename T>
-const TRingList<T>& TRingList<T>::operator=(const TRingList<T>& pRingList)
+const TRingList<T>& TRingList<T>::operator=(const TRingList<T>& pRingList) // TList::operator=
 {
 
 	pHead = new TNode<T>(T());
@@ -190,12 +190,6 @@ const TRingList<T>& TRingList<T>::operator=(const TRingList<T>& pRingList)
 		this->pLast->pNext = this->pStop;
 		this->pCurr = this->pFirst;
 	}
-	return *this;
-}
-
-template <typename T>
-TRingList<T>& TRingList<T>::Copy()
-{
 	return *this;
 }
 #endif

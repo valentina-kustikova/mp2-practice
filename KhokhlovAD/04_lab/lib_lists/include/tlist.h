@@ -17,10 +17,10 @@ public:
 	TList(const TNode<T>* pFirst);
 	TList(const TList<T>& TList);
 
-	virtual TNode<T>* search(const T& data);
+	TNode<T>* search(const T& data);
 
-	~TList();
-	void clear();
+	virtual ~TList();
+	void clear(); // virtual
 
 	void Next();
 	void Reset();
@@ -54,7 +54,7 @@ public:
 	void DeleteData(const T& data);
 	void DeleteCurrent();
 
-	virtual TList<T>& operator=(const TList<T>& pList);
+	virtual const TList<T>& operator=(const TList<T>& pList);
 
 	friend std::ostream& operator<<(std::ostream& out, TList<T>& list) {
 		int num = 1;
@@ -83,7 +83,11 @@ TList<T>::TList(const TNode<T>* pFirst)
 {
 	if (pFirst == nullptr)
 	{
-		*this = TList<T>();
+		pFirst = nullptr;
+		pLast = nullptr;
+		pCurr = nullptr;
+		pPrev = nullptr;
+		pStop = nullptr;
 		return;
 	}
 	TNode<T>* tmp = pFirst->pNext;
@@ -96,7 +100,7 @@ TList<T>::TList(const TNode<T>* pFirst)
 		tmp = tmp->pNext;
 	}
 	pStop = nullptr;
-	pPrev = pStop;
+	pPrev = nullptr;
 }
 
 
@@ -122,7 +126,7 @@ TList<T>::TList(const TList<T>& TList)
 		pPrev = tmp2;
 		tmp2 = tmp2->pNext;
 	}
-	pStop = TList.pStop;
+	pStop = nullptr;
 	pLast = tmp2;
 	pLast->pNext = pStop;
 }
@@ -164,7 +168,7 @@ bool TList<T>::IsEmpty()const
 }
 
 template <typename T>
-bool TList<T>::IsFool()const
+bool TList<T>::IsFool()const // Full
 {
 	TNode<T>* tmp = new (std::nothrow) TNode<T>();
 	if (tmp)
@@ -184,7 +188,7 @@ bool TList<T>::IsEnd()const
 
 
 template <typename T>
-TNode<T>* TList<T>::search(const T& data)
+TNode<T>* TList<T>::search(const T& data) // pCurr, pPrev
 {
 	TNode<T>* tmp = pFirst;
 	while (tmp->pNext != pStop && tmp->data != data)
@@ -201,7 +205,7 @@ void TList<T>::InsertFirst(const T& data)
 {
 	if (IsFool())
 		throw std::exception("out of memory(InsF)");
-	if (pFirst == pStop)
+	if (IsEmpty())
 	{
 		TNode<T>* node = new TNode<T>(data);
 		pFirst = node;
@@ -241,11 +245,11 @@ void TList<T>::InsertBefore(const T& data, const TNode<T>* before_node)
 		throw std::exception("out of memor(InsB)");
 	TNode<T>* new_node = new TNode<T>(data);
 	pCurr = pFirst;
-	while ((pCurr->pNext != pStop) && (new_node->pNext != before_node))
+	while ((pCurr->pNext != pStop) && (new_node->pNext != before_node)) // Search
 	{
 		Next();
 	}
-	if ((pCurr->pNext == pStop) && (pCurr != before_node))
+	if ((pCurr->pNext == pStop) && (pCurr != before_node)) // InsertBeforeCurrent
 		throw std::exception("node not found(InsB)");
 	if (pPrev == pStop)
 		InsertFirst(data);
@@ -265,7 +269,7 @@ void TList<T>::InsertAfter(const T& data, const TNode<T>* after_node)
 	if (IsFool())
 		throw std::exception("out of memory(InsA)");
 	TNode<T>* tmp = search(after_node->data);
-	TNode<T>* new_node = new TNode<T>(data);
+	TNode<T>* new_node = new TNode<T>(data); // InsertAfterCurrent
 	if (tmp == pStop)
 		throw std::exception("node not found(InsA)");
 	new_node->pNext = tmp->pNext;
@@ -279,23 +283,23 @@ void TList<T>::InsertBeforeCurrent(const T& data)
 {
 	if (IsEmpty()) {
 		InsertFirst(data);
+		return;
 	}
-	else if (IsEnd()) {
+	if (IsEnd()) {
 		InsertLast(data);
+		return;
+	}
+	TNode<T>* new_node = new TNode<T>(data);
+	if (new_node == NULL) { // IsFull
+		throw std::exception("out of memory(InsBC)");
 	}
 	else {
-		TNode<T>* new_node = new TNode<T>(data);
-		if (new_node == NULL) {
-			throw std::exception("out of memory(InsBC)");
-		}
-		else {
-			pPrev->pNext = new_node;
-			pPrev = pPrev->pNext;
-			pPrev->pNext = pCurr;
-		};
+		pPrev->pNext = new_node;
+		pPrev = pPrev->pNext;
+		pPrev->pNext = pCurr;
 	}
 	pCurr = pFirst;
-	pPrev = pStop;
+	pPrev = nullptr;
 }
 
 template <typename T>
@@ -330,7 +334,7 @@ void TList<T>::DeleteFirst()
 		throw std::exception("empty list(DelF)");
 	if (pFirst == pLast)
 	{
-		*this = TList<T>();
+		*this = TList<T>(); ///!!!!!!!!!!!
 		return;
 	}
 	TNode<T>* tmp = pFirst->pNext;
@@ -347,7 +351,7 @@ void TList<T>::DeleteLast()
 		throw std::exception("empty list(DelL)");
 	if (pLast == pFirst)
 	{
-		*this = TList<T>();
+		*this = TList<T>(); ///!!!!!!!!!!!
 		return;
 	}
 	pCurr = pFirst;
@@ -365,7 +369,7 @@ void TList<T>::DeleteCurrent()
 {
 	if (IsEmpty())
 		throw std::exception("empty list(DelC)");
-	if (pCurr != pStop)
+	if (pCurr != pStop) // IsEnded
 	{
 		if (pCurr == pFirst) {
 			DeleteFirst();
@@ -376,7 +380,6 @@ void TList<T>::DeleteCurrent()
 			pCurr = pCurr->pNext;
 			if (pPrev->pNext == pStop)
 				pLast = pPrev;
-			pPrev->pNext = pCurr;
 			delete tmp;
 		}
 	}
@@ -388,13 +391,13 @@ void TList<T>::DeleteBefore(const TNode<T>* before_node)
 	if (IsEmpty())
 		throw std::exception("empty list(DelB)");
 	pCurr = pFirst;
-	while (pCurr->pNext != pStop && pCurr->pNext != before_node)
+	while (pCurr->pNext != pStop && pCurr->pNext != before_node) // search
 		Next();
 	if (pCurr->pNext == pStop && pCurr->pNext != before_node)
 		throw std::exception("node not found(DelB)");
 	if (pPrev == pStop)
 	{
-		DeleteFirst();
+		DeleteFirst(); //?????
 		pCurr = pFirst;
 		return;
 	}
@@ -403,7 +406,7 @@ void TList<T>::DeleteBefore(const TNode<T>* before_node)
 		pPrev->pNext = pCurr->pNext;
 		delete pCurr;
 		pCurr = pFirst;
-		pPrev = pStop;
+		pPrev = nullptr;
 	}
 
 }
@@ -416,7 +419,7 @@ void TList<T>::DeleteAfter(const TNode<T>* after_node)
 	if (pLast == after_node)
 		return;
 	pCurr = pFirst;
-	while (pCurr->pNext != pStop && pCurr != after_node)
+	while (pCurr->pNext != pStop && pCurr != after_node) // search
 		Next();
 	if (pCurr->pNext == pStop && pCurr != after_node)
 		throw std::exception("node not found(DelB)");
@@ -433,7 +436,7 @@ void TList<T>::DeleteData(const T& data)
 	if (IsEmpty())
 		throw std::exception("empty list(DelD)");
 	pCurr = pFirst;
-	while (pCurr->pNext != pStop || pCurr->data != data)
+	while (pCurr->pNext != pStop || pCurr->data != data) // search
 		Next();
 	if (pCurr->pNext != pStop && pCurr->data != data)
 		throw std::exception("data not found(DelD)");
@@ -470,7 +473,7 @@ void TList<T>::Sort()
 }
 
 template <typename T>
-TList<T>& TList<T>::operator=(const TList<T>& pList)
+const TList<T>& TList<T>::operator=(const TList<T>& pList)
 {
 	if (pList.pFirst == pList.pStop)
 		throw std::exception("Invalid pList (=)");
