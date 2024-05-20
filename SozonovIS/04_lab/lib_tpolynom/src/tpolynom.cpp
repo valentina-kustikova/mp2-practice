@@ -120,14 +120,40 @@ bool TPolynom::operator==(const TPolynom& p)const {
 }
 
 TPolynom TPolynom::operator+(const TPolynom& p) {
-	TPolynom sum(*this);
-	TPolynom polynom(p);
-	polynom.monoms.Reset();
-	while (!polynom.monoms.IsEnded()) {
-		sum.monoms.InsertLast(polynom.monoms.GetCurrent()->data);
-		polynom.monoms.Next();
+	TPolynom p1(*this);
+	TPolynom p2(p);
+	TPolynom sum;
+	p1.monoms.Reset();
+	p2.monoms.Reset();
+	while (!p1.monoms.IsEnded() && !p2.monoms.IsEnded()) {
+		if (p1.monoms.GetCurrent()->data.degree > p2.monoms.GetCurrent()->data.degree) {
+			sum.monoms.InsertLast(p1.monoms.GetCurrent()->data);
+			p1.monoms.Next();
+		}
+		else if (p1.monoms.GetCurrent()->data.degree < p2.monoms.GetCurrent()->data.degree) {
+			sum.monoms.InsertLast(p2.monoms.GetCurrent()->data);
+			p2.monoms.Next();
+		}
+		else {
+			p1.monoms.GetCurrent()->data.coeff += p2.monoms.GetCurrent()->data.coeff;
+			if (p1.monoms.GetCurrent()->data.coeff != 0)
+				sum.monoms.InsertLast(p1.monoms.GetCurrent()->data);
+			p1.monoms.Next();
+			p2.monoms.Next();
+		}
 	}
-	sum.Cancellation();
+	while (!p1.monoms.IsEnded()) {
+		sum.monoms.InsertLast(p1.monoms.GetCurrent()->data);
+		p1.monoms.Next();
+	}
+	while (!p2.monoms.IsEnded()) {
+		sum.monoms.InsertLast(p2.monoms.GetCurrent()->data);
+		p2.monoms.Next();
+	}
+	if (sum.monoms.IsEmpty()) {
+		TMonom mon(0, 0);
+		sum.monoms.InsertLast(mon);
+	}
 	return sum;
 }
 
