@@ -11,21 +11,21 @@ TEST(node, constructor_parametr_work) {
 }
 
 TEST(node, constructor_copy_work) {
-	Node<double> tesTKey(5);
-	ASSERT_NO_THROW(Node<double> tesTData(tesTKey));
+	Node<double> test1(5);
+	ASSERT_NO_THROW(Node<double> test2(test1));
 }
 
 TEST(node, different_memory) {
-	Node<double> tesTKey(5);
-	tesTKey.data = 3;
-	Node<double> tesTData(tesTKey);
-	tesTData.data = 7;
-	ASSERT_TRUE(&tesTKey != &tesTData);
+	Node<double> test1(5);
+	test1.data = 3;
+	Node<double> test2(test1);
+	test2.data = 7;
+	ASSERT_TRUE(&test1 != &test2);
 }
 
 TEST(node, destructor_work) {
-	Node<double>* tesTKey= new Node<double>(5);
-	tesTKey->data = 3;
-	tesTKey->pNext = new Node<double>(8);
-	ASSERT_NO_THROW(delete tesTKey);
+	Node<double>* test1 = new Node<double>(5);
+	test1->data = 3;
+	test1->pNext = new Node<double>(8);
+	ASSERT_NO_THROW(delete test1);
 }

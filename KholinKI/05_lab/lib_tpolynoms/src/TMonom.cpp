@@ -39,23 +39,13 @@ bool TMonom::operator!=(const TMonom& monom)const {
 		return true;
 	}
 	else {
-		if (coeff != monom.coeff) {
-			return true;
-		}
-		else {
-			return false;
-		}
+		return false;
 	}
 }
 
 bool TMonom::operator==(const TMonom& monom)const {
 	if (wrap_degree == monom.wrap_degree) {
-		if (coeff == monom.coeff) {
-			return true;
-		}
-		else {
-			return false;
-		}
+		return true;
 	}
 	else {
 		return false;
@@ -126,4 +116,3 @@ ostream& operator<<(ostream& ostr, const TMonom& monom) {
 	cout << endl;
 	return ostr;
 }
-

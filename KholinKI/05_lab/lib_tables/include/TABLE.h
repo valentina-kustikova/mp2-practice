@@ -24,6 +24,8 @@ public:
 	int GetCurrPos()const;
 	virtual TKey GetKey()const = 0;
 	virtual Data<TData>* GetData()const = 0;
+protected:
+	int ToInt(const string& key);
 };
 
 template<typename TKey, typename TData>
@@ -70,5 +72,16 @@ int Table<TKey, TData>::GetCurrPos()const {
 template<typename TKey, typename TData>
 int Table<TKey, TData>::GetSize()const {
 	return max_size;
+}
+
+template<typename TKey, typename TData>
+int Table<TKey,TData>::ToInt(const string& key) {
+	int sum = 0;
+	char c;
+	for (int i = 0; i < key.length(); i++) {
+		c = key[i];
+		sum += c;
+	}
+	return sum;
 }
 #endif

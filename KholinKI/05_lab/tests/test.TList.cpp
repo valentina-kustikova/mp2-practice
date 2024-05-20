@@ -3,94 +3,92 @@
 #include "TList.h"
 
 TEST(List, constructor_default_work) {
-	TList<int,string>* List = new TList<int,string>()
+	ASSERT_NO_THROW(TList<int>*List = new TList<int>());
 }
 
 TEST(List, constructor_with_parameter_work) {
-	Data<string>* d = new Data<string>("data1");
-	Node<int,string>* pFirst = new Node<int,string>(1, d);
+	Node<int>* pFirst = new Node<int>(10);
 
-	TList<int,string>* List = new TList<int,string>(pFirst);
+	ASSERT_NO_THROW(TList<int>*List = new TList<int>(pFirst));
 }
 
 TEST(List, constructor_copy_work) {
-	Node<int,string>* pFirst = new Node<int,string>(10);
-	TList<int,string> List(pFirst);
+	Node<int>* pFirst = new Node<int>(10);
+	TList<int> List(pFirst);
 
 
-	TList<int,string> List_copy(List);
+	TList<int> List_copy(List);
 }
 
 TEST(List, insert_last_work) {
-	Data<string>* d = new Data<string>("data1");
-	Node<int,string>* pFirst = new Node<int,string>(10,d);
-	TList<int,string>* List = new TList<int,string>(pFirst);
+	Node<int>* pFirst = new Node<int>(10);
+	TList<int>* List = new TList<int>(pFirst);
 
 	ASSERT_NO_THROW(List->insert_last(5));
 }
 
 TEST(List, search_work) {
-	Node<int,string>* pFirst = new Node<int,string>(10);
-	TList<int,string>* List = new TList<int,string>(pFirst);
+	Node<int>* pFirst = new Node<int>(10);
+	TList<int>* List = new TList<int>(pFirst);
 	ASSERT_NO_THROW(List->search(10));
 }
 
 TEST(List, search_when_node_found_last) {
-	Node<int,string>* pFirst = new Node<int,string>(10);
-	TList<int,string>* List = new TList<int,string>(pFirst);
+	Node<int>* pFirst = new Node<int>(10);
+	TList<int>* List = new TList<int>(pFirst);
 
 	List->insert_last(5);
 	List->insert_last(7);
 	List->insert_last(3);
 
-	Node<int,string>* test = List->search(3);
+	Node<int>* test = List->search(3);
 
 	ASSERT_TRUE(test != nullptr);
 }
 
 TEST(List, search_when_node_found_first) {
-	Node<int,string>* pFirst = new Node<int,string>(10);
-	TList<int,string>* List = new TList<int,string>(pFirst);
+	Node<int>* pFirst = new Node<int>(10);
+	TList<int>* List = new TList<int>(pFirst);
 
 	List->insert_last(5);
 	List->insert_last(7);
 	List->insert_last(3);
 
-	Node<int,string>* test = List->search(10);
+	Node<int>* test = List->search(10);
 
 	ASSERT_TRUE(test != nullptr);
 }
 
 TEST(List, search_when_node_found_middle) {
-	Node<int,string>* pFirst = new Node<int,string>(10);
-	TList<int,string>* List = new TList<int,string>(pFirst);
+	Node<int>* pFirst = new Node<int>(10);
+	TList<int>* List = new TList<int>(pFirst);
 
 	List->insert_last(5);
 	List->insert_last(7);
 	List->insert_last(3);
 
-	Node<int,string>* test = List->search(5);
+	Node<int>* test = List->search(5);
 
 	ASSERT_TRUE(test != nullptr);
 }
 
 TEST(List, search_when_node_not_found) {
-	Node<int,string>* pFirst = new Node<int,string>(10);
-	TList<int,string>* List = new TList<int,string>(pFirst);
+	Node<int>* pFirst = new Node<int>(10);
+	TList<int>* List = new TList<int>(pFirst);
 
 	List->insert_last(5);
 	List->insert_last(7);
 	List->insert_last(3);
 
-	Node<int,string>* test = List->search(12);
+	Node<int>* test = List->search(12);
 
 	ASSERT_TRUE(test == nullptr);
 }
 
 
 TEST(List, search_inserted_data) {
-	Node<int,string>* pFirst = new Node<int,string>(10);
-	TList<int,string>* List = new TList<int,string>(pFirst);
+	Node<int>* pFirst = new Node<int>(10);
+	TList<int>* List = new TList<int>(pFirst);
 
 	List->insert_last(2);
 	List->insert_last(5);
@@ -100,8 +98,8 @@ TEST(List, search_inserted_data) {
 }
 
 TEST(TList, insert_first_work) {
-	Node<int,string>* pFirst = new Node<int,string>(10);
-	TList<int,string>* List = new TList<int,string>(pFirst);
+	Node<int>* pFirst = new Node<int>(10);
+	TList<int>* List = new TList<int>(pFirst);
 
 	ASSERT_NO_THROW(List->insert_first(5));
 }
@@ -109,8 +107,8 @@ TEST(TList, insert_first_work) {
 
 
 TEST(List, insert_before_work) {
-	Node<int,string>* pFirst = new Node<int,string>(10);
-	TList<int,string> List(pFirst);
+	Node<int>* pFirst = new Node<int>(10);
+	TList<int> List(pFirst);
 
 	List.insert_last(2);
 	List.insert_last(5);
@@ -119,8 +117,8 @@ TEST(List, insert_before_work) {
 }
 
 TEST(List, insert_before_check_values) {
-	Node<int,string>* pFirst = new Node<int,string>(10);
-	TList<int,string> List(pFirst);
+	Node<int>* pFirst = new Node<int>(10);
+	TList<int> List(pFirst);
 
 	List.insert_first(1);
 	List.insert_first(12);
@@ -128,15 +126,15 @@ TEST(List, insert_before_check_values) {
 	List.insert_last(5);
 	List.insert_before(7, 2);
 
-	Node<int,string>* test = List.search(7);
+	Node<int>* test = List.search(7);
 
 	ASSERT_TRUE(test->data == 7);
 }
 
 
 TEST(List, insert_before_check_data) {
-	Node<int,string>* pFirst = new Node<int,string>(10);
-	TList<int,string> List(pFirst);
+	Node<int>* pFirst = new Node<int>(10);
+	TList<int> List(pFirst);
 
 	List.insert_last(2);
 	List.insert_last(5);
@@ -146,15 +144,15 @@ TEST(List, insert_before_check_data) {
 	List.insert_before(20, 10);
 	List.insert_before(30, 10);
 
-	Node<int,string>* TKey = List.search(6);
-	Node<int,string>* TData = List.search(30);
+	Node<int>* t1 = List.search(6);
+	Node<int>* t2 = List.search(30);
 
-	ASSERT_TRUE(TKey->data == 6 && TData->data == 30);
+	ASSERT_TRUE(t1->data == 6 && t2->data == 30);
 }
 
 TEST(List, insert_after_work) {
-	Node<int,string>* pFirst = new Node<int,string>(10);
-	TList<int,string> List(pFirst);
+	Node<int>* pFirst = new Node<int>(10);
+	TList<int> List(pFirst);
 
 	List.insert_last(2);
 	List.insert_last(5);
@@ -166,8 +164,8 @@ TEST(List, insert_after_work) {
 
 
 TEST(List, insert_after_check_data) {
-	Node<int,string>* pFirst = new Node<int,string>(10);
-	TList<int,string> List(pFirst);
+	Node<int>* pFirst = new Node<int>(10);
+	TList<int> List(pFirst);
 
 	List.insert_last(2);
 	List.insert_last(5);
@@ -177,16 +175,16 @@ TEST(List, insert_after_check_data) {
 	List.insert_after(7, 5);
 	List.insert_after(8, 5);
 
-	Node<int,string>* TKey = List.search(6);
-	Node<int,string>* TData = List.search(8);
+	Node<int>* t1 = List.search(6);
+	Node<int>* t2 = List.search(8);
 
-	ASSERT_TRUE(TKey->data == 6 && TData->data == 8);
+	ASSERT_TRUE(t1->data == 6 && t2->data == 8);
 
 }
 
 TEST(List, remove_work) {
-	Node<int,string>* pFirst = new Node<int,string>(10);
-	TList<int,string> List(pFirst);
+	Node<int>* pFirst = new Node<int>(10);
+	TList<int> List(pFirst);
 
 	List.insert_last(2);
 	List.insert_last(5);
@@ -197,20 +195,74 @@ TEST(List, remove_work) {
 }
 
 TEST(TList, different_memory) {
-	Node<int,string>* pFirst = new Node<int,string>(10);
-	TList<int,string> List(pFirst);
+	Node<int>* pFirst = new Node<int>(10);
+	TList<int> List(pFirst);
 
 	List.insert_first(3);
 
-	TList<int,string> List_copy(List);
+	TList<int> List_copy(List);
 	List_copy.insert_first(7);
 
 	ASSERT_TRUE(&List != &List_copy);
 }
 
+
+TEST(TList, clear_work) {
+	Node<int>* pFirst = new Node<int>(10);
+	TList<int> List(pFirst);
+
+	List.insert_last(2);
+	List.insert_last(5);
+
+	List.insert_before(6, 2);
+	List.insert_before(4, 2);
+	List.insert_before(20, 10);
+	List.insert_before(30, 10);
+
+	ASSERT_NO_THROW(List.clear());
+}
+
+TEST(TList, work_after_clear) {
+	Node<int>* pFirst = new Node<int>(10);
+	TList<int> List(pFirst);
+
+	List.insert_last(2);
+	List.insert_last(5);
+
+	List.insert_before(6, 2);
+	List.insert_before(4, 2);
+	List.insert_before(20, 10);
+	List.insert_before(30, 10);
+
+	List.clear();
+
+	ASSERT_NO_THROW(List.insert_last(5));
+}
+
+TEST(TList, count_nodes_after_clear) {
+	Node<int>* pFirst = new Node<int>(10);
+	TList<int> List(pFirst);
+
+	List.insert_last(2);
+	List.insert_last(5);
+
+	List.insert_before(6, 2);
+	List.insert_before(4, 2);
+	List.insert_before(20, 10);
+	List.insert_before(30, 10);
+
+	List.clear();
+
+	int test_size = List.GetSize();
+
+	EXPECT_EQ(0, test_size);
+}
+
+
+
 TEST(TList, count_nodes) {
-	Node<int,string>* pFirst = new Node<int,string>(10);
-	TList<int,string> List(pFirst);
+	Node<int>* pFirst = new Node<int>(10);
+	TList<int> List(pFirst);
 
 	List.insert_last(2);
 	List.insert_last(5);
@@ -221,13 +273,13 @@ TEST(TList, count_nodes) {
 	List.remove(2);//6 5 
 	List.remove(10);
 
-	int,string count = List.GetSize();
+	int count = List.GetSize();
 	EXPECT_EQ(2, count);
 }
 
 TEST(TList, count_nodes_when_all_deleted) {
-	Node<int,string>* pFirst = new Node<int,string>(10);
-	TList<int,string> List(pFirst);
+	Node<int>* pFirst = new Node<int>(10);
+	TList<int> List(pFirst);
 
 	List.insert_last(2);
 	List.insert_last(5);
@@ -240,13 +292,13 @@ TEST(TList, count_nodes_when_all_deleted) {
 	List.remove(5);
 	List.remove(6);
 
-	int,string count = List.GetSize();
+	int count = List.GetSize();
 	EXPECT_EQ(0, count);
 }
 
 TEST(TList, destructor_work) {
-	Node<int,string>* pFirst = new Node<int,string>(10);
-	TList<int,string>* List = new TList<int,string>(pFirst);
+	Node<int>* pFirst = new Node<int>(10);
+	TList<int>* List = new TList<int>(pFirst);
 
 	List->insert_last(2);
 	List->insert_last(5);
@@ -259,8 +311,8 @@ TEST(TList, destructor_work) {
 }
 
 TEST(TList, Is_Full_work) {
-	Node<int,string>* pFirst = new Node<int,string>(10);
-	TList<int,string>* List = new TList<int,string>(pFirst);
+	Node<int>* pFirst = new Node<int>(10);
+	TList<int>* List = new TList<int>(pFirst);
 
 	List->insert_last(2);
 	List->insert_last(5);
@@ -271,8 +323,8 @@ TEST(TList, Is_Full_work) {
 }
 
 TEST(TList, Is_Full_false) {
-	Node<int,string>* pFirst = new Node<int,string>(10);
-	TList<int,string>* List = new TList<int,string>(pFirst);
+	Node<int>* pFirst = new Node<int>(10);
+	TList<int>* List = new TList<int>(pFirst);
 
 	List->insert_last(2);
 	List->insert_last(5);
@@ -283,8 +335,8 @@ TEST(TList, Is_Full_false) {
 }
 
 TEST(TList, Is_Empty_work) {
-	Node<int,string>* pFirst = new Node<int,string>(10);
-	TList<int,string>* List = new TList<int,string>(pFirst);
+	Node<int>* pFirst = new Node<int>(10);
+	TList<int>* List = new TList<int>(pFirst);
 
 	List->insert_last(2);
 	List->insert_last(5);
@@ -295,22 +347,22 @@ TEST(TList, Is_Empty_work) {
 }
 
 TEST(TList, Is_Empty_true) {
-	Node<int,string>* pFirst = nullptr;
-	TList<int,string>* List = new TList<int,string>(pFirst);
+	Node<int>* pFirst = nullptr;
+	TList<int>* List = new TList<int>(pFirst);
 
 	ASSERT_TRUE(List->IsEmpty());
 }
 
 TEST(TList, Is_Empty_false) {
-	Node<int,string>* pFirst = new Node<int,string>(5);
-	TList<int,string>* List = new TList<int,string>(pFirst);
+	Node<int>* pFirst = new Node<int>(5);
+	TList<int>* List = new TList<int>(pFirst);
 
 	ASSERT_FALSE(List->IsEmpty());
 }
 
 TEST(TList, navigation_part_1_current_data) {
-	Node<int,string>* pFirst = new Node<int,string>(10);
-	TList<int,string>* List = new TList<int,string>(pFirst);
+	Node<int>* pFirst = new Node<int>(10);
+	TList<int>* List = new TList<int>(pFirst);
 
 	List->insert_last(2);
 	List->insert_last(5);
@@ -324,8 +376,8 @@ TEST(TList, navigation_part_1_current_data) {
 }
 
 TEST(TList, navigation_part_2_next_data) {
-	Node<int,string>* pFirst = new Node<int,string>(10);
-	TList<int,string>* List = new TList<int,string>(pFirst);
+	Node<int>* pFirst = new Node<int>(10);
+	TList<int>* List = new TList<int>(pFirst);
 
 	List->insert_last(2);
 	List->insert_last(5);
@@ -342,8 +394,8 @@ TEST(TList, navigation_part_2_next_data) {
 }
 
 TEST(TList, navigation_part_3_use_next_method_while_not_reached_end) {
-	Node<int,string>* pFirst = new Node<int,string>(10);
-	TList<int,string>* List = new TList<int,string>(pFirst);
+	Node<int>* pFirst = new Node<int>(10);
+	TList<int>* List = new TList<int>(pFirst);
 
 	List->insert_last(2);
 	List->insert_last(5);
@@ -362,9 +414,9 @@ TEST(TList, navigation_part_3_use_next_method_while_not_reached_end) {
 }
 
 
-TEST(TList, navigation_part_4_reset_current_point,stringer) {
-	Node<int,string>* pFirst = new Node<int,string>(10);
-	TList<int,string>* List = new TList<int,string>(pFirst);
+TEST(TList, navigation_part_4_reset_current_pointer) {
+	Node<int>* pFirst = new Node<int>(10);
+	TList<int>* List = new TList<int>(pFirst);
 
 	List->insert_last(2);
 	List->insert_last(5);

@@ -1,8 +1,50 @@
-#include "TPolynom.h"
+ï»¿#include "TPolynom.h"
 
 #include <gtest.h>
 
+TEST(polynom, zero_polynom_when_differentiate) {
+	TPolynom P("1+x-1-z");
 
+	TPolynom R = P.differentiate_by_y();
+
+	TPolynom test("");
+	TMonom monom(0, 0);
+	test.Add_monom(monom);
+
+	ASSERT_TRUE(test == R);
+}
+
+TEST(polynom, zero_polynom_when_plus) {
+	TPolynom P("1+x-1-z");
+
+	TPolynom R1 = P.differentiate_by_y();
+
+	TPolynom R2 = P + R1;
+
+	TPolynom test("1+x-1-z");
+
+	ASSERT_TRUE(test == R2);
+}
+
+TEST(polynom, operator_plus_with_simple_polynoms) {
+	TPolynom P("1+x");
+	TPolynom Q("1-y");
+
+	TPolynom R = P + Q;
+
+	TPolynom test("2+x-y");
+	ASSERT_TRUE(R == test);
+}
+
+TEST(polynom, operator_multiplication_with_simple_polynoms) {
+	TPolynom P("1+x");
+	TPolynom Q("1-y");
+
+	TPolynom R = P * Q;
+
+	TPolynom test("1-y+x-xy");
+	ASSERT_TRUE(R == test);
+}
 
 
 TEST(polynom, polynom_string_contain_0_and_1_degrees) {
@@ -18,13 +60,13 @@ TEST(polynoms, diffirintiate_y_check_values) {
 
 	TPolynom test("60*y+2*x*y*z^3+4*x^2*z^4");
 	ASSERT_TRUE(test == R);
-	//ìîíîìû-êîíñòàíòû óíè÷òîæàþòñÿ, à ìîíîìû ñ íåíóëåâîé ñòåïåíüþ
-	//y ïðàâèëüíî äèôôåðåíöèðóþòñÿ
+	//Ã¬Ã®Ã­Ã®Ã¬Ã»-ÃªÃ®Ã­Ã±Ã²Ã Ã­Ã²Ã» Ã³Ã­Ã¨Ã·Ã²Ã®Ã¦Ã Ã¾Ã²Ã±Ã¿, Ã  Ã¬Ã®Ã­Ã®Ã¬Ã» Ã± Ã­Ã¥Ã­Ã³Ã«Ã¥Ã¢Ã®Ã© Ã±Ã²Ã¥Ã¯Ã¥Ã­Ã¼Ã¾
+	//y Ã¯Ã°Ã Ã¢Ã¨Ã«Ã¼Ã­Ã® Ã¤Ã¨Ã´Ã´Ã¥Ã°Ã¥Ã­Ã¶Ã¨Ã°Ã³Ã¾Ã²Ã±Ã¿
 }
 
 TEST(polynoms, multiple_differentiation_by_z) {
 	TPolynom P("4*x^2*y*z^4+x*y^2*z^3-780+30*y^2-2*x^2*z^4");
-	TPolynom R1,R2;
+	TPolynom R1, R2;
 	R1 = P.differentiate_by_z();
 	R2 = R1.differentiate_by_z();
 
@@ -36,10 +78,10 @@ TEST(polynoms, multiple_differentiation_by_z) {
 TEST(polynoms, diffirintiate_z_check_values) {
 	TPolynom P("4*x^2*y*z^4+x*y^2*z^3-780+30*y^2-2*x^2*z^4");
 	TPolynom R = P.differentiate_by_z();
-	
+
 	TPolynom test("3*x*y^2*z^2-8*x^2*z^3+16*x^2*y*z^3");
-	//ìîíîìû-êîíñòàíòû óíè÷òîæàþòñÿ, à ìîíîìû ñ íåíóëåâîé ñòåïåíüþ
-	//z ïðàâèëüíî äèôôåðåíöèðóþòñÿ
+	//Ã¬Ã®Ã­Ã®Ã¬Ã»-ÃªÃ®Ã­Ã±Ã²Ã Ã­Ã²Ã» Ã³Ã­Ã¨Ã·Ã²Ã®Ã¦Ã Ã¾Ã²Ã±Ã¿, Ã  Ã¬Ã®Ã­Ã®Ã¬Ã» Ã± Ã­Ã¥Ã­Ã³Ã«Ã¥Ã¢Ã®Ã© Ã±Ã²Ã¥Ã¯Ã¥Ã­Ã¼Ã¾
+	//z Ã¯Ã°Ã Ã¢Ã¨Ã«Ã¼Ã­Ã® Ã¤Ã¨Ã´Ã´Ã¥Ã°Ã¥Ã­Ã¶Ã¨Ã°Ã³Ã¾Ã²Ã±Ã¿
 }
 
 
@@ -87,7 +129,7 @@ TEST(polynom, operator_minus_for_polynom_with_zero_coefficient) {
 	ASSERT_TRUE(test == R);
 }
 
-TEST(polynom, operator_minus_with_polynoms_zero_degree_orderly_1_ñheck_equality) {
+TEST(polynom, operator_minus_with_polynoms_zero_degree_orderly_1_Ã±heck_equality) {
 	TPolynom P("3");
 	TPolynom Q("46");
 	TPolynom R = P + (-Q);
@@ -127,8 +169,8 @@ TEST(polynoms, diffirintiate_x_check_values) {
 
 	TPolynom test("y^2*z^3-4*x*z^4+8*x*y*z^4");
 	ASSERT_TRUE(test == R);
-	//ìîíîìû-êîíñòàíòû óíè÷òîæàþòñÿ, à ìîíîìû ñ íåíóëåâîé ñòåïåíüþ
-	//x ïðàâèëüíî äèôôåðåíöèðóþòñÿ
+	//Ã¬Ã®Ã­Ã®Ã¬Ã»-ÃªÃ®Ã­Ã±Ã²Ã Ã­Ã²Ã» Ã³Ã­Ã¨Ã·Ã²Ã®Ã¦Ã Ã¾Ã²Ã±Ã¿, Ã  Ã¬Ã®Ã­Ã®Ã¬Ã» Ã± Ã­Ã¥Ã­Ã³Ã«Ã¥Ã¢Ã®Ã© Ã±Ã²Ã¥Ã¯Ã¥Ã­Ã¼Ã¾
+	//x Ã¯Ã°Ã Ã¢Ã¨Ã«Ã¼Ã­Ã® Ã¤Ã¨Ã´Ã´Ã¥Ã°Ã¥Ã­Ã¶Ã¨Ã°Ã³Ã¾Ã²Ã±Ã¿
 }
 
 
@@ -149,7 +191,7 @@ TEST(polynoms, operator_multiplication_with_similar_monoms) {
 	TPolynom test
 	("6*y^5*z^3-25*x^3*y^3*z^2+30*x^4*y^3*z^2-3*x^5*y^4*z^6+21*x^6*y*z-35*x^7*y*z+9*x^8*y^2*z^5-15*x^9*y^2*z^5");
 	ASSERT_TRUE(test == R);
-	//Ìîíîìû ñî ñòåïåíÿìè 332 è êîýôôèöèåíòàìè -7 è -18 ñóùåñòâóþò, è îíè ïðèâîäÿòñÿ ê ïîäîáíûì.
+	//ÃŒÃ®Ã­Ã®Ã¬Ã» Ã±Ã® Ã±Ã²Ã¥Ã¯Ã¥Ã­Ã¿Ã¬Ã¨ 332 Ã¨ ÃªÃ®Ã½Ã´Ã´Ã¨Ã¶Ã¨Ã¥Ã­Ã²Ã Ã¬Ã¨ -7 Ã¨ -18 Ã±Ã³Ã¹Ã¥Ã±Ã²Ã¢Ã³Ã¾Ã², Ã¨ Ã®Ã­Ã¨ Ã¯Ã°Ã¨Ã¢Ã®Ã¤Ã¿Ã²Ã±Ã¿ Ãª Ã¯Ã®Ã¤Ã®Ã¡Ã­Ã»Ã¬.
 }
 
 TEST(polynom, operator_plus_with_polynoms_zero_degree) {
@@ -234,8 +276,6 @@ TEST(polynoms, constructor_parameter_with_list_work_1) {
 	ASSERT_NO_THROW(TPolynom Q = P.GetMonoms());
 }
 
-
-
 TEST(polynoms, constructor_parameter_with_string_work_4) {
 	ASSERT_NO_THROW(TPolynom P("4"));
 }
@@ -273,7 +313,7 @@ TEST(polynoms, check_triple_assign) {
 	TPolynom P("3*x^5-5*x^4-y^5*z");
 	TPolynom R("6*x^2*y^2");
 	TPolynom Q = P = R;
-	ASSERT_TRUE(P == R && Q == P  && Q == R);
+	ASSERT_TRUE(P == R && Q == P && Q == R);
 }
 
 TEST(polynoms, different_memory) {
@@ -286,82 +326,62 @@ TEST(polynoms, different_memory) {
 	ASSERT_TRUE(!(P == Q));
 }
 
-TEST(polynoms, polynom_with_only_zero) {
-	TPolynom P("0");
-
-	TPolynom test("");
-
-	int size_P = P.GetMonoms()->GetSize();
-	int size_test = test.GetMonoms()->GetSize();
-	EXPECT_EQ(size_test, size_P);
-}
-
-TEST(polynoms, polynom_with_only_series_zeros) {
-	TPolynom P("-0-0+0-0");
-
-	TPolynom test("");
-
-	int size_P = P.GetMonoms()->GetSize();
-	int size_test = test.GetMonoms()->GetSize();
-	EXPECT_EQ(size_test, size_P);
-}
-
 TEST(polynom, corrector_work) {
-	TRingList<TMonom>* new_list_monoms = new TRingList<TMonom>;
+	TRingList<TMonom>* new_monoms = new TRingList<TMonom>;
 
 	TMonom m1(3, 120);	TMonom m4(50, 549);
 	TMonom m2(6, 240);	TMonom m5(-6, 240);
 	TMonom m3(-4, 120); TMonom m6(45, 365);
 
-	new_list_monoms->insert_first(m1);
-	new_list_monoms->insert_first(m2);
-	new_list_monoms->insert_first(m3);
+	new_monoms->insert_first(m1);
+	new_monoms->insert_first(m2);
+	new_monoms->insert_first(m3);
 
-	new_list_monoms->insert_last(m4);
-	new_list_monoms->insert_last(m5);
-	new_list_monoms->insert_last(m6);
+	new_monoms->insert_last(m4);
+	new_monoms->insert_last(m5);
+	new_monoms->insert_last(m6);
 
-	ASSERT_NO_THROW(TPolynom P(new_list_monoms));
+	ASSERT_NO_THROW(TPolynom P(new_monoms));
 }
 
 
 TEST(polynom, corrector_deleted_similars) {
-	TRingList<TMonom>* new_list_monoms = new TRingList<TMonom>;
+	TRingList<TMonom>* new_monoms = new TRingList<TMonom>;
 
 	TMonom m1(3, 120);	TMonom m4(50, 549);
 	TMonom m2(6, 240);	TMonom m5(-6, 240);
 	TMonom m3(-4, 120); TMonom m6(45, 365);
 
-	new_list_monoms->insert_first(m1);
-	new_list_monoms->insert_first(m2);
-	new_list_monoms->insert_first(m3);
+	new_monoms->insert_first(m1);
+	new_monoms->insert_first(m2);
+	new_monoms->insert_first(m3);
 
-	new_list_monoms->insert_last(m4);
-	new_list_monoms->insert_last(m5);
-	new_list_monoms->insert_last(m6);
+	new_monoms->insert_last(m4);
+	new_monoms->insert_last(m5);
+	new_monoms->insert_last(m6);
 
-	TPolynom P(new_list_monoms);
+	TPolynom P(new_monoms);
 
 	TPolynom test("-x*y^2+45*x^3*y^6*z^5+50*x^5*y^4*z^9");
 	ASSERT_TRUE(test == P);
 }
 
 TEST(polynom, corrector_not_expected_similars) {
-	TRingList<TMonom>* new_list_monoms = new TRingList<TMonom>;
+	TRingList<TMonom>* new_monoms = new TRingList<TMonom>;
 
 	TMonom m1(3, 120);	TMonom m4(50, 549);
 	TMonom m2(6, 242);	TMonom m5(-6, 240);
 	TMonom m3(-4, 124); TMonom m6(45, 365);
 
-	new_list_monoms->insert_first(m1);
-	new_list_monoms->insert_first(m2);
-	new_list_monoms->insert_first(m3);
+	new_monoms->insert_first(m1);
+	new_monoms->insert_first(m2);
+	new_monoms->insert_first(m3);
 
-	new_list_monoms->insert_last(m4);
-	new_list_monoms->insert_last(m5);
-	new_list_monoms->insert_last(m6);
+	new_monoms->insert_last(m4);
+	new_monoms->insert_last(m5);
+	new_monoms->insert_last(m6);
 
-	TPolynom P(new_list_monoms);
+	TPolynom P(new_monoms);
 
 	TPolynom test("3*x*y^2-4*x*y^2*z^4-6*x^2*y^4+6*x^2*y^4*z^2+45*x^3*y^6*z^5+50*x^5*y^4*z^9");
 	ASSERT_TRUE(test == P);

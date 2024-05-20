@@ -18,4 +18,10 @@ size_t THashTable<TKey, TData>::HashFunction(const TKey& Key) {
 	return  Key % max_size;
 }
 
+template<>
+size_t THashTable<string,string>::HashFunction(const string& Key) {
+	int new_key = ToInt(Key);
+	return  new_key % max_size;
+}
+
 #endif

@@ -3,49 +3,40 @@
 
 #include <iostream>
 
-#include "Data.h"
-#include "TabRecord.h"
-
 using namespace std;
 
-template<typename TKey,typename TData> class Node: public TTabRecord<TKey,TData> {
+template<typename T> class Node {
 public:
-	Node<TKey, TData>* pNext;
+	T data;
+	Node* pNext;
 
-	//массив указателей на списки.
-	//Для списков меняются только параметры TKey,TData. Добавить их.
-	//Перегрузить вставку,поиск и удаление после этого
 	Node();
-	Node(TKey key_,const Data<TData>* data_);
+	Node(const T& data_);
 	Node(const Node& Node_);
 	~Node();
 };
 
-template<typename TKey,typename TData>
-Node<TKey,TData>::Node() {
-	key = {};
+template<typename T>
+Node<T>::Node() {
 	data = {};
 	pNext = nullptr;
 }
 
-template<typename TKey, typename TData>
-Node<TKey, TData>::Node(TKey key_,const Data<TData>* data_) {
-	key = key_;
-	data = new Data<TData>(data_->key);
+template<typename T>
+Node<T>::Node(const T& data_) {
+	data = data_;
 	pNext = nullptr;
 }
 
-template<typename TKey, typename TData>
-Node<TKey, TData>::Node(const Node<TKey,TData>& Node_) {
-	key = Node_.key;
-	data = new Data<TData>(Node_->data);
-	pNext = new Node<TKey,TData>(Node_.pNext->data);
+template<typename T>
+Node<T>::Node(const Node& Node_) {
+	data = Node_.data;
+	pNext = Node_.pNext;
 }
 
-template<typename TKey, typename TData>
-Node<TKey, TData>::~Node() {
+template<typename T>
+Node<T>::~Node() {
 	delete pNext;
-	key = {};
 	data = {};
 
 }

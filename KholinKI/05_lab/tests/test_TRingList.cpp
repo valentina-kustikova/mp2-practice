@@ -10,7 +10,7 @@ TEST(TRingList, constructor_default_work) {
 TEST(TRingList, constructor_with_parameter_work) {
 	Node<int>* pFirst = new Node<int>(10);
 
-	ASSERT_NO_THROW(TRingList<int>* rList = new TRingList<int>(pFirst));
+	ASSERT_NO_THROW(TRingList<int>*rList = new TRingList<int>(pFirst));
 }
 
 
@@ -108,7 +108,7 @@ TEST(TRingList, insert_first_work) {
 	ASSERT_NO_THROW(rList->insert_first(5));
 }
 
-TEST(TRingList, insert_before_work){
+TEST(TRingList, insert_before_work) {
 	Node<int>* pFirst = new Node<int>(10);
 	TRingList<int> rList(pFirst);
 
@@ -145,10 +145,10 @@ TEST(TRingList, insert_before_check_data) {
 	rList.insert_before(20, 10);
 	rList.insert_before(30, 10);
 
-	Node<int>* TKey = rList.search(6);
-	Node<int>* TData = rList.search(30);
+	Node<int>* t1 = rList.search(6);
+	Node<int>* t2 = rList.search(30);
 
-	ASSERT_TRUE(TKey->data == 6 && TData->data == 30);
+	ASSERT_TRUE(t1->data == 6 && t2->data == 30);
 }
 
 TEST(TRingList, insert_after_work) {
@@ -176,11 +176,11 @@ TEST(TRingList, insert_after_check_data) {
 	rList.insert_after(7, 5);
 	rList.insert_after(8, 5);
 
-	Node<int>* TKey = rList.search(6);
-	Node<int>* TData = rList.search(8);
+	Node<int>* t1 = rList.search(6);
+	Node<int>* t2 = rList.search(8);
 
-	ASSERT_TRUE(TKey->data == 6 && TData->data == 8);
-	
+	ASSERT_TRUE(t1->data == 6 && t2->data == 8);
+
 }
 
 TEST(TRingList, remove_work) {
@@ -194,6 +194,39 @@ TEST(TRingList, remove_work) {
 
 	ASSERT_NO_THROW(rList.remove(5));
 }
+
+TEST(TRingList, clear_work) {
+	Node<int>* pFirst = new Node<int>(10);
+	TRingList<int> rList(pFirst);
+
+	rList.insert_last(2);
+	rList.insert_last(5);
+
+	rList.insert_before(6, 2);
+	rList.insert_before(4, 2);
+	rList.insert_before(20, 10);
+	rList.insert_before(30, 10);
+
+	ASSERT_NO_THROW(rList.clear());
+}
+
+TEST(TRingList, work_after_clear) {
+	Node<int>* pFirst = new Node<int>(10);
+	TRingList<int> rList(pFirst);
+
+	rList.insert_last(2);
+	rList.insert_last(5);
+
+	rList.insert_before(6, 2);
+	rList.insert_before(4, 2);
+	rList.insert_before(20, 10);
+	rList.insert_before(30, 10);
+
+	rList.clear();
+
+	ASSERT_NO_THROW(rList.insert_last(5));
+}
+
 
 
 TEST(TRingList, count_nodes) {
@@ -374,7 +407,7 @@ TEST(TRingList, navigation_part_3_use_next_method_while_not_reached_end) {
 		rList->next();
 	}
 
-	
+
 	ASSERT_TRUE(rList->Is_Ended());
 }
 
@@ -398,11 +431,3 @@ TEST(TRingList, navigation_part_4_reset_current_pointer) {
 
 	ASSERT_TRUE(rList->getCurrent() == rList->pFirst);
 }
-
-
-
-
-
-
-
-
