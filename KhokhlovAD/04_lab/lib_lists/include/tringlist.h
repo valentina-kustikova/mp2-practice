@@ -13,7 +13,10 @@ public:
 	TRingList(const T& data);
 	TRingList(const TNode<T>* pF);
 	TRingList(const TRingList<T>& ringList);
+
 	~TRingList();
+	void clear();
+
 	void InsertFirst(const T& data);
 	void DeleteFirst();
 	const TRingList<T>& operator=(const TRingList<T>& pRingList);
@@ -98,98 +101,39 @@ TRingList<T>::TRingList(const TRingList<T>& obj)
 	}
 }
 
-// Clear() TList::Clear() + pHead->pNext = pHead
 
 template <typename T>
-TRingList<T>::~TRingList() { // delete pHead
-	if (pFirst == nullptr) 
-		throw std::exception("ERROR: list already empty");
-	TNode<T>* tmp = pFirst;
-	while (pFirst != pHead) {
-		pFirst = pFirst->pNext;
-		delete tmp;
-		tmp = pFirst;
-	}
-	if (pFirst == pStop)
-	{
-		delete pHead;
-		pHead = nullptr;
-		pFirst = nullptr;
-		pPrev = nullptr;
-		pLast = nullptr;
-		pCurr = nullptr;
-		pStop = nullptr;
-		return;
-	}
-	delete tmp;
+void TRingList<T>::clear()
+{
+	TList<T>::clear();
+	pHead->pNext = pHead;
+}
+
+template <typename T>
+TRingList<T>::~TRingList() { 
+	clear();
 	delete pHead;
-	pHead = nullptr;
-	pFirst = nullptr;
-	pPrev = nullptr;
-	pLast = nullptr;
-	pCurr = nullptr;
-	pStop = nullptr;
 }
 
 template<typename T>
-void TRingList<T>::InsertFirst(const T& data) // TList::InsertFirst + pHead
+void TRingList<T>::InsertFirst(const T& data) 
 {
-	TNode<T>* tmp = new TNode<T>(data);
-	tmp->pNext = pFirst;
-	if (this->pFirst == this->pStop)
-	{
-		this->pLast = tmp;
-	}
-	this->pFirst = tmp;
-	this->pCurr = this->pFirst;
+	TList<T>::InsertFirst(data);
+	pHead->pNext = pFirst;
 }
 
 template <typename T>
-void TRingList<T>::DeleteFirst() // TList::DeleteFirst + pHead
+void TRingList<T>::DeleteFirst() 
 {
-	if (IsEmpty())
-		throw std::exception("empty list(DelF)");
-	if (pFirst == pLast)
-	{
-		*this = TRingList<T>(T());
-		return;
-	}
-	TNode<T>* tmp = pFirst->pNext;
-	delete pFirst;
-	pFirst = tmp;
-	pCurr = pFirst;
+	TList<T>::DeleteFirst();
 	pHead->pNext = pFirst;
 }
 template <typename T>
-const TRingList<T>& TRingList<T>::operator=(const TRingList<T>& pRingList) // TList::operator=
-{
-
+const TRingList<T>& TRingList<T>::operator=(const TRingList<T>& pRingList) {
+	TList<T>::operator=(pRingList);
 	pHead = new TNode<T>(T());
 	pHead->pNext = this->pFirst;
-	this->pStop = pHead;
-
-	if (pRingList.pFirst == pRingList.pStop)
-	{
-		this->pFirst = pHead;
-		this->pLast = pHead;
-		this->pCurr = pHead;
-	}
-	else
-	{
-		this->pFirst = new TNode<T>(pRingList.pFirst->data);
-		TNode<T>* tmp = pRingList.pFirst;
-		TNode<T>* tmp_1 = this->pFirst;
-
-		while (tmp->pNext != pRingList.pStop)
-		{
-			tmp_1->pNext = new TNode<T>(tmp->pNext->data);
-			tmp_1 = tmp_1->pNext;
-			tmp = tmp->pNext;
-		}
-		this->pLast = tmp_1;
-		this->pLast->pNext = this->pStop;
-		this->pCurr = this->pFirst;
-	}
+	
 	return *this;
 }
 #endif

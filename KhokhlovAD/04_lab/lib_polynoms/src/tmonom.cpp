@@ -178,34 +178,37 @@ TMonom TMonom::operator-(const TMonom& data)
 
 TMonom TMonom::operator*(const TMonom& data)
 {
-	if (degree != data.degree)
-		throw std::exception("Invalid monoms(op*)");
-	return TMonom(coeff * data.coeff, degree);
+	int newdegree = degree + data.degree;
+	if ((degree / 100 + data.degree / 100) > 9
+		|| ((degree % 100) / 10 + (data.degree % 100) / 10) > 9
+		|| (degree % 10 + data.degree % 10) > 9)
+		return TMonom();
+	return TMonom(coeff * data.coeff, newdegree);
 }
 
 
-TMonom TMonom::def_X()
+TMonom TMonom::def_X()const
 {
 	if ((int)(degree/100) == 0)
 		return TMonom(0, 0);
 	return TMonom(coeff * (degree / 100), degree - 100);
 }
 
-TMonom TMonom::def_Y()
+TMonom TMonom::def_Y()const
 {
 	if ((int)(degree % 100) / 10 == 0)
 		return TMonom(0,0);
 	return TMonom(coeff * ((degree % 100) / 10), degree - 10);
 }
 
-TMonom TMonom::def_Z()
+TMonom TMonom::def_Z()const
 {
 	if((int)(degree%10) == 0)
 		return TMonom(0, 0);
 	return TMonom(coeff * (degree % 10), degree - 1);
 }
 
-double TMonom::calculate(double x, double y, double z)
+double TMonom::operator()(double x, double y, double z)const
 {
 	double res = coeff;
 	if (degree / 100 != 0)
@@ -237,21 +240,21 @@ std::istream& operator>>(std::istream in, TMonom& monom)
 	std::cout << std::endl;
 	if (monom.coeff == 0)
 		return in;
-A:	std::cout << "x = ";
-	std::cin >> x;
-	std::cout << std::endl;
-	if (x > 9)
-		goto A;
-B:	std::cout << "y = ";
-	std::cin >> y;
-	std::cout << std::endl;
-	if (y > 9)
-		goto B;
-C:	std::cout << "z = ";
-	std::cin >> z;
-	std::cout << std::endl;
-	if (z > 9)
-		goto C;
+	do {
+		std::cout << "x = ";
+		std::cin >> x;
+		std::cout << std::endl;
+	} while (x > 9 || x < 0);
+	do {
+		std::cout << "y = ";
+		std::cin >> y;
+		std::cout << std::endl;
+	} while (y > 9 || y < 0);
+	do {
+		std::cout << "z = ";
+		std::cin >> z;
+		std::cout << std::endl;
+	} while (z > 9 || z < 0);
 	monom.degree = x * 100 + y * 10 + z;
 	return in;
 }

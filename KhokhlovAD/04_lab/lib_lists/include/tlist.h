@@ -18,15 +18,16 @@ public:
 	TList(const TList<T>& TList);
 
 	TNode<T>* search(const T& data);
+	TNode<T>* search(const TNode<T>* node);
 
 	virtual ~TList();
-	void clear(); // virtual
+	virtual void clear(); 
 
 	void Next();
 	void Reset();
 
 	bool IsEmpty()const;
-	bool IsFool()const;
+	bool IsFull()const;
 	bool IsEnd()const;
 
 	void Sort();
@@ -59,12 +60,25 @@ public:
 	friend std::ostream& operator<<(std::ostream& out, TList<T>& list) {
 		int num = 1;
 		while (!list.IsEnd()) {
-			out << num << " node " << list.get_pCurr() << std::endl;
+			out << num << " node = " << list.get_pCurr() << std::endl;
 			list.Next();
 			num++;
 		}
 		list.Reset();
 		return out;
+	}
+	friend std::istream& operator>>(std::istream& in, TList<T>& list) {
+		T data;
+		int N;
+		std::cout << "enter length of list = ";
+		in >> N;
+		for (int i = 0; i < N; i++)
+		{
+			std::cout << "enter data = ";
+			in >> data;
+			list.InsertFirst(data);
+		}
+		return in;
 	}
 };
 
@@ -100,7 +114,7 @@ TList<T>::TList(const TNode<T>* pFirst)
 		tmp = tmp->pNext;
 	}
 	pStop = nullptr;
-	pPrev = nullptr;
+	pPrev = pStop;
 }
 
 
@@ -140,8 +154,7 @@ TList<T>::~TList()
 template <typename T>
 void TList<T>::clear()
 {
-	TNode<T>* tmp = pFirst;
-	while (pFirst != nullptr) {
+	while (!IsEmpty()) {
 		TNode<T>* tmp = pFirst;
 		pFirst = pFirst->pNext;
 		delete tmp;
@@ -149,7 +162,6 @@ void TList<T>::clear()
 	pCurr = nullptr;
 	pPrev = nullptr;
 	pLast = nullptr;
-	pStop = nullptr;
 }
 
 template <typename T>
@@ -168,7 +180,7 @@ bool TList<T>::IsEmpty()const
 }
 
 template <typename T>
-bool TList<T>::IsFool()const // Full
+bool TList<T>::IsFull()const 
 {
 	TNode<T>* tmp = new (std::nothrow) TNode<T>();
 	if (tmp)
@@ -188,22 +200,35 @@ bool TList<T>::IsEnd()const
 
 
 template <typename T>
-TNode<T>* TList<T>::search(const T& data) // pCurr, pPrev
+TNode<T>* TList<T>::search(const T& data)
 {
-	TNode<T>* tmp = pFirst;
-	while (tmp->pNext != pStop && tmp->data != data)
+	Reset();
+	while (pCurr->pNext != pStop && pCurr->data != data)
 	{
-		tmp = tmp->pNext;
+		Next();
 	}
-	if (tmp->pNext == pStop && tmp->data != data)
+	if (pCurr->pNext == pStop && pCurr->data != data)
 		throw std::exception("data not found(Search)");
-	return tmp;
+	return pCurr;
+}
+
+template <typename T>
+TNode<T>* TList<T>::search(const TNode<T>* node) 
+{
+	Reset();
+	while (pCurr->pNext != pStop && pCurr->data != node->data)
+	{
+		Next();
+	}
+	if (pCurr->pNext == pStop && pCurr->data != node->data)
+		throw std::exception("data not found(Search)");
+	return pCurr;
 }
 
 template <typename T>
 void TList<T>::InsertFirst(const T& data)
 {
-	if (IsFool())
+	if (IsFull())
 		throw std::exception("out of memory(InsF)");
 	if (IsEmpty())
 	{
@@ -226,7 +251,7 @@ void TList<T>::InsertFirst(const T& data)
 template <typename T>
 void TList<T>::InsertLast(const T& data)
 {
-	if (IsFool())
+	if (IsFull())
 		throw std::exception("out of memory(InsL)");
 	if (IsEmpty())
 	{
@@ -241,41 +266,26 @@ void TList<T>::InsertLast(const T& data)
 template <typename T>
 void TList<T>::InsertBefore(const T& data, const TNode<T>* before_node)
 {
-	if (IsFool())
+	if (IsFull())
 		throw std::exception("out of memor(InsB)");
 	TNode<T>* new_node = new TNode<T>(data);
 	pCurr = pFirst;
-	while ((pCurr->pNext != pStop) && (new_node->pNext != before_node)) // Search
-	{
-		Next();
-	}
-	if ((pCurr->pNext == pStop) && (pCurr != before_node)) // InsertBeforeCurrent
+	search(before_node);
+	if ((pCurr->pNext == pStop) && (pCurr != before_node))
 		throw std::exception("node not found(InsB)");
-	if (pPrev == pStop)
-		InsertFirst(data);
-	else
-	{
-		pPrev->pNext = new_node;
-		pPrev = pPrev->pNext;
-		pPrev->pNext = pCurr;
-	}
-	pCurr = pFirst;
-	pPrev = pStop;
+	InsertBeforeCurrent(data);
+	Reset();
 }
 
 template <typename T>
 void TList<T>::InsertAfter(const T& data, const TNode<T>* after_node)
 {
-	if (IsFool())
+	if (IsFull())
 		throw std::exception("out of memory(InsA)");
-	TNode<T>* tmp = search(after_node->data);
-	TNode<T>* new_node = new TNode<T>(data); // InsertAfterCurrent
-	if (tmp == pStop)
-		throw std::exception("node not found(InsA)");
-	new_node->pNext = tmp->pNext;
-	tmp->pNext = new_node;
-	if (tmp == pLast)
-		pLast = new_node;
+	Reset();
+	search(after_node);
+	InsertAfterCurrent(data);
+	Reset();
 }
 
 template <typename T>
@@ -289,17 +299,15 @@ void TList<T>::InsertBeforeCurrent(const T& data)
 		InsertLast(data);
 		return;
 	}
-	TNode<T>* new_node = new TNode<T>(data);
-	if (new_node == NULL) { // IsFull
+	if (IsFull()) { 
 		throw std::exception("out of memory(InsBC)");
 	}
-	else {
-		pPrev->pNext = new_node;
-		pPrev = pPrev->pNext;
-		pPrev->pNext = pCurr;
-	}
+	TNode<T>* new_node = new TNode<T>(data);
+	pPrev->pNext = new_node;
+	pPrev = pPrev->pNext;
+	pPrev->pNext = pCurr;
 	pCurr = pFirst;
-	pPrev = nullptr;
+	pPrev = pStop;
 }
 
 template <typename T>
@@ -307,22 +315,20 @@ void TList<T>::InsertAfterCurrent(const T& data)
 {
 	if (IsEmpty()) {
 		InsertFirst(data);
+		return;
 	}
-	else if (IsEnd()) {
+	if (IsEnd()) {
 		InsertLast(data);
+		return;
 	}
-	else {
-		TNode<T>* new_node = new TNode<T>(data);
-		if (new_node == NULL) {
-			throw std::exception("out of memory(InsAC)");
-		}
-		else {
-			Next();
-			pPrev->pNext = new_node;
-			pPrev = pPrev->pNext;
-			pPrev->pNext = pCurr;
-		};
+	TNode<T>* new_node = new TNode<T>(data);
+	if (new_node == NULL) {
+		throw std::exception("out of memory(InsAC)");
 	}
+	Next();
+	pPrev->pNext = new_node;
+	pPrev = pPrev->pNext;
+	pPrev->pNext = pCurr;
 	pCurr = pFirst;
 	pPrev = pStop;
 }
@@ -334,7 +340,7 @@ void TList<T>::DeleteFirst()
 		throw std::exception("empty list(DelF)");
 	if (pFirst == pLast)
 	{
-		*this = TList<T>(); ///!!!!!!!!!!!
+		pFirst = pStop; 
 		return;
 	}
 	TNode<T>* tmp = pFirst->pNext;
@@ -351,7 +357,7 @@ void TList<T>::DeleteLast()
 		throw std::exception("empty list(DelL)");
 	if (pLast == pFirst)
 	{
-		*this = TList<T>(); ///!!!!!!!!!!!
+		delete pFirst;
 		return;
 	}
 	pCurr = pFirst;
@@ -369,7 +375,7 @@ void TList<T>::DeleteCurrent()
 {
 	if (IsEmpty())
 		throw std::exception("empty list(DelC)");
-	if (pCurr != pStop) // IsEnded
+	if (!IsEnd()) 
 	{
 		if (pCurr == pFirst) {
 			DeleteFirst();
@@ -383,6 +389,9 @@ void TList<T>::DeleteCurrent()
 			delete tmp;
 		}
 	}
+	else {
+		DeleteLast();
+	}
 }
 
 template <typename T>
@@ -390,14 +399,13 @@ void TList<T>::DeleteBefore(const TNode<T>* before_node)
 {
 	if (IsEmpty())
 		throw std::exception("empty list(DelB)");
-	pCurr = pFirst;
-	while (pCurr->pNext != pStop && pCurr->pNext != before_node) // search
-		Next();
-	if (pCurr->pNext == pStop && pCurr->pNext != before_node)
+	Reset();
+	search(before_node);
+	if (pCurr->pNext == pStop && pCurr != before_node)
 		throw std::exception("node not found(DelB)");
-	if (pPrev == pStop)
+	if (pCurr == pFirst)
 	{
-		DeleteFirst(); //?????
+		DeleteFirst(); 
 		pCurr = pFirst;
 		return;
 	}
@@ -406,9 +414,9 @@ void TList<T>::DeleteBefore(const TNode<T>* before_node)
 		pPrev->pNext = pCurr->pNext;
 		delete pCurr;
 		pCurr = pFirst;
-		pPrev = nullptr;
+		pPrev = pStop;
 	}
-
+	Reset();
 }
 
 template <typename T>
@@ -418,9 +426,8 @@ void TList<T>::DeleteAfter(const TNode<T>* after_node)
 		throw std::exception("empty list(DelA)");
 	if (pLast == after_node)
 		return;
-	pCurr = pFirst;
-	while (pCurr->pNext != pStop && pCurr != after_node) // search
-		Next();
+	Reset();
+	search(after_node);
 	if (pCurr->pNext == pStop && pCurr != after_node)
 		throw std::exception("node not found(DelB)");
 	Next();
@@ -428,6 +435,7 @@ void TList<T>::DeleteAfter(const TNode<T>* after_node)
 	delete pCurr;
 	pPrev = pStop;
 	pCurr = pFirst;
+	Reset();
 }
 
 template <typename T>
@@ -435,9 +443,8 @@ void TList<T>::DeleteData(const T& data)
 {
 	if (IsEmpty())
 		throw std::exception("empty list(DelD)");
-	pCurr = pFirst;
-	while (pCurr->pNext != pStop || pCurr->data != data) // search
-		Next();
+	Reset();
+	search(data);
 	if (pCurr->pNext != pStop && pCurr->data != data)
 		throw std::exception("data not found(DelD)");
 	if (pPrev == pStop)
@@ -449,6 +456,7 @@ void TList<T>::DeleteData(const T& data)
 		pCurr = pFirst;
 		pPrev = pStop;
 	}
+	Reset();
 }
 
 template <typename T>

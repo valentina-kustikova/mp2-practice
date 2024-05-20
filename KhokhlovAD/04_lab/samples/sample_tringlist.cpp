@@ -3,12 +3,10 @@
 
 int main()
 {
-    TNode<int>* _pFirst = new TNode<int>(2);
-    TRingList<int> rl(_pFirst);
+    int data, N;
     TRingList<int> ringList;
-    std::cout << rl << std::endl;
-    ringList.InsertFirst(8);
-    ringList.InsertFirst(9);
+    std::cin >> ringList;
+    
     std::cout << "Created with InsrtFirst ringlist " << std::endl;
     std::cout << ringList << std::endl;
 
@@ -16,5 +14,12 @@ int main()
     ringList.DeleteFirst();
     std::cout << ringList << std::endl;
     ringList.Reset();
+    //search isemprty isfull 
+    std::cout << "Lets sort nodes in our ringlist " << std::endl;
+    ringList.Sort();
+    std::cout << ringList << std::endl;
+
+    std::cout << "Is empty? " << ringList.IsEmpty()<< std::endl;
+    std::cout << "Is full? " << ringList.IsFull() << std::endl;
     return 0;
 }

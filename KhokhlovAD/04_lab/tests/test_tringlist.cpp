@@ -40,14 +40,14 @@ TEST(TRingList, not_empty_list_isnt_empty)
 TEST(TRingList, empty_list_isnt_fool)
 {
 	TRingList<int> a;
-	ASSERT_FALSE(a.IsFool());
+	ASSERT_FALSE(a.IsFull());
 }
 
 TEST(TRingList, not_empty_list_isnt_fool)
 {
 	TNode<int>* a = new TNode<int>(2);
 	TRingList<int> b(a);
-	ASSERT_FALSE(b.IsFool());
+	ASSERT_FALSE(b.IsFull());
 }
 
 TEST(TRingList, empty_list_isend)
@@ -198,7 +198,7 @@ TEST(TRingList, delete_before1)
 	c.InsertLast(3);
 	TNode<int>* d = c.search(3);
 	c.DeleteBefore(d);
-	ASSERT_ANY_THROW(c.search(2));
+	ASSERT_ANY_THROW(c.search(3));
 }
 
 

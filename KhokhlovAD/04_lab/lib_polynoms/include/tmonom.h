@@ -33,11 +33,11 @@ public:
 
 	const TMonom& operator=(const TMonom& monom);
 
-	TMonom def_X(); // const
-	TMonom def_Y(); // const
-	TMonom def_Z(); // const
+	TMonom def_X()const; 
+	TMonom def_Y()const; 
+	TMonom def_Z()const; 
 
-	double calculate(double x, double y, double z); // operator()(double x, double y, double z) const
+	double operator()(double x, double y, double z)const; 
 
 	friend std::ostream& operator<<(std::ostream& out, TMonom& monom)
 	{

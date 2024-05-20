@@ -47,14 +47,14 @@ TEST(TList, not_empty_list_isnt_empty)
 TEST(TList, empty_list_isnt_fool)
 {
 	TList<int> a;
-	ASSERT_FALSE(a.IsFool());
+	ASSERT_FALSE(a.IsFull());
 }
 
 TEST(TList, not_empty_list_isnt_fool)
 {
 	TNode<int>* a = new TNode<int>(2);
 	TList<int> b(a);
-	ASSERT_FALSE(b.IsFool());
+	ASSERT_FALSE(b.IsFull());
 }
 
 TEST(TList, empty_list_isend)
@@ -205,7 +205,7 @@ TEST(TList, delete_before1)
 	c.InsertLast(3);
 	TNode<int>* d = c.search(3);
 	c.DeleteBefore(d);
-	ASSERT_ANY_THROW(c.search(2));
+	ASSERT_ANY_THROW(c.search(3));
 }
 
 

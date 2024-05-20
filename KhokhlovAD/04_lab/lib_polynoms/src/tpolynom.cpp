@@ -3,7 +3,7 @@
 
 TPolynom::TPolynom()
 {
-	monoms = TRingList<TMonom>();
+	;
 }
 
 TPolynom::TPolynom(const string& name)
@@ -11,6 +11,8 @@ TPolynom::TPolynom(const string& name)
 	if (name[0] == '\0')
 		throw std::exception("invalid string");
 	string tmpstr = name;
+	std::string::iterator end_pos = std::remove(tmpstr.begin(), tmpstr.end(), ' ');
+	tmpstr.erase(end_pos, tmpstr.end());
 	string strmonom = "";
 	TMonom tmpmonom;
 	int flag = 0;
@@ -20,11 +22,14 @@ TPolynom::TPolynom(const string& name)
 	{
 		if (i == 0 && tmpstr[i] == '+')
 			continue;
-		if (i == 0 && tmpstr[i] == '-')
+		if (strmonom == "" && tmpstr[i] == '-')
 		{
 			flag++;
 			continue;
 		}
+		if(i != 0)
+			if (tmpstr[i-1] == '-')
+				flag++;
 		if (tmpstr[i] != '+' && tmpstr[i] != '-' )
 		{
 			strmonom += tmpstr[i];
@@ -32,8 +37,6 @@ TPolynom::TPolynom(const string& name)
 				continue;
 		}
 		tmpmonom = TMonom(strmonom);
-		if (tmpstr[i] == '-')
-			flag++;
 		if (flag > 0)
 		{
 			tmpmonom.SetCoeff((-1) * tmpmonom.GetCoeff());
@@ -76,25 +79,82 @@ void TPolynom::update()
 			monoms.Next();
 		}
 	}
+	updatenull();
+	updatename();
+}
+
+void TPolynom::updatenull()
+{
 	monoms.Reset();
-	TNode<TMonom>* current = monoms.getpC();
+	int flag = 0;
 	while (!monoms.IsEmpty() && !monoms.IsEnd())
 	{
-		if (monoms.getpC()->data.GetCoeff() == 0.0)
+		flag = 0;
+		if (monoms.get_pCurr().GetCoeff() == 0.0)
 		{
 			monoms.DeleteCurrent();
+			flag++;
 		}
-		else {
+		if (flag == 0)
 			monoms.Next();
-		}
 	}
+	monoms.Reset();
+}
+
+void TPolynom::updatename()
+{
+	string tmpname = "";
+	TMonom tmpmonom;
+	int flag = 0;
+	while (!monoms.IsEnd())
+	{
+		tmpmonom = monoms.get_pCurr();
+		if (tmpmonom.GetDegree() == 0)
+		{
+			name = to_string(tmpmonom.GetCoeff());
+			return;
+		}
+		if (tmpmonom.GetCoeff() > 0 && flag != 0)
+			tmpname +=  "+";
+		tmpname += to_string(tmpmonom.GetCoeff());
+		if (tmpmonom.GetDegree() / 100 > 0)
+		{
+			tmpname+=  "*x^" + to_string(tmpmonom.GetDegree() / 100);
+		}
+		if ((tmpmonom.GetDegree() % 100) / 10 > 0)
+		{
+			tmpname +=  "*y^" + to_string((tmpmonom.GetDegree() % 100) / 10);
+		}
+		if (tmpmonom.GetDegree() % 10 > 0)
+		{
+			tmpname += "*z^" + to_string(tmpmonom.GetDegree() % 10);
+		}
+		flag++;
+		monoms.Next();
+	}
+	name = tmpname;
 	monoms.Reset();
 }
 
 const TPolynom& TPolynom::operator=(const TPolynom& polynom)
 {
 	this->monoms = polynom.monoms;
+	this->name = polynom.name;
 	return *this;
+}
+
+void TPolynom::InsertSort(const TMonom& m)
+{
+	monoms.Reset();
+	while (monoms.get_pCurr() < m && !monoms.IsEnd())
+		monoms.Next();
+	if (monoms.get_pCurr().GetDegree() == m.GetDegree())
+	{
+		monoms.getpC()->data.SetCoeff(monoms.get_pCurr().GetCoeff() + m.GetCoeff());
+		return;
+	}
+	monoms.InsertBeforeCurrent(m);
+	monoms.Reset();
 }
 
 TPolynom TPolynom::operator+(const TPolynom& polynom)
@@ -102,10 +162,12 @@ TPolynom TPolynom::operator+(const TPolynom& polynom)
 	TPolynom tmp(polynom);
 	while (!tmp.monoms.IsEnd() && !tmp.monoms.IsEmpty())
 	{
-		monoms.InsertLast(tmp.monoms.getpC()->data); // InsertSort внутри полиномов
+		if(tmp.monoms.get_pCurr().GetCoeff() != 0)
+			InsertSort(tmp.monoms.get_pCurr());
 		tmp.monoms.Next();
 	}
-	update();
+	monoms.Reset();
+	updatenull();
 	return *this;
 }
 
@@ -118,6 +180,10 @@ TPolynom TPolynom::operator-(const TPolynom& polynom)
 
 TPolynom TPolynom::operator*(const double c)
 {
+	if (c == 0)
+	{
+		return TPolynom();
+	}
 	monoms.Reset();
 	while (!monoms.IsEnd())
 	{
@@ -125,6 +191,7 @@ TPolynom TPolynom::operator*(const double c)
 		monoms.Next();
 	}
 	monoms.Reset();
+	updatename();
 	return *this;
 }
 
@@ -133,20 +200,20 @@ TPolynom TPolynom::operator*(const TPolynom& polynom)
 	if (polynom.monoms.IsEmpty())
 		return polynom;
 	TPolynom tmp(polynom);
+	TRingList<TMonom> tmplist;
 	monoms.Reset();
 	while (!monoms.IsEnd())
 	{
+		tmp.monoms.Reset();
 		while (!tmp.monoms.IsEnd())
 		{
-			if (monoms.get_pCurr().GetDegree() == tmp.monoms.get_pCurr().GetDegree())
-			{
-				monoms.getpC()->data = monoms.getpC()->data * tmp.monoms.getpC()->data;
-			}
+			tmplist.InsertLast(monoms.getpC()->data * tmp.monoms.getpC()->data);
 			tmp.monoms.Next();
 		}
 		monoms.Next();
 	}
-	update();
+	monoms = tmplist;
+	updatename();
 	return *this;
 }
 
@@ -156,7 +223,8 @@ TPolynom TPolynom::dif()const
 	tmp = tmp.dif_x();
 	tmp = tmp.dif_y();
 	tmp =tmp.dif_z();
-	tmp.update();
+	tmp.updatenull();
+	tmp.updatename();
 	return tmp;
 }
 
@@ -207,7 +275,7 @@ double TPolynom::operator()(double x, double y, double z)const
 	double res = 0;
 	while (!tmp.monoms.IsEnd())
 	{
-		res += tmp.monoms.getpC()->data.calculate(x, y, z);
+		res += tmp.monoms.getpC()->data(x, y, z);
 		tmp.monoms.Next();
 	}
 	return res;
