@@ -23,8 +23,8 @@ void main() {
 	cout << endl;
 	list.reset();
 	try { list.next(); }
-	catch(...){}
-	cout << "now lets put a new integer after " << list.GetCurrent()->data<<": ";
+	catch (...) {}
+	cout << "now lets put a new integer after " << list.GetCurrent()->data << ": ";
 	int tmp = list.GetCurrent()->data;
 	cin >> a;
 	list.InsertAfter(tmp, a);
@@ -36,7 +36,7 @@ void main() {
 	}
 	list.reset();
 	list.next();
-	cout << "now lets put a new integer before " << list.GetCurrent()->data<<": ";
+	cout << "now lets put a new integer before " << list.GetCurrent()->data << ": ";
 	tmp = list.GetCurrent()->data;
 	cin >> a;
 	list.InsertBefore(tmp, a);
@@ -46,5 +46,26 @@ void main() {
 		cout << list.GetCurrent()->data << " ";
 		list.next();
 	}
+	cout << "now enter a number you'd like to delete:\n";
+	int k;
+	cin >> k;
+	while (1) {
+		try
+		{
+			list.DeleteNode(list.Search(k));
+			cout << "got ";
+			list.reset();
+			while (!list.IsEnded()) {
+				cout << list.GetCurrent()->data << " ";
+				list.next();
+			}
+			break;
+		}
+		catch (...)
+		{
+			cout << "couldn't find this number, please, enter an existing one:\n";
+		}
+	}
+
 	list.reset();
 }

@@ -26,8 +26,14 @@ string TPolynomial::ToString() const {
 	if ((p.monomials.GetCurrent()->data.coef == 0) && (p.monomials.GetCurrent()->data.degr == 0))
 		S.push_back('0');
 	else if ((p.monomials.GetCurrent()->data.coef == 0) && (p.monomials.GetCurrent()->data.degr != 0)) {}
-	else if (p.monomials.GetCurrent()->data.coef < 0) {
-		S.push_back('-');
+	else if ((p.monomials.GetCurrent()->data.coef < 0) && (p.monomials.GetCurrent()->data.degr == 0)) {
+		S.append("-");
+		string tmp;
+		tmp = p.monomials.GetCurrent()->data.ToString();
+		tmp.erase(0, 1);
+		S.append(tmp);
+	}else if ((p.monomials.GetCurrent()->data.coef < 0) && (p.monomials.GetCurrent()->data.degr != 0)) {
+		S.append("-");
 		S.append(p.monomials.GetCurrent()->data.ToString());
 	}
 	else
@@ -37,7 +43,16 @@ string TPolynomial::ToString() const {
 	int k = -1;
 	while (!p.monomials.IsEnded()) {
 		k++;
-		if (p.monomials.GetCurrent()->data.coef < 0) {
+		if ((p.monomials.GetCurrent()->data.coef < 0)&&(p.monomials.GetCurrent()->data.degr == 0)) {
+			S.append(" - ");
+			string tmp;
+			tmp = p.monomials.GetCurrent()->data.ToString();
+			tmp.erase(0, 1);
+			S.append(tmp);
+			p.monomials.next();
+			continue;
+		}
+		else if ((p.monomials.GetCurrent()->data.coef < 0) && (p.monomials.GetCurrent()->data.degr != 0)) {
 			S.append(" - ");
 			S.append(p.monomials.GetCurrent()->data.ToString());
 			p.monomials.next();

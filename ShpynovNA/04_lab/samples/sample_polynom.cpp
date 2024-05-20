@@ -4,15 +4,12 @@ int main() {
 	try {
 		cout << "enter 1st polynomial: \n";
 		string s1;
-		//cin >> s1;  // 5x^2*y^3*z^4 + 11*x^3 + 7 + 0 - 11x^3 - x + 3 - 0 -2 +x+x^3
-		s1 = " 5x^2*y^3*z^4 + 11*x^3 + 7 + 0 - 11x^3 - x + 3 - 0 -2 +x+x^3";
-		//s1 = "-x+1";
+		cin >> s1;  // 5x^2*y^3*z^4 + 11*x^3 + 7 + 0 - 11x^3 - x + 3 - 0 -2 +x+x^3
 		TPolynomial P1 = TPolynomial(s1);
 		cout << "got " << P1 << "\n";
 
 		cout << "enter 2nd polynomial: \n";
-		//cin >> s1;
-		s1 = "x+1";
+		cin >> s1;
 		TPolynomial P2 = TPolynomial(s1);
 		cout << "got " << P2 << "\n\n";
 		cout << "their sum: " << P1+P2 << "\n";
