@@ -51,6 +51,10 @@ TEST(TPolynomial, constant_correct) {
 TEST(TPolynomial, can_create_zero) {
 	EXPECT_NO_THROW(TPolynomial("0"));
 }
+TEST(TPolynomial, can_create_minus_first) {
+	TestPolynomial tmp = TPolynomial("-5x^2*y^3*z^4+11*x^3+7");
+	EXPECT_EQ(tmp, TPolynomial("7-5x^2*y^3*z^4+11*x^3"));
+}
 TEST(TPolynomial, zero_correct) {
 	TestPolynomial tmp = TPolynomial("0");
 	tmp.monomials.reset();

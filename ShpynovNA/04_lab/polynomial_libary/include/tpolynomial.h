@@ -22,7 +22,7 @@ public:
 	TPolynomial(const TPolynomial& p){
 		name = p.name;
 		monomials = p.monomials;
-}
+	}
 	string ToString() const;
 
 	~TPolynomial() {};

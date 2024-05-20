@@ -43,7 +43,7 @@ public:
 	TList(const TList<TData>&);
 	TList(TNode<TData>*);
 
-	~TList() {clear();}
+	virtual ~TList() {clear();}
 
 	virtual void InsertFirst(const TData&);
 	void InsertLast(const TData&);
@@ -164,7 +164,11 @@ template <typename TData> void TList<TData>::DeleteNode(TNode<TData>* node) {
 		return;
 	}
 	Search(node);
+
 	pPrev->pNext = pCurrent->pNext;
+	if (pCurrent->pNext == pStop) {
+		pLast = pPrev;
+	}
 	delete pCurrent;
 	pCurrent = pPrev->pNext;
 }
