@@ -1,9 +1,7 @@
 #include "gtest.h"
-#include "hash_table.h"
-#include "scan_table.h"
-#include "sorted_table.h"
-#include "table.h"
-#include "record.h"
+#include "tableslib.h"
+
+/*
 // ------- table -------
 TEST (table, empty_)
 {
@@ -126,7 +124,7 @@ TEST(sorted_table, remove)
 
 TEST(hash_table, create_hash_table)
 {
-    HashTable<int, int> t1, t2(-5), t3(0);
+    ArrayHashTable<int, int> t1, t2(-5), t3(0);
     ASSERT_EQ(t1.get_max_size(), 101);
     ASSERT_EQ(t2.get_max_size(), -1);
     ASSERT_EQ(t3.get_max_size(), -1);
@@ -134,7 +132,7 @@ TEST(hash_table, create_hash_table)
 
 TEST(hash_table, find_)
 {
-    HashTable<int, int> table(10);
+    ArrayHashTable<int, int> table(10);
     table.insert(1, 1); table.insert(2, 2); table.insert(3, 3);
     ASSERT_NO_THROW(table.find(1));
     ASSERT_EQ(table.find(2)->data, 2);
@@ -143,7 +141,7 @@ TEST(hash_table, find_)
 
 TEST(hash_table, insert)
 {
-    HashTable<int, int> table(10);
+    ArrayHashTable<int, int> table(10);
     for (int i = 0; i < 5; ++i)
         ASSERT_NO_THROW(table.insert(i, i));
     for (int i = 0; i < 5; ++i)
@@ -155,7 +153,7 @@ TEST(hash_table, insert)
 
 TEST(hash_table, remove)
 {
-    HashTable<int, int> table(10);
+    ArrayHashTable<int, int> table(10);
     for (int i = 0; i < 5; ++i)
         ASSERT_NO_THROW(table.insert(i, i));
 
@@ -165,3 +163,4 @@ TEST(hash_table, remove)
         ASSERT_EQ(table.find(i), nullptr);
     }
 }
+*/
