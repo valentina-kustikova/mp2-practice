@@ -1,5 +1,4 @@
 #include "tmonom.h"
-#include <string>
 
 TMonom::TMonom() {
 	coeff = 0;
@@ -11,7 +10,7 @@ TMonom::TMonom(const TMonom& monom) {
 }
 TMonom::TMonom(double _coeff, int _degree) {
 	if (_degree > 999 || _degree < 0) {
-		string exp = "Error: degree must be in [0, 999]";
+		std::string exp = "Error: degree must be in [0, 999]";
 		throw exp;
 	}
 	
@@ -20,7 +19,7 @@ TMonom::TMonom(double _coeff, int _degree) {
 }
 TMonom::TMonom(double _coeff, int degX, int degY, int degZ) {
 	if (degX < 0 || degY < 0 || degZ < 0 || degX > 9 || degY > 9 || degZ > 9) {
-		string exp = "Error: x,y,z must be in [0, 9]";
+		std::string exp = "Error: x,y,z must be in [0, 9]";
 		throw exp;
 	}
 
@@ -55,7 +54,7 @@ void TMonom::set_coeff(double _coeff) {
 }
 void TMonom::set_degree(int _degree) {
 	if (_degree > 999 || _degree < 0) {
-		string exp = "Error: degree must be in [0, 999]";
+		std::string exp = "Error: degree must be in [0, 999]";
 		throw exp;
 	}
 	
@@ -63,7 +62,7 @@ void TMonom::set_degree(int _degree) {
 }
 void TMonom::set_degree(int degX, int degY, int degZ) {
 	if (degX < 0 || degY < 0 || degZ < 0 || degX > 9 || degY > 9 || degZ > 9) {
-		string exp = "Error: degX,degY,degZ must be in [0, 9]";
+		std::string exp = "Error: degX,degY,degZ must be in [0, 9]";
 		throw exp;
 	}
 	
@@ -93,24 +92,19 @@ double TMonom::operator()(double x, double y, double z) const {
 
 
 bool TMonom::operator<(const TMonom& monom) const {
-	if (degree < monom.degree) return true;
-	return false;
+	return (degree < monom.degree);
 }
 bool TMonom::operator>(const TMonom& monom) const {
-	if (degree > monom.degree) return true;
-	return false;
+	return (degree > monom.degree);
 }
 bool TMonom::operator<=(const TMonom& monom) const {
-	if (degree <= monom.degree) return true;
-	return false;
+	return (degree <= monom.degree);
 }
 bool TMonom::operator>=(const TMonom& monom) const {
-	if (degree >= monom.degree) return true;
-	return false;
+	return (degree >= monom.degree);
 }
 bool TMonom::operator==(const TMonom& monom) const {
-	if (degree == monom.degree) return true;
-	return false;
+	return (degree == monom.degree);
 }
 bool TMonom::operator!=(const TMonom& monom) const {
 	return !(degree == monom.degree);
@@ -135,7 +129,7 @@ TMonom TMonom::operator*(const TMonom& monom) const {
 
 	if (degZ1 + degZ2 > 9 || degY1 + degY2 > 9 || degX1 + degX2 > 9 ||
 		degZ1 + degZ2 < 0 || degY1 + degY2 < 0 || degX1 + degX2 < 0) {
-		string exp = "Error: res_degrees must be in [0, 9]";
+		std::string exp = "Error: res_degrees must be in [0, 9]";
 		throw exp;
 	}
 	
@@ -194,26 +188,26 @@ TMonom TMonom::dif_z() const {
 }
 
 
-string TMonom::get_string() const {
+std::string TMonom::get_string() const {
 	int degZ = get_degZ();
 	int degY = get_degY();
 	int degX = get_degX();
-	string res = "";
+	std::string res = "";
 
 
-	res += to_string(coeff);
+	res += std::to_string(coeff);
 	
 	if		(degX == 1) res += "*x";
-	else if (degX > 1)	res += "*x^" + to_string(degX);
+	else if (degX > 1)	res += "*x^" + std::to_string(degX);
 
 	if		(degY == 1) res += "*y";
-	else if (degY > 1)	res += "*y^" + to_string(degY);
+	else if (degY > 1)	res += "*y^" + std::to_string(degY);
 
 	if		(degZ == 1) res += "*z";
-	else if (degZ > 1)	res += "*z^" + to_string(degZ);
+	else if (degZ > 1)	res += "*z^" + std::to_string(degZ);
 
 	return res;
 }
-ostream& operator<<(ostream& out, const TMonom& monom) {
+std::ostream& operator<<(std::ostream& out, const TMonom& monom) {
 	return out << monom.get_string();
 }
