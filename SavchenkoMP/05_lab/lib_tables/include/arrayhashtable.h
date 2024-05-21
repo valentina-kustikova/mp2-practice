@@ -1,10 +1,12 @@
 #ifndef ARRAYHASHTABLE_H
 #define ARRAYHASHTABLE_H
 
+#include <iostream>
+#include <algorithm>
 #include "hashtable.h"
 #include "xxh3.h"
 
-#include <algorithm>
+#define DEFAULT_HASHSTEP 10
 
 template <class TKey, class TData>
 class ArrayHashTable : public HashTable<TKey, TData> {
@@ -19,20 +21,17 @@ protected:
 
 	void coprime_check(size_t _max_size, size_t _hash_step);
 public:
-	ArrayHashTable(size_t _max_size, size_t _hash_step);
+	ArrayHashTable(size_t _max_size = DEFAULT_SIZE, size_t _hash_step = DEFAULT_HASHSTEP);
 	ArrayHashTable(const ArrayHashTable<TKey, TData>& aht);
 	virtual ~ArrayHashTable();
 
-	TabRecord<TKey, TData>* Find(const TKey& key);
+	TabRecord<TKey, TData>* find(const TKey& key);
 	TabRecord<TKey, TData>* operator[](const TKey& _key);
-	void Insert(const TKey& _key, const TData* _data);
-	void Remove(const TKey& _key);
+	void insert(const TKey& _key, const TData* _data);
+	void remove(const TKey& _key);
 
-	bool Reset();
-	bool Next();
-
-	TKey GetKey() const;
-	TData* GetData() const;
+	bool reset() noexcept;
+	bool next() noexcept;
 };
 
 
@@ -69,7 +68,7 @@ template <class TKey, class TData>
 ArrayHashTable<TKey, TData>::ArrayHashTable(size_t _max_size, size_t _hash_step) : HashTable(_max_size) {
 	coprime_check(_max_size, _hash_step);
 
-	recs = new TabRecord<TKey, TData>*[max_size];
+	recs = new TabRecord<TKey, TData>* [max_size];
 	hash_step = _hash_step;
 	pMark = new TabRecord<TKey, TData>();
 	free_pos_ind = -1;
@@ -84,13 +83,13 @@ ArrayHashTable<TKey, TData>::ArrayHashTable(const ArrayHashTable<TKey, TData>& a
 	curr_pos = aht.curr_pos;
 	free_pos_ind = aht.free_pos_ind;
 
-	recs = new TabRecord<TKey, TData>*[max_size];
-	pMark = new TabRecord<TKey, TData>*();
+	recs = new TabRecord<TKey, TData>* [max_size];
+	pMark = new TabRecord<TKey, TData>* ();
 
 	for (int i = 0; i < max_size; i++) {
 		TabRecord<TKey, TData>* tmp = aht.recs[i];
-		
-		if		(tmp == nullptr)	recs[i] = tmp;
+
+		if (tmp == nullptr)	recs[i] = tmp;
 		else if (tmp == aht.pMark)	recs[i] = pMark;
 		else recs[i] = new TabRecord<TKey, TData>(tmp);
 	}
@@ -107,7 +106,7 @@ ArrayHashTable<TKey, TData>::~ArrayHashTable() {
 
 
 template <class TKey, class TData>
-TabRecord<TKey, TData>* ArrayHashTable<TKey, TData>::Find(const TKey& key) {
+TabRecord<TKey, TData>* ArrayHashTable<TKey, TData>::find(const TKey& key) {
 	size_t idx = hash_func(key);
 	for (int i = 0; i < max_size; i++) {
 		if (recs[idx] == nullptr)
@@ -116,7 +115,7 @@ TabRecord<TKey, TData>* ArrayHashTable<TKey, TData>::Find(const TKey& key) {
 		else if (recs[idx] == pMark && free_pos_ind == -1)
 			free_pos_ind = idx;
 
-		else if (recs[idx]->GetKey() == key)
+		else if (recs[idx]->key == key)
 			return recs[idx];
 
 		idx = get_next_pos(idx);
@@ -127,45 +126,58 @@ TabRecord<TKey, TData>* ArrayHashTable<TKey, TData>::Find(const TKey& key) {
 
 template <class TKey, class TData>
 TabRecord<TKey, TData>* ArrayHashTable<TKey, TData>::operator[](const TKey& _key) {
-	return Find(_key);
+	return find(_key);
 }
 
 template <class TKey, class TData>
-void ArrayHashTable<TKey, TData>::Insert(const TKey& _key, const TData* _data) {
+void ArrayHashTable<TKey, TData>::insert(const TKey& _key, const TData* _data) {
+	if (IsFull()) {
+		std::string exp = "Error: table is full.";
+		throw exp;
+	}
 
-	throw "NOT IMPLEMENTED";
+	if (find(_key) != nullptr && free_pos_ind != -1) {
+		curr_pos = free_pos_ind;
+	}
+	recs[curr_pos] = new TabRecord<TKey, TData>(_key, _data);
+	count++;
 }
 
 template <class TKey, class TData>
-void ArrayHashTable<TKey, TData>::Remove(const TKey& _key) {
+void ArrayHashTable<TKey, TData>::remove(const TKey& _key) {
+	TabRecord<TKey, TData>* tmp = find(_key);
 
-	throw "NOT IMPLEMENTED";
+	if (tmp == nullptr) {
+		std::string exp = "Error: key not found";
+		throw exp;
+	}
+
+	delete tmp;
+	recs[curr_pos] = pMark;
+	free_pos_ind = -1;
+	count--;
 }
 
 
 template <class TKey, class TData>
-bool ArrayHashTable<TKey, TData>::Reset() {
-
-	throw "NOT IMPLEMENTED";
+bool ArrayHashTable<TKey, TData>::reset() noexcept {
+	if (!empty()) {
+		curr_pos = 0;
+		return true;
+	}
+	else {
+		curr_pos = -1;
+		return false;
+	}
 }
 
 template <class TKey, class TData>
-bool ArrayHashTable<TKey, TData>::Next() {
-
-	throw "NOT IMPLEMENTED";
-}
-
-
-template <class TKey, class TData>
-TKey ArrayHashTable<TKey, TData>::GetKey() const {
-
-	throw "NOT IMPLEMENTED";
-}
-
-template <class TKey, class TData>
-TData* ArrayHashTable<TKey, TData>::GetData() const {
-
-	throw "NOT IMPLEMENTED";
+bool ArrayHashTable<TKey, TData>::next() noexcept {
+	if (curr_pos < max_size && !empty()) {
+		curr_pos++;
+		return true;
+	}
+	else return false;
 }
 
 #endif // !ARRAYHASHTABLE_H

@@ -2,7 +2,6 @@
 #define HASHTABLE_H
 
 #include "table.h"
-#include "xxh3.h"
 
 template <class TKey, class TData>
 class HashTable : public Table<TKey, TData> {
@@ -10,12 +9,7 @@ protected:
 	virtual size_t hash_func(const TKey& key) = 0;
 
 public:
-	HashTable(size_t size) : Table(size) {};
+	HashTable(size_t size = DEFAULT_SIZE) : Table(size) {};
 };
-
-//template <class TKey, class TData>
-//size_t HashTable<TKey, TData>::hash_func(const TKey& key) {
-//	return (XXH3_64bits(key.c_str(), key.size())) % max_size;
-//}
 
 #endif // !HASHTABLE_H

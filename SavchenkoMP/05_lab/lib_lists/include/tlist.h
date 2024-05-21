@@ -28,7 +28,7 @@ public:
 	virtual void Clear();
 
 	virtual size_t GetSize() const;
-	bool IsFull() const;
+	bool full() const;
 	virtual bool IsEmpty() const;
 
 	virtual void Reset();
@@ -257,7 +257,7 @@ size_t TList<T>::GetSize() const {
 }
 
 template <typename T>
-bool TList<T>::IsFull() const {
+bool TList<T>::full() const {
 	TNode<T>* tmp = new TNode<T>;
 	if (tmp != pStop) {
 		return false;

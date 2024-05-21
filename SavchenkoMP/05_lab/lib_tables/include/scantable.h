@@ -12,17 +12,15 @@ protected:
 	TabRecord<TKey, TData>** recs;
 
 public:
-	ScanTable(int _max_size);
+	ScanTable(int _max_size = DEFAULT_SIZE);
 	ScanTable(const ScanTable<TKey, TData>& st);
 	virtual ~ScanTable();
-	
-	virtual void  Insert(const TKey& _key, TData* _data);
-	virtual void Remove(const TKey& _key);
-	virtual TabRecord<TKey, TData>* Find(const TKey& key);
-	TabRecord<TKey, TData>* operator[](const TKey& _key);
 
-	virtual TKey GetKey() const;
-	virtual TData* GetData() const;
+	virtual void insert(const TKey& _key, TData* _data);
+	virtual void remove(const TKey& _key);
+	
+	virtual TabRecord<TKey, TData>* find(const TKey& key);
+	TabRecord<TKey, TData>* operator[](const TKey& _key);
 };
 
 
@@ -49,8 +47,8 @@ ScanTable<TKey, TData>::ScanTable(const ScanTable<TKey, TData>& st) {
 
 	recs = new TabRecord<TKey, TData>* [max_size];
 	for (int i = 0; i < count; i++) {
-		TKey key = st.recs[i]->GetKey();
-		TData* data = st.recs[i]->GetData();
+		TKey key = st.recs[i]->key;
+		TData* data = st.recs[i]->data;
 		recs[i] = new TabRecord<TKey, TData>(key, data)
 	}
 }
@@ -62,31 +60,31 @@ ScanTable<TKey, TData>::~ScanTable() {
 			if (recs[i] != nullptr) delete recs[i];
 		delete recs;
 	}
-	
+
 }
 
 
 template <class TKey, class TData>
-void ScanTable<TKey, TData>::Insert(const TKey& _key, TData* _data) {
-	if (IsFull()) {
+void ScanTable<TKey, TData>::insert(const TKey& _key, TData* _data) {
+	if (full()) {
 		std::string exp = "ERROR: Table is full.";
 		throw exp;
 	}
-	
-	if (Find(_key) == nullptr) {
+
+	if (find(_key) == nullptr) {
 		recs[count] = new TabRecord<TKey, TData>(_key, _data);
 		count++;
 	}
 }
 
 template <class TKey, class TData>
-void ScanTable<TKey, TData>::Remove(const TKey& _key) {
-	if (IsEmpty()) {
+void ScanTable<TKey, TData>::remove(const TKey& _key) {
+	if (empty()) {
 		std::string exp = "ERROR: Table is empty.";
 		throw exp;
 	}
 
-	if (Find(_key) != nullptr) {
+	if (find(_key) != nullptr) {
 		delete recs[curr_pos];
 		for (int i = curr_pos; i < count; i++) {
 			recs[i] = recs[i + 1];
@@ -100,11 +98,11 @@ void ScanTable<TKey, TData>::Remove(const TKey& _key) {
 }
 
 template <class TKey, class TData>
-TabRecord<TKey, TData>* ScanTable<TKey, TData>::Find(const TKey& key) {
+TabRecord<TKey, TData>* ScanTable<TKey, TData>::find(const TKey& key) {
 	TabRecord<TKey, TData>* res = nullptr;
-	
+
 	for (int i = 0; i < count; i++) {
-		if (recs[i]->GetKey() == key) {
+		if (recs[i]->key == key) {
 			curr_pos = i;
 			res = recs[i];
 			break;
@@ -116,38 +114,7 @@ TabRecord<TKey, TData>* ScanTable<TKey, TData>::Find(const TKey& key) {
 
 template <class TKey, class TData>
 TabRecord<TKey, TData>* ScanTable<TKey, TData>::operator[](const TKey& _key) {
-	return Find(_key);
-}
-
-
-template <class TKey, class TData>
-TKey ScanTable<TKey, TData>::GetKey() const {
-	if (IsEmpty()) {
-		std::string exp = "ERROR: Table is empty.";
-		throw exp;
-	}
-	//if (IsTabEnded()) Reset();
-	if (IsTabEnded()) {
-		std::string exp = "ERROR: Table is ended.";
-		throw exp;
-	}
-
-	return recs[curr_pos]->GetKey();
-}
-
-template <class TKey, class TData>
-TData* ScanTable<TKey, TData>::GetData() const {
-	if (IsEmpty()) {
-		std::string exp = "ERROR: Table is empty.";
-		throw exp;
-	}
-	//if (IsTabEnded()) Reset();
-	if (IsTabEnded()) {
-		std::string exp = "ERROR: Table is ended.";
-		throw exp;
-	}
-
-	return recs[curr_pos]->GetData();
+	return find(_key);
 }
 
 #endif // !SCANTABLE_H

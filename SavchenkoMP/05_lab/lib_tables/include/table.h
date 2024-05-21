@@ -3,6 +3,8 @@
 
 #include "tabrecord.h"
 
+#define DEFAULT_SIZE 101
+
 template <class TKey, class TData>
 class Table {
 protected:
@@ -11,78 +13,65 @@ protected:
 	int curr_pos;
 
 public:
-	virtual void Insert(const TKey& _key, TData* _data) = 0;
-	virtual void Remove(const TKey& _key) = 0;
-	virtual TabRecord<TKey, TData>* Find(const TKey& _key) = 0;
+	virtual void insert(const TKey& _key, TData* _data) = 0;
+	virtual void remove(const TKey& _key) = 0;
+	virtual TabRecord<TKey, TData>* find(const TKey& _key) = 0;
 	virtual TabRecord<TKey, TData>* operator[](const TKey& _key) = 0;
 
-	bool IsFull() const;
-	bool IsEmpty() const;
-	bool IsTabEnded() const;
+	bool full() const noexcept;
+	bool empty() const noexcept;
+	bool ended() const noexcept;
 
-	virtual bool Reset();
-	virtual bool Next();
+	virtual bool reset() noexcept;
+	virtual bool next() noexcept;
 
-	int GetDataCount() const;
-	int GetMaxSize() const;
-	virtual TKey GetKey() const = 0;
-	virtual TData* GetData() const = 0;
+	int get_size() const noexcept;
+	int get_max_size() const noexcept;
 };
 
 
 template <class TKey, class TData>
-bool Table<TKey, TData>::IsFull() const {
+bool Table<TKey, TData>::full() const noexcept {
 	return (count == max_size);
 }
 
 template <class TKey, class TData>
-bool Table<TKey, TData>::IsEmpty() const {
+bool Table<TKey, TData>::empty() const  noexcept {
 	return (count == 0);
 }
 
 template <class TKey, class TData>
-bool Table<TKey, TData>::IsTabEnded() const {
+bool Table<TKey, TData>::ended() const noexcept {
 	return (curr_pos >= max_size);
 }
 
 
 template <class TKey, class TData>
-bool Table<TKey, TData>::Reset() { // ◊“Œ »Ã≈ÕÕŒ ¬Œ«¬–¿Ÿ¿≈“—ﬂ?
-	if (!IsEmpty()) {
+bool Table<TKey, TData>::reset() noexcept {
+	if (!empty()) {
 		curr_pos = 0;
-		return IsTabEnded();
+		return ended();
 	}
 	else {
 		curr_pos = -1;
-		return IsTabEnded();
+		return ended();
 	}
-	// curr_pos = 0;
 }
 
 template <class TKey, class TData>
-bool Table<TKey, TData>::Next() { // ◊“Œ »Ã≈ÕÕŒ ¬Œ«¬–¿Ÿ¿≈“—ﬂ?
+bool Table<TKey, TData>::next() noexcept {
 	curr_pos++;
-	return IsTabEnded();
-	
-	/*
-	if (!IsTabEnded() && !IsEmpty()) {
-		curr_pos++;
-		return true;
-	}
-	else {
-		return false;
-	}
-	*/
+	return ended();
 }
 
 
 template <class TKey, class TData>
-int Table<TKey, TData>::GetDataCount() const {
+int Table<TKey, TData>::get_size() const noexcept {
 	return count;
 }
 
 template <class TKey, class TData>
-int Table<TKey, TData>::GetMaxSize() const {
+int Table<TKey, TData>::get_max_size() const noexcept {
 	return max_size;
 }
 
