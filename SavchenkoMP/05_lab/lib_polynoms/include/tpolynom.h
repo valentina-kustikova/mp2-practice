@@ -19,9 +19,9 @@ private:
 	
 	static map<string, int> priority; 
 
-	void Parse(string& name);
-	void ToMonoms(vector<string>& lexems);
-	void AddMonom(const TMonom& m);
+	void parse(string& name);
+	void to_monoms(vector<string>& lexems);
+	void add_monom(const TMonom& m);
 public:
 	TPolynom();
 	TPolynom(const string& _name);
@@ -45,21 +45,21 @@ public:
 	friend ostream& operator<<(ostream& out, TPolynom& polynom);
 
 private:
-	bool IsOperator(const string& isopr) const;
-	bool IsConst(const string& isopd) const;
-	bool IsVariable(const string& str) const;
+	bool is_operator(const string& isopr) const;
+	bool is_const(const string& isopd) const;
+	bool is_variable(const string& str) const;
 
-	int FindOperator(const string& name, int pos = 0) const;
+	int find_operator(const string& name, int pos = 0) const;
 
-	void ConvertInfix(string& name);
-	void CorrectnessCheck(const string& name) const;
+	void convert_infix(string& name);
+	void correctness_check(const string& name) const;
 
 
-	void Reset();
-	void Next();
-	bool IsEnded();
-	TNode<TMonom>* GetCurrent();
-	TMonom GetCurrentMonom();
+	void reset();
+	void next();
+	bool ended();
+	TNode<TMonom>* get_curr();
+	TMonom get_current_monom();
 };
 
 #endif // !TPOLYNOM_H

@@ -17,25 +17,24 @@ public:
 	TList(const TList<T>& list);
 	virtual ~TList();
 
-	virtual TNode<T>* Search(const T& data);
-	virtual void InsertFirst(const T& data);
-	virtual void InsertLast(const T& data);
-	virtual void InsertBefore(const T& data);
-	virtual void InsertAfter(const T& data);
-	virtual void InsertBefore(const T& data, const T& before);
-	virtual void InsertAfter(const T& data, const T& after);
-	virtual void Remove(const T& data);
-	virtual void Clear();
+	virtual TNode<T>* find(const T& data);
+	virtual void insert_first(const T& data);
+	virtual void insert_last(const T& data);
+	virtual void insert_before(const T& data);
+	virtual void insert_after(const T& data);
+	virtual void insert_before(const T& data, const T& before);
+	virtual void insert_after(const T& data, const T& after);
+	virtual void remove(const T& data);
+	virtual void clear();
 
-	virtual size_t GetSize() const;
+	virtual size_t size() const;
 	bool full() const;
-	virtual bool IsEmpty() const;
+	virtual bool empty() const;
 
-	virtual void Reset();
-	TNode<T>* GetCurrent() const;
-	virtual void Next(const int count = 1);
-	virtual bool IsEnded() const;
-	bool IsLast() const;
+	virtual void reset();
+	TNode<T>* get_curr() const;
+	virtual void next(const int count = 1);
+	virtual bool ended() const;
 
 	TNode<T>* first() const;
 	TNode<T>* last() const;
@@ -48,7 +47,7 @@ TList<T>::TList() {
 	pLast = pStop;
 	pCurr = pStop;
 
-	Reset();
+	reset();
 }
 
 template <typename T>
@@ -59,7 +58,7 @@ TList<T>::TList(TNode<T>* _pFirst) {
 		pLast = pStop;
 		pCurr = pStop;
 
-		Reset();
+		reset();
 		return;
 	}
 
@@ -68,7 +67,7 @@ TList<T>::TList(TNode<T>* _pFirst) {
 		tmp = tmp->pNext;
 	pLast = tmp;
 
-	Reset();
+	reset();
 }
 
 template <typename T>
@@ -79,7 +78,7 @@ TList<T>::TList(const TList<T>& obj) {
 		pLast = pStop;
 		pCurr = pFirst;
 
-		Reset();
+		reset();
 		return;
 	}
 
@@ -96,18 +95,18 @@ TList<T>::TList(const TList<T>& obj) {
 	pStop = pLast->pNext;
 	pCurr = pFirst;
 
-	Reset();
+	reset();
 }
 
 template <typename T>
 TList<T>::~TList() {
-	Clear();
+	clear();
 }
 
 
 
 template <typename T>
-TNode<T>* TList<T>::Search(const T& data) { 
+TNode<T>* TList<T>::find(const T& data) { 
 	TNode<T>* tmp = pFirst;
 	while (tmp != pStop && tmp->data != data)
 		tmp = tmp->pNext;
@@ -116,37 +115,37 @@ TNode<T>* TList<T>::Search(const T& data) {
 }
 
 template <typename T>
-void TList<T>::InsertFirst(const T& data) {
+void TList<T>::insert_first(const T& data) {
 	TNode<T>* tmp = new TNode<T>(data, pFirst);
 	if (pFirst == pStop) pLast = tmp;
 	pFirst = tmp;
 
-	Reset();
+	reset();
 }
 
 template <typename T>
-void TList<T>::InsertLast(const T& data) {
+void TList<T>::insert_last(const T& data) {
 	if (pFirst == pStop) {
-		InsertFirst(data);
+		insert_first(data);
 		return;
 	}
 	TNode<T>* tmp = new TNode<T>(data, pStop);
 	pLast->pNext = tmp;
 	pLast = pLast->pNext;
 
-	Reset();
+	reset();
 }
 
 /////////////////////////////////
 template <typename T>
-void TList<T>::InsertBefore(const T& data) {
+void TList<T>::insert_before(const T& data) {
 	if (pCurr == nullptr) {
 		std::string exp = "Error: data not found";
 		throw exp;
 	}
 
 	if (pCurr == pFirst) {
-		InsertFirst(data);
+		insert_first(data);
 		return;
 	}
 
@@ -157,51 +156,51 @@ void TList<T>::InsertBefore(const T& data) {
 	TNode<T>* tmp = new TNode<T>(data, pCurr);
 	before->pNext = tmp;
 
-	Reset();
+	reset();
 }
 
 template <typename T>
-void TList<T>::InsertAfter(const T& data) {
+void TList<T>::insert_after(const T& data) {
 	if (pCurr == nullptr) {
 		std::string exp = "Error: data not found";
 		throw exp;
 	}
 
-	if (IsEnded()) {
-		InsertLast(data);
+	if (ended()) {
+		insert_last(data);
 		return;
 	}
 
 	TNode<T>* tmp = new TNode<T>(data, pCurr->pNext);
 	pCurr->pNext = tmp;
 
-	Reset();
+	reset();
 }
 /////////////////////////////////
 
 template <typename T>
-void TList<T>::InsertBefore(const T& data, const T& before) {
-	pCurr = Search(before);
+void TList<T>::insert_before(const T& data, const T& before) {
+	pCurr = find(before);
 
-	InsertBefore(data);
+	insert_before(data);
 
-	Reset();
+	reset();
 }
 
 template <typename T>
-void TList<T>::InsertAfter(const T& data, const T& after) {
-	pCurr = Search(after);
+void TList<T>::insert_after(const T& data, const T& after) {
+	pCurr = find(after);
 
-	InsertAfter(data);
+	insert_after(data);
 
-	Reset();
+	reset();
 }
 
 /////////////////////////////////
 
 
 template <typename T>
-void TList<T>::Remove(const T& data) {
+void TList<T>::remove(const T& data) {
 	if (pFirst == pStop) {
 		std::string exp = "Error: list is empty";
 		throw exp;
@@ -218,7 +217,7 @@ void TList<T>::Remove(const T& data) {
 		throw exp;
 	}
 
-	if (pCurr == pNode) Reset();
+	if (pCurr == pNode) reset();
 
 	if (pPrev == nullptr) {
 		pFirst = pNode->pNext;
@@ -232,7 +231,7 @@ void TList<T>::Remove(const T& data) {
 
 
 template <typename T>
-void TList<T>::Clear() {
+void TList<T>::clear() {
 	TNode<T>* tmp = pFirst;
 	while (pFirst != pStop) {
 		pFirst = tmp->pNext;
@@ -246,7 +245,7 @@ void TList<T>::Clear() {
 
 
 template <typename T>
-size_t TList<T>::GetSize() const {
+size_t TList<T>::size() const {
 	size_t size = 0;
 	TNode<T>* tmp = pFirst;
 	while (tmp != pStop) {
@@ -268,43 +267,38 @@ bool TList<T>::full() const {
 }
 
 template <typename T>
-bool TList<T>::IsEmpty() const {
+bool TList<T>::empty() const {
 	return (pFirst == pStop);
 }
 
 
 
 template <typename T>
-void TList<T>::Reset() {
+void TList<T>::reset() {
 	pCurr = pFirst;
 }
 
 template <typename T>
-TNode<T>* TList<T>::GetCurrent() const {
+TNode<T>* TList<T>::get_curr() const {
 	return pCurr;
 }
 
 template <typename T>
-void TList<T>::Next(const int count) {
+void TList<T>::next(const int count) {
 	if (count <= 0) {
 		std::string exp = "Error: count can't be less than 0";
 		throw exp;
 	}
 
 	for (int i = 0; i < count; i++) {
-		if (!IsEnded()) pCurr = pCurr->pNext;
-		else Reset();
+		if (!ended()) pCurr = pCurr->pNext;
+		else reset();
 	}
 }
 
 template <typename T>
-bool TList<T>::IsEnded() const {
+bool TList<T>::ended() const {
 	return (pCurr == pStop);
-}
-
-template <typename T>
-bool TList<T>::IsLast() const {
-	return (pCurr == pLast);
 }
 
 template <typename T>
