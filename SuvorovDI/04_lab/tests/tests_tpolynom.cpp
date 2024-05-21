@@ -107,8 +107,8 @@ TEST(TPolynom, calculate_is_correct4)
 
 TEST(TPolynom, dx_is_correct) 
 {
-	TPolynom pol("5*x^4+x^2+y+z+1");
-	TPolynom tmp("20*x^3+2x^1");
+	TPolynom pol("-5*x^4+x^2+y+z+1");
+	TPolynom tmp("-20*x^3+2x^1");
 	EXPECT_EQ(pol.dx(), tmp);
 }
 

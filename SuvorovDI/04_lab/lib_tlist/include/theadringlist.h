@@ -75,11 +75,15 @@ const THeadRingList<TData>& THeadRingList<TData>::operator=(const THeadRingList<
 		pCurr=nullptr;
     pPrev=nullptr;
 		pStop=nullptr;
+    pHead = new TNode<TData>();
+    pHead->pNext = pHead;
     return *(this);
 	}
 	
 	Clear();
 
+  pHead = new TNode<TData>();
+  pHead->pNext = pFirst;
 	pFirst = new TNode<TData>(l.pFirst->data);
 	TNode<TData>* tmp = pFirst; 
   TNode<TData>* ltmp = l.pFirst->pNext;

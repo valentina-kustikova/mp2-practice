@@ -191,7 +191,8 @@ bool TPolynom::operator==(const TPolynom& p) const {
   TPolynom new_p(p);
 
   while (!new_p.monoms.IsEnded() && !new_this.monoms.IsEnded()) {
-    if (new_p.monoms.GetCurr()->data != new_this.monoms.GetCurr()->data) return false;
+    if (new_p.monoms.GetCurr()->data.coeff_ != new_this.monoms.GetCurr()->data.coeff_
+        || new_p.monoms.GetCurr()->data.degree_ != new_this.monoms.GetCurr()->data.degree_) return false;
     new_p.monoms.Next();
     new_this.monoms.Next();
   }
