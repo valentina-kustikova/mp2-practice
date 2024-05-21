@@ -21,7 +21,7 @@ public:
 
 	TabRecord<TKey, TData>* find(const TKey& key);
 	TabRecord<TKey, TData>* operator[](const TKey& _key);
-	void insert(const TKey& _key, const TData* _data);
+	void insert(const TKey& _key, TData* _data);
 	void remove(const TKey& _key);
 };
 
@@ -131,14 +131,14 @@ TabRecord<TKey, TData>* SortedTable<TKey, TData>::operator[](const TKey& _key) {
 }
 
 template <class TKey, class TData>
-void SortedTable<TKey, TData>::insert(const TKey& _key, const TData* _data) {
-	if (IsFull()) {
+void SortedTable<TKey, TData>::insert(const TKey& _key, TData* _data) {
+	if (full()) {
 		std::string exp = "ERROR: Table is full.";
 		throw exp;
 	}
 
 	find(_key);
-	for (int i = count - 1; i >= currpos; i--) {
+	for (int i = count - 1; i >= curr_pos; i--) {
 		recs[i + 1] = recs[i];
 	}
 	recs[curr_pos] = new TabRecord<TKey, TData>(_key, _data);
@@ -146,7 +146,7 @@ void SortedTable<TKey, TData>::insert(const TKey& _key, const TData* _data) {
 
 template <class TKey, class TData>
 void SortedTable<TKey, TData>::remove(const TKey& _key) {
-	if (IsEmpty()) {
+	if (empty()) {
 		std::string exp = "ERROR: Table is empty.";
 		throw exp;
 	}

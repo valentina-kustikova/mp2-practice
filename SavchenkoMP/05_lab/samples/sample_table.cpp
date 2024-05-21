@@ -1,6 +1,44 @@
+#include <iostream>
+#include "tableslib.h"
+#include "tpolynom.h"
+
+using namespace std;
+
+
+#define EXIT   0
+#define INSERT 1
+#define DELETE 2
+#define FIND   3
+#define PRINT  4
+#define CHOOSE_TABLES 5
 
 
 int main() {
+	ScanTable	  <string, TPolynom> scan_table  (DEFAULT_SIZE);
+	SortedTable	  <string, TPolynom> sorted_table(DEFAULT_SIZE);
+	ArrayHashTable<string, TPolynom> hash_table  (DEFAULT_SIZE, DEFAULT_HASHSTEP);
+
+	int flag_scan = 1;
+	int flag_sort = 1;
+	int flag_hash = 1;
+
+	int ans = 0;
+
+	do {
+
+	} while (ans >= INSERT && ans <= CHOOSE_TABLES);
+
+	system("cls");
+	cout << "TABLES\n" << endl;
+
+	cout << "1. Insert record" << endl;
+	cout << "2. Delete record" << endl;
+	cout << "3. Find record" << endl;
+	cout << "4. Print table\n" << endl;
+
+	cout << "";
+
+
 
 
 	return 0;

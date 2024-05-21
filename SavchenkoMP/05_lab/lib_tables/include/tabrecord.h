@@ -7,6 +7,7 @@ struct TabRecord {
 	TKey key;
 	TData* data;
 
+	TabRecord();
 	TabRecord(const TKey& _key, TData* _data);
 	TabRecord(const TabRecord<TKey, TData>& tr);
 	~TabRecord();
@@ -14,6 +15,8 @@ struct TabRecord {
 	const TabRecord<TKey, TData>& operator=(const TabRecord<TKey, TData>& tr);
 };
 
+template <class TKey, class TData>
+TabRecord<TKey, TData>::TabRecord() : key(), data(nullptr) {};
 
 template <class TKey, class TData>
 TabRecord<TKey, TData>::TabRecord(const TKey& _key, TData* _data) {

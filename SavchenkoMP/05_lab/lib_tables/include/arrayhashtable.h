@@ -2,7 +2,7 @@
 #define ARRAYHASHTABLE_H
 
 #include <iostream>
-#include <algorithm>
+#include <numeric>
 #include "hashtable.h"
 #include "xxh3.h"
 
@@ -27,7 +27,7 @@ public:
 
 	TabRecord<TKey, TData>* find(const TKey& key);
 	TabRecord<TKey, TData>* operator[](const TKey& _key);
-	void insert(const TKey& _key, const TData* _data);
+	void insert(const TKey& _key, TData* _data);
 	void remove(const TKey& _key);
 
 	bool reset() noexcept;
@@ -57,10 +57,10 @@ void ArrayHashTable<TKey, TData>::coprime_check(size_t _max_size, size_t _hash_s
 		throw exp;
 	}
 
-	if (__gcd(_hash_step, _max_size) != 1) {
-		std::string exp = "ERROR: max_size and hash_step must be coprime numbers.";
-		throw exp;
-	}
+	//if (std::gcd(_hash_step, _max_size) != 1) { // gcd NOT WORKING !?!?!??!?!
+	//	std::string exp = "ERROR: max_size and hash_step must be coprime numbers.";
+	//	throw exp;
+	//}
 }
 
 
@@ -130,8 +130,8 @@ TabRecord<TKey, TData>* ArrayHashTable<TKey, TData>::operator[](const TKey& _key
 }
 
 template <class TKey, class TData>
-void ArrayHashTable<TKey, TData>::insert(const TKey& _key, const TData* _data) {
-	if (IsFull()) {
+void ArrayHashTable<TKey, TData>::insert(const TKey& _key, TData* _data) {
+	if (full()) {
 		std::string exp = "Error: table is full.";
 		throw exp;
 	}

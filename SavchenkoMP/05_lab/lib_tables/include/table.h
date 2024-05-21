@@ -13,6 +13,8 @@ protected:
 	int curr_pos;
 
 public:
+	Table(int _max_size = DEFAULT_SIZE);
+	
 	virtual void insert(const TKey& _key, TData* _data) = 0;
 	virtual void remove(const TKey& _key) = 0;
 	virtual TabRecord<TKey, TData>* find(const TKey& _key) = 0;
@@ -29,6 +31,12 @@ public:
 	int get_max_size() const noexcept;
 };
 
+template <class TKey, class TData>
+Table<TKey, TData>::Table(int _max_size) {
+	max_size = _max_size;
+	count = 0;
+	curr_pos = -1;
+}
 
 template <class TKey, class TData>
 bool Table<TKey, TData>::full() const noexcept {
