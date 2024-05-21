@@ -14,21 +14,21 @@ public:
     TRingList(const TRingList<T>& list);
     virtual ~TRingList();
 
-    TNode<T>* Search(const T& data) override;
-    void InsertFirst(const T& data) override;
-    void InsertLast(const T& data) override;
-    void InsertBefore(const T& data) override;
-    void InsertAfter(const T& data) override;
-    void InsertBefore(const T& data, const T& before) override;
-    void InsertAfter(const T& data, const T& after) override;
-    void Remove(const T& data) override;
-    void Clear() override;
+    TNode<T>* find(const T& data) override;
+    void insert_first(const T& data) override;
+    void insert_last(const T& data) override;
+    void insert_before(const T& data) override;
+    void insert_after(const T& data) override;
+    void insert_before(const T& data, const T& before) override;
+    void insert_after(const T& data, const T& after) override;
+    void remove(const T& data) override;
+    void clear() override;
 
-    bool IsEmpty() const override;
+    bool empty() const override;
 
-    void Reset() override;
-    void Next(const int count = 1) override;
-    bool IsEnded() const override;
+    void reset() override;
+    void next(const int count = 1) override;
+    bool ended() const override;
 
     TNode<T>* head() const { return pHead };
 };
@@ -66,7 +66,7 @@ TRingList<T>::TRingList(TNode<T>* _pFirst) {
         pLast = tmp;
     }
 
-    Reset();
+    reset();
 }
 
 template <typename T>
@@ -80,19 +80,19 @@ TRingList<T>::TRingList(const TRingList<T>& obj) : TList<T>(obj) {
 
     TNode<T>* tmp = obj.pFirst;
     while (tmp != obj.pStop) {
-        InsertLast(tmp->data);
+        insert_last(tmp->data);
         tmp = tmp->pNext;
     }
 }
 
 template <typename T>
 TRingList<T>::~TRingList() {
-    Clear();
+    clear();
     delete pHead;
 }
 
 template <typename T>
-TNode<T>* TRingList<T>::Search(const T& data) {
+TNode<T>* TRingList<T>::find(const T& data) {
     TNode<T>* tmp = pFirst;
     while (tmp != pHead) {
         if (tmp->data == data) {
@@ -104,31 +104,31 @@ TNode<T>* TRingList<T>::Search(const T& data) {
 }
 
 template <typename T>
-void TRingList<T>::InsertFirst(const T& data) {
+void TRingList<T>::insert_first(const T& data) {
     TNode<T>* tmp = new TNode<T>(data, pHead->pNext);
     pHead->pNext = tmp;
     if (pFirst == pHead) {
         pLast = tmp;
     }
     pFirst = tmp;
-    Reset();
+    reset();
 }
 
 template <typename T>
-void TRingList<T>::InsertLast(const T& data) {
+void TRingList<T>::insert_last(const T& data) {
     TNode<T>* tmp = new TNode<T>(data, pHead);
     pLast->pNext = tmp;
     pLast = tmp;
     if (pFirst == pHead) {
         pFirst = tmp;
     }
-    Reset();
+    reset();
 }
 
 template <typename T>
-void TRingList<T>::InsertBefore(const T& data) {
+void TRingList<T>::insert_before(const T& data) {
     if (pCurr == pHead) {
-        InsertLast(data);
+        insert_last(data);
         return;
     }
 
@@ -144,45 +144,45 @@ void TRingList<T>::InsertBefore(const T& data) {
         pFirst = tmp;
     }
 
-    Reset();
+    reset();
 }
 
 template <typename T>
-void TRingList<T>::InsertAfter(const T& data) {
+void TRingList<T>::insert_after(const T& data) {
     TNode<T>* tmp = new TNode<T>(data, pCurr->pNext);
     pCurr->pNext = tmp;
     if (pCurr == pLast) {
         pLast = tmp;
     }
-    Reset();
+    reset();
 }
 
 template <typename T>
-void TRingList<T>::InsertBefore(const T& data, const T& before) {
-    pCurr = Search(before);
+void TRingList<T>::insert_before(const T& data, const T& before) {
+    pCurr = find(before);
     if (pCurr == nullptr) {
         std::string exp = "Error: Element not found";
         throw exp;
     }
 
-    InsertBefore(data);
-    Reset();
+    insert_before(data);
+    reset();
 }
 
 template <typename T>
-void TRingList<T>::InsertAfter(const T& data, const T& after) {
-    pCurr = Search(after);
+void TRingList<T>::insert_after(const T& data, const T& after) {
+    pCurr = find(after);
     if (pCurr == nullptr) {
         std::string exp = "Error: Element not found";
         throw exp;
     }
 
-    InsertAfter(data);
-    Reset();
+    insert_after(data);
+    reset();
 }
 
 template <typename T>
-void TRingList<T>::Remove(const T& data) {
+void TRingList<T>::remove(const T& data) {
     TNode<T>* pNode = pHead->pNext;
     TNode<T>* pPrev = pHead;
 
@@ -207,11 +207,11 @@ void TRingList<T>::Remove(const T& data) {
     }
 
     delete pNode;
-    Reset();
+    reset();
 }
 
 template <typename T>
-void TRingList<T>::Clear() {
+void TRingList<T>::clear() {
     TNode<T>* tmp = pHead->pNext;
     while (tmp != pHead) {
         TNode<T>* next = tmp->pNext;
@@ -221,21 +221,21 @@ void TRingList<T>::Clear() {
     pHead->pNext = pHead;
     pFirst = pHead;
     pLast = pHead;
-    Reset();
+    reset();
 }
 
 template <typename T>
-bool TRingList<T>::IsEmpty() const {
+bool TRingList<T>::empty() const {
     return (pHead->pNext == pHead);
 }
 
 template <typename T>
-void TRingList<T>::Reset() {
+void TRingList<T>::reset() {
     pCurr = pHead->pNext;
 }
 
 template <typename T>
-void TRingList<T>::Next(const int count) {
+void TRingList<T>::next(const int count) {
     for (int i = 0; i < count; ++i) {
         if (pCurr != pHead) {
             pCurr = pCurr->pNext;
@@ -244,7 +244,7 @@ void TRingList<T>::Next(const int count) {
 }
 
 template <typename T>
-bool TRingList<T>::IsEnded() const {
+bool TRingList<T>::ended() const {
     return (pCurr == pHead);
 }
 

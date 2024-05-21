@@ -17,15 +17,15 @@ TEST(TRingList, DefaultConstructorTest) {
 TEST(TRingList, InsertionFirstTest) {
 	TRingList<int> list;
 
-	ASSERT_NO_THROW(list.InsertFirst(1));
+	ASSERT_NO_THROW(list.insert_first(1));
 }
 
 TEST(TRingList, InsertionFirstTest_EmptyList) {
 	TRingList<int> list;
 	TNode<int>* tmp;
 
-	list.InsertFirst(1);
-	tmp = list.Search(1);
+	list.insert_first(1);
+	tmp = list.find(1);
 
 	EXPECT_EQ(1, tmp->data);
 }
@@ -33,10 +33,10 @@ TEST(TRingList, InsertionFirstTest_EmptyList) {
 TEST(TRingList, InsertionFirstTest_NotEmptyList) {
 	TRingList<int> list;
 	TNode<int>* tmp;
-	list.InsertFirst(2);
-	list.InsertFirst(1);
+	list.insert_first(2);
+	list.insert_first(1);
 
-	tmp = list.Search(1);
+	tmp = list.find(1);
 	EXPECT_EQ(1, tmp->data);
 	EXPECT_EQ(2, tmp->pNext->data);
 }
@@ -45,26 +45,26 @@ TEST(TRingList, InsertionFirstTest_NotEmptyList) {
 TEST(TRingList, SearchTest_EmptyList) {
 	TRingList<int> list;
 
-	EXPECT_EQ(nullptr, list.Search(1));
+	EXPECT_EQ(nullptr, list.find(1));
 }
 
 TEST(TRingList, SearchTest_NotFound) {
 	TRingList<int> list;
-	list.InsertFirst(3);
-	list.InsertFirst(2);
-	list.InsertFirst(1);
+	list.insert_first(3);
+	list.insert_first(2);
+	list.insert_first(1);
 
-	EXPECT_EQ(nullptr, list.Search(4));
+	EXPECT_EQ(nullptr, list.find(4));
 }
 
 TEST(TRingList, SearchTest_FirstInList) {
 	TRingList<int> list;
 	TNode<int>* tmp;
-	list.InsertFirst(3);
-	list.InsertFirst(2);
-	list.InsertFirst(1);
+	list.insert_first(3);
+	list.insert_first(2);
+	list.insert_first(1);
 
-	tmp = list.Search(1);
+	tmp = list.find(1);
 	EXPECT_EQ(1, tmp->data);
 	EXPECT_EQ(2, tmp->pNext->data);
 	EXPECT_EQ(3, tmp->pNext->pNext->data);
@@ -73,11 +73,11 @@ TEST(TRingList, SearchTest_FirstInList) {
 TEST(TRingList, SearchTest_SecondInList) {
 	TRingList<int> list;
 	TNode<int>* tmp;
-	list.InsertFirst(3);
-	list.InsertFirst(2);
-	list.InsertFirst(1);
+	list.insert_first(3);
+	list.insert_first(2);
+	list.insert_first(1);
 
-	tmp = list.Search(2);
+	tmp = list.find(2);
 	EXPECT_EQ(2, tmp->data);
 	EXPECT_EQ(3, tmp->pNext->data);
 }
@@ -85,11 +85,11 @@ TEST(TRingList, SearchTest_SecondInList) {
 TEST(TRingList, SearchTest_ThirdInList) {
 	TRingList<int> list;
 	TNode<int>* tmp;
-	list.InsertFirst(3);
-	list.InsertFirst(2);
-	list.InsertFirst(1);
+	list.insert_first(3);
+	list.insert_first(2);
+	list.insert_first(1);
 
-	tmp = list.Search(3);
+	tmp = list.find(3);
 	EXPECT_EQ(3, tmp->data);
 }
 
@@ -97,15 +97,15 @@ TEST(TRingList, SearchTest_ThirdInList) {
 TEST(TRingList, InsertionLastTest) {
 	TRingList<int> list;
 
-	ASSERT_NO_THROW(list.InsertFirst(1));
+	ASSERT_NO_THROW(list.insert_first(1));
 }
 
 TEST(TRingList, InsertionLastTest_EmptyList) {
 	TRingList<int> list;
 	TNode<int>* tmp;
 
-	list.InsertLast(1);
-	tmp = list.Search(1);
+	list.insert_last(1);
+	tmp = list.find(1);
 
 	EXPECT_EQ(1, tmp->data);
 }
@@ -114,10 +114,10 @@ TEST(TRingList, InsertionLastTest_NotEmptyList) {
 	TRingList<int> list;
 	TNode<int>* tmp;
 
-	list.InsertLast(1);
-	list.InsertLast(2);
-	list.InsertLast(3);
-	tmp = list.Search(1);
+	list.insert_last(1);
+	list.insert_last(2);
+	list.insert_last(3);
+	tmp = list.find(1);
 
 	EXPECT_EQ(1, tmp->data);
 	EXPECT_EQ(2, tmp->pNext->data);
@@ -128,15 +128,15 @@ TEST(TRingList, InsertionLastTest_NotEmptyList) {
 TEST(TRingList, IsEmptyTest_Empty) {
 	TRingList<int> list;
 
-	EXPECT_EQ(true, list.IsEmpty());
+	EXPECT_EQ(true, list.empty());
 
 }
 
 TEST(TRingList, IsEmptyTest_NotEmpty) {
 	TRingList<int> list;
-	list.InsertFirst(1);
+	list.insert_first(1);
 
-	EXPECT_EQ(false, list.IsEmpty());
+	EXPECT_EQ(false, list.empty());
 
 }
 
@@ -144,49 +144,49 @@ TEST(TRingList, IsEmptyTest_NotEmpty) {
 TEST(TRingList, GetSizeTest_Empty) {
 	TRingList<int> list;
 
-	EXPECT_EQ(0, list.GetSize());
+	EXPECT_EQ(0, list.size());
 }
 
 TEST(TRingList, GetSizeTest_NotEmpty) {
 	TRingList<int> list;
-	list.InsertLast(1);
-	list.InsertLast(2);
-	list.InsertLast(3);
+	list.insert_last(1);
+	list.insert_last(2);
+	list.insert_last(3);
 
-	EXPECT_EQ(3, list.GetSize());
+	EXPECT_EQ(3, list.size());
 }
 
 // ClearTest
 TEST(TRingList, ClearTest) {
 	TRingList<int> list;
-	list.InsertLast(1);
-	list.InsertLast(2);
-	list.InsertLast(3);
+	list.insert_last(1);
+	list.insert_last(2);
+	list.insert_last(3);
 
-	EXPECT_NO_THROW(list.Clear());
+	EXPECT_NO_THROW(list.clear());
 }
 
 TEST(TRingList, ClearTest_SizeCheck) {
 	TRingList<int> list;
-	list.InsertLast(1);
-	list.InsertLast(2);
-	list.InsertLast(3);
-	list.Clear();
+	list.insert_last(1);
+	list.insert_last(2);
+	list.insert_last(3);
+	list.clear();
 
-	EXPECT_EQ(0, list.GetSize());
+	EXPECT_EQ(0, list.size());
 }
 
 TEST(TRingList, ClearTest_InsertAfterClear) {
 	TRingList<int> list;
-	list.InsertLast(1);
-	list.InsertLast(2);
-	list.InsertLast(3);
-	list.Clear();
+	list.insert_last(1);
+	list.insert_last(2);
+	list.insert_last(3);
+	list.clear();
 
-	list.InsertLast(1);
-	list.InsertLast(2);
-	list.InsertLast(3);
-	TNode<int>* tmp = list.Search(1);
+	list.insert_last(1);
+	list.insert_last(2);
+	list.insert_last(3);
+	TNode<int>* tmp = list.find(1);
 
 	EXPECT_EQ(1, tmp->data);
 	EXPECT_EQ(2, tmp->pNext->data);
@@ -199,23 +199,23 @@ TEST(TRingList, InsertionBeforeTest_NotFound) {
 	TRingList<int> list;
 	TNode<int>* tmp;
 
-	list.InsertLast(1);
-	list.InsertLast(2);
-	list.InsertLast(3);
+	list.insert_last(1);
+	list.insert_last(2);
+	list.insert_last(3);
 
-	EXPECT_ANY_THROW(list.InsertBefore(10, 4));
+	EXPECT_ANY_THROW(list.insert_before(10, 4));
 }
 
 TEST(TRingList, InsertionBeforeTest_Found) {
 	TRingList<int> list;
 	TNode<int>* tmp;
 
-	list.InsertLast(1);
-	list.InsertLast(2);
-	list.InsertLast(3);
+	list.insert_last(1);
+	list.insert_last(2);
+	list.insert_last(3);
 
-	list.InsertBefore(10, 2);
-	tmp = list.Search(1);
+	list.insert_before(10, 2);
+	tmp = list.find(1);
 
 	EXPECT_EQ(1, tmp->data);
 	EXPECT_EQ(10, tmp->pNext->data);
@@ -226,12 +226,12 @@ TEST(TRingList, InsertionBeforeTest_FoundFirst) {
 	TRingList<int> list;
 	TNode<int>* tmp;
 
-	list.InsertLast(1);
-	list.InsertLast(2);
-	list.InsertLast(3);
+	list.insert_last(1);
+	list.insert_last(2);
+	list.insert_last(3);
 
-	list.InsertBefore(10, 1);
-	tmp = list.Search(10);
+	list.insert_before(10, 1);
+	tmp = list.find(10);
 
 	EXPECT_EQ(10, tmp->data);
 	EXPECT_EQ(1, tmp->pNext->data);
@@ -243,23 +243,23 @@ TEST(TRingList, InsertionAfterTest_NotFound) {
 	TRingList<int> list;
 	TNode<int>* tmp;
 
-	list.InsertLast(1);
-	list.InsertLast(2);
-	list.InsertLast(3);
+	list.insert_last(1);
+	list.insert_last(2);
+	list.insert_last(3);
 
-	EXPECT_ANY_THROW(list.InsertAfter(10, 4));
+	EXPECT_ANY_THROW(list.insert_after(10, 4));
 }
 
 TEST(TRingList, InsertionAfterTest_Found) {
 	TRingList<int> list;
 	TNode<int>* tmp;
 
-	list.InsertLast(1);
-	list.InsertLast(2);
-	list.InsertLast(3);
+	list.insert_last(1);
+	list.insert_last(2);
+	list.insert_last(3);
 
-	list.InsertAfter(10, 2);
-	tmp = list.Search(2);
+	list.insert_after(10, 2);
+	tmp = list.find(2);
 
 	EXPECT_EQ(2, tmp->data);
 	EXPECT_EQ(10, tmp->pNext->data);
@@ -270,12 +270,12 @@ TEST(TRingList, InsertionAfterTest_FoundLast) {
 	TRingList<int> list;
 	TNode<int>* tmp;
 
-	list.InsertLast(1);
-	list.InsertLast(2);
-	list.InsertLast(3);
+	list.insert_last(1);
+	list.insert_last(2);
+	list.insert_last(3);
 
-	list.InsertAfter(10, 3);
-	tmp = list.Search(3);
+	list.insert_after(10, 3);
+	tmp = list.find(3);
 
 	EXPECT_EQ(3, tmp->data);
 	EXPECT_EQ(10, tmp->pNext->data);
@@ -288,18 +288,18 @@ TEST(TRingList, CopyConstructorTest_List_Empty) {
 
 	TRingList<int> list(expl);
 
-	EXPECT_EQ(true, list.IsEmpty());
+	EXPECT_EQ(true, list.empty());
 }
 
 TEST(TRingList, CopyConstructorTest_List_NotEmpty) {
 	TRingList<int> expl;
 
-	expl.InsertLast(1);
-	expl.InsertLast(2);
-	expl.InsertLast(3);
+	expl.insert_last(1);
+	expl.insert_last(2);
+	expl.insert_last(3);
 
 	TRingList<int> list(expl);
-	TNode<int>* tmp = list.Search(1);
+	TNode<int>* tmp = list.find(1);
 
 	EXPECT_EQ(1, tmp->data);
 	EXPECT_EQ(2, tmp->pNext->data);
@@ -311,7 +311,7 @@ TEST(TRingList, CopyConstructorTest_Node_Empty) {
 
 	TRingList<int> list(pFirst);
 
-	EXPECT_EQ(true, list.IsEmpty());
+	EXPECT_EQ(true, list.empty());
 }
 
 TEST(TRingList, CopyConstructorTest_Node_NotEmpty) {
@@ -320,7 +320,7 @@ TEST(TRingList, CopyConstructorTest_Node_NotEmpty) {
 	pFirst->pNext->pNext = new TNode<int>(3);
 
 	TRingList<int> list(pFirst);
-	TNode<int>* tmp = list.Search(1);
+	TNode<int>* tmp = list.find(1);
 
 	EXPECT_EQ(1, tmp->data);
 	EXPECT_EQ(2, tmp->pNext->data);
@@ -332,14 +332,14 @@ TEST(TRingList, RemovalTest_First) {
 	TRingList<int> list;
 	TNode<int>* tmp;
 
-	list.InsertLast(1);
-	list.InsertLast(2);
-	list.InsertLast(3);
-	list.Remove(1);
+	list.insert_last(1);
+	list.insert_last(2);
+	list.insert_last(3);
+	list.remove(1);
 
-	tmp = list.Search(2);
+	tmp = list.find(2);
 
-	EXPECT_EQ(nullptr, list.Search(1));
+	EXPECT_EQ(nullptr, list.find(1));
 	EXPECT_EQ(2, tmp->data);
 	EXPECT_EQ(3, tmp->pNext->data);
 }
@@ -348,15 +348,15 @@ TEST(TRingList, RemovalTest_Middle) {
 	TRingList<int> list;
 	TNode<int>* tmp;
 
-	list.InsertLast(1);
-	list.InsertLast(2);
-	list.InsertLast(3);
-	list.InsertLast(4);
-	list.Remove(2);
+	list.insert_last(1);
+	list.insert_last(2);
+	list.insert_last(3);
+	list.insert_last(4);
+	list.remove(2);
 
-	tmp = list.Search(1);
+	tmp = list.find(1);
 
-	EXPECT_EQ(nullptr, list.Search(2));
+	EXPECT_EQ(nullptr, list.find(2));
 	EXPECT_EQ(1, tmp->data);
 	EXPECT_EQ(3, tmp->pNext->data);
 	EXPECT_EQ(4, tmp->pNext->pNext->data);
@@ -366,14 +366,14 @@ TEST(TRingList, RemovalTest_Last) {
 	TRingList<int> list;
 	TNode<int>* tmp;
 
-	list.InsertLast(1);
-	list.InsertLast(2);
-	list.InsertLast(3);
-	list.Remove(3);
+	list.insert_last(1);
+	list.insert_last(2);
+	list.insert_last(3);
+	list.remove(3);
 
-	tmp = list.Search(1);
+	tmp = list.find(1);
 
-	EXPECT_EQ(nullptr, list.Search(3));
+	EXPECT_EQ(nullptr, list.find(3));
 	EXPECT_EQ(1, tmp->data);
 	EXPECT_EQ(2, tmp->pNext->data);
 }
@@ -384,28 +384,28 @@ TEST(TRingList, RemovalTest_Last) {
 TEST(TRingList, GetCurrentTest) {
 	TRingList<int> list;
 
-	EXPECT_NO_THROW(list.GetCurrent());
+	EXPECT_NO_THROW(list.get_curr());
 }
 
 TEST(TRingList, GetCurrentTest_BeforeReset) {
 	TRingList<int> list;
-	list.InsertLast(1);
-	list.InsertLast(2);
-	list.InsertLast(3);
+	list.insert_last(1);
+	list.insert_last(2);
+	list.insert_last(3);
 
-	TNode<int>* tmp = list.GetCurrent();
+	TNode<int>* tmp = list.get_curr();
 
 	EXPECT_EQ(1, tmp->data);
 }
 
 TEST(TRingList, GetCurrentTest_AfterReset) {
 	TRingList<int> list;
-	list.InsertLast(1);
-	list.InsertLast(2);
-	list.InsertLast(3);
+	list.insert_last(1);
+	list.insert_last(2);
+	list.insert_last(3);
 
-	list.Reset();
-	TNode<int>* tmp = list.GetCurrent();
+	list.reset();
+	TNode<int>* tmp = list.get_curr();
 
 	EXPECT_EQ(1, tmp->data);
 }
@@ -413,24 +413,24 @@ TEST(TRingList, GetCurrentTest_AfterReset) {
 // ResetTest
 TEST(TRingList, ResetTest) {
 	TRingList<int> list;
-	list.InsertLast(1);
+	list.insert_last(1);
 
-	EXPECT_NO_THROW(list.Reset());
+	EXPECT_NO_THROW(list.reset());
 }
 
 TEST(TRingList, ResetTest_Empty) {
 	TRingList<int> list;
 
-	TNode<int>* tmp = list.GetCurrent();
+	TNode<int>* tmp = list.get_curr();
 }
 
 TEST(TRingList, ResetTest_NotEmpty) {
 	TRingList<int> list;
-	list.InsertLast(1);
-	list.InsertLast(2);
-	list.InsertLast(3);
+	list.insert_last(1);
+	list.insert_last(2);
+	list.insert_last(3);
 
-	TNode<int>* tmp = list.GetCurrent();
+	TNode<int>* tmp = list.get_curr();
 
 	EXPECT_EQ(1, tmp->data);
 }
@@ -438,39 +438,39 @@ TEST(TRingList, ResetTest_NotEmpty) {
 // NextTest
 TEST(TRingList, NextTest_BeforeReset) {
 	TRingList<int> list;
-	list.InsertLast(1);
-	list.InsertLast(2);
-	list.InsertLast(3);
+	list.insert_last(1);
+	list.insert_last(2);
+	list.insert_last(3);
 
-	list.Next();
-	TNode<int>* tmp = list.GetCurrent();
+	list.next();
+	TNode<int>* tmp = list.get_curr();
 
 	EXPECT_EQ(2, tmp->data);
 }
 
 TEST(TRingList, NextTest_AfterReset) {
 	TRingList<int> list;
-	list.InsertLast(1);
-	list.InsertLast(2);
-	list.InsertLast(3);
+	list.insert_last(1);
+	list.insert_last(2);
+	list.insert_last(3);
 
-	list.Reset();
-	list.Next();
-	list.Next();
-	TNode<int>* tmp = list.GetCurrent();
+	list.reset();
+	list.next();
+	list.next();
+	TNode<int>* tmp = list.get_curr();
 
 	EXPECT_EQ(3, tmp->data);
 }
 
 TEST(TRingList, NextTest_MultipleNext) {
 	TRingList<int> list;
-	list.InsertLast(1);
-	list.InsertLast(2);
-	list.InsertLast(3);
-	list.InsertLast(4);
+	list.insert_last(1);
+	list.insert_last(2);
+	list.insert_last(3);
+	list.insert_last(4);
 
-	list.Next(3);
-	TNode<int>* tmp = list.GetCurrent();
+	list.next(3);
+	TNode<int>* tmp = list.get_curr();
 
 	EXPECT_EQ(4, tmp->data);
 }
@@ -478,51 +478,51 @@ TEST(TRingList, NextTest_MultipleNext) {
 // IsEndedTest
 TEST(TRingList, IsEnded_NotEnded_BeforeReset) {
 	TRingList<int> list;
-	list.InsertLast(1);
-	list.InsertLast(2);
+	list.insert_last(1);
+	list.insert_last(2);
 
-	EXPECT_EQ(false, list.IsEnded());
+	EXPECT_EQ(false, list.ended());
 }
 
 TEST(TRingList, IsEnded_NotEnded_AfterReset) {
 	TRingList<int> list;
-	list.InsertLast(1);
-	list.InsertLast(2);
-	list.Reset();
+	list.insert_last(1);
+	list.insert_last(2);
+	list.reset();
 
-	EXPECT_EQ(false, list.IsEnded());
+	EXPECT_EQ(false, list.ended());
 }
 
 TEST(TRingList, IsEnded_LastNode) {
 	TRingList<int> list;
-	list.InsertLast(1);
-	list.InsertLast(2);
-	list.Reset();
-	list.Next();
+	list.insert_last(1);
+	list.insert_last(2);
+	list.reset();
+	list.next();
 
-	EXPECT_EQ(false, list.IsEnded());
+	EXPECT_EQ(false, list.ended());
 }
 
 TEST(TRingList, IsEnded_Ended) {
 	TRingList<int> list;
-	list.InsertLast(1);
-	list.InsertLast(2);
-	list.Reset();
-	list.Next();
-	list.Next();
+	list.insert_last(1);
+	list.insert_last(2);
+	list.reset();
+	list.next();
+	list.next();
 
-	EXPECT_EQ(true, list.IsEnded());
+	EXPECT_EQ(true, list.ended());
 }
 
 // InsertBeforeTest
 TEST(TRingList, InsertBeforeTest_BeforeNext) {
 	TRingList<int> list;
-	list.InsertLast(1);
-	list.InsertLast(2);
-	list.InsertLast(3);
+	list.insert_last(1);
+	list.insert_last(2);
+	list.insert_last(3);
 
-	list.InsertBefore(10);
-	TNode<int>* tmp = list.Search(10);
+	list.insert_before(10);
+	TNode<int>* tmp = list.find(10);
 
 	EXPECT_EQ(10, tmp->data);
 	EXPECT_EQ(1, tmp->pNext->data);
@@ -532,13 +532,13 @@ TEST(TRingList, InsertBeforeTest_BeforeNext) {
 
 TEST(TRingList, InsertBeforeTest_AfterNext) {
 	TRingList<int> list;
-	list.InsertLast(1);
-	list.InsertLast(2);
-	list.InsertLast(3);
-	list.Next();
+	list.insert_last(1);
+	list.insert_last(2);
+	list.insert_last(3);
+	list.next();
 
-	list.InsertBefore(10);
-	TNode<int>* tmp = list.Search(1);
+	list.insert_before(10);
+	TNode<int>* tmp = list.find(1);
 
 	EXPECT_EQ(1, tmp->data);
 	EXPECT_EQ(10, tmp->pNext->data);
@@ -549,12 +549,12 @@ TEST(TRingList, InsertBeforeTest_AfterNext) {
 // InsertAfterTest
 TEST(TRingList, InsertAfterTest_BeforeNext) {
 	TRingList<int> list;
-	list.InsertLast(1);
-	list.InsertLast(2);
-	list.InsertLast(3);
+	list.insert_last(1);
+	list.insert_last(2);
+	list.insert_last(3);
 
-	list.InsertAfter(10);
-	TNode<int>* tmp = list.Search(1);
+	list.insert_after(10);
+	TNode<int>* tmp = list.find(1);
 
 	EXPECT_EQ(1, tmp->data);
 	EXPECT_EQ(10, tmp->pNext->data);
@@ -564,13 +564,13 @@ TEST(TRingList, InsertAfterTest_BeforeNext) {
 
 TEST(TRingList, InsertAfterTest_AfterNext_AtMiddle) {
 	TRingList<int> list;
-	list.InsertLast(1);
-	list.InsertLast(2);
-	list.InsertLast(3);
-	list.Next();
+	list.insert_last(1);
+	list.insert_last(2);
+	list.insert_last(3);
+	list.next();
 
-	list.InsertAfter(10);
-	TNode<int>* tmp = list.Search(1);
+	list.insert_after(10);
+	TNode<int>* tmp = list.find(1);
 
 	EXPECT_EQ(1, tmp->data);
 	EXPECT_EQ(2, tmp->pNext->data);
@@ -580,14 +580,14 @@ TEST(TRingList, InsertAfterTest_AfterNext_AtMiddle) {
 
 TEST(TRingList, InsertAfterTest_AfterNext_AtEnd) {
 	TRingList<int> list;
-	list.InsertLast(1);
-	list.InsertLast(2);
-	list.InsertLast(3);
-	list.Next();
-	list.Next();
+	list.insert_last(1);
+	list.insert_last(2);
+	list.insert_last(3);
+	list.next();
+	list.next();
 
-	list.InsertAfter(10);
-	TNode<int>* tmp = list.Search(1);
+	list.insert_after(10);
+	TNode<int>* tmp = list.find(1);
 
 	EXPECT_EQ(1, tmp->data);
 	EXPECT_EQ(2, tmp->pNext->data);
@@ -599,10 +599,10 @@ TEST(TRingList, RingTest) {
 	TRingList<int> list;
 	TNode<int>* tmp;
 
-	list.InsertLast(1);
-	list.InsertLast(2);
+	list.insert_last(1);
+	list.insert_last(2);
 
-	tmp = list.Search(1);
+	tmp = list.find(1);
 
 	EXPECT_EQ(1, tmp->data);
 	EXPECT_EQ(2, tmp->pNext->data);
