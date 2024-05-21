@@ -188,11 +188,11 @@ TEST(TPolynom, CalculateValueTest_Null) {
 	EXPECT_EQ(0, p(2, 3, 4));
 }
 
-//TEST(TPolynom, CalculateValueTest_EmptyPolynom) {
-//	TPolynom p("");
-//
-//	EXPECT_EQ(0, p(2, 3, 4));
-//}
+TEST(TPolynom, CalculateValueTest_EmptyPolynom) {
+	TPolynom p("");
+
+	EXPECT_EQ(0, p(2, 3, 4));
+}
 
 TEST(TPolynom, CalculateValueTest_WithoutVariables) {
 	TPolynom p("4");

@@ -2,8 +2,7 @@
 #define TMONOM_H
 
 #include <iostream>
-
-using namespace std;
+#include <string>
 
 class TMonom{
 private:
@@ -43,8 +42,8 @@ public:
 	TMonom dif_y() const;
 	TMonom dif_z() const;
 
-	string get_string() const;
-	friend ostream& operator<<(ostream& out, const TMonom& monom);
+	std::string get_string() const;
+	friend std::ostream& operator<<(std::ostream& out, const TMonom& monom);
 };
 
 #endif // !TMONOM_H

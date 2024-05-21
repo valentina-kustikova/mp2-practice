@@ -1,6 +1,9 @@
 #include <gtest.h>
 
 #include "tmonom.h"
+#include "iostream"
+
+using namespace std;
 
 /*
 1. DefaultConstructorTest - проверка конструктора по умолчанию.

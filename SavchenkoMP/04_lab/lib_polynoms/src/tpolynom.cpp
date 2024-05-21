@@ -198,18 +198,6 @@ void TPolynom::ToMonoms(vector<string>& _lexems) {
 		}
 	}
 
-	// case: only one coeff or variable
-	//if (lexems.size() == 1) {
-	//	if (lexems[0] == "x") degX = 1;
-	//	else if (lexems[0] == "y") degY = 1;
-	//	else if (lexems[0] == "z") degZ = 1;
-	//	else coeff = stod(lexems[0]);
-
-	//	TMonom monom(next_const_sign * coeff, degX, degY, degZ);
-	//	AddMonom(monom);
-	//	return;
-	//}
-
 	for (int i = 0; i < lexems.size(); i++) {
 		if (lexems[i] == "+" || lexems[i] == "-") {
 			TMonom monom(next_const_sign * coeff, degX, degY, degZ);
@@ -287,7 +275,6 @@ void TPolynom::ToMonoms(vector<string>& _lexems) {
 void TPolynom::AddMonom(const TMonom& m) {
 	if (m.get_coeff() == 0) return;
 
-	//TNode<TMonom>* tmp = monoms->first();
 	while (!monoms->IsEnded()) {
 		TNode<TMonom>* curr = monoms->GetCurrent();
 
@@ -321,13 +308,9 @@ TPolynom::TPolynom() {
 	monoms = new TRingList<TMonom>;
 }
 TPolynom::TPolynom(const string& _name) {
-	if (_name.size() == 0) {
-		string exp = "ERROR: Polynom's string can't be empty.";
-		throw exp;
-	}
-	
 	monoms = new TRingList<TMonom>;
 	string name = _name;
+	if (name.size() == 0) name += "0";
 
 	Parse(name);
 }
@@ -372,16 +355,6 @@ TPolynom TPolynom::operator+(TPolynom& polynom) {
 	}
 	polynom.Reset();
 
-	/*
-	polynom.monoms->Reset();
-	TNode<TMonom>* tmp_p = polynom.monoms->first();
-	while (tmp_p != polynom.monoms->stop()) { // !this->monoms.IsEnded()
-		TMonom curr_monom = tmp_p->data;
-		res.AddMonom(curr_monom);
-		tmp_p = tmp_p->pNext;
-	}
-	*/
-
 	return res;
 }
 TPolynom TPolynom::operator-() {
@@ -395,15 +368,6 @@ TPolynom TPolynom::operator-() {
 		res.Next();
 	}
 	res.Reset();
-
-	/*
-	TNode<TMonom>* tmp = res.monoms->first();
-	while (tmp != res.monoms->stop()) { // !this->monoms.IsEnded()
-		double coeff = (-1) * tmp->data.get_coeff();
-		tmp->data.set_coeff(coeff);
-		tmp = tmp->pNext;
-	}
-	*/
 
 	return res;
 }
@@ -432,22 +396,6 @@ TPolynom TPolynom::operator*(TPolynom& polynom) {
 	polynom.Reset();
 	Reset();
 
-	/*
-	TNode<TMonom>* tmp = monoms->first();
-	while (tmp != monoms->stop()) { // !this->monoms.IsEnded()
-		TMonom curr1 = tmp->data;
-
-		TNode<TMonom>* tmp_p = polynom.monoms->first();
-		while (tmp_p != polynom.monoms->stop()) { // !this->monoms.IsEnded()
-			TMonom curr2 = tmp_p->data;
-			res.AddMonom(curr1 * curr2);
-			tmp_p = tmp_p->pNext;
-		}
-
-		tmp = tmp->pNext;
-	}
-	*/
-
 	return res;
 }
 double TPolynom::operator()(double x, double y, double z) {
@@ -459,14 +407,6 @@ double TPolynom::operator()(double x, double y, double z) {
 		Next();
 	}
 	Reset();
-
-	/*
-	TNode<TMonom>* tmp = monoms->first();
-	while (tmp != monoms->stop()) {
-		res += tmp->data(x, y, z);
-		tmp = tmp->pNext;
-	}
-	*/
 
 	return res;
 }
@@ -482,15 +422,6 @@ TPolynom TPolynom::dif_x() {
 	}
 	Reset();
 
-	/*
-	TNode<TMonom>* tmp = monoms->first();
-	while (tmp != monoms->stop()) {
-		TMonom monom = tmp->data.dif_x();
-		res.AddMonom(monom);
-		tmp = tmp->pNext;
-	}
-	*/
-
 	return res;
 }
 TPolynom TPolynom::dif_y() {
@@ -503,15 +434,6 @@ TPolynom TPolynom::dif_y() {
 	}
 	Reset();
 
-	/*
-	TNode<TMonom>* tmp = monoms->first();
-	while (tmp != monoms->stop()) {
-		TMonom monom = tmp->data.dif_y();
-		res.AddMonom(monom);
-		tmp = tmp->pNext;
-	}
-	*/
-
 	return res;
 }
 TPolynom TPolynom::dif_z() {
@@ -523,15 +445,6 @@ TPolynom TPolynom::dif_z() {
 		Next();
 	}
 	Reset();
-
-	/*
-	TNode<TMonom>* tmp = monoms->first();
-	while (tmp != monoms->stop()) {
-		TMonom monom = tmp->data.dif_z();
-		res.AddMonom(monom);
-		tmp = tmp->pNext;
-	}
-	*/
 
 	return res;
 }
@@ -556,26 +469,6 @@ string TPolynom::get_string() {
 		}
 	}
 	Reset();
-
-	/*
-	string res = "";
-	TNode<TMonom>* tmp = monoms->first();
-
-
-	if (tmp == monoms->stop()) {
-		return res;
-	}
-	else {
-		res += tmp->data.get_string();
-		tmp = tmp->pNext;
-		while (tmp != monoms->stop()) {
-			string monom = tmp->data.get_string();
-			if (monom[0] == '-') res += monom;
-			else res += "+" + monom;
-			tmp = tmp->pNext;
-		}
-	}
-	*/
 
 	return res;
 }
