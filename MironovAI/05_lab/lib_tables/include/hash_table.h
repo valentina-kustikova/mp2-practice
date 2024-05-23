@@ -23,10 +23,10 @@ public:
 	void next(int pos);
 	friend ostream& operator<<(ostream& buf, const HashTable& table)
 	{
-		cout << table.size << endl;
+		cout << "Table size: " << table.size << endl;
 		for (int i = 0; i < table.max_size; ++i)
 		{
-			if (table.recs[i])
+			if (table.recs[i] && table.recs[i] != table.pMark)
 				cout << "(" << table.recs[i]->key << ", " << table.recs[i]->data << "), ";
 		}
 		cout << endl;

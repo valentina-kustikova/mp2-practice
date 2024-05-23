@@ -10,9 +10,71 @@
 #define FIND 3
 #define PRINT 4
 
-ScanTable<TPolynom, string> scan_table(101);
-SortedTable<TPolynom, string> sorted_table(101);
-HashTable<TPolynom, string> hash_table(101);
+#define none 0
+#define SUM 1
+#define SUB 2
+#define MUL 3
+#define DIFF_X 4
+#define DIFF_Y 5
+#define DIFF_Z 6
+
+
+
+ScanTable<string, TPolynom> scan_table(101);
+SortedTable<string, TPolynom> sorted_table(101);
+HashTable<string, TPolynom> hash_table(101);
+
+TPolynom operation()
+{
+	int op;
+	TPolynom result, polynom1, polynom2;
+	string polynom_string1, polynom_string2;
+	std::cout << "1.SUM\n2.SUB\n3.MUL\n4.DIFF_x\n5.diff_y\n6.diff_z\n7.none\n";
+	cin >> op;
+
+	std::cout << "input a polynom:\n";
+	cin >> polynom_string1;
+	cout << "\n";
+	polynom1 = TPolynom(polynom_string1);
+
+	if (op < 4)
+	{
+		std::cout << "input the second polynom:\n";
+		cin >> polynom_string2;
+		cout << "\n";
+		polynom2 = TPolynom(polynom_string2);
+	}
+
+
+	switch (op)
+	{
+	case SUM:
+		result = polynom1 + polynom2;
+		break;
+	case SUB:
+		result = polynom1 - polynom2;
+		break;
+	case MUL:
+		result = polynom1 * polynom2;
+		break;
+	case DIFF_X:
+		result = polynom1.dif_x();
+		break;
+	case DIFF_Y:
+		result = polynom1.dif_y();
+		break;
+	case DIFF_Z:
+		result = polynom1.dif_z();
+		break;
+	default:
+		result = polynom1;
+		break;
+	}
+
+	return result;
+
+}
+
 
 
 void action(int table, int tag)
@@ -21,10 +83,8 @@ void action(int table, int tag)
 	string polynom_string;
 	if (tag != PRINT)
 	{
-		std::cout << "input a polynom:\n";
-		cin >> polynom_string;
-		cout << "\n";
-		polynom = TPolynom(polynom_string);
+		polynom = operation();
+		polynom_string = polynom.get_name();
 	}
 	
 	if (tag == INSERT)
@@ -33,7 +93,7 @@ void action(int table, int tag)
 		{
 			try
 			{
-				scan_table.insert(polynom, polynom_string);
+				scan_table.insert(polynom_string, polynom);
 				cout << "OK\n";
 			}
 			catch (string ex)
@@ -45,7 +105,7 @@ void action(int table, int tag)
 		{
 			try
 			{
-				sorted_table.insert(polynom, polynom_string);
+				sorted_table.insert(polynom_string, polynom);
 				cout << "OK\n";
 			}
 			catch (string ex)
@@ -57,7 +117,7 @@ void action(int table, int tag)
 		{
 			try
 			{
-				hash_table.insert(polynom, polynom_string);
+				hash_table.insert(polynom_string, polynom);
 				cout << "OK\n";
 			}
 			catch (string ex)
@@ -72,7 +132,7 @@ void action(int table, int tag)
 		{
 			try
 			{
-				Record<TPolynom, string>* t = scan_table.find(polynom);
+				Record<string, TPolynom>* t = scan_table.find(polynom_string);
 				if (!t)
 				{
 					cout << "Polynom wasn`t found\n";
@@ -88,12 +148,12 @@ void action(int table, int tag)
 		{
 			try
 			{
-				Record<TPolynom, string>* t = sorted_table.find(polynom);
+				Record<string, TPolynom>* t = sorted_table.find(polynom_string);
 				if (!t)
 				{
 					cout << "Polynom wasn`t found\n";
 				}
-				else cout << "Polynom was found";
+				else cout << "Polynom was found\n";
 			}
 			catch (string ex)
 			{
@@ -104,12 +164,12 @@ void action(int table, int tag)
 		{
 			try
 			{
-				Record<TPolynom, string>* t = hash_table.find(polynom);
+				Record<string, TPolynom>* t = hash_table.find(polynom_string);
 				if (!t)
 				{
 					cout << "Polynom wasn`t found\n";
 				}
-				else cout << "Polynom was found";
+				else cout << "Polynom was found\n";
 			}
 			catch (string ex)
 			{
@@ -123,7 +183,7 @@ void action(int table, int tag)
 		{
 			try
 			{
-				scan_table.remove(polynom);
+				scan_table.remove(polynom_string);
 				cout << "OK\n";
 			}
 			catch (string ex)
@@ -135,7 +195,7 @@ void action(int table, int tag)
 		{
 			try
 			{
-				sorted_table.remove(polynom);
+				sorted_table.remove(polynom_string);
 				cout << "OK\n";
 			}
 			catch (string ex)
@@ -147,7 +207,7 @@ void action(int table, int tag)
 		{
 			try
 			{
-				hash_table.remove(polynom);
+				hash_table.remove(polynom_string);
 				cout << "OK\n";
 			}
 			catch (string ex)

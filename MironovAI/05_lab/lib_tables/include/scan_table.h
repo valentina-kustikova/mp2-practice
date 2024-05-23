@@ -21,7 +21,7 @@ public:
 	virtual void remove(const Key& key);
 	friend ostream& operator<<(ostream& buf, const ScanTable& table)
 	{
-		cout << table.size << endl;
+		cout << "Table size: " << table.size << endl;
 		for (int i = 0; i < table.max_size; ++i)
 		{
 			if (table.recs[i])
