@@ -22,8 +22,8 @@ public:
 	bool full() const noexcept;
 	bool reset() noexcept;
 	bool next() noexcept;
-	size_t get_size() const noexcept;
-	size_t get_max_size() const noexcept;
+	int get_size() const noexcept;
+	int get_max_size() const noexcept;
 	virtual Record<Key, Value>* find(const Key& key) = 0;
 	virtual void insert(const Key& key, const Value& value) = 0;
 	virtual void remove(const Key& key) = 0; 
@@ -73,13 +73,13 @@ bool Table<Key, Value>::next() noexcept
 }
 
 template <class Key, class Value>
-size_t Table<Key, Value>::get_size() const noexcept
+int Table<Key, Value>::get_size() const noexcept
 {
 	return size;
 }
 
 template <class Key, class Value>
-size_t Table<Key, Value>::get_max_size() const noexcept
+int Table<Key, Value>::get_max_size() const noexcept
 {
 	return max_size;
 }

@@ -29,8 +29,7 @@ public:
 		}
 		cout << endl;
 		return buf;
-	}
-	
+	}	
 };
 
 
