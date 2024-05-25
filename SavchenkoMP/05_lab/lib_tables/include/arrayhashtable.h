@@ -2,9 +2,9 @@
 #define ARRAYHASHTABLE_H
 
 #include <iostream>
-#include <numeric>
+#include <functional>
 #include "hashtable.h"
-#include "xxh3.h"
+//#include "xxh3.h"
 
 #define DEFAULT_HASHSTEP 10
 
@@ -37,7 +37,9 @@ public:
 
 template <class TKey, class TData>
 size_t ArrayHashTable<TKey, TData>::hash_func(const TKey& key) {
-	return (XXH3_64bits(key.c_str(), key.size())) % max_size;
+	//return (XXH3_64bits(key.c_str(), key.size())) % max_size;
+	std::hash<TKey> hasher;
+	return hasher(key) % max_size;
 }
 
 template <class TKey, class TData>
@@ -57,10 +59,17 @@ void ArrayHashTable<TKey, TData>::coprime_check(size_t _max_size, size_t _hash_s
 		throw exp;
 	}
 
-	//if (std::gcd(_hash_step, _max_size) != 1) { // gcd NOT WORKING !?!?!??!?!
-	//	std::string exp = "ERROR: max_size and hash_step must be coprime numbers.";
-	//	throw exp;
-	//}
+	// gcd check
+	size_t a = _max_size;
+	size_t b = _hash_step;
+	while (b != 0) {
+		size_t tmp = b;
+		b = a % b;
+		a = tmp;
+	}
+	if (a != 1) {
+		throw std::string("ERROR: max_size and hash_step must be coprime numbers.");
+	}
 }
 
 
@@ -79,19 +88,20 @@ ArrayHashTable<TKey, TData>::ArrayHashTable(size_t _max_size, size_t _hash_step)
 template <class TKey, class TData>
 ArrayHashTable<TKey, TData>::ArrayHashTable(const ArrayHashTable<TKey, TData>& aht) {
 	max_size = aht.max_size;
+	count = aht.count;
 	hash_step = aht.hash_step;
 	curr_pos = aht.curr_pos;
 	free_pos_ind = aht.free_pos_ind;
 
 	recs = new TabRecord<TKey, TData>* [max_size];
-	pMark = new TabRecord<TKey, TData>* ();
+	pMark = new TabRecord<TKey, TData> ();
 
 	for (int i = 0; i < max_size; i++) {
 		TabRecord<TKey, TData>* tmp = aht.recs[i];
 
 		if (tmp == nullptr)	recs[i] = tmp;
 		else if (tmp == aht.pMark)	recs[i] = pMark;
-		else recs[i] = new TabRecord<TKey, TData>(tmp);
+		else recs[i] = new TabRecord<TKey, TData>(*tmp);
 	}
 }
 
@@ -100,25 +110,25 @@ ArrayHashTable<TKey, TData>::~ArrayHashTable() {
 	for (int i = 0; i < max_size; i++) {
 		if (recs[i] != nullptr && recs[i] != pMark) delete recs[i];
 	}
-	if (recs) delete recs;
+	if (recs) delete[] recs;
 	if (pMark) delete pMark;
 }
 
 
 template <class TKey, class TData>
 TabRecord<TKey, TData>* ArrayHashTable<TKey, TData>::find(const TKey& key) {
-	size_t idx = hash_func(key);
+	curr_pos = hash_func(key);
 	for (int i = 0; i < max_size; i++) {
-		if (recs[idx] == nullptr)
+		if (recs[curr_pos] == nullptr)
 			return nullptr;
 
-		else if (recs[idx] == pMark && free_pos_ind == -1)
-			free_pos_ind = idx;
+		else if (recs[curr_pos] == pMark && free_pos_ind == -1)
+			free_pos_ind = curr_pos;
 
-		else if (recs[idx]->key == key)
-			return recs[idx];
+		else if (recs[curr_pos]->key == key)
+			return recs[curr_pos];
 
-		idx = get_next_pos(idx);
+		curr_pos = get_next_pos(curr_pos);
 	}
 
 	return nullptr;
@@ -163,11 +173,11 @@ template <class TKey, class TData>
 bool ArrayHashTable<TKey, TData>::reset() noexcept {
 	if (!empty()) {
 		curr_pos = 0;
-		return true;
+		return ended();
 	}
 	else {
 		curr_pos = -1;
-		return false;
+		return ended();
 	}
 }
 
@@ -175,9 +185,9 @@ template <class TKey, class TData>
 bool ArrayHashTable<TKey, TData>::next() noexcept {
 	if (curr_pos < max_size && !empty()) {
 		curr_pos++;
-		return true;
+		return ended();
 	}
-	else return false;
+	else return ended();
 }
 
 #endif // !ARRAYHASHTABLE_H

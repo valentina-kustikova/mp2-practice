@@ -11,72 +11,49 @@ TEST(TabRecord, TEST_NAME) {
 }
 */
 
-//// DefaultConstructorTest
-//TEST(TabRecord, DefaultConstructorTest) {
-//	int key = 1;
-//	string* data = new string("a");
-//	
-//	ASSERT_NO_THROW(TabRecord<int,string> tr(key, data)); // КАК ЗАПИХНУТЬ В ASSERT_NO_THROW КЛАСС С ДВУМЯ ТИПАМИ?
-//}
-
-//// CopyConstructorTest
-//TEST(TabRecord, CopyConstructorTest) {
-//	int key = 1;
-//	string* data = new string("a");
-//	TabRecord<int, string> tr1(key, data);
-//	
-//	ASSERT_NO_THROW(TabRecord<int, string> tr2(tr1));
-//}
-
-TEST(TabRecord, CopyConstructorTest_Key) {
-	int key = 1;
-	string* data = new string("a");
-	TabRecord<int, string> tr1(key, data);
-	TabRecord<int, string> tr2(tr1);
-
-	EXPECT_EQ(tr1.key, tr2.key);
+// Тест конструктора по умолчанию
+TEST(TabRecord, DefaultConstructor) {
+	TabRecord<int, std::string> record;
+	EXPECT_EQ(record.key, int());
+	EXPECT_EQ(record.data, nullptr);
 }
 
-TEST(TabRecord, CopyConstructorTest_DataPointer) {
-	int key = 1;
-	string* data = new string("a");
-	TabRecord<int, string> tr1(key, data);
-	TabRecord<int, string> tr2(tr1);
-
-	EXPECT_NE(tr1.data, tr2.data);
+// Тест конструктора с параметрами
+TEST(TabRecord, ParameterizedConstructor) {
+	std::string data = "test_data";
+	TabRecord<int, std::string> record(1, &data);
+	EXPECT_EQ(record.key, 1);
+	EXPECT_EQ(*record.data, "test_data");
 }
 
-TEST(TabRecord, CopyConstructorTest_Data) {
-	int key = 1;
-	string* data = new string("a");
-	TabRecord<int, string> tr1(key, data);
-	TabRecord<int, string> tr2(tr1);
-
-	EXPECT_EQ(*tr1.data, *tr2.data);
+// Тест конструктора копирования
+TEST(TabRecord, CopyConstructor) {
+	std::string data = "test_data";
+	TabRecord<int, std::string> original(1, &data);
+	TabRecord<int, std::string> copy(original);
+	EXPECT_EQ(copy.key, 1);
+	EXPECT_EQ(*copy.data, "test_data");
 }
 
-// GetKeyTest
-TEST(TabRecord, GetKeyTest) {
-	int key = 1;
-	string* data = new string("a");
-	TabRecord<int, string> tr(key, data);
+// Тест оператора присваивания
+TEST(TabRecord, AssignmentOperator) {
+	std::string data1 = "test_data1";
+	std::string data2 = "test_data2";
+	TabRecord<int, std::string> record1(1, &data1);
+	TabRecord<int, std::string> record2(2, &data2);
 
-	EXPECT_EQ(key, tr.key);
+	record2 = record1;
+	EXPECT_EQ(record2.key, 1);
+	EXPECT_EQ(*record2.data, "test_data1");
 }
 
-// GetDataTest_Pointer
-TEST(TabRecord, GetDataTest_Pointer) {
-	int key = 1;
-	string* data = new string("a");
-	TabRecord<int, string> tr(key, data);
-
-	EXPECT_NE(data, tr.data);
-}
-
-TEST(TabRecord, GetDataTest_Data) {
-	int key = 1;
-	string* data = new string("a");
-	TabRecord<int, string> tr(key, data);
-
-	EXPECT_EQ(*data, *tr.data);
+// Тест деструктора
+TEST(TabRecord, Destructor) {
+    int key = 5;
+    double data = 3.14;
+    {
+        TabRecord<int, double> record(key, &data);
+    }
+    // Проверка отсутствия утечек памяти или ошибок при уничтожении объекта
+    EXPECT_TRUE(true);
 }

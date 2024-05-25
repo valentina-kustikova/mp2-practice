@@ -11,6 +11,93 @@ TEST(ScanTable, TEST_NAME) {
 }
 */
 
+
+/// Тест конструктора по умолчанию
+TEST(ScanTable, DefaultConstructor) {
+	ScanTable<int, std::string> table;
+	EXPECT_EQ(table.get_size(), 0);
+	EXPECT_EQ(table.get_max_size(), DEFAULT_SIZE);
+	EXPECT_TRUE(table.empty());
+	EXPECT_FALSE(table.full());
+}
+
+// Тест конструктора с параметром
+TEST(ScanTable, ParameterizedConstructor) {
+	int max_size = 20;
+	ScanTable<int, std::string> table(max_size);
+	EXPECT_EQ(table.get_size(), 0);
+	EXPECT_EQ(table.get_max_size(), max_size);
+	EXPECT_TRUE(table.empty());
+	EXPECT_FALSE(table.full());
+}
+
+// Тест конструктора копирования
+TEST(ScanTable, CopyConstructor) {
+	ScanTable<int, std::string> original(10);
+	std::string data1 = "data1";
+	std::string data2 = "data2";
+	original.insert(1, &data1);
+	original.insert(2, &data2);
+
+	ScanTable<int, std::string> copy(original);
+	EXPECT_EQ(copy.get_size(), 2);
+	EXPECT_EQ(*copy.find(1)->data, "data1");
+	EXPECT_EQ(*copy.find(2)->data, "data2");
+}
+
+// Тест метода insert
+TEST(ScanTable, Insert) {
+	ScanTable<int, std::string> table;
+	std::string data = "test_data";
+
+	table.insert(1, &data);
+	EXPECT_EQ(table.get_size(), 1);
+	EXPECT_FALSE(table.empty());
+	EXPECT_EQ(*table.find(1)->data, "test_data");
+}
+
+// Тест метода remove
+TEST(ScanTable, Remove) {
+	ScanTable<int, std::string> table;
+	std::string data = "test_data";
+
+	table.insert(1, &data);
+	table.remove(1);
+	EXPECT_EQ(table.get_size(), 0);
+	EXPECT_TRUE(table.empty());
+	EXPECT_EQ(table.find(1), nullptr);
+}
+
+// Тест метода find
+TEST(ScanTable, Find) {
+	ScanTable<int, std::string> table;
+	std::string data = "test_data";
+
+	table.insert(1, &data);
+	auto record = table.find(1);
+	ASSERT_NE(record, nullptr);
+	EXPECT_EQ(record->key, 1);
+	EXPECT_EQ(*record->data, "test_data");
+
+	EXPECT_EQ(table.find(2), nullptr);
+}
+
+// Тест перегрузки оператора []
+TEST(ScanTable, BracketOperator) {
+	ScanTable<int, std::string> table;
+	std::string data = "test_data";
+
+	table.insert(1, &data);
+	auto record = table[1];
+	ASSERT_NE(record, nullptr);
+	EXPECT_EQ(record->key, 1);
+	EXPECT_EQ(*record->data, "test_data");
+
+	EXPECT_EQ(table[2], nullptr);
+}
+
+
+
 // ParameterizedConstructorTest
 //TEST(ScanTable, ParameterizedConstructorTest) {
 //	int size = 3;

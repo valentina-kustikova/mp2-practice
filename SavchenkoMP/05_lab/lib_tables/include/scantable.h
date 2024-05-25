@@ -49,7 +49,7 @@ ScanTable<TKey, TData>::ScanTable(const ScanTable<TKey, TData>& st) {
 	for (int i = 0; i < count; i++) {
 		TKey key = st.recs[i]->key;
 		TData* data = st.recs[i]->data;
-		recs[i] = new TabRecord<TKey, TData>(key, data)
+		recs[i] = new TabRecord<TKey, TData>(key, data);
 	}
 }
 

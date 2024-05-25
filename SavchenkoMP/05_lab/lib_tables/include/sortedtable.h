@@ -2,21 +2,21 @@
 #define SORTEDTABLE_H
 
 #include "scantable.h"
-#include "sortings.h"
+//#include "sortings.h"
 
 template <class TKey, class TData>
 class SortedTable : public ScanTable<TKey, TData> {
 private:
 	void sort();
-	int partition(int start, int pivot);
-	void quick_sort(int start, int end);
+	int partition(int low, int high);
+	void quick_sort(int low, int high);
 
-	void swap(TabRecord<TKey, TData>& a, TabRecord<TKey, TData>& b);
-	bool is_sorted();
+	//void swap(TabRecord<TKey, TData>* a, TabRecord<TKey, TData>* b);
+	//bool is_sorted();
 
 public:
-	SortedTable(int _max_size);
-	SortedTable(const ScanTable<TKey, TData>* st);
+	SortedTable(int _max_size = DEFAULT_SIZE);
+	SortedTable(const ScanTable<TKey, TData>& st);
 	SortedTable(const SortedTable<TKey, TData>& srt);
 
 	TabRecord<TKey, TData>* find(const TKey& key);
@@ -28,68 +28,62 @@ public:
 
 template <class TKey, class TData>
 void SortedTable<TKey, TData>::sort() {
-	quick_sort(0, count);
+	quick_sort(0, count - 1);
 }
 
 template <class TKey, class TData>
-int SortedTable<TKey, TData>::partition(int start, int pivot) {
-	int i = start;
-	while (i < pivot) {
-		if (recs[i]->key > recs[pivot]->key && i == pivot - 1) {
-			swap(recs[i], recs[pivot]);
-			pivot--;
-		}
+int SortedTable<TKey, TData>::partition(int low, int high) {
+	TKey pivot = recs[high]->key;
+	int i = low - 1;
 
-		else if (recs[i]->key > recs[pivot]->key) {
-			swap(recs[pivot - 1], recs[pivot]);
-			swap(recs[i], recs[pivot]);
-			i--;
+	for (int j = low; j <= high - 1; ++j) {
+		if (recs[j]->key < pivot) {
+			++i;
+			std::swap(recs[i], recs[j]);
 		}
-
-		else i++
 	}
-	return pivot
+	std::swap(recs[i + 1], recs[high]);
+	return (i + 1);
 }
 
 template <class TKey, class TData>
-void SortedTable<TKey, TData>::quick_sort(int start, int end) {
-	if (start < end)
-	{
-		int pivot = partition(start, end);
+void SortedTable<TKey, TData>::quick_sort(int low, int high) {
+	if (low < high) {
+		int pi = partition(low, high);
 
-		quick_sort(start, pivot - 1);
-		quick_sort(pivot + 1, end);
+		quick_sort(low, pi - 1);
+		quick_sort(pi + 1, high);
 	}
 }
 
 
-template <class TKey, class TData>
-void SortedTable<TKey, TData>::swap(TabRecord<TKey, TData>& a, TabRecord<TKey, TData>& b) {
-	srt::swap(a, b);
-	//TabRecord<TKey, TData> tmp = a;
-	//a = b;
-	//b = tmp;
-}
+//template <class TKey, class TData>
+//void SortedTable<TKey, TData>::swap(TabRecord<TKey, TData>* a, TabRecord<TKey, TData>* b) {
+//	srt::swap(a, b);
+//	//TabRecord<TKey, TData> tmp = a;
+//	//a = b;
+//	//b = tmp;
+//}
 
-template <class TKey, class TData>
-bool SortedTable<TKey, TData>::is_sorted() {
-	bool flag = true;
-	for (int i = 0; i < max_size - 1; i++) {
-		if (recs[i]->key > recs[i + 1]->key) {
-			flag = false;
-			break;
-		}
-	}
-	return flag;
-}
+//template <class TKey, class TData>
+//bool SortedTable<TKey, TData>::is_sorted() {
+//	bool flag = true;
+//	for (int i = 0; i < max_size - 1; i++) {
+//		if (recs[i]->key > recs[i + 1]->key) {
+//			flag = false;
+//			break;
+//		}
+//	}
+//	return flag;
+//}
 
 
 template <class TKey, class TData>
 SortedTable<TKey, TData>::SortedTable(int _max_size) : ScanTable(_max_size) {}
 
 template <class TKey, class TData>
-SortedTable<TKey, TData>::SortedTable(const ScanTable<TKey, TData>* st) : ScanTable(*st) {
-	if (!is_sorted()) sort();
+SortedTable<TKey, TData>::SortedTable(const ScanTable<TKey, TData>& st) : ScanTable(st) {
+	sort();
 }
 
 template <class TKey, class TData>
@@ -100,7 +94,7 @@ SortedTable<TKey, TData>::SortedTable(const SortedTable<TKey, TData>& srt) {
 
 	recs = new TabRecord<TKey, TData>* [max_size];
 	for (int i = 0; i < count; i++) {
-		recs[i] = new TabRecord<TKey, TData>(*recs[i]);
+		recs[i] = new TabRecord<TKey, TData>(*srt.recs[i]);
 	}
 }
 
@@ -141,7 +135,8 @@ void SortedTable<TKey, TData>::insert(const TKey& _key, TData* _data) {
 	for (int i = count - 1; i >= curr_pos; i--) {
 		recs[i + 1] = recs[i];
 	}
-	recs[curr_pos] = new TabRecord<TKey, TData>(_key, _data);
+	recs[curr_pos + 1] = new TabRecord<TKey, TData>(_key, _data);
+	count++;
 }
 
 template <class TKey, class TData>

@@ -28,12 +28,12 @@ public:
 	double operator()(double x, double y, double z) const;
 
 	
-	virtual bool operator<(const TMonom& monom) const;
-	virtual bool operator>(const TMonom& monom) const;
-	virtual bool operator<=(const TMonom& monom) const;
-	virtual bool operator>=(const TMonom& monom) const;
-	virtual bool operator==(const TMonom& monom) const;
-	virtual bool operator!=(const TMonom& monom) const;
+	bool operator<(const TMonom& monom) const;
+	bool operator>(const TMonom& monom) const;
+	bool operator<=(const TMonom& monom) const;
+	bool operator>=(const TMonom& monom) const;
+	bool operator==(const TMonom& monom) const;
+	bool operator!=(const TMonom& monom) const;
 
 	const TMonom& operator=(const TMonom& data);
 	TMonom operator*(const TMonom& monom) const;
