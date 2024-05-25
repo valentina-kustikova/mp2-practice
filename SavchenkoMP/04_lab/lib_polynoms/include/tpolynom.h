@@ -11,8 +11,6 @@
 
 using namespace std;
 
-#define infix name
-
 class TPolynom {
 private:
 	TRingList<TMonom>* monoms;
@@ -28,6 +26,13 @@ public:
 	TPolynom(TRingList<TMonom>& ringlist);
 	TPolynom(TPolynom& polynom);
 	~TPolynom();
+
+	bool operator<(TPolynom& polynom);
+	bool operator>(TPolynom& polynom);
+	bool operator<=(TPolynom& polynom);
+	bool operator>=(TPolynom& polynom);
+	bool operator==(TPolynom& polynom);
+	bool operator!=(TPolynom& polynom);
 
 	const TPolynom& operator=(const TPolynom& polynom);
 

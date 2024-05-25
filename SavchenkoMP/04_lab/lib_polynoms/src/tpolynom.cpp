@@ -36,12 +36,12 @@ bool TPolynom::is_variable(const string& str) const {
 
 // If found any operator, returns index. Else returns -1.
 int TPolynom::find_operator(const string& name, int pos) const {
-	if (pos < 0 || pos >= infix.size()) return -1;
+	if (pos < 0 || pos >= name.size()) return -1;
 
 	int ind = -1;
-	for (int i = pos; i < infix.size(); i++) {
+	for (int i = pos; i < name.size(); i++) {
 		string isopr;
-		isopr += infix[i];
+		isopr += name[i];
 
 		if (is_operator(isopr)) {
 			ind = i;
@@ -53,48 +53,48 @@ int TPolynom::find_operator(const string& name, int pos) const {
 
 void TPolynom::convert_infix(string& name) {
 	string nospaces;
-	for (int i = 0; i < infix.size(); i++) {
-		if (infix[i] != ' ')
-			nospaces += infix[i];
+	for (int i = 0; i < name.size(); i++) {
+		if (name[i] != ' ')
+			nospaces += name[i];
 	}
-	infix = nospaces;
+	name = nospaces;
 
 	string tmp;
-	if (infix[0] == '-') tmp += "0-";
-	else if (infix[0] == '.') tmp += "0.";
-	else if (infix[0] == '(') tmp += '(';
-	else tmp += infix[0];
+	if (name[0] == '-') tmp += "0-";
+	else if (name[0] == '.') tmp += "0.";
+	else if (name[0] == '(') tmp += '(';
+	else tmp += name[0];
 
-	for (int i = 1; i < infix.size() - 1; i++) {
-		char elem = infix[i];
+	for (int i = 1; i < name.size() - 1; i++) {
+		char elem = name[i];
 		if (elem == ' ') {
 			continue;
 		}
 		else if (elem == '-') {
-			if (infix[i - 1] == '(')
+			if (name[i - 1] == '(')
 				tmp += '0';
 			tmp += '-';
 		}
 		else if (elem == '(') {
-			if (infix[i - 1] == ')' || infix[i - 1] == '.' || (infix[i - 1] >= '0' && infix[i - 1] <= '9'))
+			if (name[i - 1] == ')' || name[i - 1] == '.' || (name[i - 1] >= '0' && name[i - 1] <= '9'))
 				tmp += '*';
 			tmp += '(';
 		}
 		else if (elem == '.') {
-			if (infix[i - 1] < '0' || infix[i - 1] > '9') {
-				if (infix[i - 1] == ')')
+			if (name[i - 1] < '0' || name[i - 1] > '9') {
+				if (name[i - 1] == ')')
 					tmp += '*';
 				tmp += '0';
 			}
 			tmp += '.';
-			if (infix[i + 1] < '0' || infix[i + 1] > '9') {
+			if (name[i + 1] < '0' || name[i + 1] > '9') {
 				tmp += '0';
-				if (infix[i + 1] == '(')
+				if (name[i + 1] == '(')
 					tmp += '*';
 			}
 		}
 		else if (elem >= '0' && elem <= '9') {
-			if (infix[i - 1] == ')')
+			if (name[i - 1] == ')')
 				tmp += '*';
 			tmp += elem;
 		}
@@ -102,11 +102,11 @@ void TPolynom::convert_infix(string& name) {
 			tmp += elem;
 		}
 	}
-	if (infix[infix.size() - 1] == '.') tmp += ".0";
-	else if (infix[infix.size() - 1] == ')') tmp += ')';
-	//else tmp += infix[infix.size() - 1];
-	else if (tmp.size() != 1) tmp += infix[infix.size() - 1];
-	infix = tmp;
+	if (name[name.size() - 1] == '.') tmp += ".0";
+	else if (name[name.size() - 1] == ')') tmp += ')';
+	//else tmp += name[name.size() - 1];
+	else if (tmp.size() != 1) tmp += name[name.size() - 1];
+	name = tmp;
 }
 
 void TPolynom::correctness_check(const string& name) const {
@@ -116,24 +116,24 @@ void TPolynom::correctness_check(const string& name) const {
 
 	string exp = "Incorrect arithmetic expression";
 
-	if (infix[0] == '+' || infix[0] == '*' || infix[0] == '/' ||
-		infix[0] == ')' || infix[0] == '^') throw exp;
-	if (infix[infix.size() - 1] == '+' || infix[infix.size() - 1] == '-' ||
-		infix[infix.size() - 1] == '*' || infix[infix.size() - 1] == '/' ||
-		infix[infix.size() - 1] == '(' || infix[infix.size() - 1] == '^') throw exp;
+	if (name[0] == '+' || name[0] == '*' || name[0] == '/' ||
+		name[0] == ')' || name[0] == '^') throw exp;
+	if (name[name.size() - 1] == '+' || name[name.size() - 1] == '-' ||
+		name[name.size() - 1] == '*' || name[name.size() - 1] == '/' ||
+		name[name.size() - 1] == '(' || name[name.size() - 1] == '^') throw exp;
 
-	if (infix[0] == '(') op_bracket++;
-	else if (infix[0] == '.') dot++;
-	if (infix[infix.size() - 1] == ')') cl_bracket++;
-	else if (infix[infix.size() - 1] == '.') dot++;
+	if (name[0] == '(') op_bracket++;
+	else if (name[0] == '.') dot++;
+	if (name[name.size() - 1] == ')') cl_bracket++;
+	else if (name[name.size() - 1] == '.') dot++;
 
-	for (int i = 1; i < infix.size() - 1; i++) {
-		char elem = infix[i];
+	for (int i = 1; i < name.size() - 1; i++) {
+		char elem = name[i];
 		if (elem == '(')
 			op_bracket++;
 		else if (elem == ')') {
-			if (infix[i - 1] == '(' || infix[i - 1] == '+' || infix[i - 1] == '-' ||
-				infix[i - 1] == '*' || infix[i - 1] == '/' || infix[i - 1] == '^') throw exp;
+			if (name[i - 1] == '(' || name[i - 1] == '+' || name[i - 1] == '-' ||
+				name[i - 1] == '*' || name[i - 1] == '/' || name[i - 1] == '^') throw exp;
 			cl_bracket++;
 		}
 		else if (elem == '.')
@@ -141,8 +141,8 @@ void TPolynom::correctness_check(const string& name) const {
 		else if (elem == '+' || elem == '-' || elem == '*' || elem == '/' || elem == '^') {
 			if (dot > 1) throw exp;
 			dot = 0;
-			if (infix[i - 1] == '+' || infix[i - 1] == '-' || infix[i - 1] == '*' ||
-				infix[i - 1] == '/' || infix[i - 1] == '(' || infix[i - 1] == '^') throw exp;
+			if (name[i - 1] == '+' || name[i - 1] == '-' || name[i - 1] == '*' ||
+				name[i - 1] == '/' || name[i - 1] == '(' || name[i - 1] == '^') throw exp;
 		}
 	}
 	if (op_bracket != cl_bracket) throw exp;
@@ -159,16 +159,16 @@ void TPolynom::parse(string& name) {
 	firstind = find_operator(name);
 	secondind = find_operator(name, firstind + 1);
 	if (firstind == -1) {
-		lexems.push_back(infix);
+		lexems.push_back(name);
 		to_monoms(lexems);
 		return;
 	}
 	if (firstind > 0) {
-		lexems.push_back(infix.substr(0, firstind));
+		lexems.push_back(name.substr(0, firstind));
 	}
 	while (secondind != -1) {
-		string opr = infix.substr(firstind, 1);
-		string opd = infix.substr(firstind + 1, secondind - firstind - 1);
+		string opr = name.substr(firstind, 1);
+		string opd = name.substr(firstind + 1, secondind - firstind - 1);
 
 		lexems.push_back(opr);
 		if (opd != "")
@@ -176,9 +176,9 @@ void TPolynom::parse(string& name) {
 		firstind = secondind;
 		secondind = find_operator(name, firstind + 1);
 	}
-	lexems.push_back(infix.substr(firstind, 1));
-	if (firstind != infix.size() - 1)
-		lexems.push_back(infix.substr(firstind + 1));
+	lexems.push_back(name.substr(firstind, 1));
+	if (firstind != name.size() - 1)
+		lexems.push_back(name.substr(firstind + 1));
 
 	to_monoms(lexems);
 }
@@ -332,6 +332,89 @@ TPolynom::~TPolynom() {
 }
 
 
+bool TPolynom::operator<(TPolynom& polynom) {
+	reset();
+	while (!ended()) {
+		polynom.reset();
+		while (!polynom.ended()) {
+			if (!(get_current_monom() < polynom.get_current_monom())) {
+				return false;
+			}
+			polynom.next();
+		}
+		next();
+	}
+	reset();
+	polynom.reset();
+	return true;
+}
+bool TPolynom::operator>(TPolynom& polynom) {
+	reset();
+	while (!ended()) {
+		polynom.reset();
+		while (!polynom.ended()) {
+			if (!(get_current_monom() >= polynom.get_current_monom())) {
+				return false;
+			}
+			polynom.next();
+		}
+		next();
+	}
+	reset();
+	polynom.reset();
+	return true;
+}
+bool TPolynom::operator<=(TPolynom& polynom) {
+	reset();
+	while (!ended()) {
+		polynom.reset();
+		while (!polynom.ended()) {
+			if (!(get_current_monom() <= polynom.get_current_monom())) {
+				return false;
+			}
+			polynom.next();
+		}
+		next();
+	}
+	reset();
+	polynom.reset();
+	return true;
+}
+bool TPolynom::operator>=(TPolynom& polynom) {
+	reset();
+	while (!ended()) {
+		polynom.reset();
+		while (!polynom.ended()) {
+			if (!(get_current_monom() >= polynom.get_current_monom())) {
+				return false;
+			}
+			polynom.next();
+		}
+		next();
+	}
+	reset();
+	polynom.reset();
+	return true;
+}
+bool TPolynom::operator==(TPolynom& polynom) {
+	reset();
+	while (!ended()) {
+		polynom.reset();
+		while (!polynom.ended()) {
+			if (!(get_current_monom() == polynom.get_current_monom())) {
+				return false;
+			}
+			polynom.next();
+		}
+		next();
+	}
+	reset();
+	polynom.reset();
+	return true;
+}
+bool TPolynom::operator!=(TPolynom& polynom) {
+	return !((*this) == polynom);
+}
 
 
 const TPolynom& TPolynom::operator=(const TPolynom& polynom) {
