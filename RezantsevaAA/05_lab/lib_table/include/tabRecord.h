@@ -9,6 +9,7 @@ protected:
 	TData* data;
 public:
 	TTabRecord();
+	~TTabRecord() { };
 	TTabRecord(const TKey& k, const TData& d);
 	TTabRecord(const TTabRecord<TKey, TData>& record);
 
@@ -47,6 +48,7 @@ template <typename TKey, typename TData> TData*  TTabRecord<TKey, TData>::GetDat
 	return data;
 }
 
+//no need
 template <typename TKey, typename TData> bool TTabRecord<TKey, TData>::operator==(const TKey& k) const
 {
 	return (key == k);

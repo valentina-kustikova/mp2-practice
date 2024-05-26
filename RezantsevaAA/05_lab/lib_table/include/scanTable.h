@@ -1,7 +1,7 @@
 #ifndef __SCANTABLE_H__
 #define __SCANTABLE_H__
 #include "table.h"
-
+#include <iomanip>
 template<typename TKey, typename TData>
 class TScanTable : public TTable<TKey,TData>
 {
@@ -16,15 +16,19 @@ public:
 	virtual void Remove(const TKey& k) override;
 	virtual TTabRecord<TKey, TData>* Find(const TKey& k) override;
 	//Get
-	//virtual TKey GetKey() const override;
-	//virtual TData GetData() const override;
+	virtual TKey GetKey() const override;
+	virtual TData* GetData() const override;
 
 	friend std::ostream& operator<<(std::ostream& out, const TScanTable<TKey, TData>& stab)
 	{
-		std::cout << "Print table" << std::endl;
-		for (int i = 0; i < stab.maxSize; i++)
-		{
-			out << " Key: " << stab.GetKey() << " Data: " << stab.GetData() << std::endl;
+		std::cout << "-------------------------------------" << std::endl;
+		for (int i = 0; i < stab.maxSize; i++) {
+
+			if (stab.records[i] != nullptr)
+			{
+				out << "| " << std::setw(20) << stab.records[i]->GetKey() << " | " << std::setw(20) << *(stab.records[i]->GetData()) << std::endl;
+
+			}
 		}
 		return out;
 	}
@@ -38,7 +42,7 @@ template<typename TKey, typename TData> TScanTable<TKey, TData>::TScanTable(int 
 	{
 		records[i] = nullptr;
 	}
-	size = _maxSize;
+	size = 0;
 	currPos = 0;
 	maxSize = _maxSize;
 }
@@ -71,11 +75,11 @@ template<typename TKey, typename TData> TScanTable<TKey, TData>::~TScanTable()
 
 template<typename TKey, typename TData> void TScanTable<TKey, TData>::Insert(const TKey& k, const TData& d)
 {
-	if (this->IsFull())
+	if (IsFull())
 	{
 		throw "Table is full. Can't insert";
 	}
-	records[size + 1] = new TTabRecord<TKey,TData>(k, d);
+	records[size++] = new TTabRecord<TKey,TData>(k, d);
 }
 
 template<typename TKey, typename TData> TTabRecord<TKey, TData>* TScanTable<TKey, TData>::Find(const TKey& k)
@@ -106,7 +110,7 @@ template<typename TKey, typename TData> void TScanTable<TKey, TData>::Remove(con
 		throw "Record not found";
 
 }
-/*
+
 template <class TKey, class TData> TKey TScanTable<TKey, TData>::GetKey() const
 {
 	if (currPos < size)
@@ -116,14 +120,14 @@ template <class TKey, class TData> TKey TScanTable<TKey, TData>::GetKey() const
 		throw "Can't get key.Current position is out of range";
 	}
 }
-template <class TKey, class TData> TData TScanTable<TKey, TData>::GetData() const
+template <class TKey, class TData> TData* TScanTable<TKey, TData>::GetData() const
 {
-	if (currPos < size) 
+	if (currPos < size)
 		return records[currPos]->GetData();
 	else
 	{
 		throw "Can't get data. Current position is out of range";
 	}
-}*/
+}
 
 #endif

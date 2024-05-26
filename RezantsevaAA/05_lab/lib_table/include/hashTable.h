@@ -5,7 +5,7 @@ template <typename TKey, typename TData>
 class THashTable : public TTable<TKey, TData>
 {
 protected:
-	virtual size_t hash_func(const TKey& k) { return (k % maxSize)}
+	virtual size_t hash_func(const TKey& k) = 0;
 public:
 	THashTable(size_t _size): TTable<TKey,TData>(_size) {};
 };

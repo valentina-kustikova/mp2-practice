@@ -13,16 +13,16 @@ protected:
 	int currPos; 
 
 public:
-	TTable() { };
+	TTable() { size = 0; currPos = -1; };
 	TTable(int _maxSize);
-	
+
 	virtual void Insert(const TKey& k, const TData& d) = 0;
 	virtual void Remove(const TKey& k) = 0;
 	virtual TTabRecord <TKey, TData>* Find(const TKey& k) = 0;
 	//Get
 	virtual TKey GetKey() const = 0;
 	virtual TData* GetData() const = 0;
-	int Getsize() const;
+	int GetSize() const;
 	//навигация
 	virtual bool IsTabEnded() const; //таблица завершена? 
 	virtual bool Reset();   
@@ -39,7 +39,7 @@ template <typename TKey, typename TData> TTable<TKey, TData>::TTable(int _maxSiz
 	currPos = -1;
 }
 
-template <typename TKey, typename TData> int TTable<TKey, TData>::Getsize() const 
+template <typename TKey, typename TData> int TTable<TKey, TData>::GetSize() const
 {
 	return size;
 }
