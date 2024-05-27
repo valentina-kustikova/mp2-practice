@@ -1,6 +1,6 @@
 #ifndef __TABRECORD_H__
 #define __TABRECORD_H__
-#include "tpolynom.h"
+
 
 template <typename TKey, typename TData> 
 class TTabRecord {

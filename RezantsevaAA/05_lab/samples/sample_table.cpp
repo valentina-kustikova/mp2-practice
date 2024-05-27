@@ -136,7 +136,17 @@ void Remove()
 	std::cout << "Please, enter polynom to remove \n";
 	std::cin >> s1;
 	TPolinom p1(s1);
-	p1.getFormula();
+	while (scan_table.Find(p1.getFormula()) == nullptr && sorted_table.Find(p1.getFormula()) == nullptr && hash_table.Find(p1.getFormula()) == nullptr)
+	{
+		bool flag;
+		flag = scan_table.Find(p1.getFormula());
+		flag = sorted_table.Find(p1.getFormula());
+		flag = hash_table.Find(p1.getFormula());
+		std::cout << "Sorry. All tables doesn't have this polynom." << std::endl;
+		std::cout << "Please, enter exist polynom " << std::endl;
+		std::cin >> s1;
+		p1 = TPolinom(s1);
+	}
 	int type;
 	std::cout << " In which table you want to remove polynom: \n 1 - Scan table \n 2 - Sorted table \n 3 - Hash table\n 4 - All\n";
 	std::cin >> type;
@@ -247,7 +257,7 @@ void Dif()// DIF - to take the derivative
 		Print();
 		std::cout << "Please, enter exist polynom " << std::endl;
 		std::cin >> s1;
-		TPolinom p1(s1);
+		p1 = TPolinom(s1);
 	}
 	std::cout << "Now choose the variable with respect to which you want to take the derivative: x, y, z" << std::endl;
 	std::cin >> dif;
@@ -290,7 +300,7 @@ void Arithmetic() //+, -, *
 		Print();
 		std::cout << "Please, enter exist polynom " << std::endl;
 		std::cin >> s1;
-		TPolinom p1(s1);
+		p1 = TPolinom(s1);
 	}
 	std::cout << "Please, enter second polynom with which one you want to work" << std::endl;
 	std::cin >> s2;
@@ -301,7 +311,7 @@ void Arithmetic() //+, -, *
 	{
 		std::cout << "Polynoms in different tables or second polynom doesn't exist in tables, please, enter exist second polynom" << std::endl;
 		std::cin >> s2;
-		TPolinom p2(s2);
+		p2 =  TPolinom(s2);
 	}
 	std::cout << "Choose what ou want to do with polynoms. ADD, SUB to substruct, MULT  to multiply" << std::endl;
 	std::cin >> func;
