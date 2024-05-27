@@ -2,7 +2,6 @@
 #define SCANTABLE_H
 
 #include "Tables.h"
-//#include "SortTable.h"
 #include <iostream>
 using namespace std;
 
@@ -20,7 +19,6 @@ public:
 	TabRecord<TKey, TData>* Find(TKey k);
 	TKey GetKey() const;
 	TData* GetData() const;
-    //TScanTable operator=(const TSortTable<Tkey, TData>& st);
     friend ostream& operator<<(ostream& out, const TScanTable<TKey, TData>& st)
     {
         TScanTable<TKey, TData> t(st);
@@ -44,7 +42,9 @@ TScanTable<TKey, TData>::TScanTable(int _maxsize) : Table<TKey, TData>(_maxsize)
 template <class TKey, class TData>
 TScanTable<TKey, TData>::TScanTable(const TScanTable& st) : Table<TKey, TData>(st.maxsize)
 {
-    count = st.count;
+    if (this == &st)
+        return;
+    Count = st.Count;
     currPos = st.currPos;
 
     recs = new TabRecord<TKey, TData>* [maxsize];
@@ -59,7 +59,7 @@ TScanTable<TKey, TData>::TScanTable(const TScanTable& st) : Table<TKey, TData>(s
 template <class TKey, class TData>
 TScanTable<TKey, TData>::~TScanTable()
 {
-    for (int i = 0; i < count; i++)
+    for (int i = 0; i < Count; i++)
     {
         if (recs[i] != nullptr)
             delete recs[i];
@@ -74,7 +74,7 @@ void TScanTable<TKey, TData>::Insert(TKey k, TData* data)
         string msg = "Error: scan table is full";
         throw msg;
     }
-    recs[count++] = new TabRecord<TKey,TData>(k, data);
+    recs[Count++] = new TabRecord<TKey,TData>(k, data);
 }
 template <class TKey, class TData>
 void TScanTable<TKey, TData>::Remove(TKey k)
@@ -87,9 +87,9 @@ void TScanTable<TKey, TData>::Remove(TKey k)
     if (Find(k) != nullptr)
     {
         delete recs[currPos];
-        for (int i = currPos; i < this->count; i++)
+        for (int i = currPos; i < this->Count; i++)
             recs[i] = recs[i + 1];
-        count--;
+        Count--;
     }
     else
     {
@@ -100,7 +100,7 @@ void TScanTable<TKey, TData>::Remove(TKey k)
 template <class TKey, class TData>
 TabRecord<TKey, TData>* TScanTable<TKey, TData>::Find(TKey k)
 {
-    for(int i = 0; i < count; i++)
+    for(int i = 0; i < Count; i++)
     {
         if (recs[i]->GetKey() == k)
         {
@@ -113,7 +113,7 @@ TabRecord<TKey, TData>* TScanTable<TKey, TData>::Find(TKey k)
 template <class TKey, class TData>
 TKey TScanTable<TKey, TData>::GetKey() const
 {
-    if (currPos < count)
+    if (currPos < Count)
         return recs[currPos]->GetKey();
     else
     {
@@ -124,7 +124,7 @@ TKey TScanTable<TKey, TData>::GetKey() const
 template <class TKey, class TData>
 TData* TScanTable<TKey, TData>::GetData() const
 {
-    if (currPos < count)
+    if (currPos < Count)
         return recs[currPos]->GetData();
     else
     {

@@ -11,7 +11,7 @@
 //}
 
 // Copy Constructor Test
-TEST(ScanTable, CopyConstructorTest)
+TEST(ScanTable, copy_constructor_test)
 {
 	TScanTable<int, string> st(3);
 	st.Insert(1, &string("abc"));

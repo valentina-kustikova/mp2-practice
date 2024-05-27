@@ -9,11 +9,11 @@ template <class TKey, class TData>
 class TSortTable : public TScanTable<TKey, TData>
 {
 private: 
-	void Sort();
+	void Sort(int left, int right);
 public:
 	TSortTable(int _maxsize);
-	TSortTable(const TScanTable* st); // c параметром
-	TSortTable(const TSortTable& rst); //копирование
+	TSortTable(const TScanTable* st); 
+	TSortTable(const TSortTable& rst); 
 
 	void Insert(TKey k, TData* data);
 	void Remove(TKey k);
@@ -38,7 +38,7 @@ TSortTable<TKey, TData>::TSortTable(int _maxsize) : TScanTable<TKey, TData>(_max
 template <class TKey, class TData>
 TSortTable<TKey, TData>::TSortTable(const TScanTable<TKey, TData>* st) : TScanTable<TKey, TData>(*st)
 {
-	Sort();
+	Sort(0,Count-1);
 }
 template <class TKey, class TData>
 TSortTable<TKey, TData>::TSortTable(const TSortTable& rst) : TScanTable<TKey, TData>(rst) {}
@@ -47,7 +47,7 @@ template <class TKey, class TData>
 TabRecord<TKey, TData>* TSortTable<TKey, TData>::Find(TKey k)
 {
 	int i1 = 0;
-	int i2 = count - 1;
+	int i2 = Count - 1;
 	TabRecord<TKey, TData>* Search = nullptr;
 	while (i1 <= i2)
 	{
@@ -75,10 +75,10 @@ void TSortTable<TKey, TData>::Insert(TKey k, TData* data)
 		throw msg;
 	}
 	Find(k);
-	for (int i = count - 1; i > currPos; i--)
+	for (int i = Count - 1; i > currPos; i--)
 		recs[i + 1] = recs[i];
 	recs[currPos+1] = new TabRecord<TKey, TData>(k, data);
-	count++;
+	Count++;
 	//this->Sort();
 }
 template <class TKey, class TData>
@@ -96,26 +96,50 @@ void TSortTable<TKey, TData>::Remove(TKey k)
 		throw msg;
 	}
 	delete s;
-	for (int i = currPos; i < count; i++)
+	for (int i = currPos; i < Count; i++)
 	{
 		recs[i] = recs[i + 1];
 	}
-	count--;
+	Count--;
 }
 template <class TKey, class TData>
-void TSortTable<TKey, TData>::Sort()
+void TSortTable<TKey, TData>::Sort(int left, int right)
 {
-	for (int i = 0; i < count - 1; i++)
-	{
-		for (int j = 0; j < count - i - 1; j++)
+	int i = left;
+	int j = right;
+	int mid = (i + j) / 2;
+	do {
+		while (recs[i]->GetKey() < recs[mid]->GetKey())
+			i++;
+		while (recs[j]->GetKey() > recs[mid]->GetKey())
+			j--;
+		if (i <= j)
 		{
-			if (recs[j]->GetKey() > recs[j + 1]->GetKey())
+			if(i != j)
 			{
-				TabRecord<TKey, TData>* temp = recs[j];
-				recs[j] = recs[j + 1];
-				recs[j + 1] = temp;
+				TabRecord<TKey, TData>* tmp = recs[i];
+				recs[i] = recs[j];
+				recs[j] = tmp;
 			}
+			i++;
+			j--;
 		}
-	}
+	} while (i <= j);
+	if (left < j)
+		Sort(left, j);
+	if (i < right)
+		Sort(i, right);
+	//for (int i = 0; i < Count - 1; i++)
+	//{
+	//	for (int j = 0; j < Count - i - 1; j++)
+	//	{
+	//		if (recs[j]->GetKey() > recs[j + 1]->GetKey())
+	//		{
+	//			TabRecord<TKey, TData>* temp = recs[j];
+	//			recs[j] = recs[j + 1];
+	//			recs[j + 1] = temp;
+	//		}
+	//	}
+	//}
 }
 #endif //! SORT_TABLE_H

@@ -7,7 +7,7 @@ template <class TKey, class TData>
 class Table
 {
 protected:
-	int count;
+	int Count;
 	int maxsize;
 	int currPos;
 public:
@@ -28,19 +28,19 @@ public:
 template <class TKey, class TData>
 Table<TKey, TData>::Table(int _maxsize)
 {
-	count = 0;
+	Count = 0;
 	maxsize = _maxsize;
 	currPos = -1;
 }
 template <class TKey, class TData>
 bool Table<TKey, TData>::IsFull() const
 {
-	return count == maxsize;
+	return Count == maxsize;
 }
 template <class TKey, class TData>
 bool Table<TKey, TData>::IsEmpty() const
 {
-	return count == 0;
+	return Count == 0;
 }
 template <class TKey, class TData>
 bool Table<TKey, TData>::IsTabEnded() const
@@ -67,7 +67,7 @@ bool Table<TKey, TData>::Next()
 template <class TKey, class TData>
 int Table<TKey, TData>::GetCount() const
 {
-	return count;
+	return Count;
 }
 
 # endif //! TABLE_H

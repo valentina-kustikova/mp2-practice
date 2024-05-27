@@ -15,7 +15,6 @@ protected:
 	TabRecord<TKey, TData>* pMark;
 	int freePos;
 
-	size_t hash_func(const TKey& key);
 	size_t GetNextPos(size_t ind) { return (ind + hash_step) % maxsize; }
 
 public:
@@ -61,8 +60,10 @@ TArrayHashTable<TKey, TData>::TArrayHashTable(size_t _maxsize, size_t _step) : T
 		recs[i] = nullptr;
 }
 template<class TKey, class TData>
-TArrayHashTable<TKey, TData>::TArrayHashTable(const TArrayHashTable& ht) : THashTable<TKey, TData>(ht.maxsize) //
+TArrayHashTable<TKey, TData>::TArrayHashTable(const TArrayHashTable& ht) : THashTable<TKey, TData>(ht.maxsize) 
 {
+	if (this == &ht)
+		return;
 	maxsize = ht.maxsize;
 	currPos = ht.currPos;
 	hash_step = ht.hash_step;
@@ -112,15 +113,6 @@ TabRecord<TKey, TData>* TArrayHashTable<TKey, TData>::Find(TKey k)
 	return nullptr;
 }
 template<class TKey, class TData>
-size_t TArrayHashTable<TKey, TData>::hash_func(const TKey& key)
-{
-	size_t hash = 0;
-	for (char c : key)
-		hash += c;
-
-	return hash % maxsize;
-}
-template<class TKey, class TData>
 void TArrayHashTable<TKey, TData>::Insert(TKey k, TData* d)
 {
 	if (IsFull())
@@ -131,21 +123,26 @@ void TArrayHashTable<TKey, TData>::Insert(TKey k, TData* d)
 	if (Find(k) != nullptr && freePos != -1)
 		currPos = freePos;
 	recs[currPos] = new TabRecord<TKey, TData>(k, d);
-	count++;
+	Count++;
 }
 template<class TKey, class TData>
 void TArrayHashTable<TKey, TData>::Remove(TKey k)
 {
 	TabRecord<TKey, TData>* tmp = Find(k);
-	if (tmp == nullptr)
+	if (IsEmpty())
 	{
 		string msg = "Error: hash table is empty";
+		throw msg;
+	}
+	if (tmp == nullptr)
+	{
+		string msg = "Error: elem not found";
 		throw msg;
 	}
 	delete tmp;
 	recs[currPos] = pMark;
 	freePos = -1;
-	count--;
+	Count--;
 }
 template<class TKey, class TData>
 bool TArrayHashTable<TKey, TData>::Reset()
