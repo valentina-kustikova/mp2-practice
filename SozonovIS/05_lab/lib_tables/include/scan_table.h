@@ -4,6 +4,8 @@
 #include "tab_record.h"
 #include "table.h"
 
+#include <iostream>
+
 using namespace std;
 
 template <typename TKey, typename TData>
@@ -12,37 +14,35 @@ protected:
 	TabRecord<TKey, TData>** recs;
 public:
 	ScanTable(int max_size);
-	ScanTable(const ScanTable<TKey, TData>& t);
+	ScanTable(const ScanTable<TKey, TData>& table);
 	~ScanTable();
-	TabRecord<TKey, TData>* Search(TKey _key);
-	void Insert(TKey _key, TData* _data);
-	void Remove(TKey _key);
-	friend ostream& operator<<(ostream& out, const ScanTable<TKey, TData>& t) {
-		if (t.IsEmpty()) {
-			out << "table is empty";
+	TabRecord<TKey, TData>* GetCurrent() const override;
+	TabRecord<TKey, TData>* Search(TKey _key) override;
+	void Insert(TKey _key, TData* _data) override;
+	void Remove(TKey _key) override;
+	friend ostream& operator<<(ostream& out, const ScanTable<TKey, TData>& table) {
+		if (table.IsEmpty()) {
+			out << "table is empty" << endl;
 			return out;
 		}
-		for (int i = 0; i < t.count; i++) {
-			if (t.recs[i] != nullptr)
-				out << "| " << table.recs[i]->key << " | " << table.recs[i]->data << " |" << endl;
+		for (int i = 0; i < table.count; i++) {
+			if (table.recs[i] != nullptr)
+				cout << *table.recs[i] << endl;
 		}
 		return out;
-	};
+	}
 };
 
 template <typename TKey, typename TData>
 ScanTable<TKey, TData>::ScanTable(int max_size) : Table<TKey, TData>(max_size) {
-	recs = new TabRecord<TKey, TData>*[maxSize];
+	recs = new TabRecord<TKey, TData>*[max_size];
 }
 
 template <typename TKey, typename TData>
-ScanTable<TKey, TData>::ScanTable(const ScanTable<TKey, TData>& t) {
-	count = t.count;
-	maxSize = t.maxSize;
-	currPos = t.currPos;
+ScanTable<TKey, TData>::ScanTable(const ScanTable<TKey, TData>& table) : Table<TKey, TData>(table.maxSize) {
 	recs = new TabRecord<TData, TKey>*[maxSize];
 	for (int i = 0; i < maxSize; i++) {
-		recs[i] = new TabRecord<TData, TKey>(*t.recs[i]);
+		recs[i] = new TabRecord<TData, TKey>(table.recs[i]->key, table.recs[i]->data);
 	}
 }
 
@@ -56,10 +56,17 @@ ScanTable<TKey, TData>::~ScanTable() {
 }
 
 template <typename TKey, typename TData>
+TabRecord<TKey, TData>* ScanTable<TKey, TData>::GetCurrent() const {
+	if (IsEmpty())
+		throw exception("table is empty");
+	return recs[currPos];
+}
+
+template <typename TKey, typename TData>
 TabRecord<TKey, TData>* ScanTable<TKey, TData>::Search(TKey _key) {
 	if (IsEmpty())
 		return nullptr;
-	for (int i = 0; i < maxSize; i++)
+	for (int i = 0; i < count; i++)
 		if (recs[i]->key == _key) {
 			currPos = i;
 			return recs[i];
@@ -70,16 +77,16 @@ TabRecord<TKey, TData>* ScanTable<TKey, TData>::Search(TKey _key) {
 template <typename TKey, typename TData>
 void ScanTable<TKey, TData>::Insert(TKey _key, TData* _data) {
 	if (IsFull())
-		throw exception("table if full");
+		throw exception("table is full");
 	if (Search(_key) != nullptr)
-		throw exception("record with this key already existed");
+		return;
 	recs[count++] = new TabRecord<TKey, TData>(_key, _data);
 }
 
 template <typename TKey, typename TData>
 void ScanTable<TKey, TData>::Remove(TKey _key) {
 	if (IsEmpty())
-		return;
+		throw exception("table is empty");
 	if (Search(_key) == nullptr)
 		throw exception("no such records");
 	delete recs[currPos];

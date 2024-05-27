@@ -119,15 +119,69 @@ bool TPolynom::operator==(const TPolynom& p)const {
 	return true;
 }
 
-TPolynom TPolynom::operator+(const TPolynom& p) {
-	TPolynom sum(*this);
-	TPolynom polynom(p);
-	polynom.monoms.Reset();
-	while (!polynom.monoms.IsEnded()) {
-		sum.monoms.InsertLast(polynom.monoms.GetCurrent()->data);
+bool TPolynom::operator!=(const TPolynom& p) const {
+	return !(*this == p);
+}
+
+bool TPolynom::operator<(const TPolynom& p) const {
+	TPolynom polynom(*this);
+	TPolynom tmp(p);
+	while (!polynom.monoms.IsEnded() && !tmp.monoms.IsEnded()) {
+		if (polynom.monoms.GetCurrent()->data >= tmp.monoms.GetCurrent()->data)
+			return false;
 		polynom.monoms.Next();
+		tmp.monoms.Next();
 	}
-	sum.Cancellation();
+	return true;
+}
+
+bool TPolynom::operator>(const TPolynom& p)const {
+	TPolynom polynom(*this);
+	TPolynom tmp(p);
+	while (!polynom.monoms.IsEnded() && !tmp.monoms.IsEnded()) {
+		if (polynom.monoms.GetCurrent()->data <= tmp.monoms.GetCurrent()->data)
+			return false;
+		polynom.monoms.Next();
+		tmp.monoms.Next();
+	}
+	return true;
+}
+
+TPolynom TPolynom::operator+(const TPolynom& p) {
+	TPolynom p1(*this);
+	TPolynom p2(p);
+	TPolynom sum;
+	p1.monoms.Reset();
+	p2.monoms.Reset();
+	while (!p1.monoms.IsEnded() && !p2.monoms.IsEnded()) {
+		if (p1.monoms.GetCurrent()->data.degree > p2.monoms.GetCurrent()->data.degree) {
+			sum.monoms.InsertLast(p1.monoms.GetCurrent()->data);
+			p1.monoms.Next();
+		}
+		else if (p1.monoms.GetCurrent()->data.degree < p2.monoms.GetCurrent()->data.degree) {
+			sum.monoms.InsertLast(p2.monoms.GetCurrent()->data);
+			p2.monoms.Next();
+		}
+		else {
+			p1.monoms.GetCurrent()->data.coeff += p2.monoms.GetCurrent()->data.coeff;
+			if (p1.monoms.GetCurrent()->data.coeff != 0)
+				sum.monoms.InsertLast(p1.monoms.GetCurrent()->data);
+			p1.monoms.Next();
+			p2.monoms.Next();
+		}
+	}
+	while (!p1.monoms.IsEnded()) {
+		sum.monoms.InsertLast(p1.monoms.GetCurrent()->data);
+		p1.monoms.Next();
+	}
+	while (!p2.monoms.IsEnded()) {
+		sum.monoms.InsertLast(p2.monoms.GetCurrent()->data);
+		p2.monoms.Next();
+	}
+	if (sum.monoms.IsEmpty()) {
+		TMonom mon(0, 0);
+		sum.monoms.InsertLast(mon);
+	}
 	return sum;
 }
 
@@ -143,7 +197,6 @@ TPolynom TPolynom::operator-()const {
 
 TPolynom TPolynom::operator-(const TPolynom& p) {
 	TPolynom dif = (*this) + (-p);
-	dif.Cancellation();
 	return dif;
 }
 

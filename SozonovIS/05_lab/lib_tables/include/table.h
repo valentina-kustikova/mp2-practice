@@ -13,10 +13,10 @@ protected:
 	int currPos;
 public:
 	Table(int max_size);
+	virtual TabRecord<TKey, TData>* GetCurrent()const = 0;
 	virtual TabRecord<TKey, TData>* Search(TKey _key) = 0;
 	virtual void Insert(TKey _key, TData* _data) = 0;
 	virtual void Remove(TKey _key) = 0;
-	virtual TabRecord<TKey, TData>* GetCurrent()const;
 	virtual bool IsFull()const;
 	virtual bool IsEmpty()const;
 	virtual bool IsEnded()const;
@@ -31,13 +31,6 @@ Table<TKey, TData>::Table(int max_size) {
 	count = 0;
 	maxSize = max_size;
 	currPos = -1;
-}
-
-template <typename TKey, typename TData>
-TabRecord<TKey, TData>* Table<TKey, TData>::GetCurrent()const {
-	if (IsEmpty())
-		throw std::exception("table is empty");
-	return recs[currPos];
 }
 
 template <typename TKey, typename TData>

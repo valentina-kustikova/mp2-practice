@@ -22,6 +22,9 @@ public:
 	TPolynom(const TPolynom& p);
 	const TPolynom& operator=(const TPolynom& p);
 	bool operator==(const TPolynom& p)const;
+	bool operator!=(const TPolynom& p)const;
+	bool operator<(const TPolynom& p) const;
+	bool operator>(const TPolynom& p)const;
 	TPolynom operator+(const TPolynom& p);
 	TPolynom operator-()const;
 	TPolynom operator-(const TPolynom& p);
