@@ -42,9 +42,9 @@ public:
 	TPolynom operator*(TPolynom& polynom);
 	double operator()(double x, double y, double z);
 
-	TPolynom dif_x();
-	TPolynom dif_y();
-	TPolynom dif_z();
+	TPolynom diff_x();
+	TPolynom diff_y();
+	TPolynom diff_z();
 
 	string get_string();
 	friend ostream& operator<<(ostream& out, TPolynom& polynom);

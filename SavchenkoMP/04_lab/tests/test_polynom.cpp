@@ -230,7 +230,7 @@ TEST(TPolynom, DifferentiationXTest) {
 	TPolynom p("x^3*y*z + x*y^3*z + x*y*z^3 + x + y + z");
 	TPolynom expP("3*x^2*y*z + y^3*z + y*z^3 + 1");
 
-	TPolynom res(p.dif_x());
+	TPolynom res(p.diff_x());
 	EXPECT_EQ(expP.get_string(), res.get_string());
 }
 
@@ -239,7 +239,7 @@ TEST(TPolynom, DifferentiationYTest) {
 	TPolynom p("x^3*y*z + x*y^3*z + x*y*z^3 + x + y + z");
 	TPolynom expP("x^3*z + 3*x*y^2*z + x*z^3 + 1");
 
-	TPolynom res(p.dif_y());
+	TPolynom res(p.diff_y());
 	EXPECT_EQ(expP.get_string(), res.get_string());
 }
 
@@ -248,6 +248,6 @@ TEST(TPolynom, DifferentiationZTest) {
 	TPolynom p("x^3*y*z + x*y^3*z + x*y*z^3 + x + y + z");
 	TPolynom expP("x^3*y + x*y^3 + 3*x*y*z^2 + 1");
 
-	TPolynom res(p.dif_z());
+	TPolynom res(p.diff_z());
 	EXPECT_EQ(expP.get_string(), res.get_string());
 }

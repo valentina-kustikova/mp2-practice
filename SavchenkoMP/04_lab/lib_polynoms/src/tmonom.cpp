@@ -141,7 +141,7 @@ TMonom TMonom::operator*(const TMonom& monom) const {
 }
 
 
-TMonom TMonom::dif_x() const {
+TMonom TMonom::diff_x() const {
 	int degX = get_degX();
 	
 	if (degX == 0) {
@@ -156,7 +156,7 @@ TMonom TMonom::dif_x() const {
 		return res;
 	}	
 }
-TMonom TMonom::dif_y() const {
+TMonom TMonom::diff_y() const {
 	int degY = get_degY();
 	
 	if (degY == 0) {
@@ -171,7 +171,7 @@ TMonom TMonom::dif_y() const {
 		return res;
 	}
 }
-TMonom TMonom::dif_z() const {
+TMonom TMonom::diff_z() const {
 	int degZ = get_degZ();
 	
 	if (degZ == 0) {

@@ -368,14 +368,14 @@ TEST(TMonom, DifferentiationXTest) {
 	TMonom m(2, 234);
 
 	TMonom exp(4, 134);
-	EXPECT_EQ(true, exp == m.dif_x());
+	EXPECT_EQ(true, exp == m.diff_x());
 }
 
 TEST(TMonom, DifferentiationXTest_ZeroDegX) {
 	TMonom m(2, 34);
 
 	TMonom exp(0, 0);
-	EXPECT_EQ(true, exp == m.dif_x());
+	EXPECT_EQ(true, exp == m.diff_x());
 }
 
 
@@ -384,14 +384,14 @@ TEST(TMonom, DifferentiationYTest) {
 	TMonom m(2, 244);
 
 	TMonom exp(8, 234);
-	EXPECT_EQ(true, exp == m.dif_y());
+	EXPECT_EQ(true, exp == m.diff_y());
 }
 
 TEST(TMonom, DifferentiationYTest_ZeroDegY) {
 	TMonom m(2, 204);
 
 	TMonom exp(0, 0);
-	EXPECT_EQ(true, exp == m.dif_y());
+	EXPECT_EQ(true, exp == m.diff_y());
 }
 
 
@@ -400,14 +400,14 @@ TEST(TMonom, DifferentiationZTest) {
 	TMonom m(2, 234);
 
 	TMonom exp(8, 233);
-	EXPECT_EQ(true, exp == m.dif_z());
+	EXPECT_EQ(true, exp == m.diff_z());
 }
 
 TEST(TMonom, DifferentiationZTest_ZeroDegZ) {
 	TMonom m(2, 230);
 
 	TMonom exp(0, 0);
-	EXPECT_EQ(true, exp == m.dif_z());
+	EXPECT_EQ(true, exp == m.diff_z());
 }
 
 

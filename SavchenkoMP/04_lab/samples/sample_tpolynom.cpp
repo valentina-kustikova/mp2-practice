@@ -51,9 +51,9 @@ int main() {
 		cout << "p3 = " << p3 << endl << endl;
 
 		cout << "Differentiation:" << endl;
-		cout << "p1.dif_x() = " << p1.dif_x() << endl;
-		cout << "p1.dif_y() = " << p1.dif_y() << endl;
-		cout << "p1.dif_z() = " << p1.dif_z() << endl << endl;
+		cout << "p1.diff_x() = " << p1.diff_x() << endl;
+		cout << "p1.diff_y() = " << p1.diff_y() << endl;
+		cout << "p1.diff_z() = " << p1.diff_z() << endl << endl;
 
 		cout << "Set values of x, y, z:" << endl;
 		int x, y, z;
