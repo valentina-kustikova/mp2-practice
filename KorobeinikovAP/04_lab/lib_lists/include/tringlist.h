@@ -39,18 +39,7 @@ template <typename T>
 
 	if (pFirst == nullptr) {
 		pHead->pNext = pHead;
-	}
-	/*
-	else {
-		TNode<T>* tmp = pFirst;
-		pHead->pNext = pFirst;
-		while (tmp->pNext != pStop) {
-			tmp = tmp->pNext;
-		}
-		tmp->pNext = pHead;
-		pLast = tmp;
-	}
-	*/
+	}	
 }
 
 
@@ -73,11 +62,11 @@ TRingList<T>::TRingList(const TList<T>& obj) : TList<T>(obj) {
 
 
 template <typename T>
-TRingList<T>::TRingList(const TRingList<T>& obj) : TList(obj) { //??
+TRingList<T>::TRingList(const TRingList<T>& obj) : TList(obj) { 
 	pHead = new TNode<T>();
 	pStop = pHead;
 	
-	if	(obj.pFirst == obj.pStop) {
+	if	(obj.pFirst == nullptr) {
 		pHead->pNext = pHead;
 	}
 	
@@ -85,23 +74,6 @@ TRingList<T>::TRingList(const TRingList<T>& obj) : TList(obj) { //??
 		pHead->pNext = pFirst;
 		pLast->pNext = pHead;
 	}
-	/*
-	else {
-		pFirst = new TNode<T>(obj.pFirst->data);
-		TNode<T>* tmp = obj.pFirst;
-		TNode<T>* pNode = pFirst;
-		pHead->pNext = pFirst;
-
-		while (tmp->pNext != obj.pStop) {
-			pNode->pNext = new TNode<T>(tmp->pNext->data);
-			pNode = pNode->pNext;
-			tmp = tmp->pNext;
-		}
-		pLast = pNode;
-		pLast->pNext = pStop;
-		pCurr = pFirst;
-	}
-	*/
 }
 
 

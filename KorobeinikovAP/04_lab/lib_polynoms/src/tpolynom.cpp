@@ -4,7 +4,6 @@
 
 
 
-// почему была ошибка? я инициализировал polynom а он ругалс€ на входе, что нет конструктора по умолчанию, дл€ TArithmeticExpression
 
 TPolynom::TPolynom(): polynom("\n") {
 	monoms = new TRingList<TMonom>();

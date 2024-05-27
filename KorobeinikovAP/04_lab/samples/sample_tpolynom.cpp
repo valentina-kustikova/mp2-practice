@@ -1,25 +1,24 @@
 #include "tpolynom.h"
 #include<string>
-
+#include<Windows.h>
 using namespace std;
 
 
 int main()
 {
-   /* string str_polynom;
-    cout << "Input polynom\n";
-    cin >> str_polynom;*/
+    setlocale(LC_ALL, "Russian");
+   
     try {
-        /*TPolynom pl1(str_polynom);
-
-        cout << "Your polynom: " << pl1.GetString() << endl;*/
+        
 
         string name1;
         string name2;
 
-        cout << "name1 = ";
+        cout << "Введите полиномы, с которыми хотите работать!\n";
+
+        cout << "Первый полином: ";
         cin >> name1;
-        cout << "name2 = ";
+        cout << "Второй полином: ";
         cin >> name2;
 
         TPolynom p1(name1);
@@ -27,10 +26,13 @@ int main()
         cout << "p1 = " << p1.GetString() << endl;
         cout << "p2 = " << p2.GetString() << endl << endl;
 
-        cout << "Operators (Addition, Subtraction, Multiplication):" << endl;
-        cout << "p1 + p2 = " << (p1 + p2).GetString() << endl;
-        cout << "p1 - p2 = " << (p1 - p2).GetString() << endl;
-        cout << "p1 * p2 = " << (p1 * p2).GetString() << endl << endl;
+        cout << "Операции над полиномами:" << endl;
+        cout << "Результат сложения   :" << (p1 + p2).GetString() << endl;
+        cout << "Результат вычитания  :" << (p1 - p2).GetString() << endl;
+        cout << "Результат умножения  :" << (p1 * p2).GetString() << endl << endl;
+        cout << "Взятие производной по x 1 полинома:" << (p1.dif_x()).GetString() << endl;
+        cout << "Взятие производной по y 1 полинома:" << (p1.dif_y()).GetString() << endl;
+        cout << "Взятие производной по z 1 полинома:" << (p1.dif_z()).GetString() << endl;
     }
     catch (string exp) {
         cout << exp << endl;
