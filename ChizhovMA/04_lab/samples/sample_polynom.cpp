@@ -57,8 +57,8 @@ int main()
         cin >> _y;
         cout << "Enter z: ";
         cin >> _z;
-        cout << "p3 result:" << endl;
-        double r = p3.operator()(_x, _y, _z);
+        cout << "p5 result:" << endl;
+        double r = p5(_x, _y, _z);
         cout << r << endl;
 
     }

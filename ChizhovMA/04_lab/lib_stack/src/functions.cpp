@@ -41,6 +41,8 @@ bool ArithmeticExpression::Is_Number(const string& str)
 	for (int i = 0; i< str.length(); i++)
 	{
 		char c = str[i];
+		if (c == '-' && isdigit(str[i + 1]))
+			return true;
 		if (!isdigit(c) && c != '.')
 			return false; // если встречен не цифровой символ, возвращаем false
 	}
@@ -180,7 +182,7 @@ TStack<string> ArithmeticExpression::Postfix_Form(const string& s)
 	{
 		char s1 = str[i];
 		string s(1,s1);
-		if (isdigit(s1) || s == ".")
+		if (isdigit(s1) || s == "." || (s == "-" && isdigit(str[i+1])))
 			if (!varStr.empty())
 				varStr += s;
 			else

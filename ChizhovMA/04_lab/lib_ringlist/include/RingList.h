@@ -76,8 +76,7 @@ void TRingList<T>::InsertFirst(const T& data)
 	TList<T>::InsertFirst(data);
 	pHead->pNext = pFirst;
 	pStop = pHead;
-	pLast->pNext = pStop;
-	
+	pLast->pNext = pStop;	
 }
 template <typename T>
 void TRingList<T>::InsertEnd(const T& data)
