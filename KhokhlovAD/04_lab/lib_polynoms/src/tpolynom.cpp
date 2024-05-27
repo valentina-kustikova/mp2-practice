@@ -111,8 +111,10 @@ void TPolynom::updatename()
 		tmpmonom = monoms.get_pCurr();
 		if (tmpmonom.GetDegree() == 0)
 		{
-			name = to_string(tmpmonom.GetCoeff());
-			return;
+			tmpname += to_string(tmpmonom.GetCoeff());
+			monoms.Next();
+			flag++;
+			continue;
 		}
 		if (tmpmonom.GetCoeff() > 0 && flag != 0)
 			tmpname +=  "+";
@@ -146,7 +148,7 @@ const TPolynom& TPolynom::operator=(const TPolynom& polynom)
 void TPolynom::InsertSort(const TMonom& m)
 {
 	monoms.Reset();
-	while (monoms.get_pCurr() < m && !monoms.IsEnd())
+	while (monoms.get_pCurr().GetDegree() != m.GetDegree()  && !monoms.IsEnd() && monoms.get_pCurr() < m)
 		monoms.Next();
 	if (monoms.get_pCurr().GetDegree() == m.GetDegree())
 	{
@@ -168,6 +170,7 @@ TPolynom TPolynom::operator+(const TPolynom& polynom)
 	}
 	monoms.Reset();
 	updatenull();
+	updatename();
 	return *this;
 }
 
@@ -213,7 +216,7 @@ TPolynom TPolynom::operator*(const TPolynom& polynom)
 		monoms.Next();
 	}
 	monoms = tmplist;
-	updatename();
+	update();
 	return *this;
 }
 
