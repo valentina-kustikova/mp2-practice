@@ -12,11 +12,11 @@ protected:
 public:
 	Table(int max_size_);
 	virtual void Insert(TKey key, const Data<TData>* data_) = 0;
-	virtual TTabRecord<TKey,TData>* Find(TKey key) = 0;
 	virtual void Remove(TKey key) = 0;
-	bool IsFull()const;
+	virtual TTabRecord<TKey,TData>* Find(TKey key) = 0;
+	virtual bool IsFull()const;
 	bool IsEmpty()const;
-	bool IsTabEnded()const;
+	virtual bool IsTabEnded()const;
 	virtual bool next();
 	virtual bool reset();
 	int GetCount()const;

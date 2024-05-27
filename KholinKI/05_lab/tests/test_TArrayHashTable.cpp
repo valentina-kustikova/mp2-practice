@@ -180,3 +180,20 @@ TEST(ArrayHashTable, remove_and_insert_again) {
 	
 	ASSERT_NO_THROW(table.Insert(4, names[0]));
 }
+
+TEST(ArrayHashTable, destructor_work) {
+	TArrayHashTable<int, string>* table = new TArrayHashTable<int,string>();
+
+	Data<string>** names = new Data<string>*[3];
+	names[0] = new Data<string>("Ivan");
+	names[1] = new Data<string>("Nikolay");
+	names[2] = new Data<string>("Aleksandr");
+
+	table->Insert(1, names[0]);
+	table->Insert(10, names[1]);
+
+	table->Insert(4, names[0]);
+	table->Insert(7, names[2]);
+
+	ASSERT_NO_THROW(delete table);
+}

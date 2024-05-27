@@ -15,6 +15,7 @@ protected:
 	size_t index_search;//индекс найденной записи
 public:
 	TArrayHashTable(int max_size_ = 25,size_t hash_step_ = 5);
+	virtual ~TArrayHashTable();
 	void Insert(TKey key, const Data<TData>* data_);
 	TTabRecord<TKey, TData>* Find(TKey key);
 	void Remove(TKey key);
@@ -23,6 +24,16 @@ public:
 	bool next()override;
 	bool reset()override;
 };
+
+template<typename TKey, typename TData>
+TArrayHashTable<TKey, TData>::~TArrayHashTable() {
+	for (int i = 0; i < count; i++) {
+		delete records[i];
+	}
+	delete[] records;
+
+	delete pMark;
+}
 
 template<typename TKey, typename TData>
 TArrayHashTable<TKey, TData>::TArrayHashTable(int max_size_ = 25,size_t hash_step_ = 5): THashTable<TKey,TData>(max_size_) {

@@ -94,3 +94,18 @@ TEST(ArrayScanTable, getters) {
 	ASSERT_TRUE(count == 3 && key == 1 && data->value == "Ivan");
 }
 
+TEST(ArrayScanTable, destructor_work) {
+	TArrayScanTable<int, string>* table = new TArrayScanTable<int,string>(MAX_SIZE);
+
+	Data<string>** names = new Data<string>*[3];
+	names[0] = new Data<string>("Ivan");
+	names[1] = new Data<string>("Nikolay");
+	names[2] = new Data<string>("Aleksandr");
+
+	table->Insert(1, names[0]);
+	table->Insert(2, names[1]);
+	table->Insert(3, names[2]);
+
+	ASSERT_NO_THROW(delete table);
+}
+

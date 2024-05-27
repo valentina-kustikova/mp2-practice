@@ -68,4 +68,6 @@ Data<TData>* TArrayScanTable<TKey, TData>::GetData()const {
 	return records[curr_pos]->data;
 }
 
+
+
 #endif

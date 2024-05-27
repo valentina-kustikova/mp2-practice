@@ -56,14 +56,18 @@ TEST(ArraySortTable, insert_with_exist_key_after_sort) {
 TEST(ArraySortTable, insert_with_no_exist_key_after_sort) {
 	TArrayScanTable<int, string> table(MAX_SIZE);
 
-	Data<string>** names = new Data<string>*[3];
+	Data<string>** names = new Data<string>*[5];
 	names[0] = new Data<string>("Ivan");
 	names[1] = new Data<string>("Nikolay");
 	names[2] = new Data<string>("Aleksandr");
+	names[3] = new Data<string>("Vanya");
+	names[4] = new Data<string>("Kirill");
 
 	table.Insert(1, names[0]);
 	table.Insert(2, names[1]);
 	table.Insert(3, names[2]);
+	table.Insert(5, names[3]);
+	table.Insert(7, names[4]);
 
 
 	TArraySortTable<int, string> sort_table(table);

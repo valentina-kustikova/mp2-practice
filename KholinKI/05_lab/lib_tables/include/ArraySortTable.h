@@ -7,16 +7,7 @@ enum SortMethod { SIMPLE, SELECT, INSERT, BUBBLE,QUICK,MERGE };
 
 template<typename TKey, typename TData> class TArraySortTable : public TArrayScanTable<TKey, TData> {
 protected:
-	SortMethod number;
 	void SortData();
-	void SimpleSort();
-	void SelectSort();
-	void InsertSort();
-	void BubbleSort();
-	void MergeSort(int _first, int _last);//тест
-	void Merge(int _first, int _mid, int _last);
-	void QuickSort(int _first, int _last);
-	void QuickSplit(int& i, int& j, TTabRecord<TKey, TData>* _mid);
 public:
 	TArraySortTable(int max_size_ = 25);
 	TArraySortTable(const TArrayScanTable& ScanTable);
@@ -26,8 +17,16 @@ public:
 
 	void SetSortMethod(SortMethod n = SELECT) { number = n; }
 	SortMethod GetSortMethod()const { return number; }
-	
-	
+protected:
+	SortMethod number; 
+	void SimpleSort();
+	void SelectSort();
+	void InsertSort();
+	void BubbleSort();
+	void MergeSort(int _first, int _last);//тест
+	void Merge(int _first, int _mid, int _last);
+	void QuickSort(int _first, int _last);
+	void QuickSplit(int& i, int& j, TTabRecord<TKey, TData>* _mid);
 };
 
 template<typename TKey,typename TData>
@@ -38,10 +37,13 @@ TArraySortTable<TKey, TData>::TArraySortTable(const TArrayScanTable<TKey,TData>&
 	max_size = ScanTable.GetSize();
 	count = ScanTable.GetCount();
 	curr_pos = ScanTable.GetCurrPos();
-	records = new TTabRecord<TKey, TData>*[max_size];
-	TTabRecord<TKey,TData>** scan_records = ScanTable.GetRecords();
+	records = new TTabRecord<TKey, TData>* [max_size];
+	TTabRecord<TKey, TData>** scan_records = ScanTable.GetRecords();
 	for (int i = 0; i < count; i++) {
 		records[i] = new TTabRecord<TKey, TData>(scan_records[i]->key, scan_records[i]->data);
+	}
+	for (int j = count; j < max_size; j++) {
+		records[j] = nullptr;
 	}
 	SortData();
 }
@@ -54,8 +56,8 @@ void TArraySortTable<TKey,TData>::Insert(TKey Key, const Data<TData>* data_) {
 	TTabRecord<TKey,TData>* search = Find(Key);
 	if (search != nullptr)throw "Key already exist!";
 
-	for (int i = count - 1; i > curr_pos; i--) {
-		records[i + 1] = records[i];
+	for (int i = count; i > curr_pos; i--) {
+		records[i] = records[i-1];
 	}
 	records[curr_pos] = new TTabRecord<TKey, TData>(Key, data_);
 	count++;
@@ -87,7 +89,7 @@ TTabRecord<TKey, TData>* TArraySortTable<TKey, TData>::Find(TKey Key) {
 			i2 = mid - 1;
 		}
 	}
-	curr_pos = i2;
+	curr_pos = i1;
 	return search;
 }
 

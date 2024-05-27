@@ -10,6 +10,7 @@ protected:
 public:
 	TArrayTable(int max_size_=25);
 	TTabRecord<TKey, TData>** GetRecords()const;
+	virtual ~TArrayTable();
 };
 
 template<typename TKey, typename TData>
@@ -23,6 +24,14 @@ TArrayTable<TKey, TData>::TArrayTable(int max_size_ = 25) :Table<TKey,TData>(max
 template<typename TKey, typename TData>
 TTabRecord<TKey, TData>** TArrayTable<TKey, TData>::GetRecords()const {
 	return records;
+}
+
+template<typename TKey, typename TData>
+TArrayTable<TKey, TData>::~TArrayTable() {
+	for (int i = 0; i < count; i++) {
+		delete records[i];
+	}
+	delete[] records;
 }
 
 #endif
