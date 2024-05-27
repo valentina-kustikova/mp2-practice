@@ -27,9 +27,13 @@ public:
 	void SetCoeff(double c_val) { coeff = c_val; }
 	void SetWP(int wp_val) { wrap_degree = wp_val; }
 
+	string CreateMonomString(double coeff, int degree_x, int degree_y, int degree_z);
+
 	friend ostream& operator<<(ostream& ostr, const TMonom& monom);
 	friend istream& operator>>(istream& istr, TMonom& monom);
 };
+
+
 
 
 #endif

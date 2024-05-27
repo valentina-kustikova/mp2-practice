@@ -40,7 +40,6 @@ private:
 	double Read_const(const string& str, int& pos);
 	int Read_degrees(const string& str, int& pos);
 	string CreatePolynomString();
-	string CreateMonomString(double coeff,int degree_x,int degree_y, int degree_z);
 	TPolynom cite_similars(TRingList<TMonom>* list_monoms);
 };
 #endif

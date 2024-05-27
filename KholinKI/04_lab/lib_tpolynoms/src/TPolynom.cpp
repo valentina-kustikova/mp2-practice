@@ -202,7 +202,7 @@ string TPolynom::CreatePolynomString() {
 		degree_y = (mWP % 100) / 10;
 		degree_z = (mWP % 10);
 
-		string monom = CreateMonomString(mCoeff, degree_x, degree_y, degree_z);
+		string monom = m.CreateMonomString(mCoeff, degree_x, degree_y, degree_z);
 		_polynom.append(monom);
 		monoms->next();
 	}
@@ -210,38 +210,7 @@ string TPolynom::CreatePolynomString() {
 	return _polynom;
 }
 
-string TPolynom::CreateMonomString(double coeff, int degree_x,int degree_y,int degree_z) {
-	string monom;
-	monom.append(to_string(coeff));
-	if (degree_x != 0) {
-		if (degree_x == 1) {
-			monom.append("*x");
-		}
-		else {
-			monom.append("*x^");
-			monom.append(to_string(degree_x));
-		}
-	}
-	if (degree_y != 0) {
-		if (degree_y == 1) {
-			monom.append("*y");
-		}
-		else {
-			monom.append("*y^");
-			monom.append(to_string(degree_y));
-		}
-	}
-	if (degree_z != 0) {
-		if (degree_z == 1) {
-			monom.append("*z");
-		}
-		else {
-			monom.append("*z^");
-			monom.append(to_string(degree_z));
-		}
-	}
-	return monom;
-}
+
 
 TPolynom::TPolynom(const TPolynom& obj) {
 	monoms = new TRingList<TMonom>(*obj.monoms);
@@ -504,89 +473,9 @@ TPolynom TPolynom::differentiate_by_z()const {
 }
 
 istream& operator>>(istream& istr, TPolynom& Q) {
-	int number = 1;
-	int i = 0;
-	double coeff = 0;
-	int wrap_degree = 0;
-	int count = 0;
-	int d_x = 0; int d_y = 0; int d_z = 0;
-	TRingList<TMonom>* new_monoms = nullptr;
-	cout << "Welcome to the polynomial builder!" << endl;
-	cout << "To create a polynomial you will need to enter " << endl;
-	cout << "corresponding coefficients of the monomial and degree ";
-	cout << "variables." << endl;
-	cout << endl;
-	cout << "Specify the number of monomials to create the polynomial: ";
-	do {
-		cin >> count;
-	} while (count <= 0);
-	cout << endl;
-	cout << "Let`s get started!" << endl;
-	cout << "|										" << endl;
-	cout << "|										" << endl;
-	cout << "|  Constraints:								    " << endl;
-	cout << "|  1)The coefficient must not be equal to 0.		" << endl;
-	cout << "|  2)The degree of the variable is 0 <= x,y,z <= 9	" << endl;
-	while (i < count) {
-		cout << "|												    " << endl;
-		cout << "|	Set the coefficient of the monomial!			" << endl;
-		do {
-			cout << "|	coeff =	";
-			cin >> coeff;
-			cout << "|										 " << endl;
-			cout << "|												    " << endl;
-			if (coeff == 0) {
-				cout << "|	Wrong coeff! Try again.						    " << endl;
-			}
-		} while (coeff == 0);
-		cout << "|	Determine the degrees of the variables x, y, z!	" << endl;
-		cout << "|										 " << endl;
-		do {
-			cout << "|	Degree x = ";
-			cin >> d_x;
-			cout << "|										" << endl;
-			cout << "|												    " << endl;
-			cout << "|	Degree y = ";
-			cin >> d_y;
-			cout << "|										" << endl;
-			cout << "|												    " << endl;
-			cout << "|	Degree z = ";
-			cin >> d_z;
-			cout << "|										" << endl;
-			cout << "|												    " << endl;
-			if ((d_x < 0 || d_x > 9) || (d_y < 0 || d_y > 9) || (d_z < 0 || d_z > 9)) {
-				cout << "|	Wrong degrees! Try again.					    " << endl;
-				cout << "|												    " << endl;
-			}
-		} while
-			(
-				(d_x < 0 || d_x > 9) || (d_y < 0 || d_y > 9) || (d_z < 0 || d_z > 9)
-				);
-		wrap_degree = d_x * 100 + d_y * 10 + d_z;
-		cout << "|													" << endl;
-		cout << "|	Data monom " << number << ":" << "			" << endl;
-		cout << "|										" << endl;
-		cout << "|	coeff = " << coeff << endl;;
-		cout << "|	wrap_degree = " << wrap_degree << endl;;
-		cout << "|										" << endl;
-		cout << "|										" << endl;
-		cout << "|										" << endl;
-		cout << "===========================================================================" << endl;
-		if (new_monoms == nullptr) {
-			TMonom m(coeff, wrap_degree);
-			new_monoms = new TRingList<TMonom>();
-			new_monoms->insert_first(m);
-		}
-		else {
-			TMonom m(coeff, wrap_degree);
-			new_monoms->insertion_sort(m);
-		}
-		number++;
-		i++;
-	}
-	TPolynom new_polynom(new_monoms);
-	Q = new_polynom;
-	cout << "FLAG END" << endl;
+	string name;
+	istr >> name;
+	Q = TPolynom(name);
 	return istr;
 }
 
@@ -642,7 +531,7 @@ void TPolynom::Add_monom(const TMonom& m) {
 		monoms->insert_first(m);
 	}
 	else {
-		Node<TMonom>* search_monom = monoms->search(m);
+		TNode<TMonom>* search_monom = monoms->search(m);
 		monoms->reset();
 		if (search_monom != nullptr) {
 			if ((search_monom->data.GetCoeff() + m.GetCoeff()) != 0) {

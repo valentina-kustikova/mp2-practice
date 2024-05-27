@@ -5,11 +5,11 @@
 
 int main() {
 	cout << "Creating list..." << endl;
-	TList<int> my_list(new Node<int>(2));
+	TList<int> my_list(new TNode<int>(2));
 	if (my_list.IsEmpty()) {
 		cout << "empty list" << endl;
 	}
-	cout << "Quantity nodes: " << my_list.GetSize() << endl << endl;
+	cout << "Quantity TNodes: " << my_list.GetSize() << endl << endl;
 
 	cout << "Let's add some data to the list: " << endl;
 	cout << "For this, let's use all varieties of inserts" << endl;
@@ -30,13 +30,13 @@ int main() {
 
 	cout << "Result inserts" << endl;
 	cout << my_list;
-	cout << "Quantity nodes: " << my_list.GetSize() << endl;
+	cout << "Quantity TNodes: " << my_list.GetSize() << endl;
 	cout << endl;
 
 
 	cout << "Now let's do a data search. For example, find 3" << endl;
 	cout << "Searching 3..." << endl;
-	Node<int>* found = my_list.search(3);
+	TNode<int>* found = my_list.search(3);
 	my_list.reset();
 	if (found != nullptr) {
 		cout << found->data << " exist in list!" << endl << endl;
@@ -56,7 +56,7 @@ int main() {
 		cout << "Data not exist!" << endl << endl;
 	}
 
-	cout << "Let's delete some list node and try search. Assume 3" << endl;
+	cout << "Let's delete some list TNode and try search. Assume 3" << endl;
 	my_list.remove(3);
 	cout << "Searching 3..." << endl;
 	found = my_list.search(3);
@@ -70,7 +70,7 @@ int main() {
 
 	cout << "Result removing" << endl << endl;
 	cout << my_list;
-	cout << "Quantity nodes: " << my_list.GetSize() << endl << endl;
+	cout << "Quantity TNodes: " << my_list.GetSize() << endl << endl;
 
 	cout << "Let's do some more-just inserts..." << endl;
 	my_list.insert_last(6);
@@ -84,7 +84,7 @@ int main() {
 	int choice = 0;
 	cout << "Welcome to test system navigation list!" << endl;
 	do {
-		cout << "1. Get current data" << "		" << "2. Next node " << endl;
+		cout << "1. Get current data" << "		" << "2. Next TNode " << endl;
 		cout << "3. Return start	" << "		" << "4. Exit " << endl;
 		cout << endl << endl << endl;
 		do {
@@ -93,7 +93,7 @@ int main() {
 		switch (choice) {
 		case 1:{
 			cout << "|										" << endl;
-			cout << "|	Current node:" << endl;
+			cout << "|	Current TNode:" << endl;
 			cout << "|										" << endl;
 			cout << "|	data: " << my_list.getCurrent()->data << "			" << endl;
 			cout << "|										" << endl;

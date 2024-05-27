@@ -53,6 +53,41 @@ bool TMonom::operator==(const TMonom& monom)const {
 }
 
 
+// TMonom
+string TMonom::CreateMonomString(double coeff, int degree_x, int degree_y, int degree_z) {
+	string monom;
+	monom.append(to_string(coeff));
+	if (degree_x != 0) {
+		if (degree_x == 1) {
+			monom.append("*x");
+		}
+		else {
+			monom.append("*x^");
+			monom.append(to_string(degree_x));
+		}
+	}
+	if (degree_y != 0) {
+		if (degree_y == 1) {
+			monom.append("*y");
+		}
+		else {
+			monom.append("*y^");
+			monom.append(to_string(degree_y));
+		}
+	}
+	if (degree_z != 0) {
+		if (degree_z == 1) {
+			monom.append("*z");
+		}
+		else {
+			monom.append("*z^");
+			monom.append(to_string(degree_z));
+		}
+	}
+	return monom;
+}
+
+
 TMonom TMonom::operator*(const TMonom& monom) {
 	int d_x_t = wrap_degree / 100;
 	int d_y_t = (wrap_degree % 100) / 10;

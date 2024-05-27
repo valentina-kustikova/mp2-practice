@@ -6,10 +6,10 @@
 template <typename T>
 class TRingList : public TList<T> {
 protected:
-	Node<T>* pHead;
+	TNode<T>* pHead;
 public:
 	TRingList();
-	TRingList(Node<T>* pFirst_);
+	TRingList(TNode<T>* pFirst_);
 	TRingList(const TRingList<T>& rList);
 	virtual ~TRingList();
 
@@ -20,23 +20,23 @@ public:
 
 template<typename T>		
 TRingList<T>::TRingList(){ 
-	pHead = new Node<T>();
+	pHead = new TNode<T>();
 	pHead->pNext = pHead;
 	pStop = pHead;
 }
 
 template <typename T>
-TRingList<T>::TRingList(Node<T>* pFirst_):TRingList<T>(){
+TRingList<T>::TRingList(TNode<T>* pFirst_):TRingList<T>(){
 	if (pFirst_ == nullptr)
 	{
 		return;
 	}
-	pFirst = new Node<T>(pFirst_->data);
+	pFirst = new TNode<T>(pFirst_->data);
 	pHead->pNext = pFirst;
-	Node<T>* tmp = pFirst_->pNext;
+	TNode<T>* tmp = pFirst_->pNext;
 	pCurr = pFirst;
 	while (tmp != nullptr) {
-		pCurr->pNext = new Node<T>(tmp->data);
+		pCurr->pNext = new TNode<T>(tmp->data);
 		pCurr = pCurr->pNext;
 		tmp = tmp->pNext;
 	}
@@ -52,13 +52,13 @@ TRingList<T>::TRingList(const TRingList<T>& rList){
 	if (rList.pFirst == nullptr) {
 		return;
 	}
-	pHead = new Node<T>();
-	pFirst = new Node<T>(rList.pFirst->data);
+	pHead = new TNode<T>();
+	pFirst = new TNode<T>(rList.pFirst->data);
 	pHead->pNext = pFirst;
-	Node<T>* tmp = rList.pFirst->pNext;
+	TNode<T>* tmp = rList.pFirst->pNext;
 	pCurr = pFirst;
 	while (tmp != rList.pStop) {
-		pCurr->pNext = new Node<T>(tmp->data);
+		pCurr->pNext = new TNode<T>(tmp->data);
 		pCurr = pCurr->pNext;
 		tmp = tmp->pNext;
 	}
@@ -77,7 +77,7 @@ TRingList<T>::~TRingList() {
 
 template<typename T>
 void TRingList<T>::insert_first(const T& data_) {
-	Node<T>* tmp = new Node<T>(data_);
+	TNode<T>* tmp = new TNode<T>(data_);
 	tmp->pNext = pFirst;
 	if (pFirst == nullptr) {
 		pFirst = tmp;
@@ -96,7 +96,7 @@ void TRingList<T>::insert_first(const T& data_) {
 
 template<typename T>
 void TRingList<T>::remove(const T& data_) {
-	Node<T>* tmp = search(data_);
+	TNode<T>* tmp = search(data_);
 	if (tmp == pFirst) {
 		pFirst = pFirst->pNext;
 		pHead->pNext = pFirst;
@@ -120,7 +120,7 @@ void TRingList<T>::clear() {
 	if (IsEmpty()) {
 		return;
 	}
-	Node<T>* tmp = pFirst;
+	TNode<T>* tmp = pFirst;
 	while (tmp != pStop) {
 		pFirst = pFirst->pNext;
 		pHead->pNext = pFirst;
