@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 #include "tableslib.h"
 #include "tpolynom.h"
 
@@ -8,331 +9,430 @@ using namespace std;
 #define EXIT   0
 #define INSERT 1
 #define DELETE 2
-#define FIND   3
+#define OPERATIONS 3
 #define PRINT  4
-#define CHOOSE_TABLES 5
+#define SELECT_TABLES 5
+
+#define SUM 1
+#define SUB 2
+#define MUL 3
+#define DIFF_X 4
+#define DIFF_Y 5
+#define DIFF_Z 6
+
+#define SCAN 1
+#define SORTED 2
+#define ARRAY_HASH 3
+
+ScanTable	  <string, TPolynom> scan_table		 (DEFAULT_SIZE);
+SortedTable	  <string, TPolynom> sorted_table	 (DEFAULT_SIZE);
+ArrayHashTable<string, TPolynom> array_hash_table(DEFAULT_SIZE, DEFAULT_HASHSTEP);
+
+TabRecord<string, TPolynom>* tr_scan	   = nullptr;
+TabRecord<string, TPolynom>* tr_sorted	   = nullptr;
+TabRecord<string, TPolynom>* tr_array_hash = nullptr;
+
+bool flag_scan		= true;
+bool flag_sorted	= true;
+bool flag_array_hash= true;
+
+
+void menu();
+void insert();
+void remove();
+void operations();
+void print_tables();
+void select_tables();
+void print_selected_tables();
 
 
 int main() {
-	ScanTable	  <string, TPolynom> scan_table  (DEFAULT_SIZE);
-	SortedTable	  <string, TPolynom> sorted_table(DEFAULT_SIZE);
-	ArrayHashTable<string, TPolynom> hash_table  (DEFAULT_SIZE, DEFAULT_HASHSTEP);
+	
+	try {
 
-	int flag_scan = 1;
-	int flag_sort = 1;
-	int flag_hash = 1;
+		menu();
 
-	int ans = 0;
-
-	do {
-
-	} while (ans >= INSERT && ans <= CHOOSE_TABLES);
-
-	system("cls");
-	cout << "TABLES\n" << endl;
-
-	cout << "1. Insert record" << endl;
-	cout << "2. Delete record" << endl;
-	cout << "3. Find record" << endl;
-	cout << "4. Print table\n" << endl;
-
-	cout << "";
-
-
-
-
+	}
+	catch (string exp) {
+		cout << exp << endl;
+		return -1;
+	}
 	return 0;
 }
 
 
+void menu() {
+	int ans;
 
+	while (1) {
+		system("cls");
+		cout << "PATH:menu\\" << endl;
+		print_selected_tables();
+		cout << endl;
 
-/*
-#include <iostream>
+		cout << "1. Insert polynom" << endl;
+		cout << "2. Remove polynom" << endl;
+		cout << "3. Operations" << endl;
+		cout << "4. Print tables" << endl;
+		cout << "5. Select tables" << endl;
+		cout << "0. EXIT" << endl << endl;
+			
 
-using namespace std;
+		cin >> ans;
 
+		if (ans == INSERT) {
+			insert();
+		}
 
-#include <unordered_map>
-#include "tpolynom.h"
-#include "tableslib.h"
+		else if (ans == DELETE) {
+			remove();
+		}
 
-#define INSERT 1
-#define DELETE 2
-#define FIND 3
-#define PRINT 4
+		else if (ans == OPERATIONS) {
+			operations();
+		}
 
-ScanTable<TPolynom, string> scan_table(101);
-SortedTable<TPolynom, string> sorted_table(101);
-HashTable<TPolynom, string> hash_table(101);
+		else if (ans == PRINT) {
+			print_tables();
+		}
 
+		else if (ans == SELECT_TABLES) {
+			select_tables();
+		}
 
-void action(int table, int tag)
-{
-	TPolynom polynom;
-	string polynom_string;
-	if (tag != PRINT)
-	{
-		std::cout << "input a polynom:\n";
-		cin >> polynom_string;
-		cout << "\n";
-		polynom = TPolynom(polynom_string);
-	}
-
-	if (tag == INSERT)
-	{
-		if (table == 1 || table == 4)
-		{
-			try
-			{
-				scan_table.insert(polynom, polynom_string);
-				cout << "OK\n";
-			}
-			catch (string ex)
-			{
-				throw string("insert scan table\n");
-			}
-		}
-		if (table == 2 || table == 4)
-		{
-			try
-			{
-				sorted_table.insert(polynom, polynom_string);
-				cout << "OK\n";
-			}
-			catch (string ex)
-			{
-				throw string("insert sorted table\n");
-			}
-		}
-		if (table == 3 || table == 4)
-		{
-			try
-			{
-				hash_table.insert(polynom, polynom_string);
-				cout << "OK\n";
-			}
-			catch (string ex)
-			{
-				throw string("insert hash table\n");
-			}
-		}
-	}
-	else if (tag == FIND)
-	{
-		if (table == 1 || table == 4)
-		{
-			try
-			{
-				Record<TPolynom, string>* t = scan_table.find(polynom);
-				if (!t)
-				{
-					cout << "Polynom wasn`t found\n";
-				}
-				else cout << "Polynom was found\n";
-			}
-			catch (string ex)
-			{
-				throw string("find scan table\n");
-			}
-		}
-		if (table == 2 || table == 4)
-		{
-			try
-			{
-				Record<TPolynom, string>* t = sorted_table.find(polynom);
-				if (!t)
-				{
-					cout << "Polynom wasn`t found\n";
-				}
-				else cout << "Polynom was found";
-			}
-			catch (string ex)
-			{
-				throw string("find sorted table\n");
-			}
-		}
-		if (table == 3 || table == 4)
-		{
-			try
-			{
-				Record<TPolynom, string>* t = hash_table.find(polynom);
-				if (!t)
-				{
-					cout << "Polynom wasn`t found\n";
-				}
-				else cout << "Polynom was found";
-			}
-			catch (string ex)
-			{
-				throw string("find hash table\n");
-			}
-		}
-	}
-	else if (tag == DELETE)
-	{
-		if (table == 1 || table == 4)
-		{
-			try
-			{
-				scan_table.remove(polynom);
-				cout << "OK\n";
-			}
-			catch (string ex)
-			{
-				throw string("remove scan table\n");
-			}
-		}
-		if (table == 2 || table == 4)
-		{
-			try
-			{
-				sorted_table.remove(polynom);
-				cout << "OK\n";
-			}
-			catch (string ex)
-			{
-				throw string("remove sorted table\n");
-			}
-		}
-		if (table == 3 || table == 4)
-		{
-			try
-			{
-				hash_table.remove(polynom);
-				cout << "OK\n";
-			}
-			catch (string ex)
-			{
-				throw string("remove hash table\n");
-			}
-		}
-	}
-	else if (tag == PRINT)
-	{
-		if (table == 1 || table == 4)
-		{
-			try
-			{
-				cout << scan_table << endl;
-				cout << "OK\n";
-			}
-			catch (string ex)
-			{
-				throw string("cout scan table\n");
-			}
-		}
-		if (table == 2 || table == 4)
-		{
-			try
-			{
-				cout << sorted_table << endl;
-				cout << "OK\n";
-			}
-			catch (string ex)
-			{
-				throw string("cout sorted table\n");
-			}
-		}
-		if (table == 3 || table == 4)
-		{
-			try
-			{
-				cout << hash_table << endl;
-				cout << "OK\n";
-			}
-			catch (string ex)
-			{
-				throw string("cout hash table\n");
-			}
-		}
-	}
-}
-
-void kind(int table_tag)
-{
-	int teg = 0;
-	std::cout << "1.Insert\n2.Remove\n3.Find\n4.Print\n";
-	int option; cin >> option;
-	if (option == 1)
-	{
-		teg = INSERT;
-	}
-	else if (option == 2)
-	{
-		teg = DELETE;
-	}
-	else if (option == 3)
-	{
-		teg = FIND;
-	}
-	else if (option == 4)
-	{
-		teg = PRINT;
-	}
-	else if (option == 0)
-	{
-		return;
-	}
-	else
-	{
-		throw string("wrong tag\n");
-	}
-
-	try
-	{
-		action(table_tag, teg);
-	}
-	catch (string ex)
-	{
-		throw ex;
-	}
-}
-
-void user()
-{
-	while (1)
-	{
-		std::cout << "0.Kill the programm\n1.scan table\n2.sorted table\n3.hash table\n4.All tables\n";
-		int option; std::cin >> option;
-		if (option == 1)
-		{
-			kind(1);
-		}
-		else if (option == 2)
-		{
-			kind(2);
-		}
-		else if (option == 3)
-		{
-			kind(3);
-		}
-		else if (option == 4)
-		{
-			kind(4);
-		}
-		else if (option == 0)
-		{
+		else if (ans == EXIT) {
 			return;
 		}
-		else
-		{
-			std::cout << "Wrong \n";
-		}
 	}
 }
 
+void insert() {
+	system("cls");
+	cout << "PATH:menu\\insertion\\" << endl;
 
-int main()
-{
-	try
-	{
-		user();
-		return 0;
+	if (!(flag_scan || flag_sorted || flag_array_hash)) {
+		cout << "Tables not selected." << endl;
+		system("pause");
+		return;
 	}
-	catch (string ex)
-	{
-		cout << ex << endl;
-		return -1;
+	print_selected_tables();
+	cout << endl;
+
+	cout << "Enter the polynomial you want to add to the tables." << endl << endl;
+	
+
+	try {
+		string name;
+		cin.ignore(numeric_limits<streamsize>::max(), '\n');
+		getline(cin, name);
+
+		TPolynom new_polynom(name);
+		string new_polynom_name = new_polynom.get_string();
+
+		if (flag_scan) {
+			try {
+				scan_table.insert(new_polynom_name, &new_polynom);
+				cout << "\nScanTable.insert(): OK" << endl;
+			}
+			catch (string exp) {
+				cout << "\nScanTable.insert(): " << exp << endl;
+			}
+		}
+
+		if (flag_sorted) {
+			try {
+				sorted_table.insert(new_polynom_name, &new_polynom);
+				cout << "\nSortedTable.insert(): OK" << endl;
+			}
+			catch (string exp) {
+				cout << "\nSortedTable.insert(): " << exp << endl;
+			}
+		}
+
+		if (flag_array_hash) {
+			try {
+				array_hash_table.insert(new_polynom_name, &new_polynom);
+				cout << "\nArrayHashTable.insert(): OK" << endl;
+			}
+			catch (string exp) {
+				cout << "\nArrayHashTable.insert(): " << exp << endl;
+			}
+		}
 	}
-}*/
+	catch (string exp) {
+		cout << exp << endl;
+
+		system("pause");
+	}
+	
+	system("pause");
+}
+
+void remove() {
+	system("cls");
+	cout << "PATH:menu\\removing\\" << endl;
+
+	if (!(flag_scan || flag_sorted || flag_array_hash)) {
+		cout << "Tables not selected." << endl;
+		system("pause");
+		return;
+	}
+	print_selected_tables();
+	cout << endl;
+
+	cout << "Enter the polynomial you want to remove from the table." << endl << endl;
+	
+
+	try {
+		string name;
+		cin.ignore(numeric_limits<streamsize>::max(), '\n');
+		getline(cin, name);
+
+		TPolynom polynom(name);
+		string polynom_name = polynom.get_string();
+
+		if (flag_scan) {
+			try {
+				scan_table.remove(polynom_name);
+				cout << "\nScanTable.remove(): OK" << endl;
+			}
+			catch (string exp) {
+				cout << "\nScanTable.remove(): " << exp << endl;
+			}
+		}
+
+		if (flag_sorted) {
+			try {
+				sorted_table.remove(polynom_name);
+				cout << "\nSortedTable.remove(): OK" << endl;
+			}
+			catch (string exp) {
+				cout << "\nSortedTable.remove(): " << exp << endl;
+			}
+		}
+
+		if (flag_array_hash) {
+			try {
+				array_hash_table.remove(polynom_name);
+				cout << "\nArrayHashTable.remove(): OK" << endl;
+			}
+			catch (string exp) {
+				cout << "\nArrayHashTable.remove(): " << exp << endl;
+			}
+		}
+	}
+	catch (string exp) {
+		cout << exp << endl;
+
+		system("pause");
+		return;
+	}
+
+	system("pause");
+}
+
+void operations() {
+	system("cls");
+	cout << "PATH:menu\\operations\\" << endl;
+
+	cout << "Select table." << endl << endl;
+	cout << "0. none" << endl;
+	cout << "1. ScanTable" << endl;
+	cout << "2. SortedTable" << endl;
+	cout << "3. ArrayHashTable" << endl << endl;
+
+	int tab = 0;
+	cin >> tab;
+	if (tab < SCAN || tab > ARRAY_HASH) return;
+
+	system("cls");
+	cout << "PATH:menu\\operations\\" << endl;
+	cout << "Selected table: ";
+	if (tab == SCAN) cout << "ScanTable" << endl;
+	if (tab == SORTED) cout << "SortedTable" << endl;
+	if (tab == ARRAY_HASH) cout << "ArrayHashTable" << endl << endl;
+
+	cout << "Select an operation to apply it on table polynomials." << endl << endl;
+	cout << "0. none" << endl;
+	cout << "1. +" << endl;
+	cout << "2. -" << endl;
+	cout << "3. *" << endl;
+	cout << "4. diff_x" << endl;
+	cout << "5. diff_y" << endl;
+	cout << "6. diff_z" << endl << endl;
+
+	int op = 0;
+	cin >> op;
+	if (op < SUM || op > DIFF_Z) return;
+
+	system("cls");
+	cout << "PATH:menu\\operations\\" << endl;
+	TabRecord<string, TPolynom> *tab_polynom1 = nullptr, *tab_polynom2 = nullptr;
+
+	try {
+		cout << "Enter the polynom to find it in the table: " << endl;
+		
+		string name1;
+		cin.ignore(numeric_limits<streamsize>::max(), '\n');
+		getline(cin, name1);
+		TPolynom polynom1(name1);
+		
+		if (tab == SCAN) {
+			tab_polynom1 = scan_table.find(polynom1.get_string());
+		}
+		if (tab == SORTED) {
+			tab_polynom1 = sorted_table.find(polynom1.get_string());
+		}
+		if (tab == ARRAY_HASH) {
+			tab_polynom1 = array_hash_table.find(polynom1.get_string());
+		}
+		if (tab_polynom1 == nullptr) {
+			cout << "ERROR: polynom not found" << endl;
+			system("pause");
+			return;
+		}
+		cout << endl;
+
+		if (op >= SUM && op <= MUL) {
+			cout << "Enter the second polynom to find it in the table: " << endl;
+			
+			string name2;
+			getline(cin, name2);
+			TPolynom polynom2(name2);
+			
+			if (tab == SCAN) {
+				tab_polynom2 = scan_table.find(polynom2.get_string());
+			}
+			if (tab == SORTED) {
+				tab_polynom2 = sorted_table.find(polynom2.get_string());
+			}
+			if (tab == ARRAY_HASH) {
+				tab_polynom2 = array_hash_table.find(polynom2.get_string());
+			}
+			if (tab_polynom2 == nullptr) {
+				cout << "ERROR: second polynom not found" << endl;
+				system("pause");
+				return;
+			}
+		}
+		cout << endl;
+
+		system("cls");
+		cout << "PATH:menu\\operations\\" << endl;
+		TPolynom result("0");
+		if (op == SUM) {
+			result = *tab_polynom1->data + *tab_polynom2->data;
+			cout << "polynom1 + polynom2 = " << result << endl << endl;
+		}
+
+		else if (op == SUB) {
+			result = *tab_polynom1->data - *tab_polynom2->data;
+			cout << "polynom1 - polynom2 = " << result << endl << endl;
+		}
+
+		else if (op == MUL) {
+			result = *tab_polynom1->data * *tab_polynom2->data;
+			cout << "polynom1 * polynom2 = " << result << endl << endl;
+		}
+
+		else if (op == DIFF_X) {
+			result = tab_polynom1->data->diff_x();
+			cout << "polynom.diff_x() = " << result << endl << endl;
+		}
+
+		else if (op == DIFF_Y) {
+			result = tab_polynom1->data->diff_y();
+			cout << "polynom.diff_x() = " << result << endl << endl;
+		}
+
+		else if (op == DIFF_Z) {
+			result = tab_polynom1->data->diff_z();
+			cout << "polynom.diff_x() = " << result << endl << endl;
+		}
+
+		cout << "Add result to this table? 1/0" << endl;
+		int ans = 0;
+		cin >> ans;
+		if (ans) {
+			try {
+				if (tab == SCAN) {
+					scan_table.insert(result.get_string(), &result);
+				}
+				if (tab == SORTED) {
+					sorted_table.insert(result.get_string(), &result);
+				}
+				if (tab == ARRAY_HASH) {
+					array_hash_table.insert(result.get_string(), &result);
+				}
+			}
+			catch (string exp) {
+				cout << exp << endl;
+			}
+		}
+		system("pause");
+	}
+	catch (string exp) {
+		cout << exp << endl;
+		system("pause");
+		return;
+	}
+}
+
+void print_tables() {
+	system("cls");
+	cout << "PATH:menu\\print\\" << endl;
+
+	if (!(flag_scan || flag_sorted || flag_array_hash)) {
+		cout << "Tables not selected." << endl;
+		system("pause");
+		return;
+	}
+	print_selected_tables();
+	cout << endl;
+
+	if (flag_scan) {
+		cout << "ScanTable:" << endl;
+		cout << scan_table << endl;
+	}
+	if (flag_sorted) {
+		cout << "SortedTable:" << endl;
+		cout << sorted_table << endl;
+	}
+	if (flag_array_hash) {
+		cout << "ArrayHashTable:" << endl;
+		cout << array_hash_table << endl;
+	}
+
+	system("pause");
+}
+
+void select_tables() {
+	int st = 0;
+
+	do {
+		system("cls");
+		cout << "# table_name     is_selected" << endl;
+		cout << "1 ScanTable      " << flag_scan << endl;
+		cout << "2 SortedTable    " << flag_sorted << endl;
+		cout << "3 ArrayHashTable " << flag_array_hash << endl << endl;
+
+		cout << "Select # of table to enable/disable." << endl;
+		cout << "Press 0 to go back to previous menu." << endl << endl;
+
+		cin >> st;
+
+		if (st == 0) return;
+		else if (st == 1) flag_scan = !flag_scan;
+		else if (st == 2) flag_sorted = !flag_sorted;
+		else if (st == 3) flag_array_hash = !flag_array_hash;
+
+	} while (st != 0);
+}
+
+void print_selected_tables() {
+	cout << "SELECTED TABLES: ";
+	if (flag_scan) cout << "ScanTable ";
+	if (flag_sorted) cout << "SortedTable ";
+	if (flag_array_hash) cout << "ArrayHashTable ";
+	cout << endl;
+}

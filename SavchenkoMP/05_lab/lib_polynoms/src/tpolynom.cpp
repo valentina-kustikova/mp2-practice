@@ -495,36 +495,36 @@ double TPolynom::operator()(double x, double y, double z) {
 }
 
 
-TPolynom TPolynom::dif_x() {
+TPolynom TPolynom::diff_x() {
 	TPolynom res;
 
 	reset();
 	while (!ended()) {
-		res.add_monom(get_current_monom().dif_x());
+		res.add_monom(get_current_monom().diff_x());
 		next();
 	}
 	reset();
 
 	return res;
 }
-TPolynom TPolynom::dif_y() {
+TPolynom TPolynom::diff_y() {
 	TPolynom res;
 
 	reset();
 	while (!ended()) {
-		res.add_monom(get_current_monom().dif_y());
+		res.add_monom(get_current_monom().diff_y());
 		next();
 	}
 	reset();
 
 	return res;
 }
-TPolynom TPolynom::dif_z() {
+TPolynom TPolynom::diff_z() {
 	TPolynom res;
 
 	reset();
 	while (!ended()) {
-		res.add_monom(get_current_monom().dif_z());
+		res.add_monom(get_current_monom().diff_z());
 		next();
 	}
 	reset();

@@ -32,6 +32,16 @@ public:
 
 	bool reset() noexcept;
 	bool next() noexcept;
+
+	friend std::ostream& operator<<(std::ostream& out, const ArrayHashTable& table) {
+		out << "Table size: " << table.count << endl;
+		for (int i = 0; i < table.max_size; i++) {
+			if (table.recs[i] && table.recs[i] != table.pMark) {
+				out << "(" << table.recs[i]->key << ", " << *table.recs[i]->data << "); " << endl;
+			}
+		}
+		return out;
+	}
 };
 
 
@@ -142,11 +152,14 @@ TabRecord<TKey, TData>* ArrayHashTable<TKey, TData>::operator[](const TKey& _key
 template <class TKey, class TData>
 void ArrayHashTable<TKey, TData>::insert(const TKey& _key, TData* _data) {
 	if (full()) {
-		std::string exp = "Error: table is full.";
+		std::string exp = "ERROR: table is full.";
 		throw exp;
 	}
+	
+	TabRecord<TKey, TData>* rec = find(_key);
+	if (rec != nullptr && rec->key == _key) return;
 
-	if (find(_key) != nullptr && free_pos_ind != -1) {
+	if (rec != nullptr && free_pos_ind != -1) {
 		curr_pos = free_pos_ind;
 	}
 	recs[curr_pos] = new TabRecord<TKey, TData>(_key, _data);
@@ -158,7 +171,7 @@ void ArrayHashTable<TKey, TData>::remove(const TKey& _key) {
 	TabRecord<TKey, TData>* tmp = find(_key);
 
 	if (tmp == nullptr) {
-		std::string exp = "Error: key not found";
+		std::string exp = "ERROR: key not found";
 		throw exp;
 	}
 

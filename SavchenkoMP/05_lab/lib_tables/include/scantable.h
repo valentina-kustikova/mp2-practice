@@ -21,6 +21,16 @@ public:
 	
 	virtual TabRecord<TKey, TData>* find(const TKey& key);
 	TabRecord<TKey, TData>* operator[](const TKey& _key);
+
+	friend std::ostream& operator<<(std::ostream& out, const ScanTable& table) {
+		out << "Table size: " << table.count << endl;
+		for (int i = 0; i < table.count; i++) {
+			if (table.recs[i]) {
+				out << "(" << table.recs[i]->key << ", " << *table.recs[i]->data << "); " << endl;
+			}
+		}
+		return out;
+	}
 };
 
 

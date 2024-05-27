@@ -38,9 +38,9 @@ public:
 	const TMonom& operator=(const TMonom& data);
 	TMonom operator*(const TMonom& monom) const;
 
-	TMonom dif_x() const;
-	TMonom dif_y() const;
-	TMonom dif_z() const;
+	TMonom diff_x() const;
+	TMonom diff_y() const;
+	TMonom diff_z() const;
 
 	std::string get_string() const;
 	friend std::ostream& operator<<(std::ostream& out, const TMonom& monom);

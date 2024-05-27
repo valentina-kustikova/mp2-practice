@@ -23,6 +23,16 @@ public:
 	TabRecord<TKey, TData>* operator[](const TKey& _key);
 	void insert(const TKey& _key, TData* _data);
 	void remove(const TKey& _key);
+
+	friend std::ostream& operator<<(std::ostream& out, const SortedTable& table) {
+		out << "Table size: " << table.count << endl;
+		for (int i = 0; i < table.count; i++) {
+			if (table.recs[i]) {
+				out << "(" << table.recs[i]->key << ", " << *table.recs[i]->data << "); " << endl;
+			}
+		}
+		return out;
+	}
 };
 
 
@@ -131,12 +141,13 @@ void SortedTable<TKey, TData>::insert(const TKey& _key, TData* _data) {
 		throw exp;
 	}
 
-	find(_key);
-	for (int i = count - 1; i >= curr_pos; i--) {
-		recs[i + 1] = recs[i];
+	if (find(_key) == nullptr) {
+		for (int i = count - 1; i >= curr_pos; i--) {
+			recs[i + 1] = recs[i];
+		}
+		recs[curr_pos + 1] = new TabRecord<TKey, TData>(_key, _data);
+		count++;
 	}
-	recs[curr_pos + 1] = new TabRecord<TKey, TData>(_key, _data);
-	count++;
 }
 
 template <class TKey, class TData>
