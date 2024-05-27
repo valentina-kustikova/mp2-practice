@@ -4,8 +4,6 @@
 #include <iostream>
 #include "table.h"
 
-//using namespace std;
-
 template <class TKey, class TData>
 class ScanTable : public Table<TKey, TData> {
 protected:

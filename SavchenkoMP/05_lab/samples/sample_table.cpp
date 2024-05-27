@@ -129,33 +129,35 @@ void insert() {
 		TPolynom new_polynom(name);
 		string new_polynom_name = new_polynom.get_string();
 
+		cout << endl;
+
 		if (flag_scan) {
 			try {
 				scan_table.insert(new_polynom_name, &new_polynom);
-				cout << "\nScanTable.insert(): OK" << endl;
+				cout << "ScanTable.insert(): OK" << endl;
 			}
 			catch (string exp) {
-				cout << "\nScanTable.insert(): " << exp << endl;
+				cout << "ScanTable.insert(): " << exp << endl;
 			}
 		}
 
 		if (flag_sorted) {
 			try {
 				sorted_table.insert(new_polynom_name, &new_polynom);
-				cout << "\nSortedTable.insert(): OK" << endl;
+				cout << "SortedTable.insert(): OK" << endl;
 			}
 			catch (string exp) {
-				cout << "\nSortedTable.insert(): " << exp << endl;
+				cout << "SortedTable.insert(): " << exp << endl;
 			}
 		}
 
 		if (flag_array_hash) {
 			try {
 				array_hash_table.insert(new_polynom_name, &new_polynom);
-				cout << "\nArrayHashTable.insert(): OK" << endl;
+				cout << "ArrayHashTable.insert(): OK" << endl;
 			}
 			catch (string exp) {
-				cout << "\nArrayHashTable.insert(): " << exp << endl;
+				cout << "ArrayHashTable.insert(): " << exp << endl;
 			}
 		}
 	}
@@ -191,33 +193,35 @@ void remove() {
 		TPolynom polynom(name);
 		string polynom_name = polynom.get_string();
 
+		cout << endl;
+
 		if (flag_scan) {
 			try {
 				scan_table.remove(polynom_name);
-				cout << "\nScanTable.remove(): OK" << endl;
+				cout << "ScanTable.remove(): OK" << endl;
 			}
 			catch (string exp) {
-				cout << "\nScanTable.remove(): " << exp << endl;
+				cout << "ScanTable.remove(): " << exp << endl;
 			}
 		}
 
 		if (flag_sorted) {
 			try {
 				sorted_table.remove(polynom_name);
-				cout << "\nSortedTable.remove(): OK" << endl;
+				cout << "SortedTable.remove(): OK" << endl;
 			}
 			catch (string exp) {
-				cout << "\nSortedTable.remove(): " << exp << endl;
+				cout << "SortedTable.remove(): " << exp << endl;
 			}
 		}
 
 		if (flag_array_hash) {
 			try {
 				array_hash_table.remove(polynom_name);
-				cout << "\nArrayHashTable.remove(): OK" << endl;
+				cout << "ArrayHashTable.remove(): OK" << endl;
 			}
 			catch (string exp) {
-				cout << "\nArrayHashTable.remove(): " << exp << endl;
+				cout << "ArrayHashTable.remove(): " << exp << endl;
 			}
 		}
 	}

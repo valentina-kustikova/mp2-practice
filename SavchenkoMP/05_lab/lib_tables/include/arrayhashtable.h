@@ -4,7 +4,6 @@
 #include <iostream>
 #include <functional>
 #include "hashtable.h"
-//#include "xxh3.h"
 
 #define DEFAULT_HASHSTEP 10
 
@@ -47,7 +46,6 @@ public:
 
 template <class TKey, class TData>
 size_t ArrayHashTable<TKey, TData>::hash_func(const TKey& key) {
-	//return (XXH3_64bits(key.c_str(), key.size())) % max_size;
 	std::hash<TKey> hasher;
 	return hasher(key) % max_size;
 }

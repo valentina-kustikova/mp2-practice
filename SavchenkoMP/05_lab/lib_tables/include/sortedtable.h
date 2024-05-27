@@ -2,7 +2,6 @@
 #define SORTEDTABLE_H
 
 #include "scantable.h"
-//#include "sortings.h"
 
 template <class TKey, class TData>
 class SortedTable : public ScanTable<TKey, TData> {
@@ -10,9 +9,6 @@ private:
 	void sort();
 	int partition(int low, int high);
 	void quick_sort(int low, int high);
-
-	//void swap(TabRecord<TKey, TData>* a, TabRecord<TKey, TData>* b);
-	//bool is_sorted();
 
 public:
 	SortedTable(int _max_size = DEFAULT_SIZE);
@@ -65,27 +61,6 @@ void SortedTable<TKey, TData>::quick_sort(int low, int high) {
 		quick_sort(pi + 1, high);
 	}
 }
-
-
-//template <class TKey, class TData>
-//void SortedTable<TKey, TData>::swap(TabRecord<TKey, TData>* a, TabRecord<TKey, TData>* b) {
-//	srt::swap(a, b);
-//	//TabRecord<TKey, TData> tmp = a;
-//	//a = b;
-//	//b = tmp;
-//}
-
-//template <class TKey, class TData>
-//bool SortedTable<TKey, TData>::is_sorted() {
-//	bool flag = true;
-//	for (int i = 0; i < max_size - 1; i++) {
-//		if (recs[i]->key > recs[i + 1]->key) {
-//			flag = false;
-//			break;
-//		}
-//	}
-//	return flag;
-//}
 
 
 template <class TKey, class TData>
