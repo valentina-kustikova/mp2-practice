@@ -1,7 +1,7 @@
 # Get all cpp-files in the current directory
-file(GLOB samples_list RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} *.cpp)
+file(GLOB samples_polynom RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} *.cpp)
 
-foreach(sample_filename ${samples_list})
+foreach(sample_filename ${samples_polynom})
   # Get file name without extension
   get_filename_component(sample ${sample_filename} NAME_WE)
 
