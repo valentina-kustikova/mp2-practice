@@ -78,7 +78,7 @@ TEST(TPolynom, check_correct_create_polynom_from_string_5)
 	EXPECT_EQ(pl.GetCurrent()->data.get_degree(), 0);
 	EXPECT_EQ(pl.GetCurrent()->pNext->data.get_degree(), 0);
 	EXPECT_EQ(pl.GetCurrent()->pNext->data.get_koef(), 0);
-	EXPECT_EQ(pl.GetString(), "1.000000");
+	EXPECT_EQ(pl.GetString(), "1.00");
 }
 
 
@@ -107,7 +107,7 @@ TEST(TPolynom,check_correct_create_polynom_from_ringlist_1)
 
 	TPolynom pl(rl);
 
-	EXPECT_EQ(pl.GetString(), "2.000000*z+2.000000*y*z+2.000000*x*y*z");
+	EXPECT_EQ(pl.GetString(), "2.00*z+2.00*y*z+2.00*x*y*z");
 }
 
 
@@ -129,7 +129,7 @@ TEST(TPolynom, check_correct_create_polynom_from_ringlist_2)
 
 	TPolynom pl(rl);
 
-	EXPECT_EQ(pl.GetString(), "2.000000*z");
+	EXPECT_EQ(pl.GetString(), "2.00*z");
 }
 
 
@@ -141,7 +141,7 @@ TEST(TPolynom, correct_add_operator_1)
 
 	TPolynom res = pl1 + pl2;
 
-	EXPECT_EQ(res.GetString(), "4.000000+1.000000*z+4.000000*y+2.000000*x+1.000000*x*y");
+	EXPECT_EQ(res.GetString(), "4.00+1.00*z+4.00*y+2.00*x+1.00*x*y");
 }
 
 
@@ -154,7 +154,7 @@ TEST(TPolynom, correct_unar_minus_operator_1)
 
 	TPolynom res = -pl1;
 
-	EXPECT_EQ(res.GetString(), "-1.000000-1.000000*z-1.000000*y-1.000000*x");
+	EXPECT_EQ(res.GetString(), "-1.00-1.00*z-1.00*y-1.00*x");
 }
 
 
@@ -164,7 +164,7 @@ TEST(TPolynom, correct_unar_minus_operator_2)
 
 	TPolynom res = -pl1;
 
-	EXPECT_EQ(res.GetString(), "-1.000000+1.000000*z-1.000000*y+1.000000*x");
+	EXPECT_EQ(res.GetString(), "-1.00+1.00*z-1.00*y+1.00*x");
 }
 
 TEST(TPolynom, correct_unar_minus_operator_3)
@@ -173,7 +173,7 @@ TEST(TPolynom, correct_unar_minus_operator_3)
 
 	TPolynom res = -pl1;
 
-	EXPECT_EQ(res.GetString(), "1.000000+1.000000*z-1.000000*y+1.000000*x");
+	EXPECT_EQ(res.GetString(), "1.00+1.00*z-1.00*y+1.00*x");
 }
 
 
@@ -186,7 +186,7 @@ TEST(TPolynom, correct_minus_operator_1)
 
 	TPolynom res = pl1 - pl2;
 
-	EXPECT_EQ(res.GetString(), "-2.000000+1.000000*z-2.000000*y-1.000000*x*y");
+	EXPECT_EQ(res.GetString(), "-2.00+1.00*z-2.00*y-1.00*x*y");
 }
 
 //умножение
@@ -199,7 +199,7 @@ TEST(TPolynom, correct_multiplication_operator_1)
 	TPolynom res = pl1 * pl2;
 
 	EXPECT_EQ(res.GetString(),
-		"1.000000+1.000000*x");
+		"1.00+1.00*x");
 
 
 }
@@ -212,7 +212,7 @@ TEST(TPolynom, correct_multiplication_operator_2)
 	TPolynom res = pl1 * pl2;
 
 	EXPECT_EQ(res.GetString(),
-		"400.000000+1.000000*z^9+400.000000*y+1.000000*y*z^9+400.000000*x+1.000000*x*z^9");
+		"400.00+1.00*z^9+400.00*y+1.00*y*z^9+400.00*x+1.00*x*z^9");
 
 
 }
@@ -226,7 +226,7 @@ TEST(TPolynom, correct_multiplication_operator_3)
 	TPolynom res = pl1 * pl2;
 
 	EXPECT_EQ(res.GetString(), 
-	"3.000000+3.000000*z+6.000000*y+3.000000*y*z+3.000000*y^2+4.000000*x+1.000000*x*z+5.000000*x*y+1.000000*x*y*z+1.000000*x*y^2+1.000000*x^2+1.000000*x^2*y");
+	"3.00+3.00*z+6.00*y+3.00*y*z+3.00*y^2+4.00*x+1.00*x*z+5.00*x*y+1.00*x*y*z+1.00*x*y^2+1.00*x^2+1.00*x^2*y");
 }
 
 
@@ -246,7 +246,7 @@ TEST(TPolynom, correct_dif_x_1)
 
 	TPolynom res = pl.dif_x();
 	EXPECT_EQ(res.GetString(),
-		"9.000000*x^8");
+		"9.00*x^8");
 }
 
 TEST(TPolynom, correct_dif_x_2)
@@ -255,7 +255,7 @@ TEST(TPolynom, correct_dif_x_2)
 
 	TPolynom res = pl.dif_x();
 	EXPECT_EQ(res.GetString(),
-		"2.000000*x+9.000000*x^8");
+		"2.00*x+9.00*x^8");
 }
 
 
@@ -265,7 +265,7 @@ TEST(TPolynom, correct_dif_y_1)
 
 	TPolynom res = pl.dif_y();
 	EXPECT_EQ(res.GetString(),
-		"1.000000+9.000000*y^8");
+		"1.00+9.00*y^8");
 }
 
 
@@ -275,7 +275,7 @@ TEST(TPolynom, correct_dif_y_2)
 
 	TPolynom res = pl.dif_y();
 	EXPECT_EQ(res.GetString(),
-		"20.000000*y^4+700.000000*y^6");
+		"20.00*y^4+700.00*y^6");
 }
 
 

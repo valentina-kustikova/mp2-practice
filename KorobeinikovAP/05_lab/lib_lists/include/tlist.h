@@ -54,7 +54,9 @@ template<typename T>
 TList<T>::TList(TNode<T>* pFirst_) {
 
 	if (pFirst_ == nullptr) {
-		pFirst = nullptr; // pCurr, ....
+		pFirst = nullptr; 
+		pCurr = nullptr;
+		pLast = nullptr;
 		return;
 	}
 	pFirst = new TNode<T>(pFirst_->data);
@@ -91,7 +93,13 @@ TList<T>::TList(TNode<T>* pFirst_) {
 
 template<typename T>
 TList<T>::TList(const TList<T>& obj) {
-	if (obj.pFirst == nullptr) { return; } // pFirtst,...
+	if (obj.pFirst == nullptr)
+	{ 
+		pFirst = nullptr;
+		pCurr = nullptr;
+		pLast = nullptr;
+		return; 
+	} 
 	TNode<T>* tmp = obj.pFirst;
 	pFirst = new TNode<T>(obj.pFirst->data);
 	TNode<T>* tmp2 = pFirst;

@@ -19,7 +19,7 @@ private:
 	
 public:
 	TPolynom();
-	TPolynom(const string &name);
+	TPolynom(const string name);
 	TPolynom(TRingList<TMonom>* obj);
 	TPolynom(const TPolynom& obj);
 	~TPolynom();
@@ -42,6 +42,11 @@ public:
 	TNode<TMonom>* GetCurrent() const;
 	string GetString() const {
 		return polynom.GetInfix();
+	}
+
+	friend ostream& operator<<(ostream& os, const TPolynom& polynom) {
+		os <<polynom.GetString();
+		return os;
 	}
 };
 

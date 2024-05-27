@@ -94,16 +94,16 @@ string TMonom::get_string() const {
 	string res = "";
 
 
-	res += to_string(koef);
+	res += to_string(koef).erase(to_string(koef).size() - 4);;
 
 	if (degX == 1) res += "*x";
-	else if (degX > 1)	res += "*x^" + to_string(degX);
+	else if (degX > 1)	res += "*x^" + to_string(degX); //.erase(to_string(degX).size() - 4)
 
 	if (degY == 1) res += "*y";
-	else if (degY > 1)	res += "*y^" + to_string(degY);
+	else if (degY > 1)	res += "*y^" + to_string(degY); //.erase(to_string(degY).size() - 4)
 
 	if (degZ == 1) res += "*z";
-	else if (degZ > 1)	res += "*z^" + to_string(degZ);
+	else if (degZ > 1)	res += "*z^" + to_string(degZ); //.erase(to_string(degZ).size() - 4)
 
 	return res;
 }

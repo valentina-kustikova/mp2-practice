@@ -11,7 +11,7 @@ TPolynom::TPolynom(): polynom("\n") {
 }
 
 
-TPolynom::TPolynom(const string &name): polynom(name) {
+TPolynom::TPolynom(const string name): polynom(name) {
 	GetRingListFromString();
 	polynom = TArithmeticExpression(GetStringFromRingList());
 }
@@ -220,7 +220,7 @@ void TPolynom::AddMonom(TMonom& m) {
 
 
 string TPolynom:: GetStringFromRingList() {
-	if (monoms->GetSize() == 0) return "0.000000";
+	if (monoms->GetSize() == 0) return "0.00";
 
 	string res = "";
 	monoms->Reset();
@@ -379,8 +379,15 @@ TPolynom TPolynom::dif_x() const {
 
 	}
 	monoms->Reset();
-	res.polynom = TArithmeticExpression(res.GetStringFromRingList());
-	return res;
+	if (res.GetCurrent() == nullptr) {
+		res.polynom = TArithmeticExpression("0.00");
+		res.GetRingListFromString();
+		return res;
+	}
+	else {
+		res.polynom = TArithmeticExpression(res.GetStringFromRingList());
+		return res;
+	}
 }
 
 TPolynom TPolynom::dif_y() const {
@@ -412,8 +419,16 @@ TPolynom TPolynom::dif_y() const {
 
 	}
 	monoms->Reset();
-	res.polynom = TArithmeticExpression(res.GetStringFromRingList());
-	return res;
+	if (res.GetCurrent() == nullptr) {
+		res.polynom = TArithmeticExpression("0.00");
+		res.GetRingListFromString();
+		return res;
+	}
+	else {
+		res.polynom = TArithmeticExpression(res.GetStringFromRingList());
+		return res;
+	}
+	
 }
 
 
@@ -446,8 +461,15 @@ TPolynom TPolynom::dif_z() const {
 
 	}
 	monoms->Reset();
-	res.polynom = TArithmeticExpression(res.GetStringFromRingList());
-	return res;
+	if (res.GetCurrent() == nullptr) {
+		res.polynom = TArithmeticExpression("0.00");
+		res.GetRingListFromString();
+		return res;
+	}
+	else {
+		res.polynom = TArithmeticExpression(res.GetStringFromRingList());
+		return res;
+	}
 }
 
 

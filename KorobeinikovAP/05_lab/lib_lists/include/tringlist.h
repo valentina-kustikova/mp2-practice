@@ -77,7 +77,7 @@ TRingList<T>::TRingList(const TRingList<T>& obj) : TList(obj) { //??
 	pHead = new TNode<T>();
 	pStop = pHead;
 	
-	if	(obj.pFirst == obj.pStop) {
+	if	(obj.pFirst == nullptr) {
 		pHead->pNext = pHead;
 	}
 	

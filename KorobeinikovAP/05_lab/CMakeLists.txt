@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.7)
 
 
-set(PROJECT_NAME 04_lab)
+set(PROJECT_NAME 05_lab)
 project(${PROJECT_NAME})
 
 set(CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE STRING "Configs" FORCE)
@@ -17,11 +17,12 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEAS
 set(MP2_LISTS_LIBRARY "${PROJECT_NAME}_lists")
 set(MP2_POLYNOMS_LIBRARY "${PROJECT_NAME}_polynoms")
 set(MP2_POSTFIX_LIBRARY "${PROJECT_NAME}_postfix")
+set(MP2_TABLE_LIBRARY "${PROJECT_NAME}_table")
 set(MP2_TESTS   "tests_${PROJECT_NAME}")
 set(MP2_LISTS_INCLUDE "${CMAKE_CURRENT_SOURCE_DIR}/lib_lists/include")
 set(MP2_POLYNOMS_INCLUDE "${CMAKE_CURRENT_SOURCE_DIR}/lib_polynoms/include")
 set(MP2_POSTFIX_INCLUDE "${CMAKE_CURRENT_SOURCE_DIR}/lib_postfix/include")
-
+set(MP2_TABLE_INCLUDE "${CMAKE_CURRENT_SOURCE_DIR}/lib_table/include")
 
 # BUILD
 add_subdirectory(gtest)
@@ -30,6 +31,8 @@ add_subdirectory(lib_polynoms/src)
 add_subdirectory(lib_postfix/src)
 add_subdirectory(tests)
 add_subdirectory(samples)
+add_subdirectory(lib_table/src)
+
 
 # REPORT
 message( STATUS "")
@@ -42,6 +45,7 @@ message( STATUS "   Library names")
 message( STATUS "   MP2_LISTS_LIBRARY:    ${MP2_LISTS_LIBRARY}")
 message( STATUS "   MP2_POLYNOMS_LIBRARY: ${MP2_POLYNOMS_LIBRARY}")
 message( STATUS "   MP2_POSTFIX_LIBRARY: ${MP2_POSTFIX_LIBRARY}")
+message( STATUS "   MP2_TABLE_LIBRARY: ${MP2_TABLE_LIBRARY}")
 message( STATUS "   ----------------------------------------------")
 message( STATUS "   Test project name")
 message( STATUS "   MP2_TESTS:            ${MP2_TESTS}")
@@ -50,5 +54,6 @@ message( STATUS "   Include directories")
 message( STATUS "   MP2_LISTS_INCLUDE:    ${MP2_LISTS_INCLUDE}")
 message( STATUS "   MP2_POLYNOMS_INCLUDE: ${MP2_POLYNOMS_INCLUDE}")
 message( STATUS "   MP2_POSTFIX_INCLUDE: ${MP2_POSTFIX_INCLUDE}")
+message( STATUS "   MP2_TABLE_INCLUDE: ${MP2_TABLE_INCLUDE}")
 message( STATUS "=================================================")
 message( STATUS "")
