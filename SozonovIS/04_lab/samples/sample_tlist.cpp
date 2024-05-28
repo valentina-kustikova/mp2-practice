@@ -8,8 +8,6 @@ int main() {
 	TList<int> list;
 	cin >> list;
 	cout << endl;
-	cout << list;
-	cout << endl;
 
 	cout << "Is list empty? " << list.IsEmpty() << endl;
 	cout << endl;
