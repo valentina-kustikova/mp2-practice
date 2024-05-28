@@ -86,12 +86,9 @@ void ScanTable<Key, Value>::insert(const Key& _key, const Value& _data)
 	Record<Key,Value>* exist = find(_key);
 	if (exist) 
 	{
-		exist->data = _data;	
+		throw string("Insert!");
 	}
-	else
-	{
-		recs[size++] = new Record<Key, Value>(_key, _data);
-	}
+	recs[size++] = new Record<Key, Value>(_key, _data);
 }
 
 template <class Key, class Value>
@@ -105,12 +102,12 @@ void ScanTable<Key, Value>::remove(const Key& _key)
 	if (!exist) throw string("Key doesn`t exist\n");
 
 	delete recs[curr];
-
-	for (int i = curr; i < size; ++i)
+	recs[curr] = nullptr;
+	if (--size >= 0 && curr != size)
 	{
-		recs[i] = recs[i + 1];
+		recs[curr] = recs[size];
+		recs[size] = nullptr;
 	}
-	--size;
 }
 
 template <class Key, class Value>

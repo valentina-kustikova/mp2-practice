@@ -24,7 +24,7 @@ ScanTable<string, TPolynom> scan_table(101);
 SortedTable<string, TPolynom> sorted_table(101);
 HashTable<string, TPolynom> hash_table(101);
 
-TPolynom operation()
+string operation()
 {
 	int op;
 	TPolynom result, polynom1, polynom2;
@@ -71,7 +71,7 @@ TPolynom operation()
 		break;
 	}
 
-	return result;
+	return (op == 7) ? polynom_string1 : result.get_name();
 
 }
 
@@ -83,8 +83,8 @@ void action(int table, int tag)
 	string polynom_string;
 	if (tag != PRINT)
 	{
-		polynom = operation();
-		polynom_string = polynom.get_name();
+		polynom_string = operation();
+		polynom = TPolynom(polynom_string);
 	}
 	
 	if (tag == INSERT)

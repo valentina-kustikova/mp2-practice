@@ -15,6 +15,7 @@ public:
 	SortedTable(const SortedTable<Key, Value>& table) noexcept;
 
 	Record<Key, Value>* find(const Key& key);
+	void remove(const Key& _key);
 	void insert(const Key& _key, const Value& _data);
 };
 
@@ -73,7 +74,7 @@ void SortedTable<Key, Value>::insert(const Key& _key, const Value& _data) {
 	Record<Key, Value>* exist = find(_key);
 	if (exist)
 	{
-		exist->data = _data;
+		throw string("Element is not exist\n");
 	}
 	else
 	{
@@ -84,6 +85,30 @@ void SortedTable<Key, Value>::insert(const Key& _key, const Value& _data) {
 		}
 		recs[curr] = new Record<Key, Value>(_key, _data);
 		size++;
+	}
+}
+
+template <class Key, class Value>
+void SortedTable<Key, Value>::remove(const Key& _key)
+{
+	if (this->empty()) {
+		throw string("Table is empty\n");
+	}
+
+	Record<Key, Value>* exist = find(_key);
+	if (!exist)
+	{
+		throw string("Element is not exist\n");
+	}
+	else
+	{
+		if (recs[curr] != nullptr) if (recs[curr]->key < _key) curr++;
+		for (int i = curr; i < size; ++i)
+		{
+			recs[i] = recs[i + 1];
+		}
+		if (recs[--size]) delete recs[size];
+
 	}
 }
 
