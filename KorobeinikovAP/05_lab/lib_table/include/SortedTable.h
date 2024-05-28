@@ -7,6 +7,10 @@ template <class TKey, class TData>
 class SortedTable : public ScanTable<TKey, TData> {
 private:
 	void sort();
+
+	int partition(int start, int pivot);
+	void quick_sort(int start, int end);
+	void swap(TabRecord<TKey, TData>& a, TabRecord<TKey, TData>& b);
 public:
 	SortedTable(int _max_size = 100);
 	SortedTable(const ScanTable<TKey, TData>* st);
@@ -99,12 +103,9 @@ TabRecord<TKey, TData>* SortedTable<TKey, TData>::operator[](const TKey& _key) {
 template <class TKey, class TData>
 void SortedTable<TKey, TData>::insert(const TKey& _key, TData* _data) {
 	if (full()) {
-		std::string exp = "ERROR: Table is full.";
-		throw exp;
+		throw "ERROR: Table is full.";
 	}
 	
-	//recs[count] = new TabRecord<TKey, TData>();
-	//сделать проверку на find
 	if (find(_key) == nullptr) {
 		for (int i = count - 1; i >= curr_pos; i--) {
 			recs[i + 1] = recs[i];
@@ -113,19 +114,20 @@ void SortedTable<TKey, TData>::insert(const TKey& _key, TData* _data) {
 
 		count++;
 	}
+	else {
+		throw "Key repeat, it's not good";
+	}
 }
 
 template <class TKey, class TData>
 void SortedTable<TKey, TData>::remove(const TKey& _key) {
 	if (empty()) {
-		std::string exp = "ERROR: Table is empty.";
-		throw exp;
+		throw "ERROR: Table is empty.";
 	}
 
 	TabRecord<TKey, TData>* rec = find(_key);
 	if (rec == nullptr) {
-		std::string exp = "ERROR: Key nod found.";
-		throw exp;
+		throw "ERROR: Key not found.";
 	}
 	else {
 		delete rec;
@@ -152,6 +154,48 @@ void SortedTable<TKey, TData>::sort() {
 	}
 }
 
+
+
+	
+
+template <class TKey, class TData>
+int SortedTable<TKey, TData>::partition(int start, int pivot) {
+	int i = start;
+	while (i < pivot) {
+		if (recs[i]->key > recs[pivot]->key && i == pivot - 1) {
+			swap(recs[i], recs[pivot]);
+			pivot--;
+		}
+
+		else if (recs[i]->key > recs[pivot]->key) {
+			swap(recs[pivot - 1], recs[pivot]);
+			swap(recs[i], recs[pivot]);
+			i--;
+		}
+
+		else i++;
+	}
+	return pivot;
+}
+
+template <class TKey, class TData>
+void SortedTable<TKey, TData>::quick_sort(int start, int end) {
+	if (start < end)
+	{
+		int pivot = partition(start, end);
+
+		quick_sort(start, pivot - 1);
+		quick_sort(pivot + 1, end);
+	}
+}
+
+
+template <class TKey, class TData>
+void SortedTable<TKey, TData>::swap(TabRecord<TKey, TData>& a, TabRecord<TKey, TData>& b) {
+	TabRecord<TKey, TData> tmp = a;
+	a = b;
+	b = tmp;
+}
 
 #endif
 

@@ -12,10 +12,11 @@ protected:
 	TabRecord<TKey, TData>** recs;
 	TabRecord<TKey, TData>* pMark = new TabRecord<TKey, TData>();
 	size_t step;
+	int curr_pos1;
 
 	virtual size_t hash(const TKey& key) const;
 public:
-	HashTable<TKey, TData>(int _max_size = 100);
+	HashTable<TKey, TData>(int _max_size = 100, size_t _step = 13);
 	HashTable<TKey, TData>(const HashTable& table);
 	virtual ~HashTable<TKey, TData>();
 
@@ -52,7 +53,7 @@ size_t HashTable<TKey, TData>::hash(const TKey& key) const
 }
 
 template <class TKey, class TData>
-HashTable<TKey, TData>::HashTable(int _max_size)
+HashTable<TKey, TData>::HashTable(int _max_size, size_t _step)
 {
 	if (_max_size <= 0)
 	{
@@ -60,11 +61,24 @@ HashTable<TKey, TData>::HashTable(int _max_size)
 	}
 	max_size = _max_size;
 	count = 0;
-	curr_pos = 0;
+	curr_pos1 = 0;
+	
+	int flag = 0;
+	for (int i = 2; i <= _max_size; i++) 
+	{
+		if ((_max_size % i == 0) && (step % i == 0)) {
+			flag = 0;
+			break;
+		}
+		else if (i == _max_size) flag = 1;
+	}
+	if (flag == 1) {
+		throw "step is bad";
+	}
+	else step = _step;
+	
 	recs = new TabRecord<TKey, TData>* [max_size];
-	for (int i = 0; i < _max_size; ++i) recs[i] = nullptr; //pMark
-
-	step = (max_size == 13) ? 11 : 13;
+	for (int i = 0; i < _max_size; ++i) recs[i] = nullptr;
 }
 
 template <class TKey, class TData>
@@ -73,7 +87,7 @@ HashTable<TKey, TData>::HashTable(const HashTable& table)
 	this->max_size = table.max_size;
 	this->step = table.step;
 	this->count = table.count;
-	curr_pos = table.curr_pos;
+	curr_pos1 = table.curr_pos1;
 	pMark = new TabRecord<TKey, TData>();
 
 	recs = new TabRecord<TKey, TData>* [max_size];
@@ -85,14 +99,7 @@ HashTable<TKey, TData>::HashTable(const HashTable& table)
 		}
 		else {
 			recs[i] = nullptr;
-		}
-		/*if (table.recs[i] != table.pMark)
-		{
-			recs[i] = new TabRecord<TKey, TData>(*table.recs[i]);
-		}
-		else {
-			recs[i] = this->pMark;
-		}*/
+		}		
 	}
 }
 
@@ -111,7 +118,7 @@ template <class TKey, class TData>
 TabRecord<TKey, TData>* HashTable<TKey, TData>::find(const TKey& key)
 {
 	int hs = hash(key), t = (hs + step) % max_size, c = 1;
-	curr_pos = hs;
+	curr_pos1 = hs;
 
 	if (recs[hs] == nullptr)
 	{
@@ -125,7 +132,7 @@ TabRecord<TKey, TData>* HashTable<TKey, TData>::find(const TKey& key)
 	{
 		if (recs[t]->key == key)
 		{
-			curr_pos = t;
+			curr_pos1 = t;
 			return recs[t];
 		}
 		if (recs[t] == nullptr)
@@ -135,7 +142,7 @@ TabRecord<TKey, TData>* HashTable<TKey, TData>::find(const TKey& key)
 		t = (t + step) % max_size;
 		++c;
 	}
-	if (recs[curr_pos] != pMark && recs[curr_pos] != nullptr) next(curr_pos);
+	if (recs[curr_pos1] != pMark && recs[curr_pos1] != nullptr) next(curr_pos1);
 	return nullptr;
 }
 
@@ -144,18 +151,18 @@ void HashTable<TKey, TData>::insert(const TKey& key,TData* _data)
 {
 	if (ended())
 	{
-		throw string("Table is full\n");
+		throw "Table is full\n";
 	}
-	TabRecord<TKey, TData>* exist = find(key);
+	TabRecord<TKey, TData>* tmp = find(key);
 
-	if (!exist)
+	if (!tmp)
 	{
-		recs[curr_pos] = new TabRecord<TKey, TData>(key, _data);
+		recs[curr_pos1] = new TabRecord<TKey, TData>(key, _data);
 		count++;
 	}
 	else
-	{
-		exist->data = _data;
+	{		
+		tmp->data = _data;
 	}
 }
 
@@ -175,7 +182,7 @@ void HashTable<TKey, TData>::remove(const TKey& key)
 	else
 	{
 		count--;
-		delete recs[curr_pos]; recs[curr_pos] = pMark;
+		delete recs[curr_pos1]; recs[curr_pos1] = pMark;
 	}
 }
 
@@ -189,12 +196,13 @@ TabRecord<TKey, TData>* HashTable<TKey, TData>::operator[](const TKey& _key) {
 template <class TKey, class TData>
 void HashTable<TKey, TData>::next(int pos)
 {
-	if (count == max_size) curr_pos = 0;
+	if (count == max_size) curr_pos1 = 0;
 	int new_pos = (pos + step % max_size);
 	while (new_pos != pos && (recs[new_pos] != pMark && recs[new_pos] != nullptr))
 	{
 		new_pos = (new_pos + step) % max_size;
 	}
-	curr_pos = new_pos;
+	curr_pos1 = new_pos;
 }
+
 #endif

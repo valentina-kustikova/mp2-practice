@@ -47,9 +47,6 @@ void func(ScanTable<string, TPolynom>& scan_t, SortedTable<string, TPolynom>& so
 			action = 6;
 		}
 
-
-
-
 		switch (action) {
 		case 1:
 		{

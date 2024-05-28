@@ -15,14 +15,6 @@ TEST(SortedTable, can_insert_Sortedtable) {
 	ASSERT_NO_THROW(st.insert(52, str));
 }
 
-TEST(SortedTable, can_insert_rec_with_repeat_key_Sortedtable) {
-	//std::this_thread::sleep_for(std::chrono::milliseconds(200));
-	SortedTable<int, string> st;
-	string* str = new string("alblack");
-	st.insert(52, str);
-	ASSERT_NO_THROW(st.insert(52, str));
-}
-
 TEST(SortedTable, can_find_Sortedtable) {
 	SortedTable<int, string> st;
 	string* str1 = new string("alblack1");

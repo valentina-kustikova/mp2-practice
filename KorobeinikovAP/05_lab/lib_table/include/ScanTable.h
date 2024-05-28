@@ -102,19 +102,21 @@ TabRecord<TKey, TData>* ScanTable<TKey, TData>::find(const TKey& key) {
 template <typename TKey, typename TData>
 void ScanTable<TKey, TData>::insert(const TKey& _key, TData* _data) {
 	if (full()) {
-		std::string exp = "ERROR: Table is full.";
-		throw exp;
+		throw "ERROR: Table is full.";
 	}
 
 	if (find(_key) == nullptr) {
 		recs[count++] = new TabRecord<TKey, TData>(_key, _data);
+	}
+	else {
+		throw "Key repeat, it's not good";
 	}
 }
 
 template <typename TKey, typename TData>
 void ScanTable<TKey, TData>::remove(const TKey& _key) {
 	if (empty()) {
-		std::string exp = "ERROR: Table is empty.";
+		string exp = "ERROR: Table is empty.";
 		throw exp;
 	}
 
@@ -126,15 +128,11 @@ void ScanTable<TKey, TData>::remove(const TKey& _key) {
 		}
 		else {
 			recs[curr_pos] = nullptr;
-		}
-		/*for (int i = curr_pos; i < count; i++) {
-			recs[i] = recs[i + 1];
-		}*/
+		}	
 		count--;
 	}
 	else {
-		string exp = "ERROR: key not found.";
-		throw exp;
+		throw "ERROR: key not found.";
 	}
 }
 

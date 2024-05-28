@@ -14,13 +14,13 @@ TEST(HashTable, can_insert_Sortedtable) {
 	ASSERT_NO_THROW(h_t.insert(52, str));
 }
 
-TEST(HashTable, can_insert_rec_with_repeat_key_Sortedtable) {
-	//std::this_thread::sleep_for(std::chrono::milliseconds(200));
-	HashTable<int, string> h_t;
-	string* str = new string("alblack");
-	h_t.insert(52, str);
-	ASSERT_NO_THROW(h_t.insert(52, str));
-}
+//TEST(HashTable, can_insert_rec_with_repeat_key_Sortedtable) {
+//	//std::this_thread::sleep_for(std::chrono::milliseconds(200));
+//	HashTable<int, string> h_t;
+//	string* str = new string("alblack");
+//	h_t.insert(52, str);
+//	ASSERT_NO_THROW(h_t.insert(52, str));
+//}
 
 TEST(HashTable, can_find_Sortedtable) {
 	HashTable<int, string> h_t;

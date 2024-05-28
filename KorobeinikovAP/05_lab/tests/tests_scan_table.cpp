@@ -15,12 +15,6 @@ TEST(ScanTable, can_insert_scantable) {
 	ASSERT_NO_THROW(st.insert(52, str));
 }
 
-TEST(ScanTable, can_insert_rec_with_repeat_key_scantable) {
-	ScanTable<int, string> st;
-	string* str = new string("alblack");
-	st.insert(52, str);
-	ASSERT_NO_THROW(st.insert(52, str));
-}
 
 TEST(ScanTable, can_find_scantable) {
 	ScanTable<int, string> st;
