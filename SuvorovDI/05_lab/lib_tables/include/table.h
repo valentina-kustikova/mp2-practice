@@ -35,6 +35,10 @@ struct TabRecord
     return (key == r.key) && (*data == *r.data);
   }
 
+  TData* GetData() const {
+    return data;
+  }
+
   friend std::ostream& operator<<(std::ostream& out, const TabRecord<TKey, TData>& r)
   {
     out << "KEY: " << r.key << " -> VALUE: " << *r.data << "\n";
