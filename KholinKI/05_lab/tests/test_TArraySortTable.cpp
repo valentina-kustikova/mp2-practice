@@ -63,11 +63,11 @@ TEST(ArraySortTable, insert_with_no_exist_key_after_sort) {
 	names[3] = new Data<string>("Vanya");
 	names[4] = new Data<string>("Kirill");
 
-	table.Insert(1, names[0]);
-	table.Insert(2, names[1]);
-	table.Insert(3, names[2]);
+	table.Insert(7, names[0]);
+	table.Insert(3, names[1]);
+	table.Insert(2, names[2]);
 	table.Insert(5, names[3]);
-	table.Insert(7, names[4]);
+	table.Insert(1, names[4]);
 
 
 	TArraySortTable<int, string> sort_table(table);

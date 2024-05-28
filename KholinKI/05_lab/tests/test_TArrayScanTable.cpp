@@ -94,6 +94,21 @@ TEST(ArrayScanTable, getters) {
 	ASSERT_TRUE(count == 3 && key == 1 && data->value == "Ivan");
 }
 
+TEST(TArrayScanTable, constructor_copy_work) {
+	TArrayScanTable<int, string>* table = new TArrayScanTable<int, string>(MAX_SIZE);
+
+	Data<string>** names = new Data<string>*[3];
+	names[0] = new Data<string>("Ivan");
+	names[1] = new Data<string>("Nikolay");
+	names[2] = new Data<string>("Aleksandr");
+
+	table->Insert(1, names[0]);
+	table->Insert(2, names[1]);
+	table->Insert(3, names[2]);
+
+	TArrayScanTable<int, string>* copy_table = new TArrayScanTable<int, string>(*table);
+}
+
 TEST(ArrayScanTable, destructor_work) {
 	TArrayScanTable<int, string>* table = new TArrayScanTable<int,string>(MAX_SIZE);
 

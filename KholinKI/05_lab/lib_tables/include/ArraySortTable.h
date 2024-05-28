@@ -15,7 +15,7 @@ public:
 	TTabRecord<TKey, TData>* Find(TKey Key)override;
 	void Remove(TKey key)override;
 
-	void SetSortMethod(SortMethod n = SELECT) { number = n; }
+	void SetSortMethod(SortMethod n = MERGE) { number = n; }
 	SortMethod GetSortMethod()const { return number; }
 protected:
 	SortMethod number; 
@@ -23,7 +23,7 @@ protected:
 	void SelectSort();
 	void InsertSort();
 	void BubbleSort();
-	void MergeSort(int _first, int _last);//тест
+	void MergeSort(int _first, int _last);
 	void Merge(int _first, int _mid, int _last);
 	void QuickSort(int _first, int _last);
 	void QuickSplit(int& i, int& j, TTabRecord<TKey, TData>* _mid);
@@ -33,18 +33,7 @@ template<typename TKey,typename TData>
 TArraySortTable<TKey,TData>::TArraySortTable(int max_size_):TArrayScanTable<TKey,TData>(max_size_){}
 
 template<typename TKey,typename TData>
-TArraySortTable<TKey, TData>::TArraySortTable(const TArrayScanTable<TKey,TData>& ScanTable) {
-	max_size = ScanTable.GetSize();
-	count = ScanTable.GetCount();
-	curr_pos = ScanTable.GetCurrPos();
-	records = new TTabRecord<TKey, TData>* [max_size];
-	TTabRecord<TKey, TData>** scan_records = ScanTable.GetRecords();
-	for (int i = 0; i < count; i++) {
-		records[i] = new TTabRecord<TKey, TData>(scan_records[i]->key, scan_records[i]->data);
-	}
-	for (int j = count; j < max_size; j++) {
-		records[j] = nullptr;
-	}
+TArraySortTable<TKey, TData>::TArraySortTable(const TArrayScanTable<TKey,TData>& ScanTable): TArrayScanTable<TKey, TData>(ScanTable) {
 	SortData();
 }
 
@@ -140,6 +129,16 @@ void TArraySortTable<TKey, TData>::SortData() {
 			BubbleSort();
 			break;
 		}
+		case QUICK:
+		{
+			QuickSort(0, count - 1);
+			break;
+		}
+		case MERGE:
+		{
+			MergeSort(0, count-1);
+			break;
+		}
 	}
 }
 
@@ -214,8 +213,8 @@ void TArraySortTable<TKey, TData>::QuickSplit(int& i, int& j, TTabRecord<TKey, T
 {
 	do
 	{
-		while (*records[i] < *_mid)i++;
-		while (*records[j] > *_mid)j--;
+		while (*records[i] < *_mid && records[i] != nullptr)i++;
+		while (*records[j] > *_mid && records[j] != nullptr)j--;
 
 		if (i <= j)
 		{
@@ -246,7 +245,8 @@ void TArraySortTable<TKey, TData>::Merge(int _first, int _mid, int _last)
 	TTabRecord<TKey, TData>** pBuff = new TTabRecord<TKey, TData>* [_last - _first + 1];
 
 	for (int ind = 0; ind < _last - _first + 1; ind++) {
-		if ((j > _last) || ((i <= _mid) && (*records[i] < *records[j]))) {
+		if ((j > _last) || ((i <= _mid) && (*records[i] < *records[j])
+			&& (records[i] != nullptr && records[j] != nullptr))) {
 			pBuff[ind] = records[i++];
 		}
 		else {
@@ -254,7 +254,7 @@ void TArraySortTable<TKey, TData>::Merge(int _first, int _mid, int _last)
 		}
 	}
 
-	for (ind = _first; ind < _last + 1; ind++) {
+	for (int ind = _first; ind < _last + 1; ind++) {
 		{
 			records[ind] = pBuff[ind - _first];
 			pBuff[ind - _first] = nullptr;

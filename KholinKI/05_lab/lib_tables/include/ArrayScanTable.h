@@ -6,6 +6,7 @@
 template<typename TKey, typename TData> class TArrayScanTable : public TArrayTable<TKey,TData>{
 public:
 	TArrayScanTable(int max_size_ = 25);
+	TArrayScanTable(const TArrayScanTable& scan_table);
 	virtual void Insert(TKey Key, const Data<TData>* data_);
 	virtual TTabRecord<TKey,TData>* Find(TKey Key);
 	virtual void Remove(TKey key);
@@ -15,6 +16,21 @@ public:
 
 template<typename TKey,typename TData>
 TArrayScanTable<TKey, TData>::TArrayScanTable(int max_size_):TArrayTable<TKey, TData>(max_size_){}
+
+template<typename TKey, typename TData>
+TArrayScanTable<TKey, TData>::TArrayScanTable(const TArrayScanTable& scan_table) {
+	max_size = scan_table.GetSize();
+	count = scan_table.GetCount();
+	curr_pos = scan_table.GetCurrPos();
+	records = new TTabRecord<TKey, TData>* [max_size];
+	TTabRecord<TKey, TData>** scan_records = scan_table.GetRecords();
+	for (int i = 0; i < count; i++) {
+		records[i] = new TTabRecord<TKey, TData>(scan_records[i]->key, scan_records[i]->data);
+	}
+	for (int j = count; j < max_size; j++) {
+		records[j] = nullptr;
+	}
+}
 
 template<typename TKey, typename TData>
 void TArrayScanTable<TKey,TData>::Insert(TKey key, const Data<TData>* data_) {

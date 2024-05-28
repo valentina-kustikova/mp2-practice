@@ -12,6 +12,8 @@ template<typename TKey, typename TData> struct TTabRecord {
 	TTabRecord(const TKey& key_, const Data<TData>* data_);
 
 	const TTabRecord& operator=(const TTabRecord& record);
+	bool operator<(const TTabRecord& record);
+	bool operator>(const TTabRecord& record);
 };
 
 
@@ -35,6 +37,16 @@ const TTabRecord<TKey,TData>& TTabRecord<TKey,TData>::operator=(const TTabRecord
 	key = record.key;
 	data = new Data<TData>(*record.data);
 	return *this;
+}
+
+template<typename TKey, typename TData>
+bool TTabRecord<TKey,TData>::operator<(const TTabRecord& record) {
+	return key < record.key ? true : false;
+}
+
+template<typename TKey, typename TData>
+bool TTabRecord<TKey, TData>::operator>(const TTabRecord& record) {
+	return key > record.key ? true : false;
 }
 
 
