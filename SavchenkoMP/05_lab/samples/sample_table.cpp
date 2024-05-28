@@ -118,7 +118,7 @@ void insert() {
 	print_selected_tables();
 	cout << endl;
 
-	cout << "Enter the polynomial you want to add to the tables." << endl << endl;
+	cout << "Enter the name of the polynomial that you want to add to the table: " << endl;
 	
 
 	try {
@@ -127,13 +127,11 @@ void insert() {
 		getline(cin, name);
 
 		TPolynom new_polynom(name);
-		string new_polynom_name = new_polynom.get_string();
 
 		cout << endl;
-
 		if (flag_scan) {
 			try {
-				scan_table.insert(new_polynom_name, &new_polynom);
+				scan_table.insert(name, &new_polynom);
 				cout << "ScanTable.insert(): OK" << endl;
 			}
 			catch (string exp) {
@@ -143,7 +141,7 @@ void insert() {
 
 		if (flag_sorted) {
 			try {
-				sorted_table.insert(new_polynom_name, &new_polynom);
+				sorted_table.insert(name, &new_polynom);
 				cout << "SortedTable.insert(): OK" << endl;
 			}
 			catch (string exp) {
@@ -153,7 +151,7 @@ void insert() {
 
 		if (flag_array_hash) {
 			try {
-				array_hash_table.insert(new_polynom_name, &new_polynom);
+				array_hash_table.insert(name, &new_polynom);
 				cout << "ArrayHashTable.insert(): OK" << endl;
 			}
 			catch (string exp) {
@@ -165,6 +163,7 @@ void insert() {
 		cout << exp << endl;
 
 		system("pause");
+		return;
 	}
 	
 	system("pause");
@@ -182,7 +181,7 @@ void remove() {
 	print_selected_tables();
 	cout << endl;
 
-	cout << "Enter the polynomial you want to remove from the table." << endl << endl;
+	cout << "Enter the name of the polynomial you want to remove from the table." << endl << endl;
 	
 
 	try {
@@ -190,14 +189,11 @@ void remove() {
 		cin.ignore(numeric_limits<streamsize>::max(), '\n');
 		getline(cin, name);
 
-		TPolynom polynom(name);
-		string polynom_name = polynom.get_string();
-
 		cout << endl;
 
 		if (flag_scan) {
 			try {
-				scan_table.remove(polynom_name);
+				scan_table.remove(name);
 				cout << "ScanTable.remove(): OK" << endl;
 			}
 			catch (string exp) {
@@ -207,7 +203,7 @@ void remove() {
 
 		if (flag_sorted) {
 			try {
-				sorted_table.remove(polynom_name);
+				sorted_table.remove(name);
 				cout << "SortedTable.remove(): OK" << endl;
 			}
 			catch (string exp) {
@@ -217,7 +213,7 @@ void remove() {
 
 		if (flag_array_hash) {
 			try {
-				array_hash_table.remove(polynom_name);
+				array_hash_table.remove(name);
 				cout << "ArrayHashTable.remove(): OK" << endl;
 			}
 			catch (string exp) {
@@ -271,24 +267,23 @@ void operations() {
 
 	system("cls");
 	cout << "PATH:menu\\operations\\" << endl;
+	string name1, name2, result_name;
 	TabRecord<string, TPolynom> *tab_polynom1 = nullptr, *tab_polynom2 = nullptr;
 
 	try {
 		cout << "Enter the polynom to find it in the table: " << endl;
 		
-		string name1;
 		cin.ignore(numeric_limits<streamsize>::max(), '\n');
 		getline(cin, name1);
-		TPolynom polynom1(name1);
 		
 		if (tab == SCAN) {
-			tab_polynom1 = scan_table.find(polynom1.get_string());
+			tab_polynom1 = scan_table.find(name1);
 		}
 		if (tab == SORTED) {
-			tab_polynom1 = sorted_table.find(polynom1.get_string());
+			tab_polynom1 = sorted_table.find(name1);
 		}
 		if (tab == ARRAY_HASH) {
-			tab_polynom1 = array_hash_table.find(polynom1.get_string());
+			tab_polynom1 = array_hash_table.find(name1);
 		}
 		if (tab_polynom1 == nullptr) {
 			cout << "ERROR: polynom not found" << endl;
@@ -300,18 +295,16 @@ void operations() {
 		if (op >= SUM && op <= MUL) {
 			cout << "Enter the second polynom to find it in the table: " << endl;
 			
-			string name2;
 			getline(cin, name2);
-			TPolynom polynom2(name2);
 			
 			if (tab == SCAN) {
-				tab_polynom2 = scan_table.find(polynom2.get_string());
+				tab_polynom2 = scan_table.find(name2);
 			}
 			if (tab == SORTED) {
-				tab_polynom2 = sorted_table.find(polynom2.get_string());
+				tab_polynom2 = sorted_table.find(name2);
 			}
 			if (tab == ARRAY_HASH) {
-				tab_polynom2 = array_hash_table.find(polynom2.get_string());
+				tab_polynom2 = array_hash_table.find(name2);
 			}
 			if (tab_polynom2 == nullptr) {
 				cout << "ERROR: second polynom not found" << endl;
@@ -326,47 +319,53 @@ void operations() {
 		TPolynom result("0");
 		if (op == SUM) {
 			result = *tab_polynom1->data + *tab_polynom2->data;
-			cout << "polynom1 + polynom2 = " << result << endl << endl;
+			result_name = "(" + name1 + ") + (" + name2 + ")";
+			cout << result_name << " = " << result << endl << endl;
 		}
 
 		else if (op == SUB) {
 			result = *tab_polynom1->data - *tab_polynom2->data;
-			cout << "polynom1 - polynom2 = " << result << endl << endl;
+			result_name = "(" + name1 + ") - (" + name2 + ")";
+			cout << result_name << " = " << result << endl << endl;
 		}
 
 		else if (op == MUL) {
 			result = *tab_polynom1->data * *tab_polynom2->data;
-			cout << "polynom1 * polynom2 = " << result << endl << endl;
+			result_name = "(" + name1 + ") * (" + name2 + ")";
+			cout << result_name << " = " << result << endl << endl;
 		}
 
 		else if (op == DIFF_X) {
 			result = tab_polynom1->data->diff_x();
-			cout << "polynom.diff_x() = " << result << endl << endl;
+			result_name = "(" + name1 + ")'x";
+			cout << result_name << " = " << result << endl << endl;
 		}
 
 		else if (op == DIFF_Y) {
 			result = tab_polynom1->data->diff_y();
-			cout << "polynom.diff_x() = " << result << endl << endl;
+			result_name = "(" + name1 + ")'y";
+			cout << result_name << " = " << result << endl << endl;
 		}
 
 		else if (op == DIFF_Z) {
 			result = tab_polynom1->data->diff_z();
-			cout << "polynom.diff_x() = " << result << endl << endl;
+			result_name = "(" + name1 + ")'z";
+			cout << result_name << " = " << result << endl << endl;
 		}
 
 		cout << "Add result to this table? 1/0" << endl;
 		int ans = 0;
 		cin >> ans;
 		if (ans) {
-			try {
+			try {				
 				if (tab == SCAN) {
-					scan_table.insert(result.get_string(), &result);
+					scan_table.insert(result_name, &result);
 				}
 				if (tab == SORTED) {
-					sorted_table.insert(result.get_string(), &result);
+					sorted_table.insert(result_name, &result);
 				}
 				if (tab == ARRAY_HASH) {
-					array_hash_table.insert(result.get_string(), &result);
+					array_hash_table.insert(result_name, &result);
 				}
 			}
 			catch (string exp) {
