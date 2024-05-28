@@ -44,6 +44,7 @@ void operations();
 void print_tables();
 void select_tables();
 void print_selected_tables();
+void save_polynom(const string& name, TPolynom& p);
 
 
 int main() {
@@ -316,6 +317,8 @@ void operations() {
 
 		system("cls");
 		cout << "PATH:menu\\operations\\" << endl;
+		//select_tables();
+
 		TPolynom result("0");
 		if (op == SUM) {
 			result = *tab_polynom1->data + *tab_polynom2->data;
@@ -451,4 +454,34 @@ void print_selected_tables() {
 	if (flag_sorted) cout << "SortedTable ";
 	if (flag_array_hash) cout << "ArrayHashTable ";
 	cout << endl;
+}
+
+void save_polynom(const string& name, TPolynom& polynom) {
+	if (flag_scan) {
+		try {
+			scan_table.insert(name, &polynom);
+			cout << "SortedTable.insert(): OK" << endl;
+		}
+		catch (string exp) {
+			cout << "SortedTable.insert(): " << exp << endl;
+		}
+	}
+	if (flag_sorted) {
+		try {
+			sorted_table.insert(name, &polynom);
+			cout << "SortedTable.insert(): OK" << endl;
+		}
+		catch (string exp) {
+			cout << "SortedTable.insert(): " << exp << endl;
+		}
+	}
+	if (flag_array_hash) {
+		try {
+			array_hash_table.insert(name, &polynom);
+			cout << "SortedTable.insert(): OK" << endl;
+		}
+		catch (string exp) {
+			cout << "SortedTable.insert(): " << exp << endl;
+		}
+	}
 }
