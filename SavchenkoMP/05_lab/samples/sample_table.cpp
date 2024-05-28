@@ -357,19 +357,32 @@ void operations() {
 		int ans = 0;
 		cin >> ans;
 		if (ans) {
-			try {				
-				if (tab == SCAN) {
+			if (tab == SCAN) {
+				try {
 					scan_table.insert(result_name, &result);
+					cout << "SortedTable.insert(): OK" << endl;
 				}
-				if (tab == SORTED) {
-					sorted_table.insert(result_name, &result);
-				}
-				if (tab == ARRAY_HASH) {
-					array_hash_table.insert(result_name, &result);
+				catch (string exp) {
+					cout << "SortedTable.insert(): " << exp << endl;
 				}
 			}
-			catch (string exp) {
-				cout << exp << endl;
+			if (tab == SORTED) {
+				try {
+					sorted_table.insert(result_name, &result);
+					cout << "SortedTable.insert(): OK" << endl;
+				}
+				catch (string exp) {
+					cout << "SortedTable.insert(): " << exp << endl;
+				}
+			}
+			if (tab == ARRAY_HASH) {
+				try {
+					array_hash_table.insert(result_name, &result);
+					cout << "SortedTable.insert(): OK" << endl;
+				}
+				catch (string exp) {
+					cout << "SortedTable.insert(): " << exp << endl;
+				}
 			}
 		}
 		system("pause");

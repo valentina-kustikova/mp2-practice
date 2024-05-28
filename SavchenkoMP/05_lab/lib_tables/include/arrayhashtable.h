@@ -185,23 +185,26 @@ void ArrayHashTable<TKey, TData>::remove(const TKey& _key) {
 
 template <class TKey, class TData>
 bool ArrayHashTable<TKey, TData>::reset() noexcept {
-	if (!empty()) {
-		curr_pos = 0;
-		return ended();
+	curr_pos = 0;
+	while (!ended())
+	{
+		if (recs[curr_pos] != nullptr && recs[curr_pos] != pMark)
+			break;
+		curr_pos++;
 	}
-	else {
-		curr_pos = -1;
-		return ended();
-	}
+	return ended();
 }
 
 template <class TKey, class TData>
 bool ArrayHashTable<TKey, TData>::next() noexcept {
-	if (curr_pos < max_size && !empty()) {
+	curr_pos++;
+	while (!ended())
+	{
+		if (recs[curr_pos] != nullptr && recs[curr_pos] != pMark)
+			break;
 		curr_pos++;
-		return ended();
 	}
-	else return ended();
+	return ended();
 }
 
 template <class TKey, class TData>

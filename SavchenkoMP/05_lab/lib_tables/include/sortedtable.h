@@ -77,7 +77,7 @@ template <class TKey, class TData>
 SortedTable<TKey, TData>::SortedTable(const SortedTable<TKey, TData>& srt) {
 	count = srt.count;
 	max_size = srt.max_size;
-	curr_pos = srt.max_size;
+	curr_pos = srt.curr_pos;
 
 	recs = new TabRecord<TKey, TData>* [max_size];
 	for (int i = 0; i < count; i++) {
