@@ -10,7 +10,7 @@ struct TabRecord
 
   TabRecord() : key(TKey()), data(nullptr) { }
 
-  TabRecord(TKey key, TData* data) : key(TKey()), data(nullptr) { }
+  TabRecord(TKey key, TData* data) : key(key), data(data) { }
 
   const TabRecord<TKey, TData>& operator=(const TabRecord<TKey, TData>& r);
 
