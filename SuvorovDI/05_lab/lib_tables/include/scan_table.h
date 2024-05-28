@@ -34,7 +34,7 @@ public:
 
   bool IsEnded() const noexcept override
   {
-    return currPos == count - 1;
+    return currPos == count;
   }
 
   friend std::ostream& operator<<(std::ostream& out, const ScanTable<TKey, TData>& t)

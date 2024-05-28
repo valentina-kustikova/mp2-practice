@@ -66,6 +66,7 @@ TEST(ArrayHashTable, check_getting_next_when_the_table_is_ended) {
 	ArrayHashTable<std::string, int> s_table(10, 3);
 	s_table.Insert("a", new int(43));
 	s_table.Insert("b", new int(84));
+  s_table.Next();
 	ASSERT_ANY_THROW(s_table.Next());
 }
 
@@ -75,6 +76,7 @@ TEST(ArrayHashTable, check_table_is_ended) {
 	s_table.Insert("second", new int(84));
 	s_table.Reset();
 	s_table.Next();
+  s_table.Next();
 	EXPECT_TRUE(s_table.IsEnded());
 }
 
@@ -128,7 +130,7 @@ TEST(ArrayHashTable, try_to_remove_an_existing_element) {
 	s_table.Insert("first", new int(43));
 	s_table.Insert("second", new int(84));
 	s_table.Insert("third", new int(9));
-	s_table.Remove("second");
+	s_table.Remove("first");
 
 	EXPECT_TRUE(s_table.Find("second") == nullptr);
 }

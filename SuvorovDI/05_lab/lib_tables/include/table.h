@@ -41,7 +41,7 @@ struct TabRecord
 
   friend std::ostream& operator<<(std::ostream& out, const TabRecord<TKey, TData>& r)
   {
-    out << "KEY: " << r.key << " -> VALUE: " << *r.data << "\n";
+    out << "KEY: " << r.key << " -> VALUE:\n" << *r.data << "\n";
     return out;
   }
 };
@@ -82,7 +82,7 @@ public:
   }
   virtual bool IsEnded() const noexcept
   {
-    return currPos == maxSize - 1; // general case
+    return currPos == maxSize; // general case
   }
   virtual void Next()
   {

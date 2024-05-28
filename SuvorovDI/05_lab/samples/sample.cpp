@@ -1,4 +1,3 @@
-//#include <QApplication>
 #include "tables_manager.h"
 
 int main() {

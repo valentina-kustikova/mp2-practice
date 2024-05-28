@@ -147,12 +147,12 @@ void Tables::menu() {
 	int choice;
   do {
     std::cout << "Menu:" << "\n";
-    std::cout << "1. Add" << "\n";
+    std::cout << "1. Insert" << "\n";
     std::cout << "2. Remove" << "\n";
     std::cout << "3. See one table" << "\n";
     std::cout << "4. See all tables" << "\n";
     std::cout << "5. Polynoms" << "\n";
-    std::cout << "Enter your choice:";
+    std::cout << "Enter your choice: ";
     std::cin >> choice;
     switch (choice) {
     case 0: break;
@@ -189,7 +189,7 @@ void Tables::menu() {
       break;
     }
     case 4: { 
-      std::cout << "ScanTable" << "\n";
+      std::cout << "ScanTable: " << "\n";
       std::cout << scanTable << "\n";
       std::cout << "SortedTable" << "\n";
       std::cout << sortedTable << "\n";

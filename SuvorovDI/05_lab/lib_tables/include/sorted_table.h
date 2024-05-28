@@ -21,10 +21,6 @@ public:
       throw std::exception("Table_is_empty\n");
     return recs[currPos];
   }
-  bool IsEnded() const noexcept override
-  {
-    return currPos == count;
-  }
   friend std::ostream& operator<<(std::ostream& out, const SortedTable<TKey, TData>& t)
   {
     if (t.IsEmpty())

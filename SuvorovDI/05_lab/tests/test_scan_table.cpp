@@ -84,6 +84,7 @@ TEST(ScanTable, check_getting_next_when_the_table_is_ended) {
 
 	s_table.Reset();
 	s_table.Next();
+  s_table.Next();
 	ASSERT_ANY_THROW(s_table.Next());
 }
 
@@ -93,6 +94,7 @@ TEST(ScanTable, check_table_is_ended) {
 	s_table.Insert("second", new int(84));
 	s_table.Reset();
 	s_table.Next();
+  s_table.Next();
 	EXPECT_TRUE(s_table.IsEnded());
 }
 
