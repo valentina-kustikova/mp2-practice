@@ -46,7 +46,7 @@ TEST(HashTable, can_crate_copi_Hashtable) {
 	h_t.insert(54, str3);
 
 	HashTable<int, string> h_t1(h_t);
-
+	cout << h_t << h_t1;
 	EXPECT_EQ(*h_t.find(52)->data, *h_t1.find(52)->data);
 }
 

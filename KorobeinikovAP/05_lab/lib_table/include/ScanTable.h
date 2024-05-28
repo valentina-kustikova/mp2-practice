@@ -133,7 +133,7 @@ void ScanTable<TKey, TData>::remove(const TKey& _key) {
 		count--;
 	}
 	else {
-		std::string exp = "ERROR: key not found.";
+		string exp = "ERROR: key not found.";
 		throw exp;
 	}
 }

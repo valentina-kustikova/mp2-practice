@@ -16,7 +16,7 @@ protected:
 	virtual size_t hash(const TKey& key) const;
 public:
 	HashTable<TKey, TData>(int _max_size = 100);
-	HashTable<TKey, TData>(const HashTable& table) noexcept;
+	HashTable<TKey, TData>(const HashTable& table);
 	virtual ~HashTable<TKey, TData>();
 
 	TabRecord<TKey, TData>* find(const TKey& key);
@@ -33,7 +33,7 @@ public:
 		os << '+' << str1 << '+' << str2 << '+' << endl;
 		for (int i = 0; i < table.max_size; ++i)
 		{
-			if (table.recs[i] && (table.recs[i] != table.pMark)) {
+			if (table.recs[i] && table.recs[i] != table.pMark) {
 				os << "| " << setw(30) << table.recs[i]->key << " | " << setw(60) << *table.recs[i]->data << " | \n";
 				os << '+' << str1 << '+' << str2 << '+' << endl;
 			}
@@ -62,29 +62,37 @@ HashTable<TKey, TData>::HashTable(int _max_size)
 	count = 0;
 	curr_pos = 0;
 	recs = new TabRecord<TKey, TData>* [max_size];
-	for (int i = 0; i < _max_size; ++i) recs[i] = pMark;
+	for (int i = 0; i < _max_size; ++i) recs[i] = nullptr; //pMark
 
 	step = (max_size == 13) ? 11 : 13;
 }
 
 template <class TKey, class TData>
-HashTable<TKey, TData>::HashTable(const HashTable& table) noexcept
+HashTable<TKey, TData>::HashTable(const HashTable& table)
 {
 	this->max_size = table.max_size;
 	this->step = table.step;
 	this->count = table.count;
 	curr_pos = table.curr_pos;
+	pMark = new TabRecord<TKey, TData>();
 
 	recs = new TabRecord<TKey, TData>* [max_size];
 	for (int i = 0; i < max_size; ++i)
 	{
-		if (table.recs[i] != table.pMark)
+		if (table.recs[i])
+		{
+			recs[i] = new TabRecord<TKey, TData>(*table.recs[i]);
+		}
+		else {
+			recs[i] = nullptr;
+		}
+		/*if (table.recs[i] != table.pMark)
 		{
 			recs[i] = new TabRecord<TKey, TData>(*table.recs[i]);
 		}
 		else {
 			recs[i] = this->pMark;
-		}
+		}*/
 	}
 }
 
@@ -134,8 +142,7 @@ TabRecord<TKey, TData>* HashTable<TKey, TData>::find(const TKey& key)
 template <class TKey, class TData>
 void HashTable<TKey, TData>::insert(const TKey& key,TData* _data)
 {
-	//сделать исендед
-	if (count == max_size)
+	if (ended())
 	{
 		throw string("Table is full\n");
 	}
@@ -155,8 +162,7 @@ void HashTable<TKey, TData>::insert(const TKey& key,TData* _data)
 template <class TKey, class TData>
 void HashTable<TKey, TData>::remove(const TKey& key)
 {
-	//СДЕЛАТЬ  исемпти
-	if (count == 0)
+	if (empty())
 	{
 		throw string("Table is empty\n");
 	}

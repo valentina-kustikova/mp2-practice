@@ -76,7 +76,8 @@ void func(ScanTable<string, TPolynom>& scan_t, SortedTable<string, TPolynom>& so
 			try {
 				string polynom_str = " ";
 				cin >> polynom_str;
-			
+				TPolynom* polynom = new TPolynom(polynom_str);
+				polynom_str = polynom->GetString();
 				scan_t.remove(polynom_str);
 				sort_t.remove(polynom_str);
 				hash_t.remove(polynom_str);
@@ -123,6 +124,7 @@ void func(ScanTable<string, TPolynom>& scan_t, SortedTable<string, TPolynom>& so
 		}		
 		case 5:
 		{
+			cout << "Заходите ещё! :)\n";
 			return;
 			break;
 		}

@@ -77,7 +77,6 @@ TEST(SortedTable, can_crate_copi_Sortedtable_from_scantable_is_not_sort) {
 	st->insert(51, str3);
 
 	SortedTable<int, string> st1(st);
-	cout << st1;
 	EXPECT_EQ(*st->find(52)->data, *st1.find(52)->data);
 }
 
