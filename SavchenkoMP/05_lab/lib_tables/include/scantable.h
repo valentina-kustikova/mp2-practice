@@ -83,6 +83,9 @@ void ScanTable<TKey, TData>::insert(const TKey& _key, TData* _data) {
 		recs[count] = new TabRecord<TKey, TData>(_key, _data);
 		count++;
 	}
+	else {
+		throw std::string("ERROR: Record is already exist.");
+	}
 }
 
 template <class TKey, class TData>

@@ -155,7 +155,9 @@ void ArrayHashTable<TKey, TData>::insert(const TKey& _key, TData* _data) {
 	}
 	
 	TabRecord<TKey, TData>* rec = find(_key);
-	if (rec != nullptr && rec->key == _key) return;
+	if (rec != nullptr && rec->key == _key) {
+		throw std::string("ERROR: Record is already exist.");
+	}
 
 	if (rec != nullptr && free_pos_ind != -1) {
 		curr_pos = free_pos_ind;
