@@ -97,12 +97,8 @@ TEST(ScanTable, BracketOperator) {
 }
 
 
+//////////////////////////////////////////////////////////
 
-// ParameterizedConstructorTest
-//TEST(ScanTable, ParameterizedConstructorTest) {
-//	int size = 3;
-//	ASSERT_NO_THROW(ScanTable<int, string> st(3)); // œŒ◊≈Ã” –”√¿≈“—ﬂ Õ¿ <,> ???
-//}
 
 TEST(ScanTable, ParameterizedConstructorTest_IsFull) {
 	int size = 3;
@@ -275,22 +271,230 @@ TEST(ScanTable, FindTest_NotFound_Pointer) {
 	EXPECT_EQ(nullptr, find);
 }
 
-// IndexingOperatorTest
-TEST(ScanTable, IndexingOperatorTest) {
 
+///////////////////////////////////////////////////////
+
+
+TEST(ScanTable, copy_constructor_test)
+{
+	ScanTable<int, string> st(3);
+	st.insert(1, &string("abc"));
+
+	ScanTable<int, string> copiedSt(st);
+
+	EXPECT_EQ(st.find(1)->key, copiedSt.find(1)->key);
+}
+// insert Test
+TEST(ScanTable, insert_test_empty)
+{
+	ScanTable<int, string> st(3);
+
+	string data = "Data1";
+
+	EXPECT_NO_THROW(st.insert(5, &data));
 }
 
-// RemoveTest
-TEST(ScanTable, RemoveTest) {
+TEST(ScanTable, insert_test_not_empty)
+{
+	ScanTable<int, string> st(3);
 
+	string data1 = "Data1";
+	string data2 = "Data2";
+	st.insert(5, &data1);
+
+	EXPECT_NO_THROW(st.insert(10, &data2));
 }
 
-// CopyConstructorTest
-TEST(ScanTable, CopyConstructorTest) {
+TEST(ScanTable, insert_test_full)
+{
+	ScanTable<int, string> st(3);
 
+	string data1 = "Data1";
+	string data2 = "Data2";
+	string data3 = "Data3";
+	string data4 = "Data4";
+	st.insert(2, &data1);
+	st.insert(3, &data2);
+	st.insert(5, &data3);
+
+	EXPECT_ANY_THROW(st.insert(10, &data4));
+}
+// remove Test
+TEST(ScanTable, remove_test)
+{
+	ScanTable<int, string> st(3);
+
+	string data1 = "Data1";
+	string  data2 = "Data2";
+	st.insert(5, &data1);
+	st.insert(10, &data2);
+
+	st.remove(5);
+
+	EXPECT_EQ(st.get_size(), 1);
+}
+TEST(ScanTable, remove_test_empty)
+{
+	ScanTable<int, string> st(5);
+
+	ASSERT_ANY_THROW(st.remove(1));
+}
+TEST(ScanTable, remove_non_existent_test)
+{
+	ScanTable<int, string> table(5);
+	string data1 = "Data1";
+	string data2 = "Data2";
+	table.insert(5, &data1);
+	table.insert(10, &data2);
+	ASSERT_ANY_THROW(table.remove(3));
+}
+// find Test
+TEST(ScanTable, find_test)
+{
+
+	ScanTable<int, string> st(5);
+
+	string data1 = "Data1";
+	string data2 = "Data2";
+	st.insert(5, &data1);
+	st.insert(10, &data2);
+
+	EXPECT_NO_THROW(st.find(1));
 }
 
-// TypeCastCOnstructorTest
-TEST(ScanTable, TypeCastCOnstructorTest) {
+TEST(ScanTable, find_test_key)
+{
+	ScanTable<int, string> st(5);
 
+	string data = "Data1";
+	st.insert(5, &data);
+
+	TabRecord<int, string>* find = st.find(5);
+
+	EXPECT_EQ(find->key, 5);
+}
+
+TEST(ScanTable, find_test_data)
+{
+	ScanTable<int, string> st(5);
+
+	string data = "Data1";
+	st.insert(5, &data);
+
+	TabRecord<int, string>* find = st.find(5);
+
+	EXPECT_EQ(data, *find->data);
+}
+
+TEST(ScanTable, test_not_find)
+{
+	ScanTable<int, string> st(3);
+
+	string data = "Data1";
+	st.insert(5, &data);
+
+	EXPECT_EQ(st.find(2), nullptr);
+}
+// get_curr Test
+TEST(ScanTable, get_key_test)
+{
+	ScanTable<int, string> st(3);
+
+	string data = "Data1";
+	st.insert(5, &data);
+	st.reset();
+	
+	TabRecord<int, string>* tab = st.get_curr();
+
+	EXPECT_EQ(tab->key, 5);
+	EXPECT_EQ(*tab->data, data);
+}
+//Is Full
+TEST(ScanTable, is_full_test_false)
+{
+	ScanTable<int, string> st(3);
+
+	ASSERT_FALSE(st.full());
+}
+
+TEST(ScanTable, is_full_test_false_with_elements)
+{
+	ScanTable<int, string> st(3);
+	string data1 = "Data1";
+	st.insert(5, &data1);
+	ASSERT_FALSE(st.full());
+}
+
+TEST(ScanTable, is_full_test_true)
+{
+	ScanTable<int, string> st(1);
+
+	string data = "Data1";
+	st.insert(5, &data);
+	ASSERT_TRUE(st.full());
+}
+//Is Empty
+TEST(ScanTable, is_empty_test_false)
+{
+	ScanTable<int, string> st(3);
+
+	string data = "Data1";
+	st.insert(5, &data);
+	ASSERT_FALSE(st.empty());
+}
+
+TEST(ScanTable, is_empty_test_true)
+{
+	ScanTable<int, string> st(3);
+
+	ASSERT_TRUE(st.empty());
+}
+//Count
+TEST(ScanTable, get_count_test)
+{
+	ScanTable<int, string> st(3);
+
+	string data = "Data1";
+	st.insert(5, &data);
+	EXPECT_EQ(st.get_size(), 1);
+}
+//Is tab Ended
+TEST(ScanTable, is_tab_ended_test)
+{
+	ScanTable<int, string> st(3);
+
+	ASSERT_FALSE(st.ended());
+}
+TEST(ScanTable, is_tab_ended_true_test)
+{
+	ScanTable<int, string> st(1);
+	string data = "Data1";
+	st.insert(5, &data);
+	st.reset();
+	st.next();
+
+	ASSERT_TRUE(st.ended());
+}
+// reset
+TEST(ScanTable, reset_test)
+{
+	ScanTable<int, string> st(3);
+
+	ASSERT_FALSE(st.reset());
+}
+//next
+TEST(ScanTable, next_test)
+{
+	ScanTable<int, string> st(3);
+
+	ASSERT_FALSE(st.next());
+}
+TEST(ScanTable, next_test_true)
+{
+	ScanTable<int, string> st(1);
+	string data = "Data1";
+	st.insert(5, &data);
+	st.reset();
+	st.next();
+	ASSERT_TRUE(st.next());
 }
