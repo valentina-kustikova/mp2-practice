@@ -65,9 +65,7 @@ ScanTable<TKey, TData>::ScanTable(const ScanTable<TKey, TData>& st) {
 
 	recs = new TabRecord<TKey, TData>* [max_size];
 	for (int i = 0; i < count; i++) {
-		TKey key = st.recs[i]->key;
-		TData* data = st.recs[i]->data;
-		recs[i] = new TabRecord<TKey, TData>(key, data);
+		recs[i] = new TabRecord<TKey, TData>(st.recs[i]->key, st.recs[i]->data);
 	}
 }
 
@@ -105,12 +103,10 @@ void ScanTable<TKey, TData>::insert(const TKey& _key, TData* _data) {
 		throw "ERROR: Table is full.";
 	}
 
-	if (find(_key) == nullptr) {
-		recs[count++] = new TabRecord<TKey, TData>(_key, _data);
-	}
-	else {
+	if (find(_key) != nullptr) {
 		throw "Key repeat, it's not good";
 	}
+	recs[count++] = new TabRecord<TKey, TData>(_key, _data);
 }
 
 template <typename TKey, typename TData>
