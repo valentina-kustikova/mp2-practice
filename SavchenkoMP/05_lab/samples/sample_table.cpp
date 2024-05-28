@@ -43,8 +43,11 @@ void remove();
 void operations();
 void print_tables();
 void select_tables();
+
 void print_selected_tables();
+
 void save_polynom(const string& name, TPolynom& p);
+void remove_polynom(const string& name);
 
 
 int main() {
@@ -130,35 +133,7 @@ void insert() {
 		TPolynom new_polynom(name);
 
 		cout << endl;
-		if (flag_scan) {
-			try {
-				scan_table.insert(name, &new_polynom);
-				cout << "ScanTable.insert(): OK" << endl;
-			}
-			catch (string exp) {
-				cout << "ScanTable.insert(): " << exp << endl;
-			}
-		}
-
-		if (flag_sorted) {
-			try {
-				sorted_table.insert(name, &new_polynom);
-				cout << "SortedTable.insert(): OK" << endl;
-			}
-			catch (string exp) {
-				cout << "SortedTable.insert(): " << exp << endl;
-			}
-		}
-
-		if (flag_array_hash) {
-			try {
-				array_hash_table.insert(name, &new_polynom);
-				cout << "ArrayHashTable.insert(): OK" << endl;
-			}
-			catch (string exp) {
-				cout << "ArrayHashTable.insert(): " << exp << endl;
-			}
-		}
+		save_polynom(name, new_polynom);
 	}
 	catch (string exp) {
 		cout << exp << endl;
@@ -191,36 +166,7 @@ void remove() {
 		getline(cin, name);
 
 		cout << endl;
-
-		if (flag_scan) {
-			try {
-				scan_table.remove(name);
-				cout << "ScanTable.remove(): OK" << endl;
-			}
-			catch (string exp) {
-				cout << "ScanTable.remove(): " << exp << endl;
-			}
-		}
-
-		if (flag_sorted) {
-			try {
-				sorted_table.remove(name);
-				cout << "SortedTable.remove(): OK" << endl;
-			}
-			catch (string exp) {
-				cout << "SortedTable.remove(): " << exp << endl;
-			}
-		}
-
-		if (flag_array_hash) {
-			try {
-				array_hash_table.remove(name);
-				cout << "ArrayHashTable.remove(): OK" << endl;
-			}
-			catch (string exp) {
-				cout << "ArrayHashTable.remove(): " << exp << endl;
-			}
-		}
+		remove_polynom(name);
 	}
 	catch (string exp) {
 		cout << exp << endl;
@@ -317,76 +263,64 @@ void operations() {
 
 		system("cls");
 		cout << "PATH:menu\\operations\\" << endl;
-		//select_tables();
 
 		TPolynom result("0");
 		if (op == SUM) {
 			result = *tab_polynom1->data + *tab_polynom2->data;
 			result_name = "(" + name1 + ") + (" + name2 + ")";
-			cout << result_name << " = " << result << endl << endl;
 		}
 
 		else if (op == SUB) {
 			result = *tab_polynom1->data - *tab_polynom2->data;
 			result_name = "(" + name1 + ") - (" + name2 + ")";
-			cout << result_name << " = " << result << endl << endl;
 		}
 
 		else if (op == MUL) {
 			result = *tab_polynom1->data * *tab_polynom2->data;
 			result_name = "(" + name1 + ") * (" + name2 + ")";
-			cout << result_name << " = " << result << endl << endl;
 		}
 
 		else if (op == DIFF_X) {
 			result = tab_polynom1->data->diff_x();
 			result_name = "(" + name1 + ")'x";
-			cout << result_name << " = " << result << endl << endl;
 		}
 
 		else if (op == DIFF_Y) {
 			result = tab_polynom1->data->diff_y();
 			result_name = "(" + name1 + ")'y";
-			cout << result_name << " = " << result << endl << endl;
 		}
 
 		else if (op == DIFF_Z) {
 			result = tab_polynom1->data->diff_z();
 			result_name = "(" + name1 + ")'z";
-			cout << result_name << " = " << result << endl << endl;
 		}
 
-		cout << "Add result to this table? 1/0" << endl;
+		cout << result_name << " = " << result << endl << endl;
+
+		cout << "Add result in tables? (1/0)" << endl;
 		int ans = 0;
 		cin >> ans;
-		if (ans) {
-			if (tab == SCAN) {
-				try {
-					scan_table.insert(result_name, &result);
-					cout << "SortedTable.insert(): OK" << endl;
-				}
-				catch (string exp) {
-					cout << "SortedTable.insert(): " << exp << endl;
-				}
+		if (ans == 1) {
+			cout << endl;
+			print_selected_tables();
+			cout << "\nThe result will be added to the selected tables." << endl;
+			cout << "Change the selected tables? (1/0)" << endl;
+
+			cin >> ans;
+			if (ans == 1) {
+				select_tables();
+				system("cls");
+				cout << "PATH:menu\\operations\\" << endl;
+				cout << result_name << " = " << result << endl << endl;
+				print_selected_tables();
 			}
-			if (tab == SORTED) {
-				try {
-					sorted_table.insert(result_name, &result);
-					cout << "SortedTable.insert(): OK" << endl;
-				}
-				catch (string exp) {
-					cout << "SortedTable.insert(): " << exp << endl;
-				}
+			if (!(flag_scan || flag_sorted || flag_array_hash)) {
+				cout << "Tables not selected." << endl;
+				system("pause");
+				return;
 			}
-			if (tab == ARRAY_HASH) {
-				try {
-					array_hash_table.insert(result_name, &result);
-					cout << "SortedTable.insert(): OK" << endl;
-				}
-				catch (string exp) {
-					cout << "SortedTable.insert(): " << exp << endl;
-				}
-			}
+			cout << endl;
+			save_polynom(result_name, result);
 		}
 		system("pause");
 	}
@@ -448,6 +382,8 @@ void select_tables() {
 	} while (st != 0);
 }
 
+
+
 void print_selected_tables() {
 	cout << "SELECTED TABLES: ";
 	if (flag_scan) cout << "ScanTable ";
@@ -456,14 +392,16 @@ void print_selected_tables() {
 	cout << endl;
 }
 
+
+
 void save_polynom(const string& name, TPolynom& polynom) {
 	if (flag_scan) {
 		try {
 			scan_table.insert(name, &polynom);
-			cout << "SortedTable.insert(): OK" << endl;
+			cout << "ScanTable.insert(): OK" << endl;
 		}
 		catch (string exp) {
-			cout << "SortedTable.insert(): " << exp << endl;
+			cout << "ScanTable.insert(): " << exp << endl;
 		}
 	}
 	if (flag_sorted) {
@@ -478,10 +416,42 @@ void save_polynom(const string& name, TPolynom& polynom) {
 	if (flag_array_hash) {
 		try {
 			array_hash_table.insert(name, &polynom);
-			cout << "SortedTable.insert(): OK" << endl;
+			cout << "ArrayHashTable.insert(): OK" << endl;
 		}
 		catch (string exp) {
-			cout << "SortedTable.insert(): " << exp << endl;
+			cout << "ArrayHashTable.insert(): " << exp << endl;
+		}
+	}
+}
+
+void remove_polynom(const string& name) {
+	if (flag_scan) {
+		try {
+			scan_table.remove(name);
+			cout << "ScanTable.remove(): OK" << endl;
+		}
+		catch (string exp) {
+			cout << "ScanTable.remove(): " << exp << endl;
+		}
+	}
+
+	if (flag_sorted) {
+		try {
+			sorted_table.remove(name);
+			cout << "SortedTable.remove(): OK" << endl;
+		}
+		catch (string exp) {
+			cout << "SortedTable.remove(): " << exp << endl;
+		}
+	}
+
+	if (flag_array_hash) {
+		try {
+			array_hash_table.remove(name);
+			cout << "ArrayHashTable.remove(): OK" << endl;
+		}
+		catch (string exp) {
+			cout << "ArrayHashTable.remove(): " << exp << endl;
 		}
 	}
 }
