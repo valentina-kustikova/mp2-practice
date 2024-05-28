@@ -113,7 +113,7 @@ const headlist<TData>& headlist<TData>::operator=(const headlist<TData>& l) {
 		ltmp = ltmp->pNext;
 	}
 	pLast = tmp;
-	pLast->pNext = pHead;
+	pLast->pNext = pHead;//
 	pHead->pNext = pFirst;
 	pCurr = pFirst;
 	pPrev = nullptr;

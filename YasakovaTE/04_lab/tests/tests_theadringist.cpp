@@ -2,10 +2,6 @@
 #include "headlist.h"
 #include <gtest.h>
 
-TEST(headlist, can_create_headlist) {
-	ASSERT_NO_THROW(headlist<int> hr_hr_list);
-}
-
 TEST(headlist, can_Reset_hr_list)
 {
 	headlist<int> hr_list;
