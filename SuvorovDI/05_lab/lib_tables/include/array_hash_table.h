@@ -75,16 +75,17 @@ ArrayHashTable<TKey, TData>::ArrayHashTable(int n, int step) : HashTable(n) {
 template <typename TKey, typename TData>
 ArrayHashTable<TKey, TData>::~ArrayHashTable()
 {
-  delete pMark;
   for (int i = 0; i < maxSize; i++)
   {
-    if (recs[i] != nullptr) delete recs[i];
+    if (recs[i] != nullptr && recs[i] != pMark) delete recs[i];
   }
+  delete pMark;
   delete[] recs;
 }
 
 template <typename TKey, typename TData>
-ArrayHashTable<TKey, TData>::ArrayHashTable(const ArrayHashTable<TKey, TData>& ahtable) : ArrayHashTable<TKey, TData>(ahtable.maxSize, ahtable.hashStep) {
+ArrayHashTable<TKey, TData>::ArrayHashTable(const ArrayHashTable<TKey, TData>& ahtable) : 
+    ArrayHashTable<TKey, TData>(ahtable.maxSize, ahtable.hashStep) {
   if (ahtable.IsEmpty())
   {
     return;
@@ -95,6 +96,7 @@ ArrayHashTable<TKey, TData>::ArrayHashTable(const ArrayHashTable<TKey, TData>& a
   for(int i = 0; i < maxSize; i++)
   {
     if (ahtable.recs[i] == nullptr) { recs[i] = nullptr; }
+    else if (ahtable.recs[i] == ahtable.pMark) { recs[i] = pMark; }
     else { recs[i] = new TabRecord<TKey, TData>(ahtable.recs[i]->key, ahtable.recs[i]->data); }
   }
 }

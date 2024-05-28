@@ -132,7 +132,7 @@ TEST(ArrayHashTable, try_to_remove_an_existing_element) {
 	s_table.Insert("third", new int(9));
 	s_table.Remove("first");
 
-	EXPECT_TRUE(s_table.Find("second") == nullptr);
+	EXPECT_TRUE(s_table.Find("first") == nullptr);
 }
 
 TEST(ArrayHashTable, try_to_remove_a_not_existing_element) {

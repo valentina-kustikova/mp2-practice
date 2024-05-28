@@ -4,10 +4,10 @@
 int Tables::choose_table() {
     int choice;
     std::cout << "TABLES" << "\n";
-    std::cout << "1)Scan Table" << "\n";
-    std::cout << "2)Sorted Table" << "\n";
-    std::cout << "3)Array Hash Table" << "\n";
-    std::cout << "0)CANCEL" << "\n";
+    std::cout << "1) Scan Table" << "\n";
+    std::cout << "2) Sorted Table" << "\n";
+    std::cout << "3) Array Hash Table" << "\n";
+    std::cout << "0) CANCEL" << "\n";
     std::cout << "Enter:";
     if (!(std::cin >> choice)) {
       std::cout << "Invalid input." << "\n";
@@ -22,15 +22,15 @@ void Tables::add_one(const std::string& str) {
   switch (choose_table()) {
   case 0: return;
   case 1: {
-    scanTable.Insert(str,polynom);
+    scanTable.Insert(str, polynom);
     break;
   }
   case 2: {
-    sortedTable.Insert(str,polynom);
+    sortedTable.Insert(str, polynom);
     break;
   }
   case 3: {
-    arrayHashTable.Insert(str,polynom);
+    arrayHashTable.Insert(str, polynom);
     break;
   }
   }
@@ -44,7 +44,7 @@ void Tables::add(const std::string& str) {
   std::cout << "Enter:";
   std::cin >> choice;
   switch (choice) {
-  case 0:return;
+  case 0: return;
   case 1: { add_one(str); break; }
   case 2: {
     TPolynom* polynom = new TPolynom(str);
@@ -103,23 +103,23 @@ void Tables::poly_ops() {
     std::cout << "Enter second polynomial: ";
     std::cin >> pol_name2;
 
-    TabRecord<std::string, TPolynom>* rec2 =find(pol_name2);
+    TabRecord<std::string, TPolynom>* rec2 = find(pol_name2);
     if (rec2 != nullptr) {
       TPolynom p1 = *rec1->GetData();
       TPolynom p2 = *rec2->GetData();
       TPolynom p3;
 
-      int choice;
-      std::cout << "1)+" << "\n";
-      std::cout << "2)-" << "\n";
-      std::cout << "3)*" << "\n";
+      char choice;
+      std::cout << "1) -> +" << "\n";
+      std::cout << "2) -> -" << "\n";
+      std::cout << "3) -> *" << "\n";
       std::cout << "Enter:";
       std::cin >> choice;
       switch(choice){
       case 0:return;
-      case 1: { p3 = p1 + p2; break; }
-      case 2: { p3 = p1 - p2; break; }
-      case 3: { p3 = p1 * p2; break; }
+      case '+': { p3 = p1 + p2; break; }
+      case '-': { p3 = p1 - p2; break; }
+      case '*': { p3 = p1 * p2; break; }
       }
       std::cout << p3;
       add(p3.ToString());

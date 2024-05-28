@@ -13,15 +13,14 @@ public:
   ScanTable(int maxSize);
   ScanTable(const ScanTable<TKey, TData> &t);
   ~ScanTable() override {
-    if (!IsEmpty())
-      for (int i = 0; i < count; i++)
-      {
-        delete recs[i];
-      }
+    for (int i = 0; i < count; i++)
+    {
+      delete recs[i];
+    }
     delete[] recs;
   }
 
-  TabRecord<TKey, TData>* Find(TKey key) override; // const??
+  TabRecord<TKey, TData>* Find(TKey key) override;
   void Insert(TKey key, TData *data) override;
   void Remove(TKey key) override;
 
@@ -58,7 +57,11 @@ public:
 template <typename TKey, typename TData>
 ScanTable<TKey, TData>::ScanTable(int size) : Table<TKey, TData>(size)
 {
-  recs = new TabRecord<TKey, TData>* [size];
+  recs = new TabRecord<TKey, TData>*[size];
+  for (int i = 0; i < maxSize; i++)
+  {
+    recs[i] = nullptr;
+  }
 }
 
 template <typename TKey, typename TData>
@@ -66,7 +69,7 @@ ScanTable<TKey, TData>::ScanTable(const ScanTable<TKey, TData>& t) : Table<TKey,
 {
   if (t.IsEmpty())
   {
-    recs = new TabRecord<TKey, TData>* [maxSize];
+    recs = new TabRecord<TKey, TData>* [maxSize];// recs[i] = nullptr;
     return;
   }
 

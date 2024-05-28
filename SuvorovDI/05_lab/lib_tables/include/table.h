@@ -8,36 +8,16 @@ struct TabRecord
   TKey key;
   TData *data;
 
-  TabRecord()
-  {
-    this->key = TKey();
-    this->data = nullptr;
-  }
+  TabRecord() : key(TKey()), data(nullptr) { }
 
-  TabRecord(TKey key, TData *data)
-  {
-    this->key = key;
-    this->data = new TData(*data);
-  }
+  TabRecord(TKey key, TData* data) : key(TKey()), data(nullptr) { }
 
-  TabRecord<TKey, TData>& operator=(const TabRecord<TKey, TData> &r)
-  {
-    if (this == &r) 
-      return *this;
-    
-    key = r.key;
-    data = new TData(r.data);
-    return *this;
-  }
+  const TabRecord<TKey, TData>& operator=(const TabRecord<TKey, TData>& r);
 
-  bool operator==(const TabRecord<TKey, TData> &r) const
-  {
-    return (key == r.key) && (*data == *r.data);
-  }
+  bool operator==(const TabRecord<TKey, TData>& r) const
+  { return (key == r.key) && (*data == *r.data); }
 
-  TData* GetData() const {
-    return data;
-  }
+  TData* GetData() const { return data; }
 
   friend std::ostream& operator<<(std::ostream& out, const TabRecord<TKey, TData>& r)
   {
@@ -45,6 +25,17 @@ struct TabRecord
     return out;
   }
 };
+
+template <typename TKey, typename TData>
+const TabRecord<TKey, TData>& TabRecord<TKey, TData>::operator=(const TabRecord<TKey, TData>& r)
+{
+  if (this == &r)
+    return *this;
+
+  key = r.key;
+  data = new TData(r.data);
+  return *this;
+}
 
 template <typename TKey, typename TData>
 class Table
@@ -64,7 +55,7 @@ public:
     count = 0;
     currPos = -1;
   }
-  virtual ~Table() = 0;
+  virtual ~Table() { };
   virtual TabRecord<TKey, TData> *Find(TKey key) = 0;
   virtual void Insert(TKey key, TData *data) = 0;
   virtual void Remove(TKey key) = 0;
@@ -92,6 +83,3 @@ public:
   }
   virtual TabRecord<TKey, TData>* GetCurrent() const = 0;
 };
-
-template <typename TKey, typename TData>
-Table<TKey, TData>::~Table() {}
