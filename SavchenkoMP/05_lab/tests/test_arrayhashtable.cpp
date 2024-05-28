@@ -1,6 +1,8 @@
-#include <gtest.h>
+п»ї#include <gtest.h>
 
 #include "arrayhashtable.h"
+
+using namespace std;
 
 /*
 TEST(ArrayHashTable, TEST_NAME) {
@@ -8,7 +10,7 @@ TEST(ArrayHashTable, TEST_NAME) {
 }
 */
 
-// Тест конструктора по умолчанию
+// РўРµСЃС‚ РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂР° РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ
 TEST(ArrayHashTable, DefaultConstructor) {
     ArrayHashTable<int, std::string> table;
     EXPECT_EQ(table.get_size(), 0);
@@ -17,7 +19,7 @@ TEST(ArrayHashTable, DefaultConstructor) {
     EXPECT_FALSE(table.full());
 }
 
-// Тест конструктора с параметрами
+// РўРµСЃС‚ РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂР° СЃ РїР°СЂР°РјРµС‚СЂР°РјРё
 TEST(ArrayHashTable, ParameterizedConstructor) {
     int max_size = 20;
     size_t hash_step = 7;
@@ -28,7 +30,7 @@ TEST(ArrayHashTable, ParameterizedConstructor) {
     EXPECT_FALSE(table.full());
 }
 
-// Тест конструктора копирования
+// РўРµСЃС‚ РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂР° РєРѕРїРёСЂРѕРІР°РЅРёСЏ
 TEST(ArrayHashTable, CopyConstructor) {
     ArrayHashTable<int, std::string> original(10, 3);
     std::string data1 = "data1";
@@ -42,7 +44,7 @@ TEST(ArrayHashTable, CopyConstructor) {
     EXPECT_EQ(*copy.find(2)->data, "data2");
 }
 
-// Тест метода insert
+// РўРµСЃС‚ РјРµС‚РѕРґР° insert
 TEST(ArrayHashTable, Insert) {
     ArrayHashTable<int, std::string> table;
     std::string data1 = "data1";
@@ -58,7 +60,7 @@ TEST(ArrayHashTable, Insert) {
     EXPECT_EQ(*table.find(2)->data, "data2");
 }
 
-// Тест метода remove
+// РўРµСЃС‚ РјРµС‚РѕРґР° remove
 TEST(ArrayHashTable, Remove) {
     ArrayHashTable<int, std::string> table;
     std::string data1 = "data1";
@@ -78,7 +80,7 @@ TEST(ArrayHashTable, Remove) {
     EXPECT_EQ(table.find(2), nullptr);
 }
 
-// Тест метода find
+// РўРµСЃС‚ РјРµС‚РѕРґР° find
 TEST(ArrayHashTable, Find) {
     ArrayHashTable<int, std::string> table;
     std::string data = "test_data";
@@ -92,7 +94,7 @@ TEST(ArrayHashTable, Find) {
     EXPECT_EQ(table.find(2), nullptr);
 }
 
-// Тест перегрузки оператора []
+// РўРµСЃС‚ РїРµСЂРµРіСЂСѓР·РєРё РѕРїРµСЂР°С‚РѕСЂР° []
 TEST(ArrayHashTable, BracketOperator) {
     ArrayHashTable<int, std::string> table;
     std::string data = "test_data";
@@ -106,7 +108,7 @@ TEST(ArrayHashTable, BracketOperator) {
     EXPECT_EQ(table[2], nullptr);
 }
 
-// Тест методов reset и next
+// РўРµСЃС‚ РјРµС‚РѕРґРѕРІ reset Рё next
 TEST(ArrayHashTable, ResetAndNext) {
     ArrayHashTable<int, std::string> table;
     std::string data1 = "data1";
@@ -119,5 +121,217 @@ TEST(ArrayHashTable, ResetAndNext) {
     EXPECT_EQ(*table.find(1)->data, "data1");
     EXPECT_FALSE(table.next());
     EXPECT_EQ(*table.find(2)->data, "data2");
-    EXPECT_FALSE(table.next());
+    EXPECT_TRUE(table.next());
+}
+
+
+/////////////////////////////////////////////////////
+
+
+TEST(ArrayHashTable, copy_constructor_test)
+{
+    ArrayHashTable<string, int> table(5, 1);
+    int data1 = 100;
+    int data2 = 200;
+    table.insert("key1", &data1);
+    table.insert("key2", &data2);
+
+    ArrayHashTable<string, int> copy_table(table);
+    EXPECT_NE(copy_table.find("key1"), nullptr);
+}
+// insert
+TEST(ArrayHashTable, insert_test)
+{
+    ArrayHashTable<string, int> table(5, 1);
+
+    int data1 = 100;
+    int data2 = 200;
+    table.insert("key1", &data1);
+    table.insert("key2", &data2);
+
+
+    EXPECT_NE(table.find("key1"), nullptr);
+}
+TEST(ArrayHashTable, insert_to_full_table_test)
+{
+    ArrayHashTable<string, int> table(2, 1);
+
+    int data1 = 100;
+    int data2 = 200;
+    int data3 = 300;
+    table.insert("key1", &data1);
+    table.insert("key2", &data2);
+
+    ASSERT_ANY_THROW(table.insert("key3", &data3));
+}
+// remove
+TEST(ArrayHashTable, remove_test)
+{
+    ArrayHashTable<string, int> table(10, 3);
+
+    int data1 = 100;
+    table.insert("key1", &data1);
+    table.remove("key1");
+
+    EXPECT_EQ(table.find("key1"), nullptr);
+}
+TEST(ArrayHashTable, remove_error_test)
+{
+    ArrayHashTable<string, int> table(10, 3);
+
+    ASSERT_ANY_THROW(table.remove("key4"));
+}
+// find
+TEST(ArrayHashTable, find_test)
+{
+    ArrayHashTable<string, int> table(5, 1);
+
+    int data1 = 100;
+    table.insert("key1", &data1);
+
+    TabRecord<string, int>* foundRecord = table.find("key1");
+    EXPECT_EQ(foundRecord->key, "key1");
+}
+TEST(ArrayHashTable, find_non_existent_test) {
+    ArrayHashTable<string, int> table(5, 1);
+
+    int data1 = 100;
+    table.insert("key1", &data1);
+
+    TabRecord<string, int>* foundRecord = table.find("key3");
+    EXPECT_EQ(foundRecord, nullptr);
+}
+// reset
+TEST(ArrayHashTable, reset_test)
+{
+    ArrayHashTable<string, int> table(5, 1);
+
+    // Г‚Г±ГІГ ГўГЁГ¬ ГЅГ«ГҐГ¬ГҐГ­ГІГ» Гў ГІГ ГЎГ«ГЁГ¶Гі
+    int data1 = 100;
+    table.insert("key1", &data1);
+    int data2 = 200;
+    table.insert("key2", &data2);
+
+    ASSERT_FALSE(table.reset());
+}
+TEST(ArrayHashTable, reset_test_key)
+{
+    ArrayHashTable<string, int> table(5, 1);
+
+    int data1 = 100;
+    table.insert("key1", &data1);
+    int data2 = 200;
+    table.insert("key2", &data2);
+    table.reset();
+    EXPECT_EQ(table.get_curr()->key, "key1");
+}
+// next
+TEST(ArrayHashTable, next_test)
+{
+    ArrayHashTable<string, int> table(10, 3);
+
+    int data1 = 100;
+    table.insert("key1", &data1);
+    int data2 = 200;
+    table.insert("key2", &data2);
+
+    table.reset();
+    table.next();
+    EXPECT_EQ(table.get_curr()->key, "key2");
+}
+TEST(ArrayHashTable, next_test_end)
+{
+    ArrayHashTable<string, int> table(5, 1);
+
+    int data1 = 100;
+    table.insert("key1", &data1);
+    int data2 = 200;
+    table.insert("key2", &data2);
+
+    table.reset();
+    table.next();
+    table.next();
+    ASSERT_TRUE(table.next());
+}
+//GetKey
+TEST(ArrayHashTable, GetKeyTest)
+{
+    ArrayHashTable<string, int> table(5, 1);
+
+    int data = 5;
+    string key = "test data";
+    table.insert(key, &data);
+
+    string retrievedKey = table.get_curr()->key;
+
+    EXPECT_EQ(retrievedKey, key);
+}
+//GetData
+TEST(ArrayHashTable, GetDataTest)
+{
+    ArrayHashTable<string, int> table(5, 1);
+
+    int data = 5;
+    string key = "test data";
+    table.insert(key, &data);
+
+    int* retrievedData = table.get_curr()->data;
+
+    EXPECT_EQ(*retrievedData, data);
+}
+//Is full
+TEST(ArrayHashTable, is_full_test_false)
+{
+    ArrayHashTable<string, string> ht(3, 1);
+
+    ASSERT_FALSE(ht.full());
+}
+
+TEST(ArrayHashTable, is_full_test_false_with_elements)
+{
+    ArrayHashTable<string, string> ht(3, 1);
+    string data = "abc";
+    string key = "one";
+    ht.insert(key, &data);
+    ASSERT_FALSE(ht.full());
+}
+
+TEST(ArrayHashTable, is_full_test_true)
+{
+    ArrayHashTable<string, string> ht(2, 1);
+    string key = "one";
+    string data = "abc";
+    ht.insert(key, &data);
+    string key2 = "two";
+    string data2 = "cbc";
+    ht.insert(key2, &data2);
+    ASSERT_TRUE(ht.full());
+}
+//Is Empty
+TEST(ArrayHashTable, is_empty_test_false)
+{
+    ArrayHashTable<string, string> ht(3, 1);
+    string key = "one";
+    string data = "abc";
+    ht.insert(key, &data);
+    ASSERT_FALSE(ht.empty());
+}
+
+TEST(ArrayHashTable, is_empty_test_true)
+{
+    ArrayHashTable<string, string> ht(3, 1);
+
+    ASSERT_TRUE(ht.empty());
+}
+//Count
+TEST(ArrayHashTable, get_count_test)
+{
+    ArrayHashTable<string, string> ht(3, 1);
+    string key = "one";
+    string data = "abc";
+    ht.insert(key, &data);
+    string key2 = "two";
+    string data2 = "cbc";
+    ht.insert(key2, &data2);
+    EXPECT_EQ(ht.get_size(), 2);
 }
