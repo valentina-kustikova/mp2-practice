@@ -93,9 +93,9 @@ TList<T>::TList()
 }
 
 template <typename T>
-TList<T>::TList(const TNode<T>* pFirst)
+TList<T>::TList(const TNode<T>* pF)
 {
-	if (pFirst == nullptr)
+	if (pF == nullptr)
 	{
 		pFirst = nullptr;
 		pLast = nullptr;
@@ -104,10 +104,10 @@ TList<T>::TList(const TNode<T>* pFirst)
 		pStop = nullptr;
 		return;
 	}
-	TNode<T>* tmp = pFirst->pNext;
-	this->pFirst = new TNode<T>(pFirst->data);
-	this->pLast = this->pFirst;
-	pCurr = this->pFirst;
+	TNode<T>* tmp = pF->pNext;
+	pFirst = new TNode<T>(pF->data);
+	pLast = pFirst;
+	pCurr = pFirst;
 	while (tmp != nullptr) {
 		pLast->pNext = new TNode<T>(tmp->data);
 		pLast = pLast->pNext;
@@ -121,7 +121,7 @@ TList<T>::TList(const TNode<T>* pFirst)
 template <typename T>
 TList<T>::TList(const TList<T>& TList)
 {
-	if (TList.pFirst == nullptr)
+	if (TList.pFirst == TList.pStop)
 	{
 		pFirst = nullptr;
 		pLast = nullptr;
@@ -340,6 +340,7 @@ void TList<T>::DeleteFirst()
 		throw std::exception("empty list(DelF)");
 	if (pFirst == pLast)
 	{
+		delete pFirst;
 		pFirst = pStop; 
 		return;
 	}

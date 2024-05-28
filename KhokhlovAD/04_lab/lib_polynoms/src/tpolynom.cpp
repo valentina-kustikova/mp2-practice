@@ -1,11 +1,5 @@
 #include <tpolynom.h>
 
-
-TPolynom::TPolynom()
-{
-	;
-}
-
 TPolynom::TPolynom(const string& name)
 {
 	if (name[0] == '\0')
@@ -48,7 +42,7 @@ TPolynom::TPolynom(const string& name)
 	update();
 }
 
-TPolynom::TPolynom(const TRingList<TMonom> monoms)
+TPolynom::TPolynom(const TRingList<TMonom>& monoms)
 {
 	this->monoms = monoms;
 	update();
@@ -176,48 +170,50 @@ TPolynom TPolynom::operator+(const TPolynom& polynom)
 
 TPolynom TPolynom::operator-(const TPolynom& polynom)
 {
-	TPolynom tmp(polynom);
-	*this = *this + tmp * (-1);
+	*this = *this + polynom * (-1);
 	return *this;
 }
 
-TPolynom TPolynom::operator*(const double c)
+TPolynom TPolynom::operator*(const double c) const
 {
+	TPolynom p(*this);
 	if (c == 0)
 	{
 		return TPolynom();
 	}
-	monoms.Reset();
-	while (!monoms.IsEnd())
+	p.monoms.Reset();
+	while (!p.monoms.IsEnd())
 	{
-		monoms.getpC()->data.SetCoeff(monoms.getpC()->data.GetCoeff() * c);
-		monoms.Next();
+		p.monoms.getpC()->data.SetCoeff(p.monoms.getpC()->data.GetCoeff() * c);
+		p.monoms.Next();
 	}
-	monoms.Reset();
-	updatename();
-	return *this;
+	p.monoms.Reset();
+	p.updatename();
+	return p;
 }
 
-TPolynom TPolynom::operator*(const TPolynom& polynom)
+TPolynom TPolynom::operator*(const TPolynom& polynom)const
 {
+	TPolynom p(*this);
 	if (polynom.monoms.IsEmpty())
 		return polynom;
 	TPolynom tmp(polynom);
-	TRingList<TMonom> tmplist;
-	monoms.Reset();
-	while (!monoms.IsEnd())
+	TPolynom newp;
+	p.monoms.Reset();
+	while (!p.monoms.IsEnd())
 	{
 		tmp.monoms.Reset();
 		while (!tmp.monoms.IsEnd())
 		{
-			tmplist.InsertLast(monoms.getpC()->data * tmp.monoms.getpC()->data);
+			newp.monoms.InsertLast(p.monoms.getpC()->data * tmp.monoms.getpC()->data);
 			tmp.monoms.Next();
 		}
-		monoms.Next();
+		p.monoms.Next();
 	}
-	monoms = tmplist;
-	update();
-	return *this;
+	newp.update();
+
+	
+	return newp; 
 }
 
 TPolynom TPolynom::dif()const

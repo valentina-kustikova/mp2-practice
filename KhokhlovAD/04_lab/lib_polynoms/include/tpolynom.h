@@ -15,14 +15,14 @@ private:
 	void updatename();
 	void updatenull();
 public:
-	TPolynom();
+	TPolynom() {};
 	TPolynom(const string& name);
-	TPolynom(const TRingList<TMonom> monoms);
+	TPolynom(const TRingList<TMonom>& monoms);
 	TPolynom(const TPolynom& p);
 	TPolynom operator+(const TPolynom& polynom);
 	TPolynom operator-(const TPolynom& polynom);
-	TPolynom operator*(const TPolynom& polynom);
-	TPolynom operator*(const double c);
+	TPolynom operator*(const TPolynom& polynom)const;
+	TPolynom operator*(const double c) const;
 	const TPolynom& operator=(const TPolynom& polynom);
 	TPolynom dif()const;
 	TPolynom dif_x()const;
