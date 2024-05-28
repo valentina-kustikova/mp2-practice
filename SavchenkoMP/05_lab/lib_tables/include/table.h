@@ -26,6 +26,7 @@ public:
 
 	virtual bool reset() noexcept;
 	virtual bool next() noexcept;
+	virtual TabRecord<TKey, TData>* get_curr() = 0;
 
 	int get_size() const noexcept;
 	int get_max_size() const noexcept;

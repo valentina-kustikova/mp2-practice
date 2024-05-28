@@ -20,6 +20,8 @@ public:
 	void insert(const TKey& _key, TData* _data);
 	void remove(const TKey& _key);
 
+	virtual TabRecord<TKey, TData>* get_curr();
+
 	friend std::ostream& operator<<(std::ostream& out, const SortedTable& table) {
 		out << "Table size: " << table.count << endl;
 		for (int i = 0; i < table.count; i++) {
@@ -147,6 +149,11 @@ void SortedTable<TKey, TData>::remove(const TKey& _key) {
 		}
 		count--;
 	}
+}
+
+template <class TKey, class TData>
+TabRecord<TKey, TData>* SortedTable<TKey, TData>::get_curr() {
+	return recs[curr_pos];
 }
 
 #endif // !SORTEDTABLE_H

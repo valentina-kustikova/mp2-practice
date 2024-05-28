@@ -20,6 +20,8 @@ public:
 	virtual TabRecord<TKey, TData>* find(const TKey& key);
 	TabRecord<TKey, TData>* operator[](const TKey& _key);
 
+	virtual TabRecord<TKey, TData>* get_curr();
+
 	friend std::ostream& operator<<(std::ostream& out, const ScanTable& table) {
 		out << "Table size: " << table.count << endl;
 		for (int i = 0; i < table.count; i++) {
@@ -126,6 +128,11 @@ TabRecord<TKey, TData>* ScanTable<TKey, TData>::find(const TKey& key) {
 template <class TKey, class TData>
 TabRecord<TKey, TData>* ScanTable<TKey, TData>::operator[](const TKey& _key) {
 	return find(_key);
+}
+
+template <class TKey, class TData>
+TabRecord<TKey, TData>* ScanTable<TKey, TData>::get_curr() {
+	return recs[curr_pos];
 }
 
 #endif // !SCANTABLE_H

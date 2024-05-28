@@ -31,6 +31,7 @@ public:
 
 	bool reset() noexcept;
 	bool next() noexcept;
+	TabRecord<TKey, TData>* get_curr();
 
 	friend std::ostream& operator<<(std::ostream& out, const ArrayHashTable& table) {
 		out << "Table size: " << table.count << endl;
@@ -201,6 +202,12 @@ bool ArrayHashTable<TKey, TData>::next() noexcept {
 		return ended();
 	}
 	else return ended();
+}
+
+template <class TKey, class TData>
+TabRecord<TKey, TData>* ArrayHashTable<TKey, TData>::get_curr() {
+	if (recs[curr_pos] == pMark) return nullptr;
+	else return recs[curr_pos];
 }
 
 #endif // !ARRAYHASHTABLE_H
