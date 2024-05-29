@@ -118,7 +118,7 @@ TEST(ScanTable, ParameterizedConstructorTest_IsTabEnded) {
 	int size = 3;
 	ScanTable<int, string> st(3);
 
-	EXPECT_EQ(false, st.ended());
+	EXPECT_EQ(true, st.ended());
 }
 
 TEST(ScanTable, ParameterizedConstructorTest_Reset) {
@@ -132,7 +132,7 @@ TEST(ScanTable, ParameterizedConstructorTest_Next) {
 	int size = 3;
 	ScanTable<int, string> st(3);
 
-	EXPECT_EQ(false, st.next());
+	EXPECT_EQ(true, st.next());
 }
 
 TEST(ScanTable, ParameterizedConstructorTest_GetDataCount) {
@@ -463,7 +463,7 @@ TEST(ScanTable, is_tab_ended_test)
 {
 	ScanTable<int, string> st(3);
 
-	ASSERT_FALSE(st.ended());
+	ASSERT_TRUE(st.ended());
 }
 TEST(ScanTable, is_tab_ended_true_test)
 {
@@ -487,14 +487,14 @@ TEST(ScanTable, next_test)
 {
 	ScanTable<int, string> st(3);
 
-	ASSERT_FALSE(st.next());
+	ASSERT_TRUE(st.next());
 }
-TEST(ScanTable, next_test_true)
+TEST(ScanTable, next_test_false)
 {
 	ScanTable<int, string> st(1);
 	string data = "Data1";
 	st.insert(5, &data);
 	st.reset();
 	st.next();
-	ASSERT_TRUE(st.next());
+	ASSERT_FALSE(st.next());
 }

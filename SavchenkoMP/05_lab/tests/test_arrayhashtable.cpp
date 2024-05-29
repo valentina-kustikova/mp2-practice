@@ -117,11 +117,11 @@ TEST(ArrayHashTable, ResetAndNext) {
     table.insert(1, &data1);
     table.insert(2, &data2);
 
-    EXPECT_FALSE(table.reset());
+    EXPECT_TRUE(table.reset());
     EXPECT_EQ(*table.find(1)->data, "data1");
-    EXPECT_FALSE(table.next());
-    EXPECT_EQ(*table.find(2)->data, "data2");
     EXPECT_TRUE(table.next());
+    EXPECT_EQ(*table.find(2)->data, "data2");
+    EXPECT_FALSE(table.next());
 }
 
 
@@ -212,7 +212,7 @@ TEST(ArrayHashTable, reset_test)
     int data2 = 200;
     table.insert("key2", &data2);
 
-    ASSERT_FALSE(table.reset());
+    ASSERT_TRUE(table.reset());
 }
 TEST(ArrayHashTable, reset_test_key)
 {
@@ -251,7 +251,7 @@ TEST(ArrayHashTable, next_test_end)
     table.reset();
     table.next();
     table.next();
-    ASSERT_TRUE(table.next());
+    ASSERT_FALSE(table.next());
 }
 //GetKey
 TEST(ArrayHashTable, GetKeyTest)

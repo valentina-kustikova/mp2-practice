@@ -140,7 +140,6 @@ TEST(SortedTable, constructor_with_parametr_key)
 // Copy constructor
 TEST(SortedTable, copy_constructor_test)
 {
-    // Ñîçäàåì è çàïîëíÿåì èñõîäíóþ òàáëèöó
     SortedTable<int, string> originalTable(5);
     string data1 = "Data1";
     string data2 = "Data2";
@@ -311,7 +310,7 @@ TEST(SortedTable, is_tab_ended_test)
 {
     SortedTable<int, string> table(3);
 
-    ASSERT_FALSE(table.ended());
+    ASSERT_TRUE(table.ended());
 }
 TEST(SortedTable, is_tab_ended_true_test)
 {
@@ -335,14 +334,14 @@ TEST(SortedTable, next_test)
 {
     SortedTable<int, string> table(3);
 
-    ASSERT_FALSE(table.next());
+    ASSERT_TRUE(table.next());
 }
-TEST(SortedTable, next_test_true)
+TEST(SortedTable, next_test_false)
 {
     SortedTable<int, string> table(1);
     string data = "Data1";
     table.insert(5, &data);
     table.reset();
     table.next();
-    ASSERT_TRUE(table.next());
+    ASSERT_FALSE(table.next());
 }
