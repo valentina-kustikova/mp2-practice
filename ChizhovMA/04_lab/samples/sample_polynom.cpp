@@ -67,28 +67,9 @@ int main()
     }
     
 
-    /*
-    TList<int> list;
-    list.InsertFirst(42);
-    list.InsertEnd(10);
-    list.Next();
-    list.InsertAfterCurr(5);
-
-    TRingList<int> rlist(list);
-    TRingList<int> rlist2(rlist);
-   
-    TRingList<int> rl;
-    rl.InsertFirst(5);
-    rl.InsertEnd(3);
-    rl.InsertEnd(4);
-    rl.InsertFirst(10);
-    rl.InsertEnd(2);
-    rl.InsertBefore(7,4);
-    rl.InsertAfter(8,2);
-    cout << rl << endl;
-    rl.Remove(2);
-    TRingList<int> rl2(rl);
-    cout << rl2 << endl;
-    */
+    /*string s = "2*x^3*y*z-4*x*y";
+    TPolynom p(s);
+    double res = p(2, 3, 4);
+    cout << res;*/
     return 0;
 }

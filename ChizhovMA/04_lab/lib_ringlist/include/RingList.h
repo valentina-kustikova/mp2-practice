@@ -93,6 +93,11 @@ template <typename T>
 void TRingList<T>::Remove(const T& data)
 {
 	TList<T>::Remove(data);
+	/*if (GetSize() == 0)
+	{
+		pFirst = nullptr;
+		pLast = nullptr;
+	}*/
 	if (pFirst != pStop && pFirst != nullptr)
 	{
 		pLast->pNext = pHead;

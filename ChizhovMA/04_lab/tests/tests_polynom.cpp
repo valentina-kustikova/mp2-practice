@@ -201,7 +201,7 @@ TEST(TPolynom, result_operator_test)
 {
 	string s = "2*x^3*y*z-4*x*y";
 	TPolynom p(s);
-	double res = p.operator()(2, 3, 4);
+	double res = p(2, 3, 4);
 	EXPECT_EQ(168, res);
 }
 TEST(TPolynom, result_operator_test_addition)
@@ -221,7 +221,7 @@ TEST(TPolynom, result_operator_test_diff)
 	TPolynom p(s);
 	TPolynom p2;
 	p2 = p.difx();
-	double res = p2.operator()(2, 3, 4);
+	double res = p2(2, 3, 4);
 	EXPECT_EQ(23045, res);
 }
 //dif_x
@@ -321,7 +321,7 @@ TEST(TPolynom, differentiation_z_degree_zero)
 TEST(TPolynom, handle_x_test_deg)
 {
 	TPolynom p;
-	string deg = "";
+	string deg = "0";
 	int i = 0;
 	string str = "x^3";
 	p.HandleX(str, i, deg);
@@ -331,7 +331,7 @@ TEST(TPolynom, handle_x_test_deg)
 TEST(TPolynom, handle_x_test_mul)
 {
 	TPolynom p;
-	string deg = "";
+	string deg = "0";
 	int i = 0;
 	string str = "x*";
 	p.HandleX(str, i, deg);

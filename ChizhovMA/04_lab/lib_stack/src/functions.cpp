@@ -182,7 +182,7 @@ TStack<string> ArithmeticExpression::Postfix_Form(const string& s)
 	{
 		char s1 = str[i];
 		string s(1,s1);
-		if (isdigit(s1) || s == "." || (s == "-" && isdigit(str[i+1])))
+		if (isdigit(s1) || s == "." || (i==0 && s == "-" && isdigit(str[i+1])))
 			if (!varStr.empty())
 				varStr += s;
 			else

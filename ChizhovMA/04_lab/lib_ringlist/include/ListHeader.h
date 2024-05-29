@@ -236,6 +236,7 @@ void TList<T>::Remove(const T& data)
 		pLast = pPrev;
 	}
 	pPrev->pNext = pNode->pNext;
+	pCurr = pPrev;
 	delete pNode;
 }
 template <typename T>
