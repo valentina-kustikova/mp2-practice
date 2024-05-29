@@ -32,44 +32,18 @@ TRingList<T>::TRingList() {
 	this->pPrev = pHead;
 }
 
-
-
 template <typename T>
-TRingList<T>::TRingList(const TNode<T>* pF) : TList<T>::TList(pF) // List
+TRingList<T>::TRingList(const TNode<T>* pF) : TList<T>::TList(pF) 
 {
 	pHead = new TNode<T>(T());
 	pStop = pHead;
 	pHead->pNext = pFirst;
 	pPrev = pHead;
 	pLast->pNext = pStop;
-
-
-
-	
-
-	/*pHead = new TNode<T>(T());
-	pCurr = nullptr;
-	if (pF != nullptr) {
-		pFirst = new TNode<T>(pF->data);
-		pHead->pNext = pFirst;
-		pCurr = pFirst;
-		pPrev = pHead;
-		pStop = pHead;
-		TNode<T>* tmp = pFirst;
-		while (tmp->pNext != nullptr && tmp->pNext != pFirst) {
-			tmp = new TNode<T>(tmp->pNext->data);
-			pCurr->pNext = tmp;
-			pCurr = tmp;
-		}
-		if (tmp->pNext == nullptr) {
-			tmp->pNext = pHead;
-			pLast = tmp;
-		}
-	}*/
 }
 
 template <typename T>
-TRingList<T>::TRingList(const TRingList<T>& obj) : TList<T>::TList(obj)// List(const List<T>&)
+TRingList<T>::TRingList(const TRingList<T>& obj) : TList<T>::TList(obj)
 {
 	pHead = new TNode<T>(T());
 	pStop = pHead;
@@ -83,36 +57,7 @@ TRingList<T>::TRingList(const TRingList<T>& obj) : TList<T>::TList(obj)// List(c
 	pPrev = pStop;
 	pHead->pNext = pFirst;
 	pLast->pNext = pStop;
-
-	/*pHead = new TNode<T>(T());
-	pHead->pNext = this->pFirst;
-	this->pStop = pHead;
-
-	if (obj.pFirst == obj.pStop)
-	{
-		this->pFirst = pHead;
-		this->pLast = pHead;
-		this->pCurr = pHead;
-	}
-	else
-	{
-		this->pFirst = new TNode<T>(obj.pFirst->data);
-		TNode<T>* tmp = obj.pFirst;
-		TNode<T>* tmp_1 = this->pFirst;
-
-		while (tmp->pNext != obj.pStop)
-		{
-			tmp_1->pNext = new TNode<T>(tmp->pNext->data);
-			tmp_1 = tmp_1->pNext;
-			tmp = tmp->pNext;
-		}
-		this->pLast = tmp_1;
-		this->pLast->pNext = this->pStop;
-		this->pCurr = this->pFirst;
-	}
-	*/
 }
-
 
 template <typename T>
 void TRingList<T>::clear()

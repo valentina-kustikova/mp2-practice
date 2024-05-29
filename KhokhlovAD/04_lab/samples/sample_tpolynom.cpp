@@ -13,7 +13,7 @@ int main()
         cout << "enter second polynom = ";
         cin >> b;
         cout << endl << "first polynom =" << b << endl;
-        string abc =  "-2*x^2*y^4*z^7+34*x^3*y"; // x^3*y^2*z-27*z^4
+        string abc =  "-2*x^2*y^4*z^7+34*x^3*y"; 
 
 
         cout << "a.dif(): " << a.dif();

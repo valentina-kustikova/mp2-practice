@@ -14,7 +14,6 @@ int main()
     ringList.DeleteFirst();
     std::cout << ringList << std::endl;
     ringList.Reset();
-    //search isemprty isfull 
     std::cout << "Lets sort nodes in our ringlist " << std::endl;
     ringList.Sort();
     std::cout << ringList << std::endl;
