@@ -33,13 +33,21 @@ public:
 	bool next() noexcept;
 	TabRecord<TKey, TData>* get_curr();
 
-	friend std::ostream& operator<<(std::ostream& out, const ArrayHashTable& table) {
+	friend std::ostream& operator<<(std::ostream& out, ArrayHashTable& table) {
 		out << "Table size: " << table.count << endl;
-		for (int i = 0; i < table.max_size; i++) {
-			if (table.recs[i] && table.recs[i] != table.pMark) {
-				out << "(" << table.recs[i]->key << ", " << *table.recs[i]->data << "); " << endl;
+		table.reset();
+		while (!table.ended()) {
+			auto curr = table.get_curr();
+			if (curr) {
+				out << "(" << curr->key << ", " << *curr->data << "); " << endl;
 			}
+			table.next();
 		}
+		//for (int i = 0; i < table.max_size; i++) {
+		//	if (table.recs[i] && table.recs[i] != table.pMark) {
+		//		out << "(" << table.recs[i]->key << ", " << *table.recs[i]->data << "); " << endl;
+		//	}
+		//}
 		return out;
 	}
 };
@@ -87,11 +95,13 @@ ArrayHashTable<TKey, TData>::ArrayHashTable(size_t _max_size, size_t _hash_step)
 	coprime_check(_max_size, _hash_step);
 
 	recs = new TabRecord<TKey, TData>* [max_size];
+	for (int i = 0; i < max_size; i++) {
+		recs[i] = nullptr;
+	}
+
 	hash_step = _hash_step;
 	pMark = new TabRecord<TKey, TData>();
 	free_pos_ind = -1;
-
-	for (int i = 0; i < max_size; i++) recs[i] = nullptr;
 }
 
 template <class TKey, class TData>
@@ -182,9 +192,9 @@ void ArrayHashTable<TKey, TData>::remove(const TKey& _key) {
 	count--;
 }
 
-
+// If table not ended - true, else - false.
 template <class TKey, class TData>
-bool ArrayHashTable<TKey, TData>::reset() noexcept {
+bool ArrayHashTable<TKey, TData>::reset() noexcept { 
 	curr_pos = 0;
 	while (!ended())
 	{
@@ -192,11 +202,12 @@ bool ArrayHashTable<TKey, TData>::reset() noexcept {
 			break;
 		curr_pos++;
 	}
-	return ended();
+	return !ended();
 }
 
+// If table not ended - true, else - false.
 template <class TKey, class TData>
-bool ArrayHashTable<TKey, TData>::next() noexcept {
+bool ArrayHashTable<TKey, TData>::next() noexcept { 
 	curr_pos++;
 	while (!ended())
 	{
@@ -204,7 +215,7 @@ bool ArrayHashTable<TKey, TData>::next() noexcept {
 			break;
 		curr_pos++;
 	}
-	return ended();
+	return !ended();
 }
 
 template <class TKey, class TData>

@@ -51,26 +51,27 @@ bool Table<TKey, TData>::empty() const  noexcept {
 
 template <class TKey, class TData>
 bool Table<TKey, TData>::ended() const noexcept {
-	return (curr_pos >= max_size);
+	return ((curr_pos >= max_size) || (curr_pos < 0));
 }
 
 
+// If table not ended - true, else - false.
 template <class TKey, class TData>
-bool Table<TKey, TData>::reset() noexcept {
+bool Table<TKey, TData>::reset() noexcept { 
 	if (!empty()) {
 		curr_pos = 0;
-		return ended();
 	}
 	else {
 		curr_pos = -1;
-		return ended();
 	}
+	return !ended();
 }
 
+// If table not ended - true, else - false.
 template <class TKey, class TData>
-bool Table<TKey, TData>::next() noexcept {
+bool Table<TKey, TData>::next() noexcept { 
 	curr_pos++;
-	return ended();
+	return !ended();
 }
 
 

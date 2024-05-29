@@ -22,13 +22,21 @@ public:
 
 	virtual TabRecord<TKey, TData>* get_curr();
 
-	friend std::ostream& operator<<(std::ostream& out, const SortedTable& table) {
+	friend std::ostream& operator<<(std::ostream& out, SortedTable& table) {
 		out << "Table size: " << table.count << endl;
-		for (int i = 0; i < table.count; i++) {
-			if (table.recs[i]) {
-				out << "(" << table.recs[i]->key << ", " << *table.recs[i]->data << "); " << endl;
+		table.reset();
+		while (!table.ended()) {
+			auto curr = table.get_curr();
+			if (curr) {
+				out << "(" << curr->key << ", " << *curr->data << "); " << endl;
 			}
+			table.next();
 		}
+		//for (int i = 0; i < table.count; i++) {
+		//	if (table.recs[i]) {
+		//		out << "(" << table.recs[i]->key << ", " << *table.recs[i]->data << "); " << endl;
+		//	}
+		//}
 		return out;
 	}
 };

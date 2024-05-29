@@ -22,13 +22,21 @@ public:
 
 	virtual TabRecord<TKey, TData>* get_curr();
 
-	friend std::ostream& operator<<(std::ostream& out, const ScanTable& table) {
+	friend std::ostream& operator<<(std::ostream& out, ScanTable& table) {
 		out << "Table size: " << table.count << endl;
-		for (int i = 0; i < table.count; i++) {
-			if (table.recs[i]) {
-				out << "(" << table.recs[i]->key << ", " << *table.recs[i]->data << "); " << endl;
+		table.reset();
+		while (!table.ended()) {
+			auto curr = table.get_curr();
+			if (curr) {
+				out << "(" << curr->key << ", " << *curr->data << "); " << endl;
 			}
+			table.next();
 		}
+		//for (int i = 0; i < table.count; i++) {
+		//	if (table.recs[i]) {
+		//		out << "(" << table.recs[i]->key << ", " << *table.recs[i]->data << "); " << endl;
+		//	}
+		//}
 		return out;
 	}
 };
@@ -43,6 +51,9 @@ ScanTable<TKey, TData>::ScanTable(int _max_size) {
 
 	max_size = _max_size;
 	recs = new TabRecord<TKey, TData>* [max_size];
+	for (int i = 0; i < max_size; i++) {
+		recs[i] = nullptr;
+	}
 
 	count = 0;
 	curr_pos = -1;
