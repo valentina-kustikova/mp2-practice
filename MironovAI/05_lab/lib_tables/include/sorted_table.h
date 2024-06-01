@@ -102,7 +102,6 @@ void SortedTable<Key, Value>::remove(const Key& _key)
 	}
 	else
 	{
-		if (recs[curr] != nullptr) if (recs[curr]->key < _key) curr++;
 		for (int i = curr; i < size; ++i)
 		{
 			recs[i] = recs[i + 1];
