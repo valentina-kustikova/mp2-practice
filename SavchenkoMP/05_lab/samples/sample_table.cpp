@@ -12,6 +12,7 @@ using namespace std;
 #define OPERATIONS 3
 #define PRINT  4
 #define SELECT_TABLES 5
+#define VALUE 6
 
 #define SUM 1
 #define SUB 2
@@ -43,6 +44,7 @@ void remove();
 void operations();
 void print_tables();
 void select_tables();
+void value();
 
 void print_selected_tables();
 
@@ -79,6 +81,7 @@ void menu() {
 		cout << "3. Operations" << endl;
 		cout << "4. Print tables" << endl;
 		cout << "5. Select tables" << endl;
+		cout << "6. Polynom value" << endl;
 		cout << "0. EXIT" << endl << endl;
 			
 
@@ -102,6 +105,10 @@ void menu() {
 
 		else if (ans == SELECT_TABLES) {
 			select_tables();
+		}
+
+		else if (ans == VALUE) {
+			value();
 		}
 
 		else if (ans == EXIT) {
@@ -380,6 +387,71 @@ void select_tables() {
 		else if (st == 3) flag_array_hash = !flag_array_hash;
 
 	} while (st != 0);
+}
+
+void value() {
+	system("cls");
+	cout << "PATH:menu\\values\\" << endl;
+
+	cout << "Select table." << endl << endl;
+	cout << "0. none" << endl;
+	cout << "1. ScanTable" << endl;
+	cout << "2. SortedTable" << endl;
+	cout << "3. ArrayHashTable" << endl << endl;
+
+	int tab = 0;
+	cin >> tab;
+	if (tab < SCAN || tab > ARRAY_HASH) return;
+
+	system("cls");
+	cout << "PATH:menu\\operations\\" << endl;
+	cout << "Selected table: ";
+	if (tab == SCAN) cout << "ScanTable" << endl;
+	if (tab == SORTED) cout << "SortedTable" << endl;
+	if (tab == ARRAY_HASH) cout << "ArrayHashTable" << endl << endl;
+
+	string name1;
+	TabRecord<string, TPolynom>* tab_polynom1 = nullptr;
+
+	try {
+		cout << "Enter the polynomial whose value you want to find out." << endl;
+
+		cin.ignore(numeric_limits<streamsize>::max(), '\n');
+		getline(cin, name1);
+
+		if (tab == SCAN) {
+			tab_polynom1 = scan_table.find(name1);
+		}
+		if (tab == SORTED) {
+			tab_polynom1 = sorted_table.find(name1);
+		}
+		if (tab == ARRAY_HASH) {
+			tab_polynom1 = array_hash_table.find(name1);
+		}
+		if (tab_polynom1 == nullptr) {
+			cout << "ERROR: polynom not found" << endl;
+			system("pause");
+			return;
+		}
+		cout << endl;
+		double x = 0, y = 0, z = 0;
+		cout << "x = ";
+		cin >> x;
+		cout << "y = ";
+		cin >> y;
+		cout << "z = ";
+		cin >> z;
+		cout << endl;
+
+		cout << "p(" << x << ", " << y << ", " << z << ") = " << tab_polynom1->data->operator()(x, y, z) << endl;
+		system("pause");
+	}
+	catch (string exp) {
+		cout << exp << endl;
+		system("pause");
+		return;
+	}
+
 }
 
 
