@@ -87,7 +87,7 @@ void SortedTable<TKey, TData>::Insert(TKey _key, TData* _data) {
 	if (IsFull())
 		throw exception("table is full");
 	if (Search(_key) != nullptr)
-		return;
+		throw exception("record with this key already existed");
 	for (int i = count - 1; i > currPos; i--) {
 		recs[i + 1] = recs[i];
 	}

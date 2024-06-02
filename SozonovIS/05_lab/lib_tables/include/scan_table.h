@@ -79,7 +79,7 @@ void ScanTable<TKey, TData>::Insert(TKey _key, TData* _data) {
 	if (IsFull())
 		throw exception("table is full");
 	if (Search(_key) != nullptr)
-		return;
+		throw exception("record with this key already existed");
 	recs[count++] = new TabRecord<TKey, TData>(_key, _data);
 }
 

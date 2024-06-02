@@ -12,7 +12,7 @@ using namespace std;
 int main() {
 	ScanTable<string, TPolynom> scan_table(100);
 	SortedTable<string, TPolynom> sorted_table(100);
-	ArrayHashTable<string, TPolynom> hash_table(10, 1);
+	ArrayHashTable<string, TPolynom> hash_table(100, 1);
 	int action = 0;
 	int table;
 	string str;
@@ -26,7 +26,7 @@ int main() {
 		cin >> action;
 		cout << endl;
 		if (action == 1) {
-			cout << "Enter the polynom to add: ";
+			cout << "Enter the polynom to insert: ";
 			cin >> str;
 			cout << endl;
 			TPolynom p(str);
@@ -195,17 +195,17 @@ int main() {
 				if (table == 1) {
 					TPolynom p1 = *scan_table.Search(str1)->data;
 					TPolynom p2 = *scan_table.Search(str2)->data;
-					scan_table.Insert(str1 + '*' + str2, &(p1 * p2));
+					scan_table.Insert("(" + str1 + ")*(" + str2 + ")", &(p1* p2));
 				}
 				else if (table == 2) {
 					TPolynom p1 = *sorted_table.Search(str1)->data;
 					TPolynom p2 = *sorted_table.Search(str2)->data;
-					sorted_table.Insert(str1 + '*' + str2, &(p1 * p2));
+					sorted_table.Insert("(" + str1 + ")*(" + str2 + ")", &(p1 * p2));
 				}
 				else if (table == 3) {
 					TPolynom p1 = *hash_table.Search(str1)->data;
 					TPolynom p2 = *hash_table.Search(str2)->data;
-					hash_table.Insert(str1 + '*' + str2, &(p1 * p2));
+					hash_table.Insert("(" + str1 + ")*(" + str2 + ")", &(p1 * p2));
 				}
 				else {
 					cout << "Invalid value!" << endl;

@@ -6,14 +6,14 @@
 template <typename TKey, typename TData>
 class HashTable : public Table<TKey, TData> {
 protected:
-	int hashFunc(const TKey _key);
+	virtual int hashFunc(const TKey _key);
 public:
 	HashTable(int max_size);
 };
 
 template <typename TKey, typename TData>
 int HashTable<TKey, TData>::hashFunc(const TKey _key) {
-	return  _key.length() % maxSize;
+	return std::hash<TKey>{}(_key) % maxSize;
 }
 
 template <typename TKey, typename TData>
