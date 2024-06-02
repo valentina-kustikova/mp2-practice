@@ -43,11 +43,6 @@ public:
 			}
 			table.next();
 		}
-		//for (int i = 0; i < table.max_size; i++) {
-		//	if (table.recs[i] && table.recs[i] != table.pMark) {
-		//		out << "(" << table.recs[i]->key << ", " << *table.recs[i]->data << "); " << endl;
-		//	}
-		//}
 		return out;
 	}
 };

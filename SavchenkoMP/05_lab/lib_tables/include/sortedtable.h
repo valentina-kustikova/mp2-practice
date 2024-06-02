@@ -32,11 +32,6 @@ public:
 			}
 			table.next();
 		}
-		//for (int i = 0; i < table.count; i++) {
-		//	if (table.recs[i]) {
-		//		out << "(" << table.recs[i]->key << ", " << *table.recs[i]->data << "); " << endl;
-		//	}
-		//}
 		return out;
 	}
 };
