@@ -170,7 +170,8 @@ void HashTable<TKey, TData>::insert(const TKey& key,TData* _data)
 	}
 	else
 	{		
-		tmp->data = _data; // throw
+		throw "Kiy not unique: not good";
+		//tmp->data = _data; // throw
 	}
 }
 
@@ -201,13 +202,13 @@ TabRecord<TKey, TData>* HashTable<TKey, TData>::operator[](const TKey& _key) {
 template <class TKey, class TData>
 void HashTable<TKey, TData>::next(int pos)
 {
-	if (count == max_size) curr_pos = 0;
+	if (count == max_size) free_pos = 0;
 	int new_pos = (pos + step % max_size);
 	while (new_pos != pos && (recs[new_pos] != pMark && recs[new_pos] != nullptr))
 	{
 		new_pos = (new_pos + step) % max_size;
 	}
-	curr_pos = new_pos;
+	free_pos = new_pos;
 }
 
 #endif

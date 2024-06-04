@@ -34,6 +34,7 @@ int main()
 
 void func(ScanTable<string, TPolynom>& scan_t, SortedTable<string, TPolynom>& sort_t, HashTable<string, TPolynom>& hash_t) {
 	while (1) {
+		system("cls");
 		cout << "Выберите действие с таблицами: \n1.Вставить новый полином \n" <<
 			"2.Удалить полином из таблицы \n3.Произвести операцию над полиномами \n" <<
 			"4.Вывести на экран таблицы \n5.Закончить работу" << endl;
@@ -55,7 +56,7 @@ void func(ScanTable<string, TPolynom>& scan_t, SortedTable<string, TPolynom>& so
 				string polynom_str = " ";
 				cin >> polynom_str;
 				TPolynom* polynom = new TPolynom(polynom_str);
-				polynom_str = polynom->GetString();
+				//polynom_str = polynom->GetString();
 				scan_t.insert(polynom_str, polynom);
 				sort_t.insert(polynom_str, polynom);
 				hash_t.insert(polynom_str, polynom);
@@ -74,7 +75,7 @@ void func(ScanTable<string, TPolynom>& scan_t, SortedTable<string, TPolynom>& so
 				string polynom_str = " ";
 				cin >> polynom_str;
 				TPolynom* polynom = new TPolynom(polynom_str);
-				polynom_str = polynom->GetString();
+				//polynom_str = polynom->GetString();
 				scan_t.remove(polynom_str);
 				sort_t.remove(polynom_str);
 				hash_t.remove(polynom_str);
@@ -112,6 +113,7 @@ void func(ScanTable<string, TPolynom>& scan_t, SortedTable<string, TPolynom>& so
 				cout << scan_t;
 				cout << sort_t;
 				cout << hash_t;
+				system("pause");
 			}
 			catch (string exp) {
 				cout << exp << endl;
@@ -140,7 +142,7 @@ void op(ScanTable<string, TPolynom>& scan_t, SortedTable<string, TPolynom>& sort
 		string polynom_str1 = " ";
 		cin >> polynom_str1;
 		TPolynom* polynom1 = new TPolynom(polynom_str1);
-		polynom_str1 = polynom1->GetString();
+		//polynom_str1 = polynom1->GetString();
 		if (scan_t.find(polynom_str1) == nullptr || sort_t.find(polynom_str1) == nullptr ||
 			hash_t.find(polynom_str1) == nullptr) 
 		{
@@ -152,7 +154,7 @@ void op(ScanTable<string, TPolynom>& scan_t, SortedTable<string, TPolynom>& sort
 		string polynom_str2 = " ";
 		cin >> polynom_str2;
 		TPolynom* polynom2 = new TPolynom(polynom_str2);
-		polynom_str2 = polynom2->GetString();
+		//polynom_str2 = polynom2->GetString();
 		if (scan_t.find(polynom_str2) == nullptr || sort_t.find(polynom_str2) == nullptr ||
 			hash_t.find(polynom_str2) == nullptr)
 		{
@@ -193,7 +195,7 @@ void op(ScanTable<string, TPolynom>& scan_t, SortedTable<string, TPolynom>& sort
 		string polynom_str = " ";
 		cin >> polynom_str;
 		TPolynom* polynom = new TPolynom(polynom_str);
-		polynom_str = polynom->GetString();
+		//polynom_str = polynom->GetString();
 		if (scan_t.find(polynom_str) == nullptr || sort_t.find(polynom_str) == nullptr ||
 			hash_t.find(polynom_str) == nullptr)
 		{
