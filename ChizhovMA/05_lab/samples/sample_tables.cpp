@@ -25,6 +25,7 @@ void Insert(const string& k, TScanTable<string, TPolynom>& table, TSortTable<str
         int n = 0;
 
         TPolynom* p = new TPolynom(k);
+        string pol_name = p->ToString();
 
         cout << "Select a table:" << endl;
         cout << "1. ScanTable" << endl;
@@ -36,18 +37,18 @@ void Insert(const string& k, TScanTable<string, TPolynom>& table, TSortTable<str
             cin >> n;
         } while (n != 1 && n!= 2 && n != 3 && n != 4);
         if (n == 1) {
-            table.Insert(k, p);
+            table.Insert(pol_name, p);
         }
         else if (n == 2) {
-            stable.Insert(k, p);
+            stable.Insert(pol_name, p);
         }
         else if (n == 3) {
-            htable.Insert(k, p);
+            htable.Insert(pol_name, p);
         }
         else {
-            table.Insert(k, p);
-            stable.Insert(k, p);
-            htable.Insert(k, p);
+            table.Insert(pol_name, p);
+            stable.Insert(pol_name, p);
+            htable.Insert(pol_name, p);
         }
         cout << "Successfully" << endl;
         this_thread::sleep_for(chrono::seconds(3));

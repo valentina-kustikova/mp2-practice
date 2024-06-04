@@ -1,6 +1,5 @@
 #include "Monom.h"
 #include "Polynom.h"
-
 #include <iostream>
 #include <string>
 #include <sstream>
@@ -69,9 +68,10 @@ TPolynom::TPolynom()
 
 TPolynom::TPolynom(const string& s)
 {
-	name = s;
 	monoms = new TRingList<TMonom>();
-	Parse_Polynom(name);
+	Parse_Polynom(s);
+	name = ToString();
+
 }
 
 TPolynom::TPolynom(const TRingList<TMonom>& rlist)
@@ -187,9 +187,10 @@ TPolynom TPolynom::operator*(const TPolynom& p)
 
 			while (!list.IsEnded())
 			{
-				if (deg == list.GetCurrent()->data.degree)
+				TMonom m_curr = list.GetCurrent()->data;
+				int curr_d = m_curr.degree;
+				if (deg == curr_d)
 				{
-					TMonom m_curr = list.GetCurrent()->data;
 					double k_curr = m_curr.coef;
 					k3 = k_curr + k3;
 					if (k3 != 0)
@@ -201,12 +202,17 @@ TPolynom TPolynom::operator*(const TPolynom& p)
 						break;
 					}
 				}
-				if (deg < list.GetCurrent()->data.degree)
+				if (deg <= list.GetCurrent()->data.degree)
 				{
 					if (flag == 1)
 					{
 						TMonom mon_new(k3, deg);
-						list.InsertBeforeCurr(mon_new);
+						TMonom m_del = list.GetCurrent()->data;
+						list.Remove(m_del);
+						if (list.GetSize() == 0)
+							list.InsertFirst(mon_new);
+						else
+							list.InsertAfterCurr(mon_new);
 					}
 					else
 						list.InsertBeforeCurr(mon); 
@@ -324,17 +330,6 @@ TPolynom TPolynom::difz() const
 	}
 	return TPolynom(list);
 }
-//double TPolynom::operator()(double _x, double _y, double _z)
-//{
-//	string pol_name = name;
-//	map<string, double> variableDict = {
-//		{"x", _x},
-//		{"y", _y},
-//		{"z", _z},
-//	};
-//	TStack<string> st = ArithmeticExpression::Postfix_Form(pol_name);
-//	return ArithmeticExpression::Calculate(st, variableDict);
-//}
 string TPolynom::FilteredExpression(const string& s)
 {
 	string filteredExpression = "";
@@ -452,12 +447,17 @@ void TPolynom::HandleX(const string& str, int& i, string& deg)
 		char k = str[i];
 		int n = k - '0';
 		n = n * 100;
-		string x = to_string(n);
-		deg += x;
+		int N = stoi(deg);
+		n += N;
+		deg = to_string(n);
 		i++;
 	}
 	else
-		deg = "100";
+	{
+		int N = stoi(deg);
+		N += 100;
+		deg = to_string(N);
+	}
 }
 void TPolynom::HandleY(const string& str, int& i, string& deg) 
 {
@@ -524,16 +524,13 @@ void TPolynom::CreateAndInsertMonom(double koef, int degree, TRingList<TMonom>* 
 			{
 				double k = m.coef;
 				double k2 = monom.coef;
-				if (k2 < k)
-				{
-					monomList->InsertBeforeCurr(monom);
-					break;
-				}
-				else
-				{
-					monomList->InsertAfterCurr(monom);
-					break;
-				}
+				double k3 = k + k2;
+				if (k3 == 0)
+					return;
+				TMonom new_m(k3, deg);
+				monomList->InsertAfterCurr(new_m);
+				monomList->Remove(m);
+				break;
 			}
 			monomList->Next();
 		}
@@ -592,9 +589,9 @@ void TPolynom::Parse_Polynom(const string& s) // ??? разбить на функции
 				{
 					if (str[i] == 'x')
 						HandleX(str, i, deg);
-					else if (str[i] == 'y')
+					if (str[i] == 'y')
 						HandleY(str, i, deg);
-					else
+					if (str[i] == 'z')
 						HandleZ(str, i, deg);
 				}
 				if (str[i] == '*' || str[i] == '/')
