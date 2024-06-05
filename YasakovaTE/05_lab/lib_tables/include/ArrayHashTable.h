@@ -20,7 +20,6 @@ public:
     TabRecord <TKey, TData>* Find(const TKey key);
     void Insert(TKey key, TData* data);
     void Remove(TKey key);
-    void Next();
     void Reset();
     TabRecord<TKey, TData>* GetCurrent() const;
     friend ostream& operator<<(ostream& out, const ArrayHashTable<TKey, TData>& t) {
@@ -55,6 +54,7 @@ ArrayHashTable<TKey, TData>::ArrayHashTable(int n, int step) : HashTable<TKey, T
 
 template <typename TKey, typename TData>
 ArrayHashTable<TKey, TData>::ArrayHashTable(const ArrayHashTable& ahtable) : HashTable<TKey, TData>(ahtable.maxSize) {
+    maxSize = ahtable.maxSize;
     hashStep = ahtable.hashStep;
     currPos = ahtable.currPos;
     recs = new TabRecord<TKey, TData>*[maxSize];
@@ -178,16 +178,6 @@ void ArrayHashTable<TKey, TData>::GetNextPos(int pos) {
 template <typename TKey, typename TData>
 void ArrayHashTable<TKey, TData>::Reset() {
     currPos = 0;
-    while (!IsEnded() && (recs[currPos] == nullptr || recs[currPos] == pMark))
-    {
-        currPos++;
-    }
-}
-
-template <typename TKey, typename TData>
-void ArrayHashTable<TKey, TData>::Next() {
-    if (IsEnded())  throw ("table is ended");
-    currPos++;
     while (!IsEnded() && (recs[currPos] == nullptr || recs[currPos] == pMark))
     {
         currPos++;

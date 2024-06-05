@@ -107,8 +107,7 @@ void ScanTable<TKey, TData>::Remove(TKey key) {
     if (Find(key) != nullptr) {
         delete recs[currPos];
         if (count - 1 != currPos) {
-            recs[currPos] = new TabRecord<TKey, TData>(*recs[count - 1]);
-            delete recs[count - 1];
+            recs[currPos] = recs[count - 1];
         }
         else {
             recs[currPos] = nullptr;

@@ -200,7 +200,7 @@ void Tables::menu() {
         cout << "Enter your choice:";
         cin >> choice;
         switch (choice) {
-        case 0: break;
+        case 0: ;
         case 1: {
             cout << "Enter polynom:";
             string pol_name;
