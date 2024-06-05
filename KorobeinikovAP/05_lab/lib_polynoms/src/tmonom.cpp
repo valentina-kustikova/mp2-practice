@@ -95,6 +95,7 @@ string TMonom::get_string() const {
 
 
 	res += to_string(koef).erase(to_string(koef).size() - 4);;
+	res.replace(res.find(","), 1, ".");
 
 	if (degX == 1) res += "*x";
 	else if (degX > 1)	res += "*x^" + to_string(degX); //.erase(to_string(degX).size() - 4)

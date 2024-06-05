@@ -34,7 +34,7 @@ int main()
 
 void func(ScanTable<string, TPolynom>& scan_t, SortedTable<string, TPolynom>& sort_t, HashTable<string, TPolynom>& hash_t) {
 	while (1) {
-		system("cls");
+		//system("cls");
 		cout << "Выберите действие с таблицами: \n1.Вставить новый полином \n" <<
 			"2.Удалить полином из таблицы \n3.Произвести операцию над полиномами \n" <<
 			"4.Вывести на экран таблицы \n5.Закончить работу" << endl;
@@ -113,7 +113,7 @@ void func(ScanTable<string, TPolynom>& scan_t, SortedTable<string, TPolynom>& so
 				cout << scan_t;
 				cout << sort_t;
 				cout << hash_t;
-				system("pause");
+				//system("pause");
 			}
 			catch (string exp) {
 				cout << exp << endl;
