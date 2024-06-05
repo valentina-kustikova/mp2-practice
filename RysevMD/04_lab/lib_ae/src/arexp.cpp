@@ -10,10 +10,7 @@ map <string, int> pr = {
 };
 
 ArithmeticExpression::ArithmeticExpression() {
-	cin >> arexp;
-	arexp += '\0';
-	GetTokens();
-	ToPostfixForm();
+	arexp = "";
 }
 ArithmeticExpression::ArithmeticExpression(const string& str) {
 	arexp = str;
@@ -55,9 +52,10 @@ bool ArithmeticExpression::IsInvalidSign(const char& symbol) const noexcept {
 }
 void ArithmeticExpression::GetTokens() {
 	int i = 0;
-	while (arexp[i] != '\0') {
+	char symb = '1';
+	while (arexp[i] != '\0' || symb != '\0') {
 		string tok = "";
-		char symb = arexp[i];
+		symb = arexp[i];
 		while (!IsOperation(symb) && symb != '\0' && symb != ' ') {
 			tok += symb;
 			i += 1;
@@ -67,8 +65,9 @@ void ArithmeticExpression::GetTokens() {
 		if (IsOperation(symb)) {
 			string c(1, symb);
 			mas.push_back(c);
+			i += 1;
 		}
-		i += 1;
+		if (symb == ' ') i += 1;
 	}
 }
 void ArithmeticExpression::GetValues() {

@@ -20,6 +20,15 @@ Monom::Monom(const double _coef, const int _degX, const int _degY, const int _de
 	degZ = _degZ;
 }
 
+const Monom& Monom::operator=(const Monom& monom)
+{
+	coef = monom.coef;
+	degX = monom.degX;
+	degY = monom.degY;
+	degZ = monom.degZ;
+	return (*this);
+}
+
 bool Monom::operator==(const Monom& monom) const
 {
 	return (coef == monom.coef) && (degX == monom.degX) && (degY == monom.degY) && (degZ == monom.degZ);
@@ -39,7 +48,7 @@ bool Monom::operator>(const Monom& monom) const
 bool Monom::operator<(const Monom& monom) const
 {
 	return ((degX < monom.degX) || (degX == monom.degX && degY < monom.degY) ||
-		(degX == monom.degX && degY == monom.degY && degZ < monom.degZ));
+		(degX == monom.degX && degY == monom.degY && degZ < monom.degZ) || (degX == monom.degX && degY == monom.degY && degZ == monom.degZ && coef < monom.coef));
 }
 
 Monom Monom::operator*(const Monom& monom) const
@@ -76,4 +85,18 @@ Monom Monom::difZ() const
 {
 	if (*this == Monom()) return Monom();
 	return Monom(coef * degZ, degX, degY, degZ - 1);
+}
+
+string Monom::toString() const {
+	string m = "";
+	if (coef != 0) {
+		m += to_string(coef);
+		if (degX != 0 && degX == 1) m += "*X";
+		else if (degX > 1) m += "*X^" + to_string(degX);
+		if (degY != 0 && degY == 1) m += "*Y";
+		else if (degY > 1) m += "*Y^" + to_string(degY);
+		if (degZ != 0 && degZ == 1) m += "*Z";
+		else if (degZ > 1) m += "*Z^" + to_string(degZ);
+	}
+	return m;
 }

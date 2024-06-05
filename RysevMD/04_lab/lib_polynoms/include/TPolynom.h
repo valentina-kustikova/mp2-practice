@@ -3,24 +3,23 @@
 #include "TRingList.h"
 #include "TMonom.h"
 #include "arexp.h"
+#include <string>
 
 using namespace std;
 
-class TPolynom {
-private:
+class TPolynom : public ArithmeticExpression {
+protected:
 	TRingList<Monom>* monoms;
-	string name;
-
-	vector<string> lexems;
-	static map<string, int> priority;
-
-	void Parse();
-	void ToMonoms();
-	void AddMonom(const TMonom& m);
+	void toPolynome();
+	bool findLess(Monom& m, TNode<Monom>*& g);
+	void setDegree(Monom&, string& param, int deg);
+	void giveSimTer();
+	bool isSimilar(Monom& a, Monom& b) const;
+	void SortInsert(Monom& m);
 public:
 	TPolynom();
-	TPolynom(const string _name);
-	TPolynom(const TRingList<TMonom>& ringlist);
+	TPolynom(const string& _polynome);
+	TPolynom(const TRingList<Monom>& ringlist);
 	TPolynom(const TPolynom& polynom);
 	~TPolynom();
 
@@ -29,18 +28,31 @@ public:
 	TPolynom operator+(TPolynom& polynom);
 	TPolynom operator-(TPolynom& polynom);
 	TPolynom operator*(TPolynom& polynom);
+	TPolynom operator*=(int num);
+	TPolynom operator*=(float num);
 	double operator()(double x, double y, double z);
+	friend std::ostream& operator << (std::ostream& out, TPolynom& polynom) {
+		polynom.monoms->Reset();
+		while (polynom.monoms->getCurrent() != polynom.monoms->getStop()) {
+			Monom monom = polynom.monoms->getCurrent()->key;
+			if (monom.coef > 0 && polynom.monoms->getCurrent() != polynom.monoms->getFirst()) out << "+";
+			if (monom.coef != 0) out << monom;
+			polynom.monoms->Next();
+		}
+		return out;
+	}
+	friend std::istream& operator >> (std::istream& in, TPolynom& polynom) {
+		string pol;
+		getline(in, pol);
+		polynom = TPolynom(pol);
+		return in;
+	}
+
+	bool operator == (const TPolynom& polynom) const;
 
 	TPolynom dif_x() const;
 	TPolynom dif_y() const;
 	TPolynom dif_z() const;
 
-private:
-	bool IsOperator(const string& isopr) const;
-	bool IsConst(const string& isopd) const;
-
-	int FindOperator(int pos = 0) const;
-
-	void ConvertInfix();
-	void CorrectnessCheck();
+	void ToString();
 };

@@ -11,55 +11,73 @@ public:
 	TRingList(const TRingList<T>& lst);
 	TRingList(TNode<T>* _pFirst);
 	virtual ~TRingList();
+
+	void insertFirst(const T& key);
+	void Remove(const T& key);
+	void Clear();
 };
 
 template <typename T>
-TRingList<T>::TRingList() {
+TRingList<T>::TRingList() : TList<T>() {
 	pHead = nullptr;
+	pStop = pHead;
 }
 
 template <typename T>
-TRingList<T>::TRingList(const TList<T>& lst) {
-	pHead->pNext = lst.pFirst;
-	lst.pLast->pNext = lst.pFirst;
+TRingList<T>::TRingList(const TList<T>& lst) : TList<T>(lst)
+{
+	pHead = new TNode<T>(0, lst.getFirst());
+	if (pLast != nullptr) pLast->pNext = pHead;
+	pStop = pHead;
 }
 
 template <typename T>
-TRingList<T>::TRingList(const TRingList<T>& lst) {
-	pHead = lst.pHead;
-	if (lst.pFirst == nullptr) return;
-	pFirst = new TNode<T>(lst.pFirst->key);
-	TNode<T>* tmp1 = pFirst;
-	TNode<T>* tmp2 = pFirst;
-	while (tmp1->pNext != lst.pStop) {
-		tmp2->pNext = new TNode<T>(tmp1->pNext->key);
-		tmp1 = tmp1->pNext;
-		tmp2 = tmp2->pNext;
-	}
-	pLast = tmp2;
-	pLast->pNext = pFirst;
-	pCurrent = pFirst;
+TRingList<T>::TRingList(const TRingList<T>& lst) : TList<T>(lst)
+{
+	pHead = new TNode<T>(0, lst.getFirst());
+	if (pLast != nullptr) pLast->pNext = pHead;
 	pStop = pHead;
 }
 
 template <typename T>
 TRingList<T>::TRingList(TNode<T>* _pFirst) : TList<T>(_pFirst) {
 	pHead = new TNode<T>(pFirst->key, pFirst);
-	pLast->pNext = pFirst;
+	pLast->pNext = pHead;
+	pStop = pHead;
 }
 
 template <typename T>
 TRingList<T>::~TRingList() {
-	if (pFirst == nullptr) throw "ERROR: list already empty";
-	TNode<T>* tmp = pFirst;
-	while (pFirst != pLast) {
-		pFirst = pFirst->pNext;
-		delete tmp;
-		tmp = pFirst;
-	}
-	delete tmp;
+	if (pFirst == nullptr) return; 	
 	delete pHead;
+}
+
+template <typename T>
+void TRingList<T>::insertFirst(const T& key) {
+	TList<T>::insertFirst(key);
+	pHead = new TNode<T>(-1, pFirst);
+	pLast->pNext = pHead;
+	pStop = pHead;
+}
+
+//template <typename T>
+//void TRingList<T>::Next() {
+//	pCurrent = pCurrent->pNext;
+//}
+
+template <typename T>
+void TRingList<T>::Remove(const T& key) {
+	TList<T>::Remove(key);
+	pHead->pNext = pFirst;
+	TNode<T>* tmp = pFirst;
+	while (tmp->pNext != pStop) tmp = tmp->pNext;
+	pLast = tmp;
+}
+
+template <typename T>
+void TRingList<T>::Clear() {
+	TList<T>::Clear();
+	if (pFirst != nullptr) delete pFirst;
 	pFirst = nullptr;
-	pCurrent = nullptr;
-	pStop = nullptr;
+	pHead = nullptr;
 }
