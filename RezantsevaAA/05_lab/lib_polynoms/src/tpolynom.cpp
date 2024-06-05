@@ -275,6 +275,8 @@ TPolinom TPolinom::operator+(const TPolinom& p) {
 		resultPolynom.monoms.InsertLast(monoms.GetCurrent()->data);
 		monoms.Next();
 	}
+	if (resultPolynom.monoms.is_Empty())
+		resultPolynom.monoms.InsertLast(0);
 	resultPolynom.Sort();
 	resultPolynom.formula = resultPolynom.getStringMonoms();
 	return resultPolynom;

@@ -15,7 +15,7 @@ protected:
 public:
 	TTable() { size = 0; currPos = -1; };
 	TTable(int _maxSize);
-
+	~TTable() { };
 	virtual void Insert(const TKey& k, const TData& d) = 0;
 	virtual void Remove(const TKey& k) = 0;
 	virtual TTabRecord <TKey, TData>* Find(const TKey& k) = 0;

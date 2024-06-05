@@ -49,7 +49,7 @@ void Print()
 		break;
 	}
 }
-void insertResult(TPolinom res, int type)
+void insertResult(std::string k, TPolinom res, int type)
 {
 	type = Correct(type);
 
@@ -57,7 +57,7 @@ void insertResult(TPolinom res, int type)
 	{
 	case 1:
 		if (!scan_table.IsFull()) {
-			scan_table.Insert(res.getFormula(), res);
+			scan_table.Insert(k, res);
 			break;
 		}
 		else
@@ -66,14 +66,14 @@ void insertResult(TPolinom res, int type)
 			std::cin >> type;
 			while (type != 2 && type != 3)
 				std::cin >> type;
-			insertResult(res, type);
+			insertResult(k, res, type);
 			break;
 		}
 
 	case 2:
 		if (!sorted_table.IsFull())
 		{
-			sorted_table.Insert(res.getFormula(), res);
+			sorted_table.Insert(k, res);
 			break;
 		}
 		else
@@ -82,14 +82,14 @@ void insertResult(TPolinom res, int type)
 			std::cin >> type;
 			while (type != 1 && type != 3)
 				std::cin >> type;
-			insertResult(res, type);
+			insertResult(k, res, type);
 			break;
 		}
 
 	case 3:
 		if (!hash_table.IsFull())
 		{
-			hash_table.Insert(res.getFormula(), res);
+			hash_table.Insert(k, res);
 			break;
 		}
 		else
@@ -98,16 +98,16 @@ void insertResult(TPolinom res, int type)
 			std::cin >> type;
 			while (type != 1 && type != 2)
 				std::cin >> type;
-			insertResult(res, type);
+			insertResult(k, res, type);
 			break;
 		}
 
 	case 4:
 		if (!sorted_table.IsFull() && !scan_table.IsFull() && !hash_table.IsFull())
 		{
-			scan_table.Insert(res.getFormula(), res);
-			sorted_table.Insert(res.getFormula(), res);
-			hash_table.Insert(res.getFormula(), res);
+			scan_table.Insert(k, res);
+			sorted_table.Insert(k, res);
+			hash_table.Insert(k, res);
 			break;
 		}
 		else
@@ -127,7 +127,7 @@ void Insert()
 	int type;
 	std::cout << " In which table you want to insert: \n 1 - Scan table \n 2 - Sorted table \n 3 - Hash table\n 4 - All\n";
 	std::cin >> type;
-	insertResult(p1, type);
+	insertResult(s1, p1, type);
 }
 
 void Remove()
@@ -136,12 +136,8 @@ void Remove()
 	std::cout << "Please, enter polynom to remove \n";
 	std::cin >> s1;
 	TPolinom p1(s1);
-	while (scan_table.Find(p1.getFormula()) == nullptr && sorted_table.Find(p1.getFormula()) == nullptr && hash_table.Find(p1.getFormula()) == nullptr)
+	while (scan_table.Find(s1) == nullptr && sorted_table.Find(s1) == nullptr && hash_table.Find(s1) == nullptr)
 	{
-		bool flag;
-		flag = scan_table.Find(p1.getFormula());
-		flag = sorted_table.Find(p1.getFormula());
-		flag = hash_table.Find(p1.getFormula());
 		std::cout << "Sorry. All tables doesn't have this polynom." << std::endl;
 		std::cout << "Please, enter exist polynom " << std::endl;
 		std::cin >> s1;
@@ -156,9 +152,9 @@ void Remove()
 	case 1:
 
 
-		if (scan_table.Find(p1.getFormula()) != nullptr)
+		if (scan_table.Find(s1) != nullptr)
 		{
-			scan_table.Remove(p1.getFormula());
+			scan_table.Remove(s1);
 		}
 		else
 		{
@@ -167,9 +163,9 @@ void Remove()
 		break;
 	case 2:
 
-		if (sorted_table.Find(p1.getFormula()) != nullptr)
+		if (sorted_table.Find(s1) != nullptr)
 		{
-			sorted_table.Remove(p1.getFormula());
+			sorted_table.Remove(s1);
 		}
 		else
 		{
@@ -178,9 +174,9 @@ void Remove()
 		break;
 	case 3:
 
-		if (hash_table.Find(p1.getFormula()) != nullptr)
+		if (hash_table.Find(s1) != nullptr)
 		{
-			hash_table.Remove(p1.getFormula());
+			hash_table.Remove(s1);
 		}
 		else
 		{
@@ -189,20 +185,17 @@ void Remove()
 		break;
 	case 4:
 
-		if (hash_table.Find(p1.getFormula()) != nullptr && scan_table.Find(p1.getFormula()) != nullptr && sorted_table.Find(p1.getFormula()) != nullptr)
+		if (hash_table.Find(s1) != nullptr && scan_table.Find(s1) != nullptr && sorted_table.Find(s1) != nullptr)
 		{
-			scan_table.Remove(p1.getFormula());
-			sorted_table.Remove(p1.getFormula());
-			hash_table.Remove(p1.getFormula());
+			scan_table.Remove(s1);
+			sorted_table.Remove(s1);
+			hash_table.Remove(s1);
 		}
 		else
 		{
 			std::cout << "Sorry. Not all tables have this polynom\n";
+			break;
 		}
-		break;
-		scan_table.Insert(p1.getFormula(), p1);
-		sorted_table.Insert(p1.getFormula(), p1);
-		hash_table.Insert(p1.getFormula(), p1);
 		break;
 	}
 }
@@ -213,31 +206,31 @@ void Result(TPolinom result)
 	std::cout << "Result = " << result.getFormula() << std::endl;
 	std::cout << " In which table you want to insert the result: \n 1 - Scan table \n 2 - Sorted table \n 3 - Hash table\n 4 - All\n";
 	std::cin >> type;
-	insertResult(result, type);
+	insertResult(result.getFormula(), result, type);
 }
 
 //-------------In Table----------------------\\
 
-bool inScanTable(TPolinom p1, TPolinom p2)
+bool inScanTable(std::string p1, std::string p2)
 {
-	if (scan_table.Find(p1.getFormula()) != nullptr && scan_table.Find(p2.getFormula()) != nullptr)
+	if (scan_table.Find(p1) != nullptr && scan_table.Find(p2) != nullptr)
 		return true;
 	return false;
 }
-bool inSortedTable(TPolinom p1, TPolinom p2)
+bool inSortedTable(std::string p1, std::string p2)
 {
-	if (sorted_table.Find(p1.getFormula()) != nullptr && sorted_table.Find(p2.getFormula()) != nullptr)
+	if (sorted_table.Find(p1) != nullptr && sorted_table.Find(p2) != nullptr)
 		return true;
 	return false;
 }
-bool inHashTable(TPolinom p1, TPolinom p2)
+bool inHashTable(std::string p1, std::string p2)
 {
-	if (hash_table.Find(p1.getFormula()) != nullptr && hash_table.Find(p2.getFormula()) != nullptr)
+	if (hash_table.Find(p1) != nullptr && hash_table.Find(p2) != nullptr)
 		return true;
 	return false;
 }
 
-bool inOneTable(TPolinom p1, TPolinom p2)
+bool inOneTable(std::string p1, std::string p2)
 {
 	if (inScanTable(p1, p2) || inSortedTable(p1, p2) || inHashTable(p1, p2))
 		return true;
@@ -251,7 +244,7 @@ void Dif()// DIF - to take the derivative
 	std::cin >> s1;
 	TPolinom p1(s1);
 	TPolinom result;
-	while (scan_table.Find(p1.getFormula()) == nullptr && sorted_table.Find(p1.getFormula()) == nullptr && hash_table.Find(p1.getFormula()) == nullptr)
+	while (scan_table.Find(s1) == nullptr && sorted_table.Find(s1) == nullptr && hash_table.Find(s1) == nullptr)
 	{
 		std::cout << "Sorry. All tables doesn't have this polynom." << std::endl;
 		Print();
@@ -292,9 +285,8 @@ void Arithmetic() //+, -, *
 	std::cout << "Please, enter first polynom with which one you want to work" << std::endl;
 	std::cin >> s1;
 	TPolinom p1(s1);
-	bool flag;
 	//проверка, есть ли первый полином в одной из таблиц
-	while (scan_table.Find(p1.getFormula()) == nullptr && sorted_table.Find(p1.getFormula()) == nullptr && hash_table.Find(p1.getFormula()) == nullptr)
+	while (scan_table.Find(s1) == nullptr && sorted_table.Find(s1) == nullptr && hash_table.Find(s1) == nullptr)
 	{
 		std::cout << "Sorry. All tables doesn't have this polynom." << std::endl;
 		Print();
@@ -307,7 +299,7 @@ void Arithmetic() //+, -, *
 	TPolinom p2(s2);
 	TPolinom result;
 
-	while (!inOneTable(p1, p2))
+	while (!inOneTable(s1, s2))
 	{
 		std::cout << "Polynoms in different tables or second polynom doesn't exist in tables, please, enter exist second polynom" << std::endl;
 		std::cin >> s2;
@@ -368,25 +360,6 @@ void user()
 
 int main()
 {
-	TPolinom p("3*x^5");
-	TPolinom t1("1-x");
-	TPolinom t2("x-1");
-	TPolinom t3("2*x^2");
-
-	hash_table.Insert(t1.getFormula(), t1);
-	hash_table.Insert(t2.getFormula(), t2);
-	hash_table.Insert(t3.getFormula(), t3);
-	
-	scan_table.Insert(t1.getFormula(), t1);
-	scan_table.Insert(t2.getFormula(), t2);
-	scan_table.Insert(t3.getFormula(), t3);
-
-	sorted_table.Insert(t1.getFormula(), t1);
-	sorted_table.Insert(t2.getFormula(), t2);
-	sorted_table.Insert(t3.getFormula(), t3);
-	sorted_table.Insert(p.getFormula(), p);
-	
 	user();
-
 	return 0;
 }

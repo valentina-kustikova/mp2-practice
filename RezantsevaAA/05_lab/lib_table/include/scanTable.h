@@ -63,9 +63,9 @@ template<typename TKey, typename TData> TScanTable<TKey, TData>::TScanTable(cons
 }
 template<typename TKey, typename TData> TScanTable<TKey, TData>::~TScanTable()
 {
-	for (int i = 0; i < maxSize; i++)
+	for (int i = 0; i < size; i++)
 	{
-		if (records[i])
+		if (records[i] != nullptr)
 		{
 			delete records[i];
 		}
@@ -79,6 +79,7 @@ template<typename TKey, typename TData> void TScanTable<TKey, TData>::Insert(con
 	{
 		throw "Table is full. Can't insert";
 	}
+	
 	records[size++] = new TTabRecord<TKey,TData>(k, d);
 }
 
@@ -96,19 +97,19 @@ template<typename TKey, typename TData> TTabRecord<TKey, TData>* TScanTable<TKey
 
 template<typename TKey, typename TData> void TScanTable<TKey, TData>::Remove(const TKey& k)
 {
-	if ( this->IsEmpty()) {
+	if (this->IsEmpty()) {
 		throw "Nothing to remove. Table is empty";
 	}
-	if (this->Find(k) != nullptr) {
-		delete records[currPos];
-		for (int i = currPos; i < size; i++) {
-			records[i] = records[i + 1];
-			size--;
-		}
-	}
-	else
-		throw "Record not found";
 
+	if (this->Find(k) == nullptr) {
+		throw "Record not found";
+	}
+	delete records[currPos];
+		if (size - 1 != currPos)
+		{
+			records[currPos] = records[size - 1];
+		}
+		records[--size] = nullptr;
 }
 
 template <class TKey, class TData> TKey TScanTable<TKey, TData>::GetKey() const

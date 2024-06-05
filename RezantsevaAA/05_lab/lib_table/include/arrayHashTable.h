@@ -3,6 +3,7 @@
 #include "hashTable.h"
 #include <iostream>
 #include <iomanip>
+
 template <typename TKey, typename TData> 
 class TArrayHashTable : public THashTable<TKey, TData>
 {
@@ -204,16 +205,43 @@ void TArrayHashTable<TKey, TData>::Remove(const TKey& k)
 
 template<typename TKey, typename TData>
 void TArrayHashTable<TKey, TData>::Insert(const TKey& k, const TData& d)
+
 {
 	if (IsFull())
 	{
 		throw "Error. Can't insert, table is full";
 	}
+	
+
+	if (freePosIndex != -1)
+	{
+		currPos = freePosIndex;
+	}
+	else
+	{
+		currPos = hash_func(k);
+		while (records[currPos] != nullptr && records[currPos] != pMark)
+		{
+			currPos = GetNextPos(currPos);
+		}
+	}
+
+	records[currPos] = new TTabRecord<TKey, TData>(k, d);
+	size++;
+}
+/*
+{
+	if (IsFull())
+	{
+		throw "Error. Can't insert, table is full";
+	}
+	
 	if (Find(k) != nullptr && freePosIndex != -1)
 	{
 		currPos = freePosIndex;
 	}
 	records[currPos] = new TTabRecord<TKey, TData>(k, d);
 	size++;
-}
+
+}*/
 #endif
