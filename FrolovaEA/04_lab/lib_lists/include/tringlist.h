@@ -130,7 +130,7 @@ template<typename T>
 void TRingList<T>::removeCurrentNode()
 {
 	TList<T>::removeCurrentNode();
-	if (this->pFirst != this->pStop && this->pFirst != nullptr)
+	if (this->pFirst != this->pStop /*&& this->pFirst != nullptr*/) //???
 	{
 		this->pLast->pNext = this->pHead;
 	}
