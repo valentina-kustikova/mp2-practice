@@ -17,10 +17,10 @@ public:
 	virtual TabRecord<TKey, TData>* Search(TKey _key) = 0;
 	virtual void Insert(TKey _key, TData* _data) = 0;
 	virtual void Remove(TKey _key) = 0;
-	virtual bool IsFull()const;
-	virtual bool IsEmpty()const;
-	virtual bool IsEnded()const;
-	virtual void Reset();
+	virtual bool IsFull()const noexcept;
+	virtual bool IsEmpty()const noexcept;
+	virtual bool IsEnded()const noexcept;
+	virtual void Reset() noexcept;
 	virtual void Next();
 };
 
@@ -34,22 +34,22 @@ Table<TKey, TData>::Table(int max_size) {
 }
 
 template <typename TKey, typename TData>
-bool Table<TKey, TData>::IsFull()const {
+bool Table<TKey, TData>::IsFull()const noexcept {
 	return count == maxSize;
 }
 
 template <typename TKey, typename TData>
-bool Table<TKey, TData>::IsEmpty()const {
+bool Table<TKey, TData>::IsEmpty()const noexcept {
 	return count == 0;
 }
 
 template <typename TKey, typename TData>
-bool Table<TKey, TData>::IsEnded()const {
+bool Table<TKey, TData>::IsEnded()const noexcept {
 	return currPos == maxSize;
 }
 
 template <typename TKey, typename TData>
-void Table<TKey, TData>::Reset() {
+void Table<TKey, TData>::Reset() noexcept {
 	currPos = 0;
 }
 

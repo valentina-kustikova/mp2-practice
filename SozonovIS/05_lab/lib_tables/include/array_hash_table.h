@@ -21,11 +21,11 @@ public:
 	ArrayHashTable(int max_size, int step);
 	ArrayHashTable(const ArrayHashTable<TKey, TData>& table);
 	~ArrayHashTable();
-	TabRecord<TKey, TData>* GetCurrent()const;
+	TabRecord<TKey, TData>* GetCurrent() const;
 	TabRecord<TKey, TData>* Search(TKey _key);
 	void Insert(TKey _key, TData* _data);
 	void Remove(TKey _key);
-	void Reset();
+	void Reset() noexcept;
 	void Next();
 	friend ostream& operator<<(ostream& out, const ArrayHashTable<TKey, TData>& table) {
 		if (table.IsEmpty()) {
@@ -89,7 +89,7 @@ ArrayHashTable<TKey, TData>::~ArrayHashTable() {
 }
 
 template <typename TKey, typename TData>
-TabRecord<TKey, TData>* ArrayHashTable<TKey, TData>::GetCurrent()const {
+TabRecord<TKey, TData>* ArrayHashTable<TKey, TData>::GetCurrent() const {
 	if (IsEmpty())
 		throw exception("table is empty");
 	return recs[currPos];
@@ -143,7 +143,7 @@ void ArrayHashTable<TKey, TData>::Remove(TKey _key) {
 }
 
 template <typename TKey, typename TData>
-void ArrayHashTable<TKey, TData>::Reset() {
+void ArrayHashTable<TKey, TData>::Reset() noexcept {
 	currPos = 0;
 	while (!IsEnded()) {
 		if (recs[currPos] == nullptr && recs[currPos] == pMark)

@@ -21,27 +21,27 @@ public:
 };
 
 template <typename TKey, typename TData>
-void SortedTable<TKey, TData>::QuickSort(TabRecord<TKey, TData>** a, int n) {
+void SortedTable<TKey, TData>::QuickSort(TabRecord<TKey, TData>** records, int n) {
 	int i = 0;
 	int j = n - 1;
-	TabRecord<TKey, TData>* mid = a[(i + j) / 2];
+	TabRecord<TKey, TData>* mid = records[(i + j) / 2];
 	do {
-		while (a[i]->key < mid->key)
+		while (records[i]->key < mid->key)
 			i++;
-		while (a[j]->key > mid->key)
+		while (records[j]->key > mid->key)
 			j--;
 		if (i <= j) {
-			TabRecord<TKey, TData>* tmp = a[i];
-			a[i] = a[j];
-			a[j] = tmp;
+			TabRecord<TKey, TData>* tmp = records[i];
+			records[i] = records[j];
+			records[j] = tmp;
 			i++;
 			j--;
 		}
 	} while (i <= j);
 	if (j > 0)
-		QuickSort(a, j + 1);
+		QuickSort(records, j + 1);
 	if (i < n)
-		QuickSort(a, n - 1);
+		QuickSort(records, n - 1);
 }
 
 

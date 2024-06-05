@@ -6,7 +6,7 @@
 template <typename TKey, typename TData>
 class HashTable : public Table<TKey, TData> {
 protected:
-	virtual int hashFunc(const TKey _key);
+	int hashFunc(const TKey _key);
 public:
 	HashTable(int max_size);
 };
