@@ -106,6 +106,7 @@ void ScanTable<TKey, TData>::remove(const TKey& _key) {
 	if (find(_key) != nullptr) {
 		delete recs[curr_pos];
 		recs[curr_pos] = recs[count - 1];
+		recs[count - 1] = nullptr;
 		count--;
 	}
 	else {

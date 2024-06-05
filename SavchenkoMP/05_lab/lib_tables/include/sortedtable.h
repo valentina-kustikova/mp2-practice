@@ -150,6 +150,7 @@ void SortedTable<TKey, TData>::remove(const TKey& _key) {
 		for (int i = curr_pos; i < count - 1; i++) {
 			recs[i] = recs[i + 1];
 		}
+		recs[count - 1] = nullptr;
 		count--;
 	}
 }
