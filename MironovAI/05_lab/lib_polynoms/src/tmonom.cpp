@@ -21,7 +21,7 @@ TMonom::TMonom(const double coef_, const int degreex_, const int degreey_, const
 
 string TMonom::to_str()
 {
-	return to_string(coef) + "x^" + to_string(degree_x) + "y^"
+	return to_string(abs(coef)) + "x^" + to_string(degree_x) + "y^"
 		+ to_string(degree_y) + "z^" + to_string(degree_z);
 }
 
