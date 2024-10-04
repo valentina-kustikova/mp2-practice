@@ -94,6 +94,15 @@ int TBitField::GetBit(const int n) const // получить значение б
 
 const TBitField& TBitField::operator=(const TBitField &bf) // присваивание
 {
+    if (this == &bf)
+        return *this;
+    if (this->BitLen == bf.BitLen)
+    {
+        for (int i = 0; i < this->MemLen; i++)
+        {
+            this->pMem[i] = bf.pMem[i];
+        }
+    }
     this->BitLen = bf.BitLen;
     this->MemLen = bf.MemLen;
     delete[] this->pMem;
@@ -126,21 +135,10 @@ int TBitField::operator==(const TBitField &bf) const // сравнение
 
 int TBitField::operator!=(const TBitField &bf) const // сравнение
 {
-    if (this->BitLen != bf.BitLen)
-        return 1;
+    if (*this == bf)
+        return 0;
     else
-    {
-        int temp = 0;
-        for (int i = 0; i < BitLen; i++)
-        {
-            if (this->GetBit(i) == bf.GetBit(i))
-                temp += 1;
-        }
-        if (this->BitLen == temp)
-            return 0;
-        else
-            return 1;
-    }
+        return 1;
 }
 
 TBitField TBitField::operator|(const TBitField &bf) // операция "или"
@@ -190,8 +188,10 @@ istream &operator>>(istream &istr, TBitField &bf) // ввод
 {    
     int temp = 0;
     int len;
+    std::cout << "Enter the length of the bit field: ";
     istr >> len;
     bf = TBitField(len);
+    std::cout << "Enter the bit value (0 | 1): ";
     for (int i = 0; i < bf.BitLen; i++)
     {
         istr >> temp;
@@ -209,12 +209,6 @@ ostream &operator<<(ostream &ostr, const TBitField &bf) // вывод
 {
     for (int i = bf.BitLen; i >= 0; i --)
         ostr << bf.GetBit(i) << " ";
-    
-    /*
-    for (int i = 0; i < bf.MemLen; i++)
-        ostr << bf.pMem[i] << "";
-    */
-    
     ostr << "\n";
     return ostr;
 }
