@@ -14,8 +14,8 @@ static TBitField FAKE_BITFIELD(1);
 
 TBitField::TBitField(int len)
 {
-    /*if (len <= 0)
-        throw "negative_length";*/
+    if (len <= 0)
+        throw "negative_length";
     this->BitLen = len;
 
     if (this->BitLen % 16 == 0)
@@ -125,10 +125,9 @@ int TBitField::operator!=(const TBitField &bf) const // сравнение
 TBitField TBitField::operator|(const TBitField &bf) // операция "или"
 {
     if (this->MemLen == bf.MemLen) {
-        TBitField tmp(*this);
         for (int i = 0; i < bf.MemLen; i++)
-            tmp.pMem[i] |= bf.pMem[i];
-        return tmp;
+            this->pMem[i] |= bf.pMem[i];
+        return *this;
     }
     else {
         throw "non_equal_size";
@@ -138,10 +137,9 @@ TBitField TBitField::operator|(const TBitField &bf) // операция "или"
 TBitField TBitField::operator&(const TBitField &bf) // операция "и"
 {
     if (this->MemLen == bf.MemLen) {
-        TBitField tmp(*this);
         for (int i = 0; i < bf.MemLen; i++)
-            tmp.pMem[i] &= bf.pMem[i];
-        return tmp;
+            this->pMem[i] &= bf.pMem[i];
+        return *this;
     }
     else {
         throw "non_equal_size";
@@ -150,20 +148,19 @@ TBitField TBitField::operator&(const TBitField &bf) // операция "и"
 
 TBitField TBitField::operator~(void) // отрицание
 {
-    TBitField tmp(BitLen);
-    for (int i = 0; i < tmp.BitLen; i++)
+    for (int i = 0; i < this->BitLen; i++)
     {
         if (GetBit(i) == 0)
-            tmp.SetBit(i);
+            this->SetBit(i);
         else
-            tmp.ClrBit(i);
+            this->ClrBit(i);
     }
-    return tmp;
+    return *this;
 }
 
 // ввод/вывод
 
-istream &operator>>(istream &istr, TBitField &bf) // ввод
+istream &operator>>(istream &istr, TBitField &bf) // ввод (откуда?)
 {
     return istr;
 }
