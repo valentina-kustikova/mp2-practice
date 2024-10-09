@@ -7,9 +7,7 @@
 
 #include "tbitfield.h"
 
-// Fake variables used as placeholders in tests
-static const int FAKE_INT = -1;
-static TBitField FAKE_BITFIELD(1);
+
 
 TBitField::TBitField(int len)
 {
@@ -156,14 +154,32 @@ TBitField TBitField::operator|(const TBitField &bf) // операция "или"
 
 TBitField TBitField::operator&(const TBitField &bf) // операция "и"
 {
-    if (MemLen != bf.MemLen) {
-        throw "ERROR";
+    if (BitLen >= bf.BitLen)
+    {
+        TBitField copy(BitLen), res(BitLen);
+        for (int i = 0; i < bf.BitLen; i++)
+        {
+            copy.pMem[GetMemIndex(i)] = bf.pMem[GetMemIndex(i)];
+        }
+        for (int i = 0; i < MemLen; i++)
+        {
+            res.pMem[i] = pMem[i] & copy.pMem[i];
+        }
+        return res;
     }
-    TBitField res(*this);
-    for (int i = 0; i < MemLen; i++) {
-        res.pMem[i] = pMem[i] * bf.pMem[i];
+    else
+    {
+        TBitField copy(bf.BitLen), res(bf.BitLen);
+        for (int i = 0; i < BitLen; i++)
+        {
+            copy.pMem[GetMemIndex(i)] = pMem[GetMemIndex(i)];
+        }
+        for (int i = 0; i < bf.MemLen; i++)
+        {
+            res.pMem[i] = bf.pMem[i] & copy.pMem[i];
+        }
+        return res;
     }
-    return res; 
 }
 
 TBitField TBitField::operator~(void) // отрицание

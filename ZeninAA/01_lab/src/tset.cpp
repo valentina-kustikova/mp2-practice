@@ -7,10 +7,7 @@
 
 #include "tset.h"
 
-// Fake variables used as placeholders in tests
-static const int FAKE_INT = -1;
-static TBitField FAKE_BITFIELD(1);
-static TSet FAKE_SET(1);
+
 
 TSet::TSet(int mp) : BitField(1)
 {
@@ -78,27 +75,46 @@ const TSet& TSet::operator=(const TSet &s) // присваивание
 
 int TSet::operator==(const TSet &s) const // сравнение
 {
-    return FAKE_INT;
+    if (MaxPower != s.MaxPower) {
+        return false;
+    }
+    if (BitField != s.BitField) {
+        return false;
+    }
+    return true;
+   
 }
 
 int TSet::operator!=(const TSet &s) const // сравнение
 {
-    return FAKE_INT;
+    if (MaxPower != s.MaxPower) {
+        return true;
+    }
+    if (BitField != s.BitField) {
+        return true;
+    }
+    return false;
 }
 
 TSet TSet::operator+(const TSet &s) // объединение
 {
-    return FAKE_SET;
+    TSet tmp(s.MaxPower > MaxPower ? s.MaxPower : MaxPower);
+    tmp.BitField = BitField | s.BitField;
+    return tmp;
 }
 
 TSet TSet::operator+(const int Elem) // объединение с элементом
 {
-    return FAKE_SET;
+    TSet tmp(Elem > MaxPower ? Elem : MaxPower); 
+    tmp.InsElem(Elem); 
+    return tmp;
 }
 
 TSet TSet::operator-(const int Elem) // разность с элементом
 {
-    return FAKE_SET;
+    TSet tmp(MaxPower);
+    tmp.DelElem(Elem);
+    return tmp;
 }
 
 TSet TSet::operator*(const TSet &s) // пересечение
