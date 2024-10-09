@@ -12,7 +12,7 @@
 
 using namespace std;
 
-typedef unsigned int TELEM;
+typedef unsigned int TELEM; //тип для хранения битов, что позволяет хранить 8 бит в каждом элементе массива.
 
 class TBitField
 {
