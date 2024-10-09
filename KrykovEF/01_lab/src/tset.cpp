@@ -81,34 +81,39 @@ int TSet::operator!=(const TSet &s) const // сравнение
 
 TSet TSet::operator+(const TSet &s) // объединение
 {
-    this->MaxPower = max(this->MaxPower, s.MaxPower);
-    this->BitField = this->BitField | s.BitField;
-    return *this;
+    TSet tmp(*this);
+    tmp.MaxPower = max(this->MaxPower, s.MaxPower);
+    tmp.BitField = tmp.BitField | s.BitField;
+    return tmp;
 }
 
 TSet TSet::operator+(const int Elem) // объединение с элементом
 {
-    this->BitField.SetBit(Elem);
-    return *this;
+    TSet tmp(*this);
+    tmp.BitField.SetBit(Elem);
+    return tmp;
 }
 
 TSet TSet::operator-(const int Elem) // разность с элементом
 {
-    this->BitField.ClrBit(Elem);
-    return *this;
+    TSet tmp(*this);
+    tmp.BitField.ClrBit(Elem);
+    return tmp;
 }
 
 TSet TSet::operator*(const TSet &s) // пересечение
 {
-    this->MaxPower = max(this->MaxPower, s.MaxPower);
-    this->BitField = this->BitField & s.BitField;
-    return *this;
+    TSet tmp(*this);
+    tmp.MaxPower = max(this->MaxPower, s.MaxPower);
+    tmp.BitField = this->BitField & s.BitField;
+    return  tmp;
 }
 
 TSet TSet::operator~(void) // дополнение
 {
-    this->BitField = ~(this->BitField);
-    return *this;
+    TSet tmp(*this);
+    tmp.BitField = ~(tmp.BitField);
+    return tmp;
 }
 
 // перегрузка ввода/вывода
