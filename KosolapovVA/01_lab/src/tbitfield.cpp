@@ -197,11 +197,9 @@ istream &operator>>(istream &istr, TBitField &bf) // ввод
         istr >> temp;
         if (temp == 1)
             bf.SetBit(i);
+        else if ((temp !=1)&&(temp !=0))
+            throw std::exception("Error");
     }    
-    /*
-    for (int i = 0; i < bf.MemLen; i++)
-        istr >> bf.pMem[i];    
-    */
     return istr;
 }
 

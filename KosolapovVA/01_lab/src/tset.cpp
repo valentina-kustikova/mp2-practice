@@ -136,11 +136,13 @@ istream &operator>>(istream &istr, TSet &s) // ввод
     s = TSet(temp);
     std::cout << "Enter the number of items you want to enter\n";
     istr >> temp;
-    std::cout << "Enter elemets:\n";
+    std::cout << "Enter elements:\n";
     for (int i = 0; i <temp; i++)
     {
         int elem;
         istr >> elem;
+        if (elem > s.MaxPower)
+            throw std::exception("Error");
         s.InsElem(elem);
     }
     istr >> s.BitField;
