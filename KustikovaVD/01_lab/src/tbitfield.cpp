@@ -56,11 +56,13 @@ void TBitField::SetBit(const int n) // установить бит
     if (n >= BitLen || n<0)
         throw "invalid index";
     pMem[GetMemIndex(n)] = pMem[GetMemIndex(n)] | GetMemMask(n);
-    pMem[GetMemIndex(n)] |= GetMemMask(n);
 }
 
 void TBitField::ClrBit(const int n) // очистить бит
 {
+    if (n >= BitLen || n < 0)
+        throw "invalid index";
+    pMem[GetMemIndex(n)] = pMem[GetMemIndex(n)] & (~GetMemMask(n));
 }
 
 int TBitField::GetBit(const int n) const // получить значение бита
