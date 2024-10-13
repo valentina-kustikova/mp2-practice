@@ -56,6 +56,9 @@ void TBitField::ClrBit(const int n) // очистить бит
 
 int TBitField::GetBit(const int n) const // получить значение бита
 {
+    if (n < 0  || n>BitLen) {
+        throw "Unvalid n";
+    }
     if ((pMem[n / (sizeof(TELEM) * 8)] & GetMemMask(n)) == 0) return 0;
 }
 
