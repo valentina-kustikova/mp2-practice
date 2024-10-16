@@ -1,5 +1,5 @@
 #include "tbitfield.h"
-
+ 
 #include <gtest.h>
 
 TEST(TBitField, can_create_bitfield_with_positive_length)
@@ -52,6 +52,7 @@ TEST(TBitField, can_clear_bit)
 
 TEST(TBitField, throws_when_create_bitfield_with_negative_length)
 {
+
   ASSERT_ANY_THROW(TBitField bf(-3));
 }
 
