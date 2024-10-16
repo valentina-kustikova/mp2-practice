@@ -12,7 +12,7 @@ static const int FAKE_INT = -1;
 static TBitField FAKE_BITFIELD(1);
 static TSet FAKE_SET(1);
 
-TSet::TSet(int mp) : BitField(-1)
+TSet::TSet(int mp) : BitField(mp)
 {
     MaxPower = mp;
 }
@@ -121,10 +121,18 @@ TSet TSet::operator~(void) // дополнение
 
 istream &operator>>(istream &istr, TSet &s) // ввод
 {
+    int tmp = 0;
+    for (int i = 0; i < s.MaxPower; i++) {
+        istr >> tmp;
+        s.InsElem(tmp);
+    }
     return istr;
 }
 
 ostream& operator<<(ostream &ostr, const TSet &s) // вывод
 {
+    for (int i = 0; i < s.MaxPower; i++) {
+        ostr << s.BitField.GetBit(i);
+    }
     return ostr;
 }
