@@ -38,9 +38,7 @@ TBitField::TBitField(const TBitField &bf) // конструктор копиро
 
 TBitField::~TBitField()
 {
-    if (pMem != nullptr) {
-        delete[] pMem;
-    }
+    delete[] this->pMem;
     
 }
 
@@ -149,14 +147,15 @@ TBitField TBitField::operator&(const TBitField &bf) // операция "и"
 
 TBitField TBitField::operator~(void) // отрицание
 {
-    TBitField res(*this);
-    for (int i = 0; i < BitLen; i++) {
-        if (GetBit(i) == 1) {
-            res.ClrBit(i);
-        }
-        else res.SetBit(i);
+    TBitField tmp(*this);
+    for (int i = 0; i < this->BitLen; i++)
+    {
+        if (GetBit(i) == 0)
+            tmp.SetBit(i);
+        else
+            tmp.ClrBit(i);
     }
-    return res;
+    return tmp;
 }
 
 // ввод/вывод
