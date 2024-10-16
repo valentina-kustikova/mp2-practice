@@ -22,7 +22,7 @@ TBitField::TBitField(int len)
         }
     }
 
-    //else  throw "Error";
+    else  throw "Error";
     
 }
 
