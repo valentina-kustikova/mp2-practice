@@ -15,7 +15,7 @@ TBitField::TBitField(int len)
 {
     if (len > 0) {
         this->BitLen = len;
-        MemLen = (len / (sizeof(TELEM) * 8)) + 1;
+        this->MemLen = (len / (sizeof(TELEM) * 8)) + 1;
         this->pMem = new TELEM[this->MemLen];
         for (int i = 0; i < this->MemLen; i++) {
             this->pMem[i] = 0;
@@ -38,8 +38,8 @@ TBitField::TBitField(const TBitField& bf) // конструктор копиро
 
 TBitField::~TBitField()
 {
-    if (pMem != nullptr) {
-        delete [] pMem;
+    if (this->pMem != nullptr) {
+        delete [] this->pMem;
     }
 }
 
@@ -57,12 +57,12 @@ TELEM TBitField::GetMemMask(const int n) const // битовая маска дл
 
 int TBitField::GetLength(void) const // получить длину (к-во битов)
 {
-    return BitLen;
+    return this->BitLen;
 }
 
 void TBitField::SetBit(const int n) // установить бит
 {
-    if ((n > -1) && (n < BitLen))
+    if ((n > -1) && (n < this->BitLen))
     {
         int index = GetMemIndex(n);
         TELEM temp = GetMemMask(n);
@@ -73,7 +73,7 @@ void TBitField::SetBit(const int n) // установить бит
 
 void TBitField::ClrBit(const int n) // очистить бит
 {
-    if ((n > -1) && (n < BitLen))
+    if ((n > -1) && (n < this->BitLen))
     {
         int index = GetMemIndex(n);
         TELEM temp = GetMemMask(n);
@@ -84,11 +84,13 @@ void TBitField::ClrBit(const int n) // очистить бит
 
 int TBitField::GetBit(const int n) const // получить значение бита
 {
-    if ((n > -1) && (n < BitLen))
+    if ((n > -1) && (n < this->BitLen))
     {
         int index = GetMemIndex(n);
         TELEM temp = GetMemMask(n);
-        if (temp == (temp & this->pMem[index])) { return 1; }
+        if (temp == (temp & this->pMem[index])) { 
+            return 1;
+        }
     }
     else { throw n; }
     return 0;
@@ -145,7 +147,10 @@ int TBitField::operator!=(const TBitField& bf) const // сравнение
 
 TBitField TBitField::operator|(const TBitField& bf) // операция "или"
 {
-    int max_len = (this->BitLen > bf.BitLen) ? this->BitLen : bf.BitLen;
+    int max_len = this->BitLen;
+    if (max_len < bf.BitLen) {
+        max_len = bf.BitLen;
+    }
     TBitField Result(max_len);
 
     for (int i = 0; i < this->MemLen; i++) {
