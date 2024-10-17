@@ -112,6 +112,7 @@ public:
   }
   T operator*(const TDynamicVector& v) noexcept(noexcept(T()))
   {
+      throw "Method is not implemented";
   }
 
   friend void swap(TDynamicVector& lhs, TDynamicVector& rhs) noexcept
