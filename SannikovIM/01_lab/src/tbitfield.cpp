@@ -6,24 +6,16 @@
 // Битовое поле
 
 #include "tbitfield.h"
-// Fake variables used as placeholders in tests
-static const int FAKE_INT = -1;
-static TBitField FAKE_BITFIELD(1);
-
 
 TBitField::TBitField(int len) 
 {
     if (len <= 0) throw range_error("Can't make BitField with negative size");
-    this->MemLen = len / 32 + 1;
+    this->MemLen = len /(sizeof(TELEM)*8) + 1;
     this->BitLen = len;
     this->pMem = new TELEM[this->MemLen];
     for (int i = 0; i < this->MemLen; i++) {
         this->pMem[i] = 0;
     }
-    
-    
-   
-  
 }
 
 TBitField::TBitField(const TBitField &bf) // конструктор копирования
@@ -35,7 +27,6 @@ TBitField::TBitField(const TBitField &bf) // конструктор копиро
     for (int i = 0; i < this->MemLen; i++) {
         this->pMem[i] = bf.pMem[i];
     }
-
 }
 
 TBitField::~TBitField()
@@ -50,7 +41,7 @@ int TBitField::GetMemIndex(const int n) const // индекс Мем для би
 
 TELEM TBitField::GetMemMask(const int n) const // битовая маска для бита n
 {
-    return 1<<(n%32);
+    return 1<<(n% (sizeof(TELEM) * 8));
 }
 
 // доступ к битам битового поля
@@ -80,7 +71,7 @@ int TBitField::GetBit(const int n) const // получить значение б
 {
     if (n < 0) throw range_error("There is no such bit");
     if (n >= BitLen) throw out_of_range("There is no such bit");
-  return (pMem[n/32]&(1<<(n%32)))>>(n%32);
+  return (pMem[n/ (sizeof(TELEM) * 8)]&(1<<(n% (sizeof(TELEM) * 8))))>>(n% (sizeof(TELEM) * 8));
 }
 
 // битовые операции
@@ -98,7 +89,6 @@ const TBitField& TBitField::operator=(const TBitField &bf) // присваива
 
 int TBitField::operator==(const TBitField &bf) const // сравнение
 {
-    //if (this->GetLength() != bf.GetLength()) return 0;
     for (int i = 0; i < this->GetLength(); i++) {
         if (this->GetBit(i) != bf.GetBit(i)) return 0;
     }
@@ -118,32 +108,8 @@ TBitField TBitField::operator|(const TBitField &bf) // операция "или"
 {
     TBitField bf1(max(this->BitLen, bf.BitLen));
 
-    for (int i = 0; i < min(this->BitLen, bf.BitLen); i++) {
-        if (this->GetBit(i) == 1 || bf.GetBit(i) == 1) {
-            bf1.SetBit(i);
-        }
-        else {
-            bf1.ClrBit(i);
-        }
-    }
-
-    for (int i = min(this->BitLen, bf.BitLen); i < max(this->BitLen, bf.BitLen); i++) {
-        if (this->BitLen < bf.BitLen) {
-            if (bf.GetBit(i) == 1) {
-                bf1.SetBit(i);
-            }
-            else {
-                bf1.ClrBit(i);
-            }
-        }
-        else {
-            if (this->GetBit(i) == 1) {
-                bf1.SetBit(i);
-            }
-            else {
-                bf1.ClrBit(i);
-            }
-        }
+    for (int i = 0; i < max(this->MemLen, bf.MemLen); i++) {
+        bf1.pMem[i] = this->pMem[i] | bf.pMem[i];
     }
     return bf1;
 }
@@ -152,24 +118,11 @@ TBitField TBitField::operator&(const TBitField &bf) // операция "и"
 {
     TBitField bf1(max(this->GetLength(), bf.GetLength()));
 
-    for (int i = 0; i < min(this->GetLength(), bf.GetLength()); i++) {
-        if ((this->GetBit(i) == 0) || (bf.GetBit(i) == 0)) {
-           
-            bf1.ClrBit(i);
-            
-        }
-        else {
-            bf1.SetBit(i);
-        }
+    for (int i = 0; i < max(this->MemLen, bf.MemLen); i++) { 
+     
+        bf1.pMem[i] = this->pMem[i] & bf.pMem[i];
         
-    }
-    
-
-        for (int i = min(this->GetLength(), bf.GetLength()); i < bf1.GetLength(); i++) {
-            bf1.ClrBit(i);
-           
-        }
-       
+    }  
     return bf1;
 }
 
@@ -183,6 +136,9 @@ TBitField TBitField::operator~(void) // отрицание
             this->ClrBit(i);
         }
     }
+    for (int i = this->BitLen; i < sizeof(TELEM) * 8 * MemLen; i++) {
+        pMem[this->MemLen - 1] &= ~GetMemMask(i);
+    }
     return *this;
 }
 
@@ -191,29 +147,27 @@ TBitField TBitField::operator~(void) // отрицание
 istream &operator>>(istream &istr, TBitField &bf) // ввод
 {
 
-    setlocale(LC_ALL, "Rus");
-    int n;
+    string s;
+    cout << "Get Bits string: " << endl;
+    cin >> s;
+    if (sizeof(s) * 8 >= bf.GetLength()) throw range_error("Not equal size");
     for (int i = 0; i < bf.GetLength(); i++) {
-        do{
-            cout << "Введите значение бита №" << i << "(Допустимые значения: 0 или 1): " << endl;
-            cin >> n;
-            if (n == 0) {
-                 bf.ClrBit(i);
-            }
-            else {
-                bf.SetBit(i);
-            }
-        }while (n == 0 || n == 1);
+        if (s[i] == '1') {
+            bf.SetBit(i);
+        }
+        else if (s[i] == '0') {
+            bf.ClrBit(i);
+        }
+        else {
+            throw range_error("It is not a bit"); ///!!!!
+        }
     }
-    
     istr >> bf;
     return istr;
 }
 
 ostream &operator<<(ostream &ostr, const TBitField &bf) // вывод
 {
-
-    
     ostr << "The length of the beaten field:: " << bf.GetLength() << endl;
     ostr << "Field data: " << endl;
     for (int i = 0; i < bf.GetLength(); i++) {
