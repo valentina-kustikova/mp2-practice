@@ -41,8 +41,7 @@ int TBitField::GetMemIndex(const int n) const // индекс Мем для би
     if (n < 0 || n >= BitLen) {
         throw "Bit index out of range";
     }
-    else
-        return n/ (sizeof(TELEM) * 8);
+    return n/ (sizeof(TELEM) * 8);
 }
 
 TELEM TBitField::GetMemMask(const int n) const // битовая маска для бита n(n=1, остальные = 0)
@@ -59,32 +58,27 @@ int TBitField::GetLength(void) const // получить длину (к-во б�
 
 void TBitField::SetBit(const int n) // установить бит
 {
-    if (n >= 0 && n < BitLen) {
-        pMem[GetMemIndex(n)] |= GetMemMask(n);
-    }
-    else {
+    if (n < 0 && n >= BitLen)
+    {
         throw "Bit index out of range";
     }
+    pMem[GetMemIndex(n)] |= GetMemMask(n);
 }
 
-void TBitField::ClrBit(const int n) // очистить бит
+void TBitField::ClrBit(const int n) // очистить бит 
 {
     if (n >= 0 && n < BitLen) {
-        pMem[GetMemIndex(n)] &= ~GetMemMask(n);
-    }
-    else {
         throw "Bit index out of range";
     }
+    pMem[GetMemIndex(n)] &= ~GetMemMask(n);
 }
 
-int TBitField::GetBit(const int n) const // получить значение бита
+int TBitField::GetBit(const int n) const // получить значение бита 
 {
     if (n >= 0 && n < BitLen) {
-        return (pMem[GetMemIndex(n)] & GetMemMask(n)) != 0;
-    }
-    else {
         throw "Bit index out of range";
     }
+    return (pMem[GetMemIndex(n)] & GetMemMask(n)) != 0;
 }
 
 // битовые операции
@@ -94,10 +88,12 @@ const TBitField& TBitField::operator=(const TBitField &bf) // присваива
     if (this == &bf) {
         return *this;
     }
-    delete[] pMem;
+    if (MemLen != bf.MemLen)
+    {
+        delete[] pMem;
+        MemLen = bf.MemLen;
+    }    
     BitLen = bf.BitLen;
-    MemLen = bf.MemLen;
-    pMem = new TELEM[MemLen];
     for (int i = 0; i < MemLen; i++) {
         pMem[i] = bf.pMem[i];
     }
@@ -132,11 +128,13 @@ TBitField TBitField::operator|(const TBitField &bf) // операция "или"
         res.pMem[i] = this->pMem[i] | bf.pMem[i];
     }
 
-    for (int i = (std::min(MemLen, bf.MemLen)); i < max_len / 8; ++i) {
-        if (MemLen > bf.MemLen) {
+    if (MemLen > bf.MemLen) {
+        for (int i = (std::min(MemLen, bf.MemLen)); i < max_len / 8; ++i) {
             res.pMem[i] = this->pMem[i];
         }
-        else {
+    }
+    else {
+        for (int i = (std::min(MemLen, bf.MemLen)); i < max_len / 8; ++i) {
             res.pMem[i] = bf.pMem[i];
         }
     }

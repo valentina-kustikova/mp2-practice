@@ -36,26 +36,17 @@ int TSet::GetMaxPower(void) const // получить макс. к-во эл-т�
 
 int TSet::IsMember(const int Elem) const // элемент множества? проверка входит ли в множество
 {
-    if (Elem >= 0 && Elem < this->BitField.GetLength())
-        return this->BitField.GetBit(Elem);
-    else
-        return 0;
+    return this->BitField.GetBit(Elem);
 }
 
 void TSet::InsElem(const int Elem) // включение элемента множества
 {
-    if (Elem < 0 || Elem >= this->BitField.GetLength())
-        throw "not in set";
-    else
-        this->BitField.SetBit(Elem);
+    //this->BitField.SetBit(Elem);
 }
 
 void TSet::DelElem(const int Elem) // исключение элемента множества
 {
-    if (Elem < 0 || Elem >= this->BitField.GetLength())
-        throw "not in set";
-    else
-        this->BitField.ClrBit(Elem);
+    //this->BitField.ClrBit(Elem);
 }
 
 // теоретико-множественные операции
@@ -71,18 +62,15 @@ const TSet& TSet::operator=(const TSet &s) // присваивание
 
 int TSet::operator==(const TSet &s) const // сравнение
 {
-    if (this->MaxPower == s.MaxPower && this->BitField == s.BitField)
-        return 1;
-    else
-        return 0;
+    return (this->MaxPower == s.MaxPower && this->BitField == s.BitField);
 }
 
 int TSet::operator!=(const TSet &s) const // сравнение
 {
-    return this->BitField != s.BitField;
+    return this->BitField != s.BitField; // TODO!!! ==
 }
 
-TSet TSet::operator+(const TSet &s) // объединение
+TSet TSet::operator+(const TSet &s) // объединение // TODO!!! & bitfield
 {
     int maxPower = std::max(this->MaxPower, s.MaxPower);
     TSet p(maxPower);
@@ -104,8 +92,6 @@ TSet TSet::operator+(const TSet &s) // объединение
 
 TSet TSet::operator+(const int Elem) // объединение с элементом
 {
-    if (Elem < 0 || Elem >= this->MaxPower)
-        throw "Element is out of range";
     TSet res(*this);
     res.InsElem(Elem);
     return res;
@@ -114,13 +100,11 @@ TSet TSet::operator+(const int Elem) // объединение с элемент
 TSet TSet::operator-(const int Elem) // разность с элементом
 {
     TSet res(*this);
-    if (res.IsMember(Elem) == 1) {
-        res.DelElem(Elem);
-    }
+    res.DelElem(Elem);
     return res;
 }
 
-TSet TSet::operator*(const TSet &s) // пересечение
+TSet TSet::operator*(const TSet &s) // пересечение  // TODO!!! & bitfield
 {
     int new_size = max(this->MaxPower, s.MaxPower);
     TSet res(new_size);
