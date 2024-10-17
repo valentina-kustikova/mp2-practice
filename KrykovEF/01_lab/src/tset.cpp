@@ -58,8 +58,10 @@ void TSet::DelElem(const int Elem) // исключение элемента мн
 
 const TSet& TSet::operator=(const TSet &s) // присваивание
 {
-    this->MaxPower = s.MaxPower;
-    this->BitField = s.BitField;
+    if (this != &s) {
+        this->MaxPower = s.MaxPower;
+        this->BitField = s.BitField;
+    }
     return *this;
 }
 
@@ -73,10 +75,11 @@ int TSet::operator==(const TSet &s) const // сравнение
 
 int TSet::operator!=(const TSet &s) const // сравнение
 {
-    if (this->MaxPower != s.MaxPower) {
-        return 1;
+    if (this->operator==(s))
+    {
+        return 0;
     }
-    return this->BitField != s.BitField;;
+    return 1;
 }
 
 TSet TSet::operator+(const TSet &s) // объединение
@@ -120,11 +123,26 @@ TSet TSet::operator~(void) // дополнение
 
 istream &operator>>(istream &istr, TSet &s) // ввод (откуда?)
 {
+    istr >> s.MaxPower;
+    s = TSet(s.MaxPower);
+
+    for(int i=0;i<s.MaxPower;i++)
+    {
+        int n;
+        istr >> n;
+        s.BitField.SetBit(n);
+    }
     return istr;
 }
 
 ostream& operator<<(ostream &ostr, const TSet &s) // вывод
 {
-    ostr << s.BitField;
+    for (int i = 0; i < s.MaxPower; i++)
+    {
+        if (s.BitField.GetBit(i)) {
+            ostr << i << " ";
+        }
+    }
+    ostr << "\n";
     return ostr;
 }

@@ -90,15 +90,18 @@ int TBitField::GetBit(const int n) const // получить значение б
 
 const TBitField& TBitField::operator=(const TBitField &bf) // присваивание
 {
-    this->BitLen = bf.BitLen;
-    this->MemLen = bf.MemLen;
+    if (this != &bf) {
+        this->BitLen = bf.BitLen;
+        this->MemLen = bf.MemLen;
 
-    delete[] this->pMem;
-    this->pMem = new TELEM[this->MemLen];
+        delete[] this->pMem;
+        this->pMem = new TELEM[this->MemLen];
 
-    for (int i = 0; i < this->MemLen; i++)
-        this->pMem[i] = bf.pMem[i];
+        for (int i = 0; i < this->MemLen; i++)
+            this->pMem[i] = bf.pMem[i];
 
+    }
+    
     return *this;
 }
 
@@ -114,12 +117,11 @@ int TBitField::operator==(const TBitField &bf) const // сравнение
 
 int TBitField::operator!=(const TBitField &bf) const // сравнение
 {
-    if (this->MemLen != bf.MemLen)
-        return 1;
-    for (int i = 0; i < this->MemLen; i++)
-        if (this->pMem[i] != bf.pMem[i])
-            return 1;
-    return 0;
+    if (this->operator==(bf))
+    {
+        return 0;
+    }
+    return 1;
 }
 
 TBitField TBitField::operator|(const TBitField &bf) // операция "или"
@@ -157,16 +159,23 @@ TBitField TBitField::operator~(void) // отрицание
 
 // ввод/вывод
 
-istream &operator>>(istream &istr, TBitField &bf) // ввод (откуда?)
+istream &operator>>(istream &istr, TBitField &bf) // ввод
 {
+    for (int i = 0; i < (bf.BitLen); i++) {
+        int bit;
+        istr >> bit;
+        if (bit) {
+            bf.SetBit(i);
+        }
+    }
     return istr;
 }
 
 ostream &operator<<(ostream &ostr, const TBitField &bf) // вывод
 {
     for (int i = 0; i < bf.BitLen; i++) {
-        cout << bf.GetBit(i);
+        ostr << bf.GetBit(i);
     }
-    cout << "\n";
+    ostr << "\n";
     return ostr;
 }
