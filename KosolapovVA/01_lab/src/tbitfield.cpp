@@ -13,7 +13,7 @@ TBitField::TBitField(int len)
 {    
     if (len <= 0)
     {
-        throw std::exception("Error");
+        throw std::exception("Error: The BitLen must be greater than 0");
     }
     BitLen = len;
     MemLen = (len - 1) / (sizeof(TELEM) * 8) + 1;
@@ -64,7 +64,7 @@ void TBitField::SetBit(const int n) // установить бит
 {
     if (n<0 || n>BitLen)
     {
-        throw std::exception("Error");
+        throw std::exception("Error: Incorrect Index in bf");
     }
     pMem[GetMemIndex(n)] = pMem[GetMemIndex(n)] | GetMemMask(n);
 }
@@ -73,7 +73,7 @@ void TBitField::ClrBit(const int n) // очистить бит
 {
     if (n<0 || n>BitLen)
     {
-        throw std::exception("Error");
+        throw std::exception("Error: Incorrect Index in bf");
     }
     pMem[GetMemIndex(n)] = pMem[GetMemIndex(n)] & (~(GetMemMask(n)));
 }
@@ -82,7 +82,7 @@ int TBitField::GetBit(const int n) const // получить значение б
 {
     if (n<0||n>BitLen)
     {
-        throw std::exception("Error");
+        throw std::exception("Error: Incorrect Index in bf");
     }
     return ((pMem[GetMemIndex(n)] & GetMemMask(n)) > 0) ? 1: 0;
 }
@@ -171,20 +171,18 @@ TBitField TBitField::operator~(void) // отрицание
 
 // ввод/вывод
 
-istream &operator>>(istream &istr, TBitField &bf) // ввод // TODO!!! 0101011110
+istream &operator>>(istream &istr, TBitField &bf) // ввод // TODO!!! 0101011110//EDIT
 {    
 
     std::string ibf;
     std::cout << "Enter Bitfield: " << "\n";
     istr >> ibf;
     int len = ibf.length();
-    std::cout << "Out len: " << len << "\n";
-    std::cout << "Bit 2: " << ibf[2] << "\n";
     bf = TBitField(len);
-    for (int i = 0; i < len; i++)
+    for (int i = bf.BitLen; i >= 0; i--)
     {
         if (ibf[i] != '1' && ibf[i] != '0')
-            throw std::exception("Error");
+            throw std::exception("Error: The bitfield must be 0 and 1 ");
         if (ibf[i] == '1')
         {
             bf.SetBit(i);
