@@ -48,17 +48,14 @@ void TSet::InsElem(const int Elem) // включение элемента мно
 {
     if (Elem < 0 || Elem >= MaxPower)
         throw std::exception("Error");
-    else if (Elem >= 0 && Elem < MaxPower) 
-        BitField.SetBit(Elem);
-
+    BitField.SetBit(Elem);
 }
 
 void TSet::DelElem(const int Elem) // исключение элемента множества
 {
     if (Elem < 0 || Elem >= MaxPower)
         throw std::exception("Error");
-    else if (Elem >= 0 && Elem < MaxPower)
-        BitField.ClrBit(Elem);
+    BitField.ClrBit(Elem);
 }
 
 // теоретико-множественные операции
@@ -74,20 +71,12 @@ const TSet& TSet::operator=(const TSet &s) // присваивание
 
 int TSet::operator==(const TSet &s) const // сравнение
 {
-    if (MaxPower != s.MaxPower)
-        return 0;
-    else if (BitField == s.BitField)
-        return 1;
-    else
-        return 0;
+    return ((MaxPower == s.MaxPower) && (BitField == s.BitField));
 }
 
 int TSet::operator!=(const TSet &s) const // сравнение
 {
-    if (*this == s)
-        return 0;
-    else
-        return 1;
+    return !(*this == s);
 }
 
 TSet TSet::operator+(const TSet &s) // объединение

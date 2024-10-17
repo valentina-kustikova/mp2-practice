@@ -6,6 +6,7 @@
 // Битовое поле
 
 #include "tbitfield.h"
+#include <string>
 
 
 TBitField::TBitField(int len)
@@ -83,11 +84,7 @@ int TBitField::GetBit(const int n) const // получить значение б
     {
         throw std::exception("Error");
     }
-    int res = pMem[GetMemIndex(n)]&GetMemMask(n);
-    if (res == 0)
-        return 0;
-    else
-        return 1;
+    return ((pMem[GetMemIndex(n)] & GetMemMask(n)) > 0) ? 1: 0;
 }
 
 // битовые операции
@@ -96,17 +93,13 @@ const TBitField& TBitField::operator=(const TBitField &bf) // присваива
 {
     if (this == &bf)
         return *this;
-    if (this->BitLen == bf.BitLen)
+    if (this->BitLen != bf.BitLen) // TODO!!!//EDIT
     {
-        for (int i = 0; i < this->MemLen; i++)
-        {
-            this->pMem[i] = bf.pMem[i];
-        }
-    }
-    this->BitLen = bf.BitLen;
-    this->MemLen = bf.MemLen;
-    delete[] this->pMem;
-    this->pMem = new TELEM[this->MemLen];
+        this->BitLen = bf.BitLen;
+        this->MemLen = bf.MemLen;
+        delete[] this->pMem;
+        this->pMem = new TELEM[this->MemLen];
+    }    
     for (int i = 0; i < this->MemLen; i++)
     {
         this->pMem[i] = bf.pMem[i];
@@ -118,30 +111,22 @@ int TBitField::operator==(const TBitField &bf) const // сравнение
 {
     if (this->BitLen != bf.BitLen)
         return 0;
-    else
+    int temp=0;
+    for (int i = 0; i < BitLen; i++)
     {
-        int temp=0;
-        for (int i = 0; i < BitLen; i++)
-        {
-            if (this->GetBit(i) == bf.GetBit(i))
-                temp += 1;
-        }
-        if (this->BitLen == temp)
-            return 1;
-        else
-            return 0;
+        if (this->GetBit(i) == bf.GetBit(i))
+            temp += 1;
     }
+    return (this->BitLen == temp);
 }
 
 int TBitField::operator!=(const TBitField &bf) const // сравнение
 {
-    if (*this == bf)
-        return 0;
-    else
-        return 1;
+    // TODO!!!//EDIT
+    return !(*this == bf);
 }
 
-TBitField TBitField::operator|(const TBitField &bf) // операция "или"
+TBitField TBitField::operator|(const TBitField &bf) // операция "или"  
 {
     TBitField temp(std::max(this->BitLen, bf.BitLen));
     for (int i = 0; i < std::min(this->MemLen, bf.MemLen); i++)
@@ -161,18 +146,20 @@ TBitField TBitField::operator|(const TBitField &bf) // операция "или"
 
 TBitField TBitField::operator&(const TBitField &bf) // операция "и"
 {
-    TBitField temp(std::max(this->BitLen, bf.BitLen));
+    TBitField temp(std::min(this->BitLen, bf.BitLen)); // TODO!!! min//EDIT
     for (int i = 0; i < std::min(this->MemLen, bf.MemLen); i++)
         temp.pMem[i] = this->pMem[i] & bf.pMem[i];
-    for (int i = std::min(MemLen, bf.MemLen); i < std::max(MemLen, bf.MemLen); i++)
-        temp.pMem[i] = 0;
     return temp;
 }
 
 TBitField TBitField::operator~(void) // отрицание
 {
     TBitField temp(this->BitLen);
-    for (int i = 0; i < this->BitLen; i++)
+    for (int i = 0; i < (MemLen - 1); i++)
+    {
+        temp.pMem[i] = ~pMem[i];
+    }
+    for (int i = (sizeof(TELEM) * 8)*(MemLen-1); i < this->BitLen; i++) // TODO!!!//EDIT
     {
         if (this->GetBit(i) == 0)
             temp.SetBit(i);
@@ -184,22 +171,25 @@ TBitField TBitField::operator~(void) // отрицание
 
 // ввод/вывод
 
-istream &operator>>(istream &istr, TBitField &bf) // ввод
+istream &operator>>(istream &istr, TBitField &bf) // ввод // TODO!!! 0101011110
 {    
-    int temp = 0;
-    int len;
-    std::cout << "Enter the length of the bit field: ";
-    istr >> len;
+
+    std::string ibf;
+    std::cout << "Enter Bitfield: " << "\n";
+    istr >> ibf;
+    int len = ibf.length();
+    std::cout << "Out len: " << len << "\n";
+    std::cout << "Bit 2: " << ibf[2] << "\n";
     bf = TBitField(len);
-    std::cout << "Enter the bit value (0 | 1): ";
-    for (int i = 0; i < bf.BitLen; i++)
+    for (int i = 0; i < len; i++)
     {
-        istr >> temp;
-        if (temp == 1)
-            bf.SetBit(i);
-        else if ((temp !=1)&&(temp !=0))
+        if (ibf[i] != '1' && ibf[i] != '0')
             throw std::exception("Error");
-    }    
+        if (ibf[i] == '1')
+        {
+            bf.SetBit(i);
+        }
+    }
     return istr;
 }
 
