@@ -126,27 +126,33 @@ TSet TSet::operator*(const TSet &s) // пересечение
 
 TSet TSet::operator~(void) // дополнение
 {
-    TSet tmp(MaxPower); 
-    tmp = ~BitField; 
-    return tmp;
+    BitField = ~BitField;  
+    return *this;
 }
 
 // перегрузка ввода/вывода
 
 istream &operator>>(istream &istr, TSet &s) // ввод
 {
-    int tmp = 0; 
-    for (int i = 0; i < s.MaxPower; i++) {
-        istr >> tmp;
-        s.InsElem(tmp);
-    }
+    int n;
+    do {
+        cout << "Input elem: " << endl;
+        cin >> n;
+        s.InsElem(n);
+    } while (s.GetMaxPower() <= n && n < 0);
+    istr >> s;
     return istr;
 }
 
 ostream& operator<<(ostream &ostr, const TSet &s) // вывод
 {
-    for (int i = 0; i < s.MaxPower; i++) {
-        ostr << s.BitField.GetBit(i);
+    cout << "Set is: ";
+    for (int i = 0; i < s.MaxPower; i++){
+        if (s.IsMember(i))
+        {
+            cout << i << " ";
+        }
     }
+    cout << endl;
     return ostr;
 }

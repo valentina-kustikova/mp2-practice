@@ -159,22 +159,23 @@ TBitField TBitField::operator|(const TBitField &bf) // операция "или"
 
 TBitField TBitField::operator&(const TBitField &bf) // операция "и"
 {
+    TBitField copy(max(BitLen, bf.BitLen)), res(max(BitLen, bf.BitLen)); 
     if (BitLen >= bf.BitLen)
     {
-        TBitField copy(BitLen), res(BitLen);
+        
         for (int i = 0; i < bf.BitLen; i++)
         {
             copy.pMem[GetMemIndex(i)] = bf.pMem[GetMemIndex(i)];
         }
-        for (int i = 0; i < MemLen; i++)
+        for (int i = 0; i < bf.MemLen; i++)
         {
             res.pMem[i] = pMem[i] & copy.pMem[i];
         }
-        return res;
+        
     }
     else
     {
-        TBitField copy(bf.BitLen), res(bf.BitLen);
+        
         for (int i = 0; i < BitLen; i++)
         {
             copy.pMem[GetMemIndex(i)] = pMem[GetMemIndex(i)];
@@ -183,39 +184,59 @@ TBitField TBitField::operator&(const TBitField &bf) // операция "и"
         {
             res.pMem[i] = bf.pMem[i] & copy.pMem[i];
         }
-        return res;
+       
     }
+    return res;
 }
 
 TBitField TBitField::operator~(void) // отрицание
 {
-    TBitField res(*this);
-    for (int i = 0; i < BitLen; i++) {
-        if (GetBit(i) == 1) {
-            res.ClrBit(i);
-        }
-        else res.SetBit(i);
+    for (int i = 0; i < MemLen - 1; i++) {
+        pMem[i] = ~pMem[i];
     }
-    return res;
+    for (int i = (MemLen - 1) * 8 * sizeof(TELEM); i < BitLen; i++)
+    {
+        if (GetBit(i) == 0){
+            SetBit(i);
+        }
+        else
+        {
+            ClrBit(i); 
+        }
+    }
+    return *this;
 }
 
 // ввод/вывод
 
 istream &operator>>(istream &istr, TBitField &bf) // ввод
 {
-    int tmp = 0;
-    for (int i = 0; i < bf.BitLen; i++) {
-        istr >> tmp;
-        bf.SetBit(tmp);
+    string s;
+    cout << "Enter bitlength " << endl;
+    cin >> s;
+    if (sizeof(s) * 8 >= bf.GetLength()) {
+        throw range_error("The size isn't equal");
     }
-
+    for (int i = 0; i < bf.GetLength(); i++) {
+        if (s[i] == '1') {
+            bf.SetBit(i);
+        }
+        else if (s[i] == '0') {
+            bf.ClrBit(i);
+        }
+        else {
+            throw range_error("NOT BIT"); 
+        }
+    }
+    istr >> bf;
     return istr;
 }
 
 ostream &operator<<(ostream &ostr, const TBitField &bf) // вывод
 {
-    for (int i = 0; i < bf.BitLen; i++) {
-        ostr << bf.GetBit(i);
+    ostr << "Our bitfield length is " << bf.GetLength() << endl;
+    for (int i = 0; i < bf.GetLength(); i++) {
+        ostr << "BIT of " << i << " " << bf.GetBit(i) << endl;
     }
     return ostr;
 }
