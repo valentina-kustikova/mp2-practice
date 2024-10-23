@@ -9,6 +9,7 @@
 
 #include <iostream>
 #include <cassert>
+#include <iomanip>
 
 using namespace std;
 
@@ -192,7 +193,8 @@ public:
   friend ostream& operator<<(ostream& ostr, const TDynamicVector& v)
   {
     for (size_t i = 0; i < v.sz; i++)
-      ostr << v.pMem[i] << ' '; // требуется оператор<< для типа T
+      ostr  <<'|' << setw(6) << v.pMem[i] << ' '; // требуется оператор<< для типа T
+    ostr << '|';
     return ostr;
   }
 };
@@ -336,5 +338,4 @@ public:
       return ostr;
   }
 };
-
 #endif
