@@ -7,11 +7,6 @@
 
 #include "tset.h"
 
-// Fake variables used as placeholders in tests
-static const int FAKE_INT = -1;
-static TBitField FAKE_BITFIELD(1);
-static TSet FAKE_SET(1);
-
 TSet::TSet(int mp) : BitField(mp)
 {
     MaxPower = mp;
@@ -72,9 +67,7 @@ int TSet::operator==(const TSet &s) const // сравнение
 
 int TSet::operator!=(const TSet &s) const // сравнение
 {
-    if ((MaxPower != s.MaxPower) ||
-        (BitField != s.BitField)) return 1;
-    return 0;
+    return !(*this == s);
 }
 
 TSet TSet::operator+(const TSet &s) // объединение
@@ -120,12 +113,20 @@ istream &operator>>(istream &istr, TSet &s) // ввод
 {
     istr >> s.MaxPower;
     s = TSet(s.MaxPower);
-    istr >> s.BitField;
+    for (int i = 0; i < s.MaxPower; i++) {
+        int elem;
+        istr >> elem;
+        s.InsElem(elem);
+    }
     return istr;
 }
 
 ostream& operator<<(ostream &ostr, const TSet &s) // вывод
 {
-    ostr << s.BitField;
+    for (int i = 0; i < s.MaxPower; i++) {
+        if (s.BitField.GetBit(i)) {
+            ostr << i << ' ';
+        }
+    }
     return ostr;
 }
