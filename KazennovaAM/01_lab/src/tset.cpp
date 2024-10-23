@@ -73,30 +73,14 @@ int TSet::operator!=(const TSet &s) const // сравнение
     return !(*this == s);
 }
 
-TSet TSet::operator+(const TSet &s) // объединение // TODO!!! | bitfield
+TSet TSet::operator+(const TSet& s) //TODO & bitfield
 {
+    int maxSize = std::max(MaxPower, s.MaxPower);
+    TSet result(maxSize);  
 
-    int max;
-    if (this->MaxPower <= s.MaxPower) {
-        max = s.MaxPower;
-    }
-    else
-        max = this->MaxPower;
+    result.BitField = this->BitField | s.BitField;
 
-    TSet p(max);
-    for (int i = 0; i < this->MaxPower; ++i) {
-        if (BitField.GetBit(i)) {
-            p.BitField.SetBit(i);
-        }
-    }
-
-    for (int i = 0; i < s.MaxPower; ++i) {
-        if (s.BitField.GetBit(i)) {
-            p.BitField.SetBit(i);
-        }
-    }
-
-    return p;
+    return result; 
 }
 
 TSet TSet::operator+(const int Elem) // объединение с элементом
@@ -124,6 +108,14 @@ TSet TSet::operator*(const TSet &s) // пересечение // TODO!!! & bitfi
         }
     }
 
+    return res;
+}
+
+TSet TSet::operator*(const TSet& s) { //todo
+    int new_size = std::max(this->MaxPower, s.MaxPower);
+    TSet res(new_size); 
+
+    res.BitField = this->BitField & s.BitField;
     return res;
 }
 

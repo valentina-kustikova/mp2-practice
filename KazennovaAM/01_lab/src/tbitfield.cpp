@@ -137,19 +137,17 @@ TBitField TBitField::operator|(const TBitField &bf) // операция "или"
 
 TBitField TBitField::operator&(const TBitField &bf) // операция "и"
 {
-    int max_len;
-    if (BitLen <= bf.BitLen) { // TODO
-        max_len = bf.BitLen;
-    }
-    else
-        max_len = BitLen;
+    int max_len = std::max(BitLen, bf.BitLen); //TODO
     TBitField res(max_len);
+
     for (int i = 0; i < std::min(MemLen, bf.MemLen); ++i) {
         res.pMem[i] = this->pMem[i] & bf.pMem[i];
     }
 
     return res;
 }
+
+
 
 TBitField TBitField::operator~(void) // отрицание идем и каждый бит обрататываем отдельно по предпоследнего элемента, потому что решать через маску долго
 {
