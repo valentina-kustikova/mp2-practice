@@ -41,12 +41,12 @@ int TSet::IsMember(const int Elem) const // элемент множества? �
 
 void TSet::InsElem(const int Elem) // включение элемента множества
 {
-    //this->BitField.SetBit(Elem);
+    return this->BitField.SetBit(Elem);
 }
 
 void TSet::DelElem(const int Elem) // исключение элемента множества
 {
-    //this->BitField.ClrBit(Elem);
+    return this->BitField.ClrBit(Elem);
 }
 
 // теоретико-множественные операции
@@ -62,32 +62,19 @@ const TSet& TSet::operator=(const TSet &s) // присваивание
 
 int TSet::operator==(const TSet &s) const // сравнение
 {
-    return (this->MaxPower == s.MaxPower && this->BitField == s.BitField);
+    return (this->BitField == s.BitField);
 }
 
 int TSet::operator!=(const TSet &s) const // сравнение
 {
-    return this->BitField != s.BitField; // TODO!!! ==
+    return !(this->BitField == s.BitField);
 }
 
-TSet TSet::operator+(const TSet &s) // объединение // TODO!!! & bitfield
+TSet TSet::operator+(const TSet &s) // объединение 
 {
-    int maxPower = std::max(this->MaxPower, s.MaxPower);
-    TSet p(maxPower);
-
-    for (int i = 0; i < this->MaxPower; ++i) {
-        if (BitField.GetBit(i)) {
-            p.BitField.SetBit(i);
-        }
-    }
-
-    for (int i = 0; i < s.MaxPower; ++i) {
-        if (s.BitField.GetBit(i)) {
-            p.BitField.SetBit(i);
-        }
-    }
-
-    return p;
+    TSet res(std::max(this->MaxPower, s.MaxPower));
+    res.BitField = this->BitField | s.BitField; 
+    return res;
 }
 
 TSet TSet::operator+(const int Elem) // объединение с элементом
@@ -106,15 +93,8 @@ TSet TSet::operator-(const int Elem) // разность с элементом
 
 TSet TSet::operator*(const TSet &s) // пересечение  // TODO!!! & bitfield
 {
-    int new_size = max(this->MaxPower, s.MaxPower);
-    TSet res(new_size);
-
-    for (int i = 0; i < min(this->MaxPower, s.MaxPower); i++) {
-        if (this->IsMember(i) && s.IsMember(i)) {
-            res.InsElem(i);
-        }
-    }
-
+    TSet res(std::max(this->MaxPower, s.MaxPower));
+    res.BitField = this->BitField & s.BitField;
     return res;
 }
 

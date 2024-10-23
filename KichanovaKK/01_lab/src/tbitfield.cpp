@@ -67,7 +67,7 @@ void TBitField::SetBit(const int n) // установить бит
 
 void TBitField::ClrBit(const int n) // очистить бит 
 {
-    if (n >= 0 && n < BitLen) {
+    if (n < 0 && n >= BitLen) {
         throw "Bit index out of range";
     }
     pMem[GetMemIndex(n)] &= ~GetMemMask(n);
@@ -75,7 +75,7 @@ void TBitField::ClrBit(const int n) // очистить бит
 
 int TBitField::GetBit(const int n) const // получить значение бита 
 {
-    if (n >= 0 && n < BitLen) {
+    if (n < 0 && n >= BitLen) {
         throw "Bit index out of range";
     }
     return (pMem[GetMemIndex(n)] & GetMemMask(n)) != 0;
