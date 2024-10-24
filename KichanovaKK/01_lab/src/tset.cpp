@@ -7,15 +7,13 @@
 
 #include "tset.h"
 
-TSet::TSet(int mp) : BitField(mp)
+TSet::TSet(int mp) : BitField(mp), MaxPower(mp)
 {
-    MaxPower = mp;
 }
 
 // конструктор копирования
-TSet::TSet(const TSet &s) : BitField(s.BitField)
+TSet::TSet(const TSet &s) : BitField(s.BitField), MaxPower(s.MaxPower)
 {
-    this->MaxPower = s.MaxPower;
 }
 
 // конструктор преобразования типа
@@ -41,12 +39,12 @@ int TSet::IsMember(const int Elem) const // элемент множества? �
 
 void TSet::InsElem(const int Elem) // включение элемента множества
 {
-    return this->BitField.SetBit(Elem);
+    this->BitField.SetBit(Elem);
 }
 
 void TSet::DelElem(const int Elem) // исключение элемента множества
 {
-    return this->BitField.ClrBit(Elem);
+    this->BitField.ClrBit(Elem);
 }
 
 // теоретико-множественные операции
