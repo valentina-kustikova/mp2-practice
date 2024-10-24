@@ -112,11 +112,11 @@ const TBitField& TBitField::operator=(const TBitField& bf) // присваива
     if (BitLen != bf.BitLen)
     {
         delete[]pMem;
-        BitLen = bf.BitLen;
         MemLen = bf.MemLen;
         pMem = new TELEM[MemLen];
     }
-        
+    BitLen = bf.BitLen;
+
     for (int i = 0; i < MemLen; i++) {
         pMem[i] = bf.pMem[i];
     }
@@ -144,21 +144,18 @@ int TBitField::operator!=(const TBitField& bf) const // сравнение
 
 TBitField TBitField::operator|(const TBitField& bf) // операция "или"
 {
-
     TBitField answ(max(BitLen, bf.BitLen));
+    for (int i = 0; i < answ.MemLen; i++) { // TODO!!!
+        answ.pMem[i] = pMem[i] | bf.pMem[i];
+    }
+    
     if (MemLen >= bf.MemLen) {
-        for (int i = 0; i < bf.MemLen; i++) {
-            answ.pMem[i] = pMem[i] | bf.pMem[i];
-        }
         for (int i = bf.MemLen; i < MemLen; i++) {
             answ.pMem[i] = pMem[i];
         }
 
     }
     else {
-        for (int i = 0; i < MemLen; i++) {
-            answ.pMem[i] = pMem[i] | bf.pMem[i];
-        }
         for (int i = MemLen; i < bf.MemLen; i++) {
             answ.pMem[i] = bf.pMem[i];
         }
@@ -171,19 +168,17 @@ TBitField TBitField::operator|(const TBitField& bf) // операция "или"
 TBitField TBitField::operator&(const TBitField& bf) // операция "и"
 {
     TBitField answ(max(BitLen, bf.BitLen));
+    for (int i = 0; i < answ.MemLen; i++) { // TODO!!!
+        answ.pMem[i] = pMem[i] & bf.pMem[i];
+    }
+
     if (MemLen >= bf.MemLen) {
-        for (int i = 0; i < bf.MemLen; i++) {
-            answ.pMem[i] = pMem[i] & bf.pMem[i];
-        }
         for (int i = bf.MemLen; i < MemLen; i++) {
             answ.pMem[i] = pMem[i];
         }
 
     }
     else {
-        for (int i = 0; i < MemLen; i++) {
-            answ.pMem[i] = pMem[i] & bf.pMem[i];
-        }
         for (int i = MemLen; i < bf.MemLen; i++) {
             answ.pMem[i] = bf.pMem[i];
         }
@@ -191,7 +186,7 @@ TBitField TBitField::operator&(const TBitField& bf) // операция "и"
     return answ;
 }
 
-TBitField TBitField::operator~(void) // отрицание // TODO!
+TBitField TBitField::operator~(void) // отрицание
 {
     TBitField answ(BitLen);
     
@@ -210,7 +205,7 @@ TBitField TBitField::operator~(void) // отрицание // TODO!
 
 // ввод/вывод
 
-istream& operator>>(istream& istr, TBitField& bf) // ввод // TODO! 1010101111
+istream& operator>>(istream& istr, TBitField& bf) // ввод
 {
     
     string bitstr;
