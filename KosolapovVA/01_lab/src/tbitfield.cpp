@@ -93,13 +93,13 @@ const TBitField& TBitField::operator=(const TBitField &bf) // присваива
 {
     if (this == &bf)
         return *this;
-    if (this->BitLen != bf.BitLen) // TODO!!!//EDIT
+    if (this->MemLen != bf.MemLen)
     {
-        this->BitLen = bf.BitLen;
         this->MemLen = bf.MemLen;
         delete[] this->pMem;
         this->pMem = new TELEM[this->MemLen];
-    }    
+    }
+    this->BitLen = bf.BitLen;
     for (int i = 0; i < this->MemLen; i++)
     {
         this->pMem[i] = bf.pMem[i];
@@ -112,17 +112,16 @@ int TBitField::operator==(const TBitField &bf) const // сравнение
     if (this->BitLen != bf.BitLen)
         return 0;
     int temp=0;
-    for (int i = 0; i < BitLen; i++)
+    for (int i = 0; i < MemLen; i++) // TODO!!! element
     {
-        if (this->GetBit(i) == bf.GetBit(i))
+        if (this->pMem[i] == bf.pMem[i])
             temp += 1;
     }
-    return (this->BitLen == temp);
+    return (this->MemLen == temp);
 }
 
 int TBitField::operator!=(const TBitField &bf) const // сравнение
 {
-    // TODO!!!//EDIT
     return !(*this == bf);
 }
 
@@ -146,7 +145,7 @@ TBitField TBitField::operator|(const TBitField &bf) // операция "или"
 
 TBitField TBitField::operator&(const TBitField &bf) // операция "и"
 {
-    TBitField temp(std::max(this->BitLen, bf.BitLen)); // TODO!!! min//EDIT
+    TBitField temp(std::max(this->BitLen, bf.BitLen));
     for (int i = 0; i < std::min(this->MemLen, bf.MemLen); i++)
         temp.pMem[i] = this->pMem[i] & bf.pMem[i];
     return temp;
@@ -159,7 +158,7 @@ TBitField TBitField::operator~(void) // отрицание
     {
         temp.pMem[i] = ~pMem[i];
     }
-    for (int i = (sizeof(TELEM) * 8)*(MemLen-1); i < this->BitLen; i++) // TODO!!!//EDIT
+    for (int i = (sizeof(TELEM) * 8)*(MemLen-1); i < this->BitLen; i++)
     {
         if (this->GetBit(i) == 0)
             temp.SetBit(i);
@@ -171,7 +170,7 @@ TBitField TBitField::operator~(void) // отрицание
 
 // ввод/вывод
 
-istream &operator>>(istream &istr, TBitField &bf) // ввод // TODO!!! 0101011110//EDIT
+istream &operator>>(istream &istr, TBitField &bf) // ввод
 {    
 
     std::string ibf;
