@@ -146,7 +146,7 @@ TBitField TBitField::operator|(const TBitField &bf) // операция "или"
 
 TBitField TBitField::operator&(const TBitField &bf) // операция "и"
 {
-    TBitField temp(std::min(this->BitLen, bf.BitLen)); // TODO!!! min//EDIT
+    TBitField temp(std::max(this->BitLen, bf.BitLen)); // TODO!!! min//EDIT
     for (int i = 0; i < std::min(this->MemLen, bf.MemLen); i++)
         temp.pMem[i] = this->pMem[i] & bf.pMem[i];
     return temp;
