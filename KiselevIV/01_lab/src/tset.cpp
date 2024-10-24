@@ -7,26 +7,19 @@
 
 #include "tset.h"
 
-// Fake variables used as placeholders in tests
-static const int FAKE_INT = -1;
-static TBitField FAKE_BITFIELD(1);
-static TSet FAKE_SET(1);
 
-TSet::TSet(int mp) : BitField(mp)
+TSet::TSet(int mp) : MaxPower(mp), BitField(mp)
 {
-    MaxPower = mp;
 }
 
 // конструктор копирования
-TSet::TSet(const TSet &s) : BitField(TBitField(s.BitField))
+TSet::TSet(const TSet &s) : MaxPower (s.MaxPower), BitField(TBitField(s.BitField)) // TODO!!!
 {
-    MaxPower = s.MaxPower;
 }
 
 // конструктор преобразования типа
-TSet::TSet(const TBitField &bf) : BitField(TBitField(bf))
+TSet::TSet(const TBitField &bf) : MaxPower (bf.GetLength()), BitField(TBitField(bf)) // TODO!!!
 {
-    MaxPower = bf.GetLength();
 }
 
 TSet::operator TBitField()
@@ -65,18 +58,15 @@ const TSet& TSet::operator=(const TSet &s) // присваивание
 
 int TSet::operator==(const TSet &s) const // сравнение
 {
-    if (MaxPower == s.MaxPower) {
-        return 1;
+    if (this->MaxPower != s.MaxPower) {
+        return 0;
     }
-    return (BitField == s.BitField);
+    return this->BitField == s.BitField;
 }
 
 int TSet::operator!=(const TSet& s) const // сравнение
 {
-    if (MaxPower != s.MaxPower) {
-        return 1;
-    }
-    return(BitField != s.BitField);
+    return !(*this == s);
 }
 
 TSet TSet::operator+(const TSet &s) // объединение
@@ -88,9 +78,7 @@ TSet TSet::operator+(const TSet &s) // объединение
 
 TSet TSet::operator+(const int Elem) // объединение с элементом
 {
-    if (Elem > MaxPower) {
-        throw "Too big Elem";
-    }
+    // не нужен условный оператор
     TSet tmp(Elem > MaxPower ? Elem : MaxPower);
     tmp.InsElem(Elem);
     return tmp;
