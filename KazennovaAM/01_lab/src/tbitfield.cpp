@@ -115,7 +115,7 @@ int TBitField::operator!=(const TBitField &bf) const // сравнение
     return !(*this == bf);
 }
 
-TBitField TBitField::operator|(const TBitField &bf) // операция "или"
+TBitField TBitField::operator|(const TBitField &bf) // операция "или" todo вроде
 {
     TBitField res(max(BitLen, bf.BitLen));
     for (int i = 0; i < min(MemLen, bf.MemLen); i++) {
@@ -134,7 +134,7 @@ TBitField TBitField::operator|(const TBitField &bf) // операция "или"
     }
     return res;
 }
-
+ 
 TBitField TBitField::operator&(const TBitField &bf) // операция "и"
 {
     int max_len = std::max(BitLen, bf.BitLen); //TODO

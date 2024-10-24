@@ -7,15 +7,13 @@
 
 #include "tset.h"
 
-TSet::TSet(int mp) : BitField(mp)
+TSet::TSet(int mp) : MaxPower(mp), BitField(mp)
 {
-    MaxPower = mp;
 }
 
 // конструктор копирования
-TSet::TSet(const TSet &s) : BitField(s.BitField)
+TSet::TSet(const TSet &s) :  MaxPower(s.MaxPower), BitField(s.BitField)
 {
-    this->MaxPower = s.MaxPower;
 }
 
 // конструктор преобразования типа
@@ -94,20 +92,6 @@ TSet TSet::operator-(const int Elem) // разность с элементом
 {
     TSet res(*this);
     res.DelElem(Elem);
-    return res;
-}
-
-TSet TSet::operator*(const TSet &s) // пересечение // TODO!!! & bitfield
-{
-    int new_size = max(this->MaxPower, s.MaxPower);
-    TSet res(new_size);
-
-    for (int i = 0; i < min(this->MaxPower, s.MaxPower); i++) {
-        if (this->IsMember(i) && s.IsMember(i)) {
-            res.InsElem(i);
-        }
-    }
-
     return res;
 }
 
