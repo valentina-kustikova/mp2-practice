@@ -154,6 +154,8 @@ public:
   // векторные операции
   TDynamicVector operator+(const TDynamicVector& v)
   {
+      if (size() != v.size()) { throw "diff size"; }
+  
       TDynamicVector<T> answ(size());
       for (int i = 0; i < size(); i++) {
           answ[i] = pMem[i] + v[i];
@@ -163,14 +165,16 @@ public:
   }
   TDynamicVector operator-(const TDynamicVector& v)
   {
+      if (size() != v.size()) { throw "diff size"; }
       TDynamicVector<T> answ(size());
       for (int i = 0; i < size(); i++) {
-          answ[i] = pMem[i] + v[i];
+          answ[i] = pMem[i] - v[i];
       }
       return answ;
   }
-  T operator*(const TDynamicVector& v) noexcept(noexcept(T()))
+  T operator*(const TDynamicVector& v) 
   {
+      if (size() != v.size()) { throw "diff size"; }
       T answ = 0;
       for (int i = 0; i < size(); i++) {
           answ += pMem[i] * v[i];
@@ -219,7 +223,14 @@ public:
   // сравнение
   bool operator==(const TDynamicMatrix& m) const noexcept
   {
-      throw "Method is not implemented";
+      for (int i = 0; i < size(); i++) {
+          for (int j = 0; j < [i].size(); i++) {
+              if ([i][j] != m[i][j]) {
+                  return 0;
+              }
+          }
+      }
+      return 1;
   }
 
   // матрично-скалярные операции

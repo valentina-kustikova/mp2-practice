@@ -26,6 +26,10 @@ TEST(TDynamicMatrix, can_create_copied_matrix)
 
 TEST(TDynamicMatrix, copied_matrix_is_equal_to_source_one)
 {
+    TDynamicMatrix<int> m(5);
+    for (int i = 0; i < 5; i++) {
+        
+    }
   ADD_FAILURE();
 }
 
