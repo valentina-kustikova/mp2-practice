@@ -7,22 +7,16 @@
 
 #include "tbitfield.h"
 
-// Fake variables used as placeholders in tests
-static const int FAKE_INT = -1;
-static TBitField FAKE_BITFIELD(1);
-
 TBitField::TBitField(int len)
 {
-    if (len > 0) {
-        this->BitLen = len;
-        this->MemLen = (len / (sizeof(TELEM) * 8)) + 1;
-        this->pMem = new TELEM[this->MemLen];
-        for (int i = 0; i < this->MemLen; i++) {
-            this->pMem[i] = 0;
-        }
+    if (len <= 0) {
+        throw len;
     }
-    else {
-       throw len;
+    this->BitLen = len;
+    this->MemLen = (len / (sizeof(TELEM) * 8)) + 1;
+    this->pMem = new TELEM[this->MemLen];
+    for (int i = 0; i < this->MemLen; i++) {
+        this->pMem[i] = 0;
     }
 }
 
@@ -62,52 +56,56 @@ int TBitField::GetLength(void) const // получить длину (к-во б�
 
 void TBitField::SetBit(const int n) // установить бит
 {
-    if ((n > -1) && (n < this->BitLen))
+    if ((n < 0) || (n > this->BitLen))
     {
-        int index = GetMemIndex(n);
-        TELEM temp = GetMemMask(n);
-        this->pMem[index] |= temp;
+        throw n;
     }
-    else { throw n; }
+    int index = GetMemIndex(n);
+    TELEM temp = GetMemMask(n);
+    this->pMem[index] |= temp;
 }
 
 void TBitField::ClrBit(const int n) // очистить бит
 {
-    if ((n > -1) && (n < this->BitLen))
+    if ((n < 0) || (n > this->BitLen))
     {
-        int index = GetMemIndex(n);
-        TELEM temp = GetMemMask(n);
-        this->pMem[index] &= ~temp;
+        throw n;
     }
-    else { throw n; }
+    int index = GetMemIndex(n);
+    TELEM temp = GetMemMask(n);
+    this->pMem[index] &= ~temp;
 }
 
 int TBitField::GetBit(const int n) const // получить значение бита
 {
-    if ((n > -1) && (n < this->BitLen))
+    if ((n < 0) || (n > this->BitLen))
     {
-        int index = GetMemIndex(n);
-        TELEM temp = GetMemMask(n);
-        if (temp == (temp & this->pMem[index])) { 
-            return 1;
-        }
+        throw n;
+        return 0;
     }
-    else { throw n; }
-    return 0;
+    int index = GetMemIndex(n);
+    TELEM temp = GetMemMask(n);
+    if (temp == (temp & this->pMem[index])) {
+        return 1;
+    }
 }
 
 // битовые операции
 
 const TBitField& TBitField::operator=(const TBitField& bf) // присваивание
 {
-    if (this != &bf) {
+    if (this == &bf) {
+        return *this;
+    }
+    if (this->MemLen != bf.MemLen)
+    {
         delete[] this->pMem;
-        this->BitLen = bf.BitLen;
         this->MemLen = bf.MemLen;
         this->pMem = new TELEM[this->MemLen];
-        for (int i = 0; i < MemLen; i++) {
-            this->pMem[i] = bf.pMem[i];
-        }
+    }
+    this->BitLen = bf.BitLen;
+    for (int i = 0; i < MemLen; i++) {
+        this->pMem[i] = bf.pMem[i];
     }
     return (*this);
 }
@@ -117,32 +115,20 @@ int TBitField::operator==(const TBitField& bf) const // сравнение
     if (this->BitLen != bf.BitLen) {
         return 0;
     }
-    else {
-        for (int i = 0; i < this->MemLen; i++) {
-            if (this->pMem[i] != bf.pMem[i]) {
-                return 0;
-            }
+    for (int i = 0; i < this->MemLen; i++) {
+        if (this->pMem[i] != bf.pMem[i]) {
+            return 0;
         }
     }
     return 1;
 }
 
-int TBitField::operator!=(const TBitField& bf) const // сравнение
+int TBitField::operator!=(const TBitField& bf) const // сравнение // TODO: ==
 {
-    if (this->BitLen != bf.BitLen) {
-        return 1;
+    if (this->pMem == bf.pMem) {
+        return 0;
     }
-    else {
-        for (int i = 0; i < this->BitLen; i++) {
-            if (this->pMem[i] == bf.pMem[i]) {
-                continue;
-            }
-            else {
-                return 1;
-            }
-        }
-    }
-    return 0;
+    return 1;
 }
 
 TBitField TBitField::operator|(const TBitField& bf) // операция "или"
@@ -194,14 +180,14 @@ TBitField TBitField::operator~(void) // отрицание
 
 istream& operator>>(istream& istr, TBitField& bf) // ввод
 {
-    int k;
+    string k; // TODO: string 010101111
     for (int i = 0; i < bf.GetLength(); i++)
     {
         istr >> k;
-        if (k == 1) {
+        if (k[i] == 1) {
             bf.SetBit(i);
         }
-        else if (k == 0)
+        else if (k[i] == 0)
         {
             bf.ClrBit(i);
         }
