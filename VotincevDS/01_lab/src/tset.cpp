@@ -84,7 +84,7 @@ TSet TSet::operator+(const int Elem) // объединение с элемент
 
     TSet answ(MaxPower);
     answ.BitField = BitField;
-    answ.InsElem(Elem);
+    answ.InsElem(Elem);  
     return answ;
     
 }
