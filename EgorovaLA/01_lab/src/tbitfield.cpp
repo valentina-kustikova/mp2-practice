@@ -20,14 +20,11 @@ TBitField::TBitField(int len)
 
 TBitField::TBitField(const TBitField &bf) // конструктор копирования
 {
-    if (pMem != bf.pMem) {
-        BitLen = bf.BitLen;
-        MemLen = bf.MemLen;
-        pMem = new TELEM[MemLen];
-        for (int i = 0; i < MemLen; i++) {
-            pMem[i] = bf.pMem[i];
-        }
-        return;
+    BitLen = bf.BitLen;
+    MemLen = bf.MemLen;
+    pMem = new TELEM[MemLen];
+    for (int i = 0; i < MemLen; i++) {
+        pMem[i] = bf.pMem[i];
     }
 }
 
@@ -83,10 +80,13 @@ int TBitField::GetBit(const int n) const // получить значение б
 
 const TBitField& TBitField::operator=(const TBitField &bf) // присваивание
 {
-    if (pMem == bf.pMem) return *this;
+    if (this == &bf) return *this;
+    if (MemLen != bf.MemLen)
+    {
+        MemLen = bf.MemLen;
+        pMem = new TELEM[MemLen];
+    }
     BitLen = bf.BitLen;
-    MemLen = bf.MemLen;
-    pMem = new TELEM[MemLen];
     for (int i = 0; i < MemLen; i++) {
         pMem[i] = bf.pMem[i];
     }
@@ -95,13 +95,13 @@ const TBitField& TBitField::operator=(const TBitField &bf) // присваива
 
 int TBitField::operator==(const TBitField &bf) const // сравнение
 {
-    if ((MemLen == bf.MemLen) && (BitLen == bf.BitLen)) {
-        for (int i = 0; i < MemLen; i++) {
-            if (pMem[i] != bf.pMem[i]) return 0;
-        }
-        return 1;
+    if ((MemLen != bf.MemLen) || (BitLen != bf.BitLen)) {
+        return 0;
     }
-    return 0;
+    for (int i = 0; i < MemLen; i++) {
+        if (pMem[i] != bf.pMem[i]) return 0;
+    }
+    return 1;
 }
 
 int TBitField::operator!=(const TBitField &bf) const // сравнение
@@ -135,16 +135,6 @@ TBitField TBitField::operator&(const TBitField &bf) // операция "и"
     TBitField res(max(BitLen, bf.BitLen));
     for (int i = 0; i < minim; i++) {
         res.pMem[i] = pMem[i] & bf.pMem[i];
-    }
-    if (MemLen > bf.MemLen) {
-        for (int i = minim; i < MemLen; i++) {
-            res.pMem[i] = pMem[i];
-        }
-    }
-    else if (MemLen < bf.MemLen) {
-        for (int i = minim; i < bf.MemLen; i++) {
-            res.pMem[i] = bf.pMem[i];
-        }
     }
     return res;
 }
