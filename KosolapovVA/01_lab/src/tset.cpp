@@ -6,24 +6,16 @@
 // Множество - реализация через битовые поля
 
 #include "tset.h"
+#include <iomanip>
 
 
-TSet::TSet(int mp) : BitField(mp)
-{
-    MaxPower = mp;
-}
+TSet::TSet(int mp) : MaxPower(mp), BitField(mp){}
 
 // конструктор копирования
-TSet::TSet(const TSet &s) : BitField(s.BitField)
-{
-    MaxPower = s.MaxPower;
-}
+TSet::TSet(const TSet &s) : MaxPower(s.MaxPower), BitField(s.BitField){}
 
 // конструктор преобразования типа
-TSet::TSet(const TBitField &bf) : BitField(bf)
-{
-    MaxPower = bf.GetLength();
-}
+TSet::TSet(const TBitField &bf) : MaxPower(bf.GetLength()),BitField(bf){}
 
 TSet::operator TBitField()
 {
@@ -145,7 +137,7 @@ ostream& operator<<(ostream &ostr, const TSet &s) // вывод
     {
         if (s.IsMember(i) == 1)
         {
-            ostr << i << " ";
+            ostr << setw(4)<<i << " ";
             if (k++ % 10 == 0)
                 cout << endl;
         }        
