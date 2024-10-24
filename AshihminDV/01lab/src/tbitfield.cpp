@@ -114,13 +114,13 @@ const TBitField& TBitField::operator=(const TBitField& bf) // присваива
     {
         return *this;
     }
-    if (this->BitLen != bf.BitLen)
+    if (this->MemLen != bf.MemLen)
     {
-        delete[]this->pMem;
-        BitLen = bf.BitLen;
+        delete[]this->pMem;        
         MemLen = bf.MemLen;
         pMem = new TELEM[MemLen];
     }
+    BitLen = bf.BitLen;
 
     for (int i = 0; i < MemLen; i++)
     {
@@ -154,20 +154,18 @@ int TBitField::operator!=(const TBitField& bf) const // сравнение
 TBitField TBitField::operator|(const TBitField& bf) // операция "или"
 {
     TBitField ress(max(BitLen, bf.BitLen));
+    for (int i=0; i < min(this->MemLen, bf.MemLen); i++)
+    {
+        ress.pMem[i] = pMem[i] | bf.pMem[i];
+    }
 
-    if (MemLen >= bf.MemLen) {
-        for (int i = 0; i < bf.MemLen; i++) {
-            ress.pMem[i] = pMem[i] | bf.pMem[i];
-        }
+    if (MemLen >= bf.MemLen) { // TODO!!! were
         for (int i = bf.MemLen; i < MemLen; i++) {
             ress.pMem[i] = pMem[i];
         }
 
     }
     else {
-        for (int i = 0; i < MemLen; i++) {
-            ress.pMem[i] = pMem[i] | bf.pMem[i];
-        }
         for (int i = MemLen; i < bf.MemLen; i++) {
             ress.pMem[i] = bf.pMem[i];
         }
@@ -180,21 +178,19 @@ TBitField TBitField::operator|(const TBitField& bf) // операция "или"
 TBitField TBitField::operator&(const TBitField& bf) // операция "и"
 {
     TBitField ress(max(BitLen, bf.BitLen));
-    int i = 0;
 
-    if (MemLen >= bf.MemLen) {
-        for (int i = 0; i < bf.MemLen; i++) {
-            ress.pMem[i] = pMem[i] & bf.pMem[i];
-        }
+    for (int i = 0; i < min(MemLen, bf.MemLen); i++)
+    {
+        ress.pMem[i] = pMem[i] & bf.pMem[i];
+    }
+
+    if (MemLen >= bf.MemLen) {  // TODO!!! were
         for (int i = bf.MemLen; i < MemLen; i++) {
             ress.pMem[i] = pMem[i];
         }
 
     }
     else {
-        for (int i = 0; i < MemLen; i++) {
-            ress.pMem[i] = pMem[i] & bf.pMem[i];
-        }
         for (int i = MemLen; i < bf.MemLen; i++) {
             ress.pMem[i] = bf.pMem[i];
         }
@@ -220,7 +216,7 @@ TBitField TBitField::operator~(void) // отрицание
 
 istream& operator>>(istream& istr, TBitField& bf) // ввод
 {
-    for (int i = 0; i < bf.BitLen; i++)
+    for (int i = 0; i < bf.BitLen; i++)  // TODO!!! string
     {
         int bit;
         istr >> bit;

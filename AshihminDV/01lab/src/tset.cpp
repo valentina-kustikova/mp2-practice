@@ -7,22 +7,17 @@
 
 #include "tset.h"
 
-TSet::TSet(int mp) : BitField(mp)
-{
-    MaxPower = mp;
-}
+TSet::TSet(int mp) : BitField(mp), MaxPower(mp)
+{ }
 
 // конструктор копирования
-TSet::TSet(const TSet& s) : BitField(s.BitField)
+TSet::TSet(const TSet& s) : BitField(s.BitField), MaxPower(s.MaxPower)
 {
-    MaxPower = s.MaxPower;
-    BitField = s.BitField;
 }
 
 // конструктор преобразования типа
-TSet::TSet(const TBitField& bf) : BitField(bf)
+TSet::TSet(const TBitField& bf) : BitField(bf), MaxPower(bf.GetLength())
 {
-    MaxPower = bf.GetLength();
 }
 
 TSet::operator TBitField()
@@ -61,16 +56,11 @@ const TSet& TSet::operator=(const TSet& s) // присваивание
 
 int TSet::operator==(const TSet& s) const // сравнение
 {
-    if ((MaxPower == s.MaxPower) && (BitField == s.BitField))
-    {
-        return 1;
-    }
-    return 0;
+    return (this->BitField == s.BitField);
 }
 
 int TSet::operator!=(const TSet& s) const // сравнение
 {
-    
     return !((*this)==s);
 }
 
@@ -123,12 +113,12 @@ TSet TSet::operator~(void) // дополнение
 
 istream& operator>>(istream& istr, TSet& s) // ввод
 {
-    return istr;
+    return istr; // TODO!!!
 }
 
 ostream& operator<<(ostream& ostr, const TSet& s) // вывод
 {
-    ostr << s.BitField;
+    ostr << s.BitField;  // TODO!!!
     ostr << s.MaxPower;
 
     return ostr;
