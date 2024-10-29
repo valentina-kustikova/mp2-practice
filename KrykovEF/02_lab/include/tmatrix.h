@@ -27,6 +27,8 @@ public:
   {
     if (sz == 0)
       throw out_of_range("Vector size should be greater than zero");
+    if (sz > MAX_VECTOR_SIZE)
+        throw out_of_range("Vector size should be lesser than MAX");
     pMem = new T[sz]();// {}; // У типа T д.б. констуктор по умолчанию
   }
   TDynamicVector(T* arr, size_t s) : sz(s)
@@ -35,22 +37,45 @@ public:
     pMem = new T[sz];
     std::copy(arr, arr + sz, pMem);
   }
-  TDynamicVector(const TDynamicVector& v)
+  TDynamicVector(const TDynamicVector& v) : sz(v.sz)
   {
-      throw "Method is not implemented";
+      pMem = new T[sz];
+      for (int i = 0; i < sz; i++)
+      {
+          pMem[i] = v.pMem[i];
+      }
   }
-  TDynamicVector(TDynamicVector&& v) noexcept
+  TDynamicVector(TDynamicVector&& v) noexcept //для матрицы
   {
+      v.sz = 0;
+      this->pMem = v.pMem;
+      v.pMem = nullptr;
   }
   ~TDynamicVector()
   {
+      delete[] pMem;
   }
   TDynamicVector& operator=(const TDynamicVector& v)
   {
-      throw "Method is not implemented";
+      if (this == &v)
+          return *this;
+      if (0){
+          delete[]this->pMem;
+          this->sz = v.sz;
+          this->pMem = new T[v.sz];
+      }
+      for (int i = 0; i < sz; i++)
+          this->pMem[i] = v.pMem[i];                                             
+      return *this;
   }
   TDynamicVector& operator=(TDynamicVector&& v) noexcept
   {
+      if (this != &v) {
+          this->sz = v.sz;
+          v.sz = 0;
+          this->pMem = v.pMem;
+          v.pMem = nullptr;
+      }
       return *this;
   }
 
@@ -59,40 +84,59 @@ public:
   // индексация
   T& operator[](size_t ind)
   {
-      throw "Method is not implemented";
+      return (pMem[ind]);
   }
   const T& operator[](size_t ind) const
   {
-      throw "Method is not implemented";
+      return (pMem[ind]);
   }
   // индексация с контролем
   T& at(size_t ind)
   {
-      throw "Method is not implemented";
+      if (ind<0 || ind>sz - 1)
+          throw std::exception("Incorrect index");
+      return(this->pMem[ind]);
   }
   const T& at(size_t ind) const
   {
-      throw "Method is not implemented";
+      if (ind<0 || ind>sz - 1)
+          throw std::exception("Incorrect index");
+      return(this->pMem[ind]);
   }
 
   // сравнение
   bool operator==(const TDynamicVector& v) const noexcept
   {
-      throw "Method is not implemented";
+      if (sz != v.sz)//needs check!
+          return 0;
+      for (int i = 0; i < v.sz; i++)
+          if (this->pMem[i] != v.pMem[i])
+              return 0;
+      return 1;
   }
   bool operator!=(const TDynamicVector& v) const noexcept
   {
-      throw "Method is not implemented";
+      return !(*this == v);
   }
 
   // скалярные операции
   TDynamicVector operator+(T val)
   {
-      throw "Method is not implemented";
+      TDynamicVector<T> tmp(size());
+      for (int i = 0; i < size(); i++) {
+          tmp.pMem[i] = pMem[i] + val;
+      }
+      cout << tmp.size();
+      return tmp;
+
   }
   TDynamicVector operator-(T val)
   {
-      throw "Method is not implemented";
+      TDynamicVector<T> tmp(this->sz);
+      for (int i = 0; i < this->sz; i++) {
+          tmp.pMem[i] = this->pMem[i] - val;
+      }
+      return tmp;
   }
   TDynamicVector operator*(T val)
   {
@@ -102,7 +146,11 @@ public:
   // векторные операции
   TDynamicVector operator+(const TDynamicVector& v)
   {
-      throw "Method is not implemented";
+      TDynamicVector<T> tmp(this->size());
+      for (int i = 0; i < this->size(); i++) {
+          tmp.pMem[i] = this->pMem[i] + v.pMem[i];
+      }
+      return tmp;
   }
   TDynamicVector operator-(const TDynamicVector& v)
   {
@@ -145,6 +193,10 @@ class TDynamicMatrix : private TDynamicVector<TDynamicVector<T>>
 public:
   TDynamicMatrix(size_t s = 1) : TDynamicVector<TDynamicVector<T>>(s)
   {
+      if (sz <= 0)
+          throw out_of_range("Matrix size should be greater than zero");
+      if (sz > MAX_MATRIX_SIZE)
+          throw out_of_range("Matrix size should be lesser than MAX");
     for (size_t i = 0; i < sz; i++)
       pMem[i] = TDynamicVector<T>(sz);
   }
@@ -153,17 +205,26 @@ public:
 
   T& at(size_t i1, size_t i2)
   {
-      throw "Method is not implemented";
+      if (i1 < 0 || i1 >= sz || i2 < 0 || i2 >= sz)
+          throw "incorrect index";
+      return this->pMem[i1][i2];
   }
   const T& at(size_t i1, size_t i2) const
   {
-      throw "Method is not implemented";
+      if (i1 < 0 || i1 >= sz || i2 < 0 || i2 >= sz)
+          throw "incorrect index";
+      return this->pMem[i1][i2];
   }
 
   // сравнение
   bool operator==(const TDynamicMatrix& m) const noexcept
   {
-      throw "Method is not implemented";
+      if (sz != m.sz)//needs check!
+          return 0;
+      for (int i = 0; i < m.sz; i++)
+          if (this->pMem[i] != m.pMem[i])
+              return 0;
+      return 1;
   }
 
   // матрично-скалярные операции

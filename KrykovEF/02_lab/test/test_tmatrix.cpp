@@ -33,7 +33,10 @@ TEST(TDynamicMatrix, copied_matrix_is_equal_to_source_one)
             m1[i][j] = i;
     }
     TDynamicMatrix<int> m2(m1);
+    
     EXPECT_EQ(m1, m2);
+       
+    //EXPECT_EQ(1, 1);
 }
 
 TEST(TDynamicMatrix, copied_matrix_has_its_own_memory)

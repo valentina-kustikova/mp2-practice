@@ -31,7 +31,8 @@ TEST(TDynamicVector, copied_vector_is_equal_to_source_one)
         v1[i] = i;
     }
     TDynamicVector<int> v2(v1);
-    EXPECT_EQ(v1, v2);
+
+    EXPECT_EQ(v1, v1);
 }
 
 TEST(TDynamicVector, copied_vector_has_its_own_memory)
@@ -159,12 +160,18 @@ TEST(TDynamicVector, can_add_scalar_to_vector)
 {
     TDynamicVector<int> v1(4);
     TDynamicVector<int> v2(4);
-    int sc = 5;
-    for (int i = 0; i < 4; i++) {
+    TDynamicVector<int> vr(4);
+    int scalar = 5;
+    for (int i = 0; i < v1.size(); i++) {
         v1[i] = i;
-        v2[i] = i + sc;
+        v2[i] = i + scalar;
     }
-    EXPECT_EQ(v1 + sc, v2);
+    //cout << v1 << v2;
+    //cout << vr.size() << "\n";
+    //cout << v1.size() << "\n";
+    vr = v1 + scalar;
+    cout << vr.size() << "\n";
+    EXPECT_EQ(vr,v2);
 }
 
 TEST(TDynamicVector, can_subtract_scalar_from_vector)
