@@ -216,14 +216,13 @@ TBitField TBitField::operator~(void) // отрицание
 
 istream& operator>>(istream& istr, TBitField& bf) // ввод
 {
-    for (int i = 0; i < bf.BitLen; i++)  // TODO!!! string
-    {
-        int bit;
-        istr >> bit;
-        if (bit)
-        {
+    string bsting;
+    istr >> bsting;
+    for (int i = 0; i < bf.BitLen; i++) {
+        if (bsting[i] == '1') {
             bf.SetBit(i);
         }
+
     }
 
     return istr;

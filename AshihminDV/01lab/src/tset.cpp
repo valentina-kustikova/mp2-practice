@@ -113,13 +113,21 @@ TSet TSet::operator~(void) // дополнение
 
 istream& operator>>(istream& istr, TSet& s) // ввод
 {
+    int i = 0;
+    while ((i >= 0) && (i < s.MaxPower))
+    {
+        s.InsElem(i);
+        istr >> i;
+    }
     return istr; // TODO!!!
 }
 
 ostream& operator<<(ostream& ostr, const TSet& s) // вывод
 {
-    ostr << s.BitField;  // TODO!!!
-    ostr << s.MaxPower;
-
+    for (int i = 0; i < s.MaxPower; i++)
+        if (s.BitField.GetBit(i)) {
+            ostr << i;
+        }
     return ostr;
+
 }
