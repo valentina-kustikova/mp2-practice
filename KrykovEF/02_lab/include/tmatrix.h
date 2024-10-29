@@ -110,6 +110,7 @@ public:
   }
   T operator*(const TDynamicVector& v) noexcept(noexcept(T()))
   {
+      throw "Method is not implemented";
   }
 
   friend void swap(TDynamicVector& lhs, TDynamicVector& rhs) noexcept
@@ -149,6 +150,15 @@ public:
   }
 
   using TDynamicVector<TDynamicVector<T>>::operator[];
+
+  T& at(size_t i1, size_t i2)
+  {
+      throw "Method is not implemented";
+  }
+  const T& at(size_t i1, size_t i2) const
+  {
+      throw "Method is not implemented";
+  }
 
   // сравнение
   bool operator==(const TDynamicMatrix& m) const noexcept
