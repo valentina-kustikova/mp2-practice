@@ -230,7 +230,7 @@ TBitField TBitField::operator~(void) // отрицание
 istream &operator>>(istream &istr, TBitField &bf) // ввод
 {
     cout << "Enter BitLen: ";
-    cin >> bf.BitLen;
+    istr >> bf.BitLen;
     bf.MemLen = (bf.BitLen / (sizeof(TELEM) * 8)) + 1;
     bf.pMem = new TELEM[bf.MemLen];
     cout << "Enter bit sequence: " << endl;
@@ -238,7 +238,7 @@ istream &operator>>(istream &istr, TBitField &bf) // ввод
     for (int i = 0; i < bf.BitLen; i++)
     {
         cout << "Enter bit number " << i << ": ";
-        cin >> tmp;
+        istr >> tmp;
         if ((tmp == 0) || (tmp == 1))
         {
             switch (tmp)
@@ -261,7 +261,7 @@ istream &operator>>(istream &istr, TBitField &bf) // ввод
 
 ostream &operator<<(ostream &ostr, const TBitField &bf) // вывод
 {
-    cout << "BitField: ";
+    ostr << "BitField: ";
     for (int i = 0; i < bf.BitLen; i++)
     {
         switch (bf.GetBit(i))
@@ -274,6 +274,6 @@ ostream &operator<<(ostream &ostr, const TBitField &bf) // вывод
             break;
         }
     }
-    cout << endl;
+    ostr << endl;
     return ostr;
 }

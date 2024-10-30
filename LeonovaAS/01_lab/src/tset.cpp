@@ -8,21 +8,18 @@
 #include "tset.h"
 
 
-TSet::TSet(int mp) : BitField(mp)
+TSet::TSet(int mp) : BitField(mp), MaxPower(mp)
 {
-    MaxPower = mp;
 }
 
 // конструктор копирования
-TSet::TSet(const TSet &s) : BitField(s.BitField)
+TSet::TSet(const TSet &s) : BitField(s.BitField), MaxPower(s.MaxPower)
 {
-    MaxPower = s.MaxPower;
 }
 
 // конструктор преобразования типа
-TSet::TSet(const TBitField &bf) : BitField(bf)
+TSet::TSet(const TBitField &bf) : BitField(bf), MaxPower((bf.GetLength() / (8 * sizeof(TELEM))) + 1)
 {
-    MaxPower = (bf.GetLength()/ (8 * sizeof(TELEM))) + 1;
 }
 
 TSet::operator TBitField()
@@ -116,10 +113,10 @@ istream &operator>>(istream &istr, TSet &s) // ввод
     {
         int elem;
         cout << "Enter element: ";
-        cin >> elem;
+        istr >> elem;
         s.InsElem(elem);
         cout << "Enter another element? 1 - yes, 0 - no ";
-        cin >> flag;
+        istr >> flag;
 
     } while (flag == 1);
     return istr;
@@ -127,14 +124,14 @@ istream &operator>>(istream &istr, TSet &s) // ввод
 
 ostream& operator<<(ostream &ostr, const TSet &s) // вывод
 {
-    cout << "Set: ";
+    ostr << "Set: ";
     for (int i = 0; i < s.MaxPower; i++)
     {
         if (s.IsMember(i))
         {
-            cout << i << " ";
+            ostr << i << " ";
         }
     }
-    cout << endl;
+    ostr << endl;
     return ostr;
 }
