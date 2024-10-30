@@ -25,12 +25,12 @@ protected:
 public:
   TDynamicVector(size_t size = 1) 
   {
-      if (size > MAX_VECTOR_SIZE) {
+      sz = size;
+      if (sz > MAX_VECTOR_SIZE) {
           throw "max vector size reached";
       }
-    if (sz == 0)
+    if (sz <= 0)
       throw out_of_range("Vector size should be greater than zero");
-    sz = size;
     pMem = new T[sz]();// {}; // У типа T д.б. констуктор по умолчанию
   }
   TDynamicVector(T* arr, size_t s) : sz(s)
@@ -86,22 +86,26 @@ public:
   // индексация
   T& operator[](size_t ind)
   {
-      if (ind < 0 || ind >= MAX_VECTOR_SIZE) throw "ind < 0";
       return (pMem[ind]);
   }
   const T& operator[](size_t ind) const
   {
-      if (ind < 0 || ind >= MAX_VECTOR_SIZE) throw "ind < 0";
       return (pMem[ind]);
   }
   // индексация с контролем
   T& at(size_t ind)
   {
-      throw "Method is not implemented";
+      if (ind >= this->sz || ind < 0 || ind >= MAX_VECTOR_SIZE) {
+          throw "wrong index";
+      }
+      return (pMem[ind]);
   }
   const T& at(size_t ind) const
   {
-      throw "Method is not implemented";
+      if (ind >= this->sz || ind < 0 || ind >= MAX_VECTOR_SIZE) {
+          throw "wrong index";
+      }
+      return (pMem[ind]);
   }
 
   // сравнение
@@ -214,6 +218,9 @@ class TDynamicMatrix : private TDynamicVector<TDynamicVector<T>>
 public:
   TDynamicMatrix(size_t s = 1) : TDynamicVector<TDynamicVector<T>>(s)
   {
+      if (sz >= MAX_MATRIX_SIZE || sz <= 0) {
+          throw "wrong matrix size";
+      }
     for (size_t i = 0; i < sz; i++)
       pMem[i] = TDynamicVector<T>(sz);
   }
@@ -223,12 +230,13 @@ public:
   // сравнение
   bool operator==(const TDynamicMatrix& m) const noexcept
   {
+      if (this->size() != m.size()) {
+          return 0;
+      }
       for (int i = 0; i < size(); i++) {
-          for (int j = 0; j < [i].size(); i++) {
-              if ([i][j] != m[i][j]) {
-                  return 0;
-              }
-          }
+          if (this->at(i) != m[i]) {
+              return 0;
+        }
       }
       return 1;
   }
@@ -236,27 +244,70 @@ public:
   // матрично-скалярные операции
   TDynamicMatrix operator*(const T& val)
   {
-      throw "Method is not implemented";
+      TDynamicMatrix answ = *this;
+      for (int i = 0; i < size(); i++) {
+          answ[i] = answ[i] * val;
+      }
+      return answ;
   }
 
   // матрично-векторные операции
   TDynamicVector<T> operator*(const TDynamicVector<T>& v)
   {
-      throw "Method is not implemented";
+      if (size() != v.size()) { throw "matrix and vector has diff size"; }
+      TDynamicVector<T> answ(v.size());
+      for (int i = 0; i < v.size(); i++) {
+          answ[i] = this->at(i) * v;
+      }
+
   }
 
   // матрично-матричные операции
   TDynamicMatrix operator+(const TDynamicMatrix& m)
   {
-      throw "Method is not implemented";
+      if (size() != m.size()) {
+          throw "diff size";
+      }
+      TDynamicMatrix answ(size());
+      for (int i = 0; i < size(); i++) {
+          answ[i] = this->at(i) + m[i];
+      }
+      return answ;
   }
   TDynamicMatrix operator-(const TDynamicMatrix& m)
   {
-      throw "Method is not implemented";
+      if (size() != m.size()) {
+          throw "diff size";
+      }
+      TDynamicMatrix answ(size());
+      for (int i = 0; i < size(); i++) {
+          answ[i] = this->at(i) - m[i];
+      }
+      return answ;
   }
   TDynamicMatrix operator*(const TDynamicMatrix& m)
   {
-      throw "Method is not implemented";
+      // 
+      // it has no tests
+      // so it might be wrong
+      //
+      if (size() != v.size()) { throw "matricies has diff size"; }
+      // i - столбец из матрицы справа
+      // j - строка матрицы слева
+      // k - индекс элемента 
+      // ( k столбец матрицы слева и k строка матрицы справа)
+      TDynamicMatrix answ(size());
+      for (int i = 0; i < size(); i++) {
+          for (int j = 0; j < size(); j++) {
+              answ[i][j] = 0;
+
+              for (int k = 0; k < size(); k++) {
+                  answ[i][j] = at([j])[k] * m[i][k];
+              }
+              
+          }
+      }
+      return answ;
   }
 
   // ввод/вывод
