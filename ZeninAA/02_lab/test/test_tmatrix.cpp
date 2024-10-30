@@ -26,12 +26,17 @@ TEST(TDynamicMatrix, can_create_copied_matrix)
 
 TEST(TDynamicMatrix, copied_matrix_is_equal_to_source_one)
 {
-  ADD_FAILURE();
+    TDynamicMatrix<int> m(2), m1(m);
+    EXPECT_EQ(1, m == m1);
 }
 
 TEST(TDynamicMatrix, copied_matrix_has_its_own_memory)
 {
-  ADD_FAILURE();
+    TDynamicMatrix<int> m(4), m1(m);
+    EXPECT_NE(&m[0], &m1[0]);
+    EXPECT_NE(&m[1], &m1[1]);
+    EXPECT_NE(&m[2], &m1[2]);
+    EXPECT_NE(&m[3], &m1[3]);
 }
 
 TEST(TDynamicMatrix, can_get_size)
@@ -41,7 +46,15 @@ TEST(TDynamicMatrix, can_get_size)
 
 TEST(TDynamicMatrix, can_set_and_get_element)
 {
-  ADD_FAILURE();
+  TDynamicMatrix<int> m(2);
+    for (int i = 0; i < 2; i++)
+    {
+        for (int j = 0; j < 2; j++)
+        {
+            m[i][j] = i + j;
+        }
+    }
+    EXPECT_EQ(2, m[1][1]);
 }
 
 TEST(TDynamicMatrix, throws_when_set_element_with_negative_index)

@@ -25,8 +25,8 @@ protected:
 public:
   TDynamicVector(size_t size = 1) : sz(size)
   {
-    if (sz == 0)
-      throw out_of_range("Vector size should be greater than zero");
+    if (sz >= MAX_VECTOR_SIZE || sz <= 0)
+      throw out_of_range("Vector size should be greater than zero and it should be less than 100000000! ");
     pMem = new T[sz]();// {}; // У типа T д.б. констуктор по умолчанию
   }
   TDynamicVector(T* arr, size_t s) : sz(s)
@@ -35,22 +35,55 @@ public:
     pMem = new T[sz];
     std::copy(arr, arr + sz, pMem);
   }
-  TDynamicVector(const TDynamicVector& v)
+  TDynamicVector(const TDynamicVector& v) : sz(v.sz)
   {
-      throw "Method is not implemented";
+      pMem = new T[sz];
+      for (int i = 0; i < sz; i++) {
+          pMem[i] = v.pMem[i];
+      }
+      
   }
   TDynamicVector(TDynamicVector&& v) noexcept
   {
+      sz = v.sz;
+      pMem = v.pMem;        
+      
+      v.sz = 0;
+      v.pMem = nullptr;
   }
   ~TDynamicVector()
   {
+      delete[] this->pMem;
   }
   TDynamicVector& operator=(const TDynamicVector& v)
   {
-      throw "Method is not implemented";
+      if (this == &v)
+      {
+          return *this;
+      }
+      if (this->sz != v.sz)
+      {
+          delete[] this->pMem; 
+          this->sz = v.sz;
+          this->pMem = new T[this->sz];
+      }
+
+      for (int i = 0; i < this->sz; i++) {
+          this->pMem[i] = v.pMem[i];
+      }
+      return *this;
+  
   }
   TDynamicVector& operator=(TDynamicVector&& v) noexcept
   {
+      if (this == &v)
+      {
+          return *this;
+      }
+      sz = v.sz;
+      pMem = v.pMem;
+      v.sz = 0;
+      v.pMem = nullptr;
       return *this;
   }
 
@@ -59,44 +92,78 @@ public:
   // индексация
   T& operator[](size_t ind)
   {
-      throw "Method is not implemented";
+      return pMem[ind];
   }
   const T& operator[](size_t ind) const
   {
-      throw "Method is not implemented";
+      return pMem[ind];
   }
   // индексация с контролем
   T& at(size_t ind)
   {
-      throw "Method is not implemented";
+      if (ind >= sz || ind < 0)
+      {
+          throw "OUT OF RANGE INDEX";
+      }
+      return pMem[ind];
   }
   const T& at(size_t ind) const
   {
-      throw "Method is not implemented";
+      if (ind >= sz || ind < 0)
+      {
+          throw "OUT OF RANGE INDEX";
+      }
+      return pMem[ind];
   }
 
   // сравнение
   bool operator==(const TDynamicVector& v) const noexcept
   {
-      throw "Method is not implemented";
+          if (sz == v.sz)
+          {
+              for (int i = 0; i < sz; i++)
+              {
+                  if (pMem[i] != v.pMem[i])
+                  {
+                      return 0;
+                  }
+              }
+              return 1;
+          }
+          return 0;
   }
   bool operator!=(const TDynamicVector& v) const noexcept
   {
-      throw "Method is not implemented";
+      return !(*this == v);
   }
 
   // скалярные операции
   TDynamicVector operator+(T val)
   {
-      throw "Method is not implemented";
+      TDynamicVector res(sz);
+      for (int i = 0; i < sz; i++)
+      {
+          res.pMem[i] = val + pMem[i];
+      }
+      return res;
   }
   TDynamicVector operator-(T val)
   {
-      throw "Method is not implemented";
+      TDynamicVector res(sz);
+      for (int i = 0; i < sz; i++)
+      {
+          res.pMem[i] = pMem[i] - val;
+      }
+      return res;
   }
   TDynamicVector operator*(T val)
   {
-      throw "Method is not implemented";
+      TDynamicVector res(sz);
+      for (int i = 0; i < sz; i++)
+      {
+          res.pMem[i] = pMem[i] * val;
+      }
+      return res;
   }
 
   // векторные операции
@@ -144,8 +211,13 @@ class TDynamicMatrix : private TDynamicVector<TDynamicVector<T>>
 public:
   TDynamicMatrix(size_t s = 1) : TDynamicVector<TDynamicVector<T>>(s)
   {
-    for (size_t i = 0; i < sz; i++)
+      if (sz >= MAX_MATRIX_SIZE || sz <= 0) {
+          throw out_of_range("The size of matrix should be greater than zero and less than 1000");
+      }
+      for (size_t i = 0; i < sz; i++) {
       pMem[i] = TDynamicVector<T>(sz);
+      }
+    
   }
 
   using TDynamicVector<TDynamicVector<T>>::operator[];
