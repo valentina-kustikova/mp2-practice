@@ -170,7 +170,8 @@ TEST(TDynamicVector, can_add_scalar_to_vector)
     //cout << vr.size() << "\n";
     //cout << v1.size() << "\n";
     vr = v1 + scalar;
-    cout << vr.size() << "\n";
+    //cout << vr.size() << "\n";
+    //cout << vr << v1;
     EXPECT_EQ(vr,v2);
 }
 
