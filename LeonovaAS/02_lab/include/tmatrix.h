@@ -117,18 +117,18 @@ public:
   // сравнение
   bool operator==(const TDynamicVector& v) const noexcept
   {
-      if (sz == v.sz)
+      if (sz != v.sz)
       {
-          for (int i = 0; i < sz; i++)
-          {
-              if (pMem[i] != v.pMem[i])
-              {
-                  return 0;
-              }
-          }
-          return 1;
+          return false;
       }
-      return 0;
+      for (int i = 0; i < sz; i++)
+      {
+          if (pMem[i] != v.pMem[i])
+          {
+              return false;
+          }
+      }
+      return true;
   }
 
   bool operator!=(const TDynamicVector& v) const noexcept
@@ -198,7 +198,7 @@ public:
       {
           throw "Vectors have different dim";
       }
-      T res = 0;
+      T res = T(0);
       for (int i = 0; i < sz; i++)
       {
           res += pMem[i] * v.pMem[i];
@@ -243,7 +243,7 @@ public:
           throw out_of_range("Matrix size should be greater than zero and less than 10000");
       }
       for (size_t i = 0; i < sz; i++)
-      pMem[i] = TDynamicVector<T>(sz);
+        pMem[i] = TDynamicVector<T>(sz); // sz - i
   }
 
   using TDynamicVector<TDynamicVector<T>>::operator[];
@@ -253,6 +253,7 @@ public:
   // сравнение
   bool operator==(const TDynamicMatrix& m) const noexcept
   {
+      //return TDynamicVector<TDynamicVector<T>>::operator==(m);
       if (sz == m.sz)
       {
           for (int i = 0; i < sz; i++)
