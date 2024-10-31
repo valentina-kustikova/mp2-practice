@@ -159,7 +159,7 @@ TBitField TBitField::operator|(const TBitField& bf) // операция "или"
         ress.pMem[i] = pMem[i] | bf.pMem[i];
     }
 
-    if (MemLen >= bf.MemLen) { // TODO!!! were
+    if (MemLen >= bf.MemLen) {
         for (int i = bf.MemLen; i < MemLen; i++) {
             ress.pMem[i] = pMem[i];
         }
@@ -184,7 +184,7 @@ TBitField TBitField::operator&(const TBitField& bf) // операция "и"
         ress.pMem[i] = pMem[i] & bf.pMem[i];
     }
 
-    if (MemLen >= bf.MemLen) {  // TODO!!! were
+    if (MemLen >= bf.MemLen) {
         for (int i = bf.MemLen; i < MemLen; i++) {
             ress.pMem[i] = pMem[i];
         }

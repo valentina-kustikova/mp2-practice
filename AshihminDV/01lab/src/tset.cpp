@@ -119,7 +119,7 @@ istream& operator>>(istream& istr, TSet& s) // ввод
         s.InsElem(i);
         istr >> i;
     }
-    return istr; // TODO!!!
+    return istr;
 }
 
 ostream& operator<<(ostream& ostr, const TSet& s) // вывод
