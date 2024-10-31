@@ -112,7 +112,7 @@ int TBitField::operator==(const TBitField &bf) const // сравнение
     if (this->BitLen != bf.BitLen)
         return 0;
     int temp=0;
-    for (int i = 0; i < MemLen; i++) // TODO!!! element//EDIT
+    for (int i = 0; i < MemLen; i++)
     {
         if (this->pMem[i] == bf.pMem[i])
             temp += 1;
