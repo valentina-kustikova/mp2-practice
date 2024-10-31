@@ -8,9 +8,6 @@
 #include "tbitfield.h"
 #include <cstring>
 
-// Fake variables used as placeholders in tests
-static const int FAKE_INT = -1;
-static TBitField FAKE_BITFIELD(1);
 
 TBitField::TBitField(int len)
 {
@@ -90,24 +87,24 @@ int TBitField::GetBit(const int n) const // получить значение б
 
 const TBitField& TBitField::operator=(const TBitField &bf) // присваивание
 {
-    if (this != &bf) {
-        this->BitLen = bf.BitLen;
-        this->MemLen = bf.MemLen;
-
-        delete[] this->pMem;
-        this->pMem = new TELEM[this->MemLen];
-
-        for (int i = 0; i < this->MemLen; i++)
-            this->pMem[i] = bf.pMem[i];
-
+    if (this == &bf) {
+        return *this;
     }
-    
+    this->BitLen = bf.BitLen;
+    // TODO: if MemLen
+    this->MemLen = bf.MemLen;
+    delete[] this->pMem;
+    this->pMem = new TELEM[this->MemLen];
+
+    for (int i = 0; i < this->MemLen; i++)
+        this->pMem[i] = bf.pMem[i];
+
     return *this;
 }
 
 int TBitField::operator==(const TBitField &bf) const // сравнение
 {
-    if (this->MemLen != bf.MemLen)
+    if (this->BitLen != bf.BitLen)
         return 0;
     for (int i = 0; i < this->MemLen; i++)
         if (this->pMem[i] != bf.pMem[i])
@@ -117,11 +114,7 @@ int TBitField::operator==(const TBitField &bf) const // сравнение
 
 int TBitField::operator!=(const TBitField &bf) const // сравнение
 {
-    if (this->operator==(bf))
-    {
-        return 0;
-    }
-    return 1;
+    return ~(this->operator==(bf));
 }
 
 TBitField TBitField::operator|(const TBitField &bf) // операция "или"

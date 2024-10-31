@@ -7,26 +7,19 @@
 
 #include "tset.h"
 
-// Fake variables used as placeholders in tests
-static const int FAKE_INT = -1;
-static TBitField FAKE_BITFIELD(1);
-static TSet FAKE_SET(1);
 
-TSet::TSet(int mp) : BitField(TBitField(mp))
+TSet::TSet(int mp) : MaxPower(mp), BitField(TBitField(mp))
 {
-    this->MaxPower = mp;
 }
 
 // конструктор копирования
-TSet::TSet(const TSet &s) : BitField(TBitField(s.BitField))
+TSet::TSet(const TSet &s) : MaxPower(s.MaxPower), BitField(TBitField(s.BitField))
 {
-    this->MaxPower = s.MaxPower;
 }
 
 // конструктор преобразования типа
-TSet::TSet(const TBitField &bf) : BitField(TBitField(bf))
+TSet::TSet(const TBitField &bf) : MaxPower(bf.GetLength()), BitField(TBitField(bf))
 {
-    this->MaxPower = bf.GetLength();
 }
 
 TSet::operator TBitField()
@@ -67,19 +60,13 @@ const TSet& TSet::operator=(const TSet &s) // присваивание
 
 int TSet::operator==(const TSet &s) const // сравнение
 {
-    if (this->MaxPower != s.MaxPower) {
-        return 0;
-    }
     return this->BitField == s.BitField;
 }
 
 int TSet::operator!=(const TSet &s) const // сравнение
 {
-    if (this->operator==(s))
-    {
-        return 0;
-    }
-    return 1;
+    return !(this->operator==(s));
+ 
 }
 
 TSet TSet::operator+(const TSet &s) // объединение
@@ -126,8 +113,7 @@ istream &operator>>(istream &istr, TSet &s) // ввод (откуда?)
     istr >> s.MaxPower;
     s = TSet(s.MaxPower);
 
-    for(int i=0;i<s.MaxPower;i++)
-    {
+    for(int i=0;i<s.MaxPower;i++){
         int n;
         istr >> n;
         s.BitField.SetBit(n);
