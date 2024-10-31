@@ -105,8 +105,6 @@ const TBitField& TBitField::operator=(const TBitField &bf) // присваива
 int TBitField::operator==(const TBitField &bf) const // сравнение
 {
     // 0-есть различие 1- нет
-    if (MemLen != bf.MemLen) // TODO !!! bitlen
-        return 0;
     if (BitLen != bf.BitLen) {
         return 0;
     }
@@ -118,7 +116,7 @@ int TBitField::operator==(const TBitField &bf) const // сравнение
 
 int TBitField::operator!=(const TBitField &bf) const // сравнение // TODO !!! ==
 {
-    return !(*this == bf);
+    return  !(*this == bf);
 }
 
 TBitField TBitField::operator|(const TBitField &bf) // операция "или"
