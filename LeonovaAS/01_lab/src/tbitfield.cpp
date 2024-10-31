@@ -149,26 +149,22 @@ int TBitField::operator!=(const TBitField &bf) const // сравнение
 TBitField TBitField::operator|(const TBitField &bf) // операция "или"
 {
     TBitField copy(max(BitLen, bf.BitLen)), res(max(BitLen, bf.BitLen));
-    if (BitLen >= bf.BitLen)
+    for (int i = 0; i < std::min(MemLen, bf.MemLen); i++)
     {
-        for (int i = 0; i < bf.BitLen; i++)
+        res.pMem[i] = pMem[i] | bf.pMem[i];
+    }
+    if (MemLen > bf.MemLen)
+    {
+        for (int i = bf.MemLen + 1; i < MemLen; i++)
         {
-            copy.pMem[GetMemIndex(i)] = bf.pMem[GetMemIndex(i)];
-        }
-        for (int i = 0; i < MemLen; i++)
-        {
-            res.pMem[i] = pMem[i] | copy.pMem[i];
+            res.pMem[i] = pMem[i];
         }
     }
     else
-    {
-        for (int i = 0; i < BitLen; i++)
+    {        
+        for (int i = MemLen + 1; i < bf.MemLen; i++)
         {
-            copy.pMem[GetMemIndex(i)] = pMem[GetMemIndex(i)];
-        }
-        for (int i = 0; i < MemLen; i++)
-        {
-            res.pMem[i] = bf.pMem[i] | copy.pMem[i];
+            res.pMem[i] = bf.pMem[i];
         }
     }
     return res;
@@ -177,29 +173,10 @@ TBitField TBitField::operator|(const TBitField &bf) // операция "или"
 TBitField TBitField::operator&(const TBitField &bf) // операция "и" 
 {
     TBitField copy(max(BitLen, bf.BitLen)), res(max(BitLen, bf.BitLen));
-    if (BitLen >= bf.BitLen)
+    for (int i = 0; i < std::min(MemLen, bf.MemLen); i++)
     {
-        for (int i = 0; i < bf.BitLen; i++)
-        {
-            copy.pMem[GetMemIndex(i)] = bf.pMem[GetMemIndex(i)];
-        }
-        for (int i = 0; i < bf.MemLen; i++)
-        {
-            res.pMem[i] = pMem[i] & copy.pMem[i];
-        }
+        res.pMem[i] = pMem[i] & bf.pMem[i];
     }
-    else
-    {
-        for (int i = 0; i < BitLen; i++)
-        {
-            copy.pMem[GetMemIndex(i)] = pMem[GetMemIndex(i)];
-        }
-        for (int i = 0; i < bf.MemLen; i++)
-        {
-            res.pMem[i] = bf.pMem[i] & copy.pMem[i];
-        }
-    }
-    
     return res;
 
 }
