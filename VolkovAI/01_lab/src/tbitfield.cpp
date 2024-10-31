@@ -123,12 +123,9 @@ int TBitField::operator==(const TBitField& bf) const // сравнение
     return 1;
 }
 
-int TBitField::operator!=(const TBitField& bf) const // сравнение // TODO: ==
+int TBitField::operator!=(const TBitField& bf) const // сравнение
 {
-    if (this->pMem == bf.pMem) {
-        return 0;
-    }
-    return 1;
+    return !(*this == bf);
 }
 
 TBitField TBitField::operator|(const TBitField& bf) // операция "или"
@@ -180,19 +177,15 @@ TBitField TBitField::operator~(void) // отрицание
 
 istream& operator>>(istream& istr, TBitField& bf) // ввод
 {
-    string k; // TODO: string 010101111
-    for (int i = 0; i < bf.GetLength(); i++)
+    string k;
+    istr >> k;
+    if (k.size() != bf.BitLen)
     {
-        istr >> k;
-        if (k[i] == 1) {
+        throw "Input and bitfield have different sizes.";
+    }
+    for (int i = 0; i < bf.BitLen; i++) {
+        if (k[i] == '1') {
             bf.SetBit(i);
-        }
-        else if (k[i] == 0)
-        {
-            bf.ClrBit(i);
-        }
-        else {
-            break;
         }
     }
     return istr;
