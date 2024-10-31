@@ -25,7 +25,7 @@ protected:
 public:
   TDynamicVector(size_t size = 1) : sz(size)
   {
-    if (sz == 0)
+    if (sz <= 0)
       throw out_of_range("Vector size should be greater than zero");
     if (sz > MAX_VECTOR_SIZE) throw out_of_range("Size more max size");
     pMem = new T[sz]();// {}; // У типа T д.б. констуктор по умолчанию
@@ -44,9 +44,9 @@ public:
           this->pMem[i] = v.pMem[i];
       }
   }
-  TDynamicVector(TDynamicVector&& v) noexcept
+  /*TDynamicVector(TDynamicVector&& v) noexcept
   {
-  }
+  }*/
   ~TDynamicVector()
   {
       delete[] pMem;
@@ -62,10 +62,10 @@ public:
       }
       return *this;
   }
-  TDynamicVector& operator=(TDynamicVector&& v) noexcept
-  {
-      return *this;
-  }
+  //TDynamicVector& operator=(TDynamicVector&& v) noexcept
+  //{
+  //    return *this;
+  //}
 
   size_t size() const noexcept { return sz; }
 
