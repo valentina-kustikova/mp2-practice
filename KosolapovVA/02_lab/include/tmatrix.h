@@ -202,6 +202,7 @@ public:
 
 // Динамическая матрица - 
 // шаблонная матрица на динамической памяти
+//Переделать в верхне-треугольную
 template<typename T>
 class TDynamicMatrix : private TDynamicVector<TDynamicVector<T>>
 {
