@@ -5,6 +5,7 @@
 //
 // Битовое поле
 
+#include <string>
 #include "tbitfield.h"
 
 TBitField::TBitField(int len)
@@ -116,12 +117,7 @@ int TBitField::operator==(const TBitField &bf) const // сравнение
 
 int TBitField::operator!=(const TBitField &bf) const // сравнение
 {
-    if (*this == bf) {
-        return 0;
-    }
-    else {
-        return 1;
-    }
+    return !(*this == bf);
 }
 
 TBitField TBitField::operator|(const TBitField &bf) // операция "или"
@@ -187,6 +183,12 @@ istream &operator>>(istream &istr, TBitField &bf) // ввод
     for (int i = 0; i < bf.BitLen; i++) {
         if (bit[i] == '1') {
             bf.SetBit(i);
+        }
+        else if (bit[i] == '0') {
+            bf.ClrBit(i);
+        }
+        else {
+            throw "Incorrect bit";
         }
     }
     return istr;
