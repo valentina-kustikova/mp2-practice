@@ -145,7 +145,7 @@ int TBitField::operator!=(const TBitField& bf) const // сравнение
 TBitField TBitField::operator|(const TBitField& bf) // операция "или"
 {
     TBitField answ(max(BitLen, bf.BitLen));
-    for (int i = 0; i < answ.MemLen; i++) { // TODO!!!
+    for (int i = 0; i < answ.MemLen; i++) {
         answ.pMem[i] = pMem[i] | bf.pMem[i];
     }
     
@@ -168,7 +168,7 @@ TBitField TBitField::operator|(const TBitField& bf) // операция "или"
 TBitField TBitField::operator&(const TBitField& bf) // операция "и"
 {
     TBitField answ(max(BitLen, bf.BitLen));
-    for (int i = 0; i < answ.MemLen; i++) { // TODO!!!
+    for (int i = 0; i < answ.MemLen; i++) {
         answ.pMem[i] = pMem[i] & bf.pMem[i];
     }
 

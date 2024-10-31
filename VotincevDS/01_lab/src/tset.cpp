@@ -76,7 +76,7 @@ TSet TSet::operator+(const TSet &s) // объединение
     return answ;
 }
 
-TSet TSet::operator+(const int Elem) // объединение с элементом // TODO!
+TSet TSet::operator+(const int Elem) // объединение с элементом
 {
     if (Elem > MaxPower) { // TODO!!! InsElem
         throw "too large element";
@@ -91,10 +91,6 @@ TSet TSet::operator+(const int Elem) // объединение с элемент
 
 TSet TSet::operator-(const int Elem) // разность с элементом
 {
-    if (Elem > MaxPower) { // TODO!!! DelElem
-        throw "too large element";
-    }
-
     TSet answ(MaxPower);
     answ.BitField = BitField;
     answ.DelElem(Elem);
