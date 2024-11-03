@@ -39,15 +39,20 @@ public:
     pMem = new T[sz];
     std::copy(arr, arr + sz, pMem);
   }
-  TDynamicVector(const TDynamicVector& v)
+  TDynamicVector(const TDynamicVector& v): sz(v.sz)
   {
-      throw "Method is not implemented";
+      pMem = new T[sz];
+      for (int i = 0; i < sz; i++)
+      {
+          pMem[i] = v.pMem[i];
+      }
   }
   TDynamicVector(TDynamicVector&& v) noexcept
   {
   }
   ~TDynamicVector()
   {
+      delete[] this->pMem;
   }
   TDynamicVector& operator=(const TDynamicVector& v)
   {
