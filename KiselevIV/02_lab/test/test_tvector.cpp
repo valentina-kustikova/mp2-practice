@@ -30,7 +30,7 @@ TEST(TDynamicVector, copied_vector_is_equal_to_source_one)
     for (int i = 0; i < v.size(); i++)
         v[i] = i;
     TDynamicVector<int> v1(v);
-    //EXPECT_EQ(v1, v);
+    EXPECT_EQ(v1, v);
 }
 
 TEST(TDynamicVector, copied_vector_has_its_own_memory)
