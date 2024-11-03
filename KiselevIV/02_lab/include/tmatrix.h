@@ -68,11 +68,11 @@ public:
   // индексация
   T& operator[](size_t ind)
   {
-      throw "Method is not implemented";
+      return pMem[ind];
   }
   const T& operator[](size_t ind) const
   {
-      throw "Method is not implemented";
+      return pMem[ind];
   }
   // индексация с контролем
   T& at(size_t ind)
@@ -87,11 +87,15 @@ public:
   // сравнение
   bool operator==(const TDynamicVector& v) const noexcept
   {
-      throw "Method is not implemented";
+      if (sz != v.sz) return false;
+      for (int i = 0; i < sz; i++) {
+          if (pMem[i] != v.pMem[i])return false;
+      }
+      return true;
   }
   bool operator!=(const TDynamicVector& v) const noexcept
   {
-      throw "Method is not implemented";
+      return !(v == *this);
   }
 
   // скалярные операции
