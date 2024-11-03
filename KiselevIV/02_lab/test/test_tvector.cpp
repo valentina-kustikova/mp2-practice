@@ -101,17 +101,22 @@ TEST(TDynamicVector, can_assign_vectors_of_different_size)
 
 TEST(TDynamicVector, compare_equal_vectors_return_true)
 {
-  ADD_FAILURE();
+    TDynamicVector <int> v(3);
+    TDynamicVector <int> v1(3);
+    EXPECT_EQ(1, v==v1);
 }
 
 TEST(TDynamicVector, compare_vector_with_itself_return_true)
 {
-  ADD_FAILURE();
+    TDynamicVector <int> v(3);
+    EXPECT_EQ(1, v == v);
 }
 
 TEST(TDynamicVector, vectors_with_different_size_are_not_equal)
 {
-  ADD_FAILURE();
+    TDynamicVector <int> v(3);
+    TDynamicVector <int> v1(4);
+    EXPECT_NE(1, v == v1);
 }
 
 TEST(TDynamicVector, can_add_scalar_to_vector)
