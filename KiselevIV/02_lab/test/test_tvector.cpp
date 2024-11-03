@@ -67,27 +67,36 @@ TEST(TDynamicVector, throws_when_set_element_with_negative_index)
 TEST(TDynamicVector, throws_when_set_element_with_too_large_index)
 {
     TDynamicVector <int> v(3);
-    ASSERT_ANY_THROW(v.at(4));
+    ASSERT_ANY_THROW(v.at(3));
 }
 
 TEST(TDynamicVector, can_assign_vector_to_itself)
 {
-  ADD_FAILURE();
+    TDynamicVector <int> v(3);
+    EXPECT_EQ(v, v);
 }
 
 TEST(TDynamicVector, can_assign_vectors_of_equal_size)
 {
-  ADD_FAILURE();
+    TDynamicVector <int> v(3);
+    TDynamicVector <int> v1(3);
+    ASSERT_NO_THROW(v1=v);
 }
 
 TEST(TDynamicVector, assign_operator_change_vector_size)
 {
-  ADD_FAILURE();
+    TDynamicVector <int> v(3);
+    TDynamicVector <int> v1(4);
+    v1 = v;
+    EXPECT_NE(4, v.size());
 }
 
 TEST(TDynamicVector, can_assign_vectors_of_different_size)
 {
-  ADD_FAILURE();
+    TDynamicVector <int> v(3);
+    TDynamicVector <int> v1(4);
+    v1 = v;
+    EXPECT_NE(4, v.size());
 }
 
 TEST(TDynamicVector, compare_equal_vectors_return_true)

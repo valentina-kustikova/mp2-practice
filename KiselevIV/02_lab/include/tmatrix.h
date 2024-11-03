@@ -56,6 +56,7 @@ public:
   }
   TDynamicVector& operator=(const TDynamicVector& v)
   {
+      delete [] pMem;
       sz = v.sz;
       pMem = new T[sz];
       for (int i = 0; i < sz; i++) {
