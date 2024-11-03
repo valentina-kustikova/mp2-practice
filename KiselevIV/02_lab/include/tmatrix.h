@@ -56,7 +56,12 @@ public:
   }
   TDynamicVector& operator=(const TDynamicVector& v)
   {
-      throw "Method is not implemented";
+      sz = v.sz;
+      pMem = new T[sz];
+      for (int i = 0; i < sz; i++) {
+          pMem[i] = v.pMem[i];
+      }
+      return *this;
   }
   TDynamicVector& operator=(TDynamicVector&& v) noexcept
   {
@@ -72,6 +77,12 @@ public:
   }
   const T& operator[](size_t ind) const
   {
+      if (ind < 0) {
+          throw out_of_range("set_element_with_negative_index");
+      }
+      if (ind >= sz) {
+          throw out_of_range("set_element_with_too_large_index");
+      }
       return pMem[ind];
   }
   // индексация с контролем
@@ -95,7 +106,7 @@ public:
   }
   bool operator!=(const TDynamicVector& v) const noexcept
   {
-      return !(v == *this);
+      return !(v== *this);
   }
 
   // скалярные операции

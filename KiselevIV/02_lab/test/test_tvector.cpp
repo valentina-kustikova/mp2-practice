@@ -35,7 +35,11 @@ TEST(TDynamicVector, copied_vector_is_equal_to_source_one)
 
 TEST(TDynamicVector, copied_vector_has_its_own_memory)
 {
-  ADD_FAILURE();
+    TDynamicVector<int> v(3);
+    for (int i = 0; i < v.size(); i++)
+        v[i] = i;
+    TDynamicVector<int> v1(v);
+    EXPECT_NE(&v1[0], &v[0]);
 }
 
 TEST(TDynamicVector, can_get_size)
@@ -55,12 +59,15 @@ TEST(TDynamicVector, can_get_size)
 
 TEST(TDynamicVector, throws_when_set_element_with_negative_index)
 {
-  ADD_FAILURE();
+    TDynamicVector <int> v(3);
+    ASSERT_ANY_THROW(v.at(-1));
+    //спросить, что будет если вызвать throw TDynamicVector<int> v.at(4)); без at
 }
 
 TEST(TDynamicVector, throws_when_set_element_with_too_large_index)
 {
-  ADD_FAILURE();
+    TDynamicVector <int> v(3);
+    ASSERT_ANY_THROW(v.at(4));
 }
 
 TEST(TDynamicVector, can_assign_vector_to_itself)
