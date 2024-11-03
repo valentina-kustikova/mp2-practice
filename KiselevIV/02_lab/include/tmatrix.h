@@ -78,6 +78,11 @@ public:
   }
   const T& operator[](size_t ind) const
   {
+      return pMem[ind];
+  }
+  // индексация с контролем
+  T& at(size_t ind)
+  {
       if (ind < 0) {
           throw out_of_range("set_element_with_negative_index");
       }
@@ -86,14 +91,15 @@ public:
       }
       return pMem[ind];
   }
-  // индексация с контролем
-  T& at(size_t ind)
-  {
-      throw "Method is not implemented";
-  }
   const T& at(size_t ind) const
   {
-      throw "Method is not implemented";
+      if (ind < 0) {
+          throw out_of_range("set_element_with_negative_index");
+      }
+      if (ind >= sz) {
+          throw out_of_range("set_element_with_too_large_index");
+      }
+      return pMem[ind];
   }
 
   // сравнение
@@ -113,28 +119,51 @@ public:
   // скалярные операции
   TDynamicVector operator+(T val)
   {
-      throw "Method is not implemented";
+      for (int i = 0; i < sz; i++) {
+          pMem[i] = pMem[i] + val;
+      }
+      return *this;
   }
   TDynamicVector operator-(T val)
   {
-      throw "Method is not implemented";
+      for (int i = 0; i < sz; i++) {
+          pMem[i] = pMem[i]- val;
+      }
+      return *this;
   }
   TDynamicVector operator*(T val)
   {
-      throw "Method is not implemented";
+      for (int i = 0; i < sz; i++) {
+          pMem[i] =pMem[i]* val;
+      }
+      return *this;
   }
 
   // векторные операции
   TDynamicVector operator+(const TDynamicVector& v)
   {
-      throw "Method is not implemented";
+      if (sz != v.sz) throw "UNREAL";
+      for (int i = 0; i < sz; i++) {
+          pMem[i] = pMem[i] + v[i];
+      }
+      return *this;
   }
   TDynamicVector operator-(const TDynamicVector& v)
   {
-      throw "Method is not implemented";
+      if (sz != v.sz) throw "UNREAL";
+      for (int i = 0; i < sz; i++) {
+          pMem[i] = pMem[i] - v[i];
+      }
+      return *this;
   }
   T operator*(const TDynamicVector& v) noexcept(noexcept(T()))
   {
+      if (size() != v.size()) throw "UNREAL"; 
+      T tmp = 0;
+      for (int i = 0; i < size(); i++) {
+          tmp += pMem[i] * v[i];
+      }
+      return tmp;
   }
 
   friend void swap(TDynamicVector& lhs, TDynamicVector& rhs) noexcept
