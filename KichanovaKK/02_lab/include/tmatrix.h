@@ -25,7 +25,7 @@ protected:
 public:
   TDynamicVector(size_t size = 1) : sz(size)
   {
-    if (sz == 0)
+    if (sz == 0|| sz > MAX_VECTOR_SIZE)
       throw out_of_range("Vector size should be greater than zero");
     pMem = new T[sz]();// {}; // У типа T д.б. констуктор по умолчанию
   }
@@ -166,7 +166,10 @@ public:
   }
   T operator*(const TDynamicVector& v) noexcept(noexcept(T()))
   {
-      T tmp = 0.0;
+      if (sz != v.sz) {
+          throw "error";
+      }
+      T tmp = 0;
       for (size_t i = 0; i < sz; i++) { 
           tmp += pMem[i] * v.pMem[i];
       }
@@ -205,6 +208,8 @@ class TDynamicMatrix : private TDynamicVector<TDynamicVector<T>>
 public:
   TDynamicMatrix(size_t s = 1) : TDynamicVector<TDynamicVector<T>>(s)
   {
+    if (sz == 0 || sz > MAX_MATRIX_SIZE)
+      throw out_of_range("Matrix size should be greater than zero");
     for (size_t i = 0; i < sz; i++)
       pMem[i] = TDynamicVector<T>(sz);
   }
@@ -284,6 +289,25 @@ public:
             ostr << endl; 
         }
         return ostr;
+  }
+
+ //index
+
+  T& at(size_t ind1, size_t ind2)
+  {
+      if (ind1 < 0 || ind1 >= sz || ind2 < 0 || ind2 >= sz)
+          throw out_of_range("Index out of bounds.");
+      return pMem[ind1][ind2];
+  }
+  const T& at(size_t ind1, size_t ind2) const
+  {
+      if (ind1 < 0 || ind1 >= sz || ind2 < 0 || ind2 >= sz)
+          throw out_of_range("Index out of bounds.");
+      return pMem[ind1][ind2];
+  }
+  //size
+  int size() {
+      return this->sz;
   }
 };
 
