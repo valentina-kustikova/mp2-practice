@@ -65,7 +65,7 @@ public:
   }
   TDynamicVector& operator=(const TDynamicVector& v)
   {
-      if (this->pMem == v.pMem)
+      if (this == &v)
       {
           return *this;
       }
@@ -73,16 +73,23 @@ public:
       {
           this->sz = v.sz;
           delete[]pMem;
-          pMem = new T[this->sz]();
+          pMem = new T[this->sz];
       }
       for (int i = 0; i < this->sz; i++)
       {
           this->pMem[i] = v.pMem[i];
       }
+      return *this;
 
   }
   TDynamicVector& operator=(TDynamicVector&& v) noexcept
   {
+      if (this == &v)
+          return *this;
+      this->sz = v.sz;
+      v.sz = 0;
+      this->pMem = v.pMem;
+      v.pMem = nullptr;
       return *this;
   }
 
@@ -162,19 +169,29 @@ public:
   // векторные операции
   TDynamicVector operator+(const TDynamicVector& v)
   {
-      if (this->sz != v.size()) {
-          throw " NOT EQUAL SIZE "
+      
+      /*if (this->sz != v.size()) {
+          
+          throw std::exception("NOT EQUAL SIZE");
       }
-      TDynamicVector<T> SUM(this->sz);
+      
+      TDynamicVector<T> SUMM(this->sz);
+      
       for (int i = 0; i < this->sz; i++) {
-          SUM[i] = v[i] + this->pMem[i];
+          SUMM[i] = v[i] + this->pMem[i];
       }
-      return SUM;
+      return SUMM;*/
+      if (this->sz != v.sz)
+          throw std::exception("Dif vector size");
+      TDynamicVector<T> temp(this->sz);
+      for (int i = 0; i < this->sz; i++)
+          temp.pMem[i] = this->pMem[i] + v.pMem[i];
+      return temp;
   }
   TDynamicVector operator-(const TDynamicVector& v)
   {
       if (this->sz != v.size()) {
-          throw " NOT EQUAL SIZE "
+          throw " NOT EQUAL SIZE ";
       }
       TDynamicVector<T> RAZ(this->sz);
       for (int i = 0; i < this->sz; i++) {
@@ -185,7 +202,7 @@ public:
   T operator*(const TDynamicVector& v) noexcept(noexcept(T()))
   {
       if (this->sz != v.size()) {
-          throw " NOT EQUAL SIZE "
+          throw " NOT EQUAL SIZE ";
       }
       T PR = T();
       for (int i = 0; i < this->sz; i++) {
