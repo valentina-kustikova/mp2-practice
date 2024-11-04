@@ -36,7 +36,6 @@ TBitField::TBitField(const TBitField &bf) // конструктор копиро
 TBitField::~TBitField()
 {
     delete[] this->pMem;
-   
 }
 
 int TBitField::GetMemIndex(const int n) const // индекс Мем для бита n
@@ -117,7 +116,7 @@ const TBitField& TBitField::operator=(const TBitField& bf) // присваива
 
 int TBitField::operator==(const TBitField &bf) const // сравнение
 {
-    if ((MemLen != bf.MemLen) || (BitLen != bf.BitLen)){
+    if (BitLen != bf.BitLen){
         return 0;
     }
     for (int i = 0; i < MemLen; i++) {
@@ -137,12 +136,18 @@ TBitField TBitField::operator|(const TBitField &bf) // операция "или"
 {
     TBitField tmp(max(BitLen, bf.BitLen));
 
-    for (int i = 0; i < this->MemLen; i++) {
-        tmp.pMem[i] = pMem[i];
+    for (int i = 0; i < min(this->MemLen, bf.MemLen); i++) { 
+        tmp.pMem[i] = pMem[i] | bf.pMem[i]; 
     }
-        
-    for (int i = 0; i < tmp.MemLen; i++) {
-        tmp.pMem[i] |= bf.pMem[i];
+    if (MemLen > bf.MemLen) {
+        for (int i = bf.MemLen; i < MemLen; i++) {
+            tmp.pMem[i] = pMem[i];
+        }
+    }
+    else {
+        for (int i = MemLen; i < bf.MemLen; i++) {
+            tmp.pMem[i] = bf.pMem[i];
+        }
     }
     return tmp;
     
@@ -150,13 +155,11 @@ TBitField TBitField::operator|(const TBitField &bf) // операция "или"
 
 TBitField TBitField::operator&(const TBitField &bf) // операция "и"
 {
-    TBitField tmp(max(BitLen, bf.BitLen)); 
-    for (int i = 0; i < MemLen; i++) {
-        tmp.pMem[i] = pMem[i];
+    TBitField tmp(max(BitLen, bf.BitLen));  
+    for (int i = 0; i < min(this->MemLen, bf.MemLen); i++) { 
+        tmp.pMem[i] = pMem[i] & bf.pMem[i];
     } 
-    for (int i = 0; i < tmp.MemLen; i++) {
-        tmp.pMem[i] &= bf.pMem[i];
-    } 
+    
     return tmp;
    
 }
