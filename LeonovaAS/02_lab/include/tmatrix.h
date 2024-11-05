@@ -243,7 +243,9 @@ public:
           throw out_of_range("Matrix size should be greater than zero and less than 10000");
       }
       for (size_t i = 0; i < sz; i++)
-        pMem[i] = TDynamicVector<T>(sz); // sz - i
+      {
+          pMem[i] = TDynamicVector<T>(sz - i);
+      }
   }
 
   using TDynamicVector<TDynamicVector<T>>::operator[];
@@ -253,20 +255,7 @@ public:
   // сравнение
   bool operator==(const TDynamicMatrix& m) const noexcept
   {
-      //return TDynamicVector<TDynamicVector<T>>::operator==(m);
-      if (sz == m.sz)
-      {
-          for (int i = 0; i < sz; i++)
-          {
-              if (pMem[i] != m.pMem[i])
-              {
-                  return 0;
-              }
-          }
-          return 1;
-          
-      }
-      return 0;
+      return TDynamicVector<TDynamicVector<T>>::operator==(m);
   }
 
   // матрично-скалярные операции
@@ -283,14 +272,18 @@ public:
   // матрично-векторные операции
   TDynamicVector<T> operator*(const TDynamicVector<T>& v)
   {
-      if (sz != v.sz)
+      if (sz != v.size())
       {
-          throw "Matrix and vector have different dim!"
+          throw "Matrix and vector have different dim!";
       }
-      TDynamicMatrix res(sz);
+      TDynamicVector<T> res(sz);
       for (int i = 0; i < sz; i++)
       {
-          res.pMem[i] = pMem[i] * v[i];
+          res[i] = T(0);
+          for (int j = 0; j < sz - i; j++)
+          {
+              res[i] += pMem[i][j] * v[j];
+          }
       }
       return res;
   }
@@ -308,7 +301,7 @@ public:
           res.pMem[i] = pMem[i] + m.pMem[i];
       }
       return res;
-      
+      //return TDynamicVector<TDynamicVector<T>>::operator+(m);
   }
   TDynamicMatrix operator-(const TDynamicMatrix& m)
   {
@@ -322,19 +315,23 @@ public:
           res.pMem[i] = pMem[i] - m.pMem[i];
       }
       return res;
+      //return TDynamicVector<TDynamicVector>::operator-(m);
   }
   TDynamicMatrix operator*(const TDynamicMatrix& m)
   {
-      TDynamicMatrix res(sz);
       if (sz != m.sz)
       {
           throw "Matrices have different dim!";
       }
+      TDynamicMatrix<T> res(sz);
       for (int i = 0; i < sz; i++)
       {
-          for (int j = 0; j < sz; j++)
+          for (int j = 0; j < sz - i; j++)
           {
-              res.pMem[i] = res.pMem[i] + pMem[j] * m.pMem[i][j];
+              for (int l = 0; l < j + 1; l++)
+              {
+                  res[i][j] += pMem[i][l] * m[l + i][j - l];
+              }
           }
       }
       return res;
@@ -347,7 +344,7 @@ public:
       istr >> v.sz;
       for (int i = 0; i < v.sz; i++)
       {
-          for (int j = 0; j < v.sz; j++)
+          for (int j = i; j < v.sz - i; j++)
           {
               cout << "Enter element num " << i+1 << "," << j+1 << " : ";
               istr >> v.pMem[i][j];
