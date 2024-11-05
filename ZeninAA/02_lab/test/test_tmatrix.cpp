@@ -37,11 +37,13 @@ TEST(TDynamicMatrix, copied_matrix_has_its_own_memory)
     EXPECT_NE(&m[1], &m1[1]);
     EXPECT_NE(&m[2], &m1[2]);
     EXPECT_NE(&m[3], &m1[3]);
+   
 }
 
 TEST(TDynamicMatrix, can_get_size)
 {
-  ADD_FAILURE();
+    TDynamicMatrix<int> m(100);
+    EXPECT_EQ(100, m[0].size());
 }
 
 TEST(TDynamicMatrix, can_set_and_get_element)
@@ -59,7 +61,11 @@ TEST(TDynamicMatrix, can_set_and_get_element)
 
 TEST(TDynamicMatrix, throws_when_set_element_with_negative_index)
 {
-  ADD_FAILURE();
+    TDynamicMatrix<int> m(2);
+    m[0][0] = 5;
+    m[0][1] = 21;
+    m[1][0] = 334;
+    ASSERT_ANY_THROW(m[1].at(-5) = 5);
 }
 
 TEST(TDynamicMatrix, throws_when_set_element_with_too_large_index)
