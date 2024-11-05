@@ -26,11 +26,10 @@ void main()
           b[i][j] = (i * 10 + j) * 100;
       }
   }
- 
+  c = a * b;
   //v1 = a * v;
   cout << "Matrix a = " << endl << a << endl;
   cout << "Matrix b = " << endl << b << endl;
-  c = a * b;
   cout << "Matrix c = a * b" << endl << c << endl;
   //cout << "Matrix a = " << endl << a << endl;
   //cout << "Vector v = " << endl << v << endl;

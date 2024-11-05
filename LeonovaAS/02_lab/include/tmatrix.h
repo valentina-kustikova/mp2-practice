@@ -344,7 +344,7 @@ public:
       istr >> v.sz;
       for (int i = 0; i < v.sz; i++)
       {
-          for (int j = i; j < v.sz - i; j++)
+          for (int j = 0; j < v.sz - i; j++)
           {
               cout << "Enter element num " << i+1 << "," << j+1 << " : ";
               istr >> v.pMem[i][j];
