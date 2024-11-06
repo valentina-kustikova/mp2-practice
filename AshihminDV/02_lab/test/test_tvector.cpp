@@ -34,15 +34,12 @@ TEST(TDynamicVector, copied_vector_is_equal_to_source_one)
 	}
 	TDynamicVector<int> v2(v1);
 	EXPECT_EQ(v1.size(), v2.size());
-	for (int i = 0; i < size; i++)
-	{
-		EXPECT_EQ(v1[i], v2[i]);
-	}
+	EXPECT_EQ(v1, v2);
 }
 
 TEST(TDynamicVector, copied_vector_has_its_own_memory)
 {
-	const int size = 5; //?
+	const int size = 5;
 	TDynamicVector<int> v1(size);
 	for (int i = 0; i < size; i++)
 	{
@@ -185,7 +182,7 @@ TEST(TDynamicVector, can_multiply_scalar_by_vector)
 
 TEST(TDynamicVector, can_add_vectors_with_equal_size)
 {
-	TDynamicVector<int> v1(5), v2(5), v3(5), v_res(5);
+	TDynamicVector<int> v1(5), v2(5), v3(5);
 	for (int i = 0; i < 5; i++)
 	{
 		v1[i] = 1;
@@ -198,11 +195,7 @@ TEST(TDynamicVector, can_add_vectors_with_equal_size)
 	{
 		v3[i] = 3;
 	}
-	std::cout << v2;
-	v_res = v1 + v2;
-	std::cout << "eafd2";
-	std::cout << v_res;
-	EXPECT_EQ(v_res, v3);
+	EXPECT_EQ(v1+v2, v3);
 }
 
 TEST(TDynamicVector, cant_add_vectors_with_not_equal_size)
@@ -220,7 +213,7 @@ TEST(TDynamicVector, cant_add_vectors_with_not_equal_size)
 TEST(TDynamicVector, can_subtract_vectors_with_equal_size)
 {
 	TDynamicVector<int> v1(5), v2(5);
-	for (int i = 0; i < 7; i++) {
+	for (int i = 0; i < 5; i++) {
 		v1[i] = i;
 	}
 	for (int i = 0; i < 5; i++) {
@@ -244,24 +237,18 @@ TEST(TDynamicVector, cant_subtract_vectors_with_not_equal_size)
 TEST(TDynamicVector, can_multiply_vectors_with_equal_size)
 {
 	TDynamicVector<int> v1(5), v2(5);
-	for (int i = 0; i < 7; i++) {
+	for (int i = 0; i < 5; i++) {
 		v1[i] = i;
 	}
 	for (int i = 0; i < 5; i++) {
 		v2[i] = i;
 	}
-	ASSERT_NO_THROW(v1 - v2);
+	ASSERT_NO_THROW(v1 * v2);
 }
 
 TEST(TDynamicVector, cant_multiply_vectors_with_not_equal_size)
 {
 	TDynamicVector<int> v1(7), v2(5);
-	for (int i = 0; i < 7; i++) {
-		v1[i] = i;
-	}
-	for (int i = 0; i < 5; i++) {
-		v2[i] = i;
-	}
 	ASSERT_ANY_THROW(v1 * v2);
 }
 
