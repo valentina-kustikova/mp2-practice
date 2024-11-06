@@ -198,6 +198,10 @@ class TDynamicMatrix : private TDynamicVector<TDynamicVector<T>>
 public:
   TDynamicMatrix(size_t s = 1) : TDynamicVector<TDynamicVector<T>>(s)
   {
+      if (s >= MAX_MATRIX_SIZE || s<0) {
+          throw "Invalid size of matrix";
+      }
+
     for (size_t i = 0; i < sz; i++)
       pMem[i] = TDynamicVector<T>(sz);
   }
