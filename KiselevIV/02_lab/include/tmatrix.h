@@ -277,11 +277,15 @@ public:
   // ввод/вывод
   friend istream& operator>>(istream& istr, TDynamicMatrix& v)
   {
-      throw "Method is not implemented";
+      for (size_t i = 0; i < v.sz; i++)
+          istr >> v.pMem[i]; 
+      return istr;
   }
   friend ostream& operator<<(ostream& ostr, const TDynamicMatrix& v)
   {
-      throw "Method is not implemented";
+      for (size_t i = 0; i < v.sz; i++)
+          ostr << v.pMem[i] << ' ';
+      return ostr;
   }
 };
 
