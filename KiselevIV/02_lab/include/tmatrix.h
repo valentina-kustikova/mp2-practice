@@ -205,12 +205,13 @@ public:
           throw "Invalid size of matrix";
       }
       for (size_t i = 0; i < s; i++) {
-          pMem[i] = TDynamicVector<T>(s);
+          pMem[i] = TDynamicVector<T>(s-1);
       }
   }
 
   using TDynamicVector<TDynamicVector<T>>::operator[];
-
+  using TDynamicVector<TDynamicVector<T>>::size;
+  using TDynamicVector<TDynamicVector<T>>::at;
   // сравнение
   bool operator==(const TDynamicMatrix& m) const noexcept
   {
@@ -268,7 +269,9 @@ public:
       }
       for (int i = 0; i < sz; i++) {
           for (int j = 0; j < sz; j++) {
-              tmp.pMem[i] = tmp.pMem[i] + pMem[j] * m.pMem[i][j];
+              for (int n = 0; n < j + 1; n++) {
+                  tmp[i][j] += pMem[i][n] * m[n + i][j - n];
+              }
           }
       }
       return tmp;
