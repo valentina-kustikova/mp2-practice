@@ -228,27 +228,50 @@ public:
   // матрично-скалярные операции
   TDynamicMatrix operator*(const T& val)
   {
-      throw "Method is not implemented";
+      TDynamicMatrix<T> res(sz);
+      for (int i = 0; i < sz; i++)
+          res.pMem[i] = pMem[i] + val;
+      return res;
   }
 
   // матрично-векторные операции
   TDynamicVector<T> operator*(const TDynamicVector<T>& v)
   {
-      throw "Method is not implemented";
+      TDynamicMatrix<T> res(sz);
+      for (int i = 0; i < sz; i++)
+          res.pMem[i] = pMem[i] + val;
+      return res;
   }
 
   // матрично-матричные операции
   TDynamicMatrix operator+(const TDynamicMatrix& m)
   {
-      throw "Method is not implemented";
+      if (sz != m.sz) throw "different size";
+      TDynamicMatrix<T> res(m.sz);
+      for (int i = 0; i < sz; i++)
+          res.pMem[i] = pMem[i] + m.pMem[i];
+      return res;
   }
   TDynamicMatrix operator-(const TDynamicMatrix& m)
   {
-      throw "Method is not implemented";
+      if (sz != m.sz) throw "different size";
+      TDynamicMatrix<T> res(m.sz);
+      for (int i = 0; i < sz; i++)
+          res.pMem[i] = pMem[i] - m.pMem[i];
+      return res;
   }
   TDynamicMatrix operator*(const TDynamicMatrix& m)
   {
-      throw "Method is not implemented";
+      TDynamicMatrix tmp(sz);
+      if (sz != m.sz) {
+          throw "Incorrect size";
+      }
+      for (int i = 0; i < sz; i++) {
+          for (int j = 0; j < sz; j++) {
+              tmp.pMem[i] = tmp.pMem[i] + pMem[j] * m.pMem[i][j];
+          }
+      }
+      return tmp;
   }
 
   // ввод/вывод
