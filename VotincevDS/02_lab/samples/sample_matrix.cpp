@@ -16,11 +16,13 @@ void main()
   setlocale(LC_ALL, "Russian");
   cout << "Тестирование класса работы с матрицами"
     << endl;
+  /*TDynamicMatrix<int> d(2);
+  cin >> d;*/
   for (i = 0; i < 5; i++)
-    for (j = i; j < 5; j++ )
+    for (j = 0; j < a[i].size(); j++ )
     {
-      a[i][j] =  i * 10 + j;
-      b[i][j] = (i * 10 + j) * 100;
+      a[i][j] =  i;
+      b[i][j] = i+10;
     }
   c = a + b;
   cout << "Matrix a = " << endl << a << endl;
