@@ -161,17 +161,12 @@ TEST(TDynamicVector, can_add_scalar_to_vector)
     TDynamicVector<int> v1(4);
     TDynamicVector<int> v2(4);
     TDynamicVector<int> vr(4);
-    int scalar = 5;
+    int sc = 5;
     for (int i = 0; i < v1.size(); i++) {
         v1[i] = i;
-        v2[i] = i + scalar;
+        v2[i] = i + sc;
     }
-    //cout << v1 << v2;
-    //cout << vr.size() << "\n";
-    //cout << v1.size() << "\n";
-    vr = v1 + scalar;
-    //cout << vr.size() << "\n";
-    //cout << vr << v1;
+    vr = v1 + sc;
     EXPECT_EQ(vr,v2);
 }
 

@@ -70,12 +70,12 @@ public:
   }
   TDynamicVector& operator=(TDynamicVector&& v) noexcept
   {
-      if (this != &v) {
-          this->sz = v.sz;
-          v.sz = 0;
-          this->pMem = v.pMem;
-          v.pMem = nullptr;
-      }
+      if (this == &v)
+          return *this;
+      this->sz = v.sz;
+      v.sz = 0;
+      this->pMem = v.pMem;
+      v.pMem = nullptr;
       return *this;
   }
 
@@ -84,11 +84,11 @@ public:
   // индексация
   T& operator[](size_t ind)
   {
-      return (pMem[ind]);
+      return this->pMem[ind];
   }
   const T& operator[](size_t ind) const
   {
-      return (pMem[ind]);
+      return this->pMem[ind];
   }
   // индексация с контролем
   T& at(size_t ind)
@@ -122,12 +122,12 @@ public:
   // скалярные операции
   TDynamicVector operator+(T val)  //need fix, add tmp
   {
-      //TDynamicVector<T> tmp(size());
+      TDynamicVector<T> tmp(size());
       for (int i = 0; i < size(); i++) {
-          pMem[i] = pMem[i] + val;
+          tmp.pMem[i] = pMem[i] + val;
       }
       //cout << tmp.size();
-      return *this;
+      return tmp;
 
   }
   TDynamicVector operator-(T val)
