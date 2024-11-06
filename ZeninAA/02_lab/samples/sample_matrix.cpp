@@ -17,10 +17,10 @@ void main()
   cout << "Тестирование класса работы с матрицами"
     << endl;
   for (i = 0; i < 5; i++)
-    for (j = i; j < 5; j++ )
+    for (j = i; j < a[i].size(); j++ )
     {
-      a[i][j] =  i * 10 + j;
-      b[i][j] = (i * 10 + j) * 100;
+      a[i][j] =  i;
+      b[i][j] = i + 13;
     }
   c = a + b;
   cout << "Matrix a = " << endl << a << endl;

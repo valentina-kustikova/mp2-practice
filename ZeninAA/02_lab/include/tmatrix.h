@@ -48,8 +48,9 @@ public:
       sz = v.sz;
       pMem = v.pMem;        
       
-      v.sz = 0;
       v.pMem = nullptr;
+      v.sz = 0;
+      
   }
   ~TDynamicVector()
   {
@@ -82,8 +83,9 @@ public:
       }
       sz = v.sz;
       pMem = v.pMem;
-      v.sz = 0;
       v.pMem = nullptr;
+      v.sz = 0;
+      
       return *this;
   }
 
@@ -204,8 +206,8 @@ public:
 
   friend void swap(TDynamicVector& lhs, TDynamicVector& rhs) noexcept
   {
-    std::swap(lhs.sz, rhs.sz);
-    std::swap(lhs.pMem, rhs.pMem);
+    std::swap(lhs.sz, rhs.sz); 
+    std::swap(lhs.pMem, rhs.pMem);  
   }
 
   // ввод/вывод
@@ -244,19 +246,21 @@ public:
   }
 
   using TDynamicVector<TDynamicVector<T>>::operator[];
+  using TDynamicVector<TDynamicVector<T>>::size;  
+  using TDynamicVector<TDynamicVector<T>>::at;  
 
   // сравнение
   bool operator==(const TDynamicMatrix& m) const noexcept
   {
-      throw "Method is not implemented";
+      return TDynamicVector<TDynamicVector<T>>::operator==(m);
   }
 
   // матрично-скалярные операции
   TDynamicMatrix operator*(const T& val)
   {
-      TDynamicMatrix tmp = *this;
-      for (int i = 0; i < tmp.sz; i++) { 
-          tmp[i] = atmp[i] * val; 
+      TDynamicMatrix tmp(sz);
+      for (int i = 0; i < sz; i++) { 
+          tmp.pMem[i] = pMem[i] * val;  
       } 
       return tmp; 
   }
@@ -264,14 +268,14 @@ public:
   // матрично-векторные операции
   TDynamicVector<T> operator*(const TDynamicVector<T>& v)
   {
-      if (size() != v.size()) { 
+      if (sz != v.size()) { 
           throw "VECTOR AND MATRIX WITH DIFF SIZE"; 
       }
       TDynamicVector<T> tmp(sz);
       for (int i = 0; i < sz; i++) {
-          tmp[i] = 0;
+          tmp[i] = T(0);
           for (int j = 0; j < sz - i; j++) {
-              tmp[i] = tmp[i] + pMem[i][j] * v[i + j];
+              tmp[i] += pMem[i][j] * v[j]; 
           }
       }
       return tmp;
@@ -280,39 +284,61 @@ public:
   // матрично-матричные операции
   TDynamicMatrix operator+(const TDynamicMatrix& m)
   {
-      if (size() != m.size()) { 
+      if (sz != m.sz) { 
           throw "DIF SIZE";
       }
-      TDynamicMatrix tmp(m.sz);
-      for (int i = 0; i < m.sz; i++) {
-          tmp[i] = this->at(i) + m[i];
+      TDynamicMatrix tmp(sz);
+      for (int i = 0; i < sz; i++) {
+          tmp.pMem[i] = pMem[i] + m.pMem[i];
       }
+          
       return tmp;
   }
   TDynamicMatrix operator-(const TDynamicMatrix& m)
   {
-      if (size() != m.size()) {
+      if (sz != m.sz) { 
           throw "DIF SIZE";
       }
-      TDynamicMatrix tmp(m.sz);
-      for (int i = 0; i < m.sz; i++) { 
-          tmp[i] = this->at(i) - m[i];
+      TDynamicMatrix tmp(sz);
+      for (int i = 0; i < sz; i++) {
+          tmp.pMem[i] = pMem[i] - m.pMem[i];
       }
       return tmp;
   }
   TDynamicMatrix operator*(const TDynamicMatrix& m)
   {
-      throw "Method is not implemented";
+      if (sz != m.sz) {
+          throw "DIF SIZE";
+
+      }
+      TDynamicMatrix<T> tmp(sz);
+      for (int i = 0; i < sz; i++) {
+          for (int j = 0; j < sz - i; j++) {
+              for (int n = 0; n < j + 1; n++) {
+                  tmp[i][j] += pMem[i][n] * m[n + i][j - n];
+              }
+
+          }
+              
+      }
+      return tmp; 
   }
+
 
   // ввод/вывод
   friend istream& operator>>(istream& istr, TDynamicMatrix& v)
   {
-      throw "Method is not implemented";
+      for (int i = 0; i < v.sz; i++) {
+          istr >> v[i]  
+      }
+      return istr;
   }
   friend ostream& operator<<(ostream& ostr, const TDynamicMatrix& v)
   {
-      throw "Method is not implemented";
+      for (int i = 0; i < v.sz; i++) {
+          ostr << v[i] << "\n";
+      }
+      return ostr;
   }
 };
 
