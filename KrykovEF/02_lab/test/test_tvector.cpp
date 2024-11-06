@@ -160,14 +160,12 @@ TEST(TDynamicVector, can_add_scalar_to_vector)
 {
     TDynamicVector<int> v1(4);
     TDynamicVector<int> v2(4);
-    TDynamicVector<int> vr(4);
     int sc = 5;
     for (int i = 0; i < v1.size(); i++) {
         v1[i] = i;
         v2[i] = i + sc;
     }
-    vr = v1 + sc;
-    EXPECT_EQ(vr,v2);
+    EXPECT_EQ(v1 + sc, v2);
 }
 
 TEST(TDynamicVector, can_subtract_scalar_from_vector)
