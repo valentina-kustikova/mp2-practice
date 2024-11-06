@@ -198,12 +198,12 @@ class TDynamicMatrix : private TDynamicVector<TDynamicVector<T>>
 public:
   TDynamicMatrix(size_t s = 1) : TDynamicVector<TDynamicVector<T>>(s)
   {
-      if (s >= MAX_MATRIX_SIZE || s<0) {
+      if (sz >= MAX_MATRIX_SIZE || sz<=0) {
           throw "Invalid size of matrix";
       }
-
-    for (size_t i = 0; i < sz; i++)
-      pMem[i] = TDynamicVector<T>(sz);
+      for (size_t i = 0; i < sz; i++) {
+          pMem[i] = TDynamicVector<T>(sz);
+      }
   }
 
   using TDynamicVector<TDynamicVector<T>>::operator[];
@@ -211,7 +211,15 @@ public:
   // сравнение
   bool operator==(const TDynamicMatrix& m) const noexcept
   {
-      throw "Method is not implemented";
+      if (sz != m.sz) {
+          return 0;
+      }
+      for (int i = 0; i < sz; i++) {
+          if (pMem[i] != m.pMem[i]) {
+              return 0;
+          }
+      }
+      return 1;
   }
 
   // матрично-скалярные операции
