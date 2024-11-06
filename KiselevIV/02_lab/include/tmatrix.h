@@ -211,23 +211,6 @@ public:
 
   using TDynamicVector<TDynamicVector<T>>::operator[];
 
-
-  int size() {
-      return this->sz;
-  }
-
-  T& at(size_t i1, size_t i2)
-  {
-      if (i1 < 0 || i1 >= sz || i2 < 0 || i2 >= sz)
-          throw "incorrect index";
-      return this->pMem[i1][i2];
-  }
-  const T& at(size_t i1, size_t i2) const
-  {
-      if (i1 < 0 || i1 >= sz || i2 < 0 || i2 >= sz)
-          throw "incorrect index";
-      return this->pMem[i1][i2];
-  }
   // сравнение
   bool operator==(const TDynamicMatrix& m) const noexcept
   {
