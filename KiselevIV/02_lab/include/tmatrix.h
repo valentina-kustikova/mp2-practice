@@ -49,6 +49,8 @@ public:
   }
   TDynamicVector(TDynamicVector&& v) noexcept
   {
+      pMem = nullptr;
+      swap(*this, v);
   }
   ~TDynamicVector()
   {
@@ -66,7 +68,8 @@ public:
   }
   TDynamicVector& operator=(TDynamicVector&& v) noexcept
   {
-      return *this;
+      swap(*this, v);
+      return v;
   }
 
   size_t size() const noexcept { return sz; }
@@ -198,16 +201,33 @@ class TDynamicMatrix : private TDynamicVector<TDynamicVector<T>>
 public:
   TDynamicMatrix(size_t s = 1) : TDynamicVector<TDynamicVector<T>>(s)
   {
-      if (sz >= MAX_MATRIX_SIZE || sz<=0) {
+      if (s >= MAX_MATRIX_SIZE || s<=0) {
           throw "Invalid size of matrix";
       }
-      for (size_t i = 0; i < sz; i++) {
-          pMem[i] = TDynamicVector<T>(sz);
+      for (size_t i = 0; i < s; i++) {
+          pMem[i] = TDynamicVector<T>(s);
       }
   }
 
   using TDynamicVector<TDynamicVector<T>>::operator[];
 
+
+  int size() {
+      return this->sz;
+  }
+
+  T& at(size_t i1, size_t i2)
+  {
+      if (i1 < 0 || i1 >= sz || i2 < 0 || i2 >= sz)
+          throw "incorrect index";
+      return this->pMem[i1][i2];
+  }
+  const T& at(size_t i1, size_t i2) const
+  {
+      if (i1 < 0 || i1 >= sz || i2 < 0 || i2 >= sz)
+          throw "incorrect index";
+      return this->pMem[i1][i2];
+  }
   // сравнение
   bool operator==(const TDynamicMatrix& m) const noexcept
   {
