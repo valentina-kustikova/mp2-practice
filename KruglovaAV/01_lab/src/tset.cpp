@@ -7,10 +7,7 @@
 
 #include "tset.h"
 
-// Fake variables used as placeholders in tests
-static const int FAKE_INT = -1;
-static TBitField FAKE_BITFIELD(1);
-static TSet FAKE_SET(1);
+
 
 TSet::TSet(int mp) : BitField(mp)
 {
@@ -77,17 +74,13 @@ int TSet::operator==(const TSet &s) const // сравнение
 
 int TSet::operator!=(const TSet &s) const // сравнение
 {
-    if ((MaxPower == s.MaxPower) && (BitField == s.BitField))
-    {
-        return 0;
-    }
-    return 1;
+    return !(*this == s);
 }
 
 TSet TSet::operator+(const TSet &s) // объединение
 {
-    int Max = max(MaxPower, s.MaxPower);
-    TSet result(Max);
+    int len = max(MaxPower, s.MaxPower);
+    TSet result(len);
     result.BitField = BitField | s.BitField;
     return result;
 }
@@ -110,8 +103,8 @@ TSet TSet::operator-(const int Elem) // разность с элементом
 
 TSet TSet::operator*(const TSet &s) // пересечение
 {
-    int Max = max(MaxPower, s.MaxPower);
-    TSet result(Max);
+    int len = max(MaxPower, s.MaxPower);
+    TSet result(len);
     result.BitField = BitField & s.BitField;
     return result;
 }
