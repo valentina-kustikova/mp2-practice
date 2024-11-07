@@ -100,8 +100,8 @@ TSet TSet::operator*(const TSet &s) // пересечение
 TSet TSet::operator~(void) // дополнение
 {
     TSet tmp(MaxPower);
-    BitField = ~BitField;  
-    return *this;
+    tmp.BitField = ~BitField;    
+    return tmp;  
 }
 
 // перегрузка ввода/вывода
