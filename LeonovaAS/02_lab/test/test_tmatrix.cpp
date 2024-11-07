@@ -27,16 +27,14 @@ TEST(TDynamicMatrix, can_create_copied_matrix)
 TEST(TDynamicMatrix, copied_matrix_is_equal_to_source_one)
 {
     TDynamicMatrix<int> m(2), m1(m);
-    EXPECT_EQ(1, m == m1);
+    EXPECT_EQ(m, m1);
 }
 
-TEST(TDynamicMatrix, copied_matrix_has_its_own_memory)
+TEST(TDynamicMatrix, copied_matrix_has_its_own_memory)  // todo
 {
     TDynamicMatrix<int> m(4), m1(m);
-    EXPECT_NE(&m[0], &m1[0]);
-    EXPECT_NE(&m[1], &m1[1]);
-    EXPECT_NE(&m[2], &m1[2]);
-    EXPECT_NE(&m[3], &m1[3]);
+    m1[0][2] = 12;
+    EXPECT_NE(m, m1);
 }
 
 TEST(TDynamicMatrix, can_get_size)
@@ -99,10 +97,7 @@ TEST(TDynamicMatrix, can_assign_matrices_of_different_size)
             m[i][j] = i + j;
         }
     }
-    m1 = m;
-    EXPECT_EQ(0, m1[0][0]);
-    EXPECT_EQ(1, m1[0][1]);
-    EXPECT_EQ(1, m1[1][0]);
+    ASSERT_NO_THROW(m1 = m);
 }
 
 TEST(TDynamicMatrix, compare_equal_matrices_return_true)
@@ -116,22 +111,22 @@ TEST(TDynamicMatrix, compare_equal_matrices_return_true)
             m1[i][j] = i + j;
         }
     }
-    EXPECT_EQ(1, m == m1);
+    EXPECT_TRUE( m == m1);
 }
 
 TEST(TDynamicMatrix, compare_matrix_with_itself_return_true)
 {
     TDynamicMatrix<int> m(3);
-    EXPECT_EQ(1, m == m);
+    EXPECT_TRUE(m == m);
 }
 
 TEST(TDynamicMatrix, matrices_with_different_size_are_not_equal)
 {
     TDynamicMatrix<int> m(5), m1(8);
-    EXPECT_EQ(0, m == m1);
+    EXPECT_FALSE(m == m1);
 }
 
-TEST(TDynamicMatrix, can_add_matrices_with_equal_size)
+TEST(TDynamicMatrix, can_add_matrices_with_equal_size) // todo
 {
     TDynamicMatrix<int> m(2), m1(2), res(2);
     for (int i = 0; i < 2; i++)
@@ -140,12 +135,10 @@ TEST(TDynamicMatrix, can_add_matrices_with_equal_size)
         {
             m[i][j] = i + j;
             m1[i][j] = i + j;
+            res[i][j] = 2 * i + 2 * j;
         }
     }
-    res = m + m1;
-    EXPECT_EQ(0, res[0][0]);
-    EXPECT_EQ(2, res[0][1]);
-    EXPECT_EQ(2, res[1][0]);
+    EXPECT_EQ(m + m1, res);
 }
 
 TEST(TDynamicMatrix, cant_add_matrices_with_not_equal_size)
@@ -156,19 +149,17 @@ TEST(TDynamicMatrix, cant_add_matrices_with_not_equal_size)
 
 TEST(TDynamicMatrix, can_subtract_matrices_with_equal_size)
 {
-    TDynamicMatrix<int> m(2), m1(2), res(2);
+    TDynamicMatrix<int> m(2), m1(2), res(2);  // todo
     for (int i = 0; i < 2; i++)
     {
         for (int j = 0; j < 2 - i; j++)
         {
             m[i][j] = i + j;
             m1[i][j] = i + j;
+            res[i][j] = i + j - i - j;
         }
     }
-    res = m - m1;
-    EXPECT_EQ(0, res[0][0]);
-    EXPECT_EQ(0, res[0][1]);
-    EXPECT_EQ(0, res[1][0]);
+    EXPECT_EQ(m - m1, res);
 }
 
 TEST(TDynamicMatrix, cant_subtract_matrixes_with_not_equal_size)

@@ -192,7 +192,7 @@ public:
       }
       return res;
   }
-  T operator*(const TDynamicVector& v) noexcept(noexcept(T()))
+  T operator*(const TDynamicVector& v)
   {
       if (sz != v.sz)
       {
@@ -236,7 +236,8 @@ class TDynamicMatrix : private TDynamicVector<TDynamicVector<T>>
   using TDynamicVector<TDynamicVector<T>>::pMem;
   using TDynamicVector<TDynamicVector<T>>::sz;
 public:
-  TDynamicMatrix(size_t s = 1) : TDynamicVector<TDynamicVector<T>>(s)
+    TDynamicMatrix(const TDynamicVector<TDynamicVector<T>>& m) : TDynamicVector<TDynamicVector<T>>(m) {};
+    TDynamicMatrix(size_t s = 1) : TDynamicVector<TDynamicVector<T>>(s)
   {
       if (sz <= 0 || sz >= MAX_MATRIX_SIZE)
       {
@@ -256,6 +257,11 @@ public:
   bool operator==(const TDynamicMatrix& m) const noexcept
   {
       return TDynamicVector<TDynamicVector<T>>::operator==(m);
+  }
+
+  bool operator!=(const TDynamicMatrix& m) const noexcept
+  {
+      return TDynamicVector<TDynamicVector<T>>::operator!=(m);
   }
 
   // матрично-скалярные операции
@@ -291,31 +297,31 @@ public:
   // матрично-матричные операции
   TDynamicMatrix operator+(const TDynamicMatrix& m)
   {
-      if (sz != m.sz)
-      {
-          throw "Matrices have different dim!";
-      }
-      TDynamicMatrix res(sz);
-      for (int i = 0; i < sz; i++)
-      {
-          res.pMem[i] = pMem[i] + m.pMem[i];
-      }
-      return res;
-      //return TDynamicVector<TDynamicVector<T>>::operator+(m);
+      //if (sz != m.sz)
+      //{
+      //    throw "Matrices have different dim!";
+      //}
+      //TDynamicMatrix res(sz);
+      //for (int i = 0; i < sz; i++)
+      // {
+      //    res.pMem[i] = pMem[i] + m.pMem[i];
+      //}
+      //return res;
+      return TDynamicVector<TDynamicVector<T>>::operator+(m);
   }
   TDynamicMatrix operator-(const TDynamicMatrix& m)
   {
-      if (sz != m.sz)
-      {
-          throw "Matrices have different dim!";
-      }
-      TDynamicMatrix res(sz);
-      for (int i = 0; i < sz; i++)
-      {
-          res.pMem[i] = pMem[i] - m.pMem[i];
-      }
-      return res;
-      //return TDynamicVector<TDynamicVector>::operator-(m);
+      //if (sz != m.sz)
+      //{
+      //    throw "Matrices have different dim!";
+      //}
+      //TDynamicMatrix res(sz);
+      //for (int i = 0; i < sz; i++)
+      //{
+      //    res.pMem[i] = pMem[i] - m.pMem[i];
+      //}
+      //return res;
+      return TDynamicVector<TDynamicVector<T>>::operator-(m);
   }
   TDynamicMatrix operator*(const TDynamicMatrix& m)
   {
