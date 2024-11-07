@@ -36,32 +36,51 @@ TEST(TDynamicMatrix, copied_matrix_has_its_own_memory)
 
 TEST(TDynamicMatrix, can_get_size)
 {
-  ADD_FAILURE();
+	TDynamicMatrix<int> m(1);
+	EXPECT_EQ(1, m[0].size());
 }
 
 TEST(TDynamicMatrix, can_set_and_get_element)
 {
-  ADD_FAILURE();
+
+  int n = 3;
+  TDynamicVector<int> v1(n);
+  v1[0] = 1;
+  TDynamicMatrix<int> m(3);
+  m[0] = v1;
+  EXPECT_EQ(v1, m[0]);
+
 }
 
 TEST(TDynamicMatrix, throws_when_set_element_with_negative_index)
 {
-  ADD_FAILURE();
+
+	TDynamicMatrix<int> m(3);
+	ASSERT_ANY_THROW(m[1].at(-1) = 1);
 }
 
 TEST(TDynamicMatrix, throws_when_set_element_with_too_large_index)
 {
-  ADD_FAILURE();
+	TDynamicMatrix<int> m(3);
+	ASSERT_ANY_THROW(m[1].at(4) = 1);
 }
 
 TEST(TDynamicMatrix, can_assign_matrix_to_itself)
 {
-  ADD_FAILURE();
+	TDynamicMatrix<int> m(3), m1(3);
+	m[0][0] = 1;
+	m1 = m;
+	EXPECT_EQ(m1, m1);
+	
 }
 
 TEST(TDynamicMatrix, can_assign_matrices_of_equal_size)
 {
-  ADD_FAILURE();
+	TDynamicMatrix<int> m(3), m1(3);
+	m[0][0] = 1;
+	m1 = m;
+	EXPECT_EQ(m1, m);
+
 }
 
 TEST(TDynamicMatrix, assign_operator_change_matrix_size)
@@ -71,22 +90,35 @@ TEST(TDynamicMatrix, assign_operator_change_matrix_size)
 
 TEST(TDynamicMatrix, can_assign_matrices_of_different_size)
 {
-  ADD_FAILURE();
+	TDynamicMatrix<int> m(3);
+	TDynamicMatrix<int> m1(4);
+	m[0][0] = 1;
+	ASSERT_NO_THROW(m1 = m);
+
 }
 
 TEST(TDynamicMatrix, compare_equal_matrices_return_true)
 {
-  ADD_FAILURE();
+	TDynamicMatrix<int> m(3), m1(3);
+	m[0][0] = 1;
+	m1[0][0] = 1;
+	ASSERT_TRUE(m == m1);
 }
 
 TEST(TDynamicMatrix, compare_matrix_with_itself_return_true)
 {
-  ADD_FAILURE();
+	TDynamicMatrix<int> m(3);
+	m[0][0] = 1;
+	ASSERT_TRUE(m == m);
 }
 
 TEST(TDynamicMatrix, matrices_with_different_size_are_not_equal)
 {
-  ADD_FAILURE();
+	TDynamicMatrix<int> m(3);
+	TDynamicMatrix<int> m1(4);
+	m[0][0] = 1;
+	m1[0][0] = 1;
+	EXPECT_NE(m,m1);
 }
 
 TEST(TDynamicMatrix, can_add_matrices_with_equal_size)

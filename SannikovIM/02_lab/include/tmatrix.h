@@ -72,20 +72,22 @@ public:
   // индексация
   T& operator[](size_t ind)
   {
-      throw "Method is not implemented";
+      return pMem[ind];
   }
   const T& operator[](size_t ind) const
   {
-      throw "Method is not implemented";
+      return pMem[ind];
   }
   // индексация с контролем
   T& at(size_t ind)
   {
-      throw "Method is not implemented";
+      if(ind >= sz || ind < 0) throw "Index error";
+      return pMem[ind];
   }
   const T& at(size_t ind) const
   {
-      throw "Method is not implemented";
+      if (ind >= sz || ind < 0) throw "Index error";
+      return pMem[ind];
   }
 
   // сравнение
@@ -189,6 +191,7 @@ class TDynamicMatrix : private TDynamicVector<TDynamicVector<T>>
 public:
   TDynamicMatrix(size_t s = 1) : TDynamicVector<TDynamicVector<T>>(s)
   {
+    if (s > MAX_MATRIX_SIZE) throw "Error";
     for (size_t i = 0; i < sz; i++)
       pMem[i] = TDynamicVector<T>(sz);
   }
@@ -198,19 +201,30 @@ public:
   // сравнение
   bool operator==(const TDynamicMatrix& m) const noexcept
   {
-      throw "Method is not implemented";
+      return TDynamicVector<TDynamicVector<T>>::operator==(m);
+  }
+  bool operator!=(const TDynamicMatrix& m) const noexcept
+  {
+      return TDynamicVector<TDynamicVector<T>>::operator!=(m);
   }
 
   // матрично-скалярные операции
   TDynamicMatrix operator*(const T& val)
   {
-      throw "Method is not implemented";
+      return TDynamicVector<TDynamicVector<T>>::operator*(val);
   }
 
   // матрично-векторные операции
   TDynamicVector<T> operator*(const TDynamicVector<T>& v)
   {
-      throw "Method is not implemented";
+      if (this->size != v.size) throw "Range error";
+      TDynamicVector v1(this->size);
+      for (int i = 0; i < this->size; i++) {
+          for (int j = 0; j < this->size - i; j++) {
+              v1.pMem[i] += this->pMem[i][j] * v.pMem[i + j];
+          }
+      }
+      return v1;
   }
 
   // матрично-матричные операции

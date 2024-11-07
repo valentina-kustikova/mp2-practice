@@ -114,28 +114,94 @@ TEST(TDynamicVector, can_assign_vectors_of_equal_size)
 
 TEST(TDynamicVector, assign_operator_change_vector_size)
 {
-  ADD_FAILURE();
+	int n = 5;
+	int b = 6;
+	int* c = new int[n];
+	int* m = new int[b];
+	for (int i = 0; i < b; i++) {
+		m[i] = 1;
+	}
+	for (int i = 0; i < n; i++) {
+		c[i] = 1;
+	}
+	TDynamicVector<int> t1(m, b);
+	TDynamicVector<int> t2(c, n);
+	delete[] m;
+	delete[] c;
+	t2 = t1;
+	EXPECT_EQ(6, t1.size());
 }
 
 TEST(TDynamicVector, can_assign_vectors_of_different_size)
 {
-  ADD_FAILURE();
+
+	int n = 5;
+	int b = 6;
+	int* c = new int[n];
+	int* m = new int[b];
+	for (int i = 0; i < b; i++) {
+		m[i] = 1;
+	}
+	for (int i = 0; i < n; i++) {
+		c[i] = 1;
+	}
+	TDynamicVector<int> t1(m, b);
+	TDynamicVector<int> t2(c, n);
+	delete[] m;
+	delete[] c;
+	
+	ASSERT_NO_THROW(t2 = t1);
 }
 
 TEST(TDynamicVector, compare_equal_vectors_return_true)
 {
-  ADD_FAILURE();
+	int n = 5;
+	int* c = new int[n];
+	int* m = new int[n];
+	for (int i = 0; i < n; i++) {
+		m[i] = 1;
+	}
+	for (int i = 0; i < n; i++) {
+		c[i] = 1;
+	}
+	TDynamicVector<int> t1(m, n);
+	TDynamicVector<int> t2(c, n);
+	delete[] m;
+	delete[] c;
+	ASSERT_TRUE(t1 == t2);
 }
 
 TEST(TDynamicVector, compare_vector_with_itself_return_true)
 {
-  ADD_FAILURE();
+	int n = 5;
+	int* m = new int[n];
+	for (int i = 0; i < n; i++) {
+		m[i] = 1;
+	}
+	TDynamicVector<int> t1(m, n);
+	delete[] m;
+	ASSERT_TRUE(t1 == t1);
 }
 
 TEST(TDynamicVector, vectors_with_different_size_are_not_equal)
 {
-  ADD_FAILURE();
+	int n = 5;
+	int b = 6;
+	int* c = new int[n];
+	int* m = new int[b];
+	for (int i = 0; i < b; i++) {
+		m[i] = 1;
+	}
+	for (int i = 0; i < n; i++) {
+		c[i] = 1;
+	}
+	TDynamicVector<int> t1(m, b);
+	TDynamicVector<int> t2(c, n);
+	delete[] m;
+	delete[] c;
+	ASSERT_FALSE(t1 == t2);
 }
+
 
 TEST(TDynamicVector, can_add_scalar_to_vector)
 {
