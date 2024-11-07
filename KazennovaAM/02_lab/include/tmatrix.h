@@ -29,7 +29,8 @@ public:
   }
   TDynamicVector(T* arr, size_t s) : sz(s)
   {
-    assert(arr != nullptr && "TDynamicVector ctor requires non-nullptr arg");
+    if(arr == nullptr)
+        trow "index = nullptr";
     pMem = new T[sz];
     copy(arr, arr + sz, pMem);
   }
@@ -64,17 +65,10 @@ public:
           pMem[i] = v.pMem[i];
       return *this;
   }
-  TDynamicVector& operator=(TDynamicVector&& v) noexcept
+  TDynamicVector& operator=(TDynamicVector&& v) noexcept // todo: swap - done
   {
-      if (this != &v)
-      {
-          delete[] pMem; // Освобождаем старую память
-          sz = v.sz;
-          pMem = v.pMem;
-          v.sz = 0;
-          v.pMem = nullptr;
-      }
-      return *this;;
+      swap(*this, v);
+      return *this;
   }
 
   size_t size() const noexcept { return sz; }
@@ -91,13 +85,13 @@ public:
   // индексация с контролем
   T& at(size_t ind)
   {
-      if (ind >= sz)
+      if (ind <0 || ind >= sz)
           throw "Index does not exist";
       return pMem[ind];
   }
   const T& at(size_t ind) const
   {
-      if (ind >= sz)
+      if (ind < 0 || ind >= sz)
           throw "Index does not exist";
       return pMem[ind];
   }
@@ -161,23 +155,18 @@ public:
       }
       return result;
   }
-  TDynamicVector operator-(const TDynamicVector& v)
+  TDynamicVector operator-(const TDynamicVector& v)// todo: (*this) + v*(-1.0)
   {
-      TDynamicVector<T> result(sz);
-      if (sz != v.sz)
-          throw "different sizes";
-      for (size_t i = 0; i < sz; i++)
-      {
-          result.pMem[i] = this->pMem[i] - v.pMem[i];
-      }
-      return result;
+      T condts = -1;
+      v = v * condt;
+      return (*this) + v;
   }
   T operator*(const TDynamicVector& v) noexcept(noexcept(T()))
   {
       if (this->sz != v.sz) {
           throw "different sizes";
       }
-     // TDynamicVector<T> result(sz);
+     // TDynamicVector<T> result(sz); потому что надо вернуть Т
       T result(sz);
       for (size_t i = 0; i < sz; i++)
       {
@@ -221,13 +210,14 @@ public:
     if (sz == 0 || sz > MAX_MATRIX_SIZE)
           throw "invalid size";
     for (size_t i = 0; i < sz; i++)
-      pMem[i] = TDynamicVector<T>(sz);
+      pMem[i] = TDynamicVector<T>(sz); // sz-i
   }
 
   using TDynamicVector<TDynamicVector<T>>::operator[];
+  using TDynamicVector<TDynamicVector<T>>::size;
 
   // сравнение
-  bool operator==(const TDynamicMatrix& m) const noexcept
+  bool operator==(const TDynamicMatrix& m) const noexcept // todo: TDynamicVector<TDynamicVector<T>>::operator==(m)
   {
       if (this->sz != m.sz) return false;
       for (size_t i = 0; i < sz; i++) {
@@ -237,7 +227,7 @@ public:
   }
 
   // матрично-скалярные операции
-  TDynamicMatrix operator*(const T& val)
+  TDynamicMatrix operator*(const T& val) //todo: TDynamicVector<TDynamicVector<T>>:: operator*(val)
   {
       TDynamicMatrix result(sz);
       for (size_t i = 0; i < sz; i++) {
@@ -249,7 +239,7 @@ public:
   }
 
   // матрично-векторные операции
-  TDynamicVector<T> operator*(const TDynamicVector<T>& v)
+  TDynamicVector<T> operator*(const TDynamicVector<T>& v) // должна быть верхнетриугольная матрица
   {
       if (this->size != v.sz) {
           throw "different sizes";
@@ -265,7 +255,7 @@ public:
   }
 
   // матрично-матричные операции
-  TDynamicMatrix operator+(const TDynamicMatrix& m)
+  TDynamicMatrix operator+(const TDynamicMatrix& m)// должна быть верхнетриугольная матрица todo TDynamicVector<TDynamicVector<T>>:: operator+(m)
   {
       if (sz != m.sz) {
           throw "different sizes";
@@ -278,7 +268,7 @@ public:
       }
       return result;
   }
-  TDynamicMatrix operator-(const TDynamicMatrix& m)
+  TDynamicMatrix operator-(const TDynamicMatrix& m) //todo: TDynamicVector<TDynamicVector<T>>:: operator-(m)
   {
       if (sz != m.sz) {
           throw "different sizes";
@@ -291,7 +281,7 @@ public:
       }
       return result;
   }
-  TDynamicMatrix operator*(const TDynamicMatrix& m)
+  TDynamicMatrix operator*(const TDynamicMatrix& m) // должна быть верхнетриугольная матрица возможно тоже через  TDynamicVector<TDynamicVector<T>>::, но это не точно
   {
       if (this->sz != m.sz) {
           throw "different sizes";
@@ -328,10 +318,14 @@ public:
       }
       return ostr;
   }
-  // дополнительная функция
+
+  /*дополнительная функция
   int get_size() {
       return this->sz;
   }
+  */
 };
+
+//реализовать через вектор
 
 #endif
