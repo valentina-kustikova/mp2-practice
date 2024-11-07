@@ -106,12 +106,28 @@ TEST(TDynamicMatrix, can_assign_matrices_of_equal_size)
 
 TEST(TDynamicMatrix, assign_operator_change_matrix_size)
 {
-  ADD_FAILURE();
+    TDynamicMatrix<int> m(5);
+    TDynamicMatrix<int> m1(6);
+    for (int i = 0; i < 5; i++) {
+        for (int j = 0; j < 5 - i; j++) {
+            m[i][j] = i;
+        }
+    }
+    m1 = m;
+    EXPECT_EQ(m, m1);
 }
 
 TEST(TDynamicMatrix, can_assign_matrices_of_different_size)
 {
-  ADD_FAILURE();
+    TDynamicMatrix<int> m(5);
+    TDynamicMatrix<int> m1(6);
+    for (int i = 0; i < 5; i++) {
+        for (int j = 0; j < 5 - i; j++) {
+            m[i][j] = i;
+        }
+    }
+    m1 = m;
+    EXPECT_EQ(m, m1);
 }
 
 TEST(TDynamicMatrix, compare_equal_matrices_return_true)
@@ -138,11 +154,12 @@ TEST(TDynamicMatrix, compare_matrix_with_itself_return_true)
   EXPECT_EQ(m, m);
 }
 
+
 TEST(TDynamicMatrix, matrices_with_different_size_are_not_equal)
 {
   TDynamicMatrix<int> m(5);
   TDynamicMatrix<int> m1(6);
-  EXPECT_NE(m, m1);
+  EXPECT_EQ(false, m==m1);
 }
 
 TEST(TDynamicMatrix, can_add_matrices_with_equal_size)
