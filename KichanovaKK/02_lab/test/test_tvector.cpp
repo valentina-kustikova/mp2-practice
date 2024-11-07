@@ -167,7 +167,7 @@ TEST(TDynamicVector, can_multiply_scalar_by_vector)
     }
 }
 
-TEST(TDynamicVector, can_add_vectors_with_equal_size)
+TEST(TDynamicVector, can_add_vectors_with_equal_size) //по элементно, лучше через = v3  
 {
     TDynamicVector<int> v1(5);
     TDynamicVector<int> v2(5);

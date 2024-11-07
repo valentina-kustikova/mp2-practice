@@ -27,7 +27,7 @@ public:
   {
     if (sz == 0|| sz > MAX_VECTOR_SIZE)
       throw out_of_range("Vector size should be greater than zero");
-    pMem = new T[sz]();// {}; // У типа T д.б. констуктор по умолчанию
+    pMem = new T[sz]();// {}; // У типа T д.б. конструктор по умолчанию
   }
   TDynamicVector(T* arr, size_t s) : sz(s)
   {
@@ -73,7 +73,7 @@ public:
   size_t size() const noexcept { return sz; }
 
   // индексация
-  T& operator[](size_t ind) //для замены
+  T& operator[](size_t ind) //для записи
   {
       return pMem[ind];
   }
@@ -81,7 +81,7 @@ public:
   {
       return pMem[ind];
   }
-  // индексация с контролем (хз правильно ли) 
+  // индексация с контролем 
   T& at(size_t ind)
   {
       if (ind < 0 || ind >= sz) {
@@ -153,7 +153,7 @@ public:
       }
       return tmp;
   }
-  TDynamicVector operator-(const TDynamicVector& v)
+  TDynamicVector operator-(const TDynamicVector& v) // todo: (*this) + v*(-1.0)
   {
       if (sz != v.sz) {
           throw "error";
@@ -186,13 +186,13 @@ public:
   friend istream& operator>>(istream& istr, TDynamicVector& v)
   {
     for (size_t i = 0; i < v.sz; i++)
-      istr >> v.pMem[i]; // требуется оператор>> для типа T
+      istr >> v.pMem[i]; 
     return istr;
   }
   friend ostream& operator<<(ostream& ostr, const TDynamicVector& v)
   {
     for (size_t i = 0; i < v.sz; i++)
-      ostr << v.pMem[i] << ' '; // требуется оператор<< для типа T
+      ostr << v.pMem[i] << ' ';
     return ostr;
   }
 };
@@ -211,10 +211,11 @@ public:
     if (sz == 0 || sz > MAX_MATRIX_SIZE)
       throw out_of_range("Matrix size should be greater than zero");
     for (size_t i = 0; i < sz; i++)
-      pMem[i] = TDynamicVector<T>(sz);
+      pMem[i] = TDynamicVector<T>(sz); //sz-i
   }
 
   using TDynamicVector<TDynamicVector<T>>::operator[];
+  using TDynamicVector<TDynamicVector<T>>::size;
 
   // сравнение
   bool operator==(const TDynamicMatrix& m) const noexcept
@@ -223,7 +224,7 @@ public:
   }
 
   // матрично-скалярные операции
-  TDynamicMatrix operator*(const T& val)
+  TDynamicMatrix operator*(const T& val) // todo: TDynamicVector<TDynamicVector<T>>::operator*(val)
   {
       TDynamicMatrix tmp(sz);
       for (size_t i = 0; i < sz; i++)
@@ -233,7 +234,7 @@ public:
   }
 
   // матрично-векторные операции
-  TDynamicVector<T> operator*(const TDynamicVector<T>& v)
+  TDynamicVector<T> operator*(const TDynamicVector<T>& v) // todo: верхнетреугольные матрицы
   {
       TDynamicMatrix tmp(sz);
       for (size_t i = 0; i < sz; ++i) {
@@ -246,21 +247,21 @@ public:
   }
 
   // матрично-матричные операции
-  TDynamicMatrix operator+(const TDynamicMatrix& m)
+  TDynamicMatrix operator+(const TDynamicMatrix& m) //todo: TDynamicVector<TDynamicVector<T>>::
   {
       TDynamicMatrix tmp(sz);
       for (size_t i = 0; i < sz; i++)
           tmp.pMem[i] = pMem[i] + m.pMem[i];
       return tmp;
   }
-  TDynamicMatrix operator-(const TDynamicMatrix& m)
+  TDynamicMatrix operator-(const TDynamicMatrix& m)//todo: TDynamicVector<TDynamicVector<T>>::operator-(m)
   {
       TDynamicMatrix tmp(sz);
       for (size_t i = 0; i < sz; i++)
           tmp.pMem[i] = pMem[i] - m.pMem[i];
       return tmp;
   }
-  TDynamicMatrix operator*(const TDynamicMatrix& m)
+  TDynamicMatrix operator*(const TDynamicMatrix& m) // todo: верхнетреугольные матрицы
   {
       TDynamicMatrix tmp(sz);
       for (size_t i = 0; i < sz; i++)
@@ -291,24 +292,23 @@ public:
         return ostr;
   }
 
- //index
-
-  T& at(size_t ind1, size_t ind2)
-  {
-      if (ind1 < 0 || ind1 >= sz || ind2 < 0 || ind2 >= sz)
-          throw out_of_range("Index out of bounds.");
-      return pMem[ind1][ind2];
-  }
-  const T& at(size_t ind1, size_t ind2) const
-  {
-      if (ind1 < 0 || ind1 >= sz || ind2 < 0 || ind2 >= sz)
-          throw out_of_range("Index out of bounds.");
-      return pMem[ind1][ind2];
-  }
-  //size
-  int size() {
-      return this->sz;
-  }
+ ////index
+ // T& at(size_t ind1, size_t ind2)
+ // {
+ //     if (ind1 < 0 || ind1 >= sz || ind2 < 0 || ind2 >= sz)
+ //         throw out_of_range("Index out of bounds.");
+ //     return pMem[ind1][ind2];
+ // }
+ // const T& at(size_t ind1, size_t ind2) const
+ // {
+ //     if (ind1 < 0 || ind1 >= sz || ind2 < 0 || ind2 >= sz)
+ //         throw out_of_range("Index out of bounds.");
+ //     return pMem[ind1][ind2];
+ // }
+  ////size
+  //int size() {
+  //    return this->sz;
+  //}
 };
 
 #endif
