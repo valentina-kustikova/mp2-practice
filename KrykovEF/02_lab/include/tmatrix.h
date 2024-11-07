@@ -42,8 +42,7 @@ public:
       pMem = new T[sz];
       for (int i = 0; i < sz; i++)
       {
-          pMem[i] = v.pMem[i];
-      }
+          pMem[i] = v.pMem[i];}
   }
   TDynamicVector(TDynamicVector&& v) noexcept 
   {
@@ -119,13 +118,12 @@ public:
   }
 
   // скалярные операции
-  TDynamicVector operator+(T val)  //need fix, add tmp
+  TDynamicVector operator+(T val)
   {
       TDynamicVector<T> tmp(size());
       for (int i = 0; i < size(); i++) {
           tmp.pMem[i] = pMem[i] + val;
       }
-      //cout << tmp.size();
       return tmp;
 
   }
@@ -149,9 +147,8 @@ public:
   // векторные операции
   TDynamicVector operator+(const TDynamicVector& v)
   {
-      if (sz != v.sz) {
-          throw std::exception("Incorrect size");
-      }
+      if (sz != v.sz) 
+          throw std::exception("Incorrect size");      
       TDynamicVector<T> tmp(this->size());
       for (int i = 0; i < this->size(); i++) {
           tmp.pMem[i] = pMem[i] + v.pMem[i];
@@ -160,25 +157,23 @@ public:
   }
   TDynamicVector operator-(const TDynamicVector& v)
   {
-      if (sz != v.sz) {
+      if (sz != v.sz) 
           throw std::exception("Incorrect size");
-      }
       TDynamicVector<T> tmp(this->size());
       for (int i = 0; i < this->size(); i++) {
           tmp.pMem[i] = pMem[i] - v.pMem[i];
       }
       return tmp;
   }
-  T operator*(const TDynamicVector& v) noexcept(noexcept(T()))
+  T operator*(const TDynamicVector& v) 
   {
-      if (sz != v.sz) {
-          throw std::exception("Incorrect size");
-      }
-      T ans = 0;
+      if (sz != v.sz) 
+          throw std::exception("Incorrect size");      
+      T tmp = 0;
       for (int i = 0; i < sz; i++){
-          ans = ans + (pMem[i] * v.pMem[i]);
+          tmp = tmp + (pMem[i] * v.pMem[i]);
       }
-      return ans;
+      return tmp;
 
   }
 
@@ -227,13 +222,13 @@ public:
   T& at(size_t i1, size_t i2)
   {
       if (i1 < 0 || i1 >= sz || i2 < 0 || i2 >= sz)
-          throw "incorrect index";
+          throw "Incorrect index";
       return this->pMem[i1][i2];
   }
   const T& at(size_t i1, size_t i2) const
   {
       if (i1 < 0 || i1 >= sz || i2 < 0 || i2 >= sz)
-          throw "incorrect index";
+          throw "Incorrect index";
       return this->pMem[i1][i2];
   }
 
@@ -271,15 +266,13 @@ public:
           }
       }
       return tmp;
-      //throw std::exception("..")
   }
 
   // матрично-матричные операции
   TDynamicMatrix operator+(const TDynamicMatrix& m)
   {
-      if (sz != m.sz) {
-          throw std::exception("Incorrect size");
-      }
+      if (sz != m.sz) 
+          throw std::exception("Incorrect size");      
       TDynamicMatrix<T> tmp(size());
       for (int i = 0; i < m.sz; i++) {
           tmp.pMem[i] = pMem[i] + m[i];
@@ -288,9 +281,8 @@ public:
   }
   TDynamicMatrix operator-(const TDynamicMatrix& m)
   {
-      if (sz != m.sz) {
-          throw std::exception("Incorrect size");
-      }
+      if (sz != m.sz) 
+          throw std::exception("Incorrect size");      
       TDynamicMatrix<T> tmp(size());
       for (int i = 0; i < this->size(); i++) {
           for (int j = 0; j < this->size(); j++) {
@@ -302,9 +294,8 @@ public:
   TDynamicMatrix operator*(const TDynamicMatrix& m)
   {
       TDynamicMatrix tmp(sz);
-      if (sz != m.sz) {
+      if (sz != m.sz) 
           throw std::exception("Incorrect size");
-      }
       for (int i = 0; i < sz; i++){
           for (int j = 0; j < sz; j++){
               tmp.pMem[i] = tmp.pMem[i] + pMem[j] * m.pMem[i][j];
