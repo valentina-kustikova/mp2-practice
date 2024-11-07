@@ -36,10 +36,9 @@ TEST(TDynamicVector, copied_vector_is_equal_to_source_one)
 TEST(TDynamicVector, copied_vector_has_its_own_memory)
 {
     TDynamicVector<int> v(4), v1(v);
-    EXPECT_NE(&v[0], &v1[0]);
-    EXPECT_NE(&v[1], &v1[1]);
-    EXPECT_NE(&v[2], &v1[2]);
-    EXPECT_NE(&v[3], &v1[3]);
+    v1[0] = 10;
+    EXPECT_NE(v, v1);
+    
 }
 
 TEST(TDynamicVector, can_get_size)

@@ -33,11 +33,9 @@ TEST(TDynamicMatrix, copied_matrix_is_equal_to_source_one)
 TEST(TDynamicMatrix, copied_matrix_has_its_own_memory)
 {
     TDynamicMatrix<int> m(5), m1(m);
-    EXPECT_NE(&m[0], &m1[0]);
-    EXPECT_NE(&m[1], &m1[1]);
-    EXPECT_NE(&m[2], &m1[2]);
-    EXPECT_NE(&m[3], &m1[3]);
-    EXPECT_NE(&m[4], &m1[4]);
+    m1[0][0] = 10;
+    
+    EXPECT_FALSE(m == m1);
    
 }
 
