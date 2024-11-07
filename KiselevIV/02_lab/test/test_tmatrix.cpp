@@ -47,8 +47,8 @@ TEST(TDynamicMatrix, can_get_size)
 TEST(TDynamicMatrix, can_set_and_get_element)
 {
     TDynamicMatrix<int> m(3);
-    m[2][1] = 100;
-    EXPECT_EQ(100, m[2][1]);
+    m[2][0] = 100;
+    EXPECT_EQ(100, m[2][0]);
 }
 
 TEST(TDynamicMatrix, throws_when_set_element_with_negative_index)

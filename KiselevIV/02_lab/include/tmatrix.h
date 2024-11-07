@@ -151,13 +151,13 @@ public:
       }
       return *this;
   }
-  TDynamicVector operator-(const TDynamicVector& v)
+  TDynamicVector operator-(const TDynamicVector& v1) // todo: v1 + v2*(-1)
   {
-      if (sz != v.sz) throw "UNREAL";
-      for (int i = 0; i < sz; i++) {
-          pMem[i] = pMem[i] - v[i];
-      }
-      return *this;
+      //v1 = v1 ;
+      T tmp = 1;
+      v1 = v1 * (tmp);
+      //return (*this) + v1;
+      return (*this+ v1);
   }
   T operator*(const TDynamicVector& v) 
   {
@@ -205,9 +205,10 @@ public:
           throw "Invalid size of matrix";
       }
       for (size_t i = 0; i < s; i++) {
-          pMem[i] = TDynamicVector<T>(s-1);
+          pMem[i] = TDynamicVector<T>(s-i); // todo
       }
   }
+  TDynamicMatrix (TDynamicVector<TDynamicVector<T>>& m) : TDynamicVector<TDynamicVector<T>>(m){}
 
   using TDynamicVector<TDynamicVector<T>>::operator[];
   using TDynamicVector<TDynamicVector<T>>::size;
@@ -231,7 +232,7 @@ public:
   {
       TDynamicMatrix<T> res(sz);
       for (int i = 0; i < sz; i++)
-          res.pMem[i] = pMem[i] + val;
+          res.pMem[i] = pMem[i] * val;
       return res;
   }
 
@@ -240,26 +241,18 @@ public:
   {
       TDynamicMatrix<T> res(sz);
       for (int i = 0; i < sz; i++)
-          res.pMem[i] = pMem[i] + val;
+          res.pMem[i] = pMem[i] * val;
       return res;
   }
 
   // матрично-матричные операции
   TDynamicMatrix operator+(const TDynamicMatrix& m)
   {
-      if (sz != m.sz) throw "different size";
-      TDynamicMatrix<T> res(m.sz);
-      for (int i = 0; i < sz; i++)
-          res.pMem[i] = pMem[i] + m.pMem[i];
-      return res;
+      return TDynamicVector < TDynamicVector<T>>:: operator+(m);
   }
   TDynamicMatrix operator-(const TDynamicMatrix& m)
   {
-      if (sz != m.sz) throw "different size";
-      TDynamicMatrix<T> res(m.sz);
-      for (int i = 0; i < sz; i++)
-          res.pMem[i] = pMem[i] - m.pMem[i];
-      return res;
+      return TDynamicVector<TDynamicVector<T>>:: operator-(m);
   }
   TDynamicMatrix operator*(const TDynamicMatrix& m)
   {
