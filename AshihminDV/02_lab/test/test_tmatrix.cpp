@@ -222,6 +222,6 @@ TEST(TDynamicMatrix, can_subtract_matrices_with_equal_size)
 TEST(TDynamicMatrix, cant_subtract_matrixes_with_not_equal_size)
 {
 	TDynamicMatrix<int> m(4), m2(5);
-	ASSERT_ANY_THROW(m + m2);
+	ASSERT_ANY_THROW(m * m2);
 }
 

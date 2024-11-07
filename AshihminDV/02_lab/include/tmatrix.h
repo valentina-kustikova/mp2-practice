@@ -201,7 +201,7 @@ public:
       }
       return RAZ;
   }
-  T operator*(const TDynamicVector& v) noexcept(noexcept(T()))
+  T operator*(const TDynamicVector& v) //noexcept(noexcept(T()))
   {
       if (this->sz != v.size()) {
           throw std::exception("NOT EQUAL SIZE");
@@ -240,7 +240,7 @@ public:
 template<typename T>
 class TDynamicMatrix : private TDynamicVector<TDynamicVector<T>>
 {
-    using TDynamicVector<TDynamicVector<T>>::pMem; //str stolb
+    using TDynamicVector<TDynamicVector<T>>::pMem;
     using TDynamicVector<TDynamicVector<T>>::sz;
 public:
     TDynamicMatrix(size_t s = 1) : TDynamicVector<TDynamicVector<T>>(s)
@@ -257,10 +257,7 @@ public:
             pMem[i] = TDynamicVector<T>(sz - i);
     }
 
-    TDynamicMatrix(const TDynamicMatrix<T>& m) : TDynamicVector<TDynamicVector<T>>(m)
-    {
-
-    }
+    //TDynamicMatrix(const TDynamicMatrix<T>& m) : TDynamicVector<TDynamicVector<T>>(m){}
     TDynamicMatrix(const TDynamicVector<TDynamicVector<T>>& v): TDynamicVector<TDynamicVector<T>>(v) {} //Добавил
   
   using TDynamicVector<TDynamicVector<T>>::size;
