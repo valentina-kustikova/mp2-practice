@@ -159,7 +159,7 @@ public:
       }
       return *this;
   }
-  T operator*(const TDynamicVector& v) noexcept(noexcept(T()))
+  T operator*(const TDynamicVector& v) 
   {
       if (size() != v.size()) throw "UNREAL"; 
       T tmp = 0;
