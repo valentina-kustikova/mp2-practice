@@ -216,6 +216,16 @@ class TDynamicMatrix : private TDynamicVector<TDynamicVector<T>>
   using TDynamicVector<TDynamicVector<T>>::pMem;
   using TDynamicVector<TDynamicVector<T>>::sz; 
 public:
+    using TDynamicVector<TDynamicVector<T>>::operator[];
+    using TDynamicVector<TDynamicVector<T>>::size;
+
+    TDynamicMatrix(const TDynamicMatrix<T>& m) :
+        TDynamicVector<TDynamicVector<T>>(m) {};
+
+    TDynamicMatrix(const TDynamicVector<TDynamicVector<T>>& m) :
+        TDynamicVector<TDynamicVector<T>>(m) {};
+
+
   TDynamicMatrix(size_t s = 1) : TDynamicVector<TDynamicVector<T>>(s)
   {
       if (sz >= MAX_MATRIX_SIZE || sz <= 0) {
@@ -226,21 +236,14 @@ public:
       }
   }
 
-  using TDynamicVector<TDynamicVector<T>>::operator[];
-  using TDynamicVector<TDynamicVector<T>>::operator+;
+
+
 
   // сравнение
   bool operator==(const TDynamicMatrix& m) const noexcept
   {
-      if (this->size() != m.size()) {
-          return 0;
-      }
-      for (int i = 0; i < m.sz; i++) {
-          if (this->at(i) != m[i]) {
-              return 0;
-          }
-      }
-      return 1;
+      return TDynamicVector<TDynamicVector<T>>::operator==(m);
+
   }
 
   // матрично-скалярные операции
@@ -271,27 +274,13 @@ public:
   // матрично-матричные операции
   TDynamicMatrix<T> operator+(const TDynamicMatrix<T>& m)
   {
-      //return TDynamicVector<TDynamicVector<T>>::operator+(m);
-      if (size() != m.size()) {
-          throw "diff size";
-      }
-      TDynamicMatrix answ(m.sz);
-      for (int i = 0; i < m.sz; i++) {
-          answ[i] = this->at(i) + m[i];
-      }
-      return answ;
+      return TDynamicVector<TDynamicVector<T>>::operator+(m);
+    
   }
   TDynamicMatrix operator-(const TDynamicMatrix& m)
   {
-      //return TDynamicVector<TDynamicVector<T>>::operator-(m);
-      if (size() != m.size()) {
-          throw "diff size";
-      }
-      TDynamicMatrix answ(m.sz);
-      for (int i = 0; i < m.sz; i++) {
-          answ[i] = this->at(i) - m[i];
-      }
-      return answ;
+      return TDynamicVector<TDynamicVector<T>>::operator-(m);
+
   }
   TDynamicMatrix operator*(const TDynamicMatrix& m)
   {
@@ -319,6 +308,7 @@ public:
   }
   friend ostream& operator<<(ostream& ostr, const TDynamicMatrix& m)
   {
+      
       for (int i = 0; i < m.sz; i++) {
           ostr << m[i] << '\n';
       }

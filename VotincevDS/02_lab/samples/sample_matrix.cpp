@@ -16,8 +16,6 @@ void main()
   setlocale(LC_ALL, "Russian");
   cout << "Тестирование класса работы с матрицами"
     << endl;
-  /*TDynamicMatrix<int> d(2);
-  cin >> d;*/
   for (i = 0; i < 5; i++)
     for (j = 0; j < a[i].size(); j++ )
     {
