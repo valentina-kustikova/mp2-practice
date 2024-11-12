@@ -230,25 +230,63 @@ public:
   // матрично-матричные операции
   TDynamicMatrix operator+(const TDynamicMatrix& m)
   {
-      throw "Method is not implemented";
+      if (this->sz != m.size()) throw "error";
+      TDynamicMatrix m1(this->sz);
+      for (int i = 0; i < this->sz; i++) {
+          for (int j = i; j < this->sz; j++) {
+              m1[i][j] = this->pMem[i][j] + m[i][j];
+          }
+      }
+      return m1;
   }
   TDynamicMatrix operator-(const TDynamicMatrix& m)
   {
-      throw "Method is not implemented";
+      if (this->sz != m.size()) throw "error";
+      TDynamicMatrix m1(this->sz);
+      for (int i = 0; i < this->sz; i++) {
+          for (int j = i; j < this->sz; j++) {
+              m1[i][j] = this->pMem[i][j] - m[i][j];
+          }
+      }
+      return m1;
   }
   TDynamicMatrix operator*(const TDynamicMatrix& m)
   {
-      throw "Method is not implemented";
+      if (this->sz != m.size()) throw "error";
+      TDynamicMatrix m1(this->sz);
+      for (int i = 0; i < this->sz; i++) {
+          for (int j = i; j < this->sz; j++) {
+              for (int k = i; k <= j; k++) {
+                  m1[i][j] += this->pMem[i][k] * m[k][j];
+              }
+          }
+      }
+      return m1;
   }
 
   // ввод/вывод
   friend istream& operator>>(istream& istr, TDynamicMatrix& v)
   {
-      throw "Method is not implemented";
+      for (int i = 0; i < v[0].size(); i++) {
+          for (int j = i; j < v[0].size(); j++) {
+              istr >> v[i][j];
+          }
+      }
+      return istr;
   }
   friend ostream& operator<<(ostream& ostr, const TDynamicMatrix& v)
   {
-      throw "Method is not implemented";
+      ostr << endl;
+      for (int i = 0; i < v[0].size(); i++) {
+          for (int k = 0; k < i; k++) {
+              ostr << "\t";
+          }
+          for (int j = i; j < v[0].size(); j++) {
+              ostr << v[i][j]<< "\t";
+          }
+          ostr << endl;
+      }
+      return ostr;
   }
 };
 
