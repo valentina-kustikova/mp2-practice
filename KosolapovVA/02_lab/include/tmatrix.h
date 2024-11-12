@@ -116,7 +116,7 @@ public:
           return 0;
       int temp = 0;
       for (int i = 0; i < v.sz; i++)
-          if (this->pMem[i] = v.pMem[i])
+          if (this->pMem[i] == v.pMem[i])
               temp += 1;
       return(temp == sz);
   }

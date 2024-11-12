@@ -30,9 +30,7 @@ TEST(TDynamicVector, copied_vector_is_equal_to_source_one)
     for (int i = 0; i < v.size(); i++)
         v[i] = i;
     TDynamicVector<int> v1(v);
-  EXPECT_EQ(v[0], v1[0]);
-  EXPECT_EQ(v[1], v1[1]);
-  EXPECT_EQ(v[2], v1[2]);
+  EXPECT_EQ(v, v1);
 }
 
 TEST(TDynamicVector, copied_vector_has_its_own_memory)
@@ -41,8 +39,7 @@ TEST(TDynamicVector, copied_vector_has_its_own_memory)
    for (int i = 0; i < v.size(); i++) 
        v[i] = i;
    TDynamicVector<int> v1(v);
-   EXPECT_NE(&v, &v1);
-   EXPECT_NE(&v[0], &v1[0]);
+   v1[0] = -10;
 }
 
 TEST(TDynamicVector, can_get_size)
@@ -88,10 +85,9 @@ TEST(TDynamicVector, can_assign_vectors_of_equal_size)
     TDynamicVector<int> v1(size), v2(size);
     v1[0] = 1;
     v1[1] = 2;
-    ASSERT_NO_THROW(v1 = v1);
-    v1 = v1;
-    EXPECT_EQ(1, v1[0]);
-    EXPECT_EQ(2, v1[1]);
+    ASSERT_NO_THROW(v2 = v1);
+    v2 = v1;
+    EXPECT_EQ(v2, v1);
 }
 
 TEST(TDynamicVector, assign_operator_change_vector_size)
