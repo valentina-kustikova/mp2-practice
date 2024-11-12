@@ -16,7 +16,14 @@ void main()
             b[i][j] = j;
         }
     c = a * b;
+    TDynamicMatrix<int> f(5),g(5);
+    f = a + b;
+    g = a - b;
     cout << "Matrix a = " << endl << a << endl;
     cout << "Matrix b = " << endl << b << endl;
     cout << "Matrix c = a * b" << endl << c << endl;
+    cout << "Matrix f = a + b" << endl << f << endl;
+    cout << "Matrix g = a - b" << endl << g << endl;
+    g = a * 5;
+    cout << "Matrix g = a*5" << endl << g << endl;
 }

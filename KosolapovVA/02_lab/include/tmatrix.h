@@ -113,11 +113,11 @@ public:
   bool operator==(const TDynamicVector& v) const noexcept
   {
       if (sz != v.sz)
-          return 0;
+          return false;
       int temp = 0;
       for (int i = 0; i < v.sz; i++)
           if (this->pMem[i] == v.pMem[i])
-              temp += 1;
+              temp ++;
       return(temp == sz);
   }
   bool operator!=(const TDynamicVector& v) const noexcept
@@ -218,13 +218,8 @@ public:
       for (size_t i = 0; i < sz; i++)
           pMem[i] = TDynamicVector<T>(sz-i);
   }
-  TDynamicMatrix(TDynamicVector<TDynamicVector<T>> v) : TDynamicVector<TDynamicVector<T>>(v)
-  {
-      if (sz <= 0)
-          throw out_of_range("Matrix size should be greater than zero");
-      if (sz > MAX_MATRIX_SIZE)
-          throw out_of_range("The size of the matrix cannot exceed the max matrix size");
-  }
+  TDynamicMatrix(TDynamicMatrix& m) : TDynamicVector<TDynamicVector<T>>(m) {}
+  TDynamicMatrix(TDynamicVector<TDynamicVector<T>>& m) : TDynamicVector<TDynamicVector<T>>(m) {}
 
   using TDynamicVector<TDynamicVector<T>>::operator[];
   using TDynamicVector<TDynamicVector<T>>::size;
@@ -245,13 +240,7 @@ public:
   // сравнение
   bool operator==(const TDynamicMatrix& m) const noexcept
   {
-      if (this->sz != m.sz)
-          return 0;
-      int temp=0;
-      for (int i = 0; i < this->sz; i++)
-              if (this->pMem[i] != m.pMem[i])
-                  return 0;                
-      return 1;
+      return TDynamicVector<TDynamicVector<T>>::operator==(m);
   }
   bool operator!=(const TDynamicMatrix& m) const noexcept
   {
@@ -292,21 +281,11 @@ public:
   ///*
   TDynamicMatrix operator+(const TDynamicMatrix& m)
   {
-      if (this->sz != m.sz)
-          throw std::exception("Dif matrix size");
-      TDynamicMatrix<T> res(m.sz);
-      for (int i = 0; i < this->sz; i++)
-          res.pMem[i] = this->pMem[i] + m.pMem[i];
-      return res;
+      return TDynamicVector<TDynamicVector<T>>::operator+(m);      
   }
   TDynamicMatrix operator-(const TDynamicMatrix& m)
   {
-      if (this->sz != m.sz)
-          throw std::exception("Dif matrix size");
-      TDynamicMatrix<T> res(m.sz);
-      for (int i = 0; i < this->sz; i++)
-          res.pMem[i] = this->pMem[i] - m.pMem[i];
-      return res;
+      return TDynamicVector<TDynamicVector<T>>::operator-(m);      
   }
   //*/
   TDynamicMatrix operator*(const TDynamicMatrix& m)
