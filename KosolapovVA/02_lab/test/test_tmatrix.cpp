@@ -109,6 +109,7 @@ TEST(TDynamicMatrix, can_assign_matrices_of_equal_size)
         for (int j = 0; j < 2-i; j++)
             m[i][j] = 3;
     }
+    ASSERT_NO_THROW(m1 = m);
     m1 = m;
     EXPECT_EQ(m, m1);
 }

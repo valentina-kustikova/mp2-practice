@@ -76,6 +76,7 @@ TEST(TDynamicVector, can_assign_vector_to_itself)
     v1[0] = 1;
     v1[1] = 2;
     v1[2] = 3;
+    ASSERT_NO_THROW(v1 = v1);
     v1 = v1;
     EXPECT_EQ(v1, v1);
 }
