@@ -120,46 +120,49 @@ public:
   }
 
   // скалярные операции
-  TDynamicVector operator+(T val)
+  TDynamicVector operator+(T val) const
   {
+      TDynamicVector v1(sz);
       for (int i = 0; i < sz; i++) {
-          pMem[i] = pMem[i] + val;
+          v1.pMem[i] = pMem[i] + val;
       }
-      return *this;
+      return v1;
   }
-  TDynamicVector operator-(T val)
+  TDynamicVector operator-(T val) const
   {
+      TDynamicVector v1(sz);
       for (int i = 0; i < sz; i++) {
-          pMem[i] = pMem[i]- val;
+          v1.pMem[i] = pMem[i] - val;
       }
-      return *this;
+      return v1;
   }
-  TDynamicVector operator*(T val)
+  TDynamicVector operator*(T val) const
   {
+      TDynamicVector v1(sz);
       for (int i = 0; i < sz; i++) {
-          pMem[i] =pMem[i]* val;
+          v1.pMem[i] = pMem[i] * val;
       }
-      return *this;
+      return v1;
   }
 
   // векторные операции
-  TDynamicVector operator+(const TDynamicVector& v)
+  TDynamicVector operator+(const TDynamicVector& v) const
   {
       if (sz != v.sz) throw "UNREAL";
+      TDynamicVector v1(sz);
       for (int i = 0; i < sz; i++) {
-          pMem[i] = pMem[i] + v[i];
+          v1.pMem[i] = pMem[i] + v[i];
       }
-      return *this;
+      return v1;
   }
-  TDynamicVector operator-(const TDynamicVector& v1) // todo: v1 + v2*(-1)
+  TDynamicVector operator-(const TDynamicVector& v)const // todo: v1 + v2*(-1)
   {
-      //v1 = v1 ;
-      T tmp = 1;
-      v1 = v1 * (tmp);
-      //return (*this) + v1;
+      TDynamicVector v1(sz);
+      T tmp = -1;
+      v1 = v * (tmp);
       return (*this+ v1);
   }
-  T operator*(const TDynamicVector& v) 
+  T operator*(const TDynamicVector& v) const
   {
       if (size() != v.size()) throw "UNREAL"; 
       T tmp = 0;
