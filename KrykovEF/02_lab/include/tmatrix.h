@@ -213,11 +213,12 @@ public:
           throw out_of_range("Matrix size should be greater than zero");
       if (sz > MAX_MATRIX_SIZE)
           throw out_of_range("Matrix size should be lesser than MAX");
-    for (size_t i = 0; i < sz; i++)
-      pMem[i] = TDynamicVector<T>(sz);
+      for (size_t i = 0; i < sz; i++)
+          pMem[i] = TDynamicVector<T>(i + 1);
   }
 
   using TDynamicVector<TDynamicVector<T>>::operator[];
+  using TDynamicVector<TDynamicVector<T>>::size;
 
   T& at(size_t i1, size_t i2)
   {
@@ -257,12 +258,12 @@ public:
   TDynamicVector<T> operator*(const TDynamicVector<T>& v)
   {
       if (sz != v.sz)
-          throw "Incorrect size"; 
+          throw "Incorrect size";
       TDynamicMatrix<T> tmp(size());
       for (int i = 0; i < sz; i++) {
           tmp.pMem[i] = 0;
-          for (int j = 0; j < sz - i; j++) {
-              tmp.pMem[i] = tmp.pMem[i] + pMem[i][j] * v[i + j];
+          for (int j = 0; j < i + 1; j++) {
+              tmp.pMem[i] = tmp.pMem[i] + pMem[i][j] * v[j];
           }
       }
       return tmp;
@@ -281,13 +282,11 @@ public:
   }
   TDynamicMatrix operator-(const TDynamicMatrix& m)
   {
-      if (sz != m.sz) 
-          throw std::exception("Incorrect size");      
+      if (sz != m.sz)
+          throw std::exception("Incorrect size");
       TDynamicMatrix<T> tmp(size());
-      for (int i = 0; i < this->size(); i++) {
-          for (int j = 0; j < this->size(); j++) {
-              tmp.pMem[i][j] = pMem[i][j] - m.pMem[i][j];
-          }
+      for (int i = 0; i < m.sz; i++) {
+          tmp.pMem[i] = pMem[i] - m[i];
       }
       return tmp;
   }
@@ -296,6 +295,15 @@ public:
       TDynamicMatrix tmp(sz);
       if (sz != m.sz) 
           throw std::exception("Incorrect size");
+      /*for (int k = 0; k < sz; k++) {
+          for (int r = 0; r < k + 1; r++){
+              tmp.pMem[k][r] = 0;
+              for (int i = 0; i < sc; i++) {
+                  for (int  j= 0; j < i + 1; i++) {
+                      tmp.pMem[k][r] = tmp.pMem[i] + (pMem[j][] * m.pMem[i][j]);
+                  }
+              }
+          }*/
       for (int i = 0; i < sz; i++){
           for (int j = 0; j < sz; j++){
               tmp.pMem[i] = tmp.pMem[i] + pMem[j] * m.pMem[i][j];
