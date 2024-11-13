@@ -192,7 +192,7 @@ public:
       }
       return tmp;
   }
-  T operator*(const TDynamicVector& v) 
+  T operator*(const TDynamicVector& v)
   {
       if (sz != v.sz) {
           throw "VECTORS WITH DIF SIZE";
@@ -234,26 +234,32 @@ class TDynamicMatrix : private TDynamicVector<TDynamicVector<T>>
   using TDynamicVector<TDynamicVector<T>>::pMem;
   using TDynamicVector<TDynamicVector<T>>::sz;
 public:
+  TDynamicMatrix(const TDynamicVector<TDynamicVector<T>>& m) : TDynamicVector<TDynamicVector<T>>(m) {}
   TDynamicMatrix(size_t s = 1) : TDynamicVector<TDynamicVector<T>>(s)
   {
       if (sz >= MAX_MATRIX_SIZE || sz <= 0) {
-          throw out_of_range("The size of matrix should be greater than zero and less than 1000");
+          throw out_of_range("The size of matrix should be greater than zero and less than 10000");
       }
       for (size_t i = 0; i < sz; i++) {
       pMem[i] = TDynamicVector<T>(sz-i);
       }
     
   }
-  TDynamicMatrix(TDynamicVector<TDynamicVector<T>>& m): TDynamicVector<TDynamicVector<T>>(m) {}
+ 
 
   using TDynamicVector<TDynamicVector<T>>::operator[];
-  using TDynamicVector<TDynamicVector<T>>::size;  
-  using TDynamicVector<TDynamicVector<T>>::at;  
+  using TDynamicVector<TDynamicVector<T>>::size;   
+  using TDynamicVector<TDynamicVector<T>>::at;   
 
   // сравнение
   bool operator==(const TDynamicMatrix& m) const noexcept
   {
       return TDynamicVector<TDynamicVector<T>>::operator==(m);
+  }
+
+  bool operator!=(const TDynamicMatrix& m) const noexcept
+  {
+      return TDynamicVector<TDynamicVector<T>>::operator!=(m);
   }
 
   // матрично-скалярные операции
@@ -285,27 +291,12 @@ public:
   // матрично-матричные операции
   TDynamicMatrix operator+(const TDynamicMatrix& m)
   {
-      /*if (sz != m.sz) {
-          throw "DIF SIZE";
-      }
-      TDynamicMatrix tmp(sz);
-      for (int i = 0; i < sz; i++) {
-          tmp.pMem[i] = pMem[i] + m.pMem[i];
-      }
-          
-      return tmp;*/
+      
       return TDynamicVector<TDynamicVector<T>>::operator+(m);
   }
   TDynamicMatrix operator-(const TDynamicMatrix& m)
   {
-      /*if (sz != m.sz) {
-          throw "DIF SIZE";
-      }
-      TDynamicMatrix tmp(sz);
-      for (int i = 0; i < sz; i++) {
-          tmp.pMem[i] = pMem[i] - m.pMem[i];
-      }
-      return tmp;*/
+      
       return TDynamicVector<TDynamicVector<T>>::operator-(m);
   }
   TDynamicMatrix operator*(const TDynamicMatrix& m)
