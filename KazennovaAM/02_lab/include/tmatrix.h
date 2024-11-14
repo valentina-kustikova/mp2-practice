@@ -59,8 +59,8 @@ public:
           return *this;
       if (sz != v.sz) {
           delete[] pMem;
+          pMem = new T[sz];
       }
-      pMem = new T[sz];
       for(int i = 0; i< sz;i++)
           pMem[i] = v.pMem[i];
       return *this;
@@ -155,26 +155,11 @@ public:
       }
       return result;
   }
-  TDynamicVector operator-(const TDynamicVector& v)// todo: (*this) + v*(-1.0)
+  TDynamicVector operator-(const TDynamicVector& v)
   {
-      TDynamicVector<T> negation = v * TDynamicVector<T>(-1);
-      return (*this) + negation; 
+      TDynamicVector vcopy(v);
+      return (*this) + vcopy * T(-1);
   }
-
- 
-
-  T operator*(const TDynamicVector& other) const {
-      if (sz != other.sz) {
-          throw "different sizes";
-      }
-
-      T result(sz);
-      for (size_t i = 0; i < sz; ++i) {
-          result += pMem[i] * other.pMem[i];
-      }
-      return result;
-  }
-
 
   T operator*(const TDynamicVector& v) noexcept(noexcept(T()))
   {

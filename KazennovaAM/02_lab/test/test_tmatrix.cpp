@@ -37,7 +37,7 @@ TEST(TDynamicMatrix, copied_matrix_has_its_own_memory)
     TDynamicMatrix<int> m(5);
     TDynamicMatrix<int> m1(m);
     m[0][0] = 15;  // Изменяем одну из матриц
-    EXPECT_NE(m[0][0], m1[0][0]);  // Значения должны различаться
+    EXPECT_NE(m, m1);  // Значения должны различаться
 }
 
 TEST(TDynamicMatrix, can_get_size) {
@@ -74,7 +74,10 @@ TEST(TDynamicMatrix, can_assign_matrices_of_equal_size)
 {
     TDynamicMatrix<int> m1(5);
     TDynamicMatrix<int> m2(5);
-    ASSERT_NO_THROW(m1 == m2);
+    // заполнить
+    // m1=m2
+    // EXPECT_EQ(m1, m2)
+    ASSERT_NO_THROW(m1 == m2);// todo 
 }
 
 TEST(TDynamicMatrix, assign_operator_change_matrix_size) {
@@ -83,10 +86,13 @@ TEST(TDynamicMatrix, assign_operator_change_matrix_size) {
     EXPECT_THROW(m1 = m2, const char*); // ожидаем исключение
 }
 
-TEST(TDynamicMatrix, can_assign_matrices_of_different_size)
+TEST(TDynamicMatrix, can_assign_matrices_of_different_size)//todo
 {
     TDynamicMatrix<int> m1(5);
     TDynamicMatrix<int> m2(10);
+    // заполнить
+    // m1=m2
+    // EXPECT_EQ(m1, m2)
     ASSERT_NO_THROW(m1 = m2);
 }
 
@@ -115,7 +121,7 @@ TEST(TDynamicMatrix, can_add_matrices_with_equal_size)
     TDynamicMatrix<int> m1(5);
     TDynamicMatrix<int> m2(5);
 
-    ASSERT_NO_THROW(m1 + m2);
+    ASSERT_NO_THROW(m1 + m2); // todo сравнить с результатотм
 }
 
 TEST(TDynamicMatrix, cant_add_matrices_with_not_equal_size)
@@ -131,7 +137,7 @@ TEST(TDynamicMatrix, can_subtract_matrices_with_equal_size)
     TDynamicMatrix<int> m1(5);
     TDynamicMatrix<int> m2(5);
 
-    ASSERT_NO_THROW(m1 - m2);
+    ASSERT_NO_THROW(m1 - m2);  // todo сравнить с результатотм
 }
 
 TEST(TDynamicMatrix, cant_subtract_matrixes_with_not_equal_size)
@@ -141,3 +147,5 @@ TEST(TDynamicMatrix, cant_subtract_matrixes_with_not_equal_size)
 
     ASSERT_ANY_THROW(m1 - m2);// Ожидаем исключение при вычитании матриц разного размера;
 }
+
+// todo
