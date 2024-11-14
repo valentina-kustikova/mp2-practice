@@ -79,6 +79,9 @@ public:
   // индексация
   T& operator[](size_t ind)
   {
+      if (ind < 0 || ind >= this->sz || ind > MAX_VECTOR_SIZE) {
+          throw ind;
+      }
       return (this->pMem[ind]);
   }
   const T& operator[](size_t ind) const
@@ -91,14 +94,14 @@ public:
   // индексация с контролем
   T& at(size_t ind)
   {
-      if (ind < 0 || ind > MAX_VECTOR_SIZE) {
+      if (ind < 0 || ind >= this->sz || ind > MAX_VECTOR_SIZE) {
           throw ind;
       }
       return (this->pMem[ind]);
   }
   const T& at(size_t ind) const
   {
-      if (ind < 0 || ind > MAX_VECTOR_SIZE) {
+      if (ind < 0 || ind >= this->sz || ind > MAX_VECTOR_SIZE) {
           throw ind;
       }
       return (this->pMem[ind]);
@@ -274,14 +277,18 @@ public:
   }
   TDynamicMatrix operator*(const TDynamicMatrix& m)
   {
-      if (this->size != m.size) {
+      if (this->sz != m.sz) {
           throw "Matrices have different sizes.";
       }
       TDynamicMatrix res(this->size());
       for (int i = 0; i < this->size(); i++) {
-          for (int j = 0; j < this->size()-i; j++)
-              for (int k = 0; k < j+1; k++)
-                  res.pMem[i][j] += this->pMem[i][k] * m.pMem[k][j];
+          for (int j = 0; j < this->size() - i; j++) {
+              res.pMem[i][j] = 0;
+              for (int k = 0; k < j + 1; k++)
+              {
+                  res.pMem[i][j] += this->pMem[i][k] * m.pMem[k+i][j-k];
+              }
+          }
       }
       return res;
   }
@@ -296,8 +303,8 @@ public:
   friend ostream& operator<<(ostream& ostr, const TDynamicMatrix& v)
   {
       for (int i = 0; i < v.sz; i++) {
-          for (int j = v.sz; j < i; j++) {
-             // cout << "0 ";
+          for (int j = 0; j < i; j++) {
+             ostr << "0 ";
           }
           ostr << v.pMem[i] << "\n";
       }
