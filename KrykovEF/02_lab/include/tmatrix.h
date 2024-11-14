@@ -309,6 +309,7 @@ public:
               tmp.pMem[i] = tmp.pMem[i] + pMem[j] * m.pMem[i][j];
           }
       }
+      cout << tmp;
       return tmp;
   }
 

@@ -275,8 +275,8 @@ TEST(TDynamicMatrix, can_multiply_matrices_with_equal_size)
 
 
     //cout << m1;
-    //EXPECT_EQ(m1 * m2, m3);
-    EXPECT_EQ(1, 1);
+    EXPECT_EQ(m1 * m2, m3);
+    //EXPECT_EQ(1, 1);
 }
 
 TEST(TDynamicMatrix, cant_multiply_matrices_with_not_equal_size)
