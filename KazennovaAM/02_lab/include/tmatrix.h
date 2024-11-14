@@ -157,10 +157,25 @@ public:
   }
   TDynamicVector operator-(const TDynamicVector& v)// todo: (*this) + v*(-1.0)
   {
-      T condts = -1;
-      v = v * condt;
-      return (*this) + v;
+      TDynamicVector<T> negation = v * TDynamicVector<T>(-1);
+      return (*this) + negation; 
   }
+
+ 
+
+  T operator*(const TDynamicVector& other) const {
+      if (sz != other.sz) {
+          throw "different sizes";
+      }
+
+      T result(sz);
+      for (size_t i = 0; i < sz; ++i) {
+          result += pMem[i] * other.pMem[i];
+      }
+      return result;
+  }
+
+
   T operator*(const TDynamicVector& v) noexcept(noexcept(T()))
   {
       if (this->sz != v.sz) {
@@ -210,7 +225,7 @@ public:
     if (sz == 0 || sz > MAX_MATRIX_SIZE)
           throw "invalid size";
     for (size_t i = 0; i < sz; i++)
-      pMem[i] = TDynamicVector<T>(sz); // sz-i
+      pMem[i] = TDynamicVector<T>(sz-i); // sz-i
   }
 
   using TDynamicVector<TDynamicVector<T>>::operator[];
@@ -219,23 +234,13 @@ public:
   // сравнение
   bool operator==(const TDynamicMatrix& m) const noexcept // todo: TDynamicVector<TDynamicVector<T>>::operator==(m)
   {
-      if (this->sz != m.sz) return false;
-      for (size_t i = 0; i < sz; i++) {
-          if (pMem[i] != m.pMem[i]) return false;
-      }
-      return true;
+      return TDynamicVector<TDynamicVector<T>>::operator==(m);
   }
 
   // матрично-скалярные операции
   TDynamicMatrix operator*(const T& val) //todo: TDynamicVector<TDynamicVector<T>>:: operator*(val)
   {
-      TDynamicMatrix result(sz);
-      for (size_t i = 0; i < sz; i++) {
-          for (size_t j = 0; j < sz; j++) {
-              result[i][j] = this->pMem[i][j] * val;
-          }
-      }
-      return result;
+      return TDynamicVector<TDynamicVector<T>>::operator*(val);
   }
 
   // матрично-векторные операции
@@ -267,6 +272,8 @@ public:
           }
       }
       return result;
+
+      //return TDynamicVector<TDynamicVector<T>>::operator+(m);
   }
   TDynamicMatrix operator-(const TDynamicMatrix& m) //todo: TDynamicVector<TDynamicVector<T>>:: operator-(m)
   {
@@ -280,17 +287,19 @@ public:
           }
       }
       return result;
+
+      //return TDynamicVector<TDynamicVector<T>>::operator-(m);
   }
-  TDynamicMatrix operator*(const TDynamicMatrix& m) // должна быть верхнетриугольная матрица возможно тоже через  TDynamicVector<TDynamicVector<T>>::, но это не точно
+  TDynamicMatrix operator*(const TDynamicMatrix& m) // должна быть верхнетриугольная матрица возможно 
   {
       if (this->sz != m.sz) {
           throw "different sizes";
       }
       TDynamicMatrix result(sz);
       for (size_t i = 0; i < sz; i++) {
-          for (size_t j = 0; j < sz; j++) {
+          for (size_t j = 0; j < sz-i; j++) {
               result[i][j] = 0; // Обнуляем элемент
-              for (size_t k = 0; k < sz; k++) {
+              for (size_t k = 0; k < j+1; k++) {
                   result[i][j] += this->pMem[i][k] * m.pMem[k][j];
               }
           }

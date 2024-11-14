@@ -40,11 +40,9 @@ TEST(TDynamicMatrix, copied_matrix_has_its_own_memory)
     EXPECT_NE(m[0][0], m1[0][0]);  // Значения должны различаться
 }
 
-TEST(TDynamicMatrix, can_get_size)
-{
+TEST(TDynamicMatrix, can_get_size) {
     TDynamicMatrix<int> m(5);
-
-    EXPECT_EQ(5, m.get_size());
+    EXPECT_EQ(m.size(), 5); // Проверяем размер
 }
 
 TEST(TDynamicMatrix, can_set_and_get_element)
@@ -79,14 +77,10 @@ TEST(TDynamicMatrix, can_assign_matrices_of_equal_size)
     ASSERT_NO_THROW(m1 == m2);
 }
 
-TEST(TDynamicMatrix, assign_operator_change_matrix_size)
-{
-    TDynamicMatrix<int> m1(5);
-    TDynamicMatrix<int> m2(10);
-    m1 = m2;  // Присваиваем матрицу большего размера
-    
-    // Проверяем одинаковость размеров
-    ASSERT_EQ(m1.get_size(), m2.get_size());
+TEST(TDynamicMatrix, assign_operator_change_matrix_size) {
+    TDynamicMatrix<int> m1(3);
+    TDynamicMatrix<int> m2(4);
+    EXPECT_THROW(m1 = m2, const char*); // ожидаем исключение
 }
 
 TEST(TDynamicMatrix, can_assign_matrices_of_different_size)
