@@ -33,9 +33,8 @@ TEST(TDynamicVector, copied_vector_is_equal_to_source_one)
 	}
 	TDynamicVector<int> t1(m, n);
 	TDynamicVector<int> t2(t1);
-	TDynamicVector<int> t3(t1);
 	delete[] m;
-	EXPECT_EQ(t3, t2);
+	EXPECT_EQ(t1, t2);
 }
 
 
@@ -49,8 +48,9 @@ TEST(TDynamicVector, copied_vector_has_its_own_memory)
 	}
 	TDynamicVector<int> t1(m, n);
 	TDynamicVector<int> t2(t1);
+	t2[0] = 10;
 	delete[] m;
-	EXPECT_EQ(t2, t1);
+	EXPECT_NE(t2, t1);
 }
 
 TEST(TDynamicVector, can_get_size)
@@ -60,17 +60,16 @@ TEST(TDynamicVector, can_get_size)
   EXPECT_EQ(4, v.size());
 }
 
-//TEST(TDynamicVector, can_set_and_get_element)
-//{
-//  TDynamicVector<int> v(4);
-//  v[0] = 4;
-//
-//  EXPECT_EQ(4, v[0]);
-//}
+TEST(TDynamicVector, can_set_and_get_element)
+{
+  TDynamicVector<int> v(4);
+  v[0] = 4;
+
+  EXPECT_EQ(4, v[0]);
+}
 
 TEST(TDynamicVector, throws_when_set_element_with_negative_index)
-{
-	
+{	
 	ASSERT_ANY_THROW(TDynamicVector<int> v(-1));
 }
 
@@ -87,10 +86,8 @@ TEST(TDynamicVector, can_assign_vector_to_itself)
 		m[i] = 1;
 	}
 	TDynamicVector<int> t1(m, n);
-	TDynamicVector<int> t2(n);
-	t2 = t1;
 	delete[] m;
-	EXPECT_EQ(t2, t1);
+	ASSERT_NO_THROW(t1 = t1);
 }
 
 TEST(TDynamicVector, can_assign_vectors_of_equal_size)
@@ -129,7 +126,7 @@ TEST(TDynamicVector, assign_operator_change_vector_size)
 	delete[] m;
 	delete[] c;
 	t2 = t1;
-	EXPECT_EQ(6, t1.size());
+	EXPECT_EQ(6, t2.size());
 }
 
 TEST(TDynamicVector, can_assign_vectors_of_different_size)

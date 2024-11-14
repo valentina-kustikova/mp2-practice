@@ -44,16 +44,13 @@ public:
           this->pMem[i] = v.pMem[i];
       }
   }
-  /*TDynamicVector(TDynamicVector&& v) noexcept
-  {
-  }*/
   ~TDynamicVector()
   {
       delete[] pMem;
   }
   TDynamicVector& operator=(const TDynamicVector& v)
   {
-      if (*this == v) return *this;
+      if (this == &v) return *this;
       this->sz = v.sz;
       delete[]pMem;
       this->pMem = new T[this->sz];
@@ -62,10 +59,6 @@ public:
       }
       return *this;
   }
-  //TDynamicVector& operator=(TDynamicVector&& v) noexcept
-  //{
-  //    return *this;
-  //}
 
   size_t size() const noexcept { return sz; }
 
@@ -193,10 +186,12 @@ public:
   {
     if (s > MAX_MATRIX_SIZE) throw "Error";
     for (size_t i = 0; i < sz; i++)
-      pMem[i] = TDynamicVector<T>(sz);
+      pMem[i] = TDynamicVector<T>(sz-i); // sz-i
   }
 
   using TDynamicVector<TDynamicVector<T>>::operator[];
+
+  int size() const { return sz; }
 
   // сравнение
   bool operator==(const TDynamicMatrix& m) const noexcept
@@ -233,13 +228,13 @@ public:
       if (this->sz != m.size()) throw "error";
       TDynamicMatrix m1(this->sz);
       for (int i = 0; i < this->sz; i++) {
-          for (int j = i; j < this->sz; j++) {
+          for (int j = 0; j < this->sz-i; j++) {
               m1[i][j] = this->pMem[i][j] + m[i][j];
           }
       }
       return m1;
   }
-  TDynamicMatrix operator-(const TDynamicMatrix& m)
+  TDynamicMatrix operator-(const TDynamicMatrix& m) // todo
   {
       if (this->sz != m.size()) throw "error";
       TDynamicMatrix m1(this->sz);
@@ -255,9 +250,9 @@ public:
       if (this->sz != m.size()) throw "error";
       TDynamicMatrix m1(this->sz);
       for (int i = 0; i < this->sz; i++) {
-          for (int j = i; j < this->sz; j++) {
-              for (int k = i; k <= j; k++) {
-                  m1[i][j] += this->pMem[i][k] * m[k][j];
+          for (int j = 0; j < this->sz-i; j++) {
+              for (int k = 0; k <= j; k++) {
+                  m1[i][j] += this->pMem[i][k] * m[i+k][j-k];
               }
           }
       }
@@ -277,11 +272,11 @@ public:
   friend ostream& operator<<(ostream& ostr, const TDynamicMatrix& v)
   {
       ostr << endl;
-      for (int i = 0; i < v[0].size(); i++) {
+      for (int i = 0; i < v.size(); i++) {
           for (int k = 0; k < i; k++) {
               ostr << "\t";
           }
-          for (int j = i; j < v[0].size(); j++) {
+          for (int j = 0; j < v.size()-i; j++) {
               ostr << v[i][j]<< "\t";
           }
           ostr << endl;

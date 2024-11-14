@@ -35,10 +35,10 @@ TEST(TDynamicMatrix, copied_matrix_is_equal_to_source_one)
 
 TEST(TDynamicMatrix, copied_matrix_has_its_own_memory)
 {
-	TDynamicMatrix<int> m(3);
-	m[0][0] = 1;
+	TDynamicMatrix<int> m(3);	
 	TDynamicMatrix<int> m1(m);
-	EXPECT_EQ(m, m1);
+	m1[0][0] = 1;
+	EXPECT_NE(m, m1);
 }
 
 TEST(TDynamicMatrix, can_get_size)
@@ -47,7 +47,7 @@ TEST(TDynamicMatrix, can_get_size)
 	EXPECT_EQ(1, m[0].size());
 }
 
-TEST(TDynamicMatrix, can_set_and_get_element)
+TEST(TDynamicMatrix, can_set_and_get_element) // todo
 {
 
   int n = 3;
@@ -97,7 +97,7 @@ TEST(TDynamicMatrix, assign_operator_change_matrix_size)
 	m[0][0] = 1;
 	m1 = m;
 	
-	EXPECT_EQ(4, m1[0].size());
+	EXPECT_EQ(4, m1.size());
 }
 
 TEST(TDynamicMatrix, can_assign_matrices_of_different_size)
@@ -185,3 +185,4 @@ TEST(TDynamicMatrix, cant_subtract_matrixes_with_not_equal_size)
 	ASSERT_ANY_THROW(m - m1);
 }
 
+// todo
