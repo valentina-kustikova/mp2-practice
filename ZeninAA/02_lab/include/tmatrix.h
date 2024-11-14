@@ -128,7 +128,7 @@ public:
       {
           if (pMem[i] != v.pMem[i])
           {
-          return false;
+            return false;
           }
       }
       return true;
@@ -181,7 +181,7 @@ public:
       return tmp; 
       
   }
-  TDynamicVector operator-(const TDynamicVector& v)
+  TDynamicVector operator-(const TDynamicVector& v) // todo: v1+v2*(-1)
   {
       if (sz != v.sz) {
           throw "VECTORS WITH DIF SIZE";
@@ -323,7 +323,7 @@ public:
   friend istream& operator>>(istream& istr, TDynamicMatrix& v)
   {
       for (int i = 0; i < v.sz; i++) {
-          istr >> v[i]  
+          istr >> v[i]  // todo
       }
       return istr;
   }

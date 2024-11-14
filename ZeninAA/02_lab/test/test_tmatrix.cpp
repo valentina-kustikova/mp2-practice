@@ -60,13 +60,13 @@ TEST(TDynamicMatrix, can_set_and_get_element)
 TEST(TDynamicMatrix, throws_when_set_element_with_negative_index)
 {
     TDynamicMatrix<int> m(2);
-    ASSERT_ANY_THROW(m.at(-5) = 5);
+    ASSERT_ANY_THROW(m.at(-5).at(-5) = 5);
 }
 
 TEST(TDynamicMatrix, throws_when_set_element_with_too_large_index)
 {
     TDynamicMatrix<int> m(4);
-    ASSERT_ANY_THROW(m.at(7) = 3);
+    ASSERT_ANY_THROW(m.at(7).at(4) = 3);
 }
 
 TEST(TDynamicMatrix, can_assign_matrix_to_itself)
@@ -76,7 +76,7 @@ TEST(TDynamicMatrix, can_assign_matrix_to_itself)
   
 }
 
-TEST(TDynamicMatrix, can_assign_matrices_of_equal_size)
+TEST(TDynamicMatrix, can_assign_matrices_of_equal_size) // todo
 {
     TDynamicMatrix<int> m1(3);
     TDynamicMatrix<int> m2(3);
@@ -92,7 +92,7 @@ TEST(TDynamicMatrix, assign_operator_change_matrix_size)
     EXPECT_EQ(5, m1.size());
 }
 
-TEST(TDynamicMatrix, can_assign_matrices_of_different_size)
+TEST(TDynamicMatrix, can_assign_matrices_of_different_size) // todo
 {
     TDynamicMatrix<int> m1(2), m2(7);
     for (int i = 0; i < 2; i++)
@@ -175,3 +175,4 @@ TEST(TDynamicMatrix, cant_subtract_matrixes_with_not_equal_size)
     ASSERT_ANY_THROW(m1 - m2);
 }
 
+// todo (Написать тесты умножения матрицу на вектор и матрицу на матрицу)
