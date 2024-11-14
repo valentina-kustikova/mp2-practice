@@ -1,0 +1,6 @@
+C:/Users/ITMM-230041/Desktop/mp2-practice/KruglovaAV/01_lab/CMakeFiles/ALL_BUILD.dir
+C:/Users/ITMM-230041/Desktop/mp2-practice/KruglovaAV/01_lab/CMakeFiles/ZERO_CHECK.dir
+C:/Users/ITMM-230041/Desktop/mp2-practice/KruglovaAV/01_lab/src/CMakeFiles/set.dir
+C:/Users/ITMM-230041/Desktop/mp2-practice/KruglovaAV/01_lab/samples/CMakeFiles/sample_prime_numbers.dir
+C:/Users/ITMM-230041/Desktop/mp2-practice/KruglovaAV/01_lab/gtest/CMakeFiles/gtest.dir
+C:/Users/ITMM-230041/Desktop/mp2-practice/KruglovaAV/01_lab/test/CMakeFiles/test_set.dir
