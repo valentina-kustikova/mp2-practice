@@ -52,33 +52,29 @@ TEST(TDynamicVector, can_set_and_get_element)
 TEST(TDynamicVector, throws_when_set_element_with_negative_index)
 {
 	TDynamicVector<int> v(3);
-	ASSERT_ANY_THROW(v.at(-1));
+	ASSERT_ANY_THROW(v.at(-1) = 100);
 }
 
 TEST(TDynamicVector, throws_when_set_element_with_too_large_index)
 {
 	TDynamicVector<int> v(3);
-	ASSERT_ANY_THROW(v.at(4));
+	ASSERT_ANY_THROW(v.at(4) = 100);
 }
 
 TEST(TDynamicVector, can_assign_vector_to_itself)
 {
 	TDynamicVector<int> v(3);
 	ASSERT_NO_THROW(v = v);
-	for (int i = 0; i < 3; i++) {
-		v[i] = i;
-	}
-	EXPECT_EQ(v, v);
 }
 
 TEST(TDynamicVector, can_assign_vectors_of_equal_size)
 {
 	TDynamicVector<int> v(3), v1(3);
-	ASSERT_NO_THROW(v = v1);
 	for (int i = 0; i < 3; i++) {
 		v1[i] = i;
 	}
-	EXPECT_EQ(v1, v = v1);
+	v = v1;
+	EXPECT_EQ(v, v1);
 }
 
 TEST(TDynamicVector, assign_operator_change_vector_size)
@@ -91,12 +87,11 @@ TEST(TDynamicVector, assign_operator_change_vector_size)
 TEST(TDynamicVector, can_assign_vectors_of_different_size)
 {
 	TDynamicVector<int> v(3), v1(4);
-	ASSERT_NO_THROW(v = v1);
 	for (int i = 0; i < 4; i++) {
 		v1[i] = i;
 	}
 	v = v1;
-	EXPECT_EQ(v1, v = v1);
+	EXPECT_EQ(v, v1);
 }
 
 TEST(TDynamicVector, compare_equal_vectors_return_true)

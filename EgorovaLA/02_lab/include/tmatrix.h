@@ -52,7 +52,7 @@ public:
         v.pMem = nullptr;
     }
 
-    ~TDynamicVector()
+    ~TDynamicVector() 
     {
         if (pMem != nullptr) {
             delete[] pMem;
@@ -163,7 +163,7 @@ public:
         }
         return res;
     }
-    TDynamicVector operator-(const TDynamicVector& v)
+    TDynamicVector operator-(const TDynamicVector& v) // v1+v2*(-1)
     {
         if (sz != v.sz) throw "Not equal size";
         TDynamicVector res(sz);
@@ -242,12 +242,7 @@ public:
     // матрично-скалярные операции
     TDynamicMatrix operator*(const T& val)
     {
-        TDynamicMatrix<T> res(sz);
-        for (int i = 0; i < sz; i++)
-        {
-            res.pMem[i] = pMem[i] * val;
-        }
-        return res;
+        return TDynamicVector<TDynamicVector<T>>::operator*(val);
     }
 
     // матрично-векторные операции

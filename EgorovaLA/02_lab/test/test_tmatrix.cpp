@@ -52,13 +52,13 @@ TEST(TDynamicMatrix, can_set_and_get_element)
 TEST(TDynamicMatrix, throws_when_set_element_with_negative_index)
 {
 	TDynamicMatrix<int> m(5);
-	ASSERT_ANY_THROW(m.at(-3));
+	ASSERT_ANY_THROW(m.at(-3).at(-3) = 1000);
 }
 
 TEST(TDynamicMatrix, throws_when_set_element_with_too_large_index)
 {
 	TDynamicMatrix<int> m(5);
-	ASSERT_ANY_THROW(m.at(6));
+	ASSERT_ANY_THROW(m.at(10).at(10) = 1000);
 }
 
 TEST(TDynamicMatrix, can_assign_matrix_to_itself)
@@ -83,7 +83,9 @@ TEST(TDynamicMatrix, assign_operator_change_matrix_size)
 TEST(TDynamicMatrix, can_assign_matrices_of_different_size)
 {
 	TDynamicMatrix<int> m(5), m1(6);
-	ASSERT_NO_THROW(m = m1);
+	m[0][0] = 1000;
+	m1 = m;
+	EXPECT_TRUE(m == m1);
 }
 
 TEST(TDynamicMatrix, compare_equal_matrices_return_true)
@@ -152,3 +154,4 @@ TEST(TDynamicMatrix, cant_subtract_matrixes_with_not_equal_size)
 	ASSERT_ANY_THROW(m * m1);
 }
 
+// todo
