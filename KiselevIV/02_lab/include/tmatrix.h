@@ -56,7 +56,7 @@ public:
   {
       delete[] this->pMem;
   }
-  TDynamicVector& operator=(const TDynamicVector& v)
+  TDynamicVector& operator=(const TDynamicVector& v) //todo
   {
       delete [] pMem;
       sz = v.sz;
@@ -155,11 +155,10 @@ public:
       }
       return v1;
   }
-  TDynamicVector operator-(const TDynamicVector& v)const // todo: v1 + v2*(-1)
+  TDynamicVector operator-(const TDynamicVector& v)const
   {
       TDynamicVector v1(sz);
-      T tmp = -1;
-      v1 = v * (tmp);
+      v1 = v * T(-1);
       return (*this+ v1);
   }
   T operator*(const TDynamicVector& v) const
@@ -240,7 +239,7 @@ public:
   }
 
   // матрично-векторные операции
-  TDynamicVector<T> operator*(const TDynamicVector<T>& v)
+  TDynamicVector<T> operator*(const TDynamicVector<T>& v) // todo ?????????
   {
       TDynamicMatrix<T> res(sz);
       for (int i = 0; i < sz; i++)
@@ -276,13 +275,13 @@ public:
   // ввод/вывод
   friend istream& operator>>(istream& istr, TDynamicMatrix& v)
   {
-      for (size_t i = 0; i < v.sz; i++)
+      for (size_t i = 0; i < v.sz; i++) 
           istr >> v.pMem[i]; 
       return istr;
   }
   friend ostream& operator<<(ostream& ostr, const TDynamicMatrix& v)
   {
-      for (size_t i = 0; i < v.sz; i++)
+      for (size_t i = 0; i < v.sz; i++) // todo
           ostr << v.pMem[i] << ' ';
       return ostr;
   }

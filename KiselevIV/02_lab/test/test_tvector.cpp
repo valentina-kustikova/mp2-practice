@@ -39,7 +39,8 @@ TEST(TDynamicVector, copied_vector_has_its_own_memory)
     for (int i = 0; i < v.size(); i++)
         v[i] = i;
     TDynamicVector<int> v1(v);
-    EXPECT_NE(&v1[0], &v[0]);
+    v[0] = 1000;
+    EXPECT_NE(v1, v);
 }
 
 TEST(TDynamicVector, can_get_size)
@@ -59,14 +60,13 @@ TEST(TDynamicVector, can_set_and_get_element)
 TEST(TDynamicVector, throws_when_set_element_with_negative_index)
 {
     TDynamicVector <int> v(3);
-    ASSERT_ANY_THROW(v.at(-1));
-    //спросить, что будет если вызвать throw TDynamicVector<int> v.at(4)); без at
+    ASSERT_ANY_THROW(v.at(-1) = 1000);
 }
 
 TEST(TDynamicVector, throws_when_set_element_with_too_large_index)
 {
     TDynamicVector <int> v(3);
-    ASSERT_ANY_THROW(v.at(3));
+    ASSERT_ANY_THROW(v.at(3) = 1000);
 }
 
 TEST(TDynamicVector, can_assign_vector_to_itself)
@@ -75,7 +75,7 @@ TEST(TDynamicVector, can_assign_vector_to_itself)
     for (int i = 0; i < v.size(); i++) {
         v[i] = i;
     }
-    EXPECT_EQ(v, v);
+    ASSERT_NO_THROW(v = v);
 }
 
 TEST(TDynamicVector, can_assign_vectors_of_equal_size)
@@ -86,9 +86,10 @@ TEST(TDynamicVector, can_assign_vectors_of_equal_size)
         v[i] = i;
     }
     for (int i = 0; i < v1.size(); i++) {
-        v1[i] = i;
+        v1[i] = i + 10;
     }
-    ASSERT_NO_THROW(v=v1);
+    v = v1;
+    EXPECT_EQ(v, v1);
 }
 
 TEST(TDynamicVector, assign_operator_change_vector_size)
@@ -113,10 +114,10 @@ TEST(TDynamicVector, can_assign_vectors_of_different_size)
         v[i] = i;
     }
     for (int i = 0; i < v1.size(); i++) {
-        v1[i] = i;
+        v1[i] = i + 10;
     }
     v1 = v;
-    EXPECT_NE(4, v.size());
+    EXPECT_NE(4, v.size()); // todo by vectors
 }
 
 TEST(TDynamicVector, compare_equal_vectors_return_true)
@@ -129,7 +130,7 @@ TEST(TDynamicVector, compare_equal_vectors_return_true)
     for (int i = 0; i < v1.size(); i++) {
         v1[i] = i;
     }
-    EXPECT_EQ(1, v==v1);
+    ASSERT_TRUE(v==v1);
 }
 
 TEST(TDynamicVector, compare_vector_with_itself_return_true)
@@ -138,7 +139,7 @@ TEST(TDynamicVector, compare_vector_with_itself_return_true)
     for (int i = 0; i < v.size(); i++) {
         v[i] = i;
     }
-    EXPECT_EQ(1, v == v);
+    EXPECT_EQ(1, v == v); // todo ASSERT_NO_THROW
 }
 
 TEST(TDynamicVector, vectors_with_different_size_are_not_equal)
@@ -151,7 +152,7 @@ TEST(TDynamicVector, vectors_with_different_size_are_not_equal)
     for (int i = 0; i < v1.size(); i++) {
         v1[i] = i;
     }
-    EXPECT_NE(1, v == v1);
+    EXPECT_NE(1, v == v1); // todo
 }
 
 TEST(TDynamicVector, can_add_scalar_to_vector)
