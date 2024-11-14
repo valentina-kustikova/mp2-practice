@@ -36,10 +36,9 @@ TEST(TDynamicMatrix, copied_matrix_is_equal_to_source_one)
 
 TEST(TDynamicMatrix, copied_matrix_has_its_own_memory)
 {
-    TDynamicMatrix<int> m(10),m1(m);
+    TDynamicMatrix<int> m(10), m1(m);
     m1[0][0] = 100;
-    EXPECT_EQ(m1[0][0], 100); 
-    EXPECT_EQ(m[0][0], 0);
+    EXPECT_EQ(m, m1);
 }
 
 TEST(TDynamicMatrix, can_get_size)
@@ -60,14 +59,14 @@ TEST(TDynamicMatrix, throws_when_set_element_with_negative_index)
 {
     TDynamicMatrix<int> m(5);
 
-    ASSERT_ANY_THROW(m.at(-1) = 0);
+    ASSERT_ANY_THROW(m.at(-1).at(-1) = 0);
 }
 
 TEST(TDynamicMatrix, throws_when_set_element_with_too_large_index)
 {
     TDynamicMatrix<int> m(5);
 
-    ASSERT_ANY_THROW(m.at(10) = 0);
+    ASSERT_ANY_THROW(m.at(10).at(10) = 0);
 }
 
 TEST(TDynamicMatrix, can_assign_matrix_to_itself)
@@ -111,7 +110,7 @@ TEST(TDynamicMatrix, compare_equal_matrices_return_true)
     m1[1][0] = 1;
     m1[2][0] = 2;
     m2 = m1;
-    EXPECT_EQ(m1 == m2, true);
+    EXPECT_TRUE(m1 == m2); 
 }
 
 TEST(TDynamicMatrix, compare_matrix_with_itself_return_true)
@@ -120,25 +119,22 @@ TEST(TDynamicMatrix, compare_matrix_with_itself_return_true)
     m[0][0] = 0;
     m[1][0] = 1;
     m[2][0] = 2;
-    EXPECT_EQ(m == m, true);
+    EXPECT_TRUE(m == m);
 }
 
 TEST(TDynamicMatrix, matrices_with_different_size_are_not_equal)
 {
     TDynamicMatrix<int> m1(5),m2(10);
 
-    EXPECT_EQ(m1 == m2, false);
+    EXPECT_FALSE(m1 == m2); 
 }
 
 TEST(TDynamicMatrix, can_add_matrices_with_equal_size)
 {
     TDynamicMatrix<int> m1(5), m2(5), m3(5);
-    for (int i = 0; i < 5; ++i)
-    {
-        m1[i][i] = i;
-        m2[i][i] = i;
-        m3[i][i] = i + i;
-    }
+    m1[1][0] = 3;
+    m2[1][0] = 1;
+    m3[1][0] = 4;
     EXPECT_EQ(m1 + m2, m3);
 }
 
@@ -152,12 +148,9 @@ TEST(TDynamicMatrix, cant_add_matrices_with_not_equal_size)
 TEST(TDynamicMatrix, can_subtract_matrices_with_equal_size)
 {
     TDynamicMatrix<int> m1(5), m2(5), m3(5);
-    for (int i = 0; i < 5; ++i)
-    {
-        m1[i][i] = i;
-        m2[i][i] = i;
-        m3[i][i] = i - i;
-    }
+    m1[1][0] = 3;
+    m2[1][0] = 1;
+    m3[1][0] = 2;
     EXPECT_EQ(m1 - m2, m3);
 }
 
@@ -169,3 +162,4 @@ TEST(TDynamicMatrix, cant_subtract_matrixes_with_not_equal_size)
     ASSERT_ANY_THROW(m1 - m2);
 }
 
+// todo умножения
