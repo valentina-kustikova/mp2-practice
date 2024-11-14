@@ -23,8 +23,11 @@ private:
 public:
     ArrStack():top(-1), max_sz(0){}
 
-    ArrStack(int sz) :top(-1), max_sz(sz)
+    ArrStack(int sz) :top(-1)
     {
+        if (sz < 0)
+            throw std::exception("Size cannot be negative");
+        max_sz = sz;
         pMem = new T[sz];
     }
 
