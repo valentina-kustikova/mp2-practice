@@ -1,4 +1,5 @@
-
+#include <iostream>
+#include <string>
 
 template <typename T>
 class Stack {
@@ -42,15 +43,17 @@ public:
 
     void push(const T& elem)  {
 
-        if (top == -1 || top == maxsz) {
-            maxsz += (maxsz + 1) * 3;
-            arr = new T[maxsz];
-            if (top == -1) {
-                top++;
-            }
+        if (IsFull()) {
+            
+            T* tmp = arr;
+            arr = new T[(maxsz + 1) * 3];
+            std::copy(tmp,tmp + maxsz,arr);
+            maxsz = (maxsz + 1) * 3;            
         }
-        arr[top] = elem;
+
         top++;
+        arr[top] = elem;
+        
     }
 
 
@@ -67,7 +70,7 @@ public:
         return arr[top];
     };
     bool IsEmpty()  { return top == -1; };
-    bool IsFull()  { return top == maxsz; };
+    bool IsFull()  { return top == maxsz-1; };
 
     const ArrayStack<T>& operator=(const ArrayStack<T>& s) {
         if (*this == &s) {
