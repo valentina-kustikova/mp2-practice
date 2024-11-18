@@ -103,6 +103,7 @@ TEST(TDynamicMatrix, can_assign_matrix_to_itself)
 		}
 	}
 	ASSERT_NO_THROW(m = m);
+	EXPECT_EQ(m, m);
 }
 
 TEST(TDynamicMatrix, can_assign_matrices_of_equal_size)
@@ -159,7 +160,7 @@ TEST(TDynamicMatrix, compare_equal_matrices_return_true)
 		}
 	}
 	m2 = m;
-	EXPECT_EQ(true, m2 == m);
+	EXPECT_TRUE(m2 == m);
 }
 
 TEST(TDynamicMatrix, compare_matrix_with_itself_return_true)
@@ -172,13 +173,13 @@ TEST(TDynamicMatrix, compare_matrix_with_itself_return_true)
 			m[i][j] = 1;
 		}
 	}
-	EXPECT_EQ(true, m == m);
+	EXPECT_TRUE(m == m);
 }
 
 TEST(TDynamicMatrix, matrices_with_different_size_are_not_equal)
 {
 	TDynamicMatrix<int> m(4), m2(5);
-	EXPECT_EQ(false, m2 == m);
+	EXPECT_FALSE(m2 == m);
 }
 
 TEST(TDynamicMatrix, can_add_matrices_with_equal_size)

@@ -33,7 +33,6 @@ TEST(TDynamicVector, copied_vector_is_equal_to_source_one)
 		v1[i] = i;
 	}
 	TDynamicVector<int> v2(v1);
-	EXPECT_EQ(v1.size(), v2.size());
 	EXPECT_EQ(v1, v2);
 }
 
