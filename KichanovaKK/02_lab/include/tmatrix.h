@@ -158,7 +158,7 @@ public:
       TDynamicVector vcopy(v);
       return (*this) + vcopy * T(-1);
   }
-  T operator*(const TDynamicVector& v) noexcept(noexcept(T()))
+  T operator*(const TDynamicVector& v) 
   {
       if (sz != v.sz) {
           throw "error";
@@ -205,7 +205,7 @@ public:
     if (sz == 0 || sz > MAX_MATRIX_SIZE)
       throw out_of_range("Matrix size should be greater than zero");
     for (size_t i = 0; i < sz; i++)
-      pMem[i] = TDynamicVector<T>(sz-i);
+      pMem[i] = TDynamicVector<T>(sz);
   }
 
   using TDynamicVector<TDynamicVector<T>>::operator[];
@@ -223,20 +223,28 @@ public:
   // матрично-скалярные операции
   TDynamicMatrix operator*(const T& val) 
   {
-      return TDynamicVector<TDynamicVector<T>>::operator*(val);
+      TDynamicMatrix tmp(sz);
+      for (size_t i = 0; i < sz; i++){
+          tmp.pMem[i] = pMem[i] * val;
+      }
+      return tmp;
   }
 
   // матрично-векторные операции
   TDynamicVector<T> operator*(const TDynamicVector<T>& v) 
   {
+      if (sz != v.size()) {
+          throw "error";
+      }
       TDynamicVector<T> tmp(sz);
       for (size_t i = 0; i < sz; ++i) {
-          tmp.pMem[i] = 0; 
-          for (size_t j = 0; j < sz - 1; ++j) {
-              tmp.pMem[i] += pMem[i][j] * v.pMem[j+i]; 
+          tmp[i] = T(0); 
+          for (size_t j = 0; j < sz; ++j) {
+              tmp[i] += pMem[i][j] * v[j];
           }
       }
       return tmp;
+
   }
 
   // матрично-матричные операции
@@ -246,10 +254,20 @@ public:
   }
   TDynamicMatrix operator-(const TDynamicMatrix& m)
   {
-      return TDynamicVector<TDynamicVector<T>>::operator-(m);
+      //return TDynamicVector<TDynamicVector<T>>::operator-(m);
+      if (sz != m.sz) {
+          throw "error";
+      }
+      TDynamicMatrix tmp(sz);
+      for (size_t i = 0; i < sz; i++)
+          tmp.pMem[i] = pMem[i] - m.pMem[i];
+      return tmp;
   }
   TDynamicMatrix operator*(const TDynamicMatrix& m) 
   {
+      if (sz != m.sz) {
+          throw "error";
+      }
       TDynamicMatrix tmp(sz);
       for (size_t i = 0; i < sz; i++)
           for (size_t j = 0; j < sz-i; j++)
