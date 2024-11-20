@@ -237,7 +237,7 @@ public:
       TDynamicVector<T> result(sz);
       for (size_t i = 0; i < sz; i++) {
           result[i] = 0; // Обнуляем элемент
-          for (size_t j = 0; j < sz; j++) {
+          for (size_t j = i; j < sz; j++) {
               result[i] += pMem[i][j] * v[j];
           }
       }
@@ -246,17 +246,20 @@ public:
 
   // матрично-матричные операции
   TDynamicMatrix operator+(const TDynamicMatrix& m)// должна быть верхнетриугольная матрица todo TDynamicVector<TDynamicVector<T>>:: operator+(m)
-  {
+  {    
+      /**/
       if (sz != m.sz) {
           throw "different sizes";
       }
       TDynamicMatrix result(sz);
       for (size_t i = 0; i < sz; i++) {
-          for (size_t j = 0; j < sz; j++) {
+          for (size_t j = i ; j < sz; j++) {
               result[i][j] = this->pMem[i][j] + m.pMem[i][j];
           }
       }
+
       return result;
+      
 
       //return TDynamicVector<TDynamicVector<T>>::operator+(m);
   }
@@ -267,7 +270,7 @@ public:
       }
       TDynamicMatrix result(sz);
       for (size_t i = 0; i < sz; i++) {
-          for (size_t j = 0; j < sz; j++) {
+          for (size_t j = i; j < sz; j++) {
               result[i][j] = this->pMem[i][j] - m.pMem[i][j];
           }
       }
@@ -284,7 +287,7 @@ public:
       for (size_t i = 0; i < sz; i++) {
           for (size_t j = 0; j < sz-i; j++) {
               result[i][j] = 0; // Обнуляем элемент
-              for (size_t k = 0; k < j+1; k++) {
+              for (size_t k = i; k < j; k++) {
                   result[i][j] += this->pMem[i][k] * m.pMem[k][j];
               }
           }
@@ -313,11 +316,6 @@ public:
       return ostr;
   }
 
-  /*дополнительная функция
-  int get_size() {
-      return this->sz;
-  }
-  */
 };
 
 //реализовать через вектор

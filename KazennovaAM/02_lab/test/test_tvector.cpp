@@ -26,21 +26,14 @@ TEST(TDynamicVector, can_create_copied_vector)
 
 TEST(TDynamicVector, copied_vector_is_equal_to_source_one)
 {
-	TDynamicVector<int> v1(5);
-	TDynamicVector<int> v2(v1);
+	TDynamicVector<int> v1(5), v2(v1);
 
 	ASSERT_EQ(v1, v2);
 }
 
 TEST(TDynamicVector, copied_vector_has_its_own_memory)
 {
-	int n = 5;
-	TDynamicVector<int> v1(n);
-	for (int i = 0; i < n; i++)
-		v1[i] = 2;
-
-	TDynamicVector<int> v2(v1);
-
+	TDynamicVector<int> v1(2), v2(v1);
 	v2[0] = 10;
 
 	EXPECT_NE(v1, v2);
@@ -80,21 +73,18 @@ TEST(TDynamicVector, can_assign_vector_to_itself)
 	TDynamicVector<int> v(5);
 
 	ASSERT_NO_THROW(v = v);
-
 }
 
 TEST(TDynamicVector, can_assign_vectors_of_equal_size)
 {
-	TDynamicVector<int> v1(5);
-	TDynamicVector<int> v2(5);
+	TDynamicVector<int> v1(5), v2(5);
 
 	ASSERT_NO_THROW(v1 = v2);
 }
 
 TEST(TDynamicVector, assign_operator_change_vector_size)
 {
-	TDynamicVector<int> v1(5);
-	TDynamicVector<int> v2(10);
+	TDynamicVector<int> v1(5), v2(10);
 
 	v1 = v2;
 	ASSERT_EQ(v1.size(), v2.size());
@@ -102,100 +92,94 @@ TEST(TDynamicVector, assign_operator_change_vector_size)
 
 TEST(TDynamicVector, can_assign_vectors_of_different_size)
 {
-	TDynamicVector<int> v1(5);
-	TDynamicVector<int> v2(10);
+	TDynamicVector<int> v1(5), v2(10);
 
 	ASSERT_NO_THROW(v1 = v2);
 }
 
 TEST(TDynamicVector, compare_equal_vectors_return_true)
 {
-	TDynamicVector<int> v1(5);
-	TDynamicVector<int> v2(5);
+	TDynamicVector<int> v1(5), v2(5); 
 
 	ASSERT_TRUE(v1 == v2);
 }
 
 TEST(TDynamicVector, compare_vector_with_itself_return_true)
 {
-	TDynamicVector<int> v1(5);
+	TDynamicVector<int> v(2);
+	
+	v[0] = 1;
+	v[1] = 2;
 
-	ASSERT_EQ(v1 == v1, true); // todo изменить на ASSERT_TRUE или ASSERT_FALSE
+	ASSERT_TRUE(v == v); // todo изменить на ASSERT_TRUE или ASSERT_FALSE
 }
 
 TEST(TDynamicVector, vectors_with_different_size_are_not_equal)
 {
-	TDynamicVector<int> v1(5);
-	TDynamicVector<int> v2(10);
+	TDynamicVector<int> v1(5), v2(10); 
 
-	ASSERT_EQ(v1 == v2, false); // todo изменить на ASSERT_TRUE или ASSERT_FALSE
+	ASSERT_FALSE(v1 == v2); // todo изменить на ASSERT_TRUE или ASSERT_FALSE
 }
 
 TEST(TDynamicVector, can_add_scalar_to_vector)
 {
-	TDynamicVector<int> v1(2);
-	TDynamicVector<int> v2(2);
+	TDynamicVector<int> v1(2), sum(2), res(2);
 
-	int scal = 1;
 	v1[0] = 1;
 	v1[1] = 1;
-	v2[0] = 2;
-	v2[1] = 2;
+	sum[0] = 2;
+	sum[1] = 2;
 
-	v1 = v1 + scal; // todo записать разность в re
+	res = v1 + 1; // todo записать разность в re
 
-	ASSERT_EQ(v1 == v2, true);  // todo изменить на ASSERT_TRUE или ASSERT_FALSE
+	ASSERT_TRUE(res == sum);  // todo изменить на ASSERT_TRUE или ASSERT_FALSE
 }
 
 TEST(TDynamicVector, can_subtract_scalar_from_vector)
 {
-	TDynamicVector<int> v1(2);
-	TDynamicVector<int> v2(2);
-	TDynamicVector<int> res(2);
+	TDynamicVector<int> v1(2), v2(2), res(2);
 
-	double scal = 1.0;
 	v1[0] = 1;
 	v1[1] = 1;
 	v2[0] = 0;
 	v2[1] = 0;
 
-	v1 = v1 - scal;  // todo записать разность в res
+	res = v1 - 1;  // todo записать разность в res
 
-	ASSERT_EQ(v1 == v2, true);  // todo изменить на ASSERT_TRUE или ASSERT_FALSE
+	ASSERT_TRUE(v2 == res);  // todo изменить на ASSERT_TRUE или ASSERT_FALSE
 }
 
 TEST(TDynamicVector, can_multiply_scalar_by_vector)
 {
-	TDynamicVector<int> v1(2);
-	TDynamicVector<int> v2(2);
+	TDynamicVector<int> v1(2), v2(2), res(2);
 
-	double scal = 2.0;
 	v1[0] = 1;
 	v1[1] = 1;
 	v2[0] = 2;
 	v2[1] = 2;
 
-	v1 = v1 * scal; // todo  записать результат в res
+	res = v1 * 2; // todo  записать результат в res
 
-	ASSERT_EQ(v1 == v2, true); //возможно изменить на ASSERT_TRUE или ASSERT_FALSE
+	ASSERT_TRUE(v2 == res); //возможно изменить на ASSERT_TRUE или ASSERT_FALSE
 }
 
 TEST(TDynamicVector, can_add_vectors_with_equal_size)
 {
-	TDynamicVector<int> v1(2);
-	TDynamicVector<int> v2(2);
+	TDynamicVector<int> v1(2), v2(2), sum(2);
+
 	v1[0] = 1;
 	v1[1] = 1;
 	v2[0] = 2;
 	v2[1] = 2;
+	sum[0] = 3;
+	sum[1] = 3;
 
-	ASSERT_NO_THROW(v1 + v2); // todo сравнить с результатотм, записаным в res
+	ASSERT_TRUE(v1 + v2 == sum); // todo сравнить с результатотм, записаным в res
 }
 
 TEST(TDynamicVector, cant_add_vectors_with_not_equal_size)
 {
-	TDynamicVector<int> v1(2);
-	TDynamicVector<int> v2(1);
+	TDynamicVector<int> v1(2), v2(1); 
 
 	v1[0] = 1;
 	v1[1] = 1;
@@ -207,20 +191,20 @@ TEST(TDynamicVector, cant_add_vectors_with_not_equal_size)
 
 TEST(TDynamicVector, can_subtract_vectors_with_equal_size)
 {
-	TDynamicVector<int> v1(2);
-	TDynamicVector<int> v2(2);
+	TDynamicVector<int> v1(2), v2(2), res(2);
+
 	v1[0] = 1;
 	v1[1] = 1;
 	v2[0] = 2;
 	v2[1] = 2;
-
-	ASSERT_NO_THROW(v1 - v2); // todo сравнить с результатом, записать результат в res
+	res = v2 - v1;
+	ASSERT_TRUE(v1 == res); // todo сравнить с результатом, записать результат в res
 }
 
 TEST(TDynamicVector, cant_subtract_vectors_with_not_equal_size)
 {
-	TDynamicVector<int> v1(2);
-	TDynamicVector<int> v2(1);
+	TDynamicVector<int> v1(2), v2(1);
+
 	v1[0] = 1;
 	v1[1] = 1;
 	v2[0] = 2;
@@ -230,22 +214,25 @@ TEST(TDynamicVector, cant_subtract_vectors_with_not_equal_size)
 
 TEST(TDynamicVector, can_multiply_vectors_with_equal_size)
 {
-	TDynamicVector<int> v1(2);
-	TDynamicVector<int> v2(2);
+	TDynamicVector<int> v1(2), v2(2), res;
+
 	v1[0] = 1;
 	v1[1] = 1;
 	v2[0] = 2;
 	v2[1] = 2;
+	res = v1 * v2;
+   // todo сравнить с результатотм
+	
+	ASSERT_TRUE(v2 == res);
 
-	ASSERT_NO_THROW(v1 * v2); // todo сравнить с результатотм
 }
 
 TEST(TDynamicVector, cant_multiply_vectors_with_not_equal_size)
 {
-	TDynamicVector<int> v1(2);
-	TDynamicVector<int> v2(5);
-
+	TDynamicVector<int> v1(2), v2(5);
 
 	ASSERT_ANY_THROW(v1 * v2);
 }
+
+
 
