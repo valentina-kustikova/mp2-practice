@@ -142,7 +142,7 @@ public:
       }
       return res;
   }
-  TDynamicVector operator*(T val)
+  TDynamicVector operator*(T val) const
   {
       TDynamicVector<T> res(this->sz);
       for (int i = 0; i < this->sz; i++) {
@@ -152,7 +152,7 @@ public:
   }
 
   // векторные операции
-  TDynamicVector operator+(const TDynamicVector& v)
+  TDynamicVector operator+(const TDynamicVector& v) const
   {
       if (this->sz != v.sz) {
           throw("Wrong size of vectors.");
@@ -163,15 +163,10 @@ public:
       }
       return res;
   }
-  TDynamicVector operator-(const TDynamicVector& v)
+  TDynamicVector operator-(const TDynamicVector& v) const
   {
-      if (this->sz != v.sz) {
-          throw("Wrong size of vectors.");
-      }
       TDynamicVector<T> res(this->sz);
-      for (int i = 0; i < this->sz; i++) {
-          res[i] = this->pMem[i] - v.pMem[i];
-      }
+      res = *this + v * (-1);
       return res;
   }
   T operator*(const TDynamicVector& v)
@@ -243,14 +238,7 @@ public:
   // матрично-скалярные операции
   TDynamicMatrix operator*(const T& val)
   {
-      if (val == 0) {
-          throw "It's prohibited to multiply matrix and zero.";
-      }
-      TDynamicMatrix res (this->size());
-      for (int i = 0; i < this->sz; i++) {
-          res[i] = this->pMem[i] * val;
-      }
-      return res;
+      return TDynamicVector <TDynamicVector<T>>::operator* (val);
   }
 
   // матрично-векторные операции
@@ -259,7 +247,7 @@ public:
       if (this->size != v.size) {
           throw "Vector's have different sizes.";
       }
-      TDynamicVector<T> res (this->size());
+      TDynamicVector<T> res(this->size());
       for (int i = 0; i < this->size(); i++) {
           res[i] += this->pMem[i] * v;
       }

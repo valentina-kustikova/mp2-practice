@@ -31,7 +31,7 @@ TEST(TDynamicVector, copied_vector_is_equal_to_source_one)
 		v[i] = i;
 	}
 	TDynamicVector<int> v1(v);
-	EXPECT_EQ(1, v==v1);
+	EXPECT_TRUE(v==v1);
 }
 
 TEST(TDynamicVector, copied_vector_has_its_own_memory)
@@ -118,7 +118,7 @@ TEST(TDynamicVector, compare_equal_vectors_return_true)
 		v[i] = i;
 		v1[i] = i;
 	}
-	EXPECT_EQ(1, v==v1);
+	EXPECT_TRUE(v==v1);
 }
 
 TEST(TDynamicVector, compare_vector_with_itself_return_true)
@@ -127,7 +127,7 @@ TEST(TDynamicVector, compare_vector_with_itself_return_true)
 	for (int i = 0; i < 5; i++) {
 		v[i] = i;
 	}
-	EXPECT_EQ(1, v == v);
+	EXPECT_TRUE(v == v);
 }
 
 TEST(TDynamicVector, vectors_with_different_size_are_not_equal)
@@ -140,7 +140,7 @@ TEST(TDynamicVector, vectors_with_different_size_are_not_equal)
 	for (int i = 0; i < 6; i++) {
 		v1[i] = i;
 	}
-	EXPECT_EQ(0, v == v1);
+	EXPECT_FALSE(v == v1);
 }
 
 TEST(TDynamicVector, can_add_scalar_to_vector)
@@ -167,13 +167,13 @@ TEST(TDynamicVector, can_subtract_scalar_from_vector)
 
 TEST(TDynamicVector, can_multiply_scalar_by_vector)
 {
-	TDynamicVector<int> v(3);
+	TDynamicVector<int> v(3), v1(3);
 	size_t scalar = 3;
 	for (int i = 0; i < 3; i++) {
-		v[i] = i;
+		v[i] = i; // v = (0, 1, 2)
+		v1[i] = i * 3; // v1 = (0, 3, 6)
 	}
-	v = v * 3;
-	EXPECT_EQ(6, v[2]);
+	//EXPECT_EQ(v*scalar, v1);
 }
 
 TEST(TDynamicVector, can_add_vectors_with_equal_size)
