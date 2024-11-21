@@ -42,13 +42,13 @@ public:
           pMem[i] = v.pMem[i];
   }
  
-  TDynamicVector(TDynamicVector&& v)noexcept : sz(v.sz), pMem(v.pMem)
+  /*TDynamicVector(TDynamicVector&& v)noexcept : sz(v.sz), pMem(v.pMem)
   {
       this->pMem = v.pMem;
       v.pMem = nullptr;
       this->sz = v.sz;
       v.sz = 0;
-  }
+  }*/
   ~TDynamicVector()
   {
       delete[] pMem;
@@ -59,17 +59,18 @@ public:
           return *this;
       if (sz != v.sz) {
           delete[] pMem;
+          sz = v.sz;
           pMem = new T[sz];
-      }
+      }     
       for(int i = 0; i< sz;i++)
           pMem[i] = v.pMem[i];
       return *this;
   }
-  TDynamicVector& operator=(TDynamicVector&& v) noexcept // todo: swap - done
-  {
-      swap(*this, v);
-      return *this;
-  }
+  //TDynamicVector& operator=(TDynamicVector&& v) noexcept // todo: swap - done
+  //{
+  //    swap(*this, v);
+  //    return *this;
+  //}
 
   size_t size() const noexcept { return sz; }
 
@@ -144,7 +145,7 @@ public:
   }
 
   // векторные операции
-  TDynamicVector operator+(const TDynamicVector& v)
+  TDynamicVector operator+(const TDynamicVector& v) const
   {
       TDynamicVector<T> result(sz);
       if (sz != v.sz)
@@ -215,6 +216,10 @@ public:
 
   using TDynamicVector<TDynamicVector<T>>::operator[];
   using TDynamicVector<TDynamicVector<T>>::size;
+  using TDynamicVector<TDynamicVector<T>>::at;
+
+  TDynamicMatrix(const TDynamicMatrix<T>& m): TDynamicVector<TDynamicVector<T>>(m){}
+  TDynamicMatrix(const TDynamicVector<TDynamicVector<T>>& v) : TDynamicVector<TDynamicVector<T>>(v) {}
 
   // сравнение
   bool operator==(const TDynamicMatrix& m) const noexcept // todo: TDynamicVector<TDynamicVector<T>>::operator==(m)
@@ -222,10 +227,22 @@ public:
       return TDynamicVector<TDynamicVector<T>>::operator==(m);
   }
 
+  bool operator!=(const TDynamicMatrix& m) const noexcept // todo: TDynamicVector<TDynamicVector<T>>::operator==(m)
+  {
+      return TDynamicVector<TDynamicVector<T>>::operator!=(m);
+  }
+
   // матрично-скалярные операции
   TDynamicMatrix operator*(const T& val) //todo: TDynamicVector<TDynamicVector<T>>:: operator*(val)
   {
-      return TDynamicVector<TDynamicVector<T>>::operator*(val);
+      //return TDynamicVector<TDynamicVector<T>>::operator*(val);
+      TDynamicMatrix result(sz);
+      for (size_t i = 0; i < sz; i++) {
+          for (size_t j = i; j < sz; j++) {
+              result[i][j] = this->pMem[i][j] * val;
+          }
+      }
+      return result;
   }
 
   // матрично-векторные операции
@@ -247,7 +264,7 @@ public:
   // матрично-матричные операции
   TDynamicMatrix operator+(const TDynamicMatrix& m)// должна быть верхнетриугольная матрица todo TDynamicVector<TDynamicVector<T>>:: operator+(m)
   {    
-      /**/
+      /*
       if (sz != m.sz) {
           throw "different sizes";
       }
@@ -259,12 +276,13 @@ public:
       }
 
       return result;
-      
+      */
 
-      //return TDynamicVector<TDynamicVector<T>>::operator+(m);
+      return TDynamicVector<TDynamicVector<T>>::operator+(m);
   }
   TDynamicMatrix operator-(const TDynamicMatrix& m) //todo: TDynamicVector<TDynamicVector<T>>:: operator-(m)
   {
+      /*
       if (sz != m.sz) {
           throw "different sizes";
       }
@@ -275,8 +293,8 @@ public:
           }
       }
       return result;
-
-      //return TDynamicVector<TDynamicVector<T>>::operator-(m);
+      */
+      return TDynamicVector<TDynamicVector<T>>::operator-(m);
   }
   TDynamicMatrix operator*(const TDynamicMatrix& m) // должна быть верхнетриугольная матрица возможно 
   {
