@@ -1,3 +1,4 @@
+#pragma once
 #include <iostream>
 #include <string>
 
@@ -11,6 +12,11 @@ public:
     virtual bool IsFull() = 0;
 };
 
+
+
+
+
+
 template <typename T>
 class ArrayStack : public Stack<T> {
 private:
@@ -18,7 +24,7 @@ private:
     size_t maxsz;
     T* arr;
 public:
-    ArrayStack() : top(-1), maxsz(0) {};
+    ArrayStack() : top(-1), maxsz(0),arr(nullptr) {};
     ArrayStack(int sz) : top(-1)
     {
         if (sz <= 0) {
@@ -73,7 +79,7 @@ public:
     bool IsFull()  { return top == maxsz-1; };
 
     const ArrayStack<T>& operator=(const ArrayStack<T>& s) {
-        if (*this == &s) {
+        if (this == &s) {
             return *this;
         }
         if (maxsz != s.maxsz) {
@@ -101,4 +107,54 @@ public:
         }
         return 1;
     }
+};
+
+
+
+
+template <typename T>
+struct ListNode {
+    T val;
+    ListNode* next;
+    ListNode() : val(0), next(nullptr) {}
+    ListNode(T x) : val(x), next(nullptr) {}
+};
+
+
+
+template <typename T>
+class ListStack : public Stack<T> {
+private:
+    ListNode* node;
+public:
+    
+    void push(T el) {
+        if (IsEmpty()) {
+            node = new ListNode(el);
+            return;
+        }
+        ListNode* tmp = new ListNode(el);
+        tmp->next = node;
+        node = tmp;
+    }
+
+    void pop() {
+        if (IsEmpty()) {
+            throw "stack is empty"
+        }
+        ListNode* tmp = node;
+        node = node->next;
+        delete tmp;
+    }
+
+    ~ListStack() {
+        while (node != nullptr) {
+            ListNode* tmp = node;
+            node = node->next;
+            delete tmp;
+        }
+    }
+
+    bool IsEmpty() { return node == nullptr; };
+
 };
