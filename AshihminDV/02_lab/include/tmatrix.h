@@ -215,7 +215,7 @@ public:
   friend ostream& operator<<(ostream& ostr, const TDynamicVector& v)
   {
     for (size_t i = 0; i < v.sz; i++)
-      ostr << v.pMem[i] << ' '; // требуется оператор<< для типа T
+      ostr << setw(6) << v.pMem[i] << std::endl; // требуется оператор<< для типа T
     return ostr;
   }
 };
@@ -224,7 +224,7 @@ public:
 // Динамическая матрица - 
 // шаблонная матрица на динамической памяти
 template<typename T>
-class TDynamicMatrix : private TDynamicVector<TDynamicVector<T>>
+class TDynamicMatrix : public TDynamicVector<TDynamicVector<T>> //?
 {
     using TDynamicVector<TDynamicVector<T>>::pMem;
     using TDynamicVector<TDynamicVector<T>>::sz;
@@ -292,10 +292,9 @@ public:
       for (int i = 0; i < v.size(); i++)
       {
           ress[i] = 0;
-          for (int j = 0; j < ress.size(); j++)
+          for (int j = 0; j < ress.size()-i; j++)
           {
               ress[i] += pMem[i][j] * v[j + i];
-              //ress[i] += 12;
           }
       }
       return ress;
@@ -311,7 +310,7 @@ public:
   }
   TDynamicMatrix operator*(const TDynamicMatrix& m)
   {
-      if (this->sz != m.sz)
+      /*if (this->sz != m.sz)
       {
           throw "DIFF LEN";
       }
@@ -327,7 +326,18 @@ public:
               }
           }
       }
-      return ress;
+      return ress;*/
+      if (size() != m.size()) { throw "matricies has diff size"; }
+      TDynamicMatrix answ(m.sz);
+
+      for (int i = 0; i < m.sz; i++) {
+          for (int j = 0; j < m.sz - i; j++) {
+              for (int k = 0; k < j + 1; k++) {
+                  answ[i][j] += pMem[i][k] * m[k + i][j - k];
+              }
+          }
+      }
+      return answ;
   }
 
   // ввод/вывод

@@ -224,9 +224,9 @@ TEST(TDynamicMatrix, cant_subtract_matrixes_with_not_equal_size)
 
 TEST(TDynamicMatrix, can_multiply_matrix_by_vector)
 {
-	/*TDynamicMatrix<int> m1(2);
+	TDynamicMatrix<int> m1(2);
 	TDynamicVector<int> v1(2), v2(2), v3(2);
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < 2; i++)
 	{
 		v1[i] = 19;
 		for (int j = 0; j < 2 - i; j++)
@@ -234,19 +234,22 @@ TEST(TDynamicMatrix, can_multiply_matrix_by_vector)
 			m1[i][j] = i+j+1;
 		}
 	}
-	std::cout << m1 << std::endl;
-	std::cout << v1 << std::endl;
 	v2 = m1 * v1;
 	v3[0] = 57;
-	v3[1] = 76;
-	std::cout << v2 << std::endl;
-	EXPECT_EQ(v2, v3);*/
-	EXPECT_EQ(1,1);
+	v3[1] = 38;
+	EXPECT_EQ(v2, v3);
+}
+
+TEST(TDynamicMatrix, cant_multiply_matrix_by_vector)
+{
+	TDynamicMatrix<int> m1(2);
+	TDynamicVector<int> v1(3);
+	ASSERT_ANY_THROW(m1*v1);
 }
 
 TEST(TDynamicMatrix, can_multiply_matrix_by_matrix)
 {
-	/*TDynamicMatrix<int> m1(2), m2(2), m3(2), m_res(2);
+	TDynamicMatrix<int> m1(2), m2(2), m3(2), m_res(2);
 	for (int i = 0; i < 3; i++)
 	{
 		for (int j = 0; j < 2 - i; j++)
@@ -257,11 +260,15 @@ TEST(TDynamicMatrix, can_multiply_matrix_by_matrix)
 	}
 	m3[0][0] = 3;
 	m3[0][1] = 9;
-	m3[1][1] = 12;
+	m3[1][0] = 6;
 
 	m_res = m1 * m2;
 
-	std::cout << m_res << std::endl;
-	EXPECT_EQ(m2, m3);*/
-	EXPECT_EQ(1, 1);
+	EXPECT_EQ(m3, m_res);
+}
+
+TEST(TDynamicMatrix, cant_multiply_matrix_by_matrix)
+{
+	TDynamicMatrix<int> m1(2), m2(4);
+	ASSERT_ANY_THROW(m1 * m2);
 }
