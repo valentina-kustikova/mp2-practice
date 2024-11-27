@@ -21,7 +21,7 @@ private:
     size_t max_sz;
     T* pMem;
 public:
-    ArrStack():top(-1), max_sz(0){}
+    ArrStack() :top(-1), max_sz(0), pMem(nullptr) {}
 
     ArrStack(int sz) :top(-1)
     {
@@ -29,6 +29,15 @@ public:
             throw std::exception("Size cannot be negative");
         max_sz = sz;
         pMem = new T[sz];
+    }
+
+    ArrStack(const ArrStack& s) :top(s.top), max_sz(s.max_sz)
+    {
+        pMem = new T[max_sz];
+        for (int i = 0; i < max_sz; i++)
+        {
+            pMem[i] = s.pMem[i];
+        }
     }
 
     ~ArrStack()
@@ -66,6 +75,38 @@ public:
     bool IsEmpty() { return top == -1; }
 
     bool IsFull() { return top == (max_sz - 1); }
+
+    const ArrStack<T>& operator=(const ArrStack<T>& s) 
+    {
+        if (this != &s)
+        {
+            if (max_sz != s.max_sz)
+            {
+                if (max_sz != 0) {
+                    delete[] pMem;
+                }
+                max_sz = s.max_sz;
+                pMem = new T[max_sz];
+            }
+            top = s.top;
+            for (int i = 0; i < max_sz; i++)
+            {
+                pMem[i] = s.pMem[i];
+            }
+        }        
+        return *this;
+    }
+
+    void Mirror_Stack()
+    {
+        ArrStack<T> temp(this->max_sz);
+        while (!(this->IsEmpty()))
+        {
+            temp.Push(this->Top());
+            this->Pop();
+        }
+        *this = temp;
+    }
 };
 
 #endif 
