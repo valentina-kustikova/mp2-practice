@@ -151,7 +151,35 @@ TEST(TDynamicMatrix, can_subtract_matrices_with_equal_size)
 TEST(TDynamicMatrix, cant_subtract_matrixes_with_not_equal_size)
 {
 	TDynamicMatrix<int> m(5), m1(6);
+	ASSERT_ANY_THROW(m - m1);
+}
+
+TEST(TDynamicMatrix, cant_multiply_matrixes_with_not_equal_size)
+{
+	TDynamicMatrix<int> m(5), m1(6);
 	ASSERT_ANY_THROW(m * m1);
 }
 
+TEST(TDynamicMatrix, can_multiply_matrixes_with_equal_size)
+{
+	TDynamicMatrix<int> m(5), m1(5), res(5);
+	for (int i = 0; i < 5; i++)
+	{
+		for (int j = 0; j < 5 - i; j++)
+		{
+			m[i][j] = i + j;
+			m1[i][j] = i + j;
+			res[i][j] = 0;
+		}
+	}
+	for (int i = 0; i < 5; i++) {
+		for (int j = 0; j < 5 - i; j++) {
+			for (int k = 0; k < j + 1; k++) {
+				res[i][j] += m[i][k] * m1[k + i][j - k];
+			}
+		}
+	}
+
+	EXPECT_EQ(m * m1, res);
+}
 // todo

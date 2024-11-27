@@ -163,7 +163,7 @@ public:
         }
         return res;
     }
-    TDynamicVector operator-(const TDynamicVector& v) // v1+v2*(-1)
+    TDynamicVector operator-(const TDynamicVector& v) 
     {
         if (sz != v.sz) throw "Not equal size";
         TDynamicVector res(sz);
@@ -274,10 +274,10 @@ public:
     {
         if (size() != m.size()) 
             throw "Matrixes have diff size";
-        TDynamicMatrix answ(m.sz);
+        TDynamicMatrix answ(sz);
 
-        for (int i = 0; i < m.sz; i++) {
-            for (int j = 0; j < m.sz - i; j++) {
+        for (int i = 0; i < sz; i++) {
+            for (int j = 0; j < sz - i; j++) {
                 for (int k = 0; k < j + 1; k++) {
                     answ[i][j] += pMem[i][k] * m[k + i][j - k];
                 }
