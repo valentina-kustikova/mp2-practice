@@ -69,11 +69,14 @@ void TBitField::ClrBit(const int n) // очистить бит
 
 int TBitField::GetBit(const int n) const // получить значение бита
 {
-    if (n < 0) throw range_error("There is no such bit");
-    if (n >= BitLen) throw out_of_range("There is no such bit");
-  return (pMem[n/ (sizeof(TELEM) * 8)]&(1<<(n% (sizeof(TELEM) * 8))))>>(n% (sizeof(TELEM) * 8)); // todo
+    if (n < 0) {
+        throw range_error("There is no such bit");
+    }
+    if (n >= BitLen) {
+        throw out_of_range("This bit does not exist");
+    }
+    return (pMem[GetMemIndex(n)] & GetMemMask(n)) >> (n % (8 * sizeof(TELEM)));
 }
-
 // битовые операции
 
 const TBitField& TBitField::operator=(const TBitField& bf) 
@@ -110,7 +113,7 @@ int TBitField::operator==(const TBitField& bf) const
 
 int TBitField::operator!=(const TBitField& bf) const
 {
-    return ~(*this == bf);
+    return !(*this == bf);
 }
 
 
@@ -119,20 +122,29 @@ TBitField TBitField::operator|(const TBitField& bf) // операция "или"
 {
     TBitField bf1(max(BitLen, bf.BitLen));
 
-    for (int i = 0; i < max(this->MemLen, bf.MemLen); i++) {
-        bf1.pMem[i] = this->pMem[i] | bf.pMem[i];
+    for (int i = 0; i < this->MemLen; i++) {
+        bf1.pMem[i] = this->pMem[i];
     }
+
+    for (int i = 0; i < bf.MemLen; i++) {
+        bf1.pMem[i] |= bf.pMem[i];
+    }
+
     return bf1;
 }
 
 TBitField TBitField::operator&(const TBitField& bf) // операция "и"
 {
     TBitField bf1(max(BitLen, bf.BitLen));
-    for (int i = 0; i < max(this->MemLen, bf.MemLen); i++) {
 
-        bf1.pMem[i] = this->pMem[i] & bf.pMem[i];
-
+    for (int i = 0; i < this->MemLen; i++) {
+        bf1.pMem[i] = this->pMem[i];
     }
+
+    for (int i = 0; i < bf.MemLen; i++) {
+        bf1.pMem[i] &= bf.pMem[i];
+    }
+
     return bf1;
 }
 TBitField TBitField::operator~(void) // отрицание
