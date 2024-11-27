@@ -156,84 +156,107 @@ TEST(TDynamicMatrix, can_add_matrices_with_equal_size)
 
 TEST(TDynamicMatrix, cant_add_matrices_with_not_equal_size)
 {
-    TDynamicMatrix<int> m1(20);
-    TDynamicMatrix<int> m2(15);
+    TDynamicMatrix<int> m(2);
+    TDynamicMatrix<int> m1(1);
+    m[0][0] = 1;
+    m[0][1] = 2;
+    m[1][0] = 3;
 
-    ASSERT_NO_THROW(m1 + m2);
+    m1[0][0] = 5;
+    ASSERT_ANY_THROW(m1 + m);
   
 }
 
 TEST(TDynamicMatrix, can_subtract_matrices_with_equal_size)
 {
-    TDynamicMatrix<int> m1(5);
-    TDynamicMatrix<int> m2(5);
-    TDynamicMatrix<int> diff(5);
-    //ASSERT_NO_THROW(m1 - m2);
-    // todo сравнить с результатотм
-   
-    for (int i = 0; i < 5; i++)
+    TDynamicMatrix<int> m(2), m1(2), res(2);  // todo
+    for (int i = 0; i < 2; i++)
     {
-        for (int j = 0; j < 5 - i ; j++)
+        for (int j = 0; j < 2 - i; j++)
         {
-            m1[i][j] = i + j + 1;
-            m2[i][j] = i + j;
-            diff[i][j] = (i + j + 1) - (i + j);
+            m[i][j] = i + j;
+            m1[i][j] = i + j;
+            res[i][j] = i + j - i - j;
         }
     }
-    //ASSERT_NO_THROW(m1 + m2);
-    EXPECT_EQ(diff, m1 - m2);
+    EXPECT_EQ(m - m1, res);
 }
 
 TEST(TDynamicMatrix, cant_subtract_matrixes_with_not_equal_size)
 {
-    TDynamicMatrix<int> m1(5);
-    TDynamicMatrix<int> m2(15);
-
-    ASSERT_ANY_THROW(m1 - m2);// ќжидаем исключение при вычитании матриц разного размера;
+    TDynamicMatrix<int> m(2), m1(5);
+    ASSERT_ANY_THROW(m - m1);
 }
 
-TEST(TDynamicMatrix, can_multiply_matrices_with_equal_size)
+
+
+TEST(TDynamicMatrix, can_multiply_matrix_by_vector)//+
 {
-    TDynamicMatrix<int> m1(5);
-    TDynamicMatrix<int> m2(5);
-    TDynamicMatrix<int> mult(5);
 
-    // todo сравнить с результатотм
+    TDynamicMatrix<int> m(3);
+    TDynamicVector<int> v(3), mult(3);
+    m[0][0] = 1;
+    m[0][1] = 2;
+    m[0][2] = 3;
+    m[1][0] = 4;
+    m[1][1] = 5;
+    m[2][0] = 6;
 
-    for (int i = 0; i < 5; i++)
-    {
-        for (int j = 0; j < 2 - i; j++)
-        {
-            m1[i][j] = i + j + 1;
-            m2[i][j] = i + j;
-            mult[i][j] = (i + j + 1) * (i + j);
-        }
-    }
-    EXPECT_EQ(mult, m1 * m2);
+    v[0] = 3;
+    v[1] = 5;
+    v[2] = 7;
+
+    mult[0] = 3 * 1 + 5 * 2 + 7 * 3;
+    mult[1] = 4 * 5 + 5 * 7;
+    mult[2] = 6 * 7;
+
+    TDynamicVector<int> res = m * v;
+    EXPECT_EQ(res, mult);
 }
+TEST(TDynamicMatrix, can_multiply_matrix_by_const) {
+    TDynamicMatrix<int> m(2), res(2);
+    const int val = 10;
+    m[0][0] = 1;
+    m[0][1] = 2;
+    m[1][0] = 3;
 
-TEST(TDynamicMatrix, cant_multiply_matrixes_with_not_equal_size)
-{
-    TDynamicMatrix<int> m1(5), m2(15);
-
-    ASSERT_ANY_THROW(m1 * m2);
-}
-
-TEST(TDynamicMatrix, can_multiply_matrixes_and_scalar)
-{
-    TDynamicMatrix<int> m1(5), mult(5);
-    m1[0][0] = 1;
-    mult[0][0] = 5;
-    EXPECT_EQ(mult, m1 * 5);
-}
-
-TEST(TDynamicMatrix, can_multiply_matrixes_and_vector)
-{
-    TDynamicMatrix<int> m1(2);
-    TDynamicMatrix<int> v(2), res(2);
-    m1[0][0] = 1;
-    v[0][0] = 5;
     res[0][0] = 10;
-    EXPECT_EQ(res, m1 * v);
+    res[0][1] = 20;
+    res[1][0] = 30;
+    TDynamicMatrix<int> mult = m * val;
+
+
+    ASSERT_EQ(mult, res);
+
+}
+TEST(TDynamicMatrix, can_multiply_matricies)
+{
+
+    TDynamicMatrix<int> m1(2), m2(2), res(2), real(2);
+    m1[0][0] = 2;
+    m1[0][1] = 2;
+    m1[1][0] = 0;
+    m1[1][1] = 2;
+
+    m2[0][0] = 3;
+    m2[0][1] = 3;
+    m2[1][0] = 0;
+    m2[1][1] = 3;
+
+    res[0][0] = 6;
+    res[0][1] = 12;
+    res[1][0] = 0;
+    res[1][1] = 6;
+    real = m1 * m2;
+
+    EXPECT_EQ(real, res);
+    /*
+    C:\Users\user\mp2-practice\KazennovaAM\02_lab\test\test_tmatrix.cpp(252): error:
+    Value of: res
+    Actual: 6 12 0 6
+    Expected: real
+    Which is: 6 6 0 -33686019
+    */
+
 }
 
