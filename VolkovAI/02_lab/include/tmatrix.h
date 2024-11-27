@@ -25,7 +25,7 @@ protected:
 public:
   TDynamicVector(size_t size = 1) : sz(size)
   {
-    if (sz <= 0 || sz>MAX_VECTOR_SIZE) {
+    if (sz>MAX_VECTOR_SIZE) {
         throw out_of_range("Vector size should be greater than zero or lesser than max. size.");
     }
     pMem = new T[sz]();// {}; // У типа T д.б. констуктор по умолчанию
@@ -36,9 +36,8 @@ public:
     pMem = new T[sz];
     std::copy(arr, arr + sz, pMem);
   }
-  TDynamicVector(const TDynamicVector& v)
+  TDynamicVector(const TDynamicVector& v) : sz(v.sz)
   {
-      this->sz = v.sz;
       this->pMem = new T[sz];
       for (int i = 0; i < sz; i++) {
           this->pMem[i] = v.pMem[i];
@@ -142,17 +141,25 @@ public:
       }
       return res;
   }
+  TDynamicVector operator*(T val)
+  {
+      TDynamicVector<T> res(this->sz);
+      for (int i = 0; i < this->sz; i++) {
+          res[i] = val * this->pMem[i];
+      }
+      return res;
+  }
   TDynamicVector operator*(T val) const
   {
       TDynamicVector<T> res(this->sz);
       for (int i = 0; i < this->sz; i++) {
-          res.pMem[i] = this->pMem[i] * val;
+          res[i] = this->pMem[i] * val;
       }
       return res;
   }
 
   // векторные операции
-  TDynamicVector operator+(const TDynamicVector& v) const
+  TDynamicVector operator+(const TDynamicVector& v)  const
   {
       if (this->sz != v.sz) {
           throw("Wrong size of vectors.");
@@ -163,18 +170,27 @@ public:
       }
       return res;
   }
-  TDynamicVector operator-(const TDynamicVector& v) const
+  TDynamicVector operator-(const TDynamicVector& v) 
   {
-      TDynamicVector<T> res(this->sz);
-      res = *this + v * (-1);
+      if (sz != v.sz)
+      {
+          throw "Vectors have different dim";
+      }
+      TDynamicVector res(sz);
+      for (int i = 0; i < sz; i++)
+      {
+          res.pMem[i] = pMem[i] - v.pMem[i];
+      }
       return res;
+      // return *this + v * (-1);
   }
   T operator*(const TDynamicVector& v)
   {
-      if (this->sz != v.sz) {
+      if (this->sz != v.size()) {
           throw("Wrong size of vectors.");
       }
-      T res = 0;
+      T res =  T();
+      // T res = 0;
       for (int i = 0; i < this->sz; i++) {
           res += this->pMem[i] * v.pMem[i];
       }
@@ -216,8 +232,9 @@ public:
       if (s < 0 || s > MAX_MATRIX_SIZE) {
           throw "Incorrect Matrix size.";
       }
-    for (size_t i = 0; i < sz; i++)
-      pMem[i] = TDynamicVector<T>(sz - i);
+      for (size_t i = 0; i < sz; i++) {
+          pMem[i] = TDynamicVector<T>(sz - i);
+      }
   }
 
   TDynamicMatrix(const TDynamicMatrix<T>& m) : TDynamicVector <TDynamicVector<T>>(m) {
@@ -244,12 +261,18 @@ public:
   // матрично-векторные операции
   TDynamicVector<T> operator*(const TDynamicVector<T>& v)
   {
-      if (this->size != v.size) {
-          throw "Vector's have different sizes.";
+      if (this->sz != v.size())
+      {
+          throw "Different sizes.";
       }
-      TDynamicVector<T> res(this->size());
-      for (int i = 0; i < this->size(); i++) {
-          res[i] += this->pMem[i] * v;
+      TDynamicVector<T> res(v.size());
+      for (int i = 0; i < v.size(); i++)
+      {
+          res[i] = 0;
+          for (int j = 0; j < res.size() - i; j++)
+          {
+              res[i] += pMem[i][j] * v[j + i];
+          }
       }
       return res;
   }
@@ -261,7 +284,7 @@ public:
   }
   TDynamicMatrix operator-(const TDynamicMatrix& m)
   {
-      return TDynamicVector <TDynamicVector<T>>::operator- (m);
+      return TDynamicVector <TDynamicVector <T>>::operator- (m);
   }
   TDynamicMatrix operator*(const TDynamicMatrix& m)
   {

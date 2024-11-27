@@ -36,9 +36,13 @@ TEST(TDynamicMatrix, copied_matrix_is_equal_to_source_one)
 
 TEST(TDynamicMatrix, copied_matrix_has_its_own_memory)
 {
-  TDynamicMatrix<int> m(5);
-  TDynamicMatrix<int> m1(m);
-  EXPECT_NE(&m, &m1);
+    TDynamicVector<int> v(5);
+    for (int i = 0; i < v.size(); i++) {
+        v[i] = i;
+    }
+    TDynamicVector<int> v1(v);
+    v1[3] = 5;
+    EXPECT_NE(v, v1);
 }
 
 TEST(TDynamicMatrix, can_get_size)
@@ -66,8 +70,8 @@ TEST(TDynamicMatrix, throws_when_set_element_with_negative_index)
 
 TEST(TDynamicMatrix, throws_when_set_element_with_too_large_index)
 {
-  TDynamicMatrix<int> m(5);
-  ASSERT_ANY_THROW(m[70][5] = 10;);
+    TDynamicMatrix<int> m(5);
+    ASSERT_ANY_THROW(m[0].at(MAX_VECTOR_SIZE) = 5);
 }
 
 TEST(TDynamicMatrix, can_assign_matrix_to_itself)
@@ -176,19 +180,19 @@ TEST(TDynamicMatrix, cant_add_matrices_with_not_equal_size)
   ASSERT_ANY_THROW(m+m1);
 }
 
-TEST(TDynamicMatrix, can_subtract_matrices_with_equal_size) // TODO
+TEST(TDynamicMatrix, can_subtract_matrices_with_equal_size)
 {
-  TDynamicMatrix<int> m(5);
-  TDynamicMatrix<int> m1(5);
-  TDynamicMatrix<int> res(5);
-  for (int i = 0; i < 5; i++) {
-    for (int j = 0; j < 5-i; j++) {
-      m[i][j] = i;
-      m1[i][j] = i+3;
-      res[i][j] = i-i-3;
+    TDynamicMatrix<int> m(5);
+    TDynamicMatrix<int> m1(5);
+    TDynamicMatrix<int> res(5);
+    for (int i = 0; i < 5; i++) {
+        for (int j = 0; j < 5-i; j++) {
+            m[i][j] = i;
+            m1[i][j] = i+3;
+            res[i][j] = i-i-3;
+        }
     }
-  }
-  EXPECT_EQ(res, m-m1);
+    EXPECT_EQ(res, m-m1);
 }
 
 TEST(TDynamicMatrix, cant_subtract_matrixes_with_not_equal_size)
@@ -198,3 +202,22 @@ TEST(TDynamicMatrix, cant_subtract_matrixes_with_not_equal_size)
   ASSERT_ANY_THROW(m-m1);
 }
 
+// Multiplying test's
+
+TEST(TDynamicMatrix, can_multiply_matrix_by_vector) {
+    TDynamicMatrix<int> m(3);
+    for (int i = 0; i < 5; i++) {
+        for (int j = 0; j < 5 - i; j++) {
+            m[i][j] = i;
+        }
+    }
+    TDynamicVector<int> v(3);
+    for (int i = 0; i < 3; i++) {
+        v[i] = i + 3;
+    }
+    TDynamicVector<int> answ(3);
+    answ[0] = 14;
+    answ[1] = 14;
+    answ[2] = 20;
+    EXPECT_EQ(answ, m*v);
+}
