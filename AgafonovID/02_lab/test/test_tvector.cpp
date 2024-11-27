@@ -68,6 +68,7 @@ TEST(TDynamicVector, throws_when_set_element_with_too_large_index)
 TEST(TDynamicVector, can_assign_vector_to_itself)
 {
     TDynamicVector<int> v(5);
+    v[0] = 10;
     ASSERT_NO_THROW(v = v);
 }
 
@@ -85,7 +86,7 @@ TEST(TDynamicVector, assign_operator_change_vector_size)
     TDynamicVector<int> v(5);
     TDynamicVector<int> v1(10);
     v = v1;
-    EXPECT_EQ(v.size(), 10);
+    EXPECT_EQ(v.size(), v1.size());
 }
 
 TEST(TDynamicVector, can_assign_vectors_of_different_size)

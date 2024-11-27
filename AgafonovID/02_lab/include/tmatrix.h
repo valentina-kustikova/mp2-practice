@@ -24,16 +24,15 @@ protected:
   T* pMem;
 public:
   TDynamicVector(size_t size = 1) : sz(size)
-  {
-    if (sz == 0)
-      throw out_of_range("Vector size should be greater than zero");
-    if (size > MAX_VECTOR_SIZE) {
+  {   
+    if (sz <= 0) {
+        throw out_of_range("Vector size should be greater than zero");
+    }
+    if (sz > MAX_VECTOR_SIZE) {
         throw std::out_of_range("Vector size is too large");
     }
-    if (size < 0) { // Эта проверка не имеет смысла, так как size_t всегда >= 0
-        throw std::out_of_range("Negative size");
-    }
     pMem = new T[sz]();// {}; // У типа T д.б. констуктор по умолчанию
+
   }
   TDynamicVector(T* arr, size_t s) : sz(s)
   {
@@ -48,9 +47,10 @@ public:
           pMem[i] = v.pMem[i];
       }
   }
-  TDynamicVector(TDynamicVector&& v) noexcept : sz(v.sz), pMem(v.pMem)
+  TDynamicVector(TDynamicVector&& v) noexcept : sz(v.sz)
   {
       v.sz = 0;
+      pMem = v.pMem;
       v.pMem = nullptr;
   }
   ~TDynamicVector()
@@ -178,7 +178,7 @@ public:
       }
       return res;
   }
-  T operator*(const TDynamicVector& v) noexcept(noexcept(T()))
+  T operator*(const TDynamicVector& v) //noexcept(noexcept(T()))
   {
       if (sz != v.sz) {
           throw std::exception("Different size");
@@ -225,17 +225,20 @@ public:
       if (s > MAX_MATRIX_SIZE) {
           throw std::exception("Incorrect size");
       }
-    for (size_t i = 0; i < sz; i++)
-      pMem[i] = TDynamicVector<T>(sz-i);
+      if (sz <= 0) {
+          throw out_of_range("size should be greater than zero");
+      }
+      for (size_t i = 0; i < sz; i++) {
+          pMem[i] = TDynamicVector<T>(sz - i);
+      }
+     
   }
 
-  
   using TDynamicVector<TDynamicVector<T>>::at;
   using TDynamicVector<TDynamicVector<T>>::size;
   using TDynamicVector<TDynamicVector<T>>::operator[];
 
   TDynamicMatrix(const TDynamicMatrix<T>& m) : TDynamicVector<TDynamicVector<T>>(m) {};
-
   TDynamicMatrix(const TDynamicVector<TDynamicVector<T>>& m) : TDynamicVector<TDynamicVector<T>>(m) {};
 
   // сравнение
