@@ -7,9 +7,15 @@ using namespace std;
 
 string postfixform(string , ArrayStack<string>& );
 
+string postfixform(string, ListStack<string>&);
+
 double solvepf(ArrayStack<string>);
 
+double solvepf(ListStack<string>&);
+
 double test_solvepf(ArrayStack<string>, unordered_map<string, double>);
+
+double test_solvepf(ListStack<string>&, unordered_map<string, double>);
 
 bool is_op(char el);
 

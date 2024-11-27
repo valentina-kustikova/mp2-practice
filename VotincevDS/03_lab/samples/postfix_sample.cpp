@@ -3,14 +3,35 @@ using namespace std;
 
 int main()
 {
-    // -1+33-A*-5+AA-A/(A-AA)
-    string tmp = "-1--2--3--4+-5-6";
-    /*cout << "Type expression: \n";
-    getline(cin,tmp);*/
-    ArrayStack<string> s2;
-    string pf = postfixform(tmp,s2);
-    cout << tmp << '\n';
-    cout << pf << '\n';
-    cout << "Result: " << solvepf(s2);
+    setlocale(LC_ALL, "Russian");
+
+    cout << "Введите, какой стек тестируем\n" <<
+        "0 - ArrayStack   1 - ListStack\n";
+    char stack_type;
+    cin >> stack_type;
+    cin.ignore();
+    while (stack_type != '0' && stack_type != '1') {
+        cout << "Неверно выбран стек\n";
+        cin >> stack_type;
+        cin.ignore();
+    } 
+  
+    if (stack_type == '0') {    
+        ArrayStack<string> pf_stack; 
+        string expr;
+        cout << "Введите выражение\n"; 
+        getline(cin, expr);
+        string pf = postfixform(expr, pf_stack);
+        cout << "Постфиксная форма:\n" << pf << '\n';
+        cout << "Result: " << solvepf(pf_stack); 
+    } else {
+        ListStack<string> pf_stack;
+        string expr;
+        cout << "Введите выражение\n";
+        getline(cin, expr);
+        string pf = postfixform(expr, pf_stack);
+        cout << "Постфиксная форма:\n" << pf << '\n';
+        cout << "Result: " << solvepf(pf_stack);
+    }
     return 0;
 }

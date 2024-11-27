@@ -3,6 +3,10 @@
 #include <gtest.h>
 
 
+//
+//                ArrayStack
+//
+
 
 TEST(ArrayStack, can_create_stack_with_positive_length)
 {
@@ -23,10 +27,11 @@ TEST(ArrayStack, can_create_copied_stack)
 
 TEST(ArrayStack, copied_stack_is_equal_to_source_one)
 {
-    ArrayStack<int> m(1);
+    ArrayStack<int> m(2);
     m.push(5);
+    m.push(10);
     ArrayStack<int> m1(m);
-    EXPECT_EQ(m.Top(), m1.Top());
+    EXPECT_TRUE(m == m1);
 }
 
 TEST(ArrayStack, copied_stack_has_its_own_memory)
@@ -111,6 +116,93 @@ TEST(ArrayStack, compare_not_equal_stacks_return_false)
     m1.push(100);
     m1.push(2);
     ArrayStack<int> m2(2);
+    m2.push(1);
+    m2.push(2);
+    EXPECT_FALSE(m1 == m2);
+}
+
+
+
+
+//
+//                ListStack
+//
+
+
+
+
+
+TEST(ListStack, copied_stack_is_equal_to_source_one)
+{
+    ListStack<int> m;
+    m.push(5);
+    m.push(10);
+    ListStack<int> m1(m);
+    EXPECT_TRUE(m == m1);
+}
+
+TEST(ListStack, copied_stack_has_its_own_memory)
+{
+    ListStack<int> m;
+    m.push(5);
+    ListStack<int> m1(m);
+    m1.pop();
+    m1.push(6);
+    EXPECT_NE(m.Top(), m1.Top());
+}
+
+TEST(ListStack, can_pop_element_in_not_empty_stack)
+{
+    ListStack<int> m;
+    m.push(5);
+    ASSERT_NO_THROW(m.pop());
+}
+
+TEST(ListStack, cant_pop_element_in_empty_stack)
+{
+    ListStack<int> m;
+    ASSERT_ANY_THROW(m.pop());
+}
+
+TEST(ListStack, can_get_element_in_not_empty_stack)
+{
+    ListStack<int> m;
+    m.push(1);
+    ASSERT_NO_THROW(m.Top());
+}
+
+TEST(ListStack, cant_get_element_in_empty_stack)
+{
+    ListStack<int> m;
+    ASSERT_ANY_THROW(m.Top());
+}
+
+TEST(ListStack, can_assign_stack_to_itself)
+{
+    ListStack<int> m;
+    m.push(5);
+    m.push(6);
+    ASSERT_NO_THROW(m = m);
+}
+
+TEST(ListStack, compare_equal_stacks_return_true)
+{
+    ListStack<int> m1;
+    m1.push(1);
+    m1.push(2);
+    ListStack<int> m2;
+    m2.push(1);
+    m2.push(2);
+    EXPECT_TRUE(m1 == m2);
+}
+
+
+TEST(ListStack, compare_not_equal_stacks_return_false)
+{
+    ListStack<int> m1;
+    m1.push(100);
+    m1.push(2);
+    ListStack<int> m2;
     m2.push(1);
     m2.push(2);
     EXPECT_FALSE(m1 == m2);
