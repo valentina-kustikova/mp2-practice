@@ -299,7 +299,7 @@ public:
           {
               T temp = 0;
               for (int k = 0; k < j + 1; k++)
-                  temp = (this->pMem[i][k] * m.pMem[k+i][j-k]) + temp;
+                  temp += this->pMem[i][k] * m.pMem[k+i][j-k];
               res.pMem[i][j] = temp;
           }
       }
