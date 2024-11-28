@@ -33,7 +33,7 @@ public:
       }
     if (sz <= 0)
       throw out_of_range("Vector size should be greater than zero");
-    pMem = new T[sz]();// {}; // У типа T д.б. констуктор по умолчанию
+    pMem = new T[sz]();// У типа T д.б. констуктор по умолчанию
   }
   TDynamicVector(T* arr, size_t s) : sz(s)
   {
@@ -168,7 +168,7 @@ public:
   }
 
   // векторные операции
-  TDynamicVector operator+(const TDynamicVector& v) const// Добавил
+  TDynamicVector operator+(const TDynamicVector& v) const
   {
 
       if (this->sz != v.size()) {
@@ -183,7 +183,7 @@ public:
       }
       return SUMM;
   }
-  TDynamicVector operator-(const TDynamicVector& v) // todo через +
+  TDynamicVector operator-(const TDynamicVector& v)
   {
       return *this + v * (-1);
   }
@@ -224,7 +224,7 @@ public:
 // Динамическая матрица - 
 // шаблонная матрица на динамической памяти
 template<typename T>
-class TDynamicMatrix : public TDynamicVector<TDynamicVector<T>> //?
+class TDynamicMatrix : public TDynamicVector<TDynamicVector<T>>
 {
     using TDynamicVector<TDynamicVector<T>>::pMem;
     using TDynamicVector<TDynamicVector<T>>::sz;
@@ -276,7 +276,7 @@ public:
   }
 
   // матрично-скалярные операции
-  TDynamicMatrix operator*(const T& val) // todo вызов базового
+  TDynamicMatrix operator*(const T& val)
   {
       return TDynamicVector<TDynamicVector <T>>::operator* (val);
   }
@@ -310,23 +310,6 @@ public:
   }
   TDynamicMatrix operator*(const TDynamicMatrix& m)
   {
-      /*if (this->sz != m.sz)
-      {
-          throw "DIFF LEN";
-      }
-      TDynamicMatrix<int> ress(m.sz);
-      for (int i = 0; i < this->sz; i++)
-      {
-          for (int j = 0; j < this->sz - i; j++)
-          {
-              ress[i][j] = 0;
-              for (int k = 0; k < j + 1; k++)
-              {
-                  ress[i][j] += (*this)[i][k] * m[k + i][j - k];
-              }
-          }
-      }
-      return ress;*/
       if (size() != m.size()) { throw "matricies has diff size"; }
       TDynamicMatrix answ(m.sz);
 

@@ -85,7 +85,7 @@ TEST(TDynamicVector, can_assign_vector_to_itself)
 
 TEST(TDynamicVector, can_assign_vectors_of_equal_size)
 {
-	TDynamicVector<int> v1(10), v2(10); // todo check elements
+	TDynamicVector<int> v1(10), v2(10);
 	for (int i = 0; i < 10; i++)
 	{
 		v1[i] = 6;
@@ -109,7 +109,7 @@ TEST(TDynamicVector, assign_operator_change_vector_size)
 
 TEST(TDynamicVector, can_assign_vectors_of_different_size)
 {
-	TDynamicVector<int> v1(9), v2(4); // todo check elements
+	TDynamicVector<int> v1(9), v2(4);
 	for (int i = 0; i < 9; i++)
 	{
 		v1[i] = 6;
@@ -134,13 +134,13 @@ TEST(TDynamicVector, compare_vector_with_itself_return_true)
 	for (int i = 0; i < v1.size(); i++) {
 		v1[i] = i;
 	}
-	EXPECT_TRUE(v1 == v1); // todo
+	EXPECT_TRUE(v1 == v1);
 }
 
 TEST(TDynamicVector, vectors_with_different_size_are_not_equal)
 {
 	TDynamicVector<int> v1(4), v2(5);
-	EXPECT_FALSE(v1 == v2); // todo
+	EXPECT_FALSE(v1 == v2);
 }
 
 TEST(TDynamicVector, can_add_scalar_to_vector)
@@ -228,7 +228,7 @@ TEST(TDynamicVector, can_subtract_vectors_with_equal_size)
 	for (int i = 0; i < 5; i++) {
 		v2[i] = i;
 	}
-	EXPECT_EQ(v3,v1 - v2); // todo
+	EXPECT_EQ(v3,v1 - v2);
 }
 
 TEST(TDynamicVector, cant_subtract_vectors_with_not_equal_size)
@@ -253,7 +253,7 @@ TEST(TDynamicVector, can_multiply_vectors_with_equal_size)
 		v2[i] = 3;
 	}
 	int k = v1 * v2;
-	EXPECT_EQ(15, k); // todo
+	EXPECT_EQ(15, k);
 }
 
 TEST(TDynamicVector, cant_multiply_vectors_with_not_equal_size)

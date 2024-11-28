@@ -54,7 +54,7 @@ TEST(TDynamicMatrix, copied_matrix_has_its_own_memory)
 	TDynamicMatrix<int> m2(m1);
 	m1[0][0] = 10000;
 
-	EXPECT_NE(m1, m2); // todo see vectors
+	EXPECT_NE(m1, m2);
 }
 
 TEST(TDynamicMatrix, can_get_size)
@@ -87,7 +87,7 @@ TEST(TDynamicMatrix, throws_when_set_element_with_negative_index)
 TEST(TDynamicMatrix, throws_when_set_element_with_too_large_index)
 {
 	TDynamicMatrix<int> m(4);
-	ASSERT_ANY_THROW(m.at(MAX_MATRIX_SIZE+1, MAX_MATRIX_SIZE + 1)); // todo
+	ASSERT_ANY_THROW(m.at(MAX_MATRIX_SIZE+1, MAX_MATRIX_SIZE + 1));
 }
 
 TEST(TDynamicMatrix, can_assign_matrix_to_itself)
@@ -219,8 +219,6 @@ TEST(TDynamicMatrix, cant_subtract_matrixes_with_not_equal_size)
 	TDynamicMatrix<int> m(4), m2(5);
 	ASSERT_ANY_THROW(m * m2);
 }
-
-// todo tests for multiplication
 
 TEST(TDynamicMatrix, can_multiply_matrix_by_vector)
 {
