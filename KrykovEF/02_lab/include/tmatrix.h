@@ -40,9 +40,9 @@ public:
   TDynamicVector(const TDynamicVector& v) : sz(v.sz)
   {
       pMem = new T[sz];
-      for (int i = 0; i < sz; i++)
-      {
-          pMem[i] = v.pMem[i];}
+      for (int i = 0; i < sz; i++){
+          pMem[i] = v.pMem[i];
+      }
   }
   TDynamicVector(TDynamicVector&& v) noexcept 
   {
@@ -82,10 +82,14 @@ public:
   // индексация
   T& operator[](size_t ind)
   {
+      if (ind<0 || ind>sz - 1)
+          throw std::exception("Incorrect index");
       return this->pMem[ind];
   }
   const T& operator[](size_t ind) const
   {
+      if (ind<0 || ind>sz - 1)
+          throw std::exception("Incorrect index");
       return this->pMem[ind];
   }
   // индексация с контролем
@@ -160,6 +164,7 @@ public:
       if (sz != v.sz) 
           throw std::exception("Incorrect size");
       TDynamicVector<T> tmp(this->size());
+      // tmp = *this + (v*(-1));
       for (int i = 0; i < this->size(); i++) {
           tmp.pMem[i] = pMem[i] - v.pMem[i];
       }
@@ -214,24 +219,14 @@ public:
       if (sz > MAX_MATRIX_SIZE)
           throw out_of_range("Matrix size should be lesser than MAX");
       for (size_t i = 0; i < sz; i++)
-          pMem[i] = TDynamicVector<T>(i + 1);
+          pMem[i] = TDynamicVector<T>(sz - i);
   }
+  TDynamicMatrix(TDynamicMatrix& m) : TDynamicVector<TDynamicVector<T>>(m) {}
+  TDynamicMatrix(TDynamicVector<TDynamicVector<T>>& m)
+      : TDynamicVector<TDynamicVector<T>>(m) {}
 
   using TDynamicVector<TDynamicVector<T>>::operator[];
   using TDynamicVector<TDynamicVector<T>>::size;
-
-  T& at(size_t i1, size_t i2)
-  {
-      if (i1 < 0 || i1 >= sz || i2 < 0 || i2 >= sz)
-          throw "Incorrect index";
-      return this->pMem[i1][i2];
-  }
-  const T& at(size_t i1, size_t i2) const
-  {
-      if (i1 < 0 || i1 >= sz || i2 < 0 || i2 >= sz)
-          throw "Incorrect index";
-      return this->pMem[i1][i2];
-  }
 
   // сравнение
   bool operator==(const TDynamicMatrix& m) const noexcept
@@ -242,6 +237,11 @@ public:
           if (this->pMem[i] != m.pMem[i])
               return 0;
       return 1;
+  }
+
+  bool operator!=(const TDynamicMatrix& m) const noexcept
+  {
+      return !(*this == m);
   }
 
   // матрично-скалярные операции
@@ -262,7 +262,7 @@ public:
       TDynamicMatrix<T> tmp(size());
       for (int i = 0; i < sz; i++) {
           tmp.pMem[i] = 0;
-          for (int j = 0; j < i + 1; j++) {
+          for (int j = 0; j < sz - i; j++) {
               tmp.pMem[i] = tmp.pMem[i] + pMem[i][j] * v[j];
           }
       }
@@ -272,44 +272,28 @@ public:
   // матрично-матричные операции
   TDynamicMatrix operator+(const TDynamicMatrix& m)
   {
-      if (sz != m.sz) 
-          throw std::exception("Incorrect size");      
-      TDynamicMatrix<T> tmp(size());
-      for (int i = 0; i < m.sz; i++) {
-          tmp.pMem[i] = pMem[i] + m[i];
-      }
-      return tmp;
+      return TDynamicVector<TDynamicVector<T>>::operator+(m);
   }
   TDynamicMatrix operator-(const TDynamicMatrix& m)
   {
-      if (sz != m.sz)
-          throw std::exception("Incorrect size");
-      TDynamicMatrix<T> tmp(size());
-      for (int i = 0; i < m.sz; i++) {
-          tmp.pMem[i] = pMem[i] - m[i];
-      }
-      return tmp;
+      return TDynamicVector<TDynamicVector<T>>::operator-(m);
   }
-  TDynamicMatrix operator*(const TDynamicMatrix& m) // todo
+  TDynamicMatrix operator*(const TDynamicMatrix& m)
   {
-      TDynamicMatrix tmp(sz);
       if (sz != m.sz) 
           throw std::exception("Incorrect size");
-      /*for (int k = 0; k < sz; k++) {
-          for (int r = 0; r < k + 1; r++){
-              tmp.pMem[k][r] = 0;
-              for (int i = 0; i < sc; i++) {
-                  for (int  j= 0; j < i + 1; i++) {
-                      tmp.pMem[k][r] = tmp.pMem[i] + (pMem[j][] * m.pMem[i][j]);
-                  }
-              }
-          }*/
-      for (int i = 0; i < sz; i++){
-          for (int j = 0; j < sz; j++){
-              tmp.pMem[i] = tmp.pMem[i] + pMem[j] * m.pMem[i][j];
+      TDynamicMatrix<T> answ(m.sz);
+      for (int i = 0; i < this->sz; i++)
+      {
+          for (int j = 0; j < this->sz - i; j++)
+          {
+              T tmp = 0;
+              for (int k = 0; k < j + 1; k++)
+                  tmp += this->pMem[i][k] * m.pMem[k + i][j - k];
+              answ.pMem[i][j] = tmp;
           }
       }
-      return tmp;
+      return answ;
   }
 
   // ввод/вывод
