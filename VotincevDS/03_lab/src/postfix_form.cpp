@@ -4,7 +4,7 @@
 
 using namespace std;
 
-string postfixform(string input, ArrayStack<string>& names) { 
+string postfixform(string input, ArrayStack<string>& names) {
     input.push_back(' ');
 
     ArrayStack<char> op; // (1)

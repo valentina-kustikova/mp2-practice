@@ -1,8 +1,30 @@
 #pragma once
 #include "stack.h"
+#include "array_stack.h"
 #include <unordered_map>
 
 using namespace std;
+
+namespace posfix_form
+{
+    enum STACK_IMPL
+    {
+        ARRAY_STACK = 0,
+        LIST_STACK = 1,
+    };
+
+    class ArithmeticExpression
+    {
+    private:
+
+    public:
+        ArithmeticExpression(const string&, STACK_IMPL impl = ARRAY_STACK);
+
+        vector<string> convert(const string&);
+        unordered_map<string, double> fill_variables(const vector<string>&);
+        double compute(const vector<string>&, const unordered_map<string, double>&);
+    }
+};
 
 
 string postfixform(string , ArrayStack<string>& );

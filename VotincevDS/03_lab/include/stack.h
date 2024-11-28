@@ -7,109 +7,11 @@ class Stack {
 public:
     virtual void push(const T& elem) = 0;
     virtual void pop() = 0;
-    virtual T Top() = 0;
+    virtual T Top() const = 0;
+    virtual bool IsEmpty() const = 0;
     // IsFull не нужен,тк у ListStack нет ограничения
-    virtual bool IsEmpty() = 0;
+    // (он есть у ArrayStack)
 };
-
-
-
-
-
-template <typename T>
-class ArrayStack : public Stack<T> {
-private:
-    int top;
-    size_t maxsz;
-    T* arr;
-public:
-    ArrayStack() : top(-1), maxsz(0),arr(nullptr) {};
-    ArrayStack(int sz) : top(-1)
-    {
-        if (sz <= 0) {
-            throw "size must be greater than 0";
-        }
-        maxsz = sz;
-        arr = new T[sz];
-    };
-
-    ArrayStack(const ArrayStack<T>& s) {
-        top = s.top;
-        maxsz = s.maxsz;
-        arr = new T[maxsz];
-        for (int i = 0; i < maxsz; i++) {
-            arr[i] = s.arr[i];
-        }
-    };
-
-    ~ArrayStack() {
-        delete[] arr;
-    }
-
-    void push(const T& elem)  {
-
-        if (IsFull()) {
-            
-            T* tmp = arr;
-            arr = new T[(maxsz + 1) * 3];
-            std::copy(tmp,tmp + maxsz,arr);
-            maxsz = (maxsz + 1) * 3;            
-        }
-
-        top++;
-        arr[top] = elem;
-        
-    }
-
-
-    void pop()   {
-        if (IsEmpty()) {
-            throw "stack is empty";
-        }
-        top--;
-    };
-    T Top()  {
-        if (IsEmpty()) {
-            throw "stack is empty";
-        }
-        return arr[top];
-    };
-    bool IsEmpty()  { return top == -1; };
-    bool IsFull()  { return top == maxsz-1; };
-
-    const ArrayStack<T>& operator=(const ArrayStack<T>& s) {
-        if (this == &s) {
-            return *this;
-        }
-        if (maxsz != s.maxsz) {
-            if (maxsz != 0) {
-                delete[] arr;
-            }
-            maxsz = s.maxsz;
-            arr = new T[maxsz];
-        }
-        top = s.top;
-        for (int i = 0; i < maxsz; i++) {
-            arr[i] = s.arr[i];
-        }
-        return *this;
-    }
-
-    bool operator==(const ArrayStack<T>& s) {
-        if (maxsz != s.maxsz || top != s.top) {
-            return 0;
-        }
-        for (int i = 0; i < maxsz; i++) {
-            if (arr[i] != s.arr[i]) {
-                return 0;
-            }
-        }
-        return 1;
-    }
-};
-
-
-
 
 template <typename T>
 struct ListNode {
@@ -119,17 +21,23 @@ struct ListNode {
     ListNode(const T& x) : val(x), next(nullptr) {}
 };
 
+template<typename T>
+class List
+{
+    ////
+};
+
 
 
 template <typename T>
 class ListStack : public Stack<T> {
 private:
-    ListNode<T>* node;
+    ListNode<T>* node; // List<T> elems;
 public:
     
     ListStack() : node(nullptr) {}
 
-    ListStack(const ListStack<T>& s) {
+    ListStack(const ListStack<T>& s) { // elems = s.elems
         if (s.node == nullptr) {
             node = nullptr;
             return;
@@ -155,6 +63,7 @@ public:
             node = new ListNode<T>(el);
             return;
         }
+        // push O(1)
         ListNode<T>* tmp = new ListNode<T>(el);
         tmp->next = node;
         node = tmp;
@@ -164,6 +73,7 @@ public:
         if (IsEmpty()) {
             throw "stack is empty";
         }
+        // pop O(1)
         ListNode<T>* tmp = node;
         node = node->next;
         delete tmp;
