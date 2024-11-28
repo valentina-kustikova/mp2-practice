@@ -172,17 +172,14 @@ public:
   }
   TDynamicVector operator-(const TDynamicVector& v) 
   {
-      if (sz != v.sz)
-      {
-          throw "Vectors have different dim";
+      if (this->sz != v.sz) {
+          throw("Wrong size of vectors.");
       }
-      TDynamicVector res(sz);
-      for (int i = 0; i < sz; i++)
-      {
-          res.pMem[i] = pMem[i] - v.pMem[i];
+      TDynamicVector<T> res(this->sz);
+      for (int i = 0; i < this->sz; i++) {
+          res[i] = this->pMem[i] - v.pMem[i];
       }
       return res;
-      // return *this + v * (-1);
   }
   T operator*(const TDynamicVector& v)
   {
@@ -244,12 +241,18 @@ public:
 
   }
 
+  using TDynamicVector<TDynamicVector<T>>::size;
   using TDynamicVector<TDynamicVector<T>>::operator[];
 
   // сравнение
   bool operator==(const TDynamicMatrix& m) const noexcept
   {
       return TDynamicVector <TDynamicVector<T>>::operator== (m);
+  }
+
+  bool operator!=(const TDynamicMatrix& m) const noexcept
+  {
+      return TDynamicVector <TDynamicVector<T>>::operator!= (m);
   }
 
   // матрично-скалярные операции
