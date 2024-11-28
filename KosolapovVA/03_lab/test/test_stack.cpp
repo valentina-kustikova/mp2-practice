@@ -1,5 +1,6 @@
 #include <gtest.h>
 #include "stack.h"
+#include "arr_stack.h"
 
 //TEST(test_arrstack,)
 

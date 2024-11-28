@@ -2,6 +2,7 @@
 #define Postfix_form_H
 
 #include "stack.h"
+#include "arr_stack.h"
 #include <map>
 
 
