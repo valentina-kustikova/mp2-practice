@@ -51,9 +51,12 @@ public:
   TDynamicVector& operator=(const TDynamicVector& v)
   {
       if (this == &v) return *this;
-      this->sz = v.sz;
-      delete[]pMem;
-      this->pMem = new T[this->sz];
+      if (this->sz != v.sz)
+      {
+          this->sz = v.sz;
+          delete[]pMem;
+          this->pMem = new T[this->sz];
+      }
       for (int i = 0; i < this->sz; i++) {
           this->pMem[i] = v.pMem[i];
       }
@@ -186,7 +189,7 @@ public:
   {
     if (s > MAX_MATRIX_SIZE) throw "Error";
     for (size_t i = 0; i < sz; i++)
-      pMem[i] = TDynamicVector<T>(sz-i); // sz-i
+      pMem[i] = TDynamicVector<T>(sz-i);
   }
 
   using TDynamicVector<TDynamicVector<T>>::operator[];
@@ -208,12 +211,9 @@ public:
   {
       TDynamicMatrix m1(this->size());
       for (int i = 0; i < this->size(); i++) {
-          for (int j = 0; j < this->size() - i; j++) {
-              m1[i][j] = this->pMem[i][j] * val;
-          }
+          m1[i] = this->pMem[i] * val;
       }
       return m1;
-      //return TDynamicVector<TDynamicVector<T>>::operator*(val);
   }
 
   // матрично-векторные операции
@@ -242,14 +242,12 @@ public:
       
       return m1;
   }
-  TDynamicMatrix operator-(const TDynamicMatrix& m) // todo
+  TDynamicMatrix operator-(const TDynamicMatrix& m) 
   {
       if (this->size() != m.size()) throw "error";
       TDynamicMatrix m1(this->size());
       for (int i = 0; i < this->size(); i++) {
-          for (int j = 0; j < this->size()-i; j++) {
-              m1[i][j] = this->pMem[i][j] - m[i][j];
-          }
+          m1[i] = this->pMem[i] - m[i];
       }
       return m1;
   }

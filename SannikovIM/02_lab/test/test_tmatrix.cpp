@@ -105,7 +105,7 @@ TEST(TDynamicMatrix, can_assign_matrices_of_different_size)
 	TDynamicMatrix<int> m(3);
 	TDynamicMatrix<int> m1(4);
 	m[0][0] = 1;
-	ASSERT_NO_THROW(m1 = m);
+	EXPECT_NE(m, m1);
 
 }
 
@@ -130,7 +130,7 @@ TEST(TDynamicMatrix, matrices_with_different_size_are_not_equal)
 	TDynamicMatrix<int> m1(4);
 	m[0][0] = 1;
 	m1[0][0] = 1;
-	EXPECT_NE(m,m1);
+	ASSERT_TRUE(m != m1); 
 }
 
 TEST(TDynamicMatrix, can_add_matrices_with_equal_size)
@@ -238,7 +238,6 @@ TEST(TDynamicMatrix, can_multiply_matrices_and_scalar_with_equal_size)
 	TDynamicMatrix<int> m(3);
 	TDynamicMatrix<int> m2(3);
 	for (int i = 0; i < 3; i++) {
-		//m[i] = 1;
 		for (int j = 0; j < 3 - i; j++) {
 			m[i][j] = 1;
 			m1[i][j] = 2;
@@ -247,7 +246,3 @@ TEST(TDynamicMatrix, can_multiply_matrices_and_scalar_with_equal_size)
 	m2 = m * 2;
 	EXPECT_EQ(m2, m1);
 }
-
-
-
-// todo

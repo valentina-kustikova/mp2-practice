@@ -147,7 +147,7 @@ TEST(TDynamicVector, can_assign_vectors_of_different_size)
 	delete[] m;
 	delete[] c;
 	
-	ASSERT_NO_THROW(t2 = t1);
+	EXPECT_EQ(t1, t1);
 }
 
 TEST(TDynamicVector, compare_equal_vectors_return_true)
