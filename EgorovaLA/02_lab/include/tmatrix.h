@@ -242,7 +242,13 @@ public:
     // матрично-скалярные операции
     TDynamicMatrix operator*(const T& val)
     {
-        return TDynamicVector<TDynamicVector<T>>::operator*(val);
+        TDynamicMatrix result(sz);
+        for (int i = 0; i < sz; i++) {
+            for (int j = 0; j < sz - i; j++) {
+                result[i][j] = pMem[i][j] * val;
+            }
+        }
+        return result;
     }
 
     // матрично-векторные операции
@@ -290,14 +296,23 @@ public:
     friend istream& operator>>(istream& istr, TDynamicMatrix& m)
     {
         for (int i = 0; i < m.sz; i++) {
-            istr >> m[i];
+            for (int j = 0; j < m.sz - i; j++) {
+                istr >> m[i][j];
+            }
         }
         return istr;
     }
     friend ostream& operator<<(ostream& ostr, const TDynamicMatrix& m)
     {
         for (int i = 0; i < m.sz; i++) {
-            ostr << m[i] << '\n';
+            for (int j = m.sz-1; j >=0; j--) {
+                if (j >= m.sz - i) {
+                    ostr << "x ";
+                    continue;
+                }
+                ostr << m[i][j] << " ";
+            }
+            ostr << '\n';
         }
         return ostr;
     }

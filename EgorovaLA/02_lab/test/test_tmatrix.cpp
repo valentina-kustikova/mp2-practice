@@ -115,10 +115,8 @@ TEST(TDynamicMatrix, matrices_with_different_size_are_not_equal)
 TEST(TDynamicMatrix, can_add_matrices_with_equal_size)
 {
 	TDynamicMatrix<int> m(5), m1(5), res(5);
-	for (int i = 0; i < 5; i++)
-	{
-		for (int j = 0; j < 5 - i; j++)
-		{
+	for (int i = 0; i < 5; i++) {
+		for (int j = 0; j < 5 - i; j++) {
 			m[i][j] = i + j;
 			m1[i][j] = i + j;
 			res[i][j] = 2 * i + 2 * j;
@@ -136,10 +134,8 @@ TEST(TDynamicMatrix, cant_add_matrices_with_not_equal_size)
 TEST(TDynamicMatrix, can_subtract_matrices_with_equal_size)
 {
 	TDynamicMatrix<int> m(5), m1(5), res(5); 
-	for (int i = 0; i < 5; i++)
-	{
-		for (int j = 0; j < 5 - i; j++)
-		{
+	for (int i = 0; i < 5; i++) {
+		for (int j = 0; j < 5 - i; j++) {
 			m[i][j] = i + j;
 			m1[i][j] = i + j;
 			res[i][j] = i + j - i - j;
@@ -154,6 +150,40 @@ TEST(TDynamicMatrix, cant_subtract_matrixes_with_not_equal_size)
 	ASSERT_ANY_THROW(m - m1);
 }
 
+TEST(TDynamicMatrix, can_multiply_matrix_by_const) {
+	TDynamicMatrix<int> m(5), res(5);
+	const int val = 10;
+	for (int i = 0; i < 5; i++)
+	{
+		for (int j = 0; j < 5 - i; j++)
+		{
+			m[i][j] = i + j;
+			res[i][j] = (i + j)*val;
+		}
+	}
+	EXPECT_EQ(m*val, res);
+}
+
+TEST(TDynamicMatrix, can_multiply_matrix_by_vector)
+{
+	TDynamicMatrix<int> m(3);
+	TDynamicVector<int> v(3), res(3);
+
+	for (int i = 0; i < 3; i++) {
+		for (int j = 0; j < 3 - i; j++) {
+			m[i][j] = i + j;
+		}
+		v[i] = i+1;
+	}
+	for (int i = 0; i < 3; i++) {
+		for (int j = 0; j < 3 - i; j++) {
+			res[i] += m[i][j] * v[j];
+		}
+		v[i] = i + 1;
+	}
+	EXPECT_EQ(m * v, res);
+}
+
 TEST(TDynamicMatrix, cant_multiply_matrixes_with_not_equal_size)
 {
 	TDynamicMatrix<int> m(5), m1(6);
@@ -163,10 +193,8 @@ TEST(TDynamicMatrix, cant_multiply_matrixes_with_not_equal_size)
 TEST(TDynamicMatrix, can_multiply_matrixes_with_equal_size)
 {
 	TDynamicMatrix<int> m(5), m1(5), res(5);
-	for (int i = 0; i < 5; i++)
-	{
-		for (int j = 0; j < 5 - i; j++)
-		{
+	for (int i = 0; i < 5; i++) {
+		for (int j = 0; j < 5 - i; j++) {
 			m[i][j] = i + j;
 			m1[i][j] = i + j;
 			res[i][j] = 0;
@@ -182,4 +210,3 @@ TEST(TDynamicMatrix, can_multiply_matrixes_with_equal_size)
 
 	EXPECT_EQ(m * m1, res);
 }
-// todo
