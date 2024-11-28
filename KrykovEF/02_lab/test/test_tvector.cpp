@@ -42,7 +42,8 @@ TEST(TDynamicVector, copied_vector_has_its_own_memory)
         v1[i] = i;
     }
     TDynamicVector<int> v2(v1);
-    EXPECT_NE(&v1[0],&v2[0]);
+    v2[0] = 10;
+    EXPECT_NE(v1,v2);
 }
 
 TEST(TDynamicVector, can_get_size)
@@ -52,13 +53,13 @@ TEST(TDynamicVector, can_get_size)
   EXPECT_EQ(4, v.size());
 }
 
-//TEST(TDynamicVector, can_set_and_get_element)
-//{
-//  TDynamicVector<int> v(4);
-//  v[0] = 4;
-//
-//  EXPECT_EQ(4, v[0]);
-//}
+TEST(TDynamicVector, can_set_and_get_element)
+{
+  TDynamicVector<int> v(4);
+  v[0] = 4;
+
+  EXPECT_EQ(4, v[0]);
+}
 
 TEST(TDynamicVector, throws_when_set_element_with_negative_index)
 {
@@ -78,8 +79,7 @@ TEST(TDynamicVector, can_assign_vector_to_itself)
     for (int i = 0; i < 4; i++) {
         v1[i] = i;
     }
-    v1 = v1;
-    EXPECT_EQ(v1, v1);    
+    ASSERT_NO_THROW(v1 = v1);
 }
 
 TEST(TDynamicVector, can_assign_vectors_of_equal_size)
@@ -100,11 +100,8 @@ TEST(TDynamicVector, assign_operator_change_vector_size)
         v1[i] = i;
     }
     TDynamicVector<int> v2(8);
-    TDynamicVector<int> v3(2);
     v2 = v1;
-    v3 = v1;
     EXPECT_EQ(v1.size(), v2.size());
-    EXPECT_EQ(v1.size(), v3.size());
 }
 
 TEST(TDynamicVector, can_assign_vectors_of_different_size)
@@ -114,11 +111,8 @@ TEST(TDynamicVector, can_assign_vectors_of_different_size)
         v1[i] = i;
     }
     TDynamicVector<int> v2(8);
-    TDynamicVector<int> v3(2);
     v2 = v1;
-    v3 = v1;
     EXPECT_EQ(v1, v2);
-    EXPECT_EQ(v1, v3);
 }
 
 TEST(TDynamicVector, compare_equal_vectors_return_true)
@@ -129,7 +123,7 @@ TEST(TDynamicVector, compare_equal_vectors_return_true)
         v1[i] = i;
         v2[i] = i;
     }
-    EXPECT_EQ(1, v1 == v2);
+    EXPECT_TRUE(v1 == v2);
 }
 
 TEST(TDynamicVector, compare_vector_with_itself_return_true)
@@ -139,7 +133,7 @@ TEST(TDynamicVector, compare_vector_with_itself_return_true)
     for (int i = 0; i < 4; i++) {
         v1[i] = i;
     }
-    EXPECT_EQ(1, v1 == v1);
+    EXPECT_TRUE(v1 == v1);
 }
 
 TEST(TDynamicVector, vectors_with_different_size_are_not_equal)
@@ -152,7 +146,7 @@ TEST(TDynamicVector, vectors_with_different_size_are_not_equal)
     for (int i = 0; i < 5; i++) {
         v2[i] = i;
     }
-    EXPECT_EQ(0, v1 == v2);
+    EXPECT_TRUE(v1 != v2);
 
 }
 

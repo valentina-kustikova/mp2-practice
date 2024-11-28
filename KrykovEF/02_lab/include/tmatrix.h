@@ -127,7 +127,7 @@ public:
       return tmp;
 
   }
-  TDynamicVector operator-(T val)
+  TDynamicVector operator-(T val) 
   {
       TDynamicVector<T> tmp(size());
       for (int i = 0; i < size(); i++) {
@@ -155,7 +155,7 @@ public:
       }
       return tmp;
   }
-  TDynamicVector operator-(const TDynamicVector& v)
+  TDynamicVector operator-(const TDynamicVector& v) // todo: v1+v2*(-1)
   {
       if (sz != v.sz) 
           throw std::exception("Incorrect size");
@@ -169,9 +169,9 @@ public:
   {
       if (sz != v.sz) 
           throw std::exception("Incorrect size");      
-      T tmp = 0;
+      T tmp(0);
       for (int i = 0; i < sz; i++){
-          tmp = tmp + (pMem[i] * v.pMem[i]);
+          tmp += pMem[i] * v.pMem[i];
       }
       return tmp;
 
@@ -290,7 +290,7 @@ public:
       }
       return tmp;
   }
-  TDynamicMatrix operator*(const TDynamicMatrix& m)
+  TDynamicMatrix operator*(const TDynamicMatrix& m) // todo
   {
       TDynamicMatrix tmp(sz);
       if (sz != m.sz) 
@@ -309,7 +309,6 @@ public:
               tmp.pMem[i] = tmp.pMem[i] + pMem[j] * m.pMem[i][j];
           }
       }
-      cout << tmp;
       return tmp;
   }
 
