@@ -37,13 +37,13 @@ TEST(TDynamicMatrix, copied_matrix_has_its_own_memory)
 {
     TDynamicMatrix<int> m(5);
     TDynamicMatrix<int> m1(m);
-    m[0][0] = 15;  // »змен€ем одну из матриц
-    EXPECT_NE(m, m1);  // «начени€ должны различатьс€
+    m[0][0] = 15;  
+    EXPECT_NE(m, m1); 
 }
 
 TEST(TDynamicMatrix, can_get_size) {
     TDynamicMatrix<int> m(5);
-    EXPECT_EQ(m.size(), 5); // ѕровер€ем размер
+    EXPECT_EQ(m.size(), 5);
 }
 
 TEST(TDynamicMatrix, can_set_and_get_element)
@@ -84,9 +84,6 @@ TEST(TDynamicMatrix, can_assign_matrices_of_equal_size)
     }
     m2 = m1;
 
-    // заполнить
-    // m1=m2
-    // EXPECT_EQ(m1, m2)
     EXPECT_EQ(m1, m2);
     
 }
@@ -98,7 +95,7 @@ TEST(TDynamicMatrix, assign_operator_change_matrix_size) {
     ASSERT_EQ(m1.size(), m2.size());
 }
 
-TEST(TDynamicMatrix, can_assign_matrices_of_different_size)//todo
+TEST(TDynamicMatrix, can_assign_matrices_of_different_size)
 {
     TDynamicMatrix<int> m1(5);
     TDynamicMatrix<int> m2(10);
@@ -110,30 +107,30 @@ TEST(TDynamicMatrix, can_assign_matrices_of_different_size)//todo
         }
     }
 
-    // заполнить
+
     m1 = m2;
     EXPECT_EQ(m1, m2);
-    //ASSERT_NO_THROW(m1 = m2);
+   
 }
 
 TEST(TDynamicMatrix, compare_equal_matrices_return_true)
 {
     TDynamicMatrix<int> m1(5);
     TDynamicMatrix<int> m2(5);
-    EXPECT_TRUE(m1 == m2);  // равные матрицы дадут true
+    EXPECT_TRUE(m1 == m2); 
 }
 
 TEST(TDynamicMatrix, compare_matrix_with_itself_return_true)
 {
     TDynamicMatrix<int> m(5);
-    EXPECT_TRUE(m == m);  // true при сравнении с самого собой
+    EXPECT_TRUE(m == m);  
 }
 
 TEST(TDynamicMatrix, matrices_with_different_size_are_not_equal)
 {
     TDynamicMatrix<int> m1(5);
     TDynamicMatrix<int> m2(10);
-    EXPECT_FALSE(m1 == m2);  //false дл€ матриц разного размера
+    EXPECT_FALSE(m1 == m2);  
 }
 
 TEST(TDynamicMatrix, can_add_matrices_with_equal_size)
@@ -150,8 +147,7 @@ TEST(TDynamicMatrix, can_add_matrices_with_equal_size)
             sum[i][j] = (i + j) + (i + j + 1);
         }
     }
-    //ASSERT_NO_THROW(m1 + m2);
-    ASSERT_EQ(sum, m1 + m2);// todo сравнить с результатотм
+    ASSERT_EQ(sum, m1 + m2);
 }
 
 TEST(TDynamicMatrix, cant_add_matrices_with_not_equal_size)
@@ -169,7 +165,7 @@ TEST(TDynamicMatrix, cant_add_matrices_with_not_equal_size)
 
 TEST(TDynamicMatrix, can_subtract_matrices_with_equal_size)
 {
-    TDynamicMatrix<int> m(2), m1(2), res(2);  // todo
+    TDynamicMatrix<int> m(2), m1(2), res(2); 
     for (int i = 0; i < 2; i++)
     {
         for (int j = 0; j < 2 - i; j++)
@@ -232,31 +228,20 @@ TEST(TDynamicMatrix, can_multiply_matrix_by_const) {
 TEST(TDynamicMatrix, can_multiply_matricies)
 {
 
-    TDynamicMatrix<int> m1(2), m2(2), res(2), real(2);
+    TDynamicMatrix<int> m1(2), m2(2), res(2), mult(2);
     m1[0][0] = 2;
     m1[0][1] = 2;
-    m1[1][0] = 0;
-    m1[1][1] = 2;
+    m1[1][0] = 2;
 
     m2[0][0] = 3;
     m2[0][1] = 3;
-    m2[1][0] = 0;
-    m2[1][1] = 3;
+    m2[1][0] = 3;
 
     res[0][0] = 6;
     res[0][1] = 12;
-    res[1][0] = 0;
-    res[1][1] = 6;
-    real = m1 * m2;
+    res[1][0] = 6;
+    mult = m1 * m2;
 
-    EXPECT_EQ(real, res);
-    /*
-    C:\Users\user\mp2-practice\KazennovaAM\02_lab\test\test_tmatrix.cpp(252): error:
-    Value of: res
-    Actual: 6 12 0 6
-    Expected: real
-    Which is: 6 6 0 -33686019
-    */
-
+    EXPECT_EQ(mult, res);
 }
 
