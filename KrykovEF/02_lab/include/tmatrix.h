@@ -192,13 +192,14 @@ public:
   friend istream& operator>>(istream& istr, TDynamicVector& v)
   {
     for (size_t i = 0; i < v.sz; i++)
-      istr >> v.pMem[i]; // требуется оператор>> для типа T
+      istr >> v.pMem[i]; 
     return istr;
   }
   friend ostream& operator<<(ostream& ostr, const TDynamicVector& v)
   {
     for (size_t i = 0; i < v.sz; i++)
-      ostr << v.pMem[i] << ' '; // требуется оператор<< для типа T
+      ostr << v.pMem[i] << ' ';
+    ostr << endl;
     return ostr;
   }
 };
@@ -300,14 +301,20 @@ public:
   friend istream& operator>>(istream& istr, TDynamicMatrix& v)
   {
       for (size_t i = 0; i < v.sz; i++)
-          istr >> v.pMem[i]; // требуется оператор>> для типа T
+          istr >> v.pMem[i]; 
       return istr;
   }
   friend ostream& operator<<(ostream& ostr, const TDynamicMatrix& v)
   {
-      for (size_t i = 0; i < v.sz; i++)
-          ostr << v.pMem[i] << ' '; // требуется оператор<< для типа T
-      return ostr;
+      for (int i = 0; i < v.sz; i++)
+      {
+          for (int k = 0; k < i; k++)
+              cout << 0 << '\t';
+          for (int j = 0; j < v.sz-i; j++)
+              cout << v[i][j] << '\t';
+          cout << endl;
+      }
+      return ostr;    
   }
 };
 
