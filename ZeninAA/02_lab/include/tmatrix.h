@@ -185,13 +185,8 @@ public:
 
       
   }
-  TDynamicVector operator-(const TDynamicVector& v) const // todo: v1+v2*(-1)
+  TDynamicVector operator-(const TDynamicVector& v) const 
   {
- 
-      
-      //TDynamicVector v1(sz); 
-      //v1 = v * T(-1);
-      //return (*this + v1);
 
       if (sz != v.sz) {
           throw "VECTORS WITH DIF SIZE";
@@ -281,7 +276,8 @@ public:
       for (int i = 0; i < sz; i++) { 
           tmp.pMem[i] = pMem[i] * val;  
       } 
-      return tmp; 
+      return tmp;
+      
   }
 
   // матрично-векторные операции
@@ -349,9 +345,46 @@ public:
   friend ostream& operator<<(ostream& ostr, const TDynamicMatrix& v)
   {
       for (int i = 0; i < v.sz; i++) {
-          ostr << v.pMem[i] << " " << endl;
+          for (int j = v.sz - 1; j >= 0; j--) {
+              if (j >= v.sz - i) {
+              ostr << " ";
+              continue;
+              }
+              ostr << v[i][j] << " ";
+          }
+          ostr << '\n';
       }
       return ostr;
+      
+      
+      /*for (int i = 0; i < v.sz; i++) {
+          for (int j = 0; j < v.sz; j++) {
+              
+              if (i + j >= v.sz - 1) {
+                  ostr << v.pMem[i * v.sz + j] << " "; 
+              }
+              else {
+                  ostr << "0 "; 
+              }
+          }
+          ostr << endl; 
+      }
+      return ostr;*/ 
+      /*for (int i = 0; i < v.sz; i++)
+      {
+          for (int j = 1; j < v.sz; j++)  
+          {
+              for (int k = 0; k < sz - j; k++)  
+              {
+                  if (v[i][k] > v[i][k + 1]) 
+                  {
+                      int temp = v[i][k];  
+                      v[i][k] = v[i][k + 1];
+                      v[i][k + 1] = temp; 
+                  }
+              }
+          }
+      }*/
       
   }
 };

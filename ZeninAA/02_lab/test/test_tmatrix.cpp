@@ -78,11 +78,12 @@ TEST(TDynamicMatrix, can_assign_matrix_to_itself)
 
 TEST(TDynamicMatrix, can_assign_matrices_of_equal_size) // todo
 {
-    TDynamicMatrix<int> m1(2); 
-    TDynamicMatrix<int> m2(2); 
-    m1[0][0] = 1;
-    m1[0][1] = 2;
-    m1[1][0] = 3;
+    TDynamicMatrix<int> m1(4), m2(4);
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4 - i; j++) {
+            m1[i][j] = i + j;
+        }
+    }
     m1 = m2;
     EXPECT_EQ(m1, m2);  
   
