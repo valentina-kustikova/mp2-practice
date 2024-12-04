@@ -290,14 +290,9 @@ public:
   // ввод/вывод
   friend istream& operator>>(istream& istr, TDynamicMatrix& v)
   {
-      cout << "Write the size of matrix: ";
-      istr >> v.sz;
-      for (int i = 0; i < v.sz; i++)
-      {
-          for (int j = 0; j < v.sz - i; j++)
-          {
-              cout << "Write the number of element: " << i + 1 << "," << j + 1 << " : ";
-              istr >> v.pMem[i][j];
+      for (int i = 0; i < m.sz; i++) {
+          for (int j = 0; j < m.sz - i; j++) {
+              istr >> m[i][j];
           }
       }
       return istr;
@@ -307,7 +302,7 @@ public:
       for (int i = 0; i < v.sz; i++) {
           for (int j = v.sz - 1; j >= 0; j--) {
               if (j >= v.sz - i) {
-                  ostr << " ";
+                  ostr << "  ";
                   continue;
               }
               ostr << v[i][j] << " ";
