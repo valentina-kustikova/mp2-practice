@@ -268,10 +268,14 @@ public:
           throw "error";
       }
       TDynamicMatrix tmp(sz);
-      for (size_t i = 0; i < sz; i++)
-          for (size_t j = 0; j < sz-i; j++)
-              for (size_t k = 0; k < j+1; k++)
-                  tmp.pMem[i][j] += pMem[i][k] * m.pMem[k+i][j-k];
+      for (size_t i = 0; i < sz; i++) {
+          for (size_t j = 0; j < sz - i; j++) {
+              tmp[i][j] = 0;
+              for (size_t k = 0; k < j + 1; k++){
+                  tmp.pMem[i][j] += pMem[i][k] * m.pMem[k + i][j - k];
+              }
+          }
+      }
       return tmp;
   }
 

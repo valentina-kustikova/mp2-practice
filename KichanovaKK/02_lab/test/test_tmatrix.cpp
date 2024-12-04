@@ -162,7 +162,6 @@ TEST(TDynamicMatrix, cant_subtract_matrixes_with_not_equal_size)
 
     ASSERT_ANY_THROW(m1 - m2);
 }
-// todo умножения
 TEST(TDynamicMatrix, can_multiply_matrixes_with_equal_size)
 {
     TDynamicMatrix<int> m1(5), m2(5), m3(5);
@@ -188,15 +187,14 @@ TEST(TDynamicMatrix, can_multiply_scalar_by_matrix)
 }
 TEST(TDynamicMatrix, can_multiply_matrix_and_vector_with_equal_size)
 {
-    TDynamicMatrix<int> m(2);
+   TDynamicMatrix<int> m(2);
     TDynamicVector<int> v(2), res(2);
     m[0][0] = 3;
-    //m[0][1] = 3;
-    //m[1][0] = 3;
-    m[1][1] = 3;
+    m[0][1] = 3;
+    m[1][0] = 3;
     v[0] = 2;
     v[1] = 2;
-    res[0] = 6;
+    res[0] = 12;
     res[1] = 6;
     EXPECT_EQ(m * v, res);
 }
