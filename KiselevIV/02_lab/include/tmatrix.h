@@ -56,11 +56,16 @@ public:
   {
       delete[] this->pMem;
   }
-  TDynamicVector& operator=(const TDynamicVector& v) //todo
+  TDynamicVector& operator=(const TDynamicVector& v) //todo  (+)
   {
-      delete [] pMem;
-      sz = v.sz;
-      pMem = new T[sz];
+      if (this->pMem == v.pMem) {
+          return* this;
+      }
+      if (sz != v.sz) {
+          delete []pMem;
+          this->sz = v.sz;
+          pMem = new T[sz];
+      }
       for (int i = 0; i < sz; i++) {
           pMem[i] = v.pMem[i];
       }
@@ -210,7 +215,7 @@ public:
           pMem[i] = TDynamicVector<T>(s-i); // todo
       }
   }
-  TDynamicMatrix (TDynamicVector<TDynamicVector<T>>& m) : TDynamicVector<TDynamicVector<T>>(m){}
+  TDynamicMatrix (TDynamicVector<TDynamicVector<T>>& m) : TDynamicVector<TDynamicVector<T>>(m) {}
 
   using TDynamicVector<TDynamicVector<T>>::operator[];
   using TDynamicVector<TDynamicVector<T>>::size;
@@ -239,12 +244,19 @@ public:
   }
 
   // матрично-векторные операции
-  TDynamicVector<T> operator*(const TDynamicVector<T>& v) // todo ?????????
+  TDynamicVector<T> operator*(const TDynamicVector<T>& v)
   {
-      TDynamicMatrix<T> res(sz);
-      for (int i = 0; i < sz; i++)
-          res.pMem[i] = pMem[i] * val;
-      return res;
+      if (sz != v.size()) {
+          throw "VECTOR AND MATRIX WITH DIFF SIZE";
+      }
+      TDynamicVector<T> tmp(sz);
+      for (int i = 0; i < sz; i++) {
+          tmp[i] = T(0);
+          for (int j = 0; j < sz - i; j++) {
+              tmp[i] += pMem[i][j] * v[i + j];
+          }
+      }
+      return tmp;
   }
 
   // матрично-матричные операции
@@ -258,16 +270,19 @@ public:
   }
   TDynamicMatrix operator*(const TDynamicMatrix& m)
   {
-      TDynamicMatrix tmp(sz);
       if (sz != m.sz) {
-          throw "Incorrect size";
+          throw "DIF SIZE";
+
       }
+      TDynamicMatrix<T> tmp(sz);
       for (int i = 0; i < sz; i++) {
-          for (int j = 0; j < sz; j++) {
+          for (int j = 0; j < sz - i; j++) {
               for (int n = 0; n < j + 1; n++) {
                   tmp[i][j] += pMem[i][n] * m[n + i][j - n];
               }
+
           }
+
       }
       return tmp;
   }
@@ -275,14 +290,30 @@ public:
   // ввод/вывод
   friend istream& operator>>(istream& istr, TDynamicMatrix& v)
   {
-      for (size_t i = 0; i < v.sz; i++) 
-          istr >> v.pMem[i]; 
+      cout << "Write the size of matrix: ";
+      istr >> v.sz;
+      for (int i = 0; i < v.sz; i++)
+      {
+          for (int j = 0; j < v.sz - i; j++)
+          {
+              cout << "Write the number of element: " << i + 1 << "," << j + 1 << " : ";
+              istr >> v.pMem[i][j];
+          }
+      }
       return istr;
   }
   friend ostream& operator<<(ostream& ostr, const TDynamicMatrix& v)
   {
-      for (size_t i = 0; i < v.sz; i++) // todo
-          ostr << v.pMem[i] << ' ';
+      for (int i = 0; i < v.sz; i++) {
+          for (int j = v.sz - 1; j >= 0; j--) {
+              if (j >= v.sz - i) {
+                  ostr << " ";
+                  continue;
+              }
+              ostr << v[i][j] << " ";
+          }
+          ostr << '\n';
+      }
       return ostr;
   }
 };

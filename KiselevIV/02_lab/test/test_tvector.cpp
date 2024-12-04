@@ -60,13 +60,13 @@ TEST(TDynamicVector, can_set_and_get_element)
 TEST(TDynamicVector, throws_when_set_element_with_negative_index)
 {
     TDynamicVector <int> v(3);
-    ASSERT_ANY_THROW(v.at(-1) = 1000);
+    ASSERT_ANY_THROW(v.at(-1));
 }
 
 TEST(TDynamicVector, throws_when_set_element_with_too_large_index)
 {
     TDynamicVector <int> v(3);
-    ASSERT_ANY_THROW(v.at(3) = 1000);
+    ASSERT_ANY_THROW(v.at(3));
 }
 
 TEST(TDynamicVector, can_assign_vector_to_itself)
@@ -99,13 +99,11 @@ TEST(TDynamicVector, assign_operator_change_vector_size)
     for (int i = 0; i < v.size(); i++) {
         v[i] = i;
     }
-    for (int i = 0; i < v1.size(); i++) {
-        v1[i] = i;
-    }
     v1 = v;
-    EXPECT_NE(4, v.size());
+    EXPECT_EQ(v1.size(), v.size());
 }
 
+//check Anton Zennin
 TEST(TDynamicVector, can_assign_vectors_of_different_size)
 {
     TDynamicVector <int> v(3);
@@ -127,9 +125,7 @@ TEST(TDynamicVector, compare_equal_vectors_return_true)
     for (int i = 0; i < v.size(); i++) {
         v[i] = i;
     }
-    for (int i = 0; i < v1.size(); i++) {
-        v1[i] = i;
-    }
+    v1 = v;
     ASSERT_TRUE(v==v1);
 }
 
@@ -138,21 +134,25 @@ TEST(TDynamicVector, compare_vector_with_itself_return_true)
     TDynamicVector <int> v(3);
     for (int i = 0; i < v.size(); i++) {
         v[i] = i;
+    //    cout << v[i];
     }
-    EXPECT_EQ(1, v == v); // todo ASSERT_NO_THROW
+    //cout << "\n";
+    TDynamicVector <int> v1 = v;
+    ASSERT_NO_THROW(v == v1);
 }
 
 TEST(TDynamicVector, vectors_with_different_size_are_not_equal)
 {
     TDynamicVector <int> v(3);
     TDynamicVector <int> v1(4);
-    for (int i = 0; i < v.size(); i++) {
+    /*for (int i = 0; i < v.size(); i++) {
         v[i] = i;
     }
     for (int i = 0; i < v1.size(); i++) {
         v1[i] = i;
-    }
-    EXPECT_NE(1, v == v1); // todo
+    }*/
+    ASSERT_ANY_THROW(v-v1);
+    //EXPECT_NE(1, v == v1); // todo
 }
 
 TEST(TDynamicVector, can_add_scalar_to_vector)

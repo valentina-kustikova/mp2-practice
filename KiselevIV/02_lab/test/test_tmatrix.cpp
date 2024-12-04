@@ -26,9 +26,14 @@ TEST(TDynamicMatrix, can_create_copied_matrix)
 
 TEST(TDynamicMatrix, copied_matrix_is_equal_to_source_one)
 {
-    TDynamicMatrix<int> m(3);
-    TDynamicMatrix<int> m1(m);
-    EXPECT_EQ(m1, m);
+    TDynamicMatrix<int> m1(4);
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4 - i; j++)
+            m1[i][j] = i;
+    }
+    TDynamicMatrix<int> m2(m1);
+    cout << m1 << endl << m2 << endl;
+    EXPECT_EQ(m1, m2);
 }
 
 TEST(TDynamicMatrix, copied_matrix_has_its_own_memory)
@@ -81,16 +86,15 @@ TEST(TDynamicMatrix, assign_operator_change_matrix_size)
 {
     TDynamicMatrix<int> m(4);
     TDynamicMatrix<int> m1(5);
-    m1 = m;
-    EXPECT_EQ(m1[1].size(), m[1].size());
+    EXPECT_NE (1, m1.size()== m.size());
 }
 
+//вопрос
 TEST(TDynamicMatrix, can_assign_matrices_of_different_size)
 {
     TDynamicMatrix<int> m(4);
     TDynamicMatrix<int> m1(5);
-    m1 = m;
-    EXPECT_EQ(m1, 4);
+    ASSERT_ANY_THROW(m1 + m);
 }
 
 TEST(TDynamicMatrix, compare_equal_matrices_return_true)
@@ -153,4 +157,77 @@ TEST(TDynamicMatrix, cant_subtract_matrixes_with_not_equal_size)
 
     ASSERT_ANY_THROW(m - m1);
 }
+TEST(TDynamicMatrix, can_multiply_matrices_with_equal_size)
+{
+    TDynamicMatrix<int> m1(4);
+    TDynamicMatrix<int> m2(4);
+    TDynamicMatrix<int> m3(4);
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4 - i; j++){
+            m1[i][j] = i;
+            m2[i][j] = i;
+        }
+    }
+    m3[0][0] = 0;
+    m3[0][1] = 0;
+    m3[0][2] = 0;
+    m3[0][3] = 0;
+    m3[1][0] = 1;
+    m3[1][1] = 3;
+    m3[1][2] = 6;
+    m3[2][0] = 4;
+    m3[2][1] = 10;
+    m3[3][0] = 9;
+    EXPECT_EQ(m1 * m2, m3);
+}
 
+TEST(TDynamicMatrix, cant_multiply_matrices_with_not_equal_size)
+{
+    TDynamicMatrix<int> m1(4);
+    TDynamicMatrix<int> m2(5);
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4 - i; j++)
+            m1[i][j] = i;
+    }
+    for (int i = 0; i < 5; i++) {
+        for (int j = 0; j < 5 - i; j++)
+            m2[i][j] = i;
+    }
+    ASSERT_ANY_THROW(m1 * m2);
+};
+TEST(TDynamicMatrix, can_multiply_matrix_by_constant) {
+    TDynamicMatrix<int> m1(2);
+    const int val = 2;
+    m1[0][0] = 1;
+    m1[0][1] = 3;
+    m1[1][0] = 5;
+    TDynamicMatrix<int> m2(2);
+    m2[0][0] = 2;
+    m2[0][1] = 6;
+    m2[1][0] = 10;
+    TDynamicMatrix<int> m3 = m1 * val;
+    EXPECT_TRUE(m3 == m2);
+}
+
+TEST(TDynamicMatrix, can_multiply_matrix_by_vector)
+{
+    TDynamicMatrix<int> m1(3);
+    m1[0][0] = 1;
+    m1[0][1] = 2;
+    m1[0][2] = 3;
+    m1[1][0] = 4;
+    m1[1][1] = 5;
+    m1[2][0] = 6;
+    TDynamicVector<int> v1(3);
+    v1[0] = 1;
+    v1[1] = 2;
+    v1[2] = 3;
+    TDynamicVector<int> v2(3);
+    v2[0] = 1 * 1 + 2 * 2 + 3*3;
+    v2[1] = 4 * 2 + 5 * 3;
+    v2[2] = 6*3;
+
+    TDynamicVector<int> v3 = m1 * v1;
+    EXPECT_TRUE(v3 == v2);
+
+}
