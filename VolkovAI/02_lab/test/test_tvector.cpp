@@ -165,7 +165,7 @@ TEST(TDynamicVector, can_subtract_scalar_from_vector)
 		res[i] = i + 3;
 	}
 	res = res - 3;
-	EXPECT_EQ(v, res); // todo
+	EXPECT_EQ(v, res);
 }
 
 TEST(TDynamicVector, can_multiply_scalar_by_vector)
@@ -173,8 +173,8 @@ TEST(TDynamicVector, can_multiply_scalar_by_vector)
 	TDynamicVector<int> v(3), v1(3);
 	size_t scalar = 3;
 	for (int i = 0; i < 3; i++) {
-		v[i] = i; // v = (0, 1, 2)
-		v1[i] = i * 3; // v1 = (0, 3, 6)
+		v[i] = i;
+		v1[i] = i * 3;
 	}
 	EXPECT_EQ(v*scalar, v1);
 }
