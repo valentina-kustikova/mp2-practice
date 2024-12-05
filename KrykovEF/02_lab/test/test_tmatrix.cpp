@@ -247,9 +247,6 @@ TEST(TDynamicMatrix, can_multiply_matrices_with_equal_size)
             m2[i][j] = i;
     }
 
-    cout << m1;
-    cout << m2;
- 
     m3[0][0] = 0;
     m3[0][1] = 0;
     m3[0][2] = 0;

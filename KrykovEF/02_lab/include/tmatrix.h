@@ -82,7 +82,7 @@ public:
   // индексация
   T& operator[](size_t ind)
   {
-      if (ind<0 || ind>sz - 1)
+      if (ind<0 || ind>sz)
           throw std::exception("Incorrect index");
       return this->pMem[ind];
   }
@@ -109,7 +109,7 @@ public:
   // сравнение
   bool operator==(const TDynamicVector& v) const noexcept
   {
-      if (sz != v.sz)//needs check!
+      if (sz != v.sz)
           return 0;
       for (int i = 0; i < v.sz; i++)
           if (this->pMem[i] != v.pMem[i])
@@ -159,12 +159,11 @@ public:
       }
       return tmp;
   }
-  TDynamicVector operator-(const TDynamicVector& v) // todo: v1+v2*(-1)
+  TDynamicVector operator-(const TDynamicVector& v) 
   {
       if (sz != v.sz) 
           throw std::exception("Incorrect size");
       TDynamicVector<T> tmp(this->size());
-      // tmp = *this + (v*(-1));
       for (int i = 0; i < this->size(); i++) {
           tmp.pMem[i] = pMem[i] - v.pMem[i];
       }
@@ -288,7 +287,7 @@ public:
       {
           for (int j = 0; j < this->sz - i; j++)
           {
-              T tmp = 0;
+              T tmp(0);
               for (int k = 0; k < j + 1; k++)
                   tmp += this->pMem[i][k] * m.pMem[k + i][j - k];
               answ.pMem[i][j] = tmp;
