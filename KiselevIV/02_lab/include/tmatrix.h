@@ -300,12 +300,11 @@ public:
   friend ostream& operator<<(ostream& ostr, const TDynamicMatrix& v)
   {
       for (int i = 0; i < v.sz; i++) {
-          for (int j = v.sz - 1; j >= 0; j--) {
-              if (j >= v.sz - i) {
-                  ostr << "  ";
-                  continue;
-              }
-              ostr << v[i][j] << " ";
+          for (int j = 0; j < i; j++) {
+              ostr << '\t';
+          }
+          for (int j = 0;j< v.sz - i; j ++) {
+              ostr << v[i][j] << '\t';
           }
           ostr << '\n';
       }

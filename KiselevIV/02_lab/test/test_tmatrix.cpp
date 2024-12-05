@@ -32,7 +32,7 @@ TEST(TDynamicMatrix, copied_matrix_is_equal_to_source_one)
             m1[i][j] = i;
     }
     TDynamicMatrix<int> m2(m1);
-    cout << m1 << endl << m2 << endl;
+    //cout << m1 << endl << m2 << endl;
     EXPECT_EQ(m1, m2);
 }
 
