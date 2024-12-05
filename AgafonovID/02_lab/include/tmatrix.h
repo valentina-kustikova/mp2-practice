@@ -317,7 +317,15 @@ public:
   friend ostream& operator<<(ostream& ostr, const TDynamicMatrix& m)
   {
       for (int i = 0; i < m.sz; i++) {
-          ostr << m.pMem[i] << std::endl;
+
+          for (int j = 0; j < i; j++) {
+              cout << " " << '\t';
+          }
+
+          for (int k = 0; k < m.sz - i; k++) {
+              cout << m[i][k] << '\t';
+          }
+          cout << endl;
       }
       return ostr;
   }
