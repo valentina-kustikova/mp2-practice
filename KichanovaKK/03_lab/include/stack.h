@@ -16,7 +16,7 @@ public:
         elem = new T[maxsize];
         top = s.top;
         for (int i = 0; i <= top; i++) {
-            elem[i] = s.elem[i]
+            elem[i] = s.elem[i];
         }
     }
     ~stack() {
@@ -44,7 +44,7 @@ public:
     T Top() const {
         if (IsEmpty())
             throw("Stack is Empty");
-        return pMem[top];
+        return elem[top];
     }
     void Pop() {
         if (IsEmpty())
@@ -74,7 +74,7 @@ public:
         if ((this->maxsize != S.maxsize) || (this->top !=S.top)) {
             return false;
         }
-        for (size_t i = 0; i < this->maxsize; i++) {
+        for (size_t i = 0; i <= this->maxsize; i++) {
             if (this->elem[i] != S.elem[i]) {
                 return false;
             }
@@ -83,6 +83,6 @@ public:
     }
     bool operator!=(const stack<T>& S) const noexcept
     {
-        return !(*this == v);
+        return !(*this == S);
     }
 };
