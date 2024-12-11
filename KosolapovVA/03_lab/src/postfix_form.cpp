@@ -50,7 +50,6 @@ ArExpression::ArExpression(const std::string& inf, STACK_IMPL impl):infix(inf), 
         int l_symb = -1;
         ArrStack<std::string> stack_1(5);
         ArrStack<std::string> stack_2(5);
-        std::map<std::string, int> priority_s = { { "+", 1},{"-", 2},{"!",2},{"*", 3},{"/", 4},{"(",0} };
         std::string var;
         int flag;
         for (int i = 0; i < inf.size(); i++)
@@ -224,9 +223,7 @@ ArExpression::ArExpression(const std::string& inf, STACK_IMPL impl):infix(inf), 
                 break;
             case 4:
                 if (check_Oper(inf[i]))
-                {
-                    stack_1.Push(var);
-                    var.clear();
+                {                    
                     var += inf[i];
                     if (!(stack_2.IsEmpty()) && (priority_s[stack_2.Top()] > priority_s[var]))
                     {
@@ -252,6 +249,11 @@ ArExpression::ArExpression(const std::string& inf, STACK_IMPL impl):infix(inf), 
                     if (stack_2.IsEmpty())
                         throw std::exception("Error incorect infix form");
                     stack_2.Pop();
+                    if (stack_2.Top() == "!")
+                    {
+                        stack_1.Push(stack_2.Top());
+                        stack_2.Pop();
+                    }
                     l_symb = 4;
                 }
                 else
