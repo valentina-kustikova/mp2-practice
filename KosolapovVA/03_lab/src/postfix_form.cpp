@@ -552,38 +552,43 @@ double ArExpression::Calculate()
     double a1, a2, a3;
     while (!(postfix->IsEmpty()))
     {
-        if (!check_Oper(postfix->Top()[0]))
+        if (!(check_Oper(postfix->Top()[0])||postfix->Top()[0]=='!'))
         {
             res.Push(var[postfix->Top()]);
-            postfix->Pop();
         }
         else
         {
-            a2 = res.Top();
-            res.Pop();
-            a1 = res.Top();
-            res.Pop();
-            switch (postfix->Top()[0])
+            if (postfix->Top()[0] == '!')
             {
-            case '+':
-                a3 = a1 + a2;
-                break;
-            case '-':
-                a3 = a1 - a2;
-                break;
-            case '*':
-                a3 = a1 * a2;
-                break;
-            case '/':
-                a3 = a1 / a2;
-                break;
-            case '!':
-                a3 = 0.0 - a2;
-                break;
+                a1 = res.Top();
+                res.Pop();
+                a3 = -a1;
+            }
+            else
+            {
+                a2 = res.Top();
+                res.Pop();
+                a1 = res.Top();
+                res.Pop();
+                switch (postfix->Top()[0])
+                {
+                case '+':
+                    a3 = a1 + a2;
+                    break;
+                case '-':
+                    a3 = a1 - a2;
+                    break;
+                case '*':
+                    a3 = a1 * a2;
+                    break;
+                case '/':
+                    a3 = a1 / a2;
+                    break;
+                }
             }
             res.Push(a3);
-            postfix->Pop();
         }
+        postfix->Pop();
     }
     return res.Top();
 }

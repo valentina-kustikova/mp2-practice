@@ -16,19 +16,19 @@ private:
     TNode* pFirst;
     size_t sz;
 public:
-    List();
+    List() : pFirst(nullptr), sz(0){}
     List(const List& list);
+    List(List&& list) noexcept;
     ~List();
+    List& operator=(const List& list);
+    List& operator=(List&& list) noexcept;
+
+
 
 
 
 };
-template <typename T>
-List<T>::List()
-{
-    pFirst == nullptr;
-    sz = 0;
-}
+
 template <typename T>
 List<T>::List(const List &list):sz(v.sz), pFirst(nullptr)
 {
