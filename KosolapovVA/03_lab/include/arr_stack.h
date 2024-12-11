@@ -46,10 +46,11 @@ public:
     {
         if (IsFull())
         {
-            max_sz = max_sz + 8;
-            T* tmp = pMem;
+            T* tmp=new T[max_sz];
+            std::copy(pMem, pMem + max_sz, tmp);
+            max_sz += 8;
             pMem = new T[max_sz];
-            std::copy(tmp, tmp + max_sz, pMem);
+            std::copy(tmp, tmp + max_sz - 8, pMem);
         }
         top++;
         pMem[top] = el;
@@ -96,6 +97,15 @@ public:
             this->Pop();
         }
         *this = temp;
+    }
+    void Print()
+    {
+        std::cout<<"\n" << "iter\n";
+        while (top != -1)
+        {
+            std::cout << pMem[top];
+            top--;
+        }
     }
 };
 

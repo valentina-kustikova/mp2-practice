@@ -3,21 +3,34 @@
 
 #include "stack.h"
 #include "arr_stack.h"
+#include "list_stack.h"
 #include <map>
+#include <vector>
+#include <string.h>
 
 
+namespace posfix_form
+{
+    enum STACK_IMPL
+    {
+        ARRAY_STACK = 0,
+        LIST_STACK = 1,
+    };
 
-ArrStack<char> InfToPost(std::string inf);
-bool check_Symb(char s);
-bool check_Numb(char s);
-bool check_Oper(char s);
-void StackToStack(ArrStack<char> &s1, ArrStack<char> &s2);
-void GetValue(std::map<char, double>& variety, ArrStack<char> temp);
-double Counting(std::map<char, double>& variety, ArrStack<char>& temp);
-
-std::string Convert_Oper(char s);
-#endif // !Postfix_form_H
-
-
+    class ArExpression
+    {
+    private:
+        std::string infix;
+        Stack<std::string>* postfix;
+        STACK_IMPL impl; 
+        std::map<std::string, int> priority_s = { { "+", 0},{"-", 1},{"!",1},{"*", 2},{"/", 3},{"(",4} };
+        std::map<std::string, double> var;
+    public:
+        ArExpression(const std::string&, STACK_IMPL impl = ARRAY_STACK);
+        void GetValue();
+        double Calculate();
+    };
+};
+#endif 
 
 
