@@ -1,33 +1,47 @@
 #pragma once
-#include "stack.h"
-#include "array_stack.h"
+
+#include <iostream>
 #include <unordered_map>
+#include <string>
+#include <vector>
+
+using namespace std;
 
 
-/*
-
-namespace posfix_form
+enum STACK_IMPL
 {
-    enum STACK_IMPL
-    {
-        ARRAY_STACK = 0,
-        LIST_STACK = 1,
-    };
-
-    class ArithmeticExpression
-    {
-    private:
-
-    public:
-        ArithmeticExpression(const string&, STACK_IMPL impl = ARRAY_STACK);
-
-        vector<string> convert(const string&);
-        unordered_map<string, double> fill_variables(const vector<string>&);
-        double compute(const vector<string>&, const unordered_map<string, double>&);
-    }
+    ARRAY_STACK = 0,
+    LIST_STACK = 1
 };
 
-*/
+class ArithmeticExpression {
+private:
+    
+    STACK_IMPL impl = ARRAY_STACK;
+public:
+
+    vector<string> expr; // временно!
+
+
+    ArithmeticExpression(const string&, STACK_IMPL impl1 = ARRAY_STACK);
+
+    vector<string> convert(const string&);
+    /*unordered_map<string, double> fill_variables(const vector<string>&);
+    double compute(const vector<string>&, const unordered_map<string, double>&);*/
+};
+
+
+std::string removeSpaces(const std::string& str);
+
+bool is_op(char el);
+
+bool is_op(string el);
+
+int op_priority(char el);
+
+
+
+
 
 //string postfixform(string , ArrayStack<string>& );
 //
@@ -41,13 +55,9 @@ namespace posfix_form
 //
 //double test_solvepf(ListStack<string>&, unordered_map<string, double>);
 //
-//bool is_op(char el);
-//
-//bool is_op(string el);
-//
-//int op_priority(char el);
-//
+
 //double make_op(double a, double b, char op);
 //
 //bool is_number(string s);
 //
+

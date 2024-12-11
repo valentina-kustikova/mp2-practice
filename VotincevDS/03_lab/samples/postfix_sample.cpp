@@ -1,13 +1,44 @@
 #include <iostream>
 #include "array_stack.h"
 #include "list_stack.h"
-
+#include "postfix_form.h"
 using namespace std;
 
 int main()
 {
-    ArrayStack<int> s1;
-    ListStack<int> l;
+    const string s = "A + B - C - D + -1";
+    ArithmeticExpression expr(s);
+    for (int i = 0; i < expr.expr.size(); i++) {
+        cout << expr.expr[i] << '_';
+    }
+
+    //  что делает программа?
+    // 1) спрашивает какой стек используем (лучше Enum) +
+    // 2) пользователь вводит строку +
+    // 3) строка преобразовываетс€ в постфиксную форму ( строка в строку) (class Arifmetic)
+    // 4) считаем само выражение
+    //  4.1 заполн€ю стек
+    //  4.2 запрашиваем данные
+    //  4.3 считаю
+    // 5) ввод на экран ответа
+
+
+
+    //ArrayStack<int> l;
+    /*ListStack<int> l;
+    cout << l.IsEmpty() << '\n';
+    cout << l.IsFull() << '\n';
+    l.push(10);
+    l.pop();
+    l.push(15);
+    l.push(15);
+    l.push(15);
+    l.push(15);
+    l.push(15);
+    cout << l.Top() << '\n';*/
+    
+    
+    
     
 
     /*setlocale(LC_ALL, "Russian");

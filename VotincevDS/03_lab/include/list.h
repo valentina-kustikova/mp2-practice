@@ -13,15 +13,13 @@ template<typename T>
 class List
 {
 private:
-    T val;
-    ListNode<T>* pFirst;
-    
+    ListNode<T>* pFirst;   
 public:
     
 
 
-    List() : pFirst(nullptr), val(0) {}
-    List(const T& x) : val(x), pFirst(nullptr) {}
+    List() : pFirst(0) {}
+    List(const T& x) : pFirst(x) {}
     ~List() {
         ListNode<T>* curr = pFirst, * prev = nullptr;
         while (curr != nullptr) {
@@ -33,7 +31,7 @@ public:
     }
 
     T get_val() const {
-        return val;
+        return pFirst->val;
     }
 
     ListNode<T>* get_head() const {
