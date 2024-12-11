@@ -267,14 +267,14 @@ public:
   // матрично-векторные операции
   TDynamicVector<T> operator*(const TDynamicVector<T>& v)
   {
-      if (sz != v.sz) {
+      if (sz != v.size()) {
           throw std::exception("Different size");
       }
-      TDynamicVector<T> res(sz);
-      for (int i = 0; i < sz; i++) {
-          res.pMem[i] = 0;
-          for (int j = 0; j < sz - i; j++) {
-              res.pMem[i] += pMem[i][j] * v.pMem[i + j];
+      TDynamicVector<T> res(v.size());
+      for (int i = 0; i < v.size(); i++) {
+          res[i] = 0;
+          for (int j = 0; j < v.size() - i; j++) {
+              res[i] += pMem[i][j] * v[i + j];
           }
       }
           
