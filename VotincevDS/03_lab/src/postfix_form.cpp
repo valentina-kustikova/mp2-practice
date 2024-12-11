@@ -22,44 +22,52 @@ ArithmeticExpression::ArithmeticExpression(const string& s1, STACK_IMPL impl1) {
 vector<string> ArithmeticExpression::convert(const string& input) {
     string expr = removeSpaces(input);
     vector<string> answ;
-    stringstream ss; 
+   
 
+    string operand_name;
     for (size_t i = 0; i < expr.length(); ++i) {
         char c = expr[i];
+        if (c == '(' || c == ')') {
+            if (is_op(operand_name)) {
+                throw "wrong expression";
+            }
 
+            if (!operand_name.empty()) {
+                answ.push_back(operand_name);
+                operand_name.clear();
+            }
+
+            answ.push_back(string(1,c));
+            continue;
+        }
         if (is_op(c)) {
-            // проверка на - перед const
-            if (ss.str().empty()) { 
-                if (c == '-') {
-                    ss << c;
+            if (!operand_name.empty()) {
+                answ.push_back(operand_name);
+            }
+           
+            if (answ.empty()) {
+                throw "wrong expression";
+            }
+            if (is_op(answ[answ.size() - 1])) {
+                if (i == (expr.length() - 1)) {
+                    throw "wrong expression";
+                }
+                if ('0' <= expr[i + 1] && expr[i + 1] <= '9') {
+                    operand_name.clear(); //
+                    operand_name.push_back(c);
                     continue;
                 }
                 else {
                     throw "wrong expression";
                 }
+                
             }
-            answ.push_back(ss.str());
-            answ.push_back(std::string(1, c));
-            ss.str(""); //очистка
+            answ.push_back(string(1, c));
+            operand_name.clear();
+            continue;
         }
-        else if (c == '(' || c == ')') {
-            if (!ss.str().empty()) {
-                answ.push_back(ss.str());
-                ss.str(""); //очистка
-            }
-            answ.push_back(std::string(1, c));
-        }
-        else if (std::isdigit(c) || c == '.') { //проверка на число double
-            ss << c;
-        }
-        else if (!std::isspace(c)) { 
-            ss << c;
-        }
+        operand_name += c;
 
-    }
-
-    if (!ss.str().empty()) {
-        answ.push_back(ss.str());
     }
 
     return answ; 

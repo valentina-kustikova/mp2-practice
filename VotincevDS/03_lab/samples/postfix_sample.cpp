@@ -6,7 +6,7 @@ using namespace std;
 
 int main()
 {
-    
+    // A+(B-C)*D-F/(G+H)
     setlocale(LC_ALL, "Russian");
 
     cout << "¬ведите, какой стек тестируем\n" <<
