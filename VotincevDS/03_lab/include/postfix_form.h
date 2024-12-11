@@ -22,12 +22,21 @@ public:
 
     vector<string> expr; // временно!
 
-
+    ArithmeticExpression() : impl(ARRAY_STACK) {};
     ArithmeticExpression(const string&, STACK_IMPL impl1 = ARRAY_STACK);
 
-    vector<string> convert(const string&);
-    /*unordered_map<string, double> fill_variables(const vector<string>&);
-    double compute(const vector<string>&, const unordered_map<string, double>&);*/
+    vector<string> convert(const string&); // string to vector<string>
+ 
+    unordered_map<string, double> fill_variables();
+
+
+    
+    double compute(const unordered_map<string, double>&);
+
+
+
+
+    //double compute(const vector<string>&, const unordered_map<string, double>&);
 };
 
 

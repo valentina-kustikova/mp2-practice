@@ -3,7 +3,8 @@
 #include <unordered_map>
 #include <string>
 #include <vector>
-
+#include "array_stack.h"
+#include "list_stack.h"
 
 #include <sstream>
 #include <cctype> 
@@ -20,7 +21,7 @@ ArithmeticExpression::ArithmeticExpression(const string& s1, STACK_IMPL impl1) {
 
 vector<string> ArithmeticExpression::convert(const string& input) {
     string expr = removeSpaces(input);
-    vector<string> tokens;
+    vector<string> answ;
     stringstream ss; 
 
     for (size_t i = 0; i < expr.length(); ++i) {
@@ -37,102 +38,31 @@ vector<string> ArithmeticExpression::convert(const string& input) {
                     throw "wrong expression";
                 }
             }
-            tokens.push_back(ss.str());
-            tokens.push_back(std::string(1, c));
+            answ.push_back(ss.str());
+            answ.push_back(std::string(1, c));
             ss.str(""); //очистка
         }
         else if (c == '(' || c == ')') {
             if (!ss.str().empty()) {
-                tokens.push_back(ss.str());
+                answ.push_back(ss.str());
                 ss.str(""); //очистка
             }
-            tokens.push_back(std::string(1, c));
+            answ.push_back(std::string(1, c));
         }
-        else if (std::isdigit(c) || c == '.') { //Handle numbers with decimal points
+        else if (std::isdigit(c) || c == '.') { //проверка на число double
             ss << c;
         }
-        else if (!std::isspace(c)) { // Handle other characters (variables, etc.)
+        else if (!std::isspace(c)) { 
             ss << c;
         }
+
     }
 
     if (!ss.str().empty()) {
-        tokens.push_back(ss.str());
+        answ.push_back(ss.str());
     }
 
-    return tokens;
-        //string expr = removeSpaces(input);
-        //vector<string> answ;
-        //string name; // название переменной/операция
-
-        //for (int i = 0; i < expr.size(); i++) {
-        //    char el = expr[i];
-
-        //    if (el == '(') {
-        //        if (name.size() != 0) {
-        //             
-        //            answ.push_back(name); //
-        //            name.clear();
-        //        }
-        //        continue;
-        //    }
-
-        //    if (is_op(el)) {
-        //        if (i == (input.size()-1)) {
-        //            throw "wrong expression";
-        //        }
-        //        if (el == '-' && '1' <= input[i + 1] && input[i + 1] <= '9') {
-        //            name.push_back(el);
-        //            continue;
-        //        }
-        //        else if (el == '-' && input[i + 1] == '0') {
-        //            throw "wrong expression";
-        //        }
-        //        if (is_op(input[i - 1])) {
-        //            if (el == '-' && '1' <= input[i + 1] && input[i + 1] <= '9') {
-        //                name.push_back(el);
-        //                continue;
-        //            }
-        //            if (input[i + 1] == '0') {
-        //                throw "wrong expression";
-        //            }
-        //        }
-
-
-        //        if (name.size() != 0) {
-        //            
-        //            answ.push_back(name);
-        //            answ.push_back(string(1, el));
-
-        //            name.clear();
-        //        }
-
-        //        continue;
-        //    }
-
-        //    if (el == ')') {
-        //        if (name.size() != 0) {
-
-        //            answ.push_back(name);
-
-        //            name.clear();
-        //        }
-        //        continue;
-        //    }
-
-        //    if (el == ' ') {
-        //        if (name.size() != 0) {
-        //             
-        //            answ.push_back(name); 
-        //            name.clear();
-        //        }
-        //        continue;
-        //    }
-
-        //    name.push_back(el);
-        //}
-        //answ.push_back(name);
-        //return answ;
+    return answ; 
 }
 
 
@@ -159,33 +89,242 @@ int op_priority(char el) {
     if (el == '*' || el == '/') {
         return 3;
     }
-    else if (el == '-') {
+    else if (el == '-' || el == '+') {
         return 2;
+
     }
-    else if (el == '+') {
-        return 1;
-    }
-    return 0;
+    return 1;
 
     // операция - имеет свой приоритет
     // тк постфиксная форма не будет
     // строиться правильно
+}
 
-
-    /*if (el == '*' || el == '/') {
+int op_priority(string el) {
+    if (el == "*" || el == "/") {
         return 3;
     }
-    else if (el == '+' || el == '-') {
+    else if (el == "-" || el == "+") {
         return 2;
     }
-    return 1;*/
+    return 1;
+
+    // операция - имеет свой приоритет
+    // тк постфиксная форма не будет
+    // строиться правильно
+}
+
+double make_op(double a, double b, string op) {
+    switch (op[0])
+    {
+    case '+': return a + b;
+    case '-': return a - b;
+    case '*': return a * b;
+    case '/': return a / b;
+    default:
+        break;
+    }
+}
+
+
+
+unordered_map<string, double> ArithmeticExpression::fill_variables() {
+    unordered_map<string, double> values;
+    for (string s : expr) {
+        if (is_op(s) || s == "(" || s == ")") {
+            continue;
+        }
+        if (values.find(s) == values.end()) {
+            if (s[0] == '-' || '0' <= s[0] && s[0] <= '9') {
+                values[s] = stoi(s);
+                continue;
+            }
+
+            cout << "Type value: \n";
+            cout << s << " = ";
+            double val;
+            cin >> val;
+            values[s] = val;
+        }
+    }
+    return values;
 }
 
 
 
 
-//unordered_map<string, double> fill_variables(const vector<string>&);
-//double compute(const vector<string>&, const unordered_map<string, double>&);
+double ArithmeticExpression::compute(
+    const unordered_map<string, double>& values) {
+
+    vector<string> pf;
+    if (impl == ARRAY_STACK) {
+        ArrayStack<string> op;
+        
+
+        for (string el : expr) {
+
+            // является операндом/числом
+            if (!is_op(el) && el != "(" && el != ")") {
+                pf.push_back(el);
+                continue;
+            } 
+
+            // является оператором
+            if (is_op(el)) {
+                if (op.IsEmpty()) {
+                    op.push(el);
+                    continue;
+                }
+                else {
+
+
+                    while (!op.IsEmpty() && op_priority(el) <= op_priority(op.Top())) {
+                        pf.push_back(op.Top());
+                        op.pop();
+                    }
+                    op.push(el);
+                    continue;
+                }
+            }
+
+            if (el == "(") {
+                op.push(el);
+                continue;
+            }
+            if (el == ")") {
+                while (op.Top() != "(") {
+                    pf.push_back(op.Top());
+                    op.pop();
+                }
+                op.pop();
+                continue;
+            }
+
+
+        }
+        while (!op.IsEmpty()) {
+            pf.push_back(op.Top());
+            op.pop();
+        }
+        
+
+    }
+    else {
+        ListStack<string> op;
+
+
+        for (string el : expr) {
+
+            // является операндом/числом
+            if (!is_op(el) && el != "(" && el != ")") {
+                pf.push_back(el);
+                continue;
+            }
+
+            // является оператором
+            if (is_op(el)) {
+                if (op.IsEmpty()) {
+                    op.push(el);
+                    continue;
+                }
+                else {
+
+
+                    while (!op.IsEmpty() && op_priority(el) <= op_priority(op.Top())) {
+                        pf.push_back(op.Top());
+                        op.pop();
+                    }
+                    op.push(el);
+                    continue;
+                }
+            }
+
+            if (el == "(") {
+                op.push(el);
+                continue;
+            }
+            if (el == ")") {
+                while (op.Top() != "(") {
+                    pf.push_back(op.Top());
+                    op.pop();
+                }
+                op.pop();
+                continue;
+            }
+
+
+        }
+        while (!op.IsEmpty()) {
+            pf.push_back(op.Top());
+            op.pop();
+        }
+    }
+    cout << "\nPostfix form:\n";
+    for (string el : pf) {
+        cout << el << " ";
+    }
+    cout << '\n';
+
+    unordered_map<string, double> vals = values;
+    vals = fill_variables();
+
+    double answ = 0;
+
+
+    if (impl == ARRAY_STACK) {
+        ArrayStack<double> variables;
+        for (string el : pf) {
+            if (is_op(el)) {
+                double b = variables.Top();
+                variables.pop();
+                double a = variables.Top();
+                variables.pop();
+
+                variables.push(make_op(a,b,el));
+                continue;
+            }
+            variables.push(vals[el]);
+
+        }
+        answ = variables.Top();
+    }
+    else {
+        ListStack<double> variables;
+        for (string el : pf) {
+            if (is_op(el)) {
+                double b = variables.Top();
+                variables.pop();
+                double a = variables.Top();
+                variables.pop();
+
+                variables.push(make_op(a, b, el));
+                continue;
+            }
+            variables.push(vals[el]);
+
+        }
+        answ = variables.Top();
+    }
+
+
+    return answ;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 //string postfixform(string input, ArrayStack<string>& names) {
@@ -302,17 +441,7 @@ int op_priority(char el) {
 //
 
 //
-//double make_op(double a, double b, char op) {
-//    switch (op)
-//    {
-//    case '+': return a + b;
-//    case '-': return a - b;
-//    case '*': return a * b;
-//    case '/': return a / b;
-//    default:
-//        break;
-//    }
-//}
+
 //
 //bool is_number(string s) {
 //    if ('0' <= s[0] && s[0] <= '9' ||
