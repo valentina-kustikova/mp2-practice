@@ -1,13 +1,15 @@
 #include <iostream>
 #include "array_stack.h"
-//#include "list_stack.h"
+#include "list_stack.h"
 
 using namespace std;
 
 int main()
 {
     ArrayStack<int> s1;
-   
+    ListStack<int> l;
+    
+
     /*setlocale(LC_ALL, "Russian");
 
     cout << "¬ведите, какой стек тестируем\n" <<

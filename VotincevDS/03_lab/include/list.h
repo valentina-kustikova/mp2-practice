@@ -14,11 +14,16 @@ class List
 {
 private:
     T val;
-    ListNode* pFirst;
+    ListNode<T>* pFirst;
+    
 public:
+    
 
+
+    List() : pFirst(nullptr), val(0) {}
+    List(const T& x) : val(x), pFirst(nullptr) {}
     ~List() {
-        List* curr = pFirst, * prev = nullptr;
+        ListNode<T>* curr = pFirst, * prev = nullptr;
         while (curr != nullptr) {
             prev = curr;
             curr = curr->next;
@@ -27,10 +32,21 @@ public:
         delete pFirst;
     }
 
+    T get_val() const {
+        return val;
+    }
 
+    ListNode<T>* get_head() const {
+        return pFirst;
+    }
 
-    List<T>* search(T key) {
-        List* curr = pFirst;
+    void push(const T& key) {
+        ListNode<T>* tmp = new ListNode<T>(key);
+        pushFront(tmp);
+    }
+
+    ListNode<T>* search(T key) {
+        ListNode<T>* curr = pFirst;
         while (curr != nullptr) {
             if (curr->val == key) {
                 return curr;
@@ -40,7 +56,7 @@ public:
         return curr;
     };
 
-    void pushFront(List<T>* node) {
+    void pushFront(ListNode<T>* node) {
         if (pFirst == nullptr) {
             pFirst = node;
             return;
@@ -52,7 +68,7 @@ public:
         pFirst = node;
     };
 
-    void pushBack(List<T>* node) {
+    void pushBack(ListNode<T>* node) {
         if (pFirst == nullptr) {
             pFirst = node;
             return;
@@ -61,15 +77,15 @@ public:
             return;
         }
 
-        List* curr = pFirst;
+        ListNode<T>* curr = pFirst;
         while (curr->next != nullptr) {
             curr = curr->next;
         }
         curr->next = node;
     };
 
-    void InsertAfter(List<T>* node, T key) {
-        List* curr = search(key);
+    void InsertAfter(ListNode<T>* node, T key) {
+        ListNode<T>* curr = search(key);
         if (curr == nullptr) {
             throw "this key does not exist";
         }
@@ -77,8 +93,8 @@ public:
         curr->next = node;
     };
 
-    void InsertBefore(List<T>* node, T key) {
-        List* prev = nullptr, *curr = pFirst;
+    void InsertBefore(ListNode<T>* node, T key) {
+        ListNode<T>* prev = nullptr, * curr = pFirst;
         while ((curr != nullptr) && (curr->key != key)) {
             prev = curr;
             curr = curr->next;
@@ -98,7 +114,7 @@ public:
     };
 
     void remove(T key) {
-        List* prev = nullptr, *curr = pFirst;
+        ListNode<T>* prev = nullptr, * curr = pFirst;
         while ((curr != nullptr) && (curr->key != key)) {
             prev = curr;
             curr = curr->next;
@@ -117,14 +133,24 @@ public:
         delete curr;
     };
 
-    int size() {
-        List* curr = pFirst;
-        int size = 0;
+    size_t size() const {
+        ListNode<T>* curr = pFirst;
+        size_t size = 0;
         while (curr != nullptr) {
             size++;
             curr = curr->next;
         }
         return size;
     };
+
+
+    void next() {
+        ListNode<T>* tmp = pFirst;
+        if (tmp == nullptr) {
+            throw "empty list";
+        }
+        pFirst = pFirst->next;
+        delete tmp;
+    }
 
 };
