@@ -9,12 +9,20 @@
 //---------------------------------------------------------------------------
 
 int main() {
-	char* a = new char[9];
-	a = getPostform("A+B*(C-D)", 9);
-	for (int i = 0; i < 9; i++) {
+	char* st = "(A-C)*T"; 
+	int n = strlen(st);
+	char* a = new char[n];
+	a = getPostform(st,n);
+	n = n - getSymb(st, n);
+	for (int i = 0; i < n; i++) {
 		std::cout << a[i];
 	}
-
-
+	cout << endl;
+	map<char, int> s;
+	s.insert({ 'A', 2 });
+	s.insert({ 'C', 5 });
+	s.insert({ 'T', 11 });
+	cout << Calculate(a, n, s) << endl;
 	return 1;
+	
 }
