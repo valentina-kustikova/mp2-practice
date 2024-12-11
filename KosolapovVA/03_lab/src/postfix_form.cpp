@@ -248,12 +248,7 @@ ArExpression::ArExpression(const std::string& inf, STACK_IMPL impl):infix(inf), 
                     }
                     if (stack_2.IsEmpty())
                         throw std::exception("Error incorect infix form");
-                    stack_2.Pop();
-                    if (stack_2.Top() == "!")
-                    {
-                        stack_1.Push(stack_2.Top());
-                        stack_2.Pop();
-                    }
+                    stack_2.Pop();                    
                     l_symb = 4;
                 }
                 else

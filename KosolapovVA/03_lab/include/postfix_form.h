@@ -23,7 +23,7 @@ namespace posfix_form
         std::string infix;
         Stack<std::string>* postfix;
         STACK_IMPL impl;
-        std::map<std::string, int> priority_s = { { "+", 1},{"-", 2},{"!",2},{"*", 3},{"/", 4},{"(",0} };
+        std::map<std::string, int> priority_s = { { "+", 1},{"-", 2},{"!",5},{"*", 3},{"/", 4},{"(",0} };
         std::map<std::string, double> var;
     public:
         ArExpression(const std::string&, STACK_IMPL impl = ARRAY_STACK);
