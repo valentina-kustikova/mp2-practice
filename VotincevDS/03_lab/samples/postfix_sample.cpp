@@ -6,8 +6,7 @@ using namespace std;
 
 int main()
 {
-    // A+(B-C)*D-F/(G+H)
-    // -1 + (2 * (3 - 4 ) / -6) + 7
+    // -(A+B-C*g)+15*g/7*kl
     setlocale(LC_ALL, "Russian");
 
     cout << "¬ведите, какой стек тестируем\n" <<
@@ -20,6 +19,7 @@ int main()
         cin >> stack_type;
         cin.ignore();
     }
+    
 
     string s;
     cout << "\n¬ведите выражение:\n";
@@ -33,6 +33,10 @@ int main()
         expr = ArithmeticExpression::ArithmeticExpression(s, LIST_STACK);
     }
     
+    for (auto el : expr.expr) {
+        cout << el << '_';
+    }
+
     double res = expr.compute({});
     cout << "\nRes = " << res;
 

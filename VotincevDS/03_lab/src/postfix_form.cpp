@@ -28,9 +28,12 @@ vector<string> ArithmeticExpression::convert(const string& input) {
     for (size_t i = 0; i < expr.length(); ++i) {
         char c = expr[i];
         if (c == '(' || c == ')') {
-            if (is_op(operand_name)) {
-                throw "wrong expression";
+            if (is_op(operand_name) && c == ')') {
+                throw "wrong expr";
             }
+            /*if (is_op(operand_name)) {
+                throw "wrong expression";
+            }*/
 
             if (!operand_name.empty()) {
                 answ.push_back(operand_name);
@@ -293,6 +296,10 @@ double ArithmeticExpression::compute(
             if (is_op(el)) {
                 double b = variables.Top();
                 variables.pop();
+                if (variables.IsEmpty()) {
+                    variables.push(-b);
+                    continue;
+                }
                 double a = variables.Top();
                 variables.pop();
 
