@@ -46,7 +46,11 @@ vector<string> ArithmeticExpression::convert(const string& input) {
             }
            
             if (answ.empty()) {
-                throw "wrong expression";
+                if (c != '-') {
+                    throw "wrong expression";
+                }
+                operand_name.push_back(c);
+                continue;
             }
             if (is_op(answ[answ.size() - 1])) {
                 if (i == (expr.length() - 1)) {
@@ -69,6 +73,10 @@ vector<string> ArithmeticExpression::convert(const string& input) {
         operand_name += c;
 
     }
+    if (!operand_name.empty()) {
+        answ.push_back(operand_name);
+    }
+    
 
     return answ; 
 }
