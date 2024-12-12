@@ -4,7 +4,7 @@
 using namespace std;
 template<typename T>
 
-class stack {
+class stack { //объ€влени€ отдельно
 private:
     size_t maxsize;
     int top;
@@ -21,9 +21,6 @@ public:
     }
     ~stack() {
         delete[]elem;
-    }
-    size_t size() const {
-        return top + 1;
     }
     bool IsEmpty() const {
         return top == -1;
@@ -53,36 +50,22 @@ public:
     }
     const stack<T>& operator=(const stack<T>& s)
     {
-        if (this != &s)
+        if (this == &s)
         {
-            if (maxsize != s.maxsize)
-            {
-                delete[] elem;
-                maxsize = s.maxsize;
-                elem = new T[maxsize];
-            }
-            top = s.top;
-            for (int i = 0; i <= top; i++)
-            {
-                elem[i] = s.elem[i];
-            }
+            return *this;
         }
+        if (maxsize != s.maxsize)
+        {
+            delete[] elem;
+            maxsize = s.maxsize;
+            elem = new T[maxsize];
+        }
+        top = s.top;
+        for (int i = 0; i <= top; i++)
+        {
+            elem[i] = s.elem[i];
+        }
+        
         return *this;
-    }
-    bool operator==(const stack<T>& S) const noexcept
-    {
-        if ((this->maxsize != S.maxsize) || (this->top !=S.top)) {
-            return false;
-        }
-        for (size_t i = 0; i <= this->maxsize; i++) {
-            if (this->elem[i] != S.elem[i]) {
-                return false;
-            }
-        }
-        return true;
-    }
-    bool operator!=(const stack<T>& S) const noexcept
-    {
-        return !(*this == S);
     }
 };

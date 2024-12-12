@@ -1,6 +1,8 @@
 #include "stack.h"
 
 #include <gtest.h>
+
+
 TEST(stack, can_create_stack_with_positive_length)
 {
     ASSERT_NO_THROW(stack<int> s(5));
@@ -17,7 +19,6 @@ TEST(stack, can_push_and_pop) {
     s.Push(2);
     s.Push(3);
     EXPECT_FALSE(s.IsEmpty());
-    EXPECT_EQ(s.size(), 3);
     EXPECT_EQ(s.Top(), 3);
     s.Pop();
     EXPECT_EQ(s.Top(), 2);
@@ -32,7 +33,6 @@ TEST(stack, stack_is_full) {
     EXPECT_TRUE(s.IsFull());
     s.Push(3); 
     EXPECT_FALSE(s.IsFull());
-    EXPECT_EQ(s.size(), 3);
 }
 TEST(stack, can_create_copied_stack)
 {
@@ -77,59 +77,5 @@ TEST(stack, can_assign_stacks_of_different_size)
     s2.Push(1);
     s2 = s1;
     EXPECT_EQ(s1, s2);
-}
-TEST(stack, equality_empty_stacks_are_equal) {
-    stack<int> s1;
-    stack<int> s2;
-    EXPECT_TRUE(s1 == s2);
-}
-
-TEST(stack, equality_identical_stacks_are_equal) {
-    stack<int> s1;
-    s1.Push(1);
-    s1.Push(2);
-    s1.Push(3);
-    stack<int> s2;
-    s2.Push(1);
-    s2.Push(2);
-    s2.Push(3);
-    EXPECT_TRUE(s1 == s2);
-}
-
-TEST(stack, equality_different_stacks_are_not_equal) {
-    stack<int> s1;
-    s1.Push(1);
-    s1.Push(2);
-    stack<int> s2;
-    s2.Push(1);
-    s2.Push(3);
-    EXPECT_FALSE(s1 == s2);
-}
-TEST(stack, inequality_empty_stacks_are_equal) {
-    stack<int> s1;
-    stack<int> s2;
-    EXPECT_FALSE(s1 != s2); 
-}
-
-TEST(stack, inequality_identical_stacks_are_equal) {
-    stack<int> s1;
-    s1.Push(1);
-    s1.Push(2);
-    s1.Push(3);
-    stack<int> s2;
-    s2.Push(1);
-    s2.Push(2);
-    s2.Push(3);
-    EXPECT_FALSE(s1 != s2);
-}
-
-TEST(stack, inequality_different_stacks_are_not_equal) {
-    stack<int> s1;
-    s1.Push(1);
-    s1.Push(2);
-    stack<int> s2;
-    s2.Push(1);
-    s2.Push(3);
-    EXPECT_TRUE(s1 != s2);
 }
 

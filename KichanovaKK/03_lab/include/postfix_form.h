@@ -1,4 +1,4 @@
-#pragma once
+/*#pragma once
 #include <iostream>
 #include "stack.h"
 
@@ -20,4 +20,4 @@ public:
     }
     string get_infix() const { return infix; }
     string get_postfix() const { return postfix; }
-};
+};*/
