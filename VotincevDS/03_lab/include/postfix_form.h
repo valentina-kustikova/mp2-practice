@@ -18,7 +18,7 @@ class ArithmeticExpression {
 private:
     vector<string> expr;
     STACK_IMPL impl = ARRAY_STACK;
-    Stack<string> *stack1;
+    Stack<string> *stack1; // можно без этих стеков
     Stack<string> *stack2;
     Stack<double>* stackRes;
 public:
