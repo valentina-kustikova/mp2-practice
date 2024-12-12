@@ -96,7 +96,7 @@ std::string removeSpaces(const std::string& str) {
 
 
 
-bool is_op(char el) { // todo
+bool is_op(char el) { // todo (избавиться от одного)
     return el == '*' || el == '/' || el == '+' || el == '-';
 }
 
@@ -172,7 +172,7 @@ unordered_map<string, double> ArithmeticExpression::fill_variables() {
 
 
 
-double ArithmeticExpression::compute(
+double ArithmeticExpression::compute( // разбить функцию на несколько и использовать Stack
     const unordered_map<string, double>& values) {
 
     vector<string> pf;
