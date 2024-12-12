@@ -10,6 +10,7 @@ private:
 	int top;
 public:
 	TStack(int maxSize = 10) {
+		if (maxSize <= 0) throw range_error("Negative size");
 		this->maxSize = maxSize;
 		this->pMem = new T[maxSize];
 		for (int i = 0; i < maxSize; i++) {
@@ -55,7 +56,7 @@ public:
 };
 
 
-char* getPostform(char* simpleForm, int n) {
+string getPostform(char* simpleForm, int n) {
 	
 	TStack<char> s1(n);
 	TStack<char> s2(n);
@@ -98,24 +99,22 @@ char* getPostform(char* simpleForm, int n) {
 		s1.push(s2.Top());
 		s2.pop();
 	}
-	char* newForm = new char[s1.getSteckSize()+1];
-	int i = s1.getSteckSize();
+	string newForm = "";
 	while (!s1.isEmpty()) {
-		newForm[i] = s1.Top();
+		newForm =  s1.Top() + newForm ;
 		s1.pop();
-		i--;
+		//i--;
 	}
 
 	return newForm;
 
 }
 
-int Calculate(char* postForm, int n, map<char, int>& values) {
+int Calculate(string postForm, int n, map<char, int>& values) {
 
 	TStack<char> s1(n);
 	
 	for (int i = 0; i < n; i++) {
-		//cout << s1.Top() << endl;
 		if (postForm[i] == '+') {
 			char num2 = s1.Top();
 			s1.pop();
@@ -149,9 +148,7 @@ int Calculate(char* postForm, int n, map<char, int>& values) {
 			char num1 = s1.Top();
 			s1.pop();
 			int k = (values[num1] - values[num2]);
-			cout << values[num1] << endl;
 			s1.push(k);
-			cout << k << endl;
 			values.insert({  k, k });
 		}
 		else {
@@ -168,3 +165,64 @@ int getSymb(char* a, int n) {
 	}
 	return d;
 }
+/*
+string getPostform1(string simpleForm, int n) {
+
+	TStack<string> s1(n);
+	TStack<string> s2(n);
+	string stakItem;
+	int i = 0;
+	while(i<n) {
+		if (simpleForm[i] == '+' || simpleForm[i] == '-') {
+			if (s2.Top() == "/" || s2.Top() == "*") {
+				while (s2.Top() == "/" || s2.Top() == "*") {
+					s1.push(s2.Top());
+					s2.pop();
+				}
+				s2.push(""+simpleForm[i]);
+			}
+			else {
+				s2.push("" + simpleForm[i]);
+			}
+		}
+		else if (simpleForm[i] == '*' || simpleForm[i] == '/') {
+			s2.push("" + simpleForm[i]);
+
+		}
+		else if (simpleForm[i] == '(') s2.push("" + simpleForm[i]);
+		else if (simpleForm[i] == ')') {
+			stakItem = s2.Top();
+			s2.pop();
+			while (s2.Top() != "(") {
+				s1.push(stakItem);
+
+				stakItem = s2.Top();
+				s2.pop();
+			}
+			s1.push(stakItem);
+			s2.pop();
+		}
+		else {
+			string s = "";
+			while (simpleForm[i] != '+' && simpleForm[i] != '*' && simpleForm[i] != '-' && simpleForm[i] != '/') {
+				s = s + simpleForm[i];
+				i++;
+			}
+			s1.push(s);
+			
+		}
+	}
+	while (!s2.isEmpty()) {
+		s1.push(s2.Top());
+		s2.pop();
+	}
+	string newForm;
+	//int i = s1.getSteckSize();
+	while (!s1.isEmpty()) {
+		newForm = newForm + s1.Top();
+		s1.pop();
+	}
+
+	return newForm;
+	*/
+

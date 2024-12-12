@@ -9,20 +9,28 @@
 //---------------------------------------------------------------------------
 
 int main() {
+	setlocale(LC_ALL, "Russian");
 	char* st = "(A-C)*T"; 
+	cout << "Обычная форма: " << st << endl;
 	int n = strlen(st);
-	char* a = new char[n];
+	string a;
+	//char* a = new char[n];
 	a = getPostform(st,n);
 	n = n - getSymb(st, n);
-	for (int i = 0; i < n; i++) {
-		std::cout << a[i];
-	}
-	cout << endl;
+	cout << "Постфиксная форма: " << a << endl;;
+	cout <<"\n" << endl;
 	map<char, int> s;
 	s.insert({ 'A', 2 });
 	s.insert({ 'C', 5 });
 	s.insert({ 'T', 11 });
-	cout << Calculate(a, n, s) << endl;
+	cout <<"Ответ: "<< Calculate(a, n, s) << endl;
+	
+	/*
+	string st = "(A-C)*T";
+	string a;
+	//a = getPostform1(st, sizeof(st));
+	cout << getPostform1(st, sizeof(st)) << endl;
 	return 1;
+	*/
 	
 }
