@@ -142,7 +142,7 @@ public:
     };
 
 
-    void next() {
+    void next() { // RemoveFirst == PopFront
         ListNode<T>* tmp = pFirst;
         if (tmp == nullptr) {
             throw "empty list";

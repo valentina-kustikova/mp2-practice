@@ -16,13 +16,16 @@ enum STACK_IMPL
 
 class ArithmeticExpression {
 private:
-    
+    vector<string> expr;
     STACK_IMPL impl = ARRAY_STACK;
+    Stack<string> *stack1;
+    Stack<string> *stack2;
+    Stack<double>* stackRes;
 public:
 
-    vector<string> expr; // временно!
+   
 
-    ArithmeticExpression() : impl(ARRAY_STACK) {};
+    //ArithmeticExpression() : impl(ARRAY_STACK) {};
     ArithmeticExpression(const string&, STACK_IMPL impl1 = ARRAY_STACK);
 
     vector<string> convert(const string&); // string to vector<string>

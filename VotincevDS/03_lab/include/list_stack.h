@@ -4,7 +4,7 @@
 #include "stack.h"
 #include "list.h"
 
-#define MAX_SIZE 100000
+#define MAX_SIZE 100000 // !!!!
 
 template <typename T>
 class ListStack : public Stack<T> {
@@ -70,14 +70,6 @@ ListStack<T>::~ListStack() {
 template <typename T>
 void ListStack<T>::push(const T& el) {
     elems.push(el);
-    //if (IsEmpty()) {
-    //    elems = new List<T>(el);
-    //    return;
-    //}
-    //// push O(1)
-    //List<T> tmp = new List<T>(el);
-    //tmp.next = elems;
-    //elems = tmp;
 }
 
 
@@ -85,7 +77,7 @@ void ListStack<T>::push(const T& el) {
 template <typename T>
 void ListStack<T>::pop() {
     
-    elems.next();
+    elems.next(); // RemoveFirst
 
 }
 
@@ -99,7 +91,7 @@ T ListStack<T>::Top() const {
 
 
 template <typename T>
-bool ListStack<T>::IsEmpty() const { return elems.get_head() == nullptr; };
+bool ListStack<T>::IsEmpty() const { return elems.size() == 0; };
 
 template <typename T>
 bool ListStack<T>::IsFull() const { return size() < MAX_SIZE; };

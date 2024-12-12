@@ -96,7 +96,7 @@ std::string removeSpaces(const std::string& str) {
 
 
 
-bool is_op(char el) {
+bool is_op(char el) { // todo
     return el == '*' || el == '/' || el == '+' || el == '-';
 }
 
@@ -104,7 +104,7 @@ bool is_op(string el) {
     return el == "*" || el == "/" || el == "+" || el == "-";
 }
 
-int op_priority(char el) {
+int op_priority(char el) { // todo
     if (el == '*' || el == '/') {
         return 3;
     }
@@ -178,6 +178,7 @@ double ArithmeticExpression::compute(
     vector<string> pf;
     if (impl == ARRAY_STACK) {
         ArrayStack<string> op;
+        Stack<string> *op = new ArrayStack<string>();
         
 
         for (string el : expr) {
