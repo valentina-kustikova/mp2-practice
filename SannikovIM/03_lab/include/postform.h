@@ -1,33 +1,129 @@
 ﻿#include <iostream>
 #include <map>
 
+
+
 using namespace std;
+
+
+
+template <typename T>
+struct TNode {
+	T key;
+	TNode* pNext;
+	TNode(T k) : key(k), pNext(nullptr) {}
+
+};
+
+template <typename T>
+class TList {
+private:
+	TNode<T>* pFirst;
+public:
+	TList() :pFirst(nullptr){}
+	TList(const TList& other) : pFirst(nullptr) {
+		if (other.pFirst == nullptr) {
+			return; 
+		}
+		pFirst = new TNode<T>(other.pFirst->key);
+		TNode<T>* tmp = pFirst;
+		TNode<T>* curr = other.pFirst->pNext;
+		while (otherCurrent != nullptr) {
+			tmp->pNext = new TNode<T>(curr->key); 
+			tmp = tmp->pNext;                      
+			curr = curr->pNext;
+		}
+	}
+	~TList() {
+		while (pFirst != nullptr) {
+			TNode<T>* tmp = pFirst;
+			pFirst = pFirst->pNext;
+			delete tmp;
+		}
+	}
+	TNode<T>* Search(T key) {
+		if (this->pFirst == nullptr) throw range_error("First element is null");
+		TNode<T>* tmp = pFirst;
+		T a;
+		TNode<T>* tmp1(a);
+		while (tmp != nullptr || tmp->key != key) {
+			tmp = tmp->pNext;
+		}
+		return tmp;
+
+	}
+	void Insert(T key) {
+		TNode<T>* tmp1 = new TNode<T>(key);
+		if (pFirst == nullptr) {
+			pFirst = tmp1;
+			return;
+		}
+		TNode<T>* tmp = this->pFirst;
+		while (tmp->pNext != nullptr) {
+			tmp = tmp->pNext;
+		}
+		tmp->pNext = tmp1;
+
+	}
+	TNode<T>* GetLast() const{
+		if (pFirst == nullptr) return nullptr; //throw range_error("First element is null");
+		TNode<T>* tmp = pFirst;
+
+		//if (tmp->pNext == nullptr) throw "error";
+		while (tmp->pNext != nullptr) {
+			tmp = tmp->pNext;
+		}
+		return tmp;
+
+	}
+	void DeleteLast() {
+		if (pFirst == nullptr)
+			throw range_error("List is empty");
+
+		if (pFirst->pNext == nullptr) {
+			delete pFirst;
+			pFirst = nullptr;
+			return;
+		}
+
+		TNode<T>* tmp = pFirst;
+		while (tmp->pNext->pNext != nullptr) {
+			tmp = tmp->pNext;
+		}
+
+		delete tmp->pNext;
+		tmp->pNext = nullptr;
+	}
+
+};
+
+
+
+
+
 template <typename T>
 class TStack {
 private:
-	T* pMem;
+	TList<T> pMem;
 	int maxSize;
 	int top;
 public:
 	TStack(int maxSize = 10) {
 		if (maxSize <= 0) throw range_error("Negative size");
 		this->maxSize = maxSize;
-		this->pMem = new T[maxSize];
-		for (int i = 0; i < maxSize; i++) {
-			this->pMem[i] = 0;
-		}
 		top = -1;
 	}
 	TStack(const TStack& ts) {
 		this->maxSize = ts.maxSize;
-		this->pMem = new T[this->maxSize];
-		for (int i = 0; i < this->maxSize; i++) {
-			this->pMem[i] = ts.pMem[i];
-		}
 		this->top = ts.top;
+		TNode<T>* tmp = ts.pMem.GetLast();
+		while (tmp != nullptr) {
+			pMem.Insert(tmp->key);
+			tmp = tmp->pNext;
+		}
 	}
 	~TStack() {
-		delete[] pMem;
+	
 	}
 
 	bool isFull() const {
@@ -36,24 +132,31 @@ public:
 	bool isEmpty() const {
 		return (this->top == -1);
 	}
-	void push(const T& val)
+	void push(T val)
 	{
 		if (isFull()) throw "error";
 		this->top++;
-		this->pMem[top] = val;
+		
+		pMem.Insert(val);
 	}
 	void pop() {
 		if (isEmpty()) throw "error";
 
 		this->top--;
+		pMem.DeleteLast();
+
 		
 	}
 
 	T Top() const {
-		return pMem[top];
+		if (pMem.GetLast() == nullptr) return 0;
+		return pMem.GetLast()->key;
 	}
 	int getSteckSize() const { return top; }
 };
+
+
+
 
 
 string getPostform(char* simpleForm, int n) {
