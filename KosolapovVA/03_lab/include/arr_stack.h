@@ -69,44 +69,26 @@ public:
 
     const ArrStack<T>& operator=(const ArrStack<T>& s)
     {
-        if (this != &s)
+        if (this == &s)
         {
-            if (max_sz != s.max_sz)
-            {
-                if (max_sz != 0) {
-                    delete[] pMem;
-                }
-                max_sz = s.max_sz;
-                pMem = new T[max_sz];
+            return *this;            
+        }
+        if (max_sz != s.max_sz)
+        {
+            if (max_sz != 0) {
+                delete[] pMem;
             }
-            top = s.top;
-            for (int i = 0; i < max_sz; i++)
-            {
-                pMem[i] = s.pMem[i];
-            }
+            max_sz = s.max_sz;
+            pMem = new T[max_sz];
+        }
+        top = s.top;
+        for (int i = 0; i < max_sz; i++)
+        {
+            pMem[i] = s.pMem[i];
         }
         return *this;
     }
 
-    void Mirror_Stack()
-    {
-        ArrStack<T> temp(this->max_sz);
-        while (!(this->IsEmpty()))
-        {
-            temp.Push(this->Top());
-            this->Pop();
-        }
-        *this = temp;
-    }
-    void Print()
-    {
-        std::cout<<"\n" << "iter\n";
-        while (top != -1)
-        {
-            std::cout << pMem[top];
-            top--;
-        }
-    }
 };
 
 #endif // !ARR_STACK_H

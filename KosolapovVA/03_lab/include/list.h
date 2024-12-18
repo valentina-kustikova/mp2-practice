@@ -11,17 +11,19 @@ private:
     {
         TNode* pNext;
         T data;
-        int key;
+        TNode() : val(0), next(nullptr) {}
+        TNode(const T& x) : val(x), next(nullptr) {}
     };
     TNode* pFirst;
     size_t sz;
 public:
     List() : pFirst(nullptr), sz(0){}
-    List(const List& list);
-    List(List&& list) noexcept;
+    List(const List<T>& list);
+    //List(List&& list) noexcept;
     ~List();
-    List& operator=(const List& list);
-    List& operator=(List&& list) noexcept;
+    const List& operator=(const List<T>& list);
+    bool operator==(const List<T>& list);
+    //List& operator=(List&& list) noexcept;
 
 
 
@@ -30,7 +32,7 @@ public:
 };
 
 template <typename T>
-List<T>::List(const List &list):sz(v.sz), pFirst(nullptr)
+List<T>::List(const List<T> &list):sz(v.sz),pFirst(nullptr)
 {
     if (list.pFirst == nullptr)
         return;
@@ -53,6 +55,18 @@ List<T>::~List()
         pFirst = tmp;
     }
 }
-
-
+template <typename T>
+const List<T>& List<T>::operator=(const List<T>& list)
+{
+    //
+}
+template <typename T>
+bool List<T>::operator==(const List<T>& list)
+{
+    TNode* curr = pFirst;
+    while (curr != nullptr)
+    {
+        if()
+    }
+}
 #endif // !LIST_H

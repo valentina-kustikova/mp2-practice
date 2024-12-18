@@ -22,15 +22,36 @@ namespace posfix_form
     private:
         std::string infix;
         Stack<std::string>* postfix;
+        Stack<double>* res;
         STACK_IMPL impl;
         std::map<std::string, int> priority_s = { { "+", 1},{"-", 2},{"!",5},{"*", 3},{"/", 4},{"(",0} };
         std::map<std::string, double> var;
     public:
         ArExpression(const std::string&, STACK_IMPL impl = ARRAY_STACK);
-        void GetValue();
+        void GetVariable();
         double Calculate();
     };
 };
+
+
+bool check_Symb(char s);
+bool check_Numb(char s);
+bool check_Oper(char s);
+void StackToStack(Stack<std::string>& s1, Stack<std::string>& s2);
+
+
+
+void Check_Start(int&, char, std::string&, Stack<std::string>*&, Stack<std::string>*&);
+void Check_After_Minus(int&, char, std::string&, Stack<std::string>*&, Stack<std::string>*&);
+void Check_After_Oper(int&, char, std::string&, Stack<std::string>*&, Stack<std::string>*&);
+void Check_After_Symb(int&, char, std::map<std::string, int>, std::string&, Stack<std::string>*&, Stack<std::string>*&);
+void Check_After_Numb(int&, char, std::map<std::string, int> , std::string&, Stack<std::string>*&, Stack<std::string>*&);
+void Check_After_Right_Br(int& , char,std::map<std::string, int>, std::string&, Stack<std::string>*&, Stack<std::string>*&);
+
+
+void Oper_After(int&, char, std::map<std::string, int> , std::string&, Stack<std::string>*&, Stack<std::string>*&);
+void Right_Br_After(int&, char, std::map<std::string, int>, std::string&, Stack<std::string>*&, Stack<std::string>*&);
+
 #endif 
 
 

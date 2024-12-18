@@ -14,7 +14,7 @@ void main()
             std::string inf;
             std::cin >> inf;
             ArExpression ex(inf, ARRAY_STACK);
-            ex.GetValue();
+            ex.GetVariable();
             double res = ex.Calculate();
             std::cout << "result: " << res;
             std::cout << "\n If you want to calculate more, enter: 1" << "\n If you want to exit the program, enter: -1\n";

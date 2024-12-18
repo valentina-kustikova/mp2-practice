@@ -12,6 +12,5 @@ public:
     virtual T Top()=0;
     virtual bool IsEmpty()=0;
     virtual bool IsFull()=0;
-    virtual void Print() = 0;
 };
 #endif 

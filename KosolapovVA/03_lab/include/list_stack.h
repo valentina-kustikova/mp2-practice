@@ -11,7 +11,6 @@ public:
     T Top();
     bool IsEmpty();
     bool IsFull();
-    void Print();
     
     */
 };
