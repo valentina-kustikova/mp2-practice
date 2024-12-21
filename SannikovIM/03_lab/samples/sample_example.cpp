@@ -16,14 +16,13 @@ int main() {
 	string a;
 	//char* a = new char[n];
 	a = getPostform(st,n);
-	n = n - getSymb(st, n);
 	cout << "Постфиксная форма: " << a << endl;;
 	cout <<"\n" << endl;
 	map<char, int> s;
 	s.insert({ 'A', 2 });
 	s.insert({ 'C', 5 });
 	s.insert({ 'T', 11 });
-	cout <<"Ответ: "<< Calculate(a, n, s) << endl;
+	cout <<"Ответ: "<< Calculate(a, strlen(a.c_str()), s) << endl;
 	
 	/*
 	string st = "(A-C)*T";
