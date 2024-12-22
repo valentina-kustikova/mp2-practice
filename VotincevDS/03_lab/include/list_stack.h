@@ -50,12 +50,12 @@ ListStack<T>::ListStack(const ListStack<T>& s) {
         elems = nullptr;
         return;
     }
-    elems = new List<T>(s.elems.val);
+    elems = new List<T>(s.elems.get_val());//
     List<T> elemscurr = elems;
     List<T> scurr = s.elems;
     while (scurr != nullptr) {
-        elemscurr.next = new List<T>(scurr.val);
-        scurr = scurr.next;
+        elemscurr.RemoveFirst = new List<T>(scurr.get_val());
+        scurr = scurr.RemoveFirst;
     }
 };
 
@@ -77,7 +77,7 @@ void ListStack<T>::push(const T& el) {
 template <typename T>
 void ListStack<T>::pop() {
     
-    elems.next(); // RemoveFirst
+    elems.RemoveFirst(); // RemoveFirst
 
 }
 
@@ -107,16 +107,16 @@ const ListStack<T>& ListStack<T>::operator=(const ListStack<T>& s) {
         while (tmp != nullptr) {
             delete elems;
             elems = tmp;
-            tmp = tmp.next;
+            tmp = tmp.RemoveFirst;
         }
     }
 
-    elems = new List<T>(s.elems.val);
+    elems = new List<T>(s.elems.get_val());
     List<T> elemscurr = elems;
     List<T> scurr = s.elems;
     while (scurr != nullptr) {
-        elemscurr.next = new List<T>(scurr.val);
-        scurr = scurr.next;
+        elemscurr.RemoveFirst = new List<T>(scurr.get_val());
+        scurr = scurr.RemoveFirst;
     }
 
 }
@@ -126,11 +126,11 @@ bool ListStack<T>::operator==(const ListStack<T>& s) {
     List<T> thiscurr = elems;
     List<T> scurr = s.elems;
     while (thiscurr != nullptr && scurr != nullptr) {
-        if (thiscurr.val != scurr.val) {
+        if (thiscurr.get_val() != scurr.get_val()) {
             return 0;
         }
-        thiscurr = thiscurr.next;
-        scurr = scurr.next;
+        thiscurr = thiscurr.RemoveFirst;
+        scurr = scurr.RemoveFirst;
     }
 
     // когда оба nullptr

@@ -6,8 +6,6 @@
 #include "array_stack.h"
 #include "list_stack.h"
 
-#include <sstream>
-#include <cctype> 
 
 using namespace std;
 
@@ -26,9 +24,10 @@ vector<string> ArithmeticExpression::convert(const string& input) {
 
     string operand_name;
     for (size_t i = 0; i < expr.length(); ++i) {
-        char c = expr[i];
-        if (c == '(' || c == ')') {
-            if (is_op(operand_name) && c == ')') {
+        string c;
+        c.push_back(expr[i]);
+        if (c == "(" || c == ")") {
+            if (is_op(operand_name) && c == ")") {
                 throw "wrong expr";
             }
             /*if (is_op(operand_name)) {
@@ -40,7 +39,7 @@ vector<string> ArithmeticExpression::convert(const string& input) {
                 operand_name.clear();
             }
 
-            answ.push_back(string(1,c));
+            answ.push_back(c);
             continue;
         }
         if (is_op(c)) {
@@ -49,10 +48,10 @@ vector<string> ArithmeticExpression::convert(const string& input) {
             }
            
             if (answ.empty()) {
-                if (c != '-') {
+                if (c != "-") {
                     throw "wrong expression";
                 }
-                operand_name.push_back(c);
+                operand_name += c;
                 continue;
             }
             if (is_op(answ[answ.size() - 1])) {
@@ -60,8 +59,8 @@ vector<string> ArithmeticExpression::convert(const string& input) {
                     throw "wrong expression";
                 }
                 if ('0' <= expr[i + 1] && expr[i + 1] <= '9') {
-                    operand_name.clear(); //
-                    operand_name.push_back(c);
+                    operand_name.clear(); 
+                    operand_name += c;
                     continue;
                 }
                 else {
@@ -69,7 +68,7 @@ vector<string> ArithmeticExpression::convert(const string& input) {
                 }
                 
             }
-            answ.push_back(string(1, c));
+            answ.push_back(c);
             operand_name.clear();
             continue;
         }
@@ -86,7 +85,6 @@ vector<string> ArithmeticExpression::convert(const string& input) {
 
 
 
-// chatgpt
 std::string removeSpaces(const std::string& str) {
     std::string result = str; 
     result.erase(std::remove_if(result.begin(), result.end(), 
@@ -96,28 +94,11 @@ std::string removeSpaces(const std::string& str) {
 
 
 
-bool is_op(char el) { // todo (избавиться от одного)
-    return el == '*' || el == '/' || el == '+' || el == '-';
-}
-
 bool is_op(string el) {
     return el == "*" || el == "/" || el == "+" || el == "-";
 }
 
-int op_priority(char el) { // todo
-    if (el == '*' || el == '/') {
-        return 3;
-    }
-    else if (el == '-' || el == '+') {
-        return 2;
 
-    }
-    return 1;
-
-    // операция - имеет свой приоритет
-    // тк постфиксная форма не будет
-    // строиться правильно
-}
 
 int op_priority(string el) {
     if (el == "*" || el == "/") {
@@ -128,10 +109,8 @@ int op_priority(string el) {
     }
     return 1;
 
-    // операция - имеет свой приоритет
-    // тк постфиксная форма не будет
-    // строиться правильно
 }
+
 
 double make_op(double a, double b, string op) {
     switch (op[0])
@@ -143,6 +122,14 @@ double make_op(double a, double b, string op) {
     default:
         break;
     }
+}
+
+void print_pf(vector<string>& pf) {
+    cout << "\nPostfix form:\n";
+    for (string el : pf) {
+        cout << el << " ";
+    }
+    cout << '\n';
 }
 
 
@@ -172,612 +159,110 @@ unordered_map<string, double> ArithmeticExpression::fill_variables() {
 
 
 
-double ArithmeticExpression::compute( // разбить функцию на несколько и использовать Stack
+double ArithmeticExpression::compute(
     const unordered_map<string, double>& values) {
 
+    Stack<string>* op;
     vector<string> pf;
-    if (impl == ARRAY_STACK) {
-        ArrayStack<string> op;
-        Stack<string> *op = new ArrayStack<string>();
-        
-
-        for (string el : expr) {
-
-            // является операндом/числом
-            if (!is_op(el) && el != "(" && el != ")") {
-                pf.push_back(el);
-                continue;
-            } 
-
-            // является оператором
-            if (is_op(el)) {
-                if (op.IsEmpty()) {
-                    op.push(el);
-                    continue;
-                }
-                else {
-
-
-                    while (!op.IsEmpty() && op_priority(el) <= op_priority(op.Top())) {
-                        pf.push_back(op.Top());
-                        op.pop();
-                    }
-                    op.push(el);
-                    continue;
-                }
-            }
-
-            if (el == "(") {
-                op.push(el);
-                continue;
-            }
-            if (el == ")") {
-                while (op.Top() != "(") {
-                    pf.push_back(op.Top());
-                    op.pop();
-                }
-                op.pop();
-                continue;
-            }
-
-
-        }
-        while (!op.IsEmpty()) {
-            pf.push_back(op.Top());
-            op.pop();
-        }
-        
-
-    }
-    else {
-        ListStack<string> op;
-
-
-        for (string el : expr) {
-
-            // является операндом/числом
-            if (!is_op(el) && el != "(" && el != ")") {
-                pf.push_back(el);
-                continue;
-            }
-
-            // является оператором
-            if (is_op(el)) {
-                if (op.IsEmpty()) {
-                    op.push(el);
-                    continue;
-                }
-                else {
-
-
-                    while (!op.IsEmpty() && op_priority(el) <= op_priority(op.Top())) {
-                        pf.push_back(op.Top());
-                        op.pop();
-                    }
-                    op.push(el);
-                    continue;
-                }
-            }
-
-            if (el == "(") {
-                op.push(el);
-                continue;
-            }
-            if (el == ")") {
-                while (op.Top() != "(") {
-                    pf.push_back(op.Top());
-                    op.pop();
-                }
-                op.pop();
-                continue;
-            }
-
-
-        }
-        while (!op.IsEmpty()) {
-            pf.push_back(op.Top());
-            op.pop();
-        }
-    }
-    cout << "\nPostfix form:\n";
-    for (string el : pf) {
-        cout << el << " ";
-    }
-    cout << '\n';
-
-    unordered_map<string, double> vals = values;
-    vals = fill_variables();
-
-    double answ = 0;
 
 
     if (impl == ARRAY_STACK) {
-        ArrayStack<double> variables;
-        for (string el : pf) {
-            if (is_op(el)) {
-                double b = variables.Top();
-                variables.pop();
-                if (variables.IsEmpty()) {
-                    variables.push(-b);
-                    continue;
-                }
-                double a = variables.Top();
-                variables.pop();
-
-                variables.push(make_op(a,b,el));
-                continue;
-            }
-            variables.push(vals[el]);
-
-        }
-        answ = variables.Top();
+        op = new ArrayStack<string>();
     }
     else {
-        ListStack<double> variables;
-        for (string el : pf) {
-            if (is_op(el)) {
-                double b = variables.Top();
-                variables.pop();
-                double a = variables.Top();
-                variables.pop();
-
-                variables.push(make_op(a, b, el));
-                continue;
-            }
-            variables.push(vals[el]);
-
-        }
-        answ = variables.Top();
+        op = new ListStack<string>();
     }
-
-
-    return answ;
+    make_pf(op, pf);
+    print_pf(pf);
+    return solve_pf(pf,values);
 }
 
 
 
 
+double ArithmeticExpression::solve_pf(vector<string>& pf,
+    const unordered_map<string, double>& values) {
+    unordered_map<string, double> vals = values;
+    vals = fill_variables();
+
+    double answ = 0;
+
+    Stack<double>* variables;
+    if (impl == ARRAY_STACK) {
+        variables = new ArrayStack<double>();
+    }
+    else {
+        variables = new ListStack<double>();
+    }
+
+    for (string el : pf) {
+        if (is_op(el)) {
+            double b = variables->Top();
+            variables->pop();
+            if (variables->IsEmpty()) {
+                variables->push(-b);
+                continue;
+            }
+            double a = variables->Top();
+            variables->pop();
+
+            variables->push(make_op(a, b, el));
+            continue;
+        }
+        variables->push(vals[el]);
+
+    }
+    answ = variables->Top();
+    return answ;
+}
 
 
 
+void ArithmeticExpression::make_pf(Stack<string>*&op, vector<string>& pf) {
+    for (string el : expr) {
+
+        // является операндом/числом
+        if (!is_op(el) && el != "(" && el != ")") {
+            pf.push_back(el);
+            continue;
+        }
+
+        // является оператором
+        if (is_op(el)) {
+            if (op->IsEmpty()) {
+                op->push(el);
+                continue;
+            }
+            else {
 
 
+                while (!op->IsEmpty() && op_priority(el) <= op_priority(op->Top())) {
+                    pf.push_back(op->Top());
+                    op->pop();
+                }
+                op->push(el);
+                continue;
+            }
+        }
+
+        if (el == "(") {
+            op->push(el);
+            continue;
+        }
+        if (el == ")") {
+            while (op->Top() != "(") {
+                pf.push_back(op->Top());
+                op->pop();
+            }
+            op->pop();
+            continue;
+        }
 
 
+    }
+    while (!op->IsEmpty()) {
+        pf.push_back(op->Top());
+        op->pop();
+    }
+}
 
-
-
-
-
-
-
-//string postfixform(string input, ArrayStack<string>& names) {
-//    input.push_back(' ');
-//
-//    ArrayStack<char> op; // (1)
-//    string name;
-//    string answ;
-//    for (int i = 0; i < input.size(); i++) {
-//        char el = input[i];
-//
-//        if (el == '(') {
-//            if (name.size() != 0) {
-//                 
-//                answ += name; //
-//                 
-//                name.clear();
-//            }
-//            op.push(el);
-//            continue;
-//        }
-//
-//        if (is_op(el)) {
-//            if (i == (input.size()-1)) {
-//                throw "wrong expression";
-//            }
-//            if (el == '-' && '1' <= input[i + 1] && input[i + 1] <= '9') {
-//                name.push_back(el);
-//                continue;
-//            }
-//            else if (el == '-' && input[i + 1] == '0') {
-//                throw "wrong expression";
-//            }
-//            if (is_op(input[i - 1])) {
-//                if (el == '-' && '1' <= input[i + 1] && input[i + 1] <= '9') {
-//                    name.push_back(el);
-//                    continue;
-//                }
-//                if (input[i + 1] == '0') {
-//                    throw "wrong expression";
-//                }
-//            }
-//
-//
-//            if (name.size() != 0) {
-//                 
-//                answ += name; //
-//                 
-//                name.clear();
-//            }
-//
-//            while (!op.IsEmpty() && op_priority(el) < op_priority(op.Top())) {
-//                string tmp;
-//                tmp.push_back(op.Top());
-//                 
-//                answ.push_back(op.Top()); //
-//                 
-//                op.pop();
-//            }
-//
-//            op.push(el);
-//            continue;
-//        }
-//
-//        if (el == ')') {
-//            if (name.size() != 0) {
-//                 
-//                answ += name; //
-//                 
-//                name.clear();
-//            }
-//
-//            while (!op.IsEmpty() && op.Top() != '(') {
-//                string tmp;
-//                tmp.push_back(op.Top());
-//                 
-//                answ.push_back(op.Top()); //
-//                 
-//                op.pop();
-//            }
-//            /*if (op.IsEmpty()) {
-//                throw "wrong expression";
-//            }*/
-//            op.pop();
-//            continue;
-//        }
-//
-//        if (el == ' ') {
-//            if (name.size() != 0) {
-//                 
-//                answ += name; //
-//                answ += " ";
-//                name.clear();
-//            }
-//            continue;
-//        }
-//
-//        name.push_back(el);
-//    }
-//
-//    while (!op.IsEmpty()) {
-//        string tmp;
-//        tmp.push_back(op.Top());
-//         
-//        answ.push_back(op.Top()); //
-//         
-//        op.pop();
-//    }
-//
-//    input.pop_back();
-//    return answ;
-//}
-//
-//
-
-//
-
-//
-//bool is_number(string s) {
-//    if ('0' <= s[0] && s[0] <= '9' ||
-//        s[0] == '-' && '0' <= s[1] && s[1] <= '9') {
-//        return 1;
-//    }
-//    return 0;
-//}
-//
-//
-//
-//
-//double solvepf(ArrayStack<string> pf) {
-//    ArrayStack<double> vars; // variables
-//    ArrayStack<string> rpf; // reversed pf
-//    unordered_map<string, double> values;
-//    while (!pf.IsEmpty()) {
-//        rpf.push(pf.Top());
-//        pf.pop();
-//    }
-//
-//
-//    while (!rpf.IsEmpty()) {
-//        if (is_op(rpf.Top())) {
-//            double b = vars.Top();
-//            vars.pop();
-//            double a = vars.Top();
-//            vars.pop();
-//            vars.push(make_op(a, b, rpf.Top()[0]));
-//            rpf.pop();
-//             
-//        }
-//        else {
-//            if (values.find(rpf.Top()) != values.end()) {
-//                vars.push(values[rpf.Top()]);
-//                rpf.pop();
-//                continue;
-//            }
-//            else {
-//                if (is_number(rpf.Top())) {
-//                    vars.push(stod(rpf.Top()));
-//                    rpf.pop();
-//                } else if (values.find(rpf.Top()) == values.end()) {
-//                    cout << "Type value of " << rpf.Top() << '\n';
-//                    cin >> values[rpf.Top()];
-//                    vars.push(values[rpf.Top()]);
-//                    rpf.pop();
-//                    
-//                }            
-//            }
-//        }
-//    }  
-//    return vars.Top();
-//}
-//
-//
-//
-//double test_solvepf(ArrayStack<string> pf, unordered_map<string, double> v) {
-//    ArrayStack<double> vars; // variables
-//    ArrayStack<string> rpf; // reversed pf
-//    unordered_map<string, double> values = v;
-//    while (!pf.IsEmpty()) {
-//        rpf.push(pf.Top());
-//        pf.pop();
-//    }
-//
-//
-//    while (!rpf.IsEmpty()) {
-//        if (is_op(rpf.Top())) {
-//            double b = vars.Top();
-//            vars.pop();
-//            double a = vars.Top();
-//            vars.pop();
-//            vars.push(make_op(a, b, rpf.Top()[0]));
-//            rpf.pop();
-//
-//        }
-//        else {
-//            if (values.find(rpf.Top()) != values.end()) {
-//                vars.push(values[rpf.Top()]);
-//                rpf.pop();
-//                continue;
-//            }
-//            else {
-//                if (is_number(rpf.Top())) {
-//                    vars.push(stod(rpf.Top()));
-//                    rpf.pop();
-//                }
-//                else if (values.find(rpf.Top()) == values.end()) {
-//                    cout << "Type value of " << rpf.Top() << '\n';
-//                    cin >> values[rpf.Top()];
-//                    vars.push(values[rpf.Top()]);
-//                    rpf.pop();
-//
-//                }
-//            }
-//        }
-//    }
-//    return vars.Top();
-//}
-
-
-
-
-
-
-
-//
-//                  ListStack
-//
-
-
-//string postfixform(string input, ListStack<string>& names) {
-//    input.push_back(' ');
-//
-//    ListStack<char> op; // (1)
-//    string name;
-//    string answ;
-//    for (int i = 0; i < input.size(); i++) {
-//        char el = input[i];
-//
-//        if (el == '(') {
-//            if (name.size() != 0) {
-//                 
-//                answ += name; //
-//                 
-//                name.clear();
-//            }
-//            op.push(el);
-//            continue;
-//        }
-//
-//        if (is_op(el)) {
-//            if (i == (input.size() - 1)) {
-//                throw "wrong expression";
-//            }
-//            if (el == '-' && '1' <= input[i + 1] && input[i + 1] <= '9') {
-//                name.push_back(el);
-//                continue;
-//            }
-//            else if (el == '-' && input[i + 1] == '0') {
-//                throw "wrong expression";
-//            }
-//            if (is_op(input[i - 1])) {
-//                if (el == '-' && '1' <= input[i + 1] && input[i + 1] <= '9') {
-//                    name.push_back(el);
-//                    continue;
-//                }
-//                if (input[i + 1] == '0') {
-//                    throw "wrong expression";
-//                }
-//            }
-//
-//
-//            if (name.size() != 0) {
-//                 
-//                answ += name; //
-//                 
-//                name.clear();
-//            }
-//
-//            while (!op.IsEmpty() && op_priority(el) < op_priority(op.Top())) {
-//                string tmp;
-//                tmp.push_back(op.Top());
-//                 
-//                answ.push_back(op.Top()); //
-//                 
-//                op.pop();
-//            }
-//
-//            op.push(el);
-//            continue;
-//        }
-//
-//        if (el == ')') {
-//            if (name.size() != 0) {
-//                 
-//                answ += name; //
-//                 
-//                name.clear();
-//            }
-//
-//            while (!op.IsEmpty() && op.Top() != '(') {
-//                string tmp;
-//                tmp.push_back(op.Top());
-//                 
-//                answ.push_back(op.Top()); //
-//                 
-//                op.pop();
-//            }
-//            /*if (op.IsEmpty()) {
-//                throw "wrong expression";
-//            }*/
-//            op.pop();
-//            continue;
-//        }
-//
-//        if (el == ' ') {
-//            if (name.size() != 0) {
-//                 
-//                answ += name; //
-//                answ += " ";
-//                name.clear();
-//            }
-//            continue;
-//        }
-//
-//        name.push_back(el);
-//    }
-//
-//    while (!op.IsEmpty()) {
-//        string tmp;
-//        tmp.push_back(op.Top());
-//         
-//        answ.push_back(op.Top()); //
-//         
-//        op.pop();
-//    }
-//
-//    input.pop_back();
-//    return answ;
-//}
-//
-//
-//
-//double solvepf(ListStack<string>& pf) {
-//    ListStack<double> vars; // variables
-//    ListStack<string> rpf; // reversed pf
-//    unordered_map<string, double> values;
-//    while (!pf.IsEmpty()) {
-//        rpf.push(pf.Top());
-//        pf.pop();
-//    }
-//
-//
-//    while (!rpf.IsEmpty()) {
-//        if (is_op(rpf.Top())) {
-//            double b = vars.Top();
-//            vars.pop();
-//            double a = vars.Top();
-//            vars.pop();
-//            vars.push(make_op(a, b, rpf.Top()[0]));
-//            rpf.pop();
-//
-//        }
-//        else {
-//            if (values.find(rpf.Top()) != values.end()) {
-//                vars.push(values[rpf.Top()]);
-//                rpf.pop();
-//                continue;
-//            }
-//            else {
-//                if (is_number(rpf.Top())) {
-//                    vars.push(stod(rpf.Top()));
-//                    rpf.pop();
-//                }
-//                else if (values.find(rpf.Top()) == values.end()) {
-//                    cout << "Type value of " << rpf.Top() << '\n';
-//                    cin >> values[rpf.Top()];
-//                    vars.push(values[rpf.Top()]);
-//                    rpf.pop();
-//
-//                }
-//            }
-//        }
-//    }
-//
-//    return vars.Top();
-//}
-//
-//
-//
-//double test_solvepf(ListStack<string>& pf, unordered_map<string, double> v) {
-//    ListStack<double> vars; // variables
-//    ListStack<string> rpf; // reversed pf
-//    unordered_map<string, double> values = v;
-//    while (!pf.IsEmpty()) {
-//        rpf.push(pf.Top());
-//        pf.pop();
-//    }
-//
-//
-//    while (!rpf.IsEmpty()) {
-//        if (is_op(rpf.Top())) {
-//            double b = vars.Top();
-//            vars.pop();
-//            double a = vars.Top();
-//            vars.pop();
-//            vars.push(make_op(a, b, rpf.Top()[0]));
-//            rpf.pop();
-//
-//        }
-//        else {
-//            if (values.find(rpf.Top()) != values.end()) {
-//                vars.push(values[rpf.Top()]);
-//                rpf.pop();
-//                continue;
-//            }
-//            else {
-//                if (is_number(rpf.Top())) {
-//                    vars.push(stod(rpf.Top()));
-//                    rpf.pop();
-//                }
-//                else if (values.find(rpf.Top()) == values.end()) {
-//                    cout << "Type value of " << rpf.Top() << '\n';
-//                    cin >> values[rpf.Top()];
-//                    vars.push(values[rpf.Top()]);
-//                    rpf.pop();
-//
-//                }
-//            }
-//        }
-//    }
-//    return vars.Top();
-//}

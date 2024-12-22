@@ -6,7 +6,6 @@ using namespace std;
 
 int main()
 {
-    // -(A+B-C*g)+15*g/7*kl
 
     setlocale(LC_ALL, "Russian");
 
@@ -29,8 +28,8 @@ int main()
     STACK_IMPL stack_impl;
     switch (stack_type)
     {
-        case '0': stack_impl = ARRAY_STACK;
-        case '1': stack_impl = LIST_STACK;
+    case '0': stack_impl = ARRAY_STACK; break;
+    case '1': stack_impl = LIST_STACK; break;
     }
     ArithmeticExpression expr(s, stack_impl);
 
