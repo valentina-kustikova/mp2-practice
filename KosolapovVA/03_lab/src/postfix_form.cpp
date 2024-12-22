@@ -190,9 +190,9 @@ void Check_After_Right_Br(int& l_symb, char inf, std::map<std::string, int> prio
 void Oper_After(int& l_symb, char inf, std::map<std::string, int> priority_s, std::string& var, Stack<std::string>*& stack_1, Stack<std::string>*& stack_2)
 {
     var += inf;
-    if ((!(stack_2->IsEmpty())) && (priority_s[stack_2->Top()] > priority_s[var]))
+    if ((!(stack_2->IsEmpty())) && (priority_s[stack_2->Top()] >= priority_s[var]))
     {
-        while ((!(stack_2->IsEmpty())) && (priority_s[stack_2->Top()] > priority_s[var]))
+        while ((!(stack_2->IsEmpty())) && (priority_s[stack_2->Top()] >= priority_s[var]))
         {
             stack_1->Push(stack_2->Top());
             stack_2->Pop();

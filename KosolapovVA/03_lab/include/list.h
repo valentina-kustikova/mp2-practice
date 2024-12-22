@@ -28,6 +28,7 @@ public:
     void PushBack(const T& val);
     void PopBack();
     void PopFront();
+    void DelList();
     bool IsEmpty();
     int GetSZ();
 };
@@ -36,7 +37,7 @@ public:
 template <typename T>
 int List<T>::GetSZ() { return sz;}
 template <typename T>
-List<T>::List(const List<T> &list):sz(v.sz),pFirst(nullptr)
+List<T>::List(const List<T> &list):sz(list.sz), pFirst(nullptr)
 {
     if (list.pFirst == nullptr)
         return;
@@ -49,7 +50,7 @@ List<T>::List(const List<T> &list):sz(v.sz),pFirst(nullptr)
     }
 }
 template <typename T>
-List<T>::~List()
+void List<T>::DelList()
 {
     TNode* tmp;
     while (pFirst != nullptr)
@@ -58,14 +59,27 @@ List<T>::~List()
         delete pFirst;
         pFirst = tmp;
     }
+    sz = 0;
+}
+template <typename T>
+List<T>::~List()
+{
+    DelList();
 }
 template <typename T>
 const List<T>& List<T>::operator=(const List<T>& list)
 {
     if (this != &list)
     {
-        List tmp(list);
-        swap(*this, tmp);
+        this->DelList();
+        pFirst = new TNode{ *list.pFirst };
+        TNode* pNew = pFirst;
+        while (pNew->pNext != nullptr)
+        {
+            pNew->pNext = new TNode{ *pNew->pNext };
+            pNew = pNew->pNext;
+        }
+        sz = list.sz;
     }
     return *this;
 

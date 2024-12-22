@@ -16,6 +16,15 @@ public:
     T Top();
     bool IsEmpty();
     bool IsFull() { return 0; };
+    const ListStack<T>& operator=(const ListStack<T>& s)
+    {
+        stack = s.stack;
+        return *this;
+    }
+    bool operator==(const ListStack<T>& s)
+    {
+        return (stack == s.stack);
+    }
 };
 
 template <typename T>

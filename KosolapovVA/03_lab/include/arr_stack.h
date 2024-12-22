@@ -89,6 +89,27 @@ public:
         return *this;
     }
 
+    bool operator==(const ArrStack<T>& s)
+    {
+        ArrStack<T> temp1(*this);
+        ArrStack<T> temp2(s);
+        if (top != s.top)
+            return 0;
+        if (temp1.top != -1)
+        {
+            while (temp1.top != -1)
+            {
+                if (temp1.pMem[temp1.top] != temp2.pMem[temp2.top])
+                {
+                    return 0;
+                }
+                temp1.Pop();
+                temp2.Pop();                
+            }
+        }
+        return 1;
+    }
+
 };
 
 #endif // !ARR_STACK_H
