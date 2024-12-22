@@ -1,9 +1,18 @@
 #include "postfix_form.h"
+#include "list.h"
 
 
 
 void main()
 {
+    List<int> a;
+    a.PushBack(8);
+    a.PushFront(7);
+    a.PopBack();
+    a.PopFront();
+
+
+
     using namespace posfix_form;
     try
     {
@@ -13,7 +22,7 @@ void main()
             std::cout << "Write: ";
             std::string inf;
             std::cin >> inf;
-            ArExpression ex(inf, ARRAY_STACK);
+            ArExpression ex(inf, LIST_STACK);
             ex.GetVariable();
             double res = ex.Calculate();
             std::cout << "result: " << res;

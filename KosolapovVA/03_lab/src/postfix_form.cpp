@@ -33,7 +33,7 @@ void ChoseStack(Stack<T>*& s, STACK_IMPL impl)
         s = new ArrStack<T>;
         break;
     case 1:
-
+        s = new ListStack<T>;
         break;
     }
 }
@@ -268,15 +268,7 @@ ArExpression::ArExpression(const std::string& inf, STACK_IMPL impl):infix(inf), 
 void  ArExpression::GetVariable()//
 {
     Stack<std::string> *temp;
-    switch (impl)
-    {
-    case 0:
-        temp = new ArrStack<std::string>;
-        break;
-    case 1:
-
-        break;
-    }    
+    ChoseStack(temp, impl);
     while (!(postfix->IsEmpty()))
     {
         if (!(check_Oper(postfix->Top()[0])))
