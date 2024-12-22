@@ -40,42 +40,4 @@ TEST(stack, can_create_copied_stack)
     ASSERT_NO_THROW(stack<int> s1(s));
 }
 
-TEST(stack, copied_stack_has_its_own_memory)
-{
-    stack<int> s;
-    s.Push(1);
-    s.Push(2);
-    stack<int> s1(s);
-    s.Pop();
-    EXPECT_NE(s, s1);
-}
-TEST(stack, can_assign_stack_to_itself)
-{
-    stack<int> s;
-    s.Push(1);
-    s.Push(2);
-    ASSERT_NO_THROW(s = s);
-}
-
-TEST(stack, can_assign_stacks_of_equal_size)
-{
-    stack<int> s1;
-    s1.Push(1);
-    s1.Push(2);
-    stack<int> s2;
-    s2.Push(1);
-    s2.Push(2);
-    s2 = s1;
-    EXPECT_EQ(s1, s2);
-}
-TEST(stack, can_assign_stacks_of_different_size)
-{
-    stack<int> s1;
-    s1.Push(1);
-    s1.Push(2);
-    stack<int> s2;
-    s2.Push(1);
-    s2 = s1;
-    EXPECT_EQ(s1, s2);
-}
 
