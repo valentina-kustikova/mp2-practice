@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
-#include "stack.h"
+#include "main_stack.h"
+#include "list_stack.h"
 #include <cctype>
 #include <map>
 #include <string>
@@ -16,8 +17,11 @@ protected:
     vector<char> lexems;
     map<char, double> operands;
     map<char, int> priority;
+    MainStack<T>* operatorsStack; 
+    MainStack<string>* operandsStack;
 public:
-    AriExpress(string infx);
+    AriExpress(string infx, MainStack<T>* opStack, MainStack<string>* opndStack);
+    ~AriExpress();
     void Parse();
     void to_postfix();
     string get_infix() const { return infix; }
@@ -27,9 +31,15 @@ public:
 };
 
 template<typename T>
-AriExpress<T>::AriExpress(string infx) : infix(infx) {
+AriExpress<T>::AriExpress(string infx, MainStack<T>* opStack, MainStack<string>* opndStack)
+    : infix(infx), operatorsStack(opStack), operandsStack(opndStack) {
     priority = { {'(', 0}, {')', 0}, {'+', 1}, {'-', 1}, {'*', 2}, {'/', 2} };
     to_postfix();
+}
+template<typename T>
+AriExpress<T>::~AriExpress() {
+    delete operatorsStack; 
+    delete operandsStack;
 }
 template<typename T>
 void AriExpress<T>:: Parse() {
@@ -39,50 +49,48 @@ void AriExpress<T>:: Parse() {
 template<typename T>
 void AriExpress<T>::to_postfix() {
     Parse();
-    stack<char> operatorsStack;
-    stack<string> operandsStack;
     string postfix;
 
     for (char item : lexems) {
         if (isalnum(item)) { // if operand
             operands.insert({ item, 0.0 });
-            operandsStack.Push(string(1, item));
+            operandsStack->Push(string(1, item));
         }
         else if (item == '(') {
-            operatorsStack.Push(item);
+            operatorsStack->Push(item);
         }
         else if (item == ')') {
-            while (!operatorsStack.IsEmpty() && operatorsStack.Top() != '(') {
-                string rightOperand = operandsStack.Pop();
-                string leftOperand = operandsStack.Pop();
-                char operation = operatorsStack.Pop();
+            while (!operatorsStack->IsEmpty() && operatorsStack->Top() != '(') {
+                string rightOperand = operandsStack->Pop();
+                string leftOperand = operandsStack->Pop();
+                char operation = operatorsStack->Pop();
                 string expr = leftOperand + rightOperand + operation;
-                operandsStack.Push(expr);
+                operandsStack->Push(expr);
             }
-            operatorsStack.Pop();
+            operatorsStack->Pop();
         }
         else { // if operator(+, -, *, /)
-            while (!operatorsStack.IsEmpty() &&
-                priority[operatorsStack.Top()] >= priority[item]) {
-                string rightOperand = operandsStack.Pop();
-                string leftOperand = operandsStack.Pop();
-                char operation = operatorsStack.Pop();
+            while (!operatorsStack->IsEmpty() &&
+                priority[operatorsStack->Top()] >= priority[item]) {
+                string rightOperand = operandsStack->Pop();
+                string leftOperand = operandsStack->Pop();
+                char operation = operatorsStack->Pop();
                 string expr = leftOperand + rightOperand + operation;
-                operandsStack.Push(expr);
+                operandsStack->Push(expr);
             }
-            operatorsStack.Push(item);
+            operatorsStack->Push(item);
         }
     }
 
-    while (!operatorsStack.IsEmpty()) {
-        string rightOperand = operandsStack.Pop();
-        string leftOperand = operandsStack.Pop();
-        char operation = operatorsStack.Pop();
+    while (!operatorsStack->IsEmpty()) {
+        string rightOperand = operandsStack->Pop();
+        string leftOperand = operandsStack->Pop();
+        char operation = operatorsStack->Pop();
         string expr = leftOperand + rightOperand + operation;
-        operandsStack.Push(expr);
+        operandsStack->Push(expr);
     }
 
-    this->postfix = operandsStack.Pop();
+    this->postfix = operandsStack->Pop();
 }
 template<typename T>
 vector<char> AriExpress<T>::getoperands() const {
@@ -93,7 +101,7 @@ vector<char> AriExpress<T>::getoperands() const {
 }
 template<typename T>
 double AriExpress<T>::calculate(const map<char, double>& values) {
-    stack<double> calc; 
+    MainStack<double>* calc = new liststack<double>();
 
     for (char item : postfix) {
         if (isalnum(item)) { //if operand
@@ -101,15 +109,15 @@ double AriExpress<T>::calculate(const map<char, double>& values) {
             if (it == values.end()) {
                 throw (string("Value for operand ") + item + " not provided.");
             }
-            calc.Push(it->second); 
+            calc->Push(it->second); 
         }
         else { // if operator
-            if (calc.IsEmpty()) throw ("missing operands.");
+            if (calc->IsEmpty()) throw ("missing operands.");
 
-            double rightOperand = calc.Pop();
-            if (calc.IsEmpty()) throw ("missing operands.");
+            double rightOperand = calc->Pop();
+            if (calc->IsEmpty()) throw ("missing operands.");
 
-            double leftOperand = calc.Pop();
+            double leftOperand = calc->Pop();
 
             double result = 0.0;
             switch (item) {
@@ -123,8 +131,8 @@ double AriExpress<T>::calculate(const map<char, double>& values) {
             default:
                 throw (string("Unsupported operator: ") + item);
             }
-            calc.Push(result); 
+            calc->Push(result); 
         }
     }
-    return calc.Pop();
+    return calc->Pop();
 }

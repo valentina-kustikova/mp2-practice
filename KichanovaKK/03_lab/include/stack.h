@@ -1,11 +1,12 @@
 #pragma once
 #include <iostream>
+#include "main_stack.h"
 
 
 using namespace std;
 template<typename T>
 
-class stack { 
+class stack : public MainStack<T> {
 private:
     size_t maxsize;
     int top;

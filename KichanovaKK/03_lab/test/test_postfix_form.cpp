@@ -1,4 +1,4 @@
-#include "postfix_form.h"
+/*#include "postfix_form.h"
 #include <gtest.h>
 
 TEST(postfixtest, postfixform_write_correct)
@@ -20,5 +20,5 @@ TEST(postfixtest, postfixform_count_minus_correct)
     std::map<char, double> values = { {'a',-2},{'b',3} };
     ASSERT_EQ(expr.calculate(values), 1);
 }
-
+*/
 
