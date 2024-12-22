@@ -1,4 +1,5 @@
 #pragma once
+const int MAX_STACK_SIZE = 100;
 
 template<typename TElem>
 class Stack
@@ -31,7 +32,8 @@ public:
 	array_stack& operator=(array_stack<TElem> &st);
 };
 template<typename TElem>
-array_stack<TElem>::array_stack() : max_size(0), top(-1), elsems(nullptr);
+array_stack<TElem>::array_stack() : max_size(0), top(-1), elems(nullptr)
+{ }
 
 template<typename TElem>
 array_stack<TElem>::array_stack(int sz) : top(-1)
@@ -45,14 +47,13 @@ array_stack<TElem>::array_stack(int sz) : top(-1)
 }
 
 template<typename TElem>
-void Push(const TElem& el)
+void array_stack<TElem>::Push(const TElem& el)
 {
 	if (this->is_full())
 	{
 		throw "Stack is full";
 	}
-	top++;
-	this->elems[top] = el;
+	this->elems[++top] = el;
 }
 
 template<typename TElem>
