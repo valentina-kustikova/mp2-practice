@@ -1,5 +1,6 @@
 #include "stack.h"
-
+#include <map>
+#include <vector>
 
 
 
@@ -18,9 +19,10 @@ private:
     TArrayStack<string> stack;
 public:
     PostfixFormArray() {};
-    PostfixFormArray(string in) : inf_form(in) {};
-    string return_form() {};
-    int return_answer() {};
+    PostfixFormArray(string in);
+    ~PostfixFormArray() {};
+    string return_form() { return post_form; };
+    int return_answer() { return 0; };
 };
 
 

@@ -58,6 +58,7 @@ public:
     };
     bool IsEmpty() { return (top == -1); };
     bool IsFull() { return (top == maxSize-1); };
+    int size() { return maxSize; };
 
 
     const TArrayStack<T>& operator=(const TArrayStack<T>& s) {
