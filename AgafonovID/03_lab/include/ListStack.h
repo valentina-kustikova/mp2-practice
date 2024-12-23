@@ -17,5 +17,6 @@ public:
     void Pop();
     T Top() const;
 
+
     const ListStack<T>& operator=(const ListStack<T>& s);
 };

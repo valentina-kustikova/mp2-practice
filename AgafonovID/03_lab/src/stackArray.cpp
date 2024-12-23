@@ -1,6 +1,9 @@
 #include "stackArray.h"
 
 template <typename T>
+stackArray<T>::stackArray() : top(-1), maxsize(0), elems(nullptr) {};
+
+template <typename T>
 stackArray<T>::stackArray(int maxsize) {
     this->maxsize = maxsize;
     top = -1;
@@ -89,4 +92,9 @@ bool stackArray<T>::operator==(const stackArray<T>& s) const {
 template <typename T>
 bool stackArray<T>::operator!=(const stackArray<T>& s) const {
     return !(*this == s);
+}
+
+template <typename T>
+int stackArray<T>::Size() const {
+    return top + 1; 
 }
