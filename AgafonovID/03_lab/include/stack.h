@@ -1,26 +1,11 @@
 #pragma once
 
-#include <iostream>
-
-template<typename T>
+template <typename T>
 class Stack {
-private:
-    int maxsize;
-    int top;
-    T* elems;
 public:
-    Stack(int maxsize);
-    Stack(const Stack& s);
-    ~Stack();
-    const Stack<T>& operator=(const Stack<T>& s);
-
-    void Push(const T& val);
-    void Pop();
-    T Top() const;
-
-    bool IsFull() const;
-    bool IsEmpty() const;
-
-    bool operator==(const Stack<T>& s) const;
-    bool operator!=(const Stack<T>& s) const;
+    virtual void Push(const T& val) = 0;
+    virtual void Pop() = 0;
+    virtual T Top() const = 0;
+    virtual bool IsFull() const = 0;
+    virtual bool IsEmpty() const = 0;
 };

@@ -7,8 +7,10 @@ class List {
 private:
     struct TNode {
         int key;
-        T* data;
+        T data;
         TNode* pNext;
+        TNode() : data(0), pNext(nullptr) {};
+        TNode(const T& data) : data(data), pNext(nullptr) {};
     };
     TNode* pFirst;
     int size;
