@@ -6,23 +6,30 @@
 
 #ifndef USE_ARRAY
 
-string getPostform(const string& simpleForm, int n) {
+string getPostform(const string& simpleForm) {
 
-	TStackList<char> s1(n);
-	TStackList<char> s2(n);
+	TStackList<char> s1;
+	TStackList<char> s2;
 	char stakItem;
-	for (int i = 0; i < n; i++) {
+	for (int i = 0; i < strlen(simpleForm.c_str()); i++) {
 		if (simpleForm[i] == '+' || simpleForm[i] == '-') {
-			if (s2.Top() == '/' || s2.Top() == '*') {
-				while (s2.Top() == '/' || s2.Top() == '*') {
-					s1.push(s2.Top());
-					s2.pop();
+			try {
+				if (s2.Top() == '/' || s2.Top() == '*') {
+					while (s2.Top() == '/' || s2.Top() == '*') {
+						s1.push(s2.Top());
+						s2.pop();
+					}
+					s2.push(simpleForm[i]);
 				}
-				s2.push(simpleForm[i]);
+
+		else {
+			s2.push(simpleForm[i]);
+		}
 			}
-			else {
+			catch (const char* error) {
 				s2.push(simpleForm[i]);
-			}
+
+		}
 		}
 		else if (simpleForm[i] == '*' || simpleForm[i] == '/') {
 			s2.push(simpleForm[i]);
@@ -57,12 +64,32 @@ string getPostform(const string& simpleForm, int n) {
 	return newForm;
 
 }
+vector<char> getOperand(const string& simpleForm) {
+	vector<char> v;
+	for (int i = 0; i < strlen(simpleForm.c_str()); i++) {
+		if (simpleForm[i] != '+' && simpleForm[i] != '*' && simpleForm[i] != '/' && simpleForm[i] != '-') {
+			int j = 0;
+			bool f = false;
+			for (int j = 0; j < v.size(); j++) {
+				if (v[j] == simpleForm[i]) {
+					f = true;
+					break;
+				}
+			}
+			if (f == false) {
+				v.push_back(simpleForm[i]);
+			}
+		}
 
-int Calculate(const string& postForm, int n, map<char, int>& values) {
+	}
+	return v;
 
-	TStackList<char> s1(n);
+}
+int Calculate(const string& postForm, map<char, int>& values) {
 
-	for (int i = 0; i < n; i++) {
+	TStackList<char> s1;
+
+	for (int i = 0; i < strlen(postForm.c_str()); i++) {
 		if (postForm[i] == '+') {
 			char num2 = s1.Top();
 			s1.pop();
@@ -112,17 +139,24 @@ string getPostform(const string& simpleForm, int n) {
 	TStackArray<char> s1(n);
 	TStackArray<char> s2(n);
 	char stakItem;
-	for (int i = 0; i < n; i++) {
+	for (int i = 0; i < strlen(simpleForm.c_str()); i++) {
 		if (simpleForm[i] == '+' || simpleForm[i] == '-') {
-			if (s2.Top() == '/' || s2.Top() == '*') {
-				while (s2.Top() == '/' || s2.Top() == '*') {
-					s1.push(s2.Top());
-					s2.pop();
+			try {
+				if (s2.Top() == '/' || s2.Top() == '*') {
+					while (s2.Top() == '/' || s2.Top() == '*') {
+						s1.push(s2.Top());
+						s2.pop();
+					}
+					s2.push(simpleForm[i]);
 				}
-				s2.push(simpleForm[i]);
+
+				else {
+					s2.push(simpleForm[i]);
+				}
 			}
-			else {
+			catch (const char* error) {
 				s2.push(simpleForm[i]);
+
 			}
 		}
 		else if (simpleForm[i] == '*' || simpleForm[i] == '/') {
@@ -158,7 +192,27 @@ string getPostform(const string& simpleForm, int n) {
 	return newForm;
 
 }
+vector<char> getOperand(const string& simpleForm) {
+	vector<char> v;
+	for (int i = 0; i < strlen(simpleForm.c_str()); i++) {
+		if (simpleForm[i] != '+' && simpleForm[i] != '*' && simpleForm[i] != '/' && simpleForm[i] != '-') {
+			int j = 0;
+			bool f = false;
+			for (int j = 0; j < v.size(); j++) {
+				if (v[j] == simpleForm[i]) {
+					f = true;
+					break;
+				}
+			}
+			if (f == false) {
+				v.push_back(simpleForm[i]);
+			}
+		}
 
+	}
+	return v;
+
+}
 int Calculate(const string& postForm, int n, map<char, int>& values) {
 
 	TStackArray<char> s1(n);

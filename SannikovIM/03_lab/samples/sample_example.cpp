@@ -15,14 +15,18 @@ int main() {
 	int n = strlen(st);
 	string a;
 	//char* a = new char[n];
-	a = getPostform(st,n);
+	a = getPostform(st);
 	cout << "Постфиксная форма: " << a << endl;;
 	cout <<"\n" << endl;
 	map<char, int> s;
-	s.insert({ 'A', 2 });
-	s.insert({ 'C', 5 });
-	s.insert({ 'T', 11 });
-	cout <<"Ответ: "<< Calculate(a, strlen(a.c_str()), s) << endl;
+	vector<char> v = getOperand(a);
+	for (int i = 0; i < v.size(); i++) {
+		int d;
+		cout << "Введите значение для элемента " << v[i] << ":" << endl;
+		cin >> d;
+		s[v[i]]= d;
+	}
+	cout <<"Ответ: "<< Calculate(a,s) << endl;
 	
 
 	

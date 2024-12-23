@@ -1,9 +1,14 @@
-﻿#include <iostream>
+﻿#pragma once
+
+#include <iostream>
 #include <map>
-#include "stack.h"
+#include "stacklist.h"
+#include "stackarray.h"
+#include <vector>
 
 using namespace std;
 
-string getPostform(const string& simpleForm, int n);
-
-int Calculate(const string& postForm, int n, map<char, int>& values);
+string getPostform(const string& simpleForm); 
+vector<char> getOperand(const string& simpleForm);// todo strlen
+// todo сформировать список операндов
+int Calculate(const string& postForm, map<char, int>& values);  // todo strlen, double
