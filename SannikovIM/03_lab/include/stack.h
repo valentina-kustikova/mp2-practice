@@ -17,50 +17,50 @@ public:
 };
 
 
-template <typename T>
-class TStackList: public TStack<T> {
-private:
-	TList<T> pMem;
-	int maxSize;
-	int top;
-public:
-	TStackList(int maxSize = 10) {
-		if (maxSize <= 0) throw range_error("Negative size");
-		this->maxSize = maxSize;
-		top = -1;
-	}
-	TStackList(const TStack& ts) {
-		this->maxSize = ts.maxSize;
-		this->top = ts.top;
-		TNode<T>* tmp = ts.pMem.GetLast();
-		while (tmp != nullptr) {
-			pMem.InsertEnd(tmp->key);
-			tmp = tmp->pNext;
+	template <typename T>
+	class TStackList: public TStack<T> {
+	private:
+		TList<T> pMem;
+		int maxSize;
+		int top;
+	public:
+		TStackList(int maxSize = 10) {
+			if (maxSize <= 0) throw range_error("Negative size");
+			this->maxSize = maxSize;
+			top = -1;
 		}
-	}
-	~TStackList() {	}
+		TStackList(const TStack& ts) {
+			this->maxSize = ts.maxSize;
+			this->top = ts.top;
+			TNode<T>* tmp = ts.pMem.GetLast();
+			while (tmp != nullptr) {
+				pMem.InsertEnd(tmp->key);
+				tmp = tmp->pNext;
+			}
+		}
+		~TStackList() {	}
 
-	bool isFull() const {
-		return (this->top == this->maxSize - 1);
-	}
-	bool isEmpty() const {
-		return (this->top == -1);
-	}
-	void push(T val)
-	{
-		if (isFull()) throw "error";
-		this->top++;
+		bool isFull() const {
+			return (this->top == this->maxSize - 1);
+		}
+		bool isEmpty() const {
+			return (this->top == -1);
+		}
+		void push(T val)
+		{
+			if (isFull()) throw "error";
+			this->top++;
 
-		pMem.InsertFirst(val);
-	}
-	void pop() {
-		if (isEmpty()) throw "error";
+			pMem.InsertFirst(val);
+		}
+		void pop() {
+			if (isEmpty()) throw "error";
 
-		this->top--;
-		pMem.DeleteFirst();
+			this->top--;
+			pMem.DeleteFirst();
 
 
-	}
+		}
 
 	T Top() const {
 		if (pMem.GetFirst() == nullptr) return 0;
@@ -116,7 +116,7 @@ public:
 	}
 
 	T Top() const {
-		if (isEmpty()) throw "error";
+		if (isEmpty()) return 0;
 		return pMem[top];
 	}
 };

@@ -48,7 +48,6 @@ TEST(Calculate, can_sum_two_elements) {
 	s.insert({ 'A', 2 });
 	s.insert({ 'C', 5 });
 	string a = getPostform(st, strlen(st));
-	//int n = strlen(st) - getSymb(st, strlen(st));
 	EXPECT_EQ(7, Calculate(a, strlen(a.c_str()), s));
 }
 TEST(Calculate, can_subtract_two_elements) {
@@ -57,7 +56,6 @@ TEST(Calculate, can_subtract_two_elements) {
 	s.insert({ 'A', 2 });
 	s.insert({ 'C', 5 });
 	string a = getPostform(st, strlen(st));
-	//int n = strlen(st) - getSymb(st, strlen(st));
 	EXPECT_EQ(3, Calculate(a, strlen(a.c_str()), s));
 }
 TEST(Calculate, can_subtract_two_elements_with_negative_answer) {
@@ -66,7 +64,6 @@ TEST(Calculate, can_subtract_two_elements_with_negative_answer) {
 	s.insert({ 'A', 2 });
 	s.insert({ 'C', 5 });
 	string a = getPostform(st, strlen(st));
-	//int n = strlen(st) - getSymb(st, strlen(st));
 	EXPECT_EQ(-3, Calculate(a, strlen(a.c_str()), s));
 }
 TEST(Calculate, can_divide_two_elements) {
@@ -75,7 +72,6 @@ TEST(Calculate, can_divide_two_elements) {
 	s.insert({ 'A', 9 });
 	s.insert({ 'C', 3 });
 	string a = getPostform(st, strlen(st));
-	//int n = strlen(st) - getSymb(st, strlen(st));
 	EXPECT_EQ(3, Calculate(a, strlen(a.c_str()), s));
 }
 TEST(Calculate, can_sum_three_elements_with_brackets) {
@@ -85,7 +81,6 @@ TEST(Calculate, can_sum_three_elements_with_brackets) {
 	s.insert({ 'C', 5 });
 	s.insert({ 'B', 3 });
 	string a = getPostform(st, strlen(st));
-	//int n = strlen(st) - getSymb(st, strlen(st));
 	EXPECT_EQ(10, Calculate(a, strlen(a.c_str()), s));
 }
 TEST(Calculate, can_sum_and_subtract_three_elements_with_brackets) {
@@ -95,7 +90,6 @@ TEST(Calculate, can_sum_and_subtract_three_elements_with_brackets) {
 	s.insert({ 'C', 5 });
 	s.insert({ 'B', 3 });
 	string a = getPostform(st, strlen(st));
-	//int n = strlen(st) - getSymb(st, strlen(st));
 	EXPECT_EQ(4, Calculate(a, strlen(a.c_str()), s));
 }
 TEST(Calculate, can_subtract_and_sum_three_elements_with_brackets) {
@@ -105,7 +99,6 @@ TEST(Calculate, can_subtract_and_sum_three_elements_with_brackets) {
 	s.insert({ 'C', 5 });
 	s.insert({ 'B', 3 });
 	string a = getPostform(st, strlen(st));
-	//int n = strlen(st) - getSymb(st, strlen(st));
 	EXPECT_EQ(6, Calculate(a, strlen(a.c_str()), s));
 }
 TEST(Calculate, can_sum_and_multiply_three_elements_with_brackets) {
@@ -115,7 +108,6 @@ TEST(Calculate, can_sum_and_multiply_three_elements_with_brackets) {
 	s.insert({ 'C', 5 });
 	s.insert({ 'B', 3 });
 	string a = getPostform(st, strlen(st));
-//	int n = strlen(st) - getSymb(st, strlen(st));
 	EXPECT_EQ(21, Calculate(a, strlen(a.c_str()), s));
 }
 TEST(Calculate, can_multiply_and_sum_three_elements_with_brackets) {
@@ -125,7 +117,6 @@ TEST(Calculate, can_multiply_and_sum_three_elements_with_brackets) {
 	s.insert({ 'C', 5 });
 	s.insert({ 'B', 3 });
 	string a = getPostform(st, strlen(st));
-	//int n = strlen(st) - getSymb(st, strlen(st));
 	EXPECT_EQ(13, Calculate(a, strlen(a.c_str()), s));
 }
 TEST(Calculate, can_sum_and_multiply_three_elements) {
@@ -135,7 +126,6 @@ TEST(Calculate, can_sum_and_multiply_three_elements) {
 	s.insert({ 'C', 5 });
 	s.insert({ 'B', 3 });
 	string a = getPostform(st, strlen(st));
-	//int n = strlen(st) - getSymb(st, strlen(st));
 	EXPECT_EQ(11, Calculate(a, strlen(a.c_str()), s));
 }
 TEST(Calculate, can_multiply_and_multiply_three_elements) {
@@ -145,7 +135,6 @@ TEST(Calculate, can_multiply_and_multiply_three_elements) {
 	s.insert({ 'C', 5 });
 	s.insert({ 'B', 3 });
 	string a = getPostform(st, strlen(st));
-	//int n = strlen(st) - getSymb(st, strlen(st));
 	EXPECT_EQ(30, Calculate(a, strlen(a.c_str()), s));
 }
 TEST(Calculate, can_multiply_brackets) {
@@ -156,7 +145,6 @@ TEST(Calculate, can_multiply_brackets) {
 	s.insert({ 'B', 3 });
 	s.insert({ 'T', 1 });
 	string a = getPostform(st, strlen(st));
-	//int n = strlen(st) - getSymb(st, strlen(st));
 	EXPECT_EQ(14, Calculate(a, strlen(a.c_str()), s));
 }
 TEST(Calculate, can_divide_and_subtract_elements) {
@@ -166,7 +154,6 @@ TEST(Calculate, can_divide_and_subtract_elements) {
 	s.insert({ 'C', 5 });
 	s.insert({ 'B', 3 });
 	string a = getPostform(st, strlen(st));
-	//int n = strlen(st) - getSymb(st, strlen(st));
 	EXPECT_EQ(-3, Calculate(a, strlen(a.c_str()), s));
 }
 TEST(Calculate, can_subtract_and_divide_elements) {
@@ -176,6 +163,5 @@ TEST(Calculate, can_subtract_and_divide_elements) {
 	s.insert({ 'C', 5 });
 	s.insert({ 'B', 3 });
 	string a = getPostform(st, strlen(st));
-	//int n = strlen(st) - getSymb(st, strlen(st));
 	EXPECT_EQ(3, Calculate(a, strlen(a.c_str()), s));
 }

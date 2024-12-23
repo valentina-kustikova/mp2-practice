@@ -33,17 +33,15 @@ public:
 		}
 	}
 	TNode<T>* Search(T key) {
-		if (this->pFirst == nullptr) throw range_error("First element is null");
+		if (this->pFirst == nullptr) throw "First element is null";
 		TNode<T>* tmp = pFirst;
-		T a;
-		TNode<T>* tmp1(a);
-		while (tmp != nullptr && tmp->key != key) { //&&
+		while (tmp != nullptr && tmp->key != key) { 
 			tmp = tmp->pNext;
 		}
 		return tmp;
 
 	}
-	void InsertEnd(T key) { // все вставки
+	void InsertEnd(T key) { 
 		TNode<T>* tmp1 = new TNode<T>(key);
 		if (pFirst == nullptr) {
 			pFirst = tmp1;
@@ -86,7 +84,7 @@ public:
 		tmp1->pNext = findElem;
 
 	}
-	void InsertFirst(T key) { // все вставки
+	void InsertFirst(T key) {
 		TNode<T>* tmp1 = new TNode<T>(key);
 		if (pFirst == nullptr) {
 			pFirst = tmp1;
@@ -97,11 +95,10 @@ public:
 		this->pFirst = tmp1;
 
 	}
-	TNode<T>* GetLast() const { // работаем с началом
-		if (pFirst == nullptr) return nullptr; //throw range_error("First element is null");
+	TNode<T>* GetLast() const {
+		if (pFirst == nullptr) return nullptr;
 		TNode<T>* tmp = pFirst;
 
-		//if (tmp->pNext == nullptr) throw "error";
 		while (tmp->pNext != nullptr) {
 			tmp = tmp->pNext;
 		}
@@ -141,7 +138,6 @@ public:
 		TNode<T>* tmp = pFirst->pNext;
 		delete pFirst;
 		this->pFirst = tmp;
-		//tmp->pNext = nullptr;
 	}
 
 };

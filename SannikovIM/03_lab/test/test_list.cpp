@@ -58,3 +58,14 @@ TEST(TList, can_insertafter_in_list) {
 	TNode<int>* a = l.GetLast();
 	EXPECT_EQ(3, l.GetLast()->key);
 }
+
+TEST(TList, can_search_in_list) {
+
+	TList<int> l;
+	l.InsertEnd(1);
+	l.InsertEnd(2);
+	l.InsertEnd(3);
+	TNode<int>* a = new TNode<int>(2);
+	EXPECT_EQ(l.Search(2)->key, a->key);
+}
+

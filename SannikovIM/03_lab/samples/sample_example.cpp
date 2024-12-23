@@ -24,12 +24,6 @@ int main() {
 	s.insert({ 'T', 11 });
 	cout <<"Ответ: "<< Calculate(a, strlen(a.c_str()), s) << endl;
 	
-	/*
-	string st = "(A-C)*T";
-	string a;
-	//a = getPostform1(st, sizeof(st));
-	cout << getPostform1(st, sizeof(st)) << endl;
-	return 1;
-	*/
+
 	
 }
