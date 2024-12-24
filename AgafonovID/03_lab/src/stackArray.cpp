@@ -12,9 +12,9 @@ stackArray<T>::stackArray(int maxsize) {
 
 template <typename T>
 stackArray<T>::stackArray(const stackArray& s) {
+    top = s.top;
     this->maxsize = s.maxsize;
     elems = new T[this->maxsize];
-    top = s.top;
     for (int i = 0; i <= top; i++) {
         elems[i] = s.elems[i];
     }
@@ -27,7 +27,7 @@ stackArray<T>::~stackArray() {
 
 template <typename T>
 bool stackArray<T>::IsFull() const {
-    return (top == maxsize);
+    return (top == maxsize - 1);
 }
 
 template <typename T>
@@ -68,10 +68,10 @@ const stackArray<T>& stackArray<T>::operator = (const stackArray<T>& s) {
         delete[] elems;
         maxsize = s.maxsize;
         elems = new T[maxsize];
-        top = s.top;
-        for (int i = 0; i <= top; i++) {
-            elems[i] = s.elems[i];
-        }
+    }
+    top = s.top;
+    for (int i = 0; i <= top; i++) {
+        elems[i] = s.elems[i];
     }
     return *this;
 }
@@ -79,7 +79,7 @@ const stackArray<T>& stackArray<T>::operator = (const stackArray<T>& s) {
 template <typename T>
 bool stackArray<T>::operator==(const stackArray<T>& s) const {
     if (this->maxsize != s.maxsize || this->top != s.top) {
-        return false;   
+        return false;
     }
     for (int i = 0; i < this->maxsize; i++) {
         if (this->elems[i] != s.elems[i]) {
@@ -96,5 +96,5 @@ bool stackArray<T>::operator!=(const stackArray<T>& s) const {
 
 template <typename T>
 int stackArray<T>::Size() const {
-    return top + 1; 
+    return top + 1;
 }

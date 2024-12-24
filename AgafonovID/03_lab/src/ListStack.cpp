@@ -1,6 +1,6 @@
 #include "ListStack.h"
 
-template <typename T>
+/*template <typename T>
 ListStack<T>::ListStack(const ListStack<T>& s) : stack(s.stack) {}
 
 template <typename T>
@@ -8,12 +8,12 @@ ListStack<T>::~ListStack() {}
 
 template <typename T>
 bool ListStack<T>::IsEmpty() const {
-    return (stack.pFirst == nullptr);
+    return (stack.IsEmpty());
 }
 
 template <typename T>
 bool ListStack<T>::IsFull() const {
-    return false; 
+    return false;
 }
 
 template <typename T>
@@ -24,7 +24,7 @@ void ListStack<T>::Push(const T& elem) {
 
 template <typename T>
 void ListStack<T>::Pop() {
-    if (IsEmpty()) {
+    if (stack.IsEmpty()) {
         throw std::exception("Stack is empty");
     }
     typename List<T>::TNode* curr = stack.pFirst;
@@ -44,7 +44,7 @@ void ListStack<T>::Pop() {
 
 template <typename T>
 T ListStack<T>::Top() const {
-    if (IsEmpty()) {
+    if (stack.IsEmpty()) {
         throw std::exception("Stack is empty");
     }
     typename List<T>::TNode* curr = stack.pFirst;
@@ -56,7 +56,15 @@ T ListStack<T>::Top() const {
 
 template <typename T>
 const ListStack<T>& ListStack<T>::operator=(const ListStack<T>& s) {
-    if (this == &s) return *this;
+    if (this == &s) {
+        return *this;
+    }
     stack = s.stack;
     return *this;
 }
+
+template <typename T>
+bool ListStack<T>::operator==(const ListStack<T>& s) {
+    return (stack == s.stack);
+}
+*/

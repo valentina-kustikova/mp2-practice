@@ -1,137 +1,180 @@
-#include "stack.h"
-#include "stackArray.h"
-#include "ListStack.h"
+#pragma once
+
+#include <iostream>
 #include <string>
 #include <map>
 #include <cctype>
-#include <stdexcept>
+#include <vector>
+#include <sstream>
+#include "stack.h"
+#include "stackArray.h"
+#include "ListStack.h"
 
-enum class StackType {
+// Типы стека
+enum StackType {
     Array,
-    List
+    ListSt
 };
 
-template <typename T>
-class ArithmeticExpression {
-private:
-    std::string infix;
-    std::string postfix;
-    Stack<T>* operatorsStack;
-    Stack<double>* evaluationStack;
-    StackType stackType;
-    std::map<char, int> precedence = {
-        {'(', 0}, {')', 0}, {'+', 1}, {'-', 1}, {'*', 2}, {'/', 2}
-    };
+using namespace std;
 
-    void parseToPostfix();
+template<typename T>
+class AriExpress {
+protected:
+    string infix;
+    string postfix;
+    vector<char> lexems;
+    map<char, double> operands;
+    map<char, int> priority;
+    Stack<T>* operatorsStack;      
+    Stack<string>* operandsStack; 
+    StackType stackType;           
 
 public:
-    ArithmeticExpression(const std::string& expression, StackType type);
-    ~ArithmeticExpression();
+    AriExpress(string infx, Stack<T>* operatorsStack, Stack<string>* operandsStack, StackType type);
+    ~AriExpress();
 
-    void convertToPostfix();
-    double evaluate(const std::map<char, double>& variables);
-
-    std::string getPostfix() const { return postfix; }
-    std::string getInfix() const { return infix; }
+    void Parse();
+    void to_postfix();
+    string get_infix() const { return infix; }
+    string get_postfix() const { return postfix; }
+    vector<char> getoperands() const;
+    double calculate(const map<char, double>& values);
 };
 
-template <typename T>
-ArithmeticExpression<T>::ArithmeticExpression(const std::string& expression, StackType type)
-    : infix(expression), stackType(type) {
-    switch (stackType) {
-    case StackType::Array:
-        operatorsStack = new stackArray<T>();
-        evaluationStack = new stackArray<double>();
-        break;
-    case StackType::List:
-        operatorsStack = new ListStack<T>();
-        evaluationStack = new ListStack<double>();
-        break;
-    default:
-        throw std::invalid_argument("Unsupported stack type.");
-    }
+
+template<typename T>
+AriExpress<T>::AriExpress(string infx, Stack<T>* opStack, Stack<string>* opndsStack, StackType type)
+    : infix(infx), operatorsStack(opStack), operandsStack(opndsStack), stackType(type) {
+    priority = { {'(', 0}, {')', 0}, {'+', 1}, {'-', 1}, {'*', 2}, {'/', 2} };
+    to_postfix();
 }
 
-template <typename T>
-ArithmeticExpression<T>::~ArithmeticExpression() {
+template<typename T>
+AriExpress<T>::~AriExpress() {
     delete operatorsStack;
-    delete evaluationStack;
+    delete operandsStack;
 }
 
-template <typename T>
-void ArithmeticExpression<T>::convertToPostfix() {
-    parseToPostfix();
-}
-
-template <typename T>
-void ArithmeticExpression<T>::parseToPostfix() {
+template<typename T>
+void AriExpress<T>::Parse() {
     for (char c : infix) {
-        if (std::isalnum(c)) {
-            postfix += c;
-        }
-        else if (c == '(') {
-            operatorsStack->Push(c);
-        }
-        else if (c == ')') {
-            while (!operatorsStack->IsEmpty() && operatorsStack->Top() != '(') {
-                postfix += operatorsStack->Pop();
-            }
-            operatorsStack->Pop();
-        }
-        else {
-            while (!operatorsStack->IsEmpty() &&
-                precedence[operatorsStack->Top()] >= precedence[c]) {
-                postfix += operatorsStack->Pop();
-            }
-            operatorsStack->Push(c);
-        }
-    }
-    while (!operatorsStack->IsEmpty()) {
-        postfix += operatorsStack->Pop();
+        lexems.push_back(c);
     }
 }
 
-template <typename T>
-double ArithmeticExpression<T>::evaluate(const std::map<char, double>& variables) {
-    for (char c : postfix) {
-        if (std::isalnum(c)) {
-            if (variables.find(c) == variables.end()) {
-                throw std::invalid_argument(std::string("Undefined variable: ") + c);
+template<typename T>
+void AriExpress<T>::to_postfix() {
+    Parse();
+
+    for (char item : lexems) {
+        if (isalnum(item)) { 
+            operands.insert({ item, 0.0 });
+            postfix += item;
+        }
+        else if (item == '(') { 
+            operatorsStack->Push(item);
+        }
+        else if (item == ')') { 
+            while (!operatorsStack->IsEmpty() && operatorsStack->Top() != '(') {
+                postfix += operatorsStack->Top();
+                operatorsStack->Pop();
             }
-            evaluationStack->Push(variables.at(c));
+            operatorsStack->Pop(); 
+        }
+        else { 
+            while (!operatorsStack->IsEmpty() &&
+                priority[operatorsStack->Top()] >= priority[item]) {
+                postfix += operatorsStack->Top();
+                operatorsStack->Pop();
+            }
+            operatorsStack->Push(item);
+        }
+    }
+
+    while (!operatorsStack->IsEmpty()) {
+        postfix += operatorsStack->Top();
+        operatorsStack->Pop();
+    }
+}
+
+template<typename T>
+vector<char> AriExpress<T>::getoperands() const {
+    vector<char> op;
+    for (const auto& item : operands) {
+        op.push_back(item.first);
+    }
+    return op;
+}
+
+template<typename T>
+double AriExpress<T>::calculate(const map<char, double>& values) {
+    Stack<double>* calc;
+    if (stackType == Array) {
+        calc = new stackArray<double>(100);
+    }
+    else {
+        calc = new ListStack<double>();
+    }
+
+    for (char item : postfix) {
+        if (isalnum(item)) { 
+            auto it = values.find(item);
+            if (it == values.end()) {
+                delete calc;
+                throw runtime_error(string("Value for operand ") + item + " not provided.");
+            }
+            calc->Push(it->second);
         }
         else {
-            if (evaluationStack->Size() < 2) {
-                throw std::runtime_error("Invalid expression.");
+            if (calc->IsEmpty()) {
+                delete calc;
+                throw runtime_error("Missing operands.");
             }
-            double b = evaluationStack->Top();
-            evaluationStack->Pop();
-            double a = evaluationStack->Top();
-            evaluationStack->Pop();
-            switch (c) {
-            case '+':
-                evaluationStack->Push(a + b);
-                break;
-            case '-':
-                evaluationStack->Push(a - b);
-                break;
-            case '*':
-                evaluationStack->Push(a * b);
-                break;
+
+            double rightOperand = calc->Top();
+            calc->Pop();
+
+            if (calc->IsEmpty()) {
+                delete calc;
+                throw runtime_error("Missing operands.");
+            }
+
+            double leftOperand = calc->Top();
+            calc->Pop();
+
+            double result = 0.0;
+            switch (item) {
+            case '+': result = leftOperand + rightOperand; break;
+            case '-': result = leftOperand - rightOperand; break;
+            case '*': result = leftOperand * rightOperand; break;
             case '/':
-                if (b == 0) {
-                    throw std::runtime_error("Division by zero.");
+                if (rightOperand == 0) {
+                    delete calc;
+                    throw runtime_error("Division by zero.");
                 }
-                evaluationStack->Push(a / b);
-                break;
+                result = leftOperand / rightOperand; break;
             default:
-                throw std::invalid_argument(std::string("Unsupported operator: ") + c);
+                delete calc;
+                throw runtime_error(string("Unsupported operator: ") + item);
             }
+            calc->Push(result);
         }
     }
-    if (evaluationStack->Size() != 1) {
-        throw std::runtime_error("Invalid postfix expression.");
+
+    if (calc->IsEmpty()) {
+        delete calc;
+        throw runtime_error("Calculation error: stack is empty.");
     }
-    return evaluationStack->Top();
+
+    double result = calc->Top();
+    calc->Pop();
+
+    if (!calc->IsEmpty()) {
+        delete calc;
+        throw runtime_error("Calculation error: stack is not empty after calculation.");
+    }
+
+    delete calc;
+    return result;
 }

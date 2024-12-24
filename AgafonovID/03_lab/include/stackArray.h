@@ -26,3 +26,4 @@ public:
     bool operator!=(const stackArray<T>& s) const;
 
 };
+

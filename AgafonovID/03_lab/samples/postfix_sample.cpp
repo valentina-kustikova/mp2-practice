@@ -1,60 +1,58 @@
-#include "stack.h"
-#include "postfix_form.h"
-#include "ListStack.h"
-#include "stackArray.h"
 #include <iostream>
 #include <map>
 #include <string>
+#include "postfix_form.h"
+#include "stackArray.h"
+#include "ListStack.h"
+
+using namespace std;
 
 int main() {
-    std::string infixExpression;
-    char stackChoice;
-
-    std::cout << "Enter an infix expression (e.g., 3 + 4 * (2 - 1)): ";
-    std::getline(std::cin, infixExpression);
-
-   
-    std::cout << "Choose stack type (A for ArrayStack, L for ListStack): ";
-    std::cin >> stackChoice;
-    std::cin.ignore(); 
-
-    StackType stackType;
-    if (stackChoice == 'A' || stackChoice == 'a') {
-        stackType = StackType::Array;
-    }
-    else if (stackChoice == 'L' || stackChoice == 'l') {
-        stackType = StackType::List;
-    }
-    else {
-        std::cout << "Invalid stack type. Using ArrayStack by default.\n";
-        stackType = StackType::Array;
-    }
-
     try {
-        ArithmeticExpression<char> expr(infixExpression, stackType);
+        cout << "1. Array";
+        cout << "2. List";
+        int answ;
+        cin >> answ;
 
-        expr.convertToPostfix();
-        std::cout << "Postfix expression: " << expr.getPostfix() << std::endl;
+        if (answ != 1 && answ != 2) {
+            cerr << "Invalid choice!" << endl;
+            return 1;
+        }
 
-        std::map<char, double> variables;
-        char varChoice;
-        do {
-            std::cout << "Enter a variable (e.g., 'x') and its value (e.g., 5): ";
-            char var;
-            double value;
-            std::cin >> var >> value;
-            variables[var] = value;
+        Stack<char>* operatorsStack = nullptr;
+        Stack<string>* operandsStack = nullptr;
+        if (answ == 1) {
+            operatorsStack = new stackArray<char>(100);
+            operandsStack = new stackArray<string>(100);
+        }
+        else {
+            operatorsStack = new ListStack<char>();
+            operandsStack = new ListStack<string>();
+        }
 
-            std::cout << "Do you want to enter another variable? (y/n): ";
-            std::cin >> varChoice;
-            std::cin.ignore();
-        } while (varChoice == 'y' || varChoice == 'Y');
-        double result = expr.evaluate(variables);
-        std::cout << "Result of the expression: " << result << std::endl;
+        string exprstr;
+        cout << "infix expression: ";
+        cin >> exprstr;
+        StackType stackType = (answ == 1) ? Array : ListSt;
+        AriExpress<char> expr(exprstr, operatorsStack, operandsStack, stackType);
+
+        cout << "Infix expression: " << expr.get_infix() << endl;
+        cout << "Postfix expression: " << expr.get_postfix() << endl;
+
+        vector<char> operands = expr.getoperands();
+        map<char, double> values;
+        double val;
+        for (const auto& op : operands) {
+            cout << "Enter value for " << op << ": ";
+            cin >> val;
+            values[op] = val;
+        }
+        double result = expr.calculate(values);
+        cout << "Result: " << result << endl;
 
     }
-    catch (const std::exception& ex) {
-        std::cout << "Error: " << ex.what() << std::endl;
+    catch (const exception& ex) {
+        cerr << "Error: " << ex.what() << endl;
     }
 
     return 0;

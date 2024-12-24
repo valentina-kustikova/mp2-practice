@@ -1,29 +1,35 @@
 #pragma once
 
 #include <iostream>
+#include <string>
+
+template <typename T>
+struct TNode {
+    T data;
+    TNode* pNext;
+    TNode() : data(0), pNext(nullptr) {};
+    TNode(const T& data) : data(data), pNext(nullptr) {};
+};
 
 template<typename T>
 class List {
 private:
-    struct TNode {
-        int key;
-        T data;
-        TNode* pNext;
-        TNode() : data(0), pNext(nullptr) {};
-        TNode(const T& data) : data(data), pNext(nullptr) {};
-    };
-    TNode* pFirst;
-    int size;
-
+    TNode<T>* pFirst;
 public:
     List();
+    List(const T& list);
     ~List();
 
-    void print(TNode* pFirst);
-    TNode* search(TNode* pFirst, int key);
-    void pushFront(TNode*& pFirst, TNode* pNode);
-    void pushBack(TNode*& pFirst, TNode* pNode);
-    void inseartAfter(TNode*& pFirst, TNode* pNode, int key);
-    void inseartBefore(TNode*& pFirst, TNode* pNode, int key);
-    void remove(TNode*& pFirst, TNode* pNode, int key);
+    const List& operator=(const List<T>& list);
+    bool operator==(const List<T>& list);
+
+    void pushFront(TNode<T>* pNode);
+    void pushBack(TNode<T>* pNode);
+    void insertAfter(TNode<T>* pNode, int key);
+    void insertBefore(TNode<T>* pNode, int key);
+    void remove(int key);
+    T reset() const;
+    void removefirst();
+    bool IsEmpty() const;
+    int Size();
 };
