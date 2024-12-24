@@ -23,13 +23,14 @@ class array_stack : public Stack<TElem>
 public:
 	array_stack();
 	array_stack(int sz);
+	~array_stack();
 
 	void Push(const TElem& el);
 	TElem Top() const;
 	void pop();
 	bool is_full() const;
 	bool is_empty() const;
-	array_stack& operator=(array_stack<TElem> &st);
+	array_stack& operator=(array_stack<TElem>& st);
 };
 template<typename TElem>
 array_stack<TElem>::array_stack() : max_size(0), top(-1), elems(nullptr)
@@ -44,6 +45,14 @@ array_stack<TElem>::array_stack(int sz) : top(-1)
 	}
 	this->max_size = sz;
 	this->elems = new TElem[sz];
+}
+template<typename TElem>
+array_stack<TElem>::~array_stack()
+{
+	if (elems != nullptr)
+	{
+		delete[] elems;
+	}
 }
 
 template<typename TElem>

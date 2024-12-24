@@ -2,7 +2,7 @@
 #include "postfix_form.h"
 
 int main()
-{   
+{
     //std::cout << "Enter count of the variables" << std::endl;
 
     //int count;
@@ -27,6 +27,8 @@ int main()
     std::cout << arExpr << std::endl;
 
     std::cout << arExpr.Calculate();
+    std::cout << std::endl << "End CAlculate";
+
 
     return 1;
 }
