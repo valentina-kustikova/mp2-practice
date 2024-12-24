@@ -4,12 +4,11 @@
 #include "stack.h"
 #include "list.h"
 
-#define MAX_SIZE 100000 // !!!!
 
 template <typename T>
 class ListStack : public Stack<T> {
 private:
-    List<T> elems; 
+    List<T> elems;
 public:
     ListStack();
 
@@ -36,27 +35,21 @@ public:
 
 template <typename T>
 ListStack<T>::ListStack() {
-    
+    elems = List<T>::List();
 }
 
 template <typename T>
-size_t ListStack<T>::size() const { 
+size_t ListStack<T>::size() const {
     return elems.size();
 }
 
 template <typename T>
 ListStack<T>::ListStack(const ListStack<T>& s) {
-    if (s.elems == nullptr) {
-        elems = nullptr;
+    if (s.elems.get_head() == nullptr) {
         return;
     }
-    elems = new List<T>(s.elems.get_val());//
-    List<T> elemscurr = elems;
-    List<T> scurr = s.elems;
-    while (scurr != nullptr) {
-        elemscurr.RemoveFirst = new List<T>(scurr.get_val());
-        scurr = scurr.RemoveFirst;
-    }
+    elems = List<T>(s.elems);
+
 };
 
 template <typename T>
@@ -69,6 +62,10 @@ ListStack<T>::~ListStack() {
 
 template <typename T>
 void ListStack<T>::push(const T& el) {
+    if (IsFull())
+    {
+        throw "stack is full";  // todo
+    }
     elems.push(el);
 }
 
@@ -76,8 +73,11 @@ void ListStack<T>::push(const T& el) {
 
 template <typename T>
 void ListStack<T>::pop() {
-    
-    elems.RemoveFirst(); // RemoveFirst
+    if (IsEmpty())
+    {
+        throw "cant pop in empty stack"; // todo
+    }
+    elems.RemoveFirst();
 
 }
 
@@ -91,10 +91,19 @@ T ListStack<T>::Top() const {
 
 
 template <typename T>
-bool ListStack<T>::IsEmpty() const { return elems.size() == 0; };
+bool ListStack<T>::IsEmpty() const { return elems.get_head() == nullptr; };
 
 template <typename T>
-bool ListStack<T>::IsFull() const { return size() < MAX_SIZE; };
+bool ListStack<T>::IsFull() const {
+    ListNode<int>* tmp;
+    tmp = new ListNode<int>(1);
+    if (tmp == nullptr)
+    {
+        return true;
+    }
+    delete tmp;
+    return false;
+};
 
 template <typename T>
 const ListStack<T>& ListStack<T>::operator=(const ListStack<T>& s) {
@@ -103,41 +112,16 @@ const ListStack<T>& ListStack<T>::operator=(const ListStack<T>& s) {
     }
 
     if (!IsEmpty()) {
-        List<T> tmp = this.elems;
-        while (tmp != nullptr) {
-            delete elems;
-            elems = tmp;
-            tmp = tmp.RemoveFirst;
-        }
+        delete this;
     }
 
-    elems = new List<T>(s.elems.get_val());
-    List<T> elemscurr = elems;
-    List<T> scurr = s.elems;
-    while (scurr != nullptr) {
-        elemscurr.RemoveFirst = new List<T>(scurr.get_val());
-        scurr = scurr.RemoveFirst;
-    }
-
+    elems = List<T>(s.elems);
+    return *this;
 }
 
 template <typename T>
 bool ListStack<T>::operator==(const ListStack<T>& s) {
-    List<T> thiscurr = elems;
-    List<T> scurr = s.elems;
-    while (thiscurr != nullptr && scurr != nullptr) {
-        if (thiscurr.get_val() != scurr.get_val()) {
-            return 0;
-        }
-        thiscurr = thiscurr.RemoveFirst;
-        scurr = scurr.RemoveFirst;
-    }
+    return elems == s.elems;
 
-    // когда оба nullptr
-    if (thiscurr == scurr) {
-        return 1;
-    }
-    return 0;
+
 }
-
-

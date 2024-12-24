@@ -106,11 +106,36 @@ T ArrayStack<T>::Top() const {
 
 template <typename T>
 const ArrayStack<T>& ArrayStack<T>::operator=(const ArrayStack<T>& s) {
-
+    if (this == &s)
+    {
+        return *this;
+    }
+    if (maxsz != s.maxsz)
+    {
+        if (maxsz != 0) {
+            delete[] arr;
+        }
+        maxsz = s.maxsz;
+        arr = new T[maxsz];
+    }
+    top = s.top;
+    for (int i = 0; i < maxsz; i++)
+    {
+        arr[i] = s.arr[i];
+    }
+    return *this;
 }
 
 template <typename T>
 bool ArrayStack<T>::operator==(const ArrayStack<T>& s) {
-
+    if (maxsz != s.maxsz) {
+        return 0;
+    }
+    for (int i = 0; i < maxsz; i++) {
+        if (arr[i] != s.arr[i]) {
+            return 0;
+        }
+    }
+    return 1;
 }
 

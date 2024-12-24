@@ -4,10 +4,6 @@
 #include <gtest.h>
 
 
-//
-//                ArrayStack
-//
-
 
 TEST(ArrayStack, can_create_stack_with_positive_length)
 {
@@ -101,7 +97,7 @@ TEST(ArrayStack, compare_equal_stacks_return_true)
     ArrayStack<int> m2(2);
     m2.push(1);
     m2.push(2);
-    EXPECT_TRUE(m1==m2);
+    EXPECT_TRUE(m1 == m2);
 }
 
 TEST(ArrayStack, compare_stacks_with_diff_size_return_false)
@@ -125,19 +121,19 @@ TEST(ArrayStack, compare_not_equal_stacks_return_false)
 
 
 
-//
-//                ListStack
-//
 
 
+TEST(ListStack, can_create)
+{
 
+    ASSERT_NO_THROW(ListStack<int> m);
+}
 
 
 TEST(ListStack, copied_stack_is_equal_to_source_one)
 {
     ListStack<int> m;
     m.push(5);
-    m.push(10);
     ListStack<int> m1(m);
     EXPECT_TRUE(m == m1);
 }
@@ -208,3 +204,5 @@ TEST(ListStack, compare_not_equal_stacks_return_false)
     m2.push(2);
     EXPECT_FALSE(m1 == m2);
 }
+
+

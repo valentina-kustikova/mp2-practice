@@ -20,7 +20,7 @@ ArithmeticExpression::ArithmeticExpression(const string& s1, STACK_IMPL impl1) {
 vector<string> ArithmeticExpression::convert(const string& input) {
     string expr = removeSpaces(input);
     vector<string> answ;
-   
+
 
     string operand_name;
     for (size_t i = 0; i < expr.length(); ++i) {
@@ -46,7 +46,7 @@ vector<string> ArithmeticExpression::convert(const string& input) {
             if (!operand_name.empty()) {
                 answ.push_back(operand_name);
             }
-           
+
             if (answ.empty()) {
                 if (c != "-") {
                     throw "wrong expression";
@@ -59,14 +59,14 @@ vector<string> ArithmeticExpression::convert(const string& input) {
                     throw "wrong expression";
                 }
                 if ('0' <= expr[i + 1] && expr[i + 1] <= '9') {
-                    operand_name.clear(); 
+                    operand_name.clear();
                     operand_name += c;
                     continue;
                 }
                 else {
                     throw "wrong expression";
                 }
-                
+
             }
             answ.push_back(c);
             operand_name.clear();
@@ -75,26 +75,27 @@ vector<string> ArithmeticExpression::convert(const string& input) {
         operand_name += c;
 
     }
+
     if (!operand_name.empty()) {
         answ.push_back(operand_name);
     }
-    
 
-    return answ; 
+
+    return answ;
 }
 
 
 
 std::string removeSpaces(const std::string& str) {
-    std::string result = str; 
-    result.erase(std::remove_if(result.begin(), result.end(), 
+    std::string result = str;
+    result.erase(std::remove_if(result.begin(), result.end(),
         [](char c) { return std::isspace(c); }), result.end());
     return result;
 }
 
 
 
-bool is_op(string el) {
+bool is_op(const string& el) {
     return el == "*" || el == "/" || el == "+" || el == "-";
 }
 
@@ -162,6 +163,9 @@ unordered_map<string, double> ArithmeticExpression::fill_variables() {
 double ArithmeticExpression::compute(
     const unordered_map<string, double>& values) {
 
+
+
+
     Stack<string>* op;
     vector<string> pf;
 
@@ -172,9 +176,10 @@ double ArithmeticExpression::compute(
     else {
         op = new ListStack<string>();
     }
+
     make_pf(op, pf);
-    print_pf(pf);
-    return solve_pf(pf,values);
+
+    return solve_pf(pf, values);
 }
 
 
@@ -183,7 +188,10 @@ double ArithmeticExpression::compute(
 double ArithmeticExpression::solve_pf(vector<string>& pf,
     const unordered_map<string, double>& values) {
     unordered_map<string, double> vals = values;
-    vals = fill_variables();
+    if (vals.empty()) {
+        vals = fill_variables();
+    }
+
 
     double answ = 0;
 
@@ -218,7 +226,7 @@ double ArithmeticExpression::solve_pf(vector<string>& pf,
 
 
 
-void ArithmeticExpression::make_pf(Stack<string>*&op, vector<string>& pf) {
+void ArithmeticExpression::make_pf(Stack<string>*& op, vector<string>& pf) {
     for (string el : expr) {
 
         // является операндом/числом
@@ -250,9 +258,15 @@ void ArithmeticExpression::make_pf(Stack<string>*&op, vector<string>& pf) {
             continue;
         }
         if (el == ")") {
+            if (op->IsEmpty()) {
+                throw "wrong expr";
+            }
             while (op->Top() != "(") {
                 pf.push_back(op->Top());
                 op->pop();
+            }
+            if (op->IsEmpty()) {
+                throw "wrong expr";
             }
             op->pop();
             continue;
