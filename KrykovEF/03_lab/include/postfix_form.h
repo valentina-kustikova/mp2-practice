@@ -1,38 +1,27 @@
-#include "stack.h"
-#include <map>
+#include <iostream>
+#include <unordered_map>
+#include <string>
 #include <vector>
-
-
+#include "stack.h"
 
 using namespace std;
 
+
+enum STACK_IMPL
+{
+    ARRAY_STACK = 0,
+    LIST_STACK = 1
+};
+
 class PosfixForm {
-public:
-    string virtual return_form() = 0;
-    int virtual return_answer() = 0;
-};
-
-class PostfixFormArray : public PosfixForm {
 private:
-    string inf_form;
-    string post_form;
-    TArrayStack<string> stack;
+    vector<string> expr;
+    STACK_IMPL impl = ARRAY_STACK;
 public:
-    PostfixFormArray() {};
-    PostfixFormArray(string in);
-    ~PostfixFormArray() {};
-    string return_form() { return post_form; };
-    int return_answer() { return 0; };
+    PosfixForm(const string&, STACK_IMPL impl1 = ARRAY_STACK);
+    unordered_map<string, double> fill_variables();
+    void config();
+    double solve();
+    bool is_op(string el);
+    void print();
 };
-
-
-class PostfixFormList : public PosfixForm {
-private:
-    string inf_form;
-    string post_form;
-    TListStack<string> stack;
-public:
-    string return_form() {};
-    int return_answer() {};
-};
-

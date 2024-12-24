@@ -41,8 +41,12 @@ public:
         delete[] arr;
     }
     void push(const T& elem) {
-        if (IsFull())
-            throw "stack is full";
+        if (IsFull()) {
+            T* tmp = arr;
+            arr = new T[(maxSize + 1) * 3];
+            std::copy(tmp, tmp + maxSize, arr);
+            maxSize = (maxSize + 1) * 3;
+        }
         top++;
         arr[top] = elem;
     };
@@ -115,66 +119,34 @@ struct TNode{
     ~TNode() {};
 };
 
-
 template <typename T>
-class TListStack : public TStack<T> {
+class TList
+{
 private:
     TNode<T>* pFirst;
 public:
-    TListStack() :pFirst(nullptr) {};
-
-    TListStack(const TListStack<T>& s) {
-        if (s.pFirst == nullptr)
-            pFirst = nullptr;
+    TList() : pFirst(nullptr) {};
+    TList(const TList<T>& list) {
         pFirst = nullptr;
-        TNode<T>* tmp1 = s.pFirst;
-        TNode<T>* tmp2 = nullptr;
-        while (tmp1 != nullptr) {
-            TNode<T>* newNode = new TNode<T>(tmp1->Key);
-            if (pFirst == nullptr) {
-                pFirst = newNode;
-            }
-            else {
-                tmp2->pNext = newNode;
-            }
-            tmp2 = newNode;
-            tmp1 = tmp1->pNext;
+        if (list.pFirst == nullptr)
+            return;
+        pFirst = new TNode<T>{ *list.pFirst };
+        TNode<T>* pNew = pFirst;
+        while (pNew->pNext != nullptr)
+        {
+            pNew->pNext = new TNode<T>{ *pNew->pNext };
+            pNew = pNew->pNext;
         }
     };
-    ~TListStack() {
+    ~TList() {
         while (pFirst != nullptr) {
             TNode<T>* tmp = pFirst;
             pFirst = pFirst->pNext;
             delete tmp;
         }
     };
-
-    void push(const T& elem) {
-        TNode<T>* newNode = new TNode<T>(elem);
-        this->pushFront(newNode);
-    };
-    void pop() {
-        if (IsEmpty())
-            throw "stack is empty";
-        TNode<T>* tmp = pFirst;
-        pFirst = pFirst->pNext;
-        delete tmp;
-    };
-    T Top() {
-        if (IsEmpty())
-            throw "stack is empty";
-        return pFirst->Key;
-
-    };
-    bool IsEmpty() {
-        if (pFirst == nullptr)
-            return 1;
-        return 0;
-    };
-    bool IsFull() { return 0;};
-
     TNode<T>* search(T s_key) {
-        TNode* tmp = pFirst;
+        TNode<T>* tmp = pFirst;
         while ((tmp != nullptr) && (tmp->Key != s_key)) {
             tmp = tmp->pNext;
         }
@@ -194,7 +166,7 @@ public:
         if (newNode == nullptr)
             throw "nullptr push";
 
-        TNode* curr = pFirst;
+        TNode<T>* curr = pFirst;
         while (curr->pNext != nullptr) {
             curr = curr->pNext;
         }
@@ -202,18 +174,18 @@ public:
     };
 
     void InsertAfter(TNode<T>* newNode, T pKey) {
-        TNode* curr = search(pKey);
-        if (curr == nullptr) 
+        TNode<T>* curr = search(pKey);
+        if (curr == nullptr)
             throw "no element";
-        
+
         newNode->pNext = curr->pNext;
         curr->pNext = newNode;
 
     };
 
     void InsertBefore(TNode<T>* newNode, T pKey) {
-        TNode* prev = nullptr, *curr = pFirst;
-        while ((curr != nullptr) && (curr->key != pKey)) {
+        TNode<T>* prev = nullptr, * curr = pFirst;
+        while ((curr != nullptr) && (curr->Key != pKey)) {
             prew = curr;
             curr = curr->pNext;
         }
@@ -229,14 +201,13 @@ public:
     };
 
     void remove(T pKey) {
-        TNode* prev = nullptr, *curr = pFirst;
-        while ((curr != nullptr) && (curr->key != pKey)) {
-            prew = curr;
+        TNode<T>* prev = nullptr, * curr = pFirst;
+        while ((curr != nullptr) && (curr->Key != pKey)) {
+            prev = curr;
             curr = curr->pNext;
         }
         if (curr == nullptr)
             throw "no element";
-
         if (prev == nullptr) {
             pFirst = pFirst->pNext;
             delete curr;
@@ -245,8 +216,12 @@ public:
         delete curr;
     };
 
+    void remove_first() {
+        pFirst = pFirst->pNext;
+    };
+
     int size() {
-        TNode* curr = pFirst;
+        TNode<T>* curr = pFirst;
         int size = 0;
         while (curr != nullptr) {
             size++;
@@ -262,7 +237,7 @@ public:
         curr = curr->pNext;
     }
 
-    const TListStack<T>& operator=(const TListStack<T>& s) {
+    const TList<T>& operator=(const TList<T>& s) {
         if (this == &s)
             return *this;
         if (s.pFirst == nullptr)
@@ -281,12 +256,12 @@ public:
             tmp2 = newNode;
             tmp1 = tmp1->pNext;
         }
-        
+
         return *this;
     };
 
-    bool operator==(const TListStack<T>& s) {
-        TNode<T>* curr1 = pFirst; 
+    bool operator==(const TList<T>& s) {
+        TNode<T>* curr1 = pFirst;
         TNode<T>* curr2 = s.pFirst;
         while (curr1 != nullptr) {
             if (curr1->Key != curr2->Key)
@@ -296,6 +271,58 @@ public:
         }
         return 1;
     };
+
+    bool IsEmpty() {
+        if (pFirst == nullptr)
+            return 1;
+        return 0;
+    };
+    bool IsFull() { return 0; };
+
+    T get_first_key() const {
+        return pFirst->Key;
+    }
+    
+};
+
+
+template <typename T>
+class TListStack : public TStack<T> {
+private:
+    TList<T> stack;
+public:
+    TListStack(){};
+
+    TListStack(const TListStack& s) :stack(s.stack) {};
+    ~TListStack() {};
+
+    void push(const T& elem) {
+        TNode<T>* newNode = new TNode<T>(elem);
+        this->stack.pushFront(newNode);
+    };
+    void pop() {
+        if (IsEmpty())
+            throw "stack is empty";
+        stack.remove_first();
+    };
+    T Top() {
+        if (IsEmpty())
+            throw "stack is empty";
+        return stack.get_first_key();
+
+    };
+    bool IsEmpty() {return (stack.IsEmpty());};
+    bool IsFull() { return 0;};
+
+    const TListStack<T>& operator=(const TListStack<T>& s)
+    {
+        stack = s.stack;
+        return *this;
+    }
+    bool operator==(const TListStack<T>& s)
+    {
+        return (stack == s.stack);
+    }
 
 
     //add to git
