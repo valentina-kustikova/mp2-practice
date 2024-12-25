@@ -20,8 +20,9 @@ private:
     vector<string> expr;
     STACK_IMPL impl = ARRAY_STACK;
 
-    void make_pf(Stack<string>*&, vector<string>&);
+    void make_pf();
     double solve_pf(vector<string>&, const unordered_map<string, double>&);
+    friend string convert_to_str(ArithmeticExpression&);
 public:
 
     ArithmeticExpression(const string&, STACK_IMPL impl1 = ARRAY_STACK);
@@ -29,6 +30,7 @@ public:
     vector<string> convert(const string&); // string to vector<string>
     unordered_map<string, double> fill_variables();
     double compute(const unordered_map<string, double>&);
+    
 };
 
 
@@ -39,5 +41,4 @@ bool is_op(const string& el);
 
 
 void print_pf(vector<string>&);
-
 

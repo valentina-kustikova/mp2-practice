@@ -98,9 +98,7 @@ public:
             }
             curr = curr->next;
         }
-        if (curr == nullptr) {
-            throw "this key does not exist";
-        }
+        
         return curr;
     };
 

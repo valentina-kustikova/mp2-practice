@@ -65,7 +65,7 @@ TEST(ArrayStack, can_get_element_in_not_empty_stack)
 {
     ArrayStack<int> m(1);
     m.push(1);
-    ASSERT_NO_THROW(m.Top());
+    ASSERT_EQ(m.Top(), 1);
 }
 
 TEST(ArrayStack, cant_get_element_in_empty_stack)
@@ -165,7 +165,7 @@ TEST(ListStack, can_get_element_in_not_empty_stack)
 {
     ListStack<int> m;
     m.push(1);
-    ASSERT_NO_THROW(m.Top());
+    ASSERT_EQ(m.Top(), 1);
 }
 
 TEST(ListStack, cant_get_element_in_empty_stack)

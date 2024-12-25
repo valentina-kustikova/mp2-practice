@@ -1,5 +1,5 @@
 #include "postfix_form.h"
-
+#include "array_stack.h"
 #include <gtest.h>
 
 
@@ -78,7 +78,83 @@ TEST(ArrayStack, postfixform_counts_correctly_testcase6)
     string s = "(A+B)/C-(D*(A+B))/F";
     ArithmeticExpression expr(s, ARRAY_STACK);
     double res = expr.compute(values);
-    cout << "\n\n\n\n\n" << res << "\n\n\n\n\n";
+    
     EXPECT_EQ(-2, res);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+TEST(ArrayStack, postfixform_is_correct_testcase1)
+{
+    string s = "A+B-C";
+    string scorrect = "AB+C-";
+    ArithmeticExpression expr(s, ARRAY_STACK);
+    string curr = convert_to_str(expr);
+    EXPECT_EQ(curr,scorrect);
+}
+
+
+
+TEST(ArrayStack, postfixform_is_correct_testcase2)
+{
+    
+    string s = "A-B*C-C";
+    string scorrect = "ABC*-C-";
+    ArithmeticExpression expr(s, ARRAY_STACK);
+    string curr = convert_to_str(expr);
+    EXPECT_EQ(curr, scorrect);
+}
+
+TEST(ArrayStack, postfixform_is_correct_testcase3)
+{
+    
+    string s = "A-B*C-C*(A-B)/C";
+    string scorrect = "ABC*-CAB-*C/-";
+    ArithmeticExpression expr(s, ARRAY_STACK);
+    string curr = convert_to_str(expr);
+    EXPECT_EQ(curr, scorrect);
+}
+
+TEST(ArrayStack, postfixform_is_correct_testcase4)
+{
+    
+    string s = "(A-B*C)/B"; 
+    string scorrect = "ABC*-B/";
+    ArithmeticExpression expr(s, ARRAY_STACK);
+    string curr = convert_to_str(expr);
+    EXPECT_EQ(curr, scorrect);
+}
+
+TEST(ArrayStack, postfixform_is_correct_testcase5)
+{
+    string s = "(A-(B-C))*(D-A)*F-(B-D)/F";
+    string scorrect = "ABC--DA-*F*BD-F/-";
+    ArithmeticExpression expr(s, ARRAY_STACK);
+    string curr = convert_to_str(expr);
+    EXPECT_EQ(curr, scorrect);
+}
+
+TEST(ArrayStack, postfixform_is_correct_testcase6)
+{
+    string s = "(A+B)/C-(D*(A+B))/F";
+    string scorrect = "AB+C/DAB+*F/-";
+    ArithmeticExpression expr(s, ARRAY_STACK);
+    string curr = convert_to_str(expr);
+    EXPECT_EQ(curr, scorrect);
 }
 

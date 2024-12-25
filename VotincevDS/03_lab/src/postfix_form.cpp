@@ -9,11 +9,20 @@
 
 using namespace std;
 
+string convert_to_str(ArithmeticExpression& expr) {
+    string answ;
+    for (string el : expr.expr) {
+        answ += el;
+    }
+    return answ;
+}
+
 
 
 ArithmeticExpression::ArithmeticExpression(const string& s1, STACK_IMPL impl1) {
     expr = convert(s1);
     impl = impl1;
+    make_pf();
 }
 
 
@@ -165,21 +174,7 @@ double ArithmeticExpression::compute(
 
 
 
-
-    Stack<string>* op;
-    vector<string> pf;
-
-
-    if (impl == ARRAY_STACK) {
-        op = new ArrayStack<string>();
-    }
-    else {
-        op = new ListStack<string>();
-    }
-
-    make_pf(op, pf);
-
-    return solve_pf(pf, values);
+    return solve_pf(this->expr, values);
 }
 
 
@@ -226,16 +221,24 @@ double ArithmeticExpression::solve_pf(vector<string>& pf,
 
 
 
-void ArithmeticExpression::make_pf(Stack<string>*& op, vector<string>& pf) {
+void ArithmeticExpression::make_pf() {
+    Stack<string>* op;
+    if (impl == ARRAY_STACK) {
+        op = new ArrayStack<string>();
+    }
+    else {
+        op = new ListStack<string>();
+    }
+    vector<string> pf;
     for (string el : expr) {
 
-        // является операндом/числом
+        
         if (!is_op(el) && el != "(" && el != ")") {
             pf.push_back(el);
             continue;
         }
 
-        // является оператором
+        
         if (is_op(el)) {
             if (op->IsEmpty()) {
                 op->push(el);
@@ -278,5 +281,5 @@ void ArithmeticExpression::make_pf(Stack<string>*& op, vector<string>& pf) {
         pf.push_back(op->Top());
         op->pop();
     }
+    this->expr = pf;
 }
-

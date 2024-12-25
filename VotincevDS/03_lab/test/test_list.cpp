@@ -49,7 +49,7 @@ TEST(LIST, cant_search_not_existing_elem)
     ListNode<int>* node = new ListNode<int>(5);
     node->next = new ListNode<int>(6);
     list.pushBack(node);
-    ASSERT_ANY_THROW(list.search(7));
+    EXPECT_EQ(list.search(7),nullptr);
 }
 
 
@@ -60,7 +60,9 @@ TEST(LIST, can_InsertAfter_elem)
     node->next = new ListNode<int>(6);
     list.pushBack(node);
     ListNode<int>* add = new ListNode <int>(7);
-    ASSERT_NO_THROW(list.InsertAfter(add, 6));
+    list.InsertAfter(add, 5); 
+    ASSERT_EQ(list.search(5)->next->val,7);
+    ASSERT_EQ(list.search(7)->next->val, 6);
 }
 
 TEST(LIST, cant_InsertAfter_not_existing_elem)
@@ -75,12 +77,17 @@ TEST(LIST, cant_InsertAfter_not_existing_elem)
 
 TEST(LIST, can_InsertBefore_elem)
 {
+
     List<int> list;
     ListNode<int>* node = new ListNode<int>(5);
     node->next = new ListNode<int>(6);
     list.pushBack(node);
     ListNode<int>* add = new ListNode <int>(7);
-    ASSERT_NO_THROW(list.InsertBefore(add, 6));
+    list.InsertBefore(add, 6);
+    EXPECT_EQ(list.search(5)->next->val, 7);
+    EXPECT_EQ(list.search(7)->next->val, 6); // ;
+
+
 }
 
 TEST(LIST, cant_InsertBefore_not_existing_elem)
@@ -90,7 +97,7 @@ TEST(LIST, cant_InsertBefore_not_existing_elem)
     node->next = new ListNode<int>(6);
     list.pushBack(node);
     ListNode<int>* add = new ListNode <int>(7);
-    ASSERT_ANY_THROW(list.InsertBefore(add, 7));
+    ASSERT_ANY_THROW(list.InsertBefore(add, 7)); // todo
 }
 
 TEST(LIST, can_remove_elem)
@@ -98,9 +105,11 @@ TEST(LIST, can_remove_elem)
     List<int> list;
     ListNode<int>* node = new ListNode<int>(5);
     node->next = new ListNode<int>(6);
+    node->next->next = new ListNode<int>(7);
     list.pushBack(node);
-    ListNode<int>* add = new ListNode <int>(7);
-    ASSERT_NO_THROW(list.remove(6));
+    list.remove(6);
+    EXPECT_EQ(list.search(5)->next->val,7); // todo
+    EXPECT_EQ(list.search(6), nullptr);
 }
 
 TEST(LIST, cant_remove_not_existing_elem)
@@ -120,8 +129,8 @@ TEST(LIST, can_RemoveFirst_elem)
     ListNode<int>* node = new ListNode<int>(5);
     node->next = new ListNode<int>(6);
     list.pushBack(node);
-    ListNode<int>* add = new ListNode <int>(7);
-    ASSERT_NO_THROW(list.RemoveFirst());
+    list.RemoveFirst();
+    ASSERT_EQ(list.get_head()->val, 6); // todo
 }
 
 TEST(LIST, cant_RemoveFirst_not_existing_elem)
