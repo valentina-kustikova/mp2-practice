@@ -21,6 +21,7 @@ public:
     T Top() const;
     T Pop();
     const stack<T>& operator=(const stack<T>& s);
+    bool operator==(const stack<T>& S) const noexcept;
 };
 
 template<typename T>
@@ -70,7 +71,7 @@ T stack<T>::Pop() {
 template<typename T>
 const stack<T>& stack<T>:: operator=(const stack<T>& s)
 {
-    if (this != &s)
+    if (this == &s)
     {
         return *this;
     }
@@ -87,4 +88,17 @@ const stack<T>& stack<T>:: operator=(const stack<T>& s)
     }
 
     return *this;
+}
+template<typename T>
+bool stack<T>:: operator==(const stack<T>& s) const noexcept
+{
+    if ((this->maxsize != s.maxsize) || (this->top != s.top)) {
+        return false;
+    }
+    for (size_t i = 0; i < this->maxsize; i++) {
+        if (this->elem[i] != s.elem[i]) {
+            return false;
+        }
+    }
+    return true;
 }

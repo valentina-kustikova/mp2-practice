@@ -19,7 +19,7 @@ public:
     T Top() const;
     T Pop();
     const liststack<T>& operator=(const liststack<T>& s);
-    int Size() const;
+    bool liststack<T>::operator==(const liststack<T>& s) const;
 };
 
 template<typename T>
@@ -32,7 +32,7 @@ bool liststack<T>::IsEmpty() const {
 }
 template<typename T>
 bool liststack<T>::IsFull() const {
-    return false;
+    return elems.IsFull();
 }
 template<typename T>
 void liststack<T>::Push(const T& val) {
@@ -44,24 +44,27 @@ T liststack<T>::Top() const {
     if (elems.IsEmpty()) {
         throw "Stack is empty";
     }
-    return elems.reset();
+    return elems.getfirst();
 }
 template<typename T>
 T liststack<T>::Pop() {
     if (elems.IsEmpty()) {
         throw "Stack is empty";
     }
-    T val = elems.reset();
+    T val = elems.getfirst();
     elems.remove(val);
     return val;
 }
 template<typename T>
 const liststack<T>& liststack<T>:: operator=(const liststack<T>& s)
 {
-    elems = s.elems;
+    if (this != &s) { 
+        elems = s.elems; 
+    }
     return *this;
 }
-template <typename T>
-int liststack<T>::Size() const {
-    return elems.Size(); 
+template<typename T>
+bool liststack<T>::operator==(const liststack<T>& s) const
+{
+    return (elems == s.elems);
 }

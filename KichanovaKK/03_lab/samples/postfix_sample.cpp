@@ -22,30 +22,19 @@ void main() {
     else if (choice == 2) {
         opStack = new liststack<char>();
         opndStack = new liststack<string>();
-        cout << "Stack on TNode (TStack).\n";
+        cout << "Stack on TNode (liststack).\n";
     }
     else {
         throw "Error";
     }
 
-    
     string exprstr;
     cout << "Enter expression: ";
     cin >> exprstr;
 
-    AriExpress<char> expr(exprstr, opStack, opndStack);
-    cout << "Infix expression: " << expr.get_infix() << endl;
-    cout << "Postfix expression: " << expr.get_postfix() << endl;
+    AriExpress expr(exprstr, opStack, opndStack);
+    cout << "Postfix expression: " << expr.to_postfix() << endl;
 
-    vector<char> operands = expr.getoperands(); 
-    map<char, double> values;
-    double val;
-
-    for (const auto& op : operands) {
-        cout << "Enter value of " << op << ": ";
-        cin >> val;
-        values[op] = val;
-    }
-
+    map<char, double> values = expr.getoperands();
     cout << "Result: " << expr.calculate(values) << endl;
 }

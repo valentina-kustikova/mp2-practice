@@ -9,7 +9,7 @@
 
 
 using namespace std;
-template<typename T>
+
 class AriExpress {
 protected:
     string infix;
@@ -17,41 +17,37 @@ protected:
     vector<char> lexems;
     map<char, double> operands;
     map<char, int> priority;
-    MainStack<T>* operatorsStack; 
+    MainStack<char>* operatorsStack; 
     MainStack<string>* operandsStack;
 public:
-    AriExpress(string infx, MainStack<T>* opStack, MainStack<string>* opndStack);
+    AriExpress(string infx, MainStack<char>* opStack, MainStack<string>* opndStack);
     ~AriExpress();
     void Parse();
-    void to_postfix();
-    string get_infix() const { return infix; }
-    string get_postfix() const { return postfix; }
-    vector<char> getoperands() const;
+    string to_postfix();
+    map<char, double> getoperands() const;
     double calculate(const map<char, double>& values);
 };
 
-template<typename T>
-AriExpress<T>::AriExpress(string infx, MainStack<T>* opStack, MainStack<string>* opndStack)
+AriExpress::AriExpress(string infx, MainStack<char>* opStack, MainStack<string>* opndStack)
     : infix(infx), operatorsStack(opStack), operandsStack(opndStack) {
     priority = { {'(', 0}, {')', 0}, {'+', 1}, {'-', 1}, {'*', 2}, {'/', 2} };
-    to_postfix();
 }
-template<typename T>
-AriExpress<T>::~AriExpress() {
+
+AriExpress::~AriExpress() {
     delete operatorsStack; 
     delete operandsStack;
 }
-template<typename T>
-void AriExpress<T>:: Parse() {
+
+void AriExpress:: Parse() {
     for (char c : infix)
         lexems.push_back(c);
 }
-template<typename T>
-void AriExpress<T>::to_postfix() {
+
+string AriExpress::to_postfix() {
     Parse();
-    string postfix;
 
     for (char item : lexems) {
+        if (isspace(item)) continue;
         if (isalnum(item)) { // if operand
             operands.insert({ item, 0.0 });
             operandsStack->Push(string(1, item));
@@ -91,17 +87,34 @@ void AriExpress<T>::to_postfix() {
     }
 
     this->postfix = operandsStack->Pop();
+    return postfix;
 }
-template<typename T>
-vector<char> AriExpress<T>::getoperands() const {
+
+map<char, double> AriExpress::getoperands() const {
     vector<char> op;
-    for (const auto& item : operands)
+    for (const auto& item : operands) {
         op.push_back(item.first);
-    return op;
+    }
+
+    map<char, double> values;
+    double val;
+
+    for (const auto& operand : op) {
+        cout << "Enter value of " << operand << ": ";
+        cin >> val;
+        values[operand] = val;
+    }
+
+    return values;
 }
-template<typename T>
-double AriExpress<T>::calculate(const map<char, double>& values) {
-    MainStack<double>* calc = new liststack<double>();
+
+double AriExpress::calculate(const map<char, double>& values) {
+    if (postfix == "")
+    {
+        this->to_postfix();
+    }
+
+    liststack<double> calc;
 
     for (char item : postfix) {
         if (isalnum(item)) { //if operand
@@ -109,15 +122,15 @@ double AriExpress<T>::calculate(const map<char, double>& values) {
             if (it == values.end()) {
                 throw (string("Value for operand ") + item + " not provided.");
             }
-            calc->Push(it->second); 
+            calc.Push(it->second); 
         }
         else { // if operator
-            if (calc->IsEmpty()) throw ("missing operands.");
+            if (calc.IsEmpty()) throw ("missing operands.");
 
-            double rightOperand = calc->Pop();
-            if (calc->IsEmpty()) throw ("missing operands.");
+            double rightOperand = calc.Pop();
+            if (calc.IsEmpty()) throw ("missing operands.");
 
-            double leftOperand = calc->Pop();
+            double leftOperand = calc.Pop();
 
             double result = 0.0;
             switch (item) {
@@ -131,8 +144,8 @@ double AriExpress<T>::calculate(const map<char, double>& values) {
             default:
                 throw (string("Unsupported operator: ") + item);
             }
-            calc->Push(result); 
+            calc.Push(result); 
         }
     }
-    return calc->Pop();
+    return calc.Pop();
 }
