@@ -31,6 +31,7 @@ public:
         stackType = stype;
         to_postfix();
     }
+    void setOperands(map<string, double> opernds);
     void setOperands();
     string getInfix() const;
     string getPostfix() const;
