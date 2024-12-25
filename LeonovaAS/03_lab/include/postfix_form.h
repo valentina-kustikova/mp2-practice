@@ -29,11 +29,12 @@ private:
 public:
     PostfixForm(const string& s, char stype) : infix(s)
     {
-        priorts = { {"+", 1}, {"-", 1}, {"*", 2}, {"/", 2} };
+        priorts = { {"+", 1}, {"-", 1}, {"*", 2}, {"/", 3} };
         stackType = stype;
         to_postfix();
     }
     void setOperands();
+    void setOperands(map<string, double> opernds);
     string getInfix() const;
     string getPostfix() const;
     double calculate();
