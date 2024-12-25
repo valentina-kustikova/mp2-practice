@@ -48,7 +48,7 @@ TEST(test_list, correct_push_front)
     List<int> a;
     a.PushFront(8);
     a.PushFront(10);
-    EXPECT_EQ(10, a[0]);
+    EXPECT_EQ(10, a.GetFirst());
 }
 
 TEST(test_list, correct_push_back)
@@ -56,7 +56,8 @@ TEST(test_list, correct_push_back)
     List<int> a;
     a.PushBack(8);
     a.PushBack(10);
-    EXPECT_EQ(10, a[a.GetSZ()-1]);
+    a.PopFront();
+    EXPECT_EQ(10, a.GetFirst());
 }
 
 TEST(test_list, correct_pop_back)
@@ -65,7 +66,7 @@ TEST(test_list, correct_pop_back)
     a.PushBack(8);
     a.PushBack(10);
     a.PopBack();
-    EXPECT_EQ(8, a[0]);
+    EXPECT_EQ(8, a.GetFirst());
 }
 
 TEST(test_list, correct_pop_front)
@@ -74,7 +75,7 @@ TEST(test_list, correct_pop_front)
     a.PushBack(8);
     a.PushBack(10);
     a.PopFront();
-    EXPECT_EQ(10, a[0]);
+    EXPECT_EQ(10, a.GetFirst());
 }
 
 TEST(test_list, cant_popback_from_empty_list)

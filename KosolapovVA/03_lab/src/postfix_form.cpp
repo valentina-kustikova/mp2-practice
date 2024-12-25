@@ -265,6 +265,54 @@ ArExpression::ArExpression(const std::string& inf, STACK_IMPL impl):infix(inf), 
     StackToStack(*postfix, *stack_2);
 }
 
+std::string ArExpression::GetPostfix()
+{
+    Stack<std::string>* temp;
+    ChoseStack(temp, impl);
+    std::string res;
+    while (!postfix->IsEmpty())
+    {
+        res = postfix->Top()+" " + res;
+        temp->Push(postfix->Top());
+        postfix->Pop();
+    }
+    while (!temp->IsEmpty())
+    {
+        postfix->Push(temp->Top());
+        temp->Pop();
+    }
+    return res;
+}
+
+void ArExpression::GetVariable(std::map<std::string, double> variable)
+{
+    Stack<std::string>* temp;
+    ChoseStack(temp, impl);
+    while (!(postfix->IsEmpty()))
+    {
+        if (!(check_Oper(postfix->Top()[0])))
+        {
+            if (check_Numb(postfix->Top()[0]))
+            {
+                if (var.find(postfix->Top()) == var.end())
+                {
+                    var[postfix->Top()] = std::stod(postfix->Top());
+                }
+            }
+            if (check_Symb(postfix->Top()[0]))
+            {
+                if (var.find(postfix->Top()) == var.end())
+                {
+                    var[postfix->Top()]=variable[postfix->Top()];
+                }
+            }
+        }
+        temp->Push(postfix->Top());
+        postfix->Pop();
+    }
+    postfix = temp;
+}
+
 void  ArExpression::GetVariable()//
 {
     Stack<std::string> *temp;

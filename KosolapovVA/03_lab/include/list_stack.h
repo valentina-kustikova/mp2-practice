@@ -38,17 +38,17 @@ ListStack<T>::~ListStack()
 template <typename T>
 void ListStack<T>::Pop()
 {
-    stack.PopBack();
+    stack.PopFront();
 }
 template <typename T>
 void ListStack<T>::Push(const T& el)
 {
-    stack.PushBack(el);
+    stack.PushFront(el);
 }
 template <typename T>
 T ListStack<T>::Top()
 {
-    return stack[stack.GetSZ() - 1];
+    return stack.GetFirst();
 }
 template <typename T>
 bool ListStack<T>::IsEmpty()

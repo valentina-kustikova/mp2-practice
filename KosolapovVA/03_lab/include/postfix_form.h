@@ -29,6 +29,8 @@ namespace posfix_form
     public:
         ArExpression(const std::string&, STACK_IMPL impl = ARRAY_STACK);
         void GetVariable();
+        void GetVariable(std::map<std::string, double> variable);
+        std::string GetPostfix();
         double Calculate();
     };
 };

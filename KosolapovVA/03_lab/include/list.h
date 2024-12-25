@@ -23,7 +23,7 @@ public:
     ~List();
     const List& operator=(const List<T>& list);
     bool operator==(const List<T>& list);
-    T operator[](const int idx);
+    T GetFirst();
     void PushFront(const T& val);
     void PushBack(const T& val);
     void PopBack();
@@ -107,16 +107,10 @@ bool List<T>::operator==(const List<T>& list)
 
 }
 template <typename T>
-T List<T>::operator[](const int idx)
+T List<T>::GetFirst()
 {
-    if (idx >= sz)
-        throw std::exception("Invalid list index");
-    TNode* curr = pFirst;
-    for (int i = 0; i < idx; i++)
-    {
-        curr = curr->pNext;
-    }
-    return curr->data;
+    
+    return pFirst->data;
 }
 template <typename T>
 void List<T>::PushBack(const T& val)
