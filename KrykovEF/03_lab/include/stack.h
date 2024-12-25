@@ -22,8 +22,7 @@ private:
     int top;
     T* arr;
 public:
-    TArrayStack() : top(-1), maxSize(0) {};
-    TArrayStack(int sz) : top(-1) {
+    TArrayStack(int sz = 10) : top(-1) {
         if (sz <= 0) 
             throw "negative size";
         maxSize = sz;
@@ -80,7 +79,7 @@ public:
         return *this;
     };
 
-    bool operator==(const TArrayStack<T>& s) {
+    bool operator==(const TArrayStack<T>& s) const {
         if (maxSize != s.maxSize || top != s.top) {
             return 0;
         }
@@ -92,21 +91,9 @@ public:
         return 1;
     };
 
-    friend istream& operator>>(istream& istr, TArrayStack& s){//TODO
-
-        /*for (size_t i = 0; i < s.max; i++)
-            istr >> v.pMem[i]; // требуется оператор>> для типа T
-        return istr;*/
-    }
-    friend ostream& operator<<(ostream& ostr, const TArrayStack& s)
-    {
-        TArrayStack tmp(s);
-        while (tmp.top != -1) {
-            ostr << tmp.Top() << " ";
-            top--;
-        }
-        return ostr;
-    }
+    bool operator!=(const TArrayStack<T>& s) const {
+        return !((*this) == s);
+    };
 };
 
 

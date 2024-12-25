@@ -17,11 +17,13 @@ class PosfixForm {
 private:
     vector<string> expr;
     STACK_IMPL impl = ARRAY_STACK;
-public:
-    PosfixForm(const string&, STACK_IMPL impl1 = ARRAY_STACK);
+
     unordered_map<string, double> fill_variables();
     void config();
-    double solve();
     bool is_op(string el);
-    void print();
+public:
+    PosfixForm(const string&, STACK_IMPL impl1 = ARRAY_STACK);
+    double solve();
+    double solve(const unordered_map<string, double>& values);
+    string return_expr();
 };

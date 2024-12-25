@@ -23,8 +23,9 @@ int main()
         break;
     }
     PosfixForm expr(s, stack_impl);
-    expr.config();
-    expr.print();
+    cout << "\nPostfix form:\n";
+    cout << expr.return_expr() << " ";
+    cout << '\n';
     double Res = expr.solve();
     cout << Res;
 

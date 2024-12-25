@@ -68,7 +68,7 @@ TEST(TArrayStack, copied_stack_is_equal_to_source_one)
     TArrayStack<int> st(1);
     st.push(1);
     TArrayStack<int> st_c(st);
-    EXPECT_EQ(st.Top(), st_c.Top());
+    EXPECT_TRUE(st == st_c);
 }
 
 TEST(TArrayStack, copied_stack_has_its_own_memory)
@@ -79,7 +79,7 @@ TEST(TArrayStack, copied_stack_has_its_own_memory)
     TArrayStack<int> st_c(st);
     st_c.pop();
     st_c.push(3);
-    EXPECT_NE(st.Top(), st_c.Top());
+    EXPECT_NE(st, st_c);
 }
 
 TEST(TArrayStack, can_assign_stack_to_itself)
@@ -94,7 +94,8 @@ TEST(TArrayStack, can_assign_stacks_with_diff_size)
 {
     TArrayStack<int> st1(4);
     TArrayStack<int> st2(5);
-    ASSERT_NO_THROW(st1 = st2);
+    st1 = st2;
+    EXPECT_TRUE(st1 == st2);
 }
 
 TEST(TArrayStack, compare_equal_stacks_return_true)
@@ -182,7 +183,7 @@ TEST(TListStack, copied_stack_is_equal_to_source_one)
     st.push(1);
     st.push(2);
     TListStack<int> st_c(st);
-    EXPECT_EQ(st.Top(), st_c.Top());
+    EXPECT_TRUE(st == st_c);
 }
 
 TEST(TListStack, copied_stack_has_its_own_memory)

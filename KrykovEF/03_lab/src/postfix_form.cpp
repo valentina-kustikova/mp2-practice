@@ -57,6 +57,7 @@ PosfixForm::PosfixForm(const string& input, STACK_IMPL impl1) : impl(impl1) {
     if (!operand_name.empty()) {
         expr.push_back(operand_name);
     }
+    config();
 }
 
 bool PosfixForm::is_op(string el) {
@@ -89,15 +90,6 @@ double make_op(double a, double b, string op) {
     }
 }
 
-void PosfixForm::print() {
-    cout << "\nPostfix form:\n";
-    for (string el : expr) {
-        cout << el << " ";
-    }
-    cout << '\n';
-}
-
-
 
 unordered_map<string, double> PosfixForm::fill_variables() {
     unordered_map<string, double> values;
@@ -125,6 +117,40 @@ unordered_map<string, double> PosfixForm::fill_variables() {
 double PosfixForm::solve() {
     unordered_map<string, double> vals;
     vals = fill_variables();
+
+    double answ = 0;
+
+    TStack<double>* variables;
+    if (impl == ARRAY_STACK) {
+        variables = new TArrayStack<double>();
+    }
+    else {
+        variables = new TListStack<double>();
+    }
+
+    for (string el : expr) {
+        if (is_op(el)) {
+            double b = variables->Top();
+            variables->pop();
+            if (variables->IsEmpty()) {
+                variables->push(-b);
+                continue;
+            }
+            double a = variables->Top();
+            variables->pop();
+            variables->push(make_op(a, b, el));
+            continue;
+        }
+        variables->push(vals[el]);
+
+    }
+    answ = variables->Top();
+    return answ;
+}
+
+double PosfixForm::solve(const unordered_map<string, double>& values) {
+    unordered_map<string, double> vals;
+    vals = values;
 
     double answ = 0;
 
@@ -209,4 +235,12 @@ void PosfixForm::config() {
         op->pop();
     }
     expr = pf;
+}
+
+
+
+string PosfixForm::return_expr() {
+    string answ;
+    for (string el : expr) answ += el;
+    return answ;
 }
