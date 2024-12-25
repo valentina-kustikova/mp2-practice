@@ -22,14 +22,14 @@ public:
     List(const List<T>& list);
     ~List();
     const List& operator=(const List<T>& list);
-    bool operator==(const List<T>& list);
+    bool operator==(const List<T>& list) const;
     T GetFirst();
     void PushFront(const T& val);
     void PushBack(const T& val);
     void PopBack();
     void PopFront();
     void DelList();
-    bool IsEmpty();
+    bool IsEmpty() const;
     int GetSZ();
 };
 
@@ -85,7 +85,7 @@ const List<T>& List<T>::operator=(const List<T>& list)
 
 }
 template <typename T>
-bool List<T>::operator==(const List<T>& list)
+bool List<T>::operator==(const List<T>& list) const
 {
     TNode* curr1 = pFirst;
     TNode* curr2 = list.pFirst;
@@ -179,7 +179,7 @@ void List<T>::PopFront()
     sz--;
 }
 template <typename T>
-bool List<T>::IsEmpty()
+bool List<T>::IsEmpty() const
 {
     return (sz == 0);
 }

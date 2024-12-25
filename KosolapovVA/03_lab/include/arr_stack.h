@@ -63,9 +63,9 @@ public:
         return pMem[top];
     }
 
-    bool IsEmpty() { return top == -1; }
+    bool IsEmpty() const { return top == -1; }
 
-    bool IsFull() { return top == (max_sz - 1); }
+    bool IsFull() const { return top == (max_sz - 1); }
 
     const ArrStack<T>& operator=(const ArrStack<T>& s)
     {
@@ -89,7 +89,7 @@ public:
         return *this;
     }
 
-    bool operator==(const ArrStack<T>& s)
+    bool operator==(const ArrStack<T>& s) const
     {
         ArrStack<T> temp1(*this);
         ArrStack<T> temp2(s);

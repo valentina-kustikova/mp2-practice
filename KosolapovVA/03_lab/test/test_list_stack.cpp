@@ -41,7 +41,7 @@ TEST(test_liststack, can_top_from_no_empty_stack)
     }
     ASSERT_NO_THROW(st.Top());
 }
-TEST(test_liststack, correct_top_from_no_empty_stack)
+TEST(test_liststack, correct_top_and_push_from_no_empty_stack)
 {
     ListStack<int> st;
     for (int i = 0; i < 5; i++)

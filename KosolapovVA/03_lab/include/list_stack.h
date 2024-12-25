@@ -14,14 +14,14 @@ public:
     void Pop();
     void Push(const T& el);
     T Top();
-    bool IsEmpty();
-    bool IsFull() { return 0; };
+    bool IsEmpty() const;
+    bool IsFull() const { return 0; };
     const ListStack<T>& operator=(const ListStack<T>& s)
     {
         stack = s.stack;
         return *this;
     }
-    bool operator==(const ListStack<T>& s)
+    bool operator==(const ListStack<T>& s) const
     {
         return (stack == s.stack);
     }
@@ -51,7 +51,7 @@ T ListStack<T>::Top()
     return stack.GetFirst();
 }
 template <typename T>
-bool ListStack<T>::IsEmpty()
+bool ListStack<T>::IsEmpty() const
 {
     return (stack.IsEmpty());
 }

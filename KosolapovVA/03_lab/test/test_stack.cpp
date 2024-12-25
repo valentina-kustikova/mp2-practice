@@ -48,7 +48,7 @@ TEST(test_arrstack, can_top_from_no_empty_stack)
     ASSERT_NO_THROW(st.Top());
 }
 
-TEST(test_arrstack, correct_top_from_no_empty_stack)
+TEST(test_arrstack, correct_top_and_push_from_no_empty_stack)
 {
     ArrStack<int> st(5);
     for (int i = 0; i < 5; i++)

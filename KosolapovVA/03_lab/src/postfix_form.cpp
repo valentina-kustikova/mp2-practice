@@ -284,33 +284,17 @@ std::string ArExpression::GetPostfix()
     return res;
 }
 
-void ArExpression::GetVariable(std::map<std::string, double> variable)
+void ArExpression::GetVariable(std::map<std::string, double> &variable)
 {
     Stack<std::string>* temp;
     ChoseStack(temp, impl);
     while (!(postfix->IsEmpty()))
     {
-        if (!(check_Oper(postfix->Top()[0])))
-        {
-            if (check_Numb(postfix->Top()[0]))
-            {
-                if (var.find(postfix->Top()) == var.end())
-                {
-                    var[postfix->Top()] = std::stod(postfix->Top());
-                }
-            }
-            if (check_Symb(postfix->Top()[0]))
-            {
-                if (var.find(postfix->Top()) == var.end())
-                {
-                    var[postfix->Top()]=variable[postfix->Top()];
-                }
-            }
-        }
         temp->Push(postfix->Top());
         postfix->Pop();
     }
     postfix = temp;
+    var = variable;
 }
 
 void  ArExpression::GetVariable()//
@@ -319,22 +303,12 @@ void  ArExpression::GetVariable()//
     ChoseStack(temp, impl);
     while (!(postfix->IsEmpty()))
     {
-        if (!(check_Oper(postfix->Top()[0])))
+        if (check_Symb(postfix->Top()[0]))
         {
-            if (check_Numb(postfix->Top()[0]))
+            if (var.find(postfix->Top()) == var.end())
             {
-                if (var.find(postfix->Top()) == var.end())
-                {
-                    var[postfix->Top()] = std::stod(postfix->Top());
-                }
-            }
-            if (check_Symb(postfix->Top()[0]))
-            {
-                if (var.find(postfix->Top()) == var.end())
-                {
-                    std::cout << "Enter value for " << postfix->Top() << ": ";
-                    std::cin >> var[postfix->Top()];
-                }
+                std::cout << "Enter value for " << postfix->Top() << ": ";
+                std::cin >> var[postfix->Top()];
             }
         }
         temp->Push(postfix->Top());
@@ -377,15 +351,21 @@ void Chose_Oper(char oper,Stack<double>*& res)
     res->Push(a3);
 }
 
-double ArExpression::Calculate()//
+double ArExpression::Calculate()
 {
-    res;
     ChoseStack(res, impl);
     while (!(postfix->IsEmpty()))
     {
         if (!(check_Oper(postfix->Top()[0])||postfix->Top()[0]=='!'))
         {
-            res->Push(var[postfix->Top()]);
+            if (check_Numb(postfix->Top()[0]))
+            {
+                res->Push(std::stod(postfix->Top()));
+            }
+            else
+            {
+                res->Push(var[postfix->Top()]);
+            }            
         }
         else
         {
