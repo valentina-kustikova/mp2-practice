@@ -12,7 +12,7 @@ struct ListNode {
 
 
 template<typename T>
-class List
+class TList
 {
 private:
     ListNode<T>* pFirst;
@@ -20,17 +20,17 @@ private:
     ListNode<T>* pCurr;
 public:
 
-    List() {
+    TList() {
         pFirst = nullptr;
         pLast = nullptr;
         pCurr = nullptr;
     }
-    List(const T& x) {
+    TList(const T& x) {
         pFirst = new ListNode<T>(x);
         pLast = pFirst;
         pCurr = pFirst;
     }
-    List(const List<T>& list) {
+    TList(const TList<T>& list) {
         if (list.pFirst == nullptr) {
             return;
         }
@@ -44,7 +44,7 @@ public:
         pLast = curr;
     }
 
-    ~List() {
+    ~TList() {
 
         if (pFirst == nullptr) {
             return;
@@ -174,7 +174,7 @@ public:
         return size;
     };
 
-    void RemoveFirst() { // RemoveFirst
+    void Remove_First() {
         ListNode<T>* tmp = pFirst;
         if (tmp == nullptr) {
             throw "empty list";
@@ -184,7 +184,7 @@ public:
     }
 
 
-    bool operator==(const List<T>& s) const {
+    bool operator==(const TList<T>& s) const {
 
         ListNode<T>* curr1 = this->pFirst, * curr2 = s.pFirst;
         while (curr1 != nullptr && curr2 != nullptr) {
@@ -200,7 +200,7 @@ public:
         return 0;
     }
 
-    bool operator!=(const List<T>& s) const {
+    bool operator!=(const TList<T>& s) const {
         ListNode<T>* curr1 = pFirst, * curr2 = s.pFirst;
         while (curr1 != nullptr && curr2 != nullptr) {
             if (curr1->val != curr2->val) {
