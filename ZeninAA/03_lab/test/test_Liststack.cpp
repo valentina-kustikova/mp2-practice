@@ -128,3 +128,4 @@ TEST(Liststack, compare_not_equal_Liststacks_is_false)
     b.push(10);
     EXPECT_FALSE(a == b);
 }
+

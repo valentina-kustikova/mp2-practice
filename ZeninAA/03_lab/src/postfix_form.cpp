@@ -139,6 +139,10 @@ void PostfixForm::setOp()
     }
 }
 
+void PostfixForm::setOp(map<string, double> operndes) {
+    operands = operndes;
+}
+
 bool PostfixForm::isOperand(const string& name) const
 {
     try {
@@ -147,7 +151,7 @@ bool PostfixForm::isOperand(const string& name) const
     }
     catch (const invalid_argument&) {
         
-        return (name.find_first_of("+-*/") == string::npos); 
+        return (name.find_first_of("+-*/()") == string::npos); 
     }
 }
 
@@ -219,7 +223,7 @@ double do_op(char op, double A, double B)
 char set_type_of_stack()
 {
     char t;
-    cout << "Input L for Liststack or input A for Arraystack: ";
+    cout << "Input L for Liststack OR input A for Arraystack: ";
     cin >> t;
     switch (t)
     {

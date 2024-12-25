@@ -31,13 +31,14 @@ public:
 
     PostfixForm(const string& s, char stype) : infix(s)
     {
-        priority = { {"+", 1}, {"-", 1}, {"*", 2}, {"/", 2} }; 
+        priority = { {"+", 1}, {"-", 1}, {"*", 2}, {"/", 3} }; 
         type_of_stack = stype;
         to_postfix();
     }
 
     double count(); 
     void setOp();
+    void setOp(map<string, double> operndes);
     bool isOperand(const string& name) const;
     string getInfix() const;
     string getPostfix() const;

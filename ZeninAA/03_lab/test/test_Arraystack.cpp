@@ -34,7 +34,7 @@ TEST(Arraystack, copied_Arraystacks_are_equal)
     a.push(2);
     a.push(3);
     Arraystack<int> b(a);
-    EXPECT_TRUE(a == b);
+    EXPECT_EQ(a, b);
 }
 
 TEST(Arraystack, copied_Arraystacks_have_different_memory)
@@ -44,7 +44,7 @@ TEST(Arraystack, copied_Arraystacks_have_different_memory)
     a.push(3);
     Arraystack<int> b(a);
     b.pop();
-    EXPECT_FALSE(a == b);
+    EXPECT_NE(a, b);
 }
 
 TEST(Arraystack, can_push_in_Arraystack)
@@ -139,5 +139,5 @@ TEST(Arraystack, compare_not_equal_Arraystacks_is_false)
     Arraystack<int> a(2), b(2);
     a.push(2);
     b.push(8);
-    EXPECT_FALSE(a == b);
+    EXPECT_NE(a, b);
 }
