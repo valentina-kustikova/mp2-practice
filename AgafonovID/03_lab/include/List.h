@@ -18,10 +18,11 @@ private:
 public:
     List();
     List(const T& list);
+    List(const List<T>&);
     ~List();
 
     const List& operator=(const List<T>& list);
-    bool operator==(const List<T>& list);
+    bool operator==(const List<T>& list) const;
 
     void pushFront(TNode<T>* pNode);
     void pushBack(TNode<T>* pNode);
@@ -40,8 +41,21 @@ List<T>::List() {
 }
 
 template <typename T>
-List<T>::List(const T& x) {
+List<T>::List(const T& list) {
     pFirst = new ListNode<T>(x);
+
+}
+
+template <typename T>
+List<T>::List(const List<T>& list) {
+    pFirst = nullptr;
+    if (list.pFirst != nullptr) {
+        TNode<T>* tmp = list.pFirst;
+        while (tmp != nullptr) {
+            pushBack(new TNode<T>(tmp->data));
+            tmp = tmp->pNext;
+        }
+    }
 }
 
 template <typename T>
@@ -78,7 +92,7 @@ const List<T>& List<T>::operator=(const List<T>& list) {
     return *this;
 }
 template <typename T>
-bool List<T>::operator==(const List<T>& list) {
+bool List<T>::operator==(const List<T>& list) const {
     TNode<T>* curr1 = pFirst;
     TNode<T>* curr2 = list.pFirst;
     while (curr1 != nullptr && curr2 != nullptr) {
@@ -185,7 +199,7 @@ template <typename T>
 void List<T>::removefirst() {
     TNode<T>* tmp = pFirst;
     if (tmp == nullptr) {
-        throw "empty list";
+        throw "list empty";
     }
     pFirst = pFirst->pNext;
     delete tmp;

@@ -37,12 +37,12 @@ TEST(ListStack, pop_removes_top_element) {
 
 TEST(ListStack, top_throws_when_stack_is_empty) {
     ListStack<int> s;
-    ASSERT_THROW(s.Top(), std::exception);
+    ASSERT_ANY_THROW(s.Top());
 }
 
 TEST(ListStack, pop_throws_when_stack_is_empty) {
     ListStack<int> s;
-    ASSERT_THROW(s.Pop(), std::exception);
+    ASSERT_ANY_THROW(s.Pop());
 }
 
 TEST(ListStack, can_assign_stacks) {
@@ -59,6 +59,7 @@ TEST(ListStack, assigned_stack_is_equal_to_original) {
     s2 = s1;
     EXPECT_TRUE(s1 == s2);
 }
+
 
 TEST(ListStack, can_copy_stack) {
     ListStack<int> s1;

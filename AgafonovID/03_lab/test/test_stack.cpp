@@ -28,7 +28,7 @@ TEST(stackArray, copied_stackArray_are_equal) {
     a.Push(1);
     a.Push(2);
     stackArray<int> b(a);
-    EXPECT_TRUE(a == b);
+    EXPECT_EQ(a, b);
 }
 
 TEST(stackArray, copied_stackArray_have_different_memory) {
@@ -37,10 +37,9 @@ TEST(stackArray, copied_stackArray_have_different_memory) {
     a.Push(2);
     stackArray<int> b(a);
     b.Pop();
-    EXPECT_FALSE(a == b);
+    EXPECT_NE(a, b);
 }
 
-// Добавление элементов
 TEST(stackArray, can_push_in_stackArray) {
     stackArray<int> a(2);
     ASSERT_NO_THROW(a.Push(2));
@@ -126,17 +125,17 @@ TEST(stackArray, can_assign_stackArray_with_different_size) {
 TEST(stackArray, assigned_stackArray_are_equal) {
     stackArray<int> a(2), b(9);
     a = b;
-    EXPECT_TRUE(a == b);
+    EXPECT_EQ(a, b);
 }
 
 TEST(stackArray, compare_equal_stackArray_is_true) {
     stackArray<int> a(2), b(a);
-    EXPECT_TRUE(a == b);
+    EXPECT_EQ(a, b);
 }
 
 TEST(stackArray, compare_not_equal_stackArray_is_false) {
     stackArray<int> a(2), b(2);
     a.Push(2);
     b.Push(8);
-    EXPECT_FALSE(a == b);
+    EXPECT_NE(a, b);
 }

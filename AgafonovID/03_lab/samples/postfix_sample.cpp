@@ -47,7 +47,7 @@ int main() {
 
     }
     catch (const exception& e) {
-        cerr << "Error: " << e.what() << endl;
+        cout << "Error: " << e.what() << endl;
     }
 
     return 0;

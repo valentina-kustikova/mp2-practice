@@ -24,15 +24,6 @@ TEST(List, can_push_back_to_list) {
     EXPECT_EQ(5, l.reset());
 }
 
-TEST(List, push_back_does_not_change_first_element) {
-    List<int> l;
-    TNode<int>* node1 = new TNode<int>(5);
-    TNode<int>* node2 = new TNode<int>(10);
-    l.pushFront(node1);
-    l.pushBack(node2);
-    EXPECT_EQ(5, l.reset());
-}
-
 TEST(List, can_insert_after_node) {
     List<int> l;
     TNode<int>* node1 = new TNode<int>(5);

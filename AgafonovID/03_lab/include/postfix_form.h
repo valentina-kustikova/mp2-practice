@@ -16,7 +16,7 @@ private:
     string infix;
     string postfix;
     char stackType;
-    map<string, int> priorts; 
+    map<string, int> priority; 
     map<string, double> operands; 
     vector<string> lexems; 
     Stack<string>* operatorsStack; 
@@ -26,9 +26,8 @@ private:
     void to_postfix();  
 
 public:
-    PostfixForm(const string& s, char stype);
+    PostfixForm(const string& s, char stype); //интерфейс переделать
     ~PostfixForm();
-
     vector<string> getOperands() const;
     void setOperands(const map<string, double>& values); 
     string getInfix() const;      
@@ -49,10 +48,8 @@ Stack<T>* createStack(char stackType) {
     }
 }
 
-PostfixForm::PostfixForm(const string& s, char stype)
-    : infix(s), stackType(stype), operatorsStack(nullptr), valuesStack(nullptr) {
-    priorts = { {"+", 1}, {"-", 1}, {"*", 2}, {"/", 2} };
-
+PostfixForm::PostfixForm(const string& s, char stype) : infix(s), stackType(stype), operatorsStack(nullptr), valuesStack(nullptr) {
+    priority = { {"+", 1}, {"-", 1}, {"*", 2}, {"/", 2} };
     operatorsStack = createStack<string>(stackType);
     valuesStack = createStack<double>(stackType);
 
@@ -82,7 +79,6 @@ void PostfixForm::parse() {
 
 void PostfixForm::to_postfix() {
     parse();
-
     for (const string& token : lexems) {
         if (isalnum(token[0])) {
             postfix += token + " ";
@@ -100,7 +96,7 @@ void PostfixForm::to_postfix() {
         }
         else {
             while (!operatorsStack->IsEmpty() &&
-                priorts[operatorsStack->Top()] >= priorts[token]) {
+                priority[operatorsStack->Top()] >= priority[token]) {
                 postfix += operatorsStack->Top() + " ";
                 operatorsStack->Pop();
             }
@@ -126,7 +122,6 @@ void PostfixForm::setOperands(const map<string, double>& values) {
     for (auto it = values.begin(); it != values.end(); ++it) {
         const string& key = it->first;
         double value = it->second;
-
         auto operandIt = operands.find(key);
         if (operandIt != operands.end()) {
             operandIt->second = value;
@@ -170,7 +165,6 @@ double PostfixForm::calculate() {
                 result = a / b;
             }
             else throw std::exception("Unsupported operator");
-
             valuesStack->Push(result);
         }
     }
