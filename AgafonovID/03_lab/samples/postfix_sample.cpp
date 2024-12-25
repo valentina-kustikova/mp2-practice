@@ -9,50 +9,45 @@ using namespace std;
 
 int main() {
     try {
-        cout << "1. Array";
-        cout << "2. List";
-        int answ;
-        cin >> answ;
+        cout << "Choose stack type (A/L): \n";
+        char stackType;
+        cin >> stackType;
 
-        if (answ != 1 && answ != 2) {
-            cerr << "Invalid choice!" << endl;
+        if (stackType != 'A' && stackType != 'L') {
+            cout << "Incorrect choice" << endl;
             return 1;
         }
 
-        Stack<char>* operatorsStack = nullptr;
-        Stack<string>* operandsStack = nullptr;
-        if (answ == 1) {
-            operatorsStack = new stackArray<char>(100);
-            operandsStack = new stackArray<string>(100);
-        }
-        else {
-            operatorsStack = new ListStack<char>();
-            operandsStack = new ListStack<string>();
-        }
-
-        string exprstr;
         cout << "infix expression: ";
-        cin >> exprstr;
-        StackType stackType = (answ == 1) ? Array : ListSt;
-        AriExpress<char> expr(exprstr, operatorsStack, operandsStack, stackType);
+        cin.ignore(); 
+        string expr;
+        getline(cin, expr);
 
-        cout << "Infix expression: " << expr.get_infix() << endl;
-        cout << "Postfix expression: " << expr.get_postfix() << endl;
+        PostfixForm pf(expr, stackType);
 
-        vector<char> operands = expr.getoperands();
-        map<char, double> values;
-        double val;
-        for (const auto& op : operands) {
-            cout << "Enter value for " << op << ": ";
-            cin >> val;
-            values[op] = val;
+        cout << "Infix: " << pf.getInfix() << endl;
+        cout << "Postfix: " << pf.getPostfix() << endl;
+
+        map<string, double> values;
+
+        cout << "Enter values for operands:" << endl;
+
+        vector<string> operands = pf.getOperands(); 
+        for (size_t i = 0; i < operands.size(); ++i) {
+            cout << operands[i] << ": ";
+            double value;
+            cin >> value;
+            values[operands[i]] = value;
         }
-        double result = expr.calculate(values);
+
+        pf.setOperands(values);
+
+        double result = pf.calculate();
         cout << "Result: " << result << endl;
 
     }
-    catch (const exception& ex) {
-        cerr << "Error: " << ex.what() << endl;
+    catch (const exception& e) {
+        cerr << "Error: " << e.what() << endl;
     }
 
     return 0;
