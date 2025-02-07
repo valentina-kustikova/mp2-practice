@@ -58,4 +58,12 @@ public:
         return (stack == s.stack);
     }
 
+    friend ostream& operator<<(ostream& ostr, const TListStack<T>& s) {
+        TListStack<T>& s1(s);
+        while (s1.IsEmpty != 1) {
+            ostr >> s1.Top();
+            s1.Pop()
+        }
+        return ostr;
+    }
 };

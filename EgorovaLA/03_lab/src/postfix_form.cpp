@@ -4,22 +4,30 @@ void menu() {
 	string str;
 	cout << "Введите арифметическое выражение\n";
 	cin >> str;
-	cout << "Введите значения для введенных констант\n";
-	int size;
-	string* consts = fill_const(str, size);
-	for (int i = 0; i < size; i++) {
-		cin >> consts[i];
+	vector<string> consts = fill_const(str);
+
+	map<string, double>var;
+	for (int i = 0; i < consts.size(); i++) {
+		var[consts[i]] = 0;
 	}
+	cout << "Введите значения для заданных констант\n";
+	map<string, double>::iterator it = var.begin();
+	for (int i = 0; i < var.size(); i++, it++) {
+		cout << it->first<<" - ";
+		cin >> it->second;
+		cout << "\n";
+	}
+
 	cout << "Выберете способ подсчета.\n" <<
 		"С помощью стека на массивах - 1, на листах - 2\n";
 	int choice;
 	cin >> choice;
 	switch (choice) {
 	case 1:
-		manipulateArr(str, consts);
+		manipulateArr(str, var);
 		break;
 	case 2:
-		manipulateList(str, consts);
+		manipulateList(str, var);
 		break;
 	default:
 		cout << "Неверный ввод\n";
@@ -28,53 +36,29 @@ void menu() {
 	return;
 }
 
-int get_count_consts(const string& str1) {
-	int lenstr = str1.length();
-	int i = 0;
-	char elem;
-	int curr = 0;
+vector<string> fill_const(const string& str) {
+	int lenstr = str.length();
+	int i = 0, curr = 0;
+	string elem;
+	vector<string> consts;
 	while (i < lenstr) {
-		elem = str1[i];
-		if ((elem != '+') && (elem != '-') && (elem != '*')
-			&& (elem != '/') && (elem != '(') && (elem != ')')) {
+		elem = str[i];
+		if ((elem != "+") && (elem != "-") && (elem != "*")
+			&& (elem != "/") && (elem != "(") && (elem != ")")) {
+			if (consts.size() != curr + 1) {
+				consts.push_back(elem);
+			}
+			else consts[curr] += elem;
 			i++;
 			continue;
 		}
-		if ((elem == '(') || (elem == ')')) {
-			i++;
-			continue;
-		}
-		i++;
-		curr++;
-	}
-	return curr;
-}
-
-string* fill_const(const string& str1,int &size) {
-	int lenstr = str1.length();
-	int i = 0, curr = 0, count = get_count_consts(str1);
-	char elem;
-	string* consts = new string[count+1];
-	while (i < lenstr) {
-		elem = str1[i];
-		if ((elem != '+') && (elem != '-') && (elem != '*')
-			&& (elem != '/') && (elem != '(') && (elem != ')')) {
-			consts[curr] += elem;
-			i++;
-			continue;
-		}
-		if ((elem == '(') || (elem == ')')) {
+		if ((elem == "(") || (elem == ")")) {
 			i++;
 			continue;
 		}
 		curr++;
 		i++;
 	}
-	for (int j = 0; j < count+1; j++) {
-		cout << consts[j] << " ";
-	}
-	cout << "\n";
-	size = count + 1;
 	return consts;
 }
 
@@ -89,37 +73,24 @@ bool priority(string elem1, string elem2) {
 	return (res1 > res2);
 }
 
-void print_stack(TStack<string>*& st1) {
-	TStack<string>* stack(st1);
-	while (stack->IsEmpty() != 1) {
-		cout << st1->Top();
-		stack->Pop();
-	}
-	cout << "\n";
-}
-
-void expression(TStack<string>*& st1, TStack<string>*& st2, string* express, int size) {
-	int lenexp = size;
-	int i = 0;
+void expression(TStack<string>*& st1, TStack<string>*& st2, vector<string>& express) {
+	int lenexp = express.size();
 	string elem;
-	while (i < lenexp) {
+
+	for(int i=0; i<lenexp;i++) {
 		elem = express[i];
 		if ((elem != "+") && (elem != "-") && (elem != "*")//блок для букв
 			&& (elem != "/") && (elem != "(") && (elem != ")")) {
 			st1->Push(elem);
-			i++;
 			continue;
 		}
-		if ((elem == "+") || (elem == "-") || (elem == "*")//операции
-			|| (elem == "/") || (elem == "(") || (elem == ")")) {
+		else{//операции
 			if (st2->IsEmpty()) {//если начало
 				st2->Push(elem);
-				i++;
 				continue;
 			}
 			if ((elem == "(")) {
 				st2->Push(elem);
-				i++;
 				continue;
 			}
 			if ((elem == ")")) {
@@ -128,12 +99,10 @@ void expression(TStack<string>*& st1, TStack<string>*& st2, string* express, int
 					st2->Pop();
 				}
 				st2->Pop();
-				i++;
 				continue;
 			}
 			if (priority(elem, st2->Top())) {//проверка приоритета, если низ меньше работаем
 				st2->Push(elem);
-				i++;
 				continue;
 			}
 			else {
@@ -143,86 +112,130 @@ void expression(TStack<string>*& st1, TStack<string>*& st2, string* express, int
 					if (st2->IsEmpty()) break;
 				}
 				st2->Push(elem);
-				i++;
 				continue;
 			}
 		}
 	}
-	while (st2->IsEmpty()!=1) {
+	while (st1->IsEmpty()!=1) {
+		st2->Push(st1->Top());
+		st1->Pop();
+	}
+}
+
+void print_stack(TStack<string>*& st1, TStack<string>*& st2) {
+	while (st2->IsEmpty()!=1) {//сохранение массива в другом
+		cout << st2->Top();
 		st1->Push(st2->Top());
 		st2->Pop();
 	}
+	cout << "\n";
+	while (st1->IsEmpty() != 1) {//обратно для счета
+		st2->Push(st1->Top());
+		st1->Pop();
+	}
 }
 
-void read(TStack<string>*& st1, TStack<string>*& st2,const string& str) {
+vector<string> read(const string& str) {
 	int lenstr = str.length();
-	string* express = new string[lenstr+1];
+	vector<string> express;
 	int i = 0;
 	int curr = 0;
-	char elem;
+	string elem;
 	while (i < lenstr) {
 		elem = str[i];
-		if ((elem != '+') && (elem != '-') && (elem != '*')
-			&& (elem != '/') && (elem != '(') && (elem != ')')) {
-			express[curr] += elem;
+		if ((elem != "+") && (elem != "-") && (elem != "*")
+			&& (elem != "/") && (elem != "(") && (elem != ")")) {
+			add_elem(express, curr, elem);
 			i++;
 			continue;
 		}
-		if ((elem == '(')) {
-			express[curr] = elem;
+		if ((elem == "(")) {
+			add_elem(express, curr, elem);
 			curr++;
 			i++;
 			continue;
 		}
-		if ((elem == ')')) {
+		if ((elem == ")")) {
 			curr++;
-			express[curr] = elem;
+			add_elem(express, curr, elem);
 			i++;
 			continue;
 		}
 		curr++;
-		express[curr] = elem;
+		express.push_back(elem);
 		curr++;
 		i++;
 	}
-	expression(st1, st2, express, lenstr+1);
-	delete[] express;
+	return express;
 }
 
-template<typename T> T calculate(TStack<string>*& st1) {
+void add_elem(vector<string>& express, int curr, string elem) {
+	if (express.size() != curr + 1) {
+		express.push_back(elem);
+	}
+	else express[curr] += elem;
+}
 
+double calculate(TStack<string>*& st1, TStack<string>*& st2, map<string, double>& var) {
+	double res = 0, x = 0, y = 0;
+	while (st2->IsEmpty() != 1) {
+		string elem = st2->Top();
+		if ((elem != "+") && (elem != "-") && (elem != "*")
+			&& (elem != "/")) {
+			st1->Push(elem);
+			st2->Pop();
+		}
+		else {
+			x = var[st1->Top()];
+			st1->Pop();
+			y= var[st1->Top()];
+			st1->Pop();
+			if (elem == "+") res = y+x;
+			else if(elem == "-") res = y - x;
+			else if(elem == "*") res = y * x;
+			else if(elem == "/") res = y / x;
+			st2->Pop();
+			st1->Push(to_string(res));
+			var[to_string(res)] = res;
+		}
+	}
+	return res;
 }
 
 //Для массивов
 
-void manipulateArr(const string& str1, string* consts) {
-	TStack<string>* stack1;
-	TStack<string>* stack2;
+void manipulateArr(const string& str1, map<string, double>&var) {
+	TStack<string>* stack1;//операнды
+	TStack<string>* stack2;//операции->хранится выражение
 
-	stack1 = new TStackArray <string> (str1.length()*2);
-	stack2 = new TStackArray <string> (str1.length());
+	stack1 = new TStackArray <string> (str1.length());
+	stack2 = new TStackArray <string> (str1.length()*2);
 
-	read(stack1, stack2, str1);
+	vector<string> ex = read(str1);
 
-	cout << "Выражение в постфиксной форме\n";
-	print_stack(stack1);
-	cout << "Ответ с введенными значениями: ";
+	expression(stack1, stack2, ex);
+	cout << "Выражение в постфиксной форме:\n";
+	print_stack(stack1, stack2);
+
+	cout << "Ответ с введенными значениями: " << calculate(stack1, stack2, var)<< "\n";
 }
 
 //Для списков
 
-void manipulateList(const string& str1, string* consts) {
-	TStack<string>* stack1;
-	TStack<string>* stack2;
+void manipulateList(const string& str1, map<string, double>&var) {
+	TStack<string>* stack1;//операнды
+	TStack<string>* stack2;//операции->хранится выражение
 
 	stack1 = new TListStack <string>();
 	stack2 = new TListStack <string>();
 
-	read(stack1, stack2, str1);
+	vector<string> ex = read(str1);
 
-	cout << "Выражение в постфиксной форме\n";
-	print_stack(stack1);
-	cout << "Ответ с введенными значениями: ";
+	expression(stack1, stack2, ex);
+	cout << "Выражение в постфиксной форме:\n";
+	print_stack(stack1, stack2);
+
+	cout << "Ответ с введенными значениями: "<< calculate(stack1, stack2, var) << "\n";
 }
 
 
