@@ -91,14 +91,4 @@ public:
     size_t size() const {
         return maxsz;
     }
-
-    friend ostream& operator<<(ostream& ostr, const TStackArray<T>& s) {
-        TStackArray<T>& s1(s);
-        while (s1.IsEmpty!=1) {
-            ostr >> s1.Top();
-            s1.Pop()
-        }
-        return ostr;
-    }
-
 };

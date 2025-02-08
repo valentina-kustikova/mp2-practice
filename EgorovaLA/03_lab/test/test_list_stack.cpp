@@ -53,7 +53,7 @@ TEST(TListStack, stack_can_pop_element) {
 	TListStack<int> s;
 	s.Push(15);
 	s.Pop();
-	EXPECT_EQ(s.IsEmpty(), 1);
+	EXPECT_TRUE(s.IsEmpty());
 }
 
 TEST(TListStack, can_assign_stacks_of_equal_size)
@@ -61,7 +61,7 @@ TEST(TListStack, can_assign_stacks_of_equal_size)
 	TListStack<int> s, s1;
 	s.Push(15);
 	s1 = s;
-	EXPECT_EQ(15, s1.Top());
+	EXPECT_EQ(s1,s);
 }
 
 TEST(TListStack, can_assign_stacks_of_different_size)
@@ -70,7 +70,7 @@ TEST(TListStack, can_assign_stacks_of_different_size)
 	s.Push(15);
 	s.Push(15);
 	s1 = s;
-	EXPECT_EQ(s.Top(), s1.Top());;
+	EXPECT_EQ(s,s1);;
 }
 
 TEST(TListStack, compare_equal_stacks_return_true)

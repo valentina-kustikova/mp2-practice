@@ -12,6 +12,8 @@ void menu();
 
 vector<string> fill_const(const string& str1);
 
+void fill_var(map<string, double>& var);
+
 bool priority(string elem1, string elem2);
 
 void expression(TStack<string>*& st1, TStack<string>*& st2, vector<string>& express); //работа с выражением

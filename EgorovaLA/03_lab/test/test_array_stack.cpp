@@ -82,7 +82,7 @@ TEST(TStackArray, can_assign_stacks_of_different_size)
 	s.Push(15);
 	s.Push(15);
 	s1 = s;
-	EXPECT_EQ(s.Top(), s1.Top());;
+	EXPECT_EQ(s,s1);;
 }
 
 TEST(TStackArray, compare_equal_stacks_return_true)

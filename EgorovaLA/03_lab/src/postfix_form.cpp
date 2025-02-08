@@ -10,13 +10,8 @@ void menu() {
 	for (int i = 0; i < consts.size(); i++) {
 		var[consts[i]] = 0;
 	}
-	cout << "Введите значения для заданных констант\n";
-	map<string, double>::iterator it = var.begin();
-	for (int i = 0; i < var.size(); i++, it++) {
-		cout << it->first<<" - ";
-		cin >> it->second;
-		cout << "\n";
-	}
+
+	fill_var(var);
 
 	cout << "Выберете способ подсчета.\n" <<
 		"С помощью стека на массивах - 1, на листах - 2\n";
@@ -34,6 +29,16 @@ void menu() {
 		break;
 	}
 	return;
+}
+
+void fill_var(map<string, double>& var) {
+	cout << "Введите значения для заданных констант\n";
+	map<string, double>::iterator it = var.begin();
+	for (int i = 0; i < var.size(); i++, it++) {
+		cout << it->first << " - ";
+		cin >> it->second;
+		cout << "\n";
+	}
 }
 
 vector<string> fill_const(const string& str) {
@@ -178,6 +183,7 @@ void add_elem(vector<string>& express, int curr, string elem) {
 
 double calculate(TStack<string>*& st1, TStack<string>*& st2, map<string, double>& var) {
 	double res = 0, x = 0, y = 0;
+	if (var.size() == 1) return var[st2->Top()];
 	while (st2->IsEmpty() != 1) {
 		string elem = st2->Top();
 		if ((elem != "+") && (elem != "-") && (elem != "*")
@@ -214,7 +220,7 @@ void manipulateArr(const string& str1, map<string, double>&var) {
 	vector<string> ex = read(str1);
 
 	expression(stack1, stack2, ex);
-	cout << "Выражение в постфиксной форме:\n";
+	cout << "Выражение в постфиксной форме: ";
 	print_stack(stack1, stack2);
 
 	cout << "Ответ с введенными значениями: " << calculate(stack1, stack2, var)<< "\n";
@@ -232,7 +238,7 @@ void manipulateList(const string& str1, map<string, double>&var) {
 	vector<string> ex = read(str1);
 
 	expression(stack1, stack2, ex);
-	cout << "Выражение в постфиксной форме:\n";
+	cout << "Выражение в постфиксной форме: ";
 	print_stack(stack1, stack2);
 
 	cout << "Ответ с введенными значениями: "<< calculate(stack1, stack2, var) << "\n";
