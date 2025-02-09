@@ -50,14 +50,14 @@ TEST(Lstack, pushed_elem_is_in_Liststack)
     EXPECT_EQ(2, a.show_top());
 }
 
-TEST(Liststack, can_show_first_in_Liststack)
+TEST(Liststack, can_show_top_in_Liststack)
 {
     Liststack<int> a;
     a.push(2);
     ASSERT_NO_THROW(a.show_top());
 }
 
-TEST(Liststack, shows_correct_first_in_Liststack)
+TEST(Liststack, shows_correct_top_in_Liststack)
 {
     Liststack<int> a;
     a.push(2);
@@ -65,7 +65,7 @@ TEST(Liststack, shows_correct_first_in_Liststack)
     EXPECT_EQ(7, a.show_top());
 }
 
-TEST(Liststack, cant_show_first_in_empty_Liststack)
+TEST(Liststack, cant_show_top_in_empty_Liststack)
 {
     Liststack<int> a;
     ASSERT_ANY_THROW(a.show_top());
@@ -127,5 +127,11 @@ TEST(Liststack, compare_not_equal_Liststacks_is_false)
     a.push(3);
     b.push(10);
     EXPECT_FALSE(a == b);
+}
+
+TEST(Lstack, can_assign_Liststacks)
+{
+    Liststack<int> a, b;
+    ASSERT_NO_THROW(a = b);
 }
 

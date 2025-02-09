@@ -69,7 +69,7 @@ void PostfixForm::to_postfix() {
     stack<string>* operations, * operands;
     allocateStack(operands, type_of_stack);
     allocateStack(operations, type_of_stack);
-    parsing(); 
+    parsing();
 
     string currentToken, tempToken;
 
@@ -77,17 +77,17 @@ void PostfixForm::to_postfix() {
         currentToken = lex[i];
 
         if (currentToken == "+" || currentToken == "-" || currentToken == "*" || currentToken == "/") {
-            
+
             if (currentToken.length() > 1) {
                 operands->push(currentToken);
                 continue;
             }
-            
+
             while (!operations->is_empty() && priority[currentToken] < priority[operations->show_top()]) {
                 operands->push(operations->show_top());
                 operations->pop();
             }
-            operations->push(currentToken); 
+            operations->push(currentToken);
         }
 
         else if (currentToken == ")") {
@@ -97,15 +97,15 @@ void PostfixForm::to_postfix() {
                 operations->pop();
                 tempToken = operations->show_top();
             }
-            operations->pop(); 
+            operations->pop();
         }
 
-       
+
         else if (currentToken == "(") {
             operations->push(currentToken);
         }
 
-        
+
         else {
             operands->push(currentToken);
         }
@@ -142,6 +142,7 @@ void PostfixForm::setOp()
 void PostfixForm::setOp(map<string, double> operndes) {
     operands = operndes;
 }
+
 
 bool PostfixForm::isOperand(const string& name) const
 {

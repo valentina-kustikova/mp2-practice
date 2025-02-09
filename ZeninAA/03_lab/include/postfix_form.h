@@ -39,7 +39,7 @@ public:
     double count(); 
     void setOp();
     void setOp(map<string, double> operndes);
-    bool isOperand(const string& name) const;
+    bool isOperand(const string& name) const; 
     string getInfix() const;
     string getPostfix() const;
     

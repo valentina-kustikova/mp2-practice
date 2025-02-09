@@ -141,3 +141,25 @@ TEST(Arraystack, compare_not_equal_Arraystacks_is_false)
     b.push(8);
     EXPECT_NE(a, b);
 }
+
+TEST(Astack, can_assign_Arraystacks_to_itself)
+{
+    Arraystack<int> a(2);
+    ASSERT_NO_THROW(a = a);
+}
+
+TEST(Astack, pushed_element_is_in_Arraystack)
+{
+    Arraystack<int> a(2);
+    a.push(2);
+    EXPECT_EQ(2, a.show_top());
+}
+
+TEST(Astack, popped_element_is_no_longer_in_Astack)
+{
+    Arraystack<int> a(2);
+    a.push(2);
+    a.push(9);
+    a.pop();
+    EXPECT_NE(9, a.show_top());
+}
