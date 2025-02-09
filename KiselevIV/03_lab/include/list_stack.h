@@ -8,7 +8,6 @@ private:
 
 public:
     list_stack() {};
-    
     list_stack(const list_stack<TElem>& s)
     {
         elems = s.elems;

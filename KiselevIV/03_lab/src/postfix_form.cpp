@@ -60,98 +60,92 @@ char setStackType()
 
 void PostfixForm::parse()
 {
-    string tocken;
+    string token;
     char c;
-    for (int i = 0; i < infix.size(); i++)
+    for (size_t i = 0; i < infix.size(); ++i)
     {
         c = infix[i];
+
         if (i == 0 && c == '-')
         {
-            tocken += c;
+            token += c;
             continue;
         }
-        if (strchr("+-*/()", c) != nullptr)
+
+        if (string("+-*/()").find(c) != string::npos)
         {
-            if (!(tocken.empty()))
+            if (!token.empty())
             {
-                lexems.push_back(tocken);
+                lexems.push_back(token);
             }
-            tocken = c;
-            lexems.push_back(tocken);
-            tocken.clear();
+            lexems.push_back(string(1, c));
+            token.clear();
         }
         else
         {
-            tocken += c;
+            token += c;
         }
-
     }
-    lexems.push_back(tocken);
+
+    if (!token.empty())
+    {
+        lexems.push_back(token);
+    }
     return;
 }
-void PostfixForm::to_postfix()
-{
+void PostfixForm::to_postfix(){
     stack<string>* operations, * operands;
     allocStack(operands, stackType);
     allocStack(operations, stackType);
     parse();
 
-    string c, x;
-    for (int i = 0; i < lexems.size(); i++)
-    {
-        c = lexems[i];
-        if (c.find("+") != -1 || c.find("-") != -1 || c.find("*") != -1 || c.find("/") != -1)
-        {
-            if (c.size() > 1)
-            {
-                operands->push(c);
+    string currentToken, tempToken;
+
+    for (size_t i = 0; i < lexems.size(); i++) {
+        currentToken = lexems[i];
+        if (currentToken == "+" || currentToken == "-" || currentToken == "*" || currentToken == "/") {
+
+            if (currentToken.length() > 1) {
+                operands->push(currentToken);
                 continue;
             }
-            if (!(operations->is_empty()) && priorts[c] < priorts[operations->show_top()])
-            {
-                while (!(operations->is_empty()) && priorts[c] < priorts[operations->show_top()])
-                {
-                    operands->push(operations->show_top());
-                    operations->pop();
-                }
-                operations->push(c);
-            }
-            else
-            {
-                operations->push(c);
-            }
-        }
-        if (c == "(")
-        {
-            operations->push(c);
-        }
-        if (c == ")")
-        {
-            x = operations->show_top();
-            while (x != "(")
-            {
-                operands->push(x);
+
+            while (!operations->is_empty() && priorts[currentToken] < priorts[operations->show_top()]) {
+                operands->push(operations->show_top());
                 operations->pop();
-                x = operations->show_top();
+            }
+            operations->push(currentToken);
+        }
+
+        else if (currentToken == ")") {
+            tempToken = operations->show_top();
+            while (tempToken != "(") {
+                operands->push(tempToken);
+                operations->pop();
+                tempToken = operations->show_top();
             }
             operations->pop();
         }
-        if (c.find("+") == -1 && c.find("-") == -1 && c.find("*") == -1 &&
-            c.find("/") == -1 && c.find("(") == -1 && c.find(")") == -1)
-        {
-            operands->push(c);
+
+
+        else if (currentToken == "(") {
+            operations->push(currentToken);
+        }
+
+
+        else {
+            operands->push(currentToken);
         }
     }
-    while (!(operations->is_empty()))
-    {
+    while (!operations->is_empty()) {
         operands->push(operations->show_top());
         operations->pop();
     }
-    while (!(operands->is_empty()))
-    {
+    while (!operands->is_empty()) {
         postfix = operands->show_top() + " " + postfix;
         operands->pop();
     }
+
     return;
 }
 void PostfixForm::setOperands()
@@ -178,6 +172,9 @@ void PostfixForm::setOperands()
         }
     }
     return;
+}
+void PostfixForm::setOperands(map<string, double> opernds) {
+    this->operands = opernds;
 }
 double PostfixForm::calculate()
 {

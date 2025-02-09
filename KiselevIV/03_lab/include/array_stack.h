@@ -21,8 +21,6 @@ public:
         elems = new TElem[maxSize];
         top = -1;
     }
-
-
     array_stack(const array_stack<TElem>& s)
     {
         maxSize = s.maxSize;

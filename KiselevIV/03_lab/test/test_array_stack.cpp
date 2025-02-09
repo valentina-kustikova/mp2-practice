@@ -34,7 +34,7 @@ TEST(array_stack, copied_array_stack_are_equal)
     a.push(2);
     a.push(3);
     array_stack<int> b(a);
-    EXPECT_TRUE(a == b);
+    EXPECT_EQ(a, b);
 }
 
 TEST(array_stack, copied_array_stack_have_different_memory)
@@ -44,7 +44,7 @@ TEST(array_stack, copied_array_stack_have_different_memory)
     a.push(3);
     array_stack<int> b(a);
     b.pop();
-    EXPECT_FALSE(a == b);
+    EXPECT_FALSE(a == b); // todo
 }
 
 TEST(array_stack, can_push_in_arr_stack)
