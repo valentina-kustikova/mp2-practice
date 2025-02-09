@@ -17,7 +17,7 @@ class TArithmeticExpression
 	std::map<char, int> priority;
 	std::map<std::string, double> operands; //std::unordered_map
 	void ToPostfix();
-	void allocation_operand(int i, char item);
+	void allocation_operand(int &i, char item);
 public:
 	TArithmeticExpression(const std::string& infx);
 	std::string GetInfix() const
@@ -33,16 +33,17 @@ public:
 	friend ostream& operator<<(ostream& ostr, const TArithmeticExpression& AE)
 	{
 		std::cout << "infix form = " << AE.infix << std::endl;
-		//std::cout << "postfix form = ";
-		for (int i = 0; i < AE.postfix.size(); i++)
+		//std::cout << "postfix form = " << AE.postfixx << std::endl;
+		/*for (int i = 0; i < AE.postfix.size(); i++)
 		{
 			std::cout << AE.postfix[i] << " ";
-		}
-		std::cout << std::endl << "-------------------VECTRO POSTFIX----------------" << std::endl;
+		}*/
+		std::cout << std::endl << "postfix form = ";
 		for (int i = 0; i < AE.postfixx.size(); i++)
 		{
 			std::cout << AE.postfixx[i] << " ";
 		}
+		std::cout << std::endl;
 		return ostr;
 	}
 

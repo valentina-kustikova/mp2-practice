@@ -11,8 +11,8 @@ void TArithmeticExpression::ToPostfix()
 	array_stack<char> operators(MAX_STACK_SIZE);
 	std::string VremPerem;
 	char stackItem;
-
-	for (int i = 0; i < infix.length(); i++)
+	int i = 0;
+	while(i < infix.length())
 	{
 		char item = infix[i];
 		switch (item)
@@ -52,6 +52,7 @@ void TArithmeticExpression::ToPostfix()
 			allocation_operand(i, item);
 			break;
 		}
+		i++;
 	}
 	while (!operators.is_empty())
 	{
@@ -61,7 +62,7 @@ void TArithmeticExpression::ToPostfix()
 	}
 }
 
-void TArithmeticExpression::allocation_operand(int i, char item)
+void TArithmeticExpression::allocation_operand(int &i, char item)
 {
 	int idx = i;
 	std::string VremPerem;
@@ -77,11 +78,11 @@ void TArithmeticExpression::allocation_operand(int i, char item)
 		VremPerem += item;
 
 	}
-	if (isdigit(item)) //?
+	if (isdigit(item))
 	{
 		operands.insert({ VremPerem, stod(VremPerem) });
 	}
-	operands.insert({ VremPerem, 0.0 }); // todo: גûםוסעט ג מעהוכüםûי לועמה
+	operands.insert({ VremPerem, 0.0 });
 	postfix += VremPerem;
 	postfixx.push_back(VremPerem);
 }
@@ -208,7 +209,6 @@ double TArithmeticExpression::Calculate(map<std::string, double> inp)
 				promPodsch.Push(top1 * top2);
 				break;
 			case'/':
-
 				top1 = promPodsch.Top();
 				promPodsch.pop();
 				top2 = promPodsch.Top();

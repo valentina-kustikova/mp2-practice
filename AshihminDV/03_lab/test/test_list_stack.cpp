@@ -1,10 +1,11 @@
-//#include "list_stack.h"
-//#include <gtest.h>
-//
-//TEST(list_stack, can_create_Lstack)
-//{
-//	ASSERT_NO_THROW(list_stack<int> ls());
-//}
+#include "list_stack.h"
+#include <gtest.h>
+
+TEST(list_stack, can_create_Lstack)
+{
+	ASSERT_NO_THROW(list_stack<int> ls());
+}
+
 //TEST(list_stack, copied_stack_eq_original)
 //{
 //	list_stack<int> ls;
@@ -12,49 +13,112 @@
 //	ls.Push(20);
 //	ls.Push(30);
 //	list_stack<int> ls1(ls);
+//	std::cout << ls1.Top();
 //	EXPECT_EQ(ls, ls1);
 //}
-//TEST(list_stack, cant_create_Astack_with_ToLarge_size)
+
+//TEST(list_stack, copied_stack_has_its_own_memory)
 //{
-//	ASSERT_ANY_THROW(array_stack<int> m(MAX_STACK_SIZE + 1));
+//	list_stack<int> m1; 
+//	m1.Push(4);
+//	list_stack<int> m2(m1);
+//	m1.pop();
+//	m1.Push(1);
+//	EXPECT_NE(m1.Top(), m2.Top());
 //}
-//TEST(list_stack, cant_create_Astack_with_negative_size)
+
+TEST(list_stack, can_push_elem)
+{
+	list_stack<int> m;
+	m.Push(1);
+	m.Push(2);
+	EXPECT_EQ(2, m.Top());
+}
+
+TEST(list_stack, can_pop_elem_in_not_empty_lstack)
+{
+	list_stack<int> m;
+	m.Push(1);
+	m.Push(2);
+	ASSERT_NO_THROW(m.pop());
+}
+
+TEST(list_stack, cant_pop_elem_in_empty_lstack)
+{
+	list_stack<int> m;
+	ASSERT_ANY_THROW(m.pop());
+}
+
+TEST(list_stack, can_get_elem_in_not_empty_lstack)
+{
+	list_stack<int> m;
+	m.Push(1);
+	m.Push(2);
+	ASSERT_NO_THROW(m.Top());
+}
+
+TEST(list_stack, cant_get_elem_in_empty_lstack)
+{
+	list_stack<int> m;
+	ASSERT_ANY_THROW(m.Top());
+}
+
+TEST(list_stack, correct_get_elem_in_not_empty_lstack)
+{
+	list_stack<int> m;
+	m.Push(1);
+	m.Push(2);
+	EXPECT_EQ(2, m.Top());
+}
+
+TEST(list_stack, can_assign_lstack_to_itself)
+{
+	list_stack<int> m;
+	m.Push(1);
+	m.Push(2);
+	ASSERT_NO_THROW(m = m);
+}
+
+//TEST(list_stack, assign_lstack_eq_original)
 //{
-//	ASSERT_ANY_THROW(array_stack<int> m(-5));
+//	list_stack<int> m1;
+//	m1.Push(1);
+//	m1.Push(2);
+//	list_stack<int> m2;
+//	m2 = m1;
+//	EXPECT_TRUE(m1 == m2);
 //}
-//TEST(list_stack, can_push_element)
-//{
-//	list_stack<int> m;
-//	ASSERT_NO_THROW(m.Push(5));
-//}
-//TEST(list_stack, cant_push_element_in_full_stack)
-//{
-//	array_stack<int> m(2);
-//	m.Push(5);
-//	m.Push(5);
-//	ASSERT_ANY_THROW(m.Push(5));
-//}
-//TEST(list_stack, correct_push_and_top_element)
-//{
-//	array_stack<int> m(5);
-//	m.Push(5);
-//	EXPECT_EQ(5, m.Top());
-//}
-//TEST(list_stack, can_pop_element)
-//{
-//	array_stack<int> m(5);
-//	m.Push(5);
-//	ASSERT_NO_THROW(m.pop());
-//}
-//TEST(list_stack, cant_pop_element_in_empty_stack)
-//{
-//	array_stack<int> m(5);
-//	ASSERT_ANY_THROW(m.pop());
-//}
-//TEST(list_stack, empty_stack_is_empty)
-//{
-//	array_stack<int> m(5);
-//	array_stack<int> m1(5);
-//	m.Push(5);
-//	EXPECT_NE(m.is_empty(), m1.is_empty());
-//}
+
+TEST(list_stack, compare_eq_stack_return_true)
+{
+	list_stack<int> m1;
+	m1.Push(1);
+	m1.Push(2);
+	list_stack<int> m2;
+	m2.Push(1);
+	m2.Push(2);
+	EXPECT_TRUE(m1 == m2);
+}
+
+TEST(list_stack, compare_not_eq_stack_return_false)
+{
+	list_stack<int> m1;
+	m1.Push(1);
+	m1.Push(2);
+	list_stack<int> m2;
+	m2.Push(1);
+	m2.Push(3);
+	EXPECT_FALSE(m1 == m2);
+}
+
+TEST(list_stack, compare_stacks_with_not_eq_size_return_false)
+{
+	list_stack<int> m1;
+	m1.Push(1);
+	m1.Push(2);
+	list_stack<int> m2;
+	m2.Push(1);
+	m2.Push(3);
+	m2.Push(4);
+	EXPECT_FALSE(m1 == m2);
+}

@@ -10,14 +10,17 @@ class list_stack : public Stack <TElem> {
 private:
 	TList<TElem> elems;
 public:
-	list_stack() {};
+	list_stack() { elems = TList<TElem>::TList(); };
+
 	list_stack(const list_stack<TElem>& ls)
 	{
 		elems = ls.elems;
 	}
+
 	bool is_empty() const {
-		return (elems.get_head()==elems.get_end());
+		return (elems.get_head()==nullptr);
 	}
+
 	bool is_full() const {
 		return false;
 	}
