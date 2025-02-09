@@ -1,7 +1,11 @@
+
+#include <iostream>
+#include <map>
 #include "postfix_form.h"
-int main()
-{
-    ReversePolishNotation zd = ReversePolishNotation("A+B", arraystack);
-    zd.get_postfix();
+
+using namespace std;
+
+int main() {
+    menu();
     return 0;
 }
