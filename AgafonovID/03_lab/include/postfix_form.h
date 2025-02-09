@@ -1,180 +1,216 @@
-#pragma once
+#ifndef POSTFIX_FORM_H
+#define POSTFIX_FORM_H
 
-#include <iostream>
 #include <string>
-#include <map>
 #include <vector>
+#include <map>
+#include <stdexcept>
+#include <cctype>
 #include <sstream>
 #include "stack.h"
 #include "stackArray.h"
 #include "ListStack.h"
-#define N 30
-using namespace std;
 
-class PostfixForm {
-private:
-    string infix;
-    string postfix;
-    char stackType;
-    map<string, int> priority; 
-    map<string, double> operands; 
-    vector<string> lexems; 
-    Stack<string>* operatorsStack; 
-    Stack<double>* valuesStack;    
-
-    void parse();       
-    void to_postfix();  
-
-public:
-    PostfixForm(const string& s, char stype); //интерфейс переделать
-    ~PostfixForm();
-    vector<string> getOperands() const;
-    void setOperands(const map<string, double>& values); 
-    string getInfix() const;      
-    string getPostfix() const;    
-    double calculate();           
+enum STACK_IMPL {
+    ARRAY_STACK = 0,
+    LIST_STACK = 1
 };
 
-template<typename T>
-Stack<T>* createStack(char stackType) {
-    if (stackType == 'A') {
-        return new stackArray<T>(N);
+class ArExpression {
+private:
+    std::string infix;
+    std::vector<std::string> postfix;
+    std::map<std::string, double> variables;
+    Stack<std::string>* stack;
+    STACK_IMPL stackType; 
+    int getPriority(const std::string& op) const {
+        if (op == "+" || op == "-") return 1;
+        if (op == "*" || op == "/") return 2;
+        return 0;
     }
-    else if (stackType == 'L') {
-        return new ListStack<T>();
+
+    bool isOperator(const std::string& el) const {
+        return el == "+" || el == "-" || el == "*" || el == "/";
     }
-    else {
-        throw std::exception("Invalid stack type");
+
+    bool isOperand(const std::string& el) const {
+        if (std::isdigit(el[0])) return true;
+        if (el.size() > 1 && el[0] == '-' && std::isdigit(el[1])) return true;
+        if (std::isalpha(el[0])) return true;
+        return false;
     }
-}
 
-PostfixForm::PostfixForm(const string& s, char stype) : infix(s), stackType(stype), operatorsStack(nullptr), valuesStack(nullptr) {
-    priority = { {"+", 1}, {"-", 1}, {"*", 2}, {"/", 2} };
-    operatorsStack = createStack<string>(stackType);
-    valuesStack = createStack<double>(stackType);
-
-    to_postfix();
-}
-
-PostfixForm::~PostfixForm() {
-    delete operatorsStack;
-    delete valuesStack;
-}
-
-vector<string> PostfixForm::getOperands() const {
-    vector<string> operandList;
-    for (const auto& operand : operands) {
-        operandList.push_back(operand.first); 
-    }
-    return operandList;
-}
-
-void PostfixForm::parse() {
-    istringstream iss(infix);
-    string token;
-    while (iss >> token) {
-        lexems.push_back(token);
-    }
-}
-
-void PostfixForm::to_postfix() {
-    parse();
-    for (const string& token : lexems) {
-        if (isalnum(token[0])) {
-            postfix += token + " ";
-            operands[token] = 0.0;
+    bool isNumber(const std::string& s) const {
+        try {
+            std::stod(s);
+            return true;
         }
-        else if (token == "(") {
-            operatorsStack->Push(token);
-        }
-        else if (token == ")") {
-            while (!operatorsStack->IsEmpty() && operatorsStack->Top() != "(") {
-                postfix += operatorsStack->Top() + " ";
-                operatorsStack->Pop();
-            }
-            operatorsStack->Pop();
-        }
-        else {
-            while (!operatorsStack->IsEmpty() &&
-                priority[operatorsStack->Top()] >= priority[token]) {
-                postfix += operatorsStack->Top() + " ";
-                operatorsStack->Pop();
-            }
-            operatorsStack->Push(token);
+        catch (...) {
+            return false;
         }
     }
 
-    while (!operatorsStack->IsEmpty()) {
-        postfix += operatorsStack->Top() + " ";
-        operatorsStack->Pop();
-    }
-}
+    std::vector<std::string> parse(const std::string& expression) const {
+        std::vector<std::string> elems;
+        std::string current;
+        bool expect_operand = true;
 
-string PostfixForm::getInfix() const {
-    return infix;
-}
+        for (size_t i = 0; i < expression.size(); ++i) {
+            char c = expression[i];
 
-string PostfixForm::getPostfix() const {
-    return postfix;
-}
-
-void PostfixForm::setOperands(const map<string, double>& values) {
-    for (auto it = values.begin(); it != values.end(); ++it) {
-        const string& key = it->first;
-        double value = it->second;
-        auto operandIt = operands.find(key);
-        if (operandIt != operands.end()) {
-            operandIt->second = value;
-        }
-        else {
-            throw std::exception("Operand not found");
-        }
-    }
-}
-
-double PostfixForm::calculate() {
-    istringstream iss(postfix);
-    string token;
-
-    while (iss >> token) {
-        if (isalnum(token[0])) {
-            auto it = operands.find(token);
-            if (it == operands.end()) {
-                throw std::exception("Value for operand not provided");
-            }
-            valuesStack->Push(it->second);
-        }
-        else {
-            if (valuesStack->IsEmpty()) {
-                throw std::exception("Missing operands");
-            }
-            double b = valuesStack->Top(); valuesStack->Pop();
-            if (valuesStack->IsEmpty()) {
-                throw std::exception("Missing operands");
-            }
-            double a = valuesStack->Top(); valuesStack->Pop();
-
-            double result = 0.0;
-            if (token == "+") result = a + b;
-            else if (token == "-") result = a - b;
-            else if (token == "*") result = a * b;
-            else if (token == "/") {
-                if (b == 0) {
-                    throw std::exception("Division by zero");
+            if (std::isspace(c)) {
+                if (!current.empty()) {
+                    elems.push_back(current);
+                    current.clear();
                 }
-                result = a / b;
+                expect_operand = true;
+                continue;
             }
-            else throw std::exception("Unsupported operator");
-            valuesStack->Push(result);
+            if (c == '-' && expect_operand) {
+                if (!current.empty()) {
+                    elems.push_back(current);
+                    current.clear();
+                }
+                current += c;
+                expect_operand = true;
+                continue;
+            }
+            if (std::isdigit(c) || (c == '.' && !current.empty())) {
+                current += c;
+                expect_operand = false;
+            }
+            else if (std::isalpha(c)) {
+                if (!current.empty() && (current[0] == '-' || !std::isalpha(current[0]))) {
+                    elems.push_back(current);
+                    current.clear();
+                }
+                current += c;
+                expect_operand = false;
+            }
+            else {
+                if (!current.empty()) {
+                    elems.push_back(current);
+                    current.clear();
+                }
+                elems.push_back(std::string(1, c));
+                expect_operand = (c == '(' || isOperator(std::string(1, c)));
+            }
+        }
+
+        if (!current.empty()) {
+            elems.push_back(current);
+        }
+        std::cout << "Tokens: ";
+        for (const auto& t : elems) std::cout << "[" << t << "] ";
+        std::cout << std::endl;
+        return elems;
+    }
+
+public:
+    ArExpression(const std::string& expr, STACK_IMPL impl) : infix(expr), stackType(impl) {
+        if (impl == ARRAY_STACK) {
+            stack = new stackArray<std::string>();
+        }
+        else {
+            stack = new ListStack<std::string>();
+        }
+        convertToPostfix();
+    }
+
+    ~ArExpression() {
+        delete stack;
+    }
+
+    void convertToPostfix() {
+        std::vector<std::string> elems = parse(infix);
+
+        for (int i = 0; i < elems.size(); i++) {
+            const std::string& el = elems[i];
+            if (isOperand(el)) {  
+                postfix.push_back(el);
+            }
+            else if (isOperator(el)) {
+                while (!stack->IsEmpty() && getPriority(stack->Top()) >= getPriority(el)) {
+                    postfix.push_back(stack->Top());
+                    stack->Pop();
+                }
+                stack->Push(el);
+            }
+            else if (el == "(") {
+                stack->Push(el);
+            }
+            else if (el == ")") {
+                while (!stack->IsEmpty() && stack->Top() != "(") {
+                    postfix.push_back(stack->Top());
+                    stack->Pop();
+                }
+                if (!stack->IsEmpty() && stack->Top() == "(") {
+                    stack->Pop();
+                }
+            }
+        }
+
+        while (!stack->IsEmpty()) {
+            postfix.push_back(stack->Top());
+            stack->Pop();
         }
     }
 
-    if (valuesStack->IsEmpty()) {
-        throw std::exception("stack is empty.");
+    double evaluate(const std::map<std::string, double>& values) {
+        Stack<double>* evalStack;
+
+        if (stackType == ARRAY_STACK) {
+            evalStack = new stackArray<double>();
+        }
+        else {
+            evalStack = new ListStack<double>();
+        }
+
+        for (int i = 0; i < postfix.size(); i++) {
+            const std::string& el = postfix[i];
+            if (isNumber(el)) { 
+                evalStack->Push(std::stod(el));
+            }
+            else if (values.find(el) != values.end()) { 
+                evalStack->Push(values.at(el));
+            }
+            else if (isOperator(el)) {
+                if (evalStack->IsEmpty()) {
+                    throw std::exception("Invalid expression");
+                }
+                double b = evalStack->Top();
+                evalStack->Pop();
+                if (evalStack->IsEmpty()) {
+                    throw std::exception("Invalid expression");
+                }
+                double a = evalStack->Top();
+                evalStack->Pop();
+
+                if (el == "+") {
+                    evalStack->Push(a + b);
+                }
+                else if (el == "-") {
+                    evalStack->Push(a - b);
+                }
+                else if (el == "*") {
+                    evalStack->Push(a * b);
+                }
+                else if (el == "/") {
+                    if (b == 0) {
+                        throw std::exception("Division by zero");
+                    }
+                    evalStack->Push(a / b);
+                }
+            }
+        }
+
+        double result = evalStack->Top();
+        delete evalStack;
+        return result;
     }
-    double result = valuesStack->Top(); valuesStack->Pop();
-    if (!valuesStack->IsEmpty()) {
-        throw std::exception("stack is not empty.");
+
+    std::vector<std::string> getPostfix() const {
+        return postfix;
     }
-    return result;
-}
+};
+#endif

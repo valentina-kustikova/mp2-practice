@@ -65,7 +65,11 @@ bool stackArray<T>::IsEmpty() const {
 template <typename T>
 void stackArray<T>::Push(const T& val) {
     if (IsFull()) {
-        throw std::exception("Full");
+        T* tmp = new T[maxsize];
+        std::copy(elems, elems + maxsize, tmp);
+        maxsize += 8;
+        elems = new T[maxsize];
+        std::copy(tmp, tmp + maxsize - 8, elems);
     }
     elems[++top] = val;
 }

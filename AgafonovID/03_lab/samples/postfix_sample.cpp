@@ -2,49 +2,53 @@
 #include <map>
 #include <string>
 #include "postfix_form.h"
-#include "stackArray.h"
-#include "ListStack.h"
 
 using namespace std;
 
 int main() {
     try {
-        cout << "Choose stack type (A/L): \n";
+        cout << "Choose stack type (A/L): ";
         char stackType;
         cin >> stackType;
 
-        if (stackType != 'A' && stackType != 'L') {
+        STACK_IMPL impl;
+        if (stackType == 'A') impl = ARRAY_STACK;
+        else if (stackType == 'L') impl = LIST_STACK;
+        else {
             cout << "Incorrect choice" << endl;
             return 1;
         }
 
-        cout << "infix expression: ";
-        cin.ignore(); 
+        cout << "Infix expression: ";
+        cin.ignore();
         string expr;
         getline(cin, expr);
 
-        PostfixForm pf(expr, stackType);
+        ArExpression arExpr(expr, impl);
 
-        cout << "Infix: " << pf.getInfix() << endl;
-        cout << "Postfix: " << pf.getPostfix() << endl;
+        cout << "Infix: " << expr << endl;
+        cout << "Postfix: ";
+
+        vector<string> postfix = arExpr.getPostfix();
+        for (int i = 0; i < postfix.size(); i++) {
+            cout << postfix[i] << " ";
+        }
+        cout << endl;
 
         map<string, double> values;
-
         cout << "Enter values for operands:" << endl;
 
-        vector<string> operands = pf.getOperands(); 
-        for (size_t i = 0; i < operands.size(); ++i) {
-            cout << operands[i] << ": ";
-            double value;
-            cin >> value;
-            values[operands[i]] = value;
+        for (int i = 0; i < postfix.size(); i++) {
+            if (isalpha(postfix[i][0]) && values.find(postfix[i]) == values.end()) {
+                cout << postfix[i] << ": ";
+                double value;
+                cin >> value;
+                values[postfix[i]] = value;
+            }
         }
 
-        pf.setOperands(values);
-
-        double result = pf.calculate();
+        double result = arExpr.evaluate(values);
         cout << "Result: " << result << endl;
-
     }
     catch (const exception& e) {
         cout << "Error: " << e.what() << endl;

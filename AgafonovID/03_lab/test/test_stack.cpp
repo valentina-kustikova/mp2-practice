@@ -45,13 +45,6 @@ TEST(stackArray, can_push_in_stackArray) {
     ASSERT_NO_THROW(a.Push(2));
 }
 
-TEST(stackArray, cant_push_in_full_stackArray) {
-    stackArray<int> a(2);
-    a.Push(2);
-    a.Push(4);
-    ASSERT_ANY_THROW(a.Push(8));
-}
-
 TEST(stackArray, pushed_elem_is_in_stackArray) {
     stackArray<int> a(2);
     a.Push(2);
