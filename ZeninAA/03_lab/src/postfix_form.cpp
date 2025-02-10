@@ -139,12 +139,12 @@ void PostfixForm::setOp()
     }
 }
 
-void PostfixForm::setOp(map<string, double> operndes) {
+void PostfixForm::setOp(const map<string, double>& operndes) {
     operands = operndes;
 }
 
 
-bool PostfixForm::isOperand(const string& name) const
+bool PostfixForm::isOperand(const string& name)const 
 {
     try {
         stof(name);

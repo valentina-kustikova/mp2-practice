@@ -32,8 +32,12 @@ public:
     }
 
 
-    void pop()
+    void pop() 
     {
+        if (is_empty())
+        {
+            throw "EMPTY STACK";
+        }
         try
         {
             el.remove(el.first());

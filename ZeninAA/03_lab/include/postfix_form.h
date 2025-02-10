@@ -27,6 +27,8 @@ private:
     vector<string> lex;
     void to_postfix();
     void parsing(); //разбор
+    bool isOperand(const string& name)const; 
+    
 public:
 
     PostfixForm(const string& s, char stype) : infix(s)
@@ -38,8 +40,7 @@ public:
 
     double count(); 
     void setOp();
-    void setOp(map<string, double> operndes);
-    bool isOperand(const string& name) const; 
+    void setOp(const map<string, double>& operndes); 
     string getInfix() const;
     string getPostfix() const;
     
