@@ -7,8 +7,9 @@ using namespace std;
 #include "stack.h"
 #include "stack_array.h" // Для стека на массиве
 #include "List_stack.h" // Для стека на списке
-#include "List.h"
+#include "List.h" 
 #include <iostream>
+#include <map>
 
 
 template <typename T>
@@ -18,10 +19,10 @@ public:
     PostfixForm(bool useArrayStack, int arrayStackSize = 100);
     ~PostfixForm();
 
-    string InfixToPostfix(const  string& infix) const; // Преобразование в постфиксную запись
+    string InfixToPostfix(const  string& infix); // Преобразование в постфиксную запись
     string GetPostfix() const;// Вывод постфиксной записи
-    //T EvaluatePostfix(const string& postfix) const;
-
+    T EvaluatePostfix(const string& postfix) const; // 
+    map<char, T> GetVariableValues(const string& postfix) const;
 private:
     Stack<T>* stack;// Тип стека для вычислений
     string postfixResult;// Результат постфиксной записи 
@@ -75,7 +76,7 @@ int PostfixForm<T>::Priority(char operation) const {
 
 
 template <typename T>
-string PostfixForm<T>::InfixToPostfix(const string& infix) const {
+string PostfixForm<T>::InfixToPostfix(const string& infix) {
     std::string postfix_res = "";
     Array_Stack<char> brackets_stack(infix.size());
 
@@ -120,7 +121,7 @@ string PostfixForm<T>::InfixToPostfix(const string& infix) const {
         postfix_res += " ";
         brackets_stack.Pop();
     }
-
+   
     return postfix_res;
 }
 
@@ -147,48 +148,82 @@ T PostfixForm<T>::ToDoOperation(T operand1, T operand2, char operation) const {
         throw ("Invalid operator");
     }
 }
-//НЕ СМОТРИТЕ!! дальше
-//переписать чтобы у человека спрашивали числа и отдельная функция считала результат постфиксной формы
-/*
+
 template <typename T>
-T PostfixForm<T>::EvaluatePostfix(const std::string& postfix) const {
-    std::stringstream s(postfix);
-    std::string token;
-    ListStack<T> evalStack;
+T PostfixForm<T>::EvaluatePostfix(const string& postfix) const {
+    stringstream ss(postfix);
+    string token;
+    Stack<T>* evaluationStack = nullptr;
 
-    while (s >> token) {
-        if (isdigit(token[0]) || (token.size() > 1 && isdigit(token[1]))) {
+    if (dynamic_cast<Array_Stack<T>*>(stack)) {
+        evaluationStack = new Array_Stack<T>(postfix.length());
+    }
+    else {
+        evaluationStack = new ListStack<T>();
+    }
 
+
+    while (ss >> token) {
+        if (isdigit(token[0]) || (token.length() > 1 && isdigit(token[1]))) { // Проверяем, является ли token числом (поддержка многозначных чисел)
+            T number;
             try {
-                evalStack.Push(stod(token));
+                number = std::stod(token);
             }
-            catch (...) {
-                throw ("Некорректное число в постфиксной записи");
+            catch (const std::invalid_argument& e) {
+                delete evaluationStack;
+                throw runtime_error("Invalid number in postfix expression: " + std::string(e.what()));
             }
-
+            evaluationStack->Push(number);
         }
         else if (isOperator(token[0])) {
-            if (evalStack.Size() < 2) {
-                throw ("Некорректное количество операндов для операции");
+            if (evaluationStack->Size() < 2) {
+                delete evaluationStack;
+                throw runtime_error("Not enough operands for operator " + token);
             }
-            T operand2 = evalStack.Top();
-            evalStack.Pop();
-            T operand1 = evalStack.Top();
-            evalStack.Pop();
+            T operand2 = evaluationStack->Top();
+            evaluationStack->Pop();
+            T operand1 = evaluationStack->Top();
+            evaluationStack->Pop();
 
-            T result = ToDoOperation(operand1, operand2, token[0]);
-            evalStack.Push(result);
+            try {
+                T result = ToDoOperation(operand1, operand2, token[0]);
+                evaluationStack->Push(result);
+            }
+            catch (const runtime_error& e) {
+                delete evaluationStack;
+                throw;
+            }
+
+
         }
-        else if (token != " ")
-        {
-            throw ("Неизвестный токен в постфиксной записи: " + token);
+        else {
+            delete evaluationStack;
+            throw ("Invalid token in postfix expression: " + token);
         }
-
     }
-    if (evalStack.Size() != 1) {
-        throw ("Некорректное постфиксное выражение");
-    }
-    return evalStack.Top();
 
+    if (evaluationStack->Size() == 1) {
+        T result = evaluationStack->Top();
+        evaluationStack->Pop();
+        delete evaluationStack;
+        return result;
+    }
+    else {
+        delete evaluationStack;
+        throw ("Too many operands in postfix expression");
+    }
 }
-*/
+template <typename T>
+map<char, T> PostfixForm<T>::GetVariableValues(const string& postfix) const {
+    map<char, T> values;
+    for (char c : postfix) {
+        if (isalpha(c) && values.find(c) == values.end()) {
+            T value;
+            cout << "Enter value for '" << c << "': ";
+            cin >> value;
+            values[c] = value;
+        }
+    }
+    return values;
+}
+

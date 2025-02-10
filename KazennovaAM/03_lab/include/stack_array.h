@@ -24,6 +24,8 @@ public:
 	Array_Stack<T>& operator=(const Array_Stack<T>& s);
 	bool operator==(const Array_Stack<T>& other) const;
 
+	int Size() const override { return top + 1; };
+
 };
 
 

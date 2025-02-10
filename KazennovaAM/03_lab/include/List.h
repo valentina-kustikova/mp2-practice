@@ -33,6 +33,9 @@ public:
     int GetSZ() const;
     const List& operator=(const List<T>& list);
     bool operator==(const List<T>& list) const;
+    T& operator[](int index);
+    const T& operator[](int index) const;
+
 };
 
 template <typename T>
@@ -154,5 +157,30 @@ bool List<T>::operator==(const List<T>& list) const {
     }
     return true;
 }
+
+template <typename T>
+T& List<T>::operator[](int index) {
+    if (index < 0 || index >= sz) {
+        throw std::out_of_range("Index out of range");
+    }
+    TNode* curr = pFirst;
+    for (int i = 0; i < index; ++i) {
+        curr = curr->pNext;
+    }
+    return curr->data;
+}
+
+template <typename T>
+const T& List<T>::operator[](int index) const {
+    if (index < 0 || index >= sz) {
+        throw std::out_of_range("Index out of range");
+    }
+    TNode* curr = pFirst;
+    for (int i = 0; i < index; ++i) {
+        curr = curr->pNext;
+    }
+    return curr->data;
+}
+
 
 #endif

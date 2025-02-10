@@ -2,6 +2,11 @@
 #include <iostream>
 #include <limits> // Для очистки буфера ввода
 
+#include <iostream>
+#include <string>
+#include <map>
+#include <stdexcept>
+
 int main() {
     /*
     int choice;
@@ -44,7 +49,10 @@ int main() {
         std::cerr << "Ошибка: " << err.what() << std::endl;
     }
     */
-    return 0;
-}
 
+
+    // Функция для очистки и подготовки введенного выражения
+    return 0;
+
+}
 

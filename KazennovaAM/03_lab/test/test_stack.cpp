@@ -1,4 +1,3 @@
-
 #include "stack_array.h"
 #include <gtest.h>
 

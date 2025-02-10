@@ -8,7 +8,7 @@ class ListStack : public Stack<T>
 private:
     List<T> stack;
 public:
-    ListStack() {};
+    ListStack() {}; 
     ListStack(const ListStack& s) :stack(s.stack) {};
     ~ListStack();
     void Pop();
@@ -18,6 +18,7 @@ public:
     bool IsFull() const { return 0; };
     const ListStack<T>& operator=(const ListStack<T>& s);
     bool operator==(const ListStack<T>& s) const;
+    int Size() const override { return stack.GetSZ(); } // Используем GetSZ() из List
 };
 
 template <typename T>
