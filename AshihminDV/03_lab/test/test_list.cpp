@@ -122,14 +122,15 @@ TEST(TList, cant_remove_first_element_in_empty_list)
 	ASSERT_ANY_THROW(l.Remove_First());
 }
 
-/*TEST(TList, equal_lists_are_equal)
+TEST(TList, equal_lists_are_equal)
 {
 	TList<int> l;
 	ListNode<int>* n1 = new ListNode<int>(123);
 	n1->next = new ListNode<int>(321);
 	l.insert_Front(n1);
 	TList<int> l2;
-	l2.insert_Front(n1);
+	ListNode<int>* n2 = new ListNode<int>(123);
+	n2->next = new ListNode<int>(321);
+	l2.insert_Front(n2);
 	EXPECT_EQ(l ,l2);
-
-}*/ //?
+}

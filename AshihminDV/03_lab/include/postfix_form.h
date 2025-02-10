@@ -9,22 +9,48 @@
 using namespace std;
 
 
+enum Stack_type
+{
+	array_stack = 0, 
+	list_stack = 1
+};
+
+
+template <typename TElem> void stack_allocate(Stack<TElem>*& Stack, enum Stack_type type)
+{
+	if (type == array_stack)
+	{
+		Stack = new array_stack<TElem>(MAX_STACK_SIZE);
+	}
+	else if (type == list_stack)
+	{
+		Stack = new list_stack<TElem>();
+	}
+	else
+	{
+		throw std::invalid_argument("Invalid stack type");
+	}
+}
+
+
 class TArithmeticExpression
 {
 	std::string infix;
 	std::string postfix;
 	std::vector<std::string> postfixx;
+	Stack_type type;
 	std::map<char, int> priority;
-	std::map<std::string, double> operands; //std::unordered_map
+	std::map<std::string, double> operands;
 	void ToPostfix();
 	void allocation_operand(int &i, char item);
+	void input_value();
+	void input_value(map<std::string, double>);
 public:
-	TArithmeticExpression(const std::string& infx);
+	TArithmeticExpression(const std::string& infx, Stack_type type);
 	std::string GetInfix() const
 	{
 		return infix;
 	}
-	//std::vector<std::string> GetPostfix() const
 	std::string GetPostfix() const
 	{
 		return postfix;
@@ -33,11 +59,6 @@ public:
 	friend ostream& operator<<(ostream& ostr, const TArithmeticExpression& AE)
 	{
 		std::cout << "infix form = " << AE.infix << std::endl;
-		//std::cout << "postfix form = " << AE.postfixx << std::endl;
-		/*for (int i = 0; i < AE.postfix.size(); i++)
-		{
-			std::cout << AE.postfix[i] << " ";
-		}*/
 		std::cout << std::endl << "postfix form = ";
 		for (int i = 0; i < AE.postfixx.size(); i++)
 		{
@@ -47,10 +68,7 @@ public:
 		return ostr;
 	}
 
-	void input_value();
+	
 	double Calculate();
-	void input_value(map<std::string, double>);
 	double Calculate(map<std::string, double>);
-
-
 };

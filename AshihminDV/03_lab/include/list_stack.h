@@ -22,7 +22,7 @@ public:
 	}
 
 	bool is_full() const {
-		return false;
+		return false; // !!!
 	}
 
 	void Push(const TElem& e) {

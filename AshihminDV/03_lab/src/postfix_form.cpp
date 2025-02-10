@@ -1,14 +1,16 @@
 #include "postfix_form.h"
 
-TArithmeticExpression::TArithmeticExpression(const std::string& infx) : infix(infx)
+TArithmeticExpression::TArithmeticExpression(const std::string& infx, Stack_type type) : infix(infx)
 {
+	this->type = type;
 	priority = { {'+', 2}, {'-', 2}, {'*', 3}, {'/', 3} };
 	ToPostfix();
 }
 
 void TArithmeticExpression::ToPostfix()
 {
-	array_stack<char> operators(MAX_STACK_SIZE);
+	Stack_type<char>* operators;
+	stack_allocate(operators, this->type);
 	std::string VremPerem;
 	char stackItem;
 	int i = 0;
