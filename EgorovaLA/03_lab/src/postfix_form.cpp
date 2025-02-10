@@ -67,7 +67,7 @@ vector<string> fill_const(const string& str) {
 	return consts;
 }
 
-bool priority(string elem1, string elem2) {
+bool priority(const string& elem1, const string& elem2) {
 	int res1 = 0, res2 = 0;
 	if ((elem1 == "(") || (elem1 == ")"))  res1 = 1;
 	if ((elem2 == "(") || (elem2 == ")"))  res2 = 1;
@@ -78,7 +78,7 @@ bool priority(string elem1, string elem2) {
 	return (res1 > res2);
 }
 
-void expression(TStack<string>*& st1, TStack<string>*& st2, vector<string>& express) {
+void expression(TStack<string>*& st1, TStack<string>*& st2, const vector<string>& express) {
 	int lenexp = express.size();
 	string elem;
 
@@ -122,13 +122,13 @@ void expression(TStack<string>*& st1, TStack<string>*& st2, vector<string>& expr
 		}
 	}
 	while (st1->IsEmpty()!=1) {
-		st2->Push(st1->Top());
+		st2->Push(st1->Top());//итоговый вид хранится в ст2
 		st1->Pop();
 	}
 }
 
 void print_stack(TStack<string>*& st1, TStack<string>*& st2) {
-	while (st2->IsEmpty()!=1) {//сохранение массива в другом
+	while (st2->IsEmpty()!=1) {//сохранение стека в другом
 		cout << st2->Top();
 		st1->Push(st2->Top());
 		st2->Pop();
@@ -174,34 +174,34 @@ vector<string> read(const string& str) {
 	return express;
 }
 
-void add_elem(vector<string>& express, int curr, string elem) {
+void add_elem(vector<string>& express, int curr, const string& elem) {
 	if (express.size() != curr + 1) {
 		express.push_back(elem);
 	}
 	else express[curr] += elem;
 }
 
-double calculate(TStack<string>*& st1, TStack<string>*& st2, map<string, double>& var) {
+double calculate(TStack<double>*& st1, TStack<string>*& st2, map<string, double>& var) {
 	double res = 0, x = 0, y = 0;
 	if (var.size() == 1) return var[st2->Top()];
 	while (st2->IsEmpty() != 1) {
 		string elem = st2->Top();
 		if ((elem != "+") && (elem != "-") && (elem != "*")
 			&& (elem != "/")) {
-			st1->Push(elem);
+			st1->Push(var[elem]);
 			st2->Pop();
 		}
 		else {
-			x = var[st1->Top()];
+			x = st1->Top();
 			st1->Pop();
-			y= var[st1->Top()];
+			y= st1->Top();
 			st1->Pop();
 			if (elem == "+") res = y+x;
 			else if(elem == "-") res = y - x;
 			else if(elem == "*") res = y * x;
 			else if(elem == "/") res = y / x;
 			st2->Pop();
-			st1->Push(to_string(res));
+			st1->Push(res);
 			var[to_string(res)] = res;
 		}
 	}
@@ -213,9 +213,11 @@ double calculate(TStack<string>*& st1, TStack<string>*& st2, map<string, double>
 void manipulateArr(const string& str1, map<string, double>&var) {
 	TStack<string>* stack1;//операнды
 	TStack<string>* stack2;//операции->хранится выражение
+	TStack<double>* stack3;
 
 	stack1 = new TStackArray <string> (str1.length());
-	stack2 = new TStackArray <string> (str1.length()*2);
+	stack2 = new TStackArray <string>(str1.length() * 2);
+	stack3 = new TStackArray <double>(str1.length() * 2);
 
 	vector<string> ex = read(str1);
 
@@ -223,7 +225,7 @@ void manipulateArr(const string& str1, map<string, double>&var) {
 	cout << "Выражение в постфиксной форме: ";
 	print_stack(stack1, stack2);
 
-	cout << "Ответ с введенными значениями: " << calculate(stack1, stack2, var)<< "\n";
+	cout << "Ответ с введенными значениями: " << calculate(stack3, stack2, var)<< "\n";
 }
 
 //Для списков
@@ -231,9 +233,11 @@ void manipulateArr(const string& str1, map<string, double>&var) {
 void manipulateList(const string& str1, map<string, double>&var) {
 	TStack<string>* stack1;//операнды
 	TStack<string>* stack2;//операции->хранится выражение
+	TStack<double>* stack3;
 
 	stack1 = new TListStack <string>();
 	stack2 = new TListStack <string>();
+	stack3 = new TListStack <double>();
 
 	vector<string> ex = read(str1);
 
@@ -241,7 +245,7 @@ void manipulateList(const string& str1, map<string, double>&var) {
 	cout << "Выражение в постфиксной форме: ";
 	print_stack(stack1, stack2);
 
-	cout << "Ответ с введенными значениями: "<< calculate(stack1, stack2, var) << "\n";
+	cout << "Ответ с введенными значениями: "<< calculate(stack3, stack2, var) << "\n";
 }
 
 

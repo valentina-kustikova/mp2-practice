@@ -42,7 +42,7 @@ TEST(Postfix_Form, can_create_correct_expession_on_array)
 TEST(Postfix_Form, can_create_correct_expession_on_list)
 {
 	TStack<string>* stack1;
-	TStack<string>* stack2;
+	TStack<string>* stack2;;
 
 	stack1 = new TListStack <string>();
 	stack2 = new TListStack <string>();
@@ -58,63 +58,139 @@ TEST(Postfix_Form, can_create_correct_expession_on_list)
 	EXPECT_EQ("AB+", str);
 }
 
-TEST(Postfix_Form, can_correct_calculate_light_list)
+TEST(Postfix_Form, can_correct_calculate_list1)
 {
 	TStack<string>* stack1;
 	TStack<string>* stack2;
+	TStack<double>* stack3;
 
 	stack1 = new TListStack <string>();
 	stack2 = new TListStack <string>();
+	stack3 = new TListStack <double>();
 
 	vector<string> v = read("A+B");
 	expression(stack1, stack2, v);
 	map<string, double> var;
 	var["A"] = 1; var["B"] = 1;
-	EXPECT_EQ(2,calculate(stack1,stack2,var));
+	EXPECT_EQ(2,calculate(stack3,stack2,var));
 }
 
-TEST(Postfix_Form, can_correct_calculate_hard_list)
+TEST(Postfix_Form, can_correct_calculate_list2)
 {
 	TStack<string>* stack1;
 	TStack<string>* stack2;
+	TStack<double>* stack3;
 
 	stack1 = new TListStack <string>();
 	stack2 = new TListStack <string>();
+	stack3 = new TListStack <double>();
 
-	vector<string> v = read("Aa+B/A*(B-A)*A");
+	vector<string> v = read("A-B");
 	expression(stack1, stack2, v);
 	map<string, double> var;
-	var["A"] = 1; var["B"] = 1; var["Aa"] = 10;
-	EXPECT_EQ(10, calculate(stack1, stack2, var));
+	var["A"] = 1; var["B"] = 3; 
+	EXPECT_EQ(-2, calculate(stack3, stack2, var));
 }
 
-TEST(Postfix_Form, can_correct_calculate_light_arr)
+TEST(Postfix_Form, can_correct_calculate_list3)
 {
 	TStack<string>* stack1;
 	TStack<string>* stack2;
+	TStack<double>* stack3;
+
+	stack1 = new TListStack <string>();
+	stack2 = new TListStack <string>();
+	stack3 = new TListStack <double>();
+
+	vector<string> v = read("A-B*(A+C)");
+	expression(stack1, stack2, v);
+	map<string, double> var;
+	var["A"] = 1; var["B"] = 2; var["C"] = 3;
+	EXPECT_EQ(-7, calculate(stack3, stack2, var));
+}
+
+TEST(Postfix_Form, can_correct_calculate_list4)
+{
+	TStack<string>* stack1;
+	TStack<string>* stack2;
+	TStack<double>* stack3;
+
+	stack1 = new TListStack <string>();
+	stack2 = new TListStack <string>();
+	stack3 = new TListStack <double>();
+
+	vector<string> v = read("(A-B)/(C-A)*(K+B)+A");
+	expression(stack1, stack2, v);
+	map<string, double> var;
+	var["A"] = 1; var["B"] = 3; var["C"] = 2; var["K"] = -2;
+	EXPECT_EQ(-1, calculate(stack3, stack2, var));
+}
+
+TEST(Postfix_Form, can_correct_calculate_arr1)
+{
+	TStack<string>* stack1;
+	TStack<string>* stack2;
+	TStack<double>* stack3;
 
 	stack1 = new TStackArray <string>(5);
 	stack2 = new TStackArray <string>(10);
+	stack3 = new TStackArray <double>(10);
 
-	vector<string> v = read("A+B*A");
+	vector<string> v = read("A+B");
 	expression(stack1, stack2, v);
 	map<string, double> var;
 	var["A"] = 1; var["B"] = 1;
-	EXPECT_EQ(2, calculate(stack1, stack2, var));
+	EXPECT_EQ(2, calculate(stack3, stack2, var));
 }
 
-TEST(Postfix_Form, can_correct_calculate_hard_arr)
+TEST(Postfix_Form, can_correct_calculate_arr2)
 {
 	TStack<string>* stack1;
 	TStack<string>* stack2;
+	TStack<double>* stack3;
 
 	stack1 = new TStackArray <string>(5);
 	stack2 = new TStackArray <string>(10);
+	stack3 = new TStackArray <double>(10);
 
-	vector<string> v = read("A+B*(A+A)/B+(B*Cc)");
+	vector<string> v = read("A-B");
 	expression(stack1, stack2, v);
 	map<string, double> var;
-	var["A"] = 1; var["B"] = 1; var["Cc"] = 10;
-	EXPECT_EQ(13, calculate(stack1, stack2, var));
+	var["A"] = 1; var["B"] = 3;
+	EXPECT_EQ(-2, calculate(stack3, stack2, var));
+}
+
+TEST(Postfix_Form, can_correct_calculate_arr3)
+{
+	TStack<string>* stack1;
+	TStack<string>* stack2;
+	TStack<double>* stack3;
+
+	stack1 = new TStackArray <string>(5);
+	stack2 = new TStackArray <string>(10);
+	stack3 = new TStackArray <double>(10);
+
+	vector<string> v = read("A-B*(A+C)");
+	expression(stack1, stack2, v);
+	map<string, double> var;
+	var["A"] = 1; var["B"] = 2; var["C"] = 3;
+	EXPECT_EQ(-7, calculate(stack3, stack2, var));
+}
+
+TEST(Postfix_Form, can_correct_calculate_arr4)
+{
+	TStack<string>* stack1;
+	TStack<string>* stack2;
+	TStack<double>* stack3;
+
+	stack1 = new TStackArray <string>(5);
+	stack2 = new TStackArray <string>(10);
+	stack3 = new TStackArray <double>(10);
+
+	vector<string> v = read("(A-B)/(C-A)*(K+B)+A");
+	expression(stack1, stack2, v);
+	map<string, double> var;
+	var["A"] = 1; var["B"] = 3; var["C"] = 2; var["K"] = -2;
+	EXPECT_EQ(-1, calculate(stack3, stack2, var));
 }
 

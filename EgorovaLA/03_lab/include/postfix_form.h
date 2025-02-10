@@ -14,17 +14,17 @@ vector<string> fill_const(const string& str1);
 
 void fill_var(map<string, double>& var);
 
-bool priority(string elem1, string elem2);
+bool priority(const string& elem1, const string& elem2);
 
-void expression(TStack<string>*& st1, TStack<string>*& st2, vector<string>& express); //работа с выражением
+void expression(TStack<string>*& st1, TStack<string>*& st2, const vector<string>& express); //работа с выражением
 
-void add_elem(vector<string>& express, int curr, string elem);
+void add_elem(vector<string>& express, int curr, const string& elem);
 
 vector<string> read(const string& str);
 
 void print_stack(TStack<string>*& st1, TStack<string>*& st2);
 
-double calculate(TStack<string>*& st1,TStack<string>*& st2, map<string, double>& var);
+double calculate(TStack<double>*& st1,TStack<string>*& st2, map<string, double>& var); // !!! st2 - это стек вещественных значений
 
 
 //На массивах
