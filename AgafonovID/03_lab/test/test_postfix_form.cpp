@@ -60,3 +60,12 @@ TEST(ArExpressionTest, convert_to_postfix_with_nested_parentheses) {
     std::vector<std::string> expected = { "1", "2", "+", "3", "*", "4", "-" };
     EXPECT_EQ(expr.getPostfix(), expected);
 }
+
+//разбить тесты отдельно постфикс отдельно вычисления + тесты готового выражения
+
+TEST(ArExpressionTest, convert_to_postfix_1) {
+    ArExpression expr("A+B", ARRAY_STACK);
+    std::vector<std::string> expected = { "A", "B", "+"};
+    EXPECT_EQ(expr.getPostfix(), expected);
+}
+
