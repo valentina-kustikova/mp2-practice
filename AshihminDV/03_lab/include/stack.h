@@ -5,6 +5,7 @@ template<typename TElem>
 class Stack
 {
 public:
+	virtual ~Stack() {};
 	virtual void Push(const TElem& el) = 0;
 	virtual TElem Top() const = 0;
 	virtual void pop() = 0;

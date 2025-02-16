@@ -9,7 +9,7 @@ TArithmeticExpression::TArithmeticExpression(const std::string& infx, Stack_type
 
 void TArithmeticExpression::ToPostfix()
 {
-	Stack_type<char>* operators;
+	Stack<char>* operators = nullptr;
 	stack_allocate(operators, this->type);
 	std::string VremPerem;
 	char stackItem;
@@ -20,35 +20,35 @@ void TArithmeticExpression::ToPostfix()
 		switch (item)
 		{
 		case '(':
-			operators.Push(item);
+			operators->Push(item);
 			break;
 		case ')':
-			stackItem = operators.Top();
-			operators.pop();
+			stackItem = operators->Top();
+			operators->pop();
 			while (stackItem != '(')
 			{
 				postfix += stackItem;
 				postfixx.push_back(std::string(1, stackItem));
-				stackItem = operators.Top();
-				operators.pop();
+				stackItem = operators->Top();
+				operators->pop();
 			}
 			break;
 		case'+':case'-':case'*':case'/':
-			while (!operators.is_empty())
+			while (!operators->is_empty())
 			{
-				stackItem = operators.Top();
+				stackItem = operators->Top();
 				if (priority[item] <= priority[stackItem])
 				{
 					postfix += stackItem;
 					postfixx.push_back(std::string(1, stackItem));
-					operators.pop();
+					operators->pop();
 				}
 				else
 				{
 					break;
 				}
 			}
-			operators.Push(item);
+			operators->Push(item);
 			break;
 		default:
 			allocation_operand(i, item);
@@ -56,12 +56,13 @@ void TArithmeticExpression::ToPostfix()
 		}
 		i++;
 	}
-	while (!operators.is_empty())
+	while (!operators->is_empty())
 	{
-		postfix += operators.Top();
-		postfixx.push_back(std::string(1, operators.Top()));
-		operators.pop();
+		postfix += operators->Top();
+		postfixx.push_back(std::string(1, operators->Top()));
+		operators->pop();
 	}
+	delete operators;
 }
 
 void TArithmeticExpression::allocation_operand(int &i, char item)
@@ -105,7 +106,9 @@ void TArithmeticExpression::input_value()
 double TArithmeticExpression::Calculate()
 {
 	std::string Vrem;
-	array_stack<double> promPodsch(postfixx.size());
+	//array_stack<double> promPodsch(postfixx.size());
+	Stack<double>* promPodsch = nullptr;
+	stack_allocate(promPodsch, this->type);
 	double top1, top2;
 	double inValue;
 	this->input_value();
@@ -114,40 +117,40 @@ double TArithmeticExpression::Calculate()
 	{
 		if (operands.find(postfixx[i]) != operands.end())
 		{
-			promPodsch.Push(operands.find(postfixx[i])->second);
+			promPodsch->Push(operands.find(postfixx[i])->second);
 		}
 		else
 		{
 			switch (postfixx[i][0])
 			{
 			case'+':
-				top1 = promPodsch.Top();
-				promPodsch.pop();
-				top2 = promPodsch.Top();
-				promPodsch.pop();
-				promPodsch.Push(top1 + top2);
+				top1 = promPodsch->Top();
+				promPodsch->pop();
+				top2 = promPodsch->Top();
+				promPodsch->pop();
+				promPodsch->Push(top1 + top2);
 				break;
 			case'-':
-				top1 = promPodsch.Top();
-				promPodsch.pop();
-				top2 = promPodsch.Top();
-				promPodsch.pop();
-				promPodsch.Push(top2 - top1);
+				top1 = promPodsch->Top();
+				promPodsch->pop();
+				top2 = promPodsch->Top();
+				promPodsch->pop();
+				promPodsch->Push(top2 - top1);
 				break;
 			case'*':
-				top1 = promPodsch.Top();
-				promPodsch.pop();
-				top2 = promPodsch.Top();
-				promPodsch.pop();
-				promPodsch.Push(top1 * top2);
+				top1 = promPodsch->Top();
+				promPodsch->pop();
+				top2 = promPodsch->Top();
+				promPodsch->pop();
+				promPodsch->Push(top1 * top2);
 				break;
 			case'/':
 
-				top1 = promPodsch.Top();
-				promPodsch.pop();
-				top2 = promPodsch.Top();
-				promPodsch.pop();
-				promPodsch.Push(top2 / top1);
+				top1 = promPodsch->Top();
+				promPodsch->pop();
+				top2 = promPodsch->Top();
+				promPodsch->pop();
+				promPodsch->Push(top2 / top1);
 				break;
 
 			default:
@@ -156,7 +159,9 @@ double TArithmeticExpression::Calculate()
 			}
 		}
 	}
-	return promPodsch.Top();
+	double result = promPodsch->Top();
+	delete promPodsch;
+	return result;
 }
 
 void TArithmeticExpression::input_value(map<std::string, double> inp)
@@ -174,7 +179,9 @@ void TArithmeticExpression::input_value(map<std::string, double> inp)
 double TArithmeticExpression::Calculate(map<std::string, double> inp)
 {
 	std::string Vrem;
-	array_stack<double> promPodsch(postfixx.size());
+	//array_stack<double> promPodsch(postfixx.size());
+	Stack<double>* promPodsch = nullptr;
+	stack_allocate(promPodsch, this->type);
 	double top1, top2;
 	double inValue;
 	this->input_value(inp);
@@ -183,39 +190,39 @@ double TArithmeticExpression::Calculate(map<std::string, double> inp)
 	{
 		if (operands.find(postfixx[i]) != operands.end())
 		{
-			promPodsch.Push(operands.find(postfixx[i])->second);
+			promPodsch->Push(operands.find(postfixx[i])->second);
 		}
 		else
 		{
 			switch (postfixx[i][0])
 			{
 			case'+':
-				top1 = promPodsch.Top();
-				promPodsch.pop();
-				top2 = promPodsch.Top();
-				promPodsch.pop();
-				promPodsch.Push(top1 + top2);
+				top1 = promPodsch->Top();
+				promPodsch->pop();
+				top2 = promPodsch->Top();
+				promPodsch->pop();
+				promPodsch->Push(top1 + top2);
 				break;
 			case'-':
-				top1 = promPodsch.Top();
-				promPodsch.pop();
-				top2 = promPodsch.Top();
-				promPodsch.pop();
-				promPodsch.Push(top2 - top1);
+				top1 = promPodsch->Top();
+				promPodsch->pop();
+				top2 = promPodsch->Top();
+				promPodsch->pop();
+				promPodsch->Push(top2 - top1);
 				break;
 			case'*':
-				top1 = promPodsch.Top();
-				promPodsch.pop();
-				top2 = promPodsch.Top();
-				promPodsch.pop();
-				promPodsch.Push(top1 * top2);
+				top1 = promPodsch->Top();
+				promPodsch->pop();
+				top2 = promPodsch->Top();
+				promPodsch->pop();
+				promPodsch->Push(top1 * top2);
 				break;
 			case'/':
-				top1 = promPodsch.Top();
-				promPodsch.pop();
-				top2 = promPodsch.Top();
-				promPodsch.pop();
-				promPodsch.Push(top2 / top1);
+				top1 = promPodsch->Top();
+				promPodsch->pop();
+				top2 = promPodsch->Top();
+				promPodsch->pop();
+				promPodsch->Push(top2 / top1);
 				break;
 
 			default:
@@ -224,7 +231,9 @@ double TArithmeticExpression::Calculate(map<std::string, double> inp)
 			}
 		}
 	}
-	return promPodsch.Top();
+	double result = promPodsch->Top();
+	delete promPodsch;
+	return result;
 }
 
 //A*F-V/D+G

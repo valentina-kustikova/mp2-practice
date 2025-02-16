@@ -11,18 +11,18 @@ using namespace std;
 
 enum Stack_type
 {
-	array_stack = 0, 
-	list_stack = 1
+	arraystack = 0, 
+	liststack = 1
 };
 
 
 template <typename TElem> void stack_allocate(Stack<TElem>*& Stack, enum Stack_type type)
 {
-	if (type == array_stack)
+	if (type == arraystack)
 	{
 		Stack = new array_stack<TElem>(MAX_STACK_SIZE);
 	}
-	else if (type == list_stack)
+	else if (type == liststack)
 	{
 		Stack = new list_stack<TElem>();
 	}
