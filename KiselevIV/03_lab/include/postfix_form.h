@@ -12,6 +12,7 @@ template <typename TElem>
 void allocStack(stack<TElem>*& s, char stackType);
 double do_operation(char operation, double a, double b);
 char setStackType();
+double do_op(char op, double a, double b);
 
 class PostfixForm
 {
@@ -32,7 +33,7 @@ public:
         to_postfix();
     }
     void setOperands();
-    void setOperands(map<string, double> opernds);
+    void setOperands(const map<string, double>& opernds);
     string getInfix() const;
     string getPostfix() const;
     double calculate();

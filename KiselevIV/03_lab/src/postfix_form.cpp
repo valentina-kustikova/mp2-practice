@@ -161,7 +161,7 @@ void PostfixForm::setOperands()
         }
         catch (const invalid_argument& e) {
             if (name.find("+") == -1 && name.find("-") == -1 && name.find("*") == -1 &&
-                name.find("/") == -1)
+                name.find("/") == -1 && name != "(" && name != ")")
             {
                 if (operands.find(name) == operands.end()) {
                     cout << "Enter value of the " << name << endl;
@@ -173,7 +173,7 @@ void PostfixForm::setOperands()
     }
     return;
 }
-void PostfixForm::setOperands(map<string, double> opernds) {
+void PostfixForm::setOperands(const map<string, double>& opernds) {
     this->operands = opernds;
 }
 double PostfixForm::calculate()

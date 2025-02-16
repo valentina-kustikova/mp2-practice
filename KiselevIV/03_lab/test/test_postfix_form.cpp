@@ -152,3 +152,14 @@ TEST(PostfixForm, Lstack3)
     tmp.setOperands(operands);
     EXPECT_EQ(tmp.calculate(), -1);
 }
+TEST(Postfix_form, can_turn_infix_to_postfix_on_Astack4)
+{
+    PostfixForm tmp("A+(B-A)*C", 'A');
+    EXPECT_EQ(tmp.getPostfix(), "A B A - C * + ");
+}
+
+TEST(Postfix_form, can_turn_infix_to_postfix_on_Lstack4)
+{
+    PostfixForm tmp("A+(B-A)*C", 'L');
+    EXPECT_EQ(tmp.getPostfix(), "A B A - C * + ");
+}

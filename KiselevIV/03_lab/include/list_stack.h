@@ -28,13 +28,17 @@ public:
     }
     void pop()
     {
+        if (is_empty())
+        {
+            throw "EMPTY STACK";
+        }
         try
         {
             elems.remove(elems.first());
         }
         catch (...)
         {
-            throw "Stack is empty!";
+            throw "EMPTY STACK";
         }
     }
     bool is_full()const
