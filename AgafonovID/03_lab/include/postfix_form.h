@@ -25,24 +25,17 @@ private:
     Stack<std::string>* stack;
     STACK_IMPL stackType; 
     int getPriority(const std::string& op) const;
-
     bool isOperator(const std::string& el) const;
-
     bool isOperand(const std::string& el) const;
-
     bool isNumber(const std::string& s) const;
-
     std::vector<std::string> parse(const std::string& expression) const;
 
 public:
     ArExpression(const std::string& expr, STACK_IMPL impl);
-
     ~ArExpression();
 
     void convertToPostfix();
-
     double evaluate(const std::map<std::string, double>& values);
-
     std::vector<std::string> getPostfix() const;
 };
 #endif
