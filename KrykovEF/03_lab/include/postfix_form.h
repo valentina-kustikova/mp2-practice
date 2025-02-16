@@ -1,8 +1,10 @@
+#pragma once
 #include <iostream>
 #include <unordered_map>
 #include <string>
 #include <vector>
-#include "stack.h"
+#include "Array_stack.h"
+#include "List_stack.h"
 
 using namespace std;
 

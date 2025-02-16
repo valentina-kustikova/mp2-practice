@@ -1,4 +1,5 @@
-#include "stack.h"
+#include "Array_stack.h"
+#include "List_stack.h"
 
 #include <gtest.h>
 
