@@ -70,5 +70,5 @@ public:
 
 	
 	double Calculate();
-	double Calculate(map<std::string, double>);
+	double Calculate(const map<std::string, double>&);
 };

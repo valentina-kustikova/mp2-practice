@@ -176,7 +176,7 @@ void TArithmeticExpression::input_value(map<std::string, double> inp)
 	}
 }
 
-double TArithmeticExpression::Calculate(map<std::string, double> inp)
+double TArithmeticExpression::Calculate(const map<std::string, double>& inp)
 {
 	std::string Vrem;
 	//array_stack<double> promPodsch(postfixx.size());
