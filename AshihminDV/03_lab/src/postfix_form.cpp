@@ -106,7 +106,6 @@ void TArithmeticExpression::input_value()
 double TArithmeticExpression::Calculate()
 {
 	std::string Vrem;
-	//array_stack<double> promPodsch(postfixx.size());
 	Stack<double>* promPodsch = nullptr;
 	stack_allocate(promPodsch, this->type);
 	double top1, top2;
@@ -179,7 +178,6 @@ void TArithmeticExpression::input_value(map<std::string, double> inp)
 double TArithmeticExpression::Calculate(const map<std::string, double>& inp)
 {
 	std::string Vrem;
-	//array_stack<double> promPodsch(postfixx.size());
 	Stack<double>* promPodsch = nullptr;
 	stack_allocate(promPodsch, this->type);
 	double top1, top2;

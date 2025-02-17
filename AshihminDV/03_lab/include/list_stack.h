@@ -22,6 +22,20 @@ public:
 	}
 
 	bool is_full() const {
+		try
+		{
+			ListNode<TElem>* newNode = new ListNode<TElem>();
+			if (newNode == nullptr)
+			{
+				return true;
+			}
+			delete newNode;
+		}
+		catch (...)
+		{
+			return true;
+		}
+
 		return false; // !!!
 	}
 

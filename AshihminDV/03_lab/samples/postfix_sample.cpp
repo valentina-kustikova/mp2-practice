@@ -1,4 +1,3 @@
-//#include "Perem.h"
 #include "postfix_form.h"
 
 int main()
