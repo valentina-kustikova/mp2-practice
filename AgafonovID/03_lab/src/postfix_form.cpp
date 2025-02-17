@@ -100,7 +100,6 @@ double ArExpression::evaluate(const std::map<std::string, double>& values) {
             }
         }
     }
-
     double result = evalStack->Top();
     delete evalStack;
     return result;
@@ -187,6 +186,5 @@ std::vector<std::string> ArExpression::parse(const std::string& expression) cons
     if (!current.empty()) {
         elems.push_back(current);
     }
-
     return elems;
 }

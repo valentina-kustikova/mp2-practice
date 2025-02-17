@@ -67,7 +67,6 @@ TEST(ArExpressionTest, convert_to_postfix2) {
     EXPECT_EQ(expr.getPostfix(), expected);
 }
 
-// Вычисление
 TEST(ArExpressionTest, evaluate2) {
     ArExpression expr("A - B", LIST_STACK);
     std::map<std::string, double> values = { {"A", 1}, {"B", 3} };

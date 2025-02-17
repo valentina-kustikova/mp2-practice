@@ -24,6 +24,7 @@ private:
     std::map<std::string, double> variables;
     Stack<std::string>* stack;
     STACK_IMPL stackType; 
+
     int getPriority(const std::string& op) const;
     bool isOperator(const std::string& el) const;
     bool isOperand(const std::string& el) const;
