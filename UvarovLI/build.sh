@@ -7,9 +7,10 @@
 #   ./build.sh sample          — собрать пример
 #   ./build.sh 01_lab clean    — пересобрать с нуля
 #
-# Флаг CMAKE_POLICY_VERSION_MINIMUM нужен потому, что в шаблонах
-# указан cmake_minimum_required(VERSION 2.8), а CMake 4.x такие
-# проекты без него конфигурировать отказывается.
+# GTest скачивается автоматически при первой сборке (FetchContent),
+# поэтому первый запуск дольше и требует интернета.
+# Флаг CMAKE_POLICY_VERSION_MINIMUM оставлен на случай старых
+# шаблонов с cmake_minimum_required ниже 3.5.
 set -e
 
 DIR="${1:?Укажите директорию, например: ./build.sh 01_lab}"
