@@ -9,6 +9,7 @@
 #define __SET_H__
 
 #include "tbitfield.h"
+#include <algorithm>
 
 class TSet
 {
@@ -18,8 +19,8 @@ private:
 public:
   TSet(int mp);
   TSet(const TSet &s);       // конструктор копирования
-  TSet(const TBitField &bf); // конструктор преобразования типа
-  operator TBitField();      // преобразование типа к битовому полю
+  explicit TSet(const TBitField &bf); // конструктор преобразования типа
+  explicit operator TBitField();      // преобразование типа к битовому полю
   // доступ к битам
   int GetMaxPower(void) const;     // максимальная мощность множества
   void InsElem(const int Elem);       // включить элемент в множество
