@@ -15,10 +15,7 @@ TBitField::TBitField(int len)
 {
     if (len < 0) throw std::exception("Invalid length");
     BitLen = len;
-    //cout << "DBG " << len << " " << (sizeof(TELEM) << 3) - 1 << " " << len + (sizeof(TELEM) << 3) - 1 << " "
-    //    << ((len + ((sizeof(TELEM) << 3) - 1)) >> 5) << endl;
     MemLen = (len + ((sizeof(TELEM) << 3) - 1)) >> 5;
-    //cout << "MEMLEN = " << MemLen << endl;
     pMem = new TELEM[MemLen];
     for (int i = 0; i < MemLen; i++) pMem[i] = 0;
 }
@@ -36,14 +33,11 @@ TBitField::~TBitField()
 
 int TBitField::GetMemIndex(const int n) const // индекс Мем для бита n
 {
-    //cout << "n = " << n << " " << (n >> sizeof(TELEM)) << endl;
     return n >> 5;
 }
 
 TELEM TBitField::GetMemMask(const int n) const // битовая маска для бита n
 {
-    //cout << "n = " << n << " " << sizeof(TELEM) << " " << ((1 << sizeof(TELEM)) - 1) << " "
-    //    << (n & ((1 << sizeof(TELEM)) - 1)) << " " << (1 << (n & ((1 << sizeof(TELEM)) - 1))) << endl;
     return 1 << (n & ((sizeof(TELEM) << 3) - 1));
 }
 
@@ -57,7 +51,6 @@ int TBitField::GetLength(void) const // получить длину (к-во б�
 void TBitField::SetBit(const int n) // установить бит
 {
     if (n < 0 || n >= BitLen) throw std::exception("Invalid index");
-    //cout << "m = " <<  n << " " << "MemIndex = " << GetMemIndex(n) << " " << "MemMask = " << GetMemMask(n) << endl;
     pMem[GetMemIndex(n)] |= (GetMemMask(n));
 }
 
@@ -70,7 +63,6 @@ void TBitField::ClrBit(const int n) // очистить бит
 int TBitField::GetBit(const int n) const // получить значение бита
 {
     if (n < 0 || n >= BitLen) throw std::exception("Invalid Index");
-    //cout << "GET: " << GetMemIndex(n) << " " << GetMemMask(n) << " " << (pMem[GetMemIndex(n)] & GetMemMask(n)) << endl;
     return (pMem[GetMemIndex(n)] & GetMemMask(n)) >> (n & ((sizeof(TELEM) << 3) - 1));
 }
 
