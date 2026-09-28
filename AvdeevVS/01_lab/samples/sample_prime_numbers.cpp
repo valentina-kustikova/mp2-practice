@@ -17,7 +17,7 @@
 int main()
 {
   int n, m, k, count;
-
+  system("color F0"); //5-violet 0-black
   setlocale(LC_ALL, "Russian");
   cout << "Тестирование программ поддержки битового поля" << endl;
   cout << "             Решето Эратосфена" << endl;
@@ -57,7 +57,7 @@ int main()
 int main()
 {
   int n, m, k, count;
-
+  system("color F0"); //5-violet 0-black
   setlocale(LC_ALL, "Russian");
   cout << "Тестирование программ поддержки множества" << endl;
   cout << "              Решето Эратосфена" << endl;

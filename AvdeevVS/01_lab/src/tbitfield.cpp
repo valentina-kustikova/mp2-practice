@@ -12,12 +12,13 @@
 //static TBitField FAKE_BITFIELD(1);
 
 static const unsigned NUM_OF_BITS_IN_UNSIGNED = 32;
+static const unsigned POWER_OF_TWO = 5;
 
 TBitField::TBitField(int len){
   if (len < 0) throw invalid_argument("The len of TBitField is less than zero");
   this->BitLen = len;
-  if (BitLen - NUM_OF_BITS_IN_UNSIGNED * (BitLen >> 5) == 0) MemLen = BitLen >> 5;
-  else MemLen = (BitLen >> 5) + 1;
+  if (BitLen - NUM_OF_BITS_IN_UNSIGNED * (BitLen >> POWER_OF_TWO) == 0) MemLen = BitLen >> POWER_OF_TWO;
+  else MemLen = (BitLen >> POWER_OF_TWO) + 1;
   if(MemLen>0) this->pMem = new TELEM[MemLen]();
   else pMem = nullptr;
 }
@@ -25,20 +26,20 @@ TBitField::TBitField(int len){
 TBitField::TBitField(const TBitField &bf){ // конструктор копирования
   this->BitLen = bf.BitLen;
   this->MemLen = bf.MemLen;
-  if (MemLen > 0){
-    this->pMem = new TELEM[this->MemLen];
-    for (int i = 0; i < this->MemLen; i++) {
-      pMem[i] = bf.pMem[i]; 
-     }
+  this->pMem = nullptr;
+  if (MemLen > 0) {
+      this->pMem = new TELEM[this->MemLen];
+      for (int i = 0; i < this->MemLen; i++) {
+          pMem[i] = bf.pMem[i];
+      }
   }
-  else this->pMem = nullptr;
 }
 
 TBitField::~TBitField(){ delete[] pMem; }
 
 int TBitField::GetMemIndex(const int n) const // индекс Мем для бита n
 {
-  return n >> 5;
+  return n >> POWER_OF_TWO;
   //return FAKE_INT;
 }
 
@@ -71,7 +72,7 @@ void TBitField::ClrBit(const int n) // очистить бит
 int TBitField::GetBit(const int n) const // получить значение бита
 {
   if (n < 0 || n >= BitLen) throw std::out_of_range("TBitField::GetBit: index out of range");
-  return (pMem[GetMemIndex(n)]&GetMemMask(n)) >> (n - NUM_OF_BITS_IN_UNSIGNED * (n >> 5));
+  return (pMem[GetMemIndex(n)]&GetMemMask(n)) >> (n - NUM_OF_BITS_IN_UNSIGNED * (n >> POWER_OF_TWO));
   //return FAKE_INT;
 }
 
@@ -80,35 +81,40 @@ int TBitField::GetBit(const int n) const // получить значение б
 const TBitField& TBitField::operator=(const TBitField &bf) // присваивание
 {   
   if (this == &bf) return *this;
+
   this->BitLen = bf.BitLen;
   this->MemLen = bf.MemLen;
-  delete[] this->pMem;
-  if (this->MemLen > 0) {
+ 
+  if (this->MemLen == bf.MemLen) {
     pMem = new TELEM[this->MemLen];
     for (int i = 0; i < this->MemLen; i++) {
       pMem[i] = bf.pMem[i];
     }
+    return *this;
   }
-  else this->pMem = nullptr;
-  return *this;
+  else {
+      delete[] this->pMem;
+      pMem = new TELEM[this->MemLen];
+      for (int i = 0; i < this->MemLen; i++) {
+          pMem[i] = bf.pMem[i];
+      }
+      return *this;
+  }
 }
 
 int TBitField::operator==(const TBitField &bf) const{// сравнение
-  int flag = 1;
   if (BitLen != bf.BitLen) return 0;
   for (int i = 0; i < MemLen; i++) {
     if (pMem[i] != bf.pMem[i]) {
-      flag = 0;
-      break;
+        return 0;
     }
   }
-  return flag;
+  return 1;
   //return FAKE_INT;
 }
 
 int TBitField::operator!=(const TBitField &bf) const{ // сравнение
-  if (*this == bf) return 0;
-  return 1;
+  return !(*this == bf);
   //return FAKE_INT;
 }
 
@@ -176,12 +182,16 @@ istream &operator>>(istream &istr, TBitField &bf) // ввод
 
 ostream &operator<<(ostream &ostr, const TBitField &bf) // вывод
 {   
-  for (int i = 0; i < bf.MemLen; i++) {
+  /*for (int i = 0; i < bf.MemLen; i++) {
     ostr << " | ";
     for (int j = NUM_OF_BITS_IN_UNSIGNED - 1; j >= 0; j--)
       ostr << ((bf.pMem[i] >> j) & 1);
     ostr << "(" << bf.pMem[i] << ")";
   }
-  ostr << "|";
+  ostr << "|";*/
+   //change of realese
+   for (int i = 0; i < bf.MemLen; i++)
+       for (int j = 0; j < NUM_OF_BITS_IN_UNSIGNED; j++)
+           ostr << ((bf.pMem[i] >> j) & 1);
   return ostr;
 }
