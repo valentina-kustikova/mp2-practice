@@ -16,7 +16,7 @@ static const int Mem = 32;
 TBitField::TBitField(int len)
 {
     if (len < 0)
-        throw "Incorrect argument";
+        throw std::exception("Incorrect argument");//надо std::exception
     BitLen = len;
     if (BitLen - Mem * (BitLen >> 5) == 0)
         MemLen = BitLen >> 5;
@@ -48,7 +48,7 @@ int TBitField::GetMemIndex(const int n) const // индекс Мем для би
 
 TELEM TBitField::GetMemMask(const int n) const // битовая маска для бита n
 {
-    return static_cast<TELEM>((1) << (n - Mem*(n>>5)));
+    return ((1) << (n - Mem*GetMemIndex(n)));
 }
 
 // доступ к битам битового поля
@@ -61,7 +61,7 @@ int TBitField::GetLength(void) const // получить длину (к-во б�
 void TBitField::SetBit(const int n) // установить бит
 {
     if ((n > BitLen) || (n < 0))
-        throw "index out of range";
+        throw std::exception("index out of range");
     else
         pMem[GetMemIndex(n)] |= GetMemMask(n);
 }
@@ -69,7 +69,7 @@ void TBitField::SetBit(const int n) // установить бит
 void TBitField::ClrBit(const int n) // очистить бит
 {
     if ((n > BitLen) || (n < 0))
-        throw "index out of range";
+        throw std::exception("index out of range");
     else
         pMem[GetMemIndex(n)] &= (~GetMemMask(n));
 }
@@ -77,7 +77,7 @@ void TBitField::ClrBit(const int n) // очистить бит
 int TBitField::GetBit(const int n) const // получить значение бита
 {
     if ((n > BitLen) || (n < 0))
-        throw "index out of range";
+        throw std::exception("index out of range");
     else
         return (pMem[GetMemIndex(n)] & GetMemMask(n)) >> (n - Mem * (n >> 5));
 }
@@ -137,6 +137,11 @@ int TBitField::operator!=(const TBitField &bf) const // сравнение
 
 TBitField TBitField::operator|(const TBitField &bf) // операция "или"
 {
+    if (BitLen > bf.BitLen)
+        int MaxLen = BitLen;
+    else
+        int MaxLen = bf.BitLen;
+
     return FAKE_BITFIELD;
 }
 
