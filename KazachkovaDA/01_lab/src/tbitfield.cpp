@@ -136,11 +136,11 @@ int TBitField::operator!=(const TBitField &bf) const // сравнение
 
 TBitField TBitField::operator|(const TBitField &bf) // операция "или"
 {
-    int MaxMemLen = max(MemLen, bf.MemLen);
-    int MinBitLen = min(BitLen, bf.BitLen);
-    TBitField NewSet(MaxMemLen);
+    int MaxBitLen = max(BitLen, bf.BitLen);
+    int MinMemLen = min(MemLen, bf.MemLen);
+    TBitField NewSet(MaxBitLen);
     int i;
-    for (i = 0; i < MinBitLen; i++)
+    for (i = 0; i < MinMemLen; i++)
         NewSet.pMem[i] = pMem[i] | bf.pMem[i];
     while (i < MemLen)
     {
@@ -157,10 +157,10 @@ TBitField TBitField::operator|(const TBitField &bf) // операция "или"
 
 TBitField TBitField::operator&(const TBitField &bf) // операция "и"
 {
-    int MaxMemLen = max(MemLen, bf.MemLen);
-    int MinBitLen = min(BitLen, bf.BitLen);
-    TBitField NewSet(MaxMemLen);
-    for (int i = 0; i < MinBitLen; i++)
+    int MaxBitLen = max(BitLen, bf.BitLen);
+    int MinMemLen = min(MemLen, bf.MemLen);
+    TBitField NewSet(MaxBitLen);
+    for (int i = 0; i < MinMemLen; i++)
         NewSet.pMem[i] = pMem[i] & bf.pMem[i];
     return NewSet;
 }
@@ -168,13 +168,13 @@ TBitField TBitField::operator&(const TBitField &bf) // операция "и"
 TBitField TBitField::operator~(void) // отрицание
 {
     TBitField NewSet(BitLen);
-    for (int i = 0; i < BitLen; i++)
+    for (int i = 0; i < MemLen; i++)
     {
-        if (pMem[i] == 0)
-            NewSet.SetBit(i);
-        else
-            NewSet.ClrBit(i);
+        NewSet.pMem[i] = ~pMem[i];
     }
+    int extra = BitLen << Pow;
+    if (extra != 0 && NewSet.MemLen > 0)
+        NewSet.pMem[MemLen - 1] &= (1 << (BitLen & (Mem - 1))) - 1;
     return NewSet;
 }
 
@@ -185,7 +185,7 @@ istream &operator>>(istream &istr, TBitField &bf) // ввод
     string s;
     istr >> s;
     for (int i = 0; i < s.size(); i++)
-        if (s[i] == 1)
+        if (s[i] == '1')
             bf.SetBit(i);
     return istr;
 }
@@ -193,6 +193,6 @@ istream &operator>>(istream &istr, TBitField &bf) // ввод
 ostream &operator<<(ostream &ostr, const TBitField &bf) // вывод
 {   
     for (int i = 0; i < bf.BitLen; i++)
-        ostr << bf.pMem[i];
+        ostr << bf.GetBit(i);
     return ostr;
 }
