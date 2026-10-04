@@ -111,9 +111,11 @@ TSet TSet::operator~(void) // дополнение
 
 istream &operator>>(istream &istr, TSet &s) // ввод
 {
-    istr >> s.MaxPower;
-    int elem;
-    for (int i = 0; i < s.MaxPower; i++) {
+    int power, elem;
+    cout << "Insert Power of set: ";
+    istr >> power;
+    cout << "Insert elements of set: ";
+    for (int i = 0; i < power; i++) {
         istr >> elem;
         s.InsElem(elem);
     }
@@ -125,5 +127,6 @@ ostream& operator<<(ostream &ostr, const TSet &s) // вывод
     for (int i = 0; i < s.MaxPower; i++) {
         if (s.IsMember(i)) ostr << i << " ";
     }
+    ostr << endl;
     return ostr;
 }

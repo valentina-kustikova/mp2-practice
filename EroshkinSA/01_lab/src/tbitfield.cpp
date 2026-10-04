@@ -75,7 +75,7 @@ const TBitField& TBitField::operator=(const TBitField &bf) // присваива
     if (this == &bf) return *this;
     if (BitLen != bf.BitLen) {
         delete[] pMem;
-        pMem = new TELEM[MemLen];
+        pMem = new TELEM[bf.MemLen];
     }
     BitLen = bf.BitLen;
     MemLen = bf.MemLen;
