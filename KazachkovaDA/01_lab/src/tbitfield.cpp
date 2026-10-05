@@ -7,10 +7,6 @@
 
 #include "tbitfield.h"
 
-// Fake variables used as placeholders in tests
-static const int FAKE_INT = -1;
-static TBitField FAKE_BITFIELD(1);
-
 static const int Mem = 32;
 static const int Pow = 5;
 
@@ -60,25 +56,22 @@ int TBitField::GetLength(void) const // получить длину (к-во б�
 void TBitField::SetBit(const int n) // установить бит
 {
     if ((n < 0)||(n >= BitLen))
-        throw std::exception("index out of range1");
-    else
-        pMem[GetMemIndex(n)] |= GetMemMask(n);
+        throw std::exception("index out of range");
+    pMem[GetMemIndex(n)] |= GetMemMask(n);
 }
 
 void TBitField::ClrBit(const int n) // очистить бит
 {
     if ((n < 0) || (n >= BitLen))
-        throw std::exception("index out of range2");
-    else
-        pMem[GetMemIndex(n)] &= (~GetMemMask(n));
+        throw std::exception("index out of range");
+    pMem[GetMemIndex(n)] &= (~GetMemMask(n));
 }
 
 int TBitField::GetBit(const int n) const // получить значение бита
 {
     if ((n < 0) || (n >= BitLen))
-        throw std::exception("index out of range3");
-    else
-        return (pMem[GetMemIndex(n)] & GetMemMask(n)) >> (n - Mem * (n >> Pow));
+        throw std::exception("index out of range");
+    return (pMem[GetMemIndex(n)] & GetMemMask(n)) >> (n - Mem * (n >> Pow));
 }
  
 // битовые операции
@@ -87,10 +80,13 @@ const TBitField& TBitField::operator=(const TBitField &bf) // присваива
 {
     if (this == &bf)
         return *this;
-    BitLen = bf.BitLen;
-    MemLen = bf.MemLen;
-    delete[] pMem;
-    pMem = new TELEM[MemLen];
+    if (BitLen != bf.BitLen)
+    {
+        BitLen = bf.BitLen;
+        MemLen = bf.MemLen;
+        delete[] pMem;
+        pMem = new TELEM[MemLen];
+    }
     for (int i = 0; i < MemLen; i++)
     {
         pMem[i] = bf.pMem[i];
@@ -118,20 +114,7 @@ int TBitField::operator==(const TBitField &bf) const // сравнение
 
 int TBitField::operator!=(const TBitField &bf) const // сравнение
 {
-    int flag = 0;
-    if (BitLen != bf.BitLen)
-    {
-        return 1;
-    }
-    for (int i = 0; i < MemLen; i++)
-    {
-        if (pMem[i] != bf.pMem[i])
-        {
-            flag = 1;
-            break;
-        }
-    }
-    return flag;
+    return  ~(*this == bf);
 }
 
 TBitField TBitField::operator|(const TBitField &bf) // операция "или"

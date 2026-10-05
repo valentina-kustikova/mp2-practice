@@ -7,11 +7,6 @@
 
 #include "tset.h"
 
-// Fake variables used as placeholders in tests
-//static const int FAKE_INT = -1;
-//static TBitField FAKE_BITFIELD(1);
-//static TSet FAKE_SET(1);
-
 TSet::TSet(int mp) : BitField(mp)
 {
     if (mp < 0)
@@ -68,7 +63,7 @@ const TSet& TSet::operator=(const TSet &s) // присваивание
 
 int TSet::operator==(const TSet &s) const // сравнение
 {
-    if ((MaxPower == s.MaxPower) && (BitField == s.BitField))
+    if (this == &s)//убрать сравнение максповер
         return 1;
     else
         return 0;
@@ -76,10 +71,7 @@ int TSet::operator==(const TSet &s) const // сравнение
 
 int TSet::operator!=(const TSet &s) const // сравнение
 {
-    if ((MaxPower == s.MaxPower) && (BitField == s.BitField))
-        return 0;
-    else
-        return 1;
+    return ~(*this == s);
 }
 
 TSet TSet::operator+(const TSet &s) // объединение
@@ -87,7 +79,7 @@ TSet TSet::operator+(const TSet &s) // объединение
     int MaxLen = max(s.MaxPower, MaxPower);
     TSet NewTSet(MaxLen);
     NewTSet.BitField = BitField | s.BitField;
-    return NewTSet;
+    return NewTSet;//создать множество через конструктор с двумя битфилдмами
 }
 
 TSet TSet::operator+(const int Elem) // объединение с элементом
@@ -109,7 +101,7 @@ TSet TSet::operator*(const TSet &s) // пересечение
     int MaxLen = max(s.MaxPower, MaxPower);
     TSet NewTSet(MaxLen);
     NewTSet.BitField = BitField & s.BitField;
-    return NewTSet;
+    return NewTSet;//см выше
 }
 
 TSet TSet::operator~(void) // дополнение
