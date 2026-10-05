@@ -109,15 +109,14 @@ TSet TSet::operator~(void) // дополнение
 
 istream &operator>>(istream &istr, TSet &s) // ввод
 {
-  /*istr >> s.BitField; //
-  return istr;*/
-    istr >> s.MaxPower;
-    int elem;
-    for (int i = 0;i < s.MaxPower;i++) {
-        istr >> elem;
-        s.InsElem(elem);
+    int x;
+    while (istr >> x) {
+        if (x < 0 || x >= s.MaxPower) {
+            istr.setstate(ios::failbit);
+            return istr;
+        }
+        s.InsElem(x);
     }
-    return istr;
 }
 
 ostream& operator<<(ostream &ostr, const TSet &s) // вывод
