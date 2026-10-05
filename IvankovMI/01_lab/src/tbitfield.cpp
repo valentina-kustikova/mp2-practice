@@ -5,6 +5,7 @@
 //
 // Битовое поле
 
+#include <stdexcept>
 #include "tbitfield.h"
 
 namespace {
@@ -13,7 +14,10 @@ namespace {
 
 TBitField::TBitField(int len)
 {
-    BitLen = (len > 0) ? len : 0;
+    if (len < 0)
+        throw std::invalid_argument("TBitField: length cannot be negative");
+
+    BitLen = len;
     MemLen = (BitLen + BITS_PER_ELEM - 1) / BITS_PER_ELEM;
 
     if (MemLen > 0) {
@@ -65,16 +69,25 @@ int TBitField::GetLength(void) const // получить длину (к-во б�
 
 void TBitField::SetBit(const int n) // установить бит
 {
+    if (n < 0 || n >= BitLen)
+        throw std::out_of_range("TBitField::SetBit: index out of range");
+
     pMem[GetMemIndex(n)] |= GetMemMask(n);
 }
 
 void TBitField::ClrBit(const int n) // очистить бит
 {
+    if (n < 0 || n >= BitLen)
+        throw std::out_of_range("TBitField::ClrBit: index out of range");
+
     pMem[GetMemIndex(n)] &= ~GetMemMask(n);
 }
 
 int TBitField::GetBit(const int n) const // получить значение бита
 {
+    if (n < 0 || n >= BitLen)
+        throw std::out_of_range("TBitField::GetBit: index out of range");
+
     return (pMem[GetMemIndex(n)] & GetMemMask(n)) ? 1 : 0;
 }
 
