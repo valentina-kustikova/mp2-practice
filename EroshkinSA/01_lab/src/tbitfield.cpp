@@ -7,9 +7,6 @@
 
 #include "tbitfield.h"
 
-// Fake variables used as placeholders in tests
-static const int FAKE_INT = -1;
-static TBitField FAKE_BITFIELD(1);
 static const int POW = 5;
 static const int BITS_IN_CELL = 32;
 
