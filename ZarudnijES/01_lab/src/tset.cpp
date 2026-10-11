@@ -105,12 +105,17 @@ TSet TSet::operator~(void) {
 // перегрузка ввода/вывода
 
 istream& operator>>(istream& istr, TSet& s) {
-    for (int i = 0; i < s.MaxPower; i++) {
-        int bit;
-        istr >> bit;
-        if (bit) s.BitField.SetBit(i);
-        else     s.BitField.ClrBit(i);
+    for (int i = 0; i < s.GetMaxPower(); i++) {
+        s.BitField.ClrBit(i);
     }
+    int elem;
+    while (istr >> elem) {
+        if (elem < 0 || elem >= s.GetMaxPower()) {
+            throw std::out_of_range("element out of universe");
+        }
+        s.InsElem(elem);
+    }
+    istr.clear();
     return istr;
 }
 

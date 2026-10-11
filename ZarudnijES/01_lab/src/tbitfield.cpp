@@ -57,6 +57,13 @@ void TBitField::SetBit(const int n) {
 void TBitField::ClrBit(const int n) {
     if (n < 0 || n >= BitLen) throw std::out_of_range("index out of range");
     pMem[GetMemIndex(n)] = pMem[GetMemIndex(n)] & ~GetMemMask(n);
+
+    int lastbit = BitLen % (sizeof(TELEM) * 8);
+    if (lastbit == 0) return;
+
+    for (int i = lastbit; i < sizeof(TELEM) * 8; i++) {
+        pMem[MemLen - 1] &= ~(1 << i);
+    }
 }
 
 int TBitField::GetBit(const int n) const {
@@ -68,12 +75,20 @@ int TBitField::GetBit(const int n) const {
 
 const TBitField& TBitField::operator=(const TBitField& bf) {
     if (this == &bf) return *this;
-    delete[] pMem;
-    BitLen = bf.BitLen;
-    MemLen = bf.MemLen;
-    pMem = new TELEM[MemLen];
-    for (int i = 0; i < MemLen; i++) {
-        pMem[i] = bf.pMem[i];
+    if (MemLen == bf.MemLen) {
+        BitLen = bf.BitLen;
+        for (int i = 0; i < MemLen; i++) {
+            pMem[i] = bf.pMem[i];
+        }
+    }
+    else {
+        delete[] pMem;
+        BitLen = bf.BitLen;
+        MemLen = bf.MemLen;
+        pMem = new TELEM[MemLen];
+        for (int i = 0; i < MemLen; i++) {
+            pMem[i] = bf.pMem[i];
+        }
     }
     return *this;
 }
