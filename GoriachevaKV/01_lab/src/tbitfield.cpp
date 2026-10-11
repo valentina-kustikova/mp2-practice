@@ -17,7 +17,7 @@ static const int BITS = sizeof(TELEM) * 8;
 TBitField::TBitField(int len)
 {
     if (len < 0) {
-        //throw std::invalid_argument("TBitField: negative length");
+        throw std::invalid_argument("TBitField: negative length");
     }
 
     BitLen = len;
@@ -95,20 +95,21 @@ int TBitField::GetBit(const int n) const // получить значение б
 
 const TBitField& TBitField::operator=(const TBitField &bf) // присваивание
 {
-    TELEM* newMem = nullptr;
-
-    if (bf.MemLen > 0) {
-        newMem = new TELEM[bf.MemLen];
-        for (int i = 0; i < bf.MemLen; i++) {
-            newMem[i] = bf.pMem[i];
-        }
+    if (&bf == this) {
+        return *this;
     }
 
-    delete[] pMem;
+    if (MemLen != bf.MemLen) {
+        delete[] pMem;
+        pMem = new TELEM[bf.MemLen];
+    }
 
     BitLen = bf.BitLen;
-    pMem = newMem;
     MemLen = bf.MemLen;
+
+    for (int i = 0; i < bf.MemLen; i++) {
+        pMem[i] = bf.pMem[i];
+    }
 
     return *this;
 }
@@ -129,16 +130,7 @@ int TBitField::operator==(const TBitField &bf) const // сравнение
 
 int TBitField::operator!=(const TBitField &bf) const // сравнение
 {
-    if (BitLen != bf.BitLen)
-        return 1;
-
-    for (int i = 0; i < MemLen; i++) {
-        if (pMem[i] != bf.pMem[i]) {
-            return 1;
-        }
-    }
-
-    return 0;
+    return !(*this == bf);
 }
 
 TBitField TBitField::operator|(const TBitField &bf) // операция "или"
