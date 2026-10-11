@@ -54,17 +54,7 @@ void TBitField::ClrBit(const int n) {
         throw std::out_of_range("Такого бита в поле нет!");
     }
 
-    int MemIndex = GetMemIndex(n);
-    this->pMem[MemIndex] &= ~GetMemMask(n);
-
-
-    if (MemIndex == this->MemLen - 1) {
-        int lenMaskForResetZero = this->BitLen & ((sizeof(TELEM) << BIT_SHIFTING) - 1);
-        if (lenMaskForResetZero != 0) {
-            TELEM maskForResetZero = (TELEM(1) << lenMaskForResetZero) - 1;
-            this->pMem[MemIndex] &= maskForResetZero;
-        }
-    }
+    this->pMem[GetMemIndex(n)] &= ~GetMemMask(n);
 }
 
 int TBitField::GetBit(const int n) const {
@@ -78,16 +68,17 @@ int TBitField::GetBit(const int n) const {
 const TBitField& TBitField::operator=(const TBitField &bf) {
     if (this == &bf) return *this;
 
-    TELEM* temp = new TELEM[bf.MemLen];
-    for (int i = 0; i < bf.MemLen; i++) {
-        temp[i] = bf.pMem[i];
+    if (this->MemLen != bf.MemLen) {
+        TELEM* newPMem = new TELEM[bf.MemLen];
+        delete[] this->pMem;
+        this->pMem = newPMem;
+        this->MemLen = bf.MemLen;
     }
-    delete[] this->pMem;
-    this->pMem = temp;
-    this->MemLen = bf.MemLen;
-    this->BitLen = bf.BitLen;
 
-    //создавать только в случае разного размера
+    for (int i = 0; i < bf.MemLen; i++) {
+        this->pMem[i] = bf.pMem[i];
+    }
+    this->BitLen = bf.BitLen;
 
     return *this;
 }
