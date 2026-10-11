@@ -112,14 +112,31 @@ TSet TSet::operator~(void) // дополнение
 
 // перегрузка ввода/вывода
 
-istream &operator>>(istream &istr, TSet &s) // ввод
-{
-    istr >> s.BitField;
+istream& operator>>(istream& istr, TSet& s) {
+    for (int i = 0; i < s.GetMaxPower(); i++) {
+        s.BitField.ClrBit(i);
+    }
+    int elem;
+    while (istr >> elem) {
+        if (elem < 0 || elem >= s.GetMaxPower()) {
+            throw std::out_of_range("element out of universe");
+        }
+        s.InsElem(elem);
+    }
+    istr.clear();
     return istr;
 }
 
-ostream& operator<<(ostream &ostr, const TSet &s) // вывод
-{
-    ostr << s.BitField;
+ostream& operator<<(ostream& ostr, const TSet& s) {
+    ostr << "{";
+    bool first = true;
+    for (int i = 0; i < s.MaxPower; i++) {
+        if (s.BitField.GetBit(i)) {
+            if (!first) ostr << ", ";
+            ostr << i;
+            first = false;
+        }
+    }
+    ostr << "}";
     return ostr;
 }
