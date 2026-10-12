@@ -11,10 +11,11 @@
 static const int FAKE_INT = -1;
 static TBitField FAKE_BITFIELD(1);
 
+
 TBitField::TBitField(int len) {
     if (len < 0) throw std::invalid_argument("length cannot be negative");
     BitLen = len;
-    MemLen = (BitLen + sizeof(TELEM) * 8 - 1) / (sizeof(TELEM) * 8);
+    MemLen = (BitLen + size_of_Memlen - 1) / size_of_Memlen;
     pMem = new TELEM[MemLen];
     for (int i = 0; i < MemLen; i++) {
         pMem[i] = 0;
@@ -36,11 +37,11 @@ TBitField::~TBitField() {
 
 int TBitField::GetMemIndex(const int n) const {
     if (n < 0 || n >= BitLen) throw std::out_of_range("index out of range");
-    return n / (sizeof(TELEM) * 8);
+    return n / size_of_Memlen;
 }
 
 TELEM TBitField::GetMemMask(const int n) const {
-    return 1 << (n % (sizeof(TELEM) * 8));
+    return 1 << (n % size_of_Memlen);
 }
 
 // доступ к битам битового поля
@@ -58,10 +59,10 @@ void TBitField::ClrBit(const int n) {
     if (n < 0 || n >= BitLen) throw std::out_of_range("index out of range");
     pMem[GetMemIndex(n)] = pMem[GetMemIndex(n)] & ~GetMemMask(n);
 
-    int lastbit = BitLen % (sizeof(TELEM) * 8);
+    int lastbit = BitLen % size_of_Memlen;
     if (lastbit == 0) return;
 
-    for (int i = lastbit; i < sizeof(TELEM) * 8; i++) {
+    for (int i = lastbit; i < size_of_Memlen; i++) {
         pMem[MemLen - 1] &= ~(1 << i);
     }
 }
@@ -143,10 +144,11 @@ TBitField TBitField::operator~(void) {
     for (int i = 0; i < MemLen; i++) {
         res.pMem[i] = ~pMem[i];
     }
-    int lastBits = BitLen % (sizeof(TELEM) * 8);
+    int lastBits = BitLen % size_of_Memlen;
     if (lastBits != 0) {
-        TELEM mask = (1 << lastBits) - 1;
-        res.pMem[MemLen - 1] = res.pMem[MemLen - 1] & mask;
+        for (int i = lastBits; i < size_of_Memlen; i++) {
+            res.pMem[MemLen - 1] = res.pMem[MemLen - 1] & ~(1 << i);
+        }   
     }
     return res;
 }

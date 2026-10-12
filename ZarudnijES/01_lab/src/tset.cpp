@@ -7,10 +7,6 @@
 
 #include "tset.h"
 
-// Fake variables used as placeholders in tests
-static const int FAKE_INT = -1;
-static TBitField FAKE_BITFIELD(1);
-static TSet FAKE_SET(1);
 
 TSet::TSet(int mp) : BitField(mp) {
     MaxPower = mp;
@@ -97,9 +93,8 @@ TSet TSet::operator*(const TSet& s) {
 }
 
 TSet TSet::operator~(void) {
-    TSet res(*this);
-    res.BitField = ~BitField;
-    return res;
+    this->BitField = ~(this->BitField);
+    return *this;
 }
 
 // перегрузка ввода/вывода

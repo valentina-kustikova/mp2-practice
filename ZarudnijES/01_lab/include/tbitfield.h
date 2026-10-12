@@ -7,6 +7,7 @@
 
 #ifndef __BITFIELD_H__
 #define __BITFIELD_H__
+const int size_of_Memlen = 32;
 
 #include <iostream>
 
