@@ -95,7 +95,7 @@ int TBitField::GetBit(const int n) const // получить значение б
 
 const TBitField& TBitField::operator=(const TBitField& bf) // присваивание      !!! добавить проверку на разность длины  !!!
 {
-    if (this != &bf) {
+    if (MemLen != bf.MemLen) {
         delete[] pMem;
 
         BitLen = bf.BitLen;
@@ -110,7 +110,21 @@ const TBitField& TBitField::operator=(const TBitField& bf) // присваива
             pMem = nullptr;
         }
     }
-    return *this;
+    else if (this != &bf) {
+
+        BitLen = bf.BitLen;
+        MemLen = bf.MemLen;
+
+        if (MemLen > 0) {
+            for (int i = 0; i < MemLen; ++i)
+                pMem[i] = bf.pMem[i];
+        }
+        else {
+            pMem = nullptr;
+        }
+    }
+    else
+        return *this;
 }
 
 int TBitField::operator==(const TBitField& bf) const // сравнение
