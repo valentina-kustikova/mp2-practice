@@ -117,17 +117,18 @@ TBitField TBitField::operator|(const TBitField &bf) //
     int minlenMem = std::min(MemLen, bf.MemLen);
     int maxlen = std::max(BitLen, bf.BitLen);
     TBitField result(maxlen);
-    for (int i = 0; i < minlenMem; i++) {
+    int i = 0;
+    for (i; i < minlenMem; i++) {
         result.pMem[i] = pMem[i] | bf.pMem[i];
     }
-    for (int i = minlenMem; i < result.MemLen; i++) {
-        if (bf.MemLen>MemLen) {
-            result.pMem[i] = bf.pMem[i];
-        }
-        else {
-            result.pMem[i] = pMem[i];
-        }
+    while (i < MemLen) {
+        result.pMem[i] = pMem[i];
+        i++;
     }
+    while (i < bf.MemLen) {
+        result.pMem[i] = bf.pMem[i];
+        i++;
+     }
     return result;
 }
 
@@ -138,9 +139,6 @@ TBitField TBitField::operator&(const TBitField &bf) //
     TBitField result(maxlen);
     for (int i = 0; i < minlenMem; i++) {
         result.pMem[i] = pMem[i] & bf.pMem[i];
-    }
-    for (int i = minlenMem; i < result.MemLen; i++) {
-        result.pMem[i] = 0;
     }
     return result;
 }
