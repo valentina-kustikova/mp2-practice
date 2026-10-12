@@ -63,23 +63,19 @@ const TSet& TSet::operator=(const TSet &s) // присваивание
 
 int TSet::operator==(const TSet &s) const // сравнение
 {
-    if (this == &s)//убрать сравнение максповер
-        return 1;
-    else
-        return 0;
+    return (BitField == s.BitField);//убрать сравнение максповер
+        
 }
 
 int TSet::operator!=(const TSet &s) const // сравнение
 {
-    return ~(*this == s);
+    return !(*this == s);
 }
 
-TSet TSet::operator+(const TSet &s) // объединение
+TSet TSet::operator+(const TSet& s) // объединение
 {
-    int MaxLen = max(s.MaxPower, MaxPower);
-    TSet NewTSet(MaxLen);
-    NewTSet.BitField = BitField | s.BitField;
-    return NewTSet;//создать множество через конструктор с двумя битфилдмами
+    //создать множество через конструктор с двумя битфилдмами
+    return TSet(BitField | s.BitField);
 }
 
 TSet TSet::operator+(const int Elem) // объединение с элементом
@@ -97,11 +93,9 @@ TSet TSet::operator-(const int Elem) // разность с элементом
 }
 
 TSet TSet::operator*(const TSet &s) // пересечение
-{
-    int MaxLen = max(s.MaxPower, MaxPower);
-    TSet NewTSet(MaxLen);
-    NewTSet.BitField = BitField & s.BitField;
-    return NewTSet;//см выше
+{   
+    //см выше
+    return TSet(BitField & s.BitField);
 }
 
 TSet TSet::operator~(void) // дополнение
