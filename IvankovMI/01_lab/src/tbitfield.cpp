@@ -98,33 +98,16 @@ const TBitField& TBitField::operator=(const TBitField& bf) // присваива
     if (MemLen != bf.MemLen) {
         delete[] pMem;
 
-        BitLen = bf.BitLen;
         MemLen = bf.MemLen;
-
-        if (MemLen > 0) {
-            pMem = new TELEM[MemLen];
-            for (int i = 0; i < MemLen; ++i)
-                pMem[i] = bf.pMem[i];
-        }
-        else {
-            pMem = nullptr;
-        }
+        pMem = (MemLen > 0) ? new TELEM[MemLen] : nullptr;
     }
-    else if (this != &bf) {
-
+    if (this != &bf) {
         BitLen = bf.BitLen;
-        MemLen = bf.MemLen;
 
-        if (MemLen > 0) {
-            for (int i = 0; i < MemLen; ++i)
-                pMem[i] = bf.pMem[i];
-        }
-        else {
-            pMem = nullptr;
-        }
+        for (int i = 0; i < MemLen; ++i)
+            pMem[i] = bf.pMem[i];
     }
-    else
-        return *this;
+    return *this;
 }
 
 int TBitField::operator==(const TBitField& bf) const // сравнение
