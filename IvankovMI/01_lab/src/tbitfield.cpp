@@ -93,7 +93,7 @@ int TBitField::GetBit(const int n) const // получить значение б
 
 // битовые операции
 
-const TBitField& TBitField::operator=(const TBitField& bf) // присваивание
+const TBitField& TBitField::operator=(const TBitField& bf) // присваивание      !!! добавить проверку на разность длины  !!!
 {
     if (this != &bf) {
         delete[] pMem;
@@ -130,7 +130,7 @@ int TBitField::operator!=(const TBitField& bf) const // сравнение
     return !(*this == bf);
 }
 
-TBitField TBitField::operator|(const TBitField& bf) // операция "или"
+TBitField TBitField::operator|(const TBitField& bf) // операция "или"             !!!  ДОБАВИТЬ ВЕЗДЕ ОБРАБОТКУ ПО ЭЛЕМЕНТАМ   !!!
 {
     int maxLen = (BitLen > bf.BitLen) ? BitLen : bf.BitLen;
     TBitField res(maxLen);
