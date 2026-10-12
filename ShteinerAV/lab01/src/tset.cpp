@@ -72,9 +72,6 @@ TSet TSet::operator+(const TSet &s) const
 
 TSet TSet::operator+(const int Elem) const // объединение с элементом
 {
-    if (Elem > MaxPower - 1 || Elem < 0) {
-        throw("Элемент вне унивёрса!");
-    }
     TSet res(*this);
     res.BitField.SetBit(Elem);
     return res;
@@ -82,9 +79,6 @@ TSet TSet::operator+(const int Elem) const // объединение с элем
 
 TSet TSet::operator-(const int Elem) const // разность с элементом
 {
-    if (Elem > MaxPower - 1 || Elem < 0) {
-        throw("Элемент вне унивёрса!");
-    }
     TSet res(*this);
     res.BitField.ClrBit(Elem);
     return res;
