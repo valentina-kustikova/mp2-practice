@@ -88,7 +88,7 @@ int TBitField::GetBit(const int n) const // получить значение б
     if (n < 0 || n >= BitLen)
         throw std::out_of_range("TBitField::GetBit: index out of range");
 
-    return (pMem[GetMemIndex(n)] & GetMemMask(n)) ? 1 : 0;       //  допустим, здесь ошибка  (ИЛИ ОБЪЯСНИТЕ МНЕ, КАК ЭТО РАБОТАЕТ!!!!!!!!!)
+    return (pMem[GetMemIndex(n)] << (n % BITS_PER_ELEM)) & 1;
 }
 
 // битовые операции
