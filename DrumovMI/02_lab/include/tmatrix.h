@@ -26,7 +26,7 @@ protected:
 public:
   TDynamicVector(size_t size = 1) : sz(size)
   {
-    if (sz == 0)
+    if (sz == 0 || sz > MAX_VECTOR_SIZE)
       throw out_of_range("Vector size should be greater than zero");
     pMem = new T[sz]();// {}; // У типа T д.б. констуктор по умолчанию
   }
@@ -66,9 +66,10 @@ public:
       if (this == &v)
           return *this;
       if (sz != v.sz) {
+          T* tmp = new T[sz];
           delete[]pMem;
           sz = v.sz;
-          pMem = new T[sz];
+          pMem = tmp;
       }
       copy(v.pMem, v.pMem + sz, pMem);
       return *this;
@@ -117,28 +118,53 @@ public:
   // скалярные операции
   TDynamicVector operator+(T val)
   {
-      throw "Method is not implemented";
+      TDynamicVector<int> res(sz);
+      for (int i = 0; i < sz; i++)
+          res.pMem[i] = pMem[i] + val;
+      return res;
   }
   TDynamicVector operator-(T val)
   {
-      throw "Method is not implemented";
+      TDynamicVector<int> res(sz);
+      for (int i = 0; i < sz; i++)
+          res.pMem[i] = pMem[i] - val;
+      return res;
   }
   TDynamicVector operator*(T val)
   {
-      throw "Method is not implemented";
+      TDynamicVector<int> res(sz);
+      for (int i = 0; i < sz; i++)
+          res.pMem[i] = pMem[i] * val;
+      return res;
   }
 
   // векторные операции
   TDynamicVector operator+(const TDynamicVector& v)
   {
-      throw "Method is not implemented";
+      if (sz != v.sz)
+          throw std::exception("Sizes don't match");
+      TDynamicVector<T> res(sz);
+      for (int i = 0; i < sz; i++)
+          res.pMem[i] = pMem[i] + v.pMem[i];
+      return res;
   }
   TDynamicVector operator-(const TDynamicVector& v)
   {
-      throw "Method is not implemented";
+      if (sz != v.sz)
+          throw std::exception("Sizes don't match");
+      TDynamicVector<T> res(sz);
+      for (int i = 0; i < sz; i++)
+          res.pMem[i] = pMem[i] - v.pMem[i];
+      return res;
   }
-  T operator*(const TDynamicVector& v) noexcept(noexcept(T()))
+  T operator*(const TDynamicVector& v) noexcept(T())
   {
+      if (sz != v.sz)
+          throw std::exception("Sizes don't match");
+      T res{};
+      for (int i = 0; i < sz; i++)
+          res += pMem[i] * v.pMem[i];
+      return res;
   }
 
   friend void swap(TDynamicVector& lhs, TDynamicVector& rhs) noexcept
