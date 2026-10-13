@@ -10,7 +10,6 @@
 
 void main()
 {
-  try {
     system("color F0"); //5-violet 0-black
     setlocale(LC_ALL, "Russian");
 
@@ -28,10 +27,5 @@ void main()
     cout << "Matrix a = " << endl << a << endl;
     cout << "Matrix b = " << endl << b << endl;
     cout << "Matrix c = a + b" << endl << c << endl;
-  }
-  catch (const char* msg)
-  {
-    std::cerr << "Строковое исключение: " << msg << '\n';
-  }
 }
 //---------------------------------------------------------------------------

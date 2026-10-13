@@ -94,7 +94,7 @@ TEST(TDynamicVector, assign_operator_change_vector_size)
 {
   TDynamicVector<int> v(3),p(5);
   v = p;
-  EXPECT_EQ(5, v);
+  EXPECT_EQ(5, v.size());
 }
 
 TEST(TDynamicVector, can_assign_vectors_of_different_size)
