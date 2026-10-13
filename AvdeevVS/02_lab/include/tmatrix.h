@@ -301,6 +301,35 @@ public:
      }
     return ostr;
   }
+
+  //определитель
+  T det() const noexcept {
+    T det{};
+    det = pMem[0][0];
+    for (size_t i = 1; i < sz; i++) {
+      det *= pMem[i][0];
+    }
+    return det;
+  }
+
+  //след матрицы
+  T trace() const noexcept {
+    T tr{};
+    tr = pMem[0][0];
+    for (size_t i = 1; i < sz; i++) {
+      tr += pMem[i][0];
+    }
+    return tr;
+  }
+
+  //собственные числа
+  TDynamicVector<T> eigen_values() const {
+    TDynamicVector<T> ev(sz);
+    for (size_t i = 0; i < sz; i++) {
+      ev[i] = pMem[i][0];
+    }
+    return ev;
+  }
 };
 
 #endif __TDynamicMatrix_H__
