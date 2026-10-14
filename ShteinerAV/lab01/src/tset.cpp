@@ -1,8 +1,6 @@
 #include "tset.h"
-
-static const int FAKE_INT = -1;
-static TBitField FAKE_BITFIELD(1);
-static TSet FAKE_SET(1);
+#include <sstream>
+#include <string>
 
 TSet::TSet(int mp) : BitField(mp), MaxPower(mp)
 {
@@ -98,24 +96,38 @@ TSet TSet::operator~(void) const
 
 istream &operator>>(istream &is, TSet &s) 
 {
-    int count, x;
-    is >> count;
+    std::string numberline;
+    getline(is, numberline);
 
-    for (int i = 0; i < count; i++) {
-        is >> x;
-        s.BitField.SetBit(x);
+    istringstream numberStream(numberline);
+    TSet temp(s.MaxPower);
+
+    int number;
+    while (numberStream >> number) {
+        if (number < 0 || number > s.MaxPower) {
+            is.setstate(ios::failbit);
+            return is;
+        }
+        temp.InsElem(number);
     }
+
+    s = temp;
     return is;
 }
 
-ostream& operator<<(ostream &os, const TSet &s) 
-{
-    os << '{';
+ostream& operator<<(ostream& ostr, const TSet& s) {
+    ostr << "{";
+
+    bool first = true;
     for (int i = 0; i < s.MaxPower; i++) {
-        if (s.BitField.GetBit(i) == 1) {
-            os << i << ' ';
+        if (s.IsMember(i)) {
+            if (!first) ostr << ", ";
+            ostr << i;
+            first = false;
         }
     }
-    os << '}';
-    return os;
+
+    ostr << '}';
+
+    return ostr;
 }

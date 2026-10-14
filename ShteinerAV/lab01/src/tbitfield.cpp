@@ -159,19 +159,37 @@ TBitField TBitField::operator~(void) const
 
 istream &operator>>(istream &is, TBitField &tmp) 
 {
-    char c;
-    for (int i = 0; i < tmp.BitLen; i++) {
-        is >> c;
-        if (c == '1') tmp.SetBit(i);
-        else tmp.ClrBit(i);
+    std::string sField;
+    is >> sField;
+
+    if (sField.size() != tmp.BitLen) {
+        is.setstate(ios::failbit);
+        return is;
     }
+
+    TBitField newTmp(tmp.BitLen);
+    for (int i = 0; i < tmp.BitLen; i++) {
+        if (sField[i] == '1') {
+            newTmp.SetBit(tmp.BitLen - 1 - i);
+        }
+        else if (sField[i] != '0') {
+            is.setstate(ios::failbit);
+            return is;
+        }
+    }
+    tmp = newTmp;
+
     return is;
 }
 
 ostream &operator<<(ostream &os, const TBitField &tmp) 
 {
-    for (int i = 0; i < tmp.BitLen; i++) {
-        os << tmp.GetBit(i);
+    std::string sField;
+    sField.reserve(tmp.BitLen);
+    for (int i = tmp.BitLen - 1; i >= 0; i--) {
+        sField += tmp.GetBit(i) ? '1' : '0';
     }
+
+    os << sField;
     return os;
 }
