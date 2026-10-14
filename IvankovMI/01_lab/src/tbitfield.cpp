@@ -127,7 +127,7 @@ int TBitField::operator!=(const TBitField& bf) const // сравнение
     return !(*this == bf);
 }
 
-TBitField TBitField::operator|(const TBitField& bf) // операция "или"             !!!  ДОБАВИТЬ ВЕЗДЕ ОБРАБОТКУ ПО ЭЛЕМЕНТАМ   !!!
+TBitField TBitField::operator|(const TBitField& bf) // операция "или"             !!!  ДОБАВИЛ ВЕЗДЕ ОБРАБОТКУ ПО ЭЛЕМЕНТАМ - провести тесты  !!!
 {
     int minMemLen = (MemLen < bf.MemLen) ? MemLen : bf.MemLen;
 
@@ -161,11 +161,15 @@ TBitField TBitField::operator&(const TBitField& bf) // операция "и"
     return res;
 }
 
-TBitField TBitField::operator~(void) // отрицание
+TBitField TBitField::operator~(void) // отрицание      -   !!!! ПРОВЕСТИ ТЕСТЫ !!!!
 {
     TBitField res(BitLen);
 
-    for (int i = 0; i < BitLen; ++i) {
+    for (int i = 0; i < MemLen - 1; ++i) {
+        res.pMem[i] = ~pMem[i];
+    }
+
+    for (int i = 0; i < BitLen % BITS_PER_ELEM; ++i) {
         if (!GetBit(i))
             res.SetBit(i);
     }
