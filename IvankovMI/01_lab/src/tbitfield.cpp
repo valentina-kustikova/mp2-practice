@@ -130,25 +130,33 @@ int TBitField::operator!=(const TBitField& bf) const // сравнение
 TBitField TBitField::operator|(const TBitField& bf) // операция "или"             !!!  ДОБАВИТЬ ВЕЗДЕ ОБРАБОТКУ ПО ЭЛЕМЕНТАМ   !!!
 {
     int minMemLen = (MemLen < bf.MemLen) ? MemLen : bf.MemLen;
-    int maxMemLen = (MemLen > bf.MemLen) ? MemLen : bf.MemLen;
 
     int maxLen = (BitLen > bf.BitLen) ? BitLen : bf.BitLen;
     TBitField res(maxLen);
 
-    for (int i = 0; i < minMemLen; i++) {
+    int i = 0;
+    for (; i < minMemLen; ++i) {
         res.pMem[i] = pMem[i] | bf.pMem[i];
+    }
+
+    for (; i < MemLen; ++i) {
+        res.pMem[i] = pMem[i];
+    }
+    for (; i < bf.MemLen; ++i) {
+        res.pMem[i] = bf.pMem[i];
     }
     return res;
 }
 
 TBitField TBitField::operator&(const TBitField& bf) // операция "и"
 {
+    int minMemLen = (MemLen < bf.MemLen) ? MemLen : bf.MemLen;
+
     int maxLen = (BitLen > bf.BitLen) ? BitLen : bf.BitLen;
     TBitField res(maxLen);
 
-    for (int i = 0; i < maxLen; ++i) {
-        if (i < BitLen && i < bf.BitLen && GetBit(i) && bf.GetBit(i))
-            res.SetBit(i);
+    for (int i = 0; i < minMemLen; ++i) {
+        res.pMem[i] = pMem[i] & bf.pMem[i];
     }
     return res;
 }
