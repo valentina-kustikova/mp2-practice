@@ -88,12 +88,12 @@ int TBitField::GetBit(const int n) const // получить значение б
     if (n < 0 || n >= BitLen)
         throw std::out_of_range("TBitField::GetBit: index out of range");
 
-    return (pMem[GetMemIndex(n)] << (n % BITS_PER_ELEM)) & 1;
+    return (pMem[GetMemIndex(n)] << (n % BITS_PER_ELEM)) & 1;            // это по формуле с занятия. хотел проверить, как работала пред. формула
 }
 
 // битовые операции
 
-const TBitField& TBitField::operator=(const TBitField& bf) // присваивание      !!! добавить проверку на разность длины  !!!
+const TBitField& TBitField::operator=(const TBitField& bf) // присваивание      !!! добавил проверку на разность длины, провести ТЕСТЫ  !!!
 {
     if (MemLen != bf.MemLen) {
         delete[] pMem;
@@ -129,14 +129,14 @@ int TBitField::operator!=(const TBitField& bf) const // сравнение
 
 TBitField TBitField::operator|(const TBitField& bf) // операция "или"             !!!  ДОБАВИТЬ ВЕЗДЕ ОБРАБОТКУ ПО ЭЛЕМЕНТАМ   !!!
 {
+    int minMemLen = (MemLen < bf.MemLen) ? MemLen : bf.MemLen;
+    int maxMemLen = (MemLen > bf.MemLen) ? MemLen : bf.MemLen;
+
     int maxLen = (BitLen > bf.BitLen) ? BitLen : bf.BitLen;
     TBitField res(maxLen);
 
-    for (int i = 0; i < maxLen; ++i) {
-        int a = (i < BitLen) ? GetBit(i) : 0;
-        int b = (i < bf.BitLen) ? bf.GetBit(i) : 0;
-        if (a || b)
-            res.SetBit(i);
+    for (int i = 0; i < minMemLen; i++) {
+        res.pMem[i] = pMem[i] | bf.pMem[i];
     }
     return res;
 }
