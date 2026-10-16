@@ -26,12 +26,19 @@ TEST(TDynamicVector, can_create_copied_vector)
 
 TEST(TDynamicVector, copied_vector_is_equal_to_source_one)
 {
-  ADD_FAILURE();
+	int* a = new int[3] {1, 2, 3};
+	TDynamicVector<int> v(a, 3);
+	TDynamicVector<int> v1(v);
+	EXPECT_EQ(v, v1);
 }
 
 TEST(TDynamicVector, copied_vector_has_its_own_memory)
 {
-  ADD_FAILURE();
+	int* a = new int[3] {1, 2, 3};
+	TDynamicVector<int> v(a, 3);
+	TDynamicVector<int> v1(v);
+	v[0] = 100;
+	EXPECT_EQ(v1[0], 1);
 }
 
 TEST(TDynamicVector, can_get_size)
@@ -51,91 +58,147 @@ TEST(TDynamicVector, can_get_size)
 
 TEST(TDynamicVector, throws_when_set_element_with_negative_index)
 {
-  ADD_FAILURE();
+	TDynamicVector<int> v(5);
+	EXPECT_ANY_THROW(v[-3] = 2);
 }
 
 TEST(TDynamicVector, throws_when_set_element_with_too_large_index)
 {
-  ADD_FAILURE();
+	TDynamicVector<int> v(5);
+	EXPECT_ANY_THROW(v[100] = 3);
 }
 
 TEST(TDynamicVector, can_assign_vector_to_itself)
 {
-  ADD_FAILURE();
+	int* a = new int[3] {1, 2, 3};
+	TDynamicVector<int> v(a, 3);
+	EXPECT_NO_THROW(v = v);
+	EXPECT_EQ(v, v);
 }
 
 TEST(TDynamicVector, can_assign_vectors_of_equal_size)
 {
-  ADD_FAILURE();
+	int* a = new int[3] {1, 2, 3};
+	int* b = new int[3] {4, 5, 6};
+	TDynamicVector<int> v(a, 3), v1(b, 3);
+	v1 = v;
+	EXPECT_EQ(v, v1);
 }
 
 TEST(TDynamicVector, assign_operator_change_vector_size)
 {
-  ADD_FAILURE();
+	TDynamicVector<int> v(3), v1(4);
+	v1 = v;
+	EXPECT_EQ(v1.size(), 3);
 }
 
 TEST(TDynamicVector, can_assign_vectors_of_different_size)
 {
-  ADD_FAILURE();
+	int* a = new int[3] {1, 2, 3};
+	TDynamicVector<int> v(a, 3), v1(4);
+	v1 = v;
+	EXPECT_EQ(v1, v);
 }
 
 TEST(TDynamicVector, compare_equal_vectors_return_true)
 {
-  ADD_FAILURE();
+	int* a = new int[3] {1, 2, 3};
+	int* b = new int[3] {1, 2, 3};
+	TDynamicVector<int> v(a, 3), v1(b, 3);
+	EXPECT_TRUE(v == v1);
 }
 
 TEST(TDynamicVector, compare_vector_with_itself_return_true)
 {
-  ADD_FAILURE();
+	int* a = new int[3] {1, 2, 3};
+	TDynamicVector<int> v(a, 3);
+	EXPECT_TRUE(v == v);
 }
 
 TEST(TDynamicVector, vectors_with_different_size_are_not_equal)
 {
-  ADD_FAILURE();
+	TDynamicVector<int> v(3), v1(4);
+	EXPECT_NE(v, v1);
 }
 
 TEST(TDynamicVector, can_add_scalar_to_vector)
 {
-  ADD_FAILURE();
+	int* a = new int[3] {1, 2, 3};
+	int* b = new int[3] {6, 7, 8};
+	TDynamicVector<int> v(a, 3), addv;
+	addv = v + 5;
+	TDynamicVector<int> v1(b, 3);
+	EXPECT_EQ(addv, v1);
 }
 
 TEST(TDynamicVector, can_subtract_scalar_from_vector)
 {
-  ADD_FAILURE();
+	int* a = new int[3] {1, 2, 3};
+	int* b = new int[3] {-4, -3, -2};
+	TDynamicVector<int> v(a, 3), subv;
+	subv = v - 5;
+	TDynamicVector<int> v1(b, 3);
+	EXPECT_EQ(subv, v1);
 }
 
 TEST(TDynamicVector, can_multiply_scalar_by_vector)
 {
-  ADD_FAILURE();
+	int* a = new int[3] {1, 2, 3};
+	int* b = new int[3] {5, 10, 15};
+	TDynamicVector<int> v(a, 3), mulv;
+	mulv = v * 5;
+	TDynamicVector<int> v1(b, 3);
+	EXPECT_EQ(mulv, v1);
 }
 
 TEST(TDynamicVector, can_add_vectors_with_equal_size)
 {
-  ADD_FAILURE();
+	int* a = new int[3] {1, 2, 3};
+	int* b = new int[3] {4, 5, 6};
+	TDynamicVector<int> v(a, 3), v1(b, 3), vsum;
+	vsum = v + v1;
+	int* c = new int[3] {5, 7, 9};
+	TDynamicVector<int> v2(c, 3);
+	EXPECT_EQ(vsum, v2);
 }
 
 TEST(TDynamicVector, cant_add_vectors_with_not_equal_size)
 {
-  ADD_FAILURE();
+	TDynamicVector<int> v(3), v1(4);
+	EXPECT_ANY_THROW(v + v1);
 }
 
 TEST(TDynamicVector, can_subtract_vectors_with_equal_size)
 {
-  ADD_FAILURE();
+	int* a = new int[3] {1, 2, 3};
+	int* b = new int[3] {4, 5, 6};
+	TDynamicVector<int> v(a, 3), v1(b, 3), vsub;
+	vsub = v1 - v;
+	int* c = new int[3] {3, 3, 3};
+	TDynamicVector<int> v2(c, 3);
+	EXPECT_EQ(vsub, v2);
 }
 
 TEST(TDynamicVector, cant_subtract_vectors_with_not_equal_size)
 {
-  ADD_FAILURE();
+	TDynamicVector<int> v(3), v1(4);
+	EXPECT_ANY_THROW(v - v1);
 }
 
 TEST(TDynamicVector, can_multiply_vectors_with_equal_size)
 {
-  ADD_FAILURE();
+	int* a = new int[3] {1, 2, 3};
+	int* b = new int[3] {4, 5, 6};
+	TDynamicVector<int> v(a, 3), v1(b, 3);
+	int scmul = v * v1;
+	EXPECT_EQ(scmul, 32);
 }
 
 TEST(TDynamicVector, cant_multiply_vectors_with_not_equal_size)
 {
-  ADD_FAILURE();
+	int* a = new int[3] {1, 2, 3};
+	int* b = new int[4] {4, 5, 6, 7};
+	TDynamicVector<int> v(a, 3), v1(b, 4);
+	EXPECT_ANY_THROW(v * v1);
 }
 

@@ -8,6 +8,7 @@
 #define __TDynamicMatrix_H__
 
 #include <iostream>
+#include <cassert>
 
 using namespace std;
 
@@ -27,6 +28,7 @@ public:
   {
     if (sz == 0)
       throw out_of_range("Vector size should be greater than zero");
+    if (sz > MAX_VECTOR_SIZE) throw out_of_range("Too big size of vector");
     pMem = new T[sz]();// {}; // У типа T д.б. констуктор по умолчанию
   }
   TDynamicVector(T* arr, size_t s) : sz(s)
@@ -35,22 +37,42 @@ public:
     pMem = new T[sz];
     std::copy(arr, arr + sz, pMem);
   }
-  TDynamicVector(const TDynamicVector& v)
+  TDynamicVector(const TDynamicVector& v) : sz(v.sz)
   {
-      throw "Method is not implemented";
+      pMem = new T[sz];
+      std::copy(v.pMem, v.pMem + sz, pMem);
   }
-  TDynamicVector(TDynamicVector&& v) noexcept
+  TDynamicVector(TDynamicVector&& v) noexcept : sz(v.sz)
   {
+      pMem = v.pMem;
+      v.pMem = nullptr;
+      v.sz = 0;
   }
   ~TDynamicVector()
   {
+      delete[] pMem;
   }
   TDynamicVector& operator=(const TDynamicVector& v)
   {
-      throw "Method is not implemented";
+      if (this == &v) return *this;
+      if (sz != v.sz) {
+          sz = v.sz;
+          T* newpMem = new T[sz];
+          delete[] pMem;
+          pMem = newpMem;
+      }
+      //std::copy(v.pMem, v.pMem + v.sz, pMem);
+      for (int i = 0; i < sz; i++) pMem[i] = v.pMem[i];
+      return *this;
   }
   TDynamicVector& operator=(TDynamicVector&& v) noexcept
   {
+      if (this == &v) return *this;
+      delete[] pMem;
+      pMem = v.pMem;
+      sz = v.sz;
+      v.pMem = nullptr;
+      v.sz = 0;
       return *this;
   }
 
@@ -59,57 +81,79 @@ public:
   // индексация
   T& operator[](size_t ind)
   {
-      throw "Method is not implemented";
+      return at(ind);
   }
   const T& operator[](size_t ind) const
   {
-      throw "Method is not implemented";
+      return at(ind);
   }
   // индексация с контролем
   T& at(size_t ind)
   {
-      throw "Method is not implemented";
+      cout << ind << " ";
+      if (ind >= sz) throw out_of_range("Incorrect index");
+      return pMem[ind];
   }
   const T& at(size_t ind) const
   {
-      throw "Method is not implemented";
+      cout << ind << " ";
+      if (ind >= sz) throw out_of_range("Incorrect index");
+      return pMem[ind];
   }
 
   // сравнение
   bool operator==(const TDynamicVector& v) const noexcept
   {
-      throw "Method is not implemented";
+      if (sz != v.sz) return false;
+      for (int i = 0; i < sz; i++) if (pMem[i] != v.pMem[i]) return false;
+      return true;
   }
   bool operator!=(const TDynamicVector& v) const noexcept
   {
-      throw "Method is not implemented";
+      return (!(*this == v));
   }
 
   // скалярные операции
   TDynamicVector operator+(T val)
   {
-      throw "Method is not implemented";
+      TDynamicVector<T> res(sz);
+      for (int i = 0; i < sz; i++) res.pMem[i] = val + pMem[i];
+      return res;
   }
   TDynamicVector operator-(T val)
   {
-      throw "Method is not implemented";
+      TDynamicVector<T> res(sz);
+      for (int i = 0; i < sz; i++) res.pMem[i] = pMem[i] - val;
+      return res;
   }
   TDynamicVector operator*(T val)
   {
-      throw "Method is not implemented";
+      TDynamicVector<T> res(sz);
+      for (int i = 0; i < sz; i++) res.pMem[i] = val * pMem[i];
+      return res;
   }
 
   // векторные операции
   TDynamicVector operator+(const TDynamicVector& v)
   {
-      throw "Method is not implemented";
+      if (sz != v.sz) throw std::exception("Invalid arguments");
+      TDynamicVector<T> res(sz);
+      for (int i = 0; i < sz; i++) res.pMem[i] = pMem[i] + v.pMem[i];
+      return res;
   }
   TDynamicVector operator-(const TDynamicVector& v)
   {
-      throw "Method is not implemented";
+      if (sz != v.sz) throw std::exception("Invalid arguments");
+      TDynamicVector<T> res(sz);
+      for (int i = 0; i < sz; i++) res.pMem[i] = pMem[i] - v.pMem[i];
+      return res;
   }
-  T operator*(const TDynamicVector& v) noexcept(noexcept(T()))
+  T operator*(const TDynamicVector& v) //noexcept(noexcept(T()))
   {
+      if (sz != v.sz) throw std::exception("Invalid arguments");
+      T ans{};
+      for (int i = 0; i < sz; i++) ans += pMem[i] * v.pMem[i];
+      return ans;
   }
 
   friend void swap(TDynamicVector& lhs, TDynamicVector& rhs) noexcept
