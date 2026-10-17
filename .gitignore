@@ -39,6 +39,7 @@
 *.out
 *.app
 
+
 # Build directories
 build/
 Build/
@@ -67,3 +68,25 @@ vcpkg_installed/
 # test output & cache
 Testing/
 .cache/
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.sln.doctstates
+
+#compilate
+bin/
+x64/
+Debug/
+Release/
+
+#compil res
+*.ipch
+*.iobj
+*.ipdb
+
+#General
+sln/
+*.slnx
+*.sln
+README.md
