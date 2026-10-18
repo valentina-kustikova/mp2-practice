@@ -19,88 +19,134 @@ TSet::TSet(int mp) : BitField(mp)
 }
 
 // конструктор копирования
-TSet::TSet(const TSet &s) : BitField(-1)
+TSet::TSet(const TSet &s) : BitField(s.BitField)
 {
+  // Битовое поле копируется своим конструктором копирования
+  // (он в списке инициализации выше), здесь остаётся только мощность.
+  MaxPower = s.MaxPower;
 }
 
 // конструктор преобразования типа
-TSet::TSet(const TBitField &bf) : BitField(-1)
+TSet::TSet(const TBitField &bf) : BitField(bf)
 {
+  // Готовое битовое поле становится множеством: его длина
+  // и есть максимальная мощность - числа от 0 до длины-1.
+  MaxPower = bf.GetLength();
 }
 
 TSet::operator TBitField()
 {
-    return FAKE_BITFIELD;
+  // Обратное преобразование: отдаём характеристический вектор.
+  return BitField;
 }
 
 int TSet::GetMaxPower(void) const // получить макс. к-во эл-тов
 {
-    return FAKE_INT;
+  return MaxPower;
 }
 
 int TSet::IsMember(const int Elem) const // элемент множества?
 {
-    return FAKE_INT;
+  // Число входит в множество тогда и только тогда,
+  // когда бит с его номером равен единице.
+  return BitField.GetBit(Elem);
 }
 
 void TSet::InsElem(const int Elem) // включение элемента множества
 {
+  // Добавить число = поставить бит. Проверку диапазона
+  // сделает сам SetBit и бросит исключение, если элемент чужой.
+  BitField.SetBit(Elem);
 }
 
 void TSet::DelElem(const int Elem) // исключение элемента множества
 {
+  // Удалить число = погасить бит.
+  BitField.ClrBit(Elem);
 }
 
 // теоретико-множественные операции
 
 const TSet& TSet::operator=(const TSet &s) // присваивание
 {
-    return FAKE_SET;
+  if (this == &s)
+    return *this;
+
+  // Вся работа с памятью уже написана в operator= битового поля.
+  MaxPower = s.MaxPower;
+  BitField = s.BitField;
+
+  return *this;
 }
 
 int TSet::operator==(const TSet &s) const // сравнение
 {
-    return FAKE_INT;
+  // Множества равны, когда совпали и универс, и сами биты.
+  return (MaxPower == s.MaxPower) && (BitField == s.BitField);
 }
 
 int TSet::operator!=(const TSet &s) const // сравнение
 {
-    return FAKE_INT;
+  return !(*this == s);
 }
 
 TSet TSet::operator+(const TSet &s) // объединение
 {
-    return FAKE_SET;
+  // Объединение множеств - это побитовое "или" их векторов.
+  // TSet строится из TBitField конструктором преобразования.
+  return TSet(BitField | s.BitField);
 }
 
 TSet TSet::operator+(const int Elem) // объединение с элементом
 {
-    return FAKE_SET;
+  // Копируем себя и добавляем число - исходное множество не меняется.
+  TSet res(*this);
+  res.InsElem(Elem);
+  return res;
 }
 
 TSet TSet::operator-(const int Elem) // разность с элементом
 {
-    return FAKE_SET;
+  // То же самое, но элемент убираем.
+  TSet res(*this);
+  res.DelElem(Elem);
+  return res;
 }
 
 TSet TSet::operator*(const TSet &s) // пересечение
 {
-    return FAKE_SET;
+  // Пересечение - побитовое "и".
+  return TSet(BitField & s.BitField);
 }
 
 TSet TSet::operator~(void) // дополнение
 {
-    return FAKE_SET;
+  // Дополнение до универса - побитовое отрицание.
+  return TSet(~BitField);
 }
 
 // перегрузка ввода/вывода
 
 istream &operator>>(istream &istr, TSet &s) // ввод
 {
-    return istr;
+  // Читаем номера элементов, пока они попадают в универс.
+  int elem;
+  while (istr >> elem)
+  {
+    if (elem < 0 || elem >= s.GetMaxPower())
+      break;
+    s.InsElem(elem);
+  }
+  return istr;
 }
 
 ostream& operator<<(ostream &ostr, const TSet &s) // вывод
 {
-    return ostr;
+  // Печатаем в привычном виде: { 1 3 7 }
+  ostr << "{ ";
+  for (int i = 0; i < s.GetMaxPower(); i++)
+    if (s.IsMember(i))
+      ostr << i << " ";
+  ostr << "}";
+  return ostr;
 }
