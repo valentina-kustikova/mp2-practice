@@ -120,6 +120,7 @@ public:
       for (int i = 0; i < sz; i++) res.pMem[i] = val + pMem[i];
       return res;
   }
+
   TDynamicVector operator-(T val)
   {
       TDynamicVector<T> res(sz);
@@ -188,8 +189,10 @@ class TDynamicMatrix : private TDynamicVector<TDynamicVector<T>>
 public:
   TDynamicMatrix(size_t s = 1) : TDynamicVector<TDynamicVector<T>>(s)
   {
+      if (sz == 0) throw std::exception("Can't create a zero size matrix");
+      if (sz > MAX_MATRIX_SIZE) throw std::exception("Too large matrix size");
     for (size_t i = 0; i < sz; i++)
-      pMem[i] = TDynamicVector<T>(sz);
+      pMem[i] = TDynamicVector<T>(sz - i);
   }
 
   using TDynamicVector<TDynamicVector<T>>::operator[];
@@ -197,43 +200,88 @@ public:
   // сравнение
   bool operator==(const TDynamicMatrix& m) const noexcept
   {
-      throw "Method is not implemented";
+      if (sz != m.sz) return false;
+      for (int i = 0; i < sz; i++) if (pMem[i] != m.pMem[i]) return false;
+      return true;
+  }
+
+
+  size_t size() const noexcept
+  {
+      return sz;
   }
 
   // матрично-скалярные операции
   TDynamicMatrix operator*(const T& val)
   {
-      throw "Method is not implemented";
+      TDynamicMatrix res(sz);
+      for (int i = 0; i < sz; i++) res.pMem[i] = pMem[i] * val;
+      return res;
   }
 
   // матрично-векторные операции
   TDynamicVector<T> operator*(const TDynamicVector<T>& v)
   {
-      throw "Method is not implemented";
+      if (v.sz != sz) throw std::exception("Invalid argument");
+      TDynamicVector<T> res(sz);
+      for (int i = 0; i < sz; i++) {
+          for (int j = 0; j < sz - i; j++) {
+              res[i] += m[i][j] * v[i];
+          }
+      }
+      return res;
   }
 
   // матрично-матричные операции
   TDynamicMatrix operator+(const TDynamicMatrix& m)
   {
-      throw "Method is not implemented";
+      if (m.sz != sz) throw std::exception("Invalid argument");
+      TDynamicMatrix<T> res(sz);
+      for (int i = 0; i < sz; i++) {
+          for (int j = 0; j < sz - i; j++) res[i][j] = pMem[i][j] + m[i][j];
+      }
+      return res;
   }
   TDynamicMatrix operator-(const TDynamicMatrix& m)
   {
-      throw "Method is not implemented";
+      if (m.sz != sz) throw std::exception("Invalid argument");
+      TDynamicMatrix<T> res(sz);
+      for (int i = 0; i < sz; i++) {
+          for (int j = 0; j < sz - i; j++) res[i][j] = pMem[i][j] - m[i][j];
+      }
+      return res;
   }
   TDynamicMatrix operator*(const TDynamicMatrix& m)
   {
-      throw "Method is not implemented";
+      if (m.sz != sz) throw std::exception("Invalid argument");
+      TDynamicMatrix<T> res(sz);
+      for (int i = 0; i < sz; i++) {
+          for (int j = 0; j < sz - i; j++) {
+              for (int k = i; k < sz; k++)
+                  res[i][j] += pMem[i][k - i] * m[k][i + j - k];
+          }
+      }
+      return res;
   }
 
   // ввод/вывод
   friend istream& operator>>(istream& istr, TDynamicMatrix& v)
   {
-      throw "Method is not implemented";
+      T unused;
+      for (int i = 0; i < v.size(); i++) {
+          for (int j = 0; j < i; j++) istr >> unused;
+          for (int j = 0; j < v.sz - i; j++) istr >> v[i][j];
+      }
+      return istr;
   }
   friend ostream& operator<<(ostream& ostr, const TDynamicMatrix& v)
   {
-      throw "Method is not implemented";
+      for (int i = 0; i < v.size(); i++) {
+          for (int j = 0; j < i; j++) ostr << 0 << '\t';
+          for (int j = 0; j < v.sz - i; j++) ostr << v[i][j] << '\t';
+          ostr << endl;
+      }
+      return ostr;
   }
 };
 
