@@ -31,13 +31,13 @@ TEST(TDynamicVector, copied_vector_is_equal_to_source_one)
 	ASSERT_EQ(v, v1);
 }
 
-TEST(TDynamicVectorTest, copied_vector_has_its_own_memory)
+TEST(TDynamicVector, copied_vector_has_its_own_memory)
 {
 	int arr[5] = { 1, 2, 3, 4, 5 };
 	TDynamicVector<int> v(arr, 5);
 	TDynamicVector<int> v1(v);
 	v[0] = 5;
-	ASSERT_EQ(v1[0], 5);
+	ASSERT_EQ(v1[0], 1);
 }
 
 TEST(TDynamicVector, can_get_size)
