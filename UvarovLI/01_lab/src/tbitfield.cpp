@@ -35,10 +35,22 @@ TBitField::TBitField(int len)
 
 TBitField::TBitField(const TBitField &bf) // конструктор копирования
 {
+  // Копируем размеры...
+  BitLen = bf.BitLen;
+  MemLen = bf.MemLen;
+
+  // ...и заводим СВОЮ память. Если просто присвоить pMem = bf.pMem,
+  // два объекта будут владеть одним массивом и деструктор удалит его дважды.
+  pMem = new TELEM[MemLen];
+  for (int i = 0; i < MemLen; i++)
+    pMem[i] = bf.pMem[i];
 }
 
 TBitField::~TBitField()
 {
+  // Память выделялась через new[], освобождать нужно delete[].
+  delete[] pMem;
+  pMem = nullptr;
 }
 
 int TBitField::GetMemIndex(const int n) const // индекс Мем для бита n
@@ -107,42 +119,118 @@ int TBitField::GetBit(const int n) const // получить значение б
 
 const TBitField& TBitField::operator=(const TBitField &bf) // присваивание
 {
-    return FAKE_BITFIELD;
+  // Защита от bf = bf: иначе удалим память и тут же начнём из неё читать.
+  if (this == &bf)
+    return *this;
+
+  // Старая память подходит, только если в ней столько же элементов.
+  // Иначе освобождаем её и берём новую нужного размера.
+  if (MemLen != bf.MemLen)
+  {
+    delete[] pMem;
+    MemLen = bf.MemLen;
+    pMem = new TELEM[MemLen];
+  }
+
+  // Длина меняется всегда - тест assign_operator_changes_bitfield_size
+  // проверяет, что после присваивания GetLength() вернул длину источника.
+  BitLen = bf.BitLen;
+  for (int i = 0; i < MemLen; i++)
+    pMem[i] = bf.pMem[i];
+
+  return *this;
 }
 
 int TBitField::operator==(const TBitField &bf) const // сравнение
 {
-  return FAKE_INT;
+  // Разная длина - заведомо разные поля.
+  if (BitLen != bf.BitLen)
+    return 0;
+
+  // Сравниваем побитово, а не поэлементно: в последнем элементе
+  // есть "хвост" неиспользуемых битов, он к значению поля не относится.
+  for (int i = 0; i < BitLen; i++)
+    if (GetBit(i) != bf.GetBit(i))
+      return 0;
+
+  return 1;
 }
 
 int TBitField::operator!=(const TBitField &bf) const // сравнение
 {
-  return FAKE_INT;
+  // Ровно обратное к ==, дублировать логику ни к чему.
+  return !(*this == bf);
 }
 
 TBitField TBitField::operator|(const TBitField &bf) // операция "или"
 {
-    return FAKE_BITFIELD;
+  // Результат вмещает оба поля, поэтому берём большую длину.
+  int len = (BitLen > bf.BitLen) ? BitLen : bf.BitLen;
+  TBitField res(len);
+
+  // Бит результата равен 1, если он стоял хотя бы в одном из полей.
+  for (int i = 0; i < BitLen; i++)
+    if (GetBit(i))
+      res.SetBit(i);
+  for (int i = 0; i < bf.BitLen; i++)
+    if (bf.GetBit(i))
+      res.SetBit(i);
+
+  return res;
 }
 
 TBitField TBitField::operator&(const TBitField &bf) // операция "и"
 {
-    return FAKE_BITFIELD;
+  // Длина результата - большая из двух (так ждут тесты),
+  int len = (BitLen > bf.BitLen) ? BitLen : bf.BitLen;
+  TBitField res(len);
+
+  // но единица возможна только там, где биты есть в обоих полях,
+  // то есть в пределах меньшей длины.
+  int minLen = (BitLen < bf.BitLen) ? BitLen : bf.BitLen;
+  for (int i = 0; i < minLen; i++)
+    if (GetBit(i) && bf.GetBit(i))
+      res.SetBit(i);
+
+  return res;
 }
 
 TBitField TBitField::operator~(void) // отрицание
 {
-    return FAKE_BITFIELD;
+  // Та же длина, значения битов переворачиваются.
+  TBitField res(BitLen);
+
+  // Поле res создано нулевым, поэтому ставим биты только там,
+  // где в исходном поле был ноль.
+  for (int i = 0; i < BitLen; i++)
+    if (!GetBit(i))
+      res.SetBit(i);
+
+  return res;
 }
 
 // ввод/вывод
 
 istream &operator>>(istream &istr, TBitField &bf) // ввод
 {
-    return istr;
+  // Читаем символы '0' и '1' слева направо, пока поле не заполнится.
+  char ch;
+  int i = 0;
+  while (i < bf.GetLength() && istr >> ch)
+  {
+    if (ch == '1')
+      bf.SetBit(i);
+    else
+      bf.ClrBit(i);
+    i++;
+  }
+  return istr;
 }
 
 ostream &operator<<(ostream &ostr, const TBitField &bf) // вывод
 {
-    return ostr;
+  // Печатаем биты подряд: 0 или 1 на каждый бит поля.
+  for (int i = 0; i < bf.GetLength(); i++)
+    ostr << bf.GetBit(i);
+  return ostr;
 }
