@@ -12,8 +12,10 @@ static const int FAKE_INT = -1;
 static TBitField FAKE_BITFIELD(1);
 static TSet FAKE_SET(1);
 
-TSet::TSet(int mp) : BitField(-1)
+TSet::TSet(int mp) : BitField(mp)
 {
+  // Множество хранит числа от 0 до mp-1: номер бита = само число.
+  MaxPower = mp;
 }
 
 // конструктор копирования

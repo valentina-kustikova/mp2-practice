@@ -7,12 +7,30 @@
 
 #include "tbitfield.h"
 
+#include <stdexcept>
+
 // Fake variables used as placeholders in tests
 static const int FAKE_INT = -1;
 static TBitField FAKE_BITFIELD(1);
 
 TBitField::TBitField(int len)
 {
+  if (len < 0)
+    throw length_error("Длина битового поля не может быть отрицательной");
+
+  BitLen = len;
+
+  // Сколько элементов TELEM нужно, чтобы вместить len битов.
+  // Деление с округлением вверх: добавляем (размер - 1), тогда любой
+  // ненулевой остаток добавляет ещё один элемент, а полные - нет.
+  const int bitsInElem = sizeof(TELEM) * 8;
+  MemLen = (len + bitsInElem - 1) / bitsInElem;
+
+  // Память под биты. Обязательно обнуляем: new оставляет мусор,
+  // а тест new_bitfield_is_set_to_zero ждёт все биты нулевыми.
+  pMem = new TELEM[MemLen];
+  for (int i = 0; i < MemLen; i++)
+    pMem[i] = 0;
 }
 
 TBitField::TBitField(const TBitField &bf) // конструктор копирования
