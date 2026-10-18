@@ -43,19 +43,28 @@ TBitField::~TBitField()
 
 int TBitField::GetMemIndex(const int n) const // индекс Мем для бита n
 {
-    return FAKE_INT;
+  // В каком элементе массива лежит бит n.
+  // Биты 0..31 -> pMem[0], биты 32..63 -> pMem[1] и так далее.
+  // bitsInElem обязательно int: sizeof даёт беззнаковый тип, и деление
+  // отрицательного n на беззнаковое дало бы огромное число вместо минуса.
+  const int bitsInElem = sizeof(TELEM) * 8;
+  return n / bitsInElem;
 }
 
 TELEM TBitField::GetMemMask(const int n) const // битовая маска для бита n
 {
-    return FAKE_INT;
+  // Число, где все биты нули, кроме одного - на месте бита n
+  // внутри своего элемента. Остаток от деления даёт позицию,
+  // сдвиг влево ставит единицу на эту позицию.
+  const int bitsInElem = sizeof(TELEM) * 8;
+  return (TELEM)1 << (n % bitsInElem);
 }
 
 // доступ к битам битового поля
 
 int TBitField::GetLength(void) const // получить длину (к-во битов)
 {
-  return FAKE_INT;
+  return BitLen;
 }
 
 void TBitField::SetBit(const int n) // установить бит
