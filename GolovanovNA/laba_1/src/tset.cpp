@@ -73,21 +73,20 @@ int TSet::operator!=(const TSet &s) const // сравнение
 
 TSet TSet::operator+(const TSet &s) // объединение
 {
-    TSet ans(BitField | s.BitField);
+    return TSet(BitField | s.BitField);
+}
+
+TSet TSet::operator+(const int Elem) // объединение с элементом через метод сета
+{
+    TSet ans(*this);
+    ans.InsElem(Elem);
     return ans;
 }
 
-TSet TSet::operator+(const int Elem) // объединение с элементом
+TSet TSet::operator-(const int Elem) // разность с элементом через метод сета
 {
     TSet ans(*this);
-    ans.BitField.SetBit(Elem);
-    return ans;
-}
-
-TSet TSet::operator-(const int Elem) // разность с элементом
-{
-    TSet ans(*this);
-    ans.BitField.ClrBit(Elem);
+    ans.DelElem(Elem);
     return ans;
 }
 
@@ -103,10 +102,14 @@ TSet TSet::operator~(void) // дополнение
 
 // перегрузка ввода/вывода
 
-istream &operator>>(istream &istr, TSet &s) // ввод
+istream &operator>>(istream &istr, TSet &s) // ввод элементов множества
 {
-    istr >> s.BitField;
-    s.MaxPower = s.BitField.GetLength();
+    int elem;
+    while (istr >> elem) {          
+        s.InsElem(elem);
+        if (istr.peek() == '\n')
+            break;
+    }
     return istr;
 }
 

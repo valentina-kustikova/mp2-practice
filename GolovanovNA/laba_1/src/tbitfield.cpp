@@ -68,7 +68,7 @@ void TBitField::ClrBit(const int n) // очистить бит
 int TBitField::GetBit(const int n) const // получить значение бита
 {
     if (n < 0 || n >= BitLen) throw std::out_of_range("GetBit OUR");
-    return (pMem[GetMemIndex(n)] & GetMemMask(n));
+    return (pMem[GetMemIndex(n)] & GetMemMask(n)) != 0;
 }
 
 // битовые операции
@@ -100,25 +100,24 @@ int TBitField::operator==(const TBitField &bf) const // сравнение
 
 int TBitField::operator!=(const TBitField &bf) const // сравнение через равно
 {
-    if (*this == bf) return 0;
-    return 1; 
+    return !(*this == bf);
+  
 }
 
 TBitField TBitField::operator|(const TBitField &bf) // операция "или"
 {
     TBitField ans(max(BitLen, bf.BitLen));
-    for (int i = 0; i < min(MemLen, bf.MemLen); i++) {
+    int i = 0;
+    for (i; i < min(MemLen, bf.MemLen); i++) {
         ans.pMem[i] = pMem[i] | bf.pMem[i];
     }
-    if (BitLen < bf.BitLen) {
-        for (int i = min(MemLen, bf.MemLen); i < bf.MemLen; i++) {
-            ans.pMem[i] = bf.pMem[i];
-        }
+    while (i < bf.MemLen){
+        ans.pMem[i] = bf.pMem[i];
+        i++;
     }
-    else {
-        for (int i = min(MemLen, bf.MemLen); i < MemLen; i++) {
-            ans.pMem[i] = pMem[i];
-        }
+    while (i < MemLen) {
+        ans.pMem[i] = pMem[i];
+        i++;
     }
     return ans;
 }
@@ -128,9 +127,6 @@ TBitField TBitField::operator&(const TBitField &bf) // операция "и"
     TBitField ans(max(BitLen, bf.BitLen));
     for (int i = 0; i < min(MemLen, bf.MemLen); i++) {
         ans.pMem[i] = pMem[i] & bf.pMem[i];
-    }
-    for (int i = min(MemLen, bf.MemLen); i < ans.MemLen; i++) {
-        ans.pMem[i] = 0;
     }
     return ans;
 }
@@ -150,10 +146,13 @@ TBitField TBitField::operator~(void)
 
 // ввод/вывод
 
-istream &operator>>(istream &istr, TBitField &bf) // ввод
+istream &operator>>(istream &istr, TBitField &bf) // ввод по битам
 {
-    for (int i = 0; i < bf.MemLen; i++) {
-        istr >> bf.pMem[i];
+    char k;
+    for (int i = 0; i < bf.BitLen; i++) {
+        istr >> k;
+        if (k == 0) bf.ClrBit(i);
+        if (k == 1) bf.SetBit(i);
     }
     return istr;
 }
