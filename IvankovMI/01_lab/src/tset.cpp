@@ -110,17 +110,42 @@ TSet TSet::operator~(void)
     return TSet(~BitField);
 }
 
-// Ввод множества (делегируется вводу битового поля)
-istream &operator>>(istream &istr, TSet &s)
+// Ввод множества: "<количество элементов> <номер элемента> <номер элемента> ..."
+istream& operator>>(istream &istr, TSet &s)
 {
-    istr >> s.BitField;
-    s.MaxPower = s.BitField.GetLength();
+    int n;
+    istr >> n;
+
+    // очищаем текущее множество (все биты в пределах MaxPower)
+    for (int i = 0; i < s.MaxPower; ++i)
+        s.BitField.ClrBit(i);
+
+    // вводим n элементов и включаем их в множество
+    for (int i = 0; i < n; ++i)
+    {
+        int elem;
+        istr >> elem;
+        s.BitField.SetBit(elem);
+    }
+
     return istr;
 }
 
-// Вывод множества (делегируется выводу битового поля)
+// Вывод множества: "{<номер элемента>, <номер элемента>, ...}"
 ostream& operator<<(ostream &ostr, const TSet &s)
 {
-    ostr << s.BitField;
+    ostr << '{';
+    bool first = true;
+    for (int i = 0; i < s.MaxPower; ++i)
+    {
+        if (s.BitField.GetBit(i))
+        {
+            if (!first)
+                ostr << ", ";
+            ostr << i;
+            first = false;
+        }
+    }
+    ostr << '}';
     return ostr;
 }
