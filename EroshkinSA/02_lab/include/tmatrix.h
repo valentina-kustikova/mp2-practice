@@ -90,13 +90,11 @@ public:
   // индексация с контролем
   T& at(size_t ind)
   {
-      cout << ind << " ";
       if (ind >= sz) throw out_of_range("Incorrect index");
       return pMem[ind];
   }
   const T& at(size_t ind) const
   {
-      cout << ind << " ";
       if (ind >= sz) throw out_of_range("Incorrect index");
       return pMem[ind];
   }
@@ -256,9 +254,9 @@ public:
       if (m.sz != sz) throw std::exception("Invalid argument");
       TDynamicMatrix<T> res(sz);
       for (int i = 0; i < sz; i++) {
-          for (int j = 0; j < sz - i; j++) {
-              for (int k = i; k < sz; k++)
-                  res[i][j] += pMem[i][k - i] * m[k][i + j - k];
+          for (int j = i; j < sz; j++) {
+              for (int k = i; k <= j; k++)
+                  res[i][j - i] += pMem[i][k - i] * m[k][j - k];
           }
       }
       return res;
