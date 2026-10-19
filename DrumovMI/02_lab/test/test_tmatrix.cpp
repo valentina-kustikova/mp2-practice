@@ -28,8 +28,8 @@ TEST(TDynamicMatrix, copied_matrix_is_equal_to_source_one)
 {
 	TDynamicMatrix<int> m(3);
 	for (int i = 0; i < 3; i++)
-		for (int j = 0; j < 3; j++)
-			m[i][j] = i * 3 + j;
+		for (int j = i; j < 3; j++)
+			m[i][j - i] = i * 3 + j;
 	TDynamicMatrix<int> m1(m);
 
 	std::cout << "Matrix m:" << endl;
@@ -45,8 +45,8 @@ TEST(TDynamicMatrix, copied_matrix_has_its_own_memory)
 {
 	TDynamicMatrix<int> m(3);
 	for (int i = 0; i < 3; i++)
-		for (int j = 0; j < 3; j++)
-			m[i][j] = i * 3 + j;
+		for (int j = i; j < 3; j++)
+			m[i][j - i] = i * 3 + j;
 	TDynamicMatrix<int> m1(m);
 
 	m[0][0] = 5;
@@ -58,6 +58,7 @@ TEST(TDynamicMatrix, can_get_size)
 {
 	TDynamicMatrix<int> m(3);
 	ASSERT_NO_THROW(m.size());
+	EXPECT_EQ(m.size(), 3);
 }
 
 TEST(TDynamicMatrix, can_set_and_get_element)
@@ -67,6 +68,8 @@ TEST(TDynamicMatrix, can_set_and_get_element)
 	ASSERT_NO_THROW(m.at(0).at(0) = 1);
 
 	ASSERT_NO_THROW(m.at(0).at(0));
+
+	EXPECT_EQ(m.at(0).at(0), 1);
 }
 
 TEST(TDynamicMatrix, throws_when_set_element_with_negative_index)
@@ -121,8 +124,8 @@ TEST(TDynamicMatrix, compare_equal_matrices_return_true)
 	TDynamicMatrix<int> m(3);
 	TDynamicMatrix<int> m1(3);
 	for (int i = 0; i < 3; i++)
-		for (int j = 0; j < 3; j++)
-			m[i][j] = i * 3 + j, m1[i][j] = i * 3 + j;
+		for (int j = i; j < 3; j++)
+			m[i][j - i] = i * 3 + j, m1[i][j - i] = i * 3 + j;
 
 	ASSERT_EQ(m, m1);
 }
@@ -148,8 +151,8 @@ TEST(TDynamicMatrix, can_add_matrices_with_equal_size)
 	TDynamicMatrix<int> m1(3);
 	TDynamicMatrix<int> res(3);
 	for (int i = 0; i < 3; i++)
-		for (int j = 0; j < 3; j++)
-			m[i][j] = i * 3 + j, m1[i][j] = (2 - i) * 3 + (2 - j);
+		for (int j = i; j < 3; j++)
+			m[i][j - i] = i * 3 + j, m1[i][j - i] = (2 - i) * 3 + (2 - j);
 
 	res = m + m1;
 
@@ -164,8 +167,8 @@ TEST(TDynamicMatrix, can_add_matrices_with_equal_size)
 
 
 	for (int i = 0; i < 3; i++)
-		for (int j = 0; j < 3; j++)
-			EXPECT_EQ(res[i][j], i * 3 + j + (2 - i) * 3 + (2 - j));
+		for (int j = i; j < 3; j++)
+			EXPECT_EQ(res[i][j - i], i * 3 + j + (2 - i) * 3 + (2 - j));
 }
 
 TEST(TDynamicMatrix, cant_add_matrices_with_not_equal_size)
@@ -182,8 +185,8 @@ TEST(TDynamicMatrix, can_subtract_matrices_with_equal_size)
 	TDynamicMatrix<int> m1(3);
 	TDynamicMatrix<int> res(3);
 	for (int i = 0; i < 3; i++)
-		for (int j = 0; j < 3; j++)
-			m[i][j] = i * 3 + j, m1[i][j] = i * 3 + j;
+		for (int j = i; j < 3; j++)
+			m[i][j - i] = i * 3 + j, m1[i][j - i] = i * 3 + j;
 
 	res = m - m1;
 
@@ -198,8 +201,8 @@ TEST(TDynamicMatrix, can_subtract_matrices_with_equal_size)
 
 
 	for (int i = 0; i < 3; i++)
-		for (int j = 0; j < 3; j++)
-			EXPECT_EQ(res[i][j], 0);
+		for (int j = i; j < 3; j++)
+			EXPECT_EQ(res[i][j - i], 0);
 }
 
 TEST(TDynamicMatrix, cant_subtract_matrixes_with_not_equal_size)
@@ -210,3 +213,34 @@ TEST(TDynamicMatrix, cant_subtract_matrixes_with_not_equal_size)
 	ASSERT_ANY_THROW(m - m1);
 }
 
+TEST(TDynamicMatrix, can_multiply_matrices_with_equal_size) {
+	TDynamicMatrix<int> m(3);
+	TDynamicMatrix<int> m1(3);
+	TDynamicMatrix<int> res(3);
+	for (int i = 0; i < 3; i++)
+		for (int j = i; j < 3; j++)
+			m[i][j - i] = 1, m1[i][j - i] = 1;
+
+	res = m * m1;
+
+	std::cout << "Matrix m:" << endl;
+	std::cout << m << endl;
+
+	std::cout << "Matrix m1:" << endl;
+	std::cout << m1 << endl;
+
+	std::cout << "Matrix m * m1:" << endl;
+	std::cout << res << endl;
+
+
+	for (int i = 0; i < 3; i++)
+		for (int j = i; j < 3; j++)
+			EXPECT_EQ(res[i][j - i], j - i + 1);
+}
+
+TEST(TDynamicMatrix, cant_multiply_matrices_with_not_equal_size) {
+	TDynamicMatrix<int> m(3);
+	TDynamicMatrix<int> m1(5);
+	
+	ASSERT_ANY_THROW(m * m1);
+}

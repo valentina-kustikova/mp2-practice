@@ -199,7 +199,7 @@ public:
       if (sz == 0 || sz > MAX_MATRIX_SIZE)
           throw out_of_range("Matrix size should be greater than zero, but less than MAX_MATRIX_SIZE");
       for (size_t i = 0; i < sz; i++)
-          pMem[i] = TDynamicVector<T>(sz);
+          pMem[i] = TDynamicVector<T>(sz - i);
   }
 
   using TDynamicVector<TDynamicVector<T>>::operator[];
@@ -232,8 +232,9 @@ public:
       if (sz != v.sz)
           throw std::runtime_error("Dimensions don't match");
       TDynamicVector<T> res(v.sz);
-      for (int i = 0; i < v.sz; i++)
-          res[i] = pMem[i] * v;
+      for (int i = 0; i < sz; i++)
+          for (int j = i; j < sz; j++)
+              res[i] += pMem[i][j - i] * v[j];
       return res;
   }
 
@@ -262,23 +263,30 @@ public:
           throw std::runtime_error("Dimensions don't match");
       TDynamicMatrix res(sz);
       for (int i = 0; i < sz; i++)
-          for (int j = 0; j < sz; j++)
-              for (int k = 0; k < sz; k++)
-                  res[i][j] += pMem[i][k] * m.pMem[k][j];
+          for (int j = i; j < sz; j++)
+              for (int k = i; k <= j; k++)
+                  res[i][j - i] += pMem[i][k - i] * m.pMem[k][j - k];
       return res;
   }
 
   // ввод/вывод
   friend istream& operator>>(istream& istr, TDynamicMatrix& v)
   {
-      for (int i = 0; i < v.sz; i++)
+      for (int i = 0; i < v.sz; i++) {
+          T dummy;
+          for (int j = 0; j < i; j++)
+              istr >> dummy;
           istr >> v.pMem[i];
+      }
       return istr;
   }
   friend ostream& operator<<(ostream& ostr, const TDynamicMatrix& v)
   {
-      for (int i = 0; i < v.sz; i++)
+      for (int i = 0; i < v.sz; i++) {
+          for (int j = 0; j < i; j++)
+              ostr << T{} << " ";
           ostr << v.pMem[i] << endl;
+      }
       return ostr;
   }
 };
