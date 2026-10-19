@@ -20,13 +20,11 @@ TBitField::TBitField(int len)
     BitLen = len;
     MemLen = (BitLen + BITS_PER_ELEM - 1) / BITS_PER_ELEM;
 
+    pMem = nullptr;
     if (MemLen > 0) {
         pMem = new TELEM[MemLen];
         for (int i = 0; i < MemLen; ++i)
             pMem[i] = 0;
-    }
-    else {
-        pMem = nullptr;
     }
 }
 
@@ -35,13 +33,11 @@ TBitField::TBitField(const TBitField& bf) // конструктор копиро
     BitLen = bf.BitLen;
     MemLen = bf.MemLen;
 
+    pMem = nullptr;
     if (MemLen > 0) {
         pMem = new TELEM[MemLen];
         for (int i = 0; i < MemLen; ++i)
             pMem[i] = bf.pMem[i];
-    }
-    else {
-        pMem = nullptr;
     }
 }
 
@@ -95,18 +91,21 @@ int TBitField::GetBit(const int n) const // получить значение б
 
 const TBitField& TBitField::operator=(const TBitField& bf) // присваивание      !!! добавил проверку на разность длины, провести ТЕСТЫ  !!!
 {
+    if (this == &bf)
+    {
+        return *this;
+    }
     if (MemLen != bf.MemLen) {
         delete[] pMem;
 
         MemLen = bf.MemLen;
         pMem = (MemLen > 0) ? new TELEM[MemLen] : nullptr;
     }
-    if (this != &bf) {
-        BitLen = bf.BitLen;
+    BitLen = bf.BitLen;
 
-        for (int i = 0; i < MemLen; ++i)
-            pMem[i] = bf.pMem[i];
-    }
+    for (int i = 0; i < MemLen; ++i)
+        pMem[i] = bf.pMem[i];
+    
     return *this;
 }
 
