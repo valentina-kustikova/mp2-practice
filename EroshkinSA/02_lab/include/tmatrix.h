@@ -220,11 +220,11 @@ public:
   // матрично-векторные операции
   TDynamicVector<T> operator*(const TDynamicVector<T>& v)
   {
-      if (v.sz != sz) throw std::exception("Invalid argument");
+      if (v.size() != sz) throw std::exception("Invalid argument");
       TDynamicVector<T> res(sz);
       for (int i = 0; i < sz; i++) {
           for (int j = 0; j < sz - i; j++) {
-              res[i] += m[i][j] * v[i];
+              res[i] += pMem[i][j] * v[i];
           }
       }
       return res;
