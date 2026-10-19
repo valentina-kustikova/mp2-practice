@@ -146,11 +146,12 @@ TEST(TDynamicMatrix, can_add_matrices_with_equal_size)
 {
 	TDynamicMatrix<int> m(3);
 	TDynamicMatrix<int> m1(3);
+	TDynamicMatrix<int> res(3);
 	for (int i = 0; i < 3; i++)
 		for (int j = 0; j < 3; j++)
 			m[i][j] = i * 3 + j, m1[i][j] = (2 - i) * 3 + (2 - j);
 
-	TDynamicMatrix<int> res = m + m1;
+	res = m + m1;
 
 	std::cout << "Matrix m:" << endl;
 	std::cout << m << endl;
@@ -179,11 +180,12 @@ TEST(TDynamicMatrix, can_subtract_matrices_with_equal_size)
 {
 	TDynamicMatrix<int> m(3);
 	TDynamicMatrix<int> m1(3);
+	TDynamicMatrix<int> res(3);
 	for (int i = 0; i < 3; i++)
 		for (int j = 0; j < 3; j++)
 			m[i][j] = i * 3 + j, m1[i][j] = i * 3 + j;
 
-	TDynamicMatrix<int> res = m - m1;
+	res = m - m1;
 
 	std::cout << "Matrix m:" << endl;
 	std::cout << m << endl;

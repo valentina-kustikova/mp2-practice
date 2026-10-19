@@ -65,7 +65,7 @@ public:
   {
       if (this == &v)
           return *this;
-      delete pMem;
+      delete[]pMem;
       pMem = nullptr;
       sz = 0;
       swap(*this, v);
