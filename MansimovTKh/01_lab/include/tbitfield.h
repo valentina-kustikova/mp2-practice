@@ -13,6 +13,7 @@
 #include <algorithm>
 
 #define INT_POWER 5
+#define BITS 8
 
 using namespace std;
 
