@@ -239,12 +239,13 @@ public:
   {
     if (sz!=v.size()) throw invalid_argument("Multiplying matrix by vector of different size");
     TDynamicVector<T> res(sz);
+    T sum;
     for (size_t i = 0; i < sz; i++) {
-      TDynamicVector<T> tmp(sz);
-      for (size_t j = 0; j < sz; j++) {
-        if (j >= i) tmp[j] = pMem[i][j-i];
+      sum = T{};
+      for (size_t j = i; j < sz; j++) {
+        sum += pMem[i][j - i] * v[j];
       }
-      res[i] = tmp * v;
+      res[i] = sum;
     }
     return res;
   }
