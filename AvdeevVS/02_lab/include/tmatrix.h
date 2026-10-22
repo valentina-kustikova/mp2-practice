@@ -128,12 +128,7 @@ public:
   }
   TDynamicVector operator-(T val)
   {
-    TDynamicVector<T> res(*this);
-    for (size_t i = 0; i < res.sz; i++) {
-      res.pMem[i] -= val;
-    }
-    return res;
-    //return (*this + ((-1)*val));
+    return (*this + (val*(-1)));
   }
   TDynamicVector operator*(T val)
   {
@@ -162,9 +157,9 @@ public:
       res.pMem[i] -= v.pMem[i];
     }
     return res;
-    //return (*this + ((-1)*v));
+    //return (*this + (v*(-1)));
   }
-  T operator*(const TDynamicVector& v) //noexcept(noexcept(T()))
+  T operator*(const TDynamicVector& v) noexcept(noexcept(T()))
   {
     if (this->sz != v.sz) throw invalid_argument("The dot product for vectors of different lengths");
     T res{};

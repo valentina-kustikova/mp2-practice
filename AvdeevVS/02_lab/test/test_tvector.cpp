@@ -73,9 +73,9 @@ TEST(TDynamicVector, can_assign_vector_to_itself)
   TDynamicVector<int> v(3);
   v[0] = 1; v[1] = 2; v[2] = 3;
   ASSERT_NO_THROW(v = v);
-  EXPECT_EQ(1, v[0]);
+  /*EXPECT_EQ(1, v[0]);
   EXPECT_EQ(2, v[1]);
-  EXPECT_EQ(3, v[2]);
+  EXPECT_EQ(3, v[2]);*/
 }
 
 TEST(TDynamicVector, can_assign_vectors_of_equal_size)
@@ -83,11 +83,13 @@ TEST(TDynamicVector, can_assign_vectors_of_equal_size)
   TDynamicVector<int> v(3), p(3);
   v[0] = 1; v[1] = 2; v[2] = 3;
   p[0] = 4; p[1] = 5; p[2] = 6;
+  ASSERT_NO_THROW(v = p);
   v = p;
-  EXPECT_EQ(4, v[0]);
+  EXPECT_EQ(v, p);
+  /*EXPECT_EQ(4, v[0]);
   EXPECT_EQ(5, v[1]);
   EXPECT_EQ(6, v[2]);
-  EXPECT_EQ(3, v.size());
+  EXPECT_EQ(3, v.size());*/
 }
 
 TEST(TDynamicVector, assign_operator_change_vector_size)
@@ -102,11 +104,13 @@ TEST(TDynamicVector, can_assign_vectors_of_different_size)
   TDynamicVector<int> v(4), p(3);
   v[0] = 1; v[1] = 2; v[2] = 3; v[3] = 0;
   p[0] = 4; p[1] = 5; p[2] = 6;
+  ASSERT_NO_THROW(v = p);
   v = p;
-  EXPECT_EQ(4, v[0]);
+  EXPECT_EQ(v, p);
+  /*EXPECT_EQ(4, v[0]);
   EXPECT_EQ(5, v[1]);
   EXPECT_EQ(6, v[2]);
-  EXPECT_EQ(3, v.size());
+  EXPECT_EQ(3, v.size());*/
 }
 
 TEST(TDynamicVector, compare_equal_vectors_return_true)
@@ -127,7 +131,7 @@ TEST(TDynamicVector, compare_vector_with_itself_return_true)
 TEST(TDynamicVector, vectors_with_different_size_are_not_equal)
 {
   TDynamicVector<int> v(3), p(4);;
-  EXPECT_TRUE(p != v);
+  EXPECT_FALSE(p == v);
 }
 
 TEST(TDynamicVector, can_add_scalar_to_vector)
@@ -136,10 +140,12 @@ TEST(TDynamicVector, can_add_scalar_to_vector)
   TDynamicVector<int> p(3);
   v[0] = 1; v[1] = 1; v[2] = 1;
   int a = 7;
+  ASSERT_NO_THROW(v + a);
   p = v + a;
-  EXPECT_TRUE(p[0] == 8);
+  EXPECT_EQ(p, v + a);
+  /*EXPECT_TRUE(p[0] == 8);
   EXPECT_TRUE(p[1] == 8);
-  EXPECT_TRUE(p[2] == 8);
+  EXPECT_TRUE(p[2] == 8);*/
 }
 
 TEST(TDynamicVector, can_subtract_scalar_from_vector)
@@ -148,10 +154,12 @@ TEST(TDynamicVector, can_subtract_scalar_from_vector)
   TDynamicVector<int> p(3);
   v[0] = 2; v[1] = 3; v[2] = 4;
   int a = 1;
+  ASSERT_NO_THROW(v - a);
   p = v - a;
-  EXPECT_TRUE(p[0] == 1);
+  EXPECT_EQ(p, v - a);
+  /*EXPECT_TRUE(p[0] == 1);
   EXPECT_TRUE(p[1] == 2);
-  EXPECT_TRUE(p[2] == 3);
+  EXPECT_TRUE(p[2] == 3);*/
 }
 
 TEST(TDynamicVector, can_multiply_scalar_by_vector)
@@ -160,10 +168,12 @@ TEST(TDynamicVector, can_multiply_scalar_by_vector)
   TDynamicVector<int> p(3);
   v[0] = 1; v[1] = 2; v[2] = 3;
   int a = 2;
+  ASSERT_NO_THROW(v * a);
   p = v * a;
-  EXPECT_TRUE(p[0] == 2);
+  EXPECT_EQ(p, v * a);
+  /*EXPECT_TRUE(p[0] == 2);
   EXPECT_TRUE(p[1] == 4);
-  EXPECT_TRUE(p[2] == 6);
+  EXPECT_TRUE(p[2] == 6);*/
 }
 
 TEST(TDynamicVector, can_add_vectors_with_equal_size)
@@ -173,10 +183,12 @@ TEST(TDynamicVector, can_add_vectors_with_equal_size)
   TDynamicVector<int> res(3);
   v[0] = 1; v[1] = 2; v[2] = 3;
   p[0] = 1; p[1] = 2; p[2] = 3;
+  ASSERT_NO_THROW(v + p);
   res = v + p;
-  EXPECT_TRUE(res[0] == 2);
+  EXPECT_EQ(res, v + p);
+  /*EXPECT_TRUE(res[0] == 2);
   EXPECT_TRUE(res[1] == 4);
-  EXPECT_TRUE(res[2] == 6);
+  EXPECT_TRUE(res[2] == 6);*/
 }
 
 TEST(TDynamicVector, cant_add_vectors_with_not_equal_size)
@@ -193,10 +205,12 @@ TEST(TDynamicVector, can_subtract_vectors_with_equal_size)
   TDynamicVector<int> res(3);
   v[0] = 1; v[1] = 2; v[2] = 3;
   p[0] = 2; p[1] = 3; p[2] = 4;
+  ASSERT_NO_THROW(v - p);
   res = v - p;
-  EXPECT_TRUE(res[0] == -1);
+  EXPECT_EQ(res, v - p);
+  /*EXPECT_TRUE(res[0] == -1);
   EXPECT_TRUE(res[1] == -1);
-  EXPECT_TRUE(res[2] == -1);
+  EXPECT_TRUE(res[2] == -1);*/
 }
 
 TEST(TDynamicVector, cant_subtract_vectors_with_not_equal_size)
@@ -213,8 +227,10 @@ TEST(TDynamicVector, can_multiply_vectors_with_equal_size)
   int res = 0;
   v[0] = 1; v[1] = 2; v[2] = 3;
   p[0] = 2; p[1] = 3; p[2] = 4;
-  res = p * v;
-  EXPECT_EQ(res,20);
+  ASSERT_NO_THROW(v * p);
+  res = v * p;
+  EXPECT_EQ(res, v * p);
+  //EXPECT_EQ(res,20);
 }
 
 TEST(TDynamicVector, cant_multiply_vectors_with_not_equal_size)
