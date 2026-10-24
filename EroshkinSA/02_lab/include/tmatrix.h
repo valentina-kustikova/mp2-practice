@@ -56,8 +56,8 @@ public:
   {
       if (this == &v) return *this;
       if (sz != v.sz) {
+          T* newpMem = new T[v.sz];
           sz = v.sz;
-          T* newpMem = new T[sz];
           delete[] pMem;
           pMem = newpMem;
       }
@@ -224,7 +224,7 @@ public:
       TDynamicVector<T> res(sz);
       for (int i = 0; i < sz; i++) {
           for (int j = 0; j < sz - i; j++) {
-              res[i] += pMem[i][j] * v[i];
+              res[i] += pMem[i][j] * v[i + j];
           }
       }
       return res;

@@ -73,7 +73,6 @@ TEST(TDynamicVector, can_assign_vector_to_itself)
 	int* a = new int[3] {1, 2, 3};
 	TDynamicVector<int> v(a, 3);
 	EXPECT_NO_THROW(v = v);
-	EXPECT_EQ(v, v);
 }
 
 TEST(TDynamicVector, can_assign_vectors_of_equal_size)

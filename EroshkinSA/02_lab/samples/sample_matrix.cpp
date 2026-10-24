@@ -36,6 +36,7 @@ void main()
   cout << "Matrix d = a - b" << endl << d << endl;
   cout << "Matrix e = a * b" << endl << e << endl;
   cout << "Matrix f = a * 100" << endl << f << endl;
+  cout << "Vector x = " << endl << x << endl;
   cout << "Vector y = a * x" << endl << y << endl;
 }
 //---------------------------------------------------------------------------
