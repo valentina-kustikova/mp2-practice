@@ -113,21 +113,18 @@ public:
   }
 
   // скалярные операции
-  TDynamicVector operator+(T val)
+  TDynamicVector operator+(T val) const
   {
       TDynamicVector<T> res(sz);
       for (int i = 0; i < sz; i++)
           res.pMem[i] = pMem[i] + val;
       return res;
   }
-  TDynamicVector operator-(T val)
+  TDynamicVector operator-(T val) const // v1+(-val)
   {
-      TDynamicVector<T> res(sz);
-      for (int i = 0; i < sz; i++)
-          res.pMem[i] = pMem[i] - val;
-      return res;
+      return operator+(val * T(-1));
   }
-  TDynamicVector operator*(T val)
+  TDynamicVector operator*(T val) const
   {
       TDynamicVector<T> res(sz);
       for (int i = 0; i < sz; i++)
@@ -136,7 +133,7 @@ public:
   }
 
   // векторные операции
-  TDynamicVector operator+(const TDynamicVector& v)
+  TDynamicVector operator+(const TDynamicVector& v) const
   {
       if (sz != v.sz)
           throw std::runtime_error("Sizes don't match");
@@ -145,16 +142,12 @@ public:
           res.pMem[i] = pMem[i] + v.pMem[i];
       return res;
   }
-  TDynamicVector operator-(const TDynamicVector& v)
+  TDynamicVector operator-(const TDynamicVector& v) const // v1+v2*(-1)
   {
-      if (sz != v.sz)
-          throw std::runtime_error("Sizes don't match");
-      TDynamicVector<T> res(sz);
-      for (int i = 0; i < sz; i++)
-          res.pMem[i] = pMem[i] - v.pMem[i];
-      return res;
+      return operator+(v * T(-1));
   }
-  T operator*(const TDynamicVector& v)
+
+  T operator*(const TDynamicVector& v) const
   {
       if (sz != v.sz)
           throw std::runtime_error("Sizes don't match");
@@ -218,7 +211,7 @@ public:
   }
 
   // матрично-скалярные операции
-  TDynamicMatrix operator*(const T& val)
+  TDynamicMatrix operator*(T val) const
   {
       TDynamicMatrix res(sz);
       for (int i = 0; i < sz; i++)
@@ -248,14 +241,10 @@ public:
           res[i] = pMem[i] + m.pMem[i];
       return res;
   }
-  TDynamicMatrix operator-(const TDynamicMatrix& m)
+  TDynamicMatrix operator-(const TDynamicMatrix& m) //m1+m2*(-1)
   {
-      if (sz != m.sz)
-          throw std::runtime_error("Dimensions don't match");
-      TDynamicMatrix res(sz);
-      for (int i = 0; i < sz; i++)
-          res[i] = pMem[i] - m.pMem[i];
-      return res;
+      TDynamicMatrix res(*this);
+      return res + (m * T(-1));
   }
   TDynamicMatrix operator*(const TDynamicMatrix& m)
   {
