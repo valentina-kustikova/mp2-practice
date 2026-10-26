@@ -1,3 +1,4 @@
+
 // ННГУ, ВМК, Курс "Методы программирования-2", С++, ООП
 //
 // tbitfield.cpp - Copyright (c) Гергель В.П. 07.05.2001
@@ -8,9 +9,6 @@
 #include "tbitfield.h"
 #include <stdexcept>
 
-// Fake variables used as placeholders in tests
-static const int FAKE_INT = -1;
-static TBitField FAKE_BITFIELD(1);
 
 TBitField::TBitField(int len)
 {
@@ -18,7 +16,7 @@ TBitField::TBitField(int len)
         throw std::invalid_argument("len must be non-negative");
     }
     BitLen = len;
-    MemLen = (len + 31) >> 5;
+    MemLen = (len + MASK_BITS) >> SHIFT_BITS; // todo static const
     pMem = new TELEM[MemLen]();
 
 }
@@ -41,12 +39,12 @@ TBitField::~TBitField()
 
 int TBitField::GetMemIndex(const int n) const // индекс Мем для бита n
 {
-    return n >> 5;
+    return n >> SHIFT_BITS;
 }
 
 TELEM TBitField::GetMemMask(const int n) const // битовая маска для бита n
 {
-    return 1u << (n & 31);
+    return 1u << (n & MASK_BITS); // todo static const
 }
 
 // доступ к битам битового поля
@@ -81,7 +79,7 @@ int TBitField::GetBit(const int n) const // получить значение б
         throw std::out_of_range("bit index out of range");
     }
 
-  return (pMem[GetMemIndex(n)] & GetMemMask(n)) >> (n & 31);
+  return (pMem[GetMemIndex(n)] & GetMemMask(n)) >> (n & MASK_BITS);// todo static const
 }
 
 // битовые операции
@@ -128,7 +126,7 @@ int TBitField::operator!=(const TBitField &bf) const // сравнение
     return !(*this == bf);
 }
 
-TBitField TBitField::operator|(const TBitField &bf) // операция "или"
+TBitField TBitField::operator|(const TBitField &bf) // операция "или" //todo
 {
     int maxLen = (BitLen > bf.BitLen) ? BitLen : bf.BitLen;
     TBitField res(maxLen);
@@ -140,7 +138,7 @@ TBitField TBitField::operator|(const TBitField &bf) // операция "или"
     return res;
 }
 
-TBitField TBitField::operator&(const TBitField &bf) // операция "и"
+TBitField TBitField::operator&(const TBitField &bf) // операция "и"  //todo
 {
     int maxLen = (BitLen > bf.BitLen) ? BitLen : bf.BitLen;
     TBitField res(maxLen);
@@ -159,9 +157,9 @@ TBitField TBitField::operator~(void) // отрицание
     for (int i = 0; i < MemLen; i++) {
         ans.pMem[i] = ~ans.pMem[i];
     }
-    int extra = MemLen * 32 - BitLen;
+    int extra = MemLen * BITS_PER_ELEM - BitLen; //todo const
     if (extra > 0) {
-        ans.pMem[MemLen - 1] &= (1u << (32 - extra)) - 1;
+        ans.pMem[MemLen - 1] &= (1u << (BITS_PER_ELEM - extra)) - 1;
     }
     return ans;
 }

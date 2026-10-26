@@ -13,6 +13,9 @@
 using namespace std;
 
 typedef unsigned int TELEM;
+#define BITS_PER_ELEM 32
+#define SHIFT_BITS 5
+#define MASK_BITS 31
 
 class TBitField
 {
