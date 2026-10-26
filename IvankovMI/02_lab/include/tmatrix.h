@@ -86,55 +86,44 @@ class TDynamicMatrix : private TDynamicVector<TDynamicVector<T>>
 {
     using TDynamicVector<TDynamicVector<T>>::pMem;
     using TDynamicVector<TDynamicVector<T>>::sz;
+private:
+    static size_t checkSize(size_t s);
 public:
-    TDynamicMatrix(size_t s = 1) : TDynamicVector<TDynamicVector<T>>(s)
-    {
-        for (size_t i = 0; i < sz; i++)
-            pMem[i] = TDynamicVector<T>(sz);
-    }
+    TDynamicMatrix(size_t s = 1);
 
     using TDynamicVector<TDynamicVector<T>>::operator[];
 
     // сравнение
-    bool operator==(const TDynamicMatrix& m) const noexcept
-    {
-        throw "Method is not implemented";
-    }
+    bool operator==(const TDynamicMatrix& m) const noexcept;
 
     // матрично-скалярные операции
-    TDynamicMatrix operator*(const T& val)
-    {
-        throw "Method is not implemented";
-    }
+    TDynamicMatrix operator*(const T& val);
 
     // матрично-векторные операции
-    TDynamicVector<T> operator*(const TDynamicVector<T>& v)
-    {
-        throw "Method is not implemented";
-    }
+    TDynamicVector<T> operator*(const TDynamicVector<T>& v);
 
     // матрично-матричные операции
-    TDynamicMatrix operator+(const TDynamicMatrix& m)
-    {
-        throw "Method is not implemented";
-    }
-    TDynamicMatrix operator-(const TDynamicMatrix& m)
-    {
-        throw "Method is not implemented";
-    }
-    TDynamicMatrix operator*(const TDynamicMatrix& m)
-    {
-        throw "Method is not implemented";
-    }
+    TDynamicMatrix operator+(const TDynamicMatrix& m);
+    TDynamicMatrix operator-(const TDynamicMatrix& m);
+    TDynamicMatrix operator*(const TDynamicMatrix& m);
 
     // ввод/вывод
     friend istream& operator>>(istream& istr, TDynamicMatrix& v)
     {
-        throw "Method is not implemented";
+        for (size_t i = 0; i < v.sz; ++i)
+            for (size_t j = 0; j < v.sz; ++j)
+                istr >> v.pMem[i][j];
+        return istr;
     }
     friend ostream& operator<<(ostream& ostr, const TDynamicMatrix& v)
     {
-        throw "Method is not implemented";
+        for (size_t i = 0; i < v.sz; ++i)
+        {
+            for (size_t j = 0; j < v.sz; ++j)
+                ostr << v.pMem[i][j] << ' ';
+            ostr << '\n';
+        }
+        return ostr;
     }
 };
 
