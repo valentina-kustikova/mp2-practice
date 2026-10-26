@@ -55,7 +55,7 @@ public:
     // векторные операции
     TDynamicVector operator+(const TDynamicVector& v);
     TDynamicVector operator-(const TDynamicVector& v);
-    T operator*(const TDynamicVector& v);
+    T operator*(const TDynamicVector& v);      // удалено noexcept т. к. был тест с именем «cant_multiply_vectors_with_not_equal_size»
 
     friend void swap(TDynamicVector& lhs, TDynamicVector& rhs) noexcept
     {
