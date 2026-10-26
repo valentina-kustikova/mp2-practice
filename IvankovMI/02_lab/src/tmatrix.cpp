@@ -304,3 +304,4 @@ template class TDynamicMatrix<int>;
 template class TDynamicMatrix<double>;
 template class TDynamicMatrix<float>;
 template class TDynamicMatrix<long long>;
+
