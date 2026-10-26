@@ -8,6 +8,8 @@
 #define __TDynamicMatrix_H__
 
 #include <iostream>
+#include <cassert>
+#include <algorithm>
 
 using namespace std;
 
@@ -88,12 +90,10 @@ public:
   // индексация
   T& operator[](size_t ind)
   {
-      if (ind >= sz) throw out_of_range("Index out of range");
       return pMem[ind];
   }
   const T& operator[](size_t ind) const
   {
-      if (ind >= sz) throw out_of_range("Index out of range");
       return pMem[ind];
   }
   // индексация с контролем
@@ -131,7 +131,7 @@ public:
       TDynamicVector res(sz);
       for (size_t i=0; i < sz; i++)
       {
-          res[i] =pMem[i] + val;
+          res[i] = pMem[i] + val;
       }
       return res;
   }
@@ -175,7 +175,7 @@ public:
       }
       return res;
   }
-  T operator*(const TDynamicVector& v) const //noexcept(noexcept(T()))
+  T operator*(const TDynamicVector& v) const
   {
       if (v.sz != sz) throw out_of_range("Can't multiply vectors with different sizes");
       T res=0;
@@ -217,8 +217,10 @@ class TDynamicMatrix : private TDynamicVector<TDynamicVector<T>>
   using TDynamicVector<TDynamicVector<T>>::sz;
 public:
   TDynamicMatrix(size_t s = 1) : 
-      TDynamicVector<TDynamicVector<T>>((s>MAX_MATRIX_SIZE) ? MAX_VECTOR_SIZE+1 : s)
+      TDynamicVector<TDynamicVector<T>>(s)
   {
+      if (sz > MAX_MATRIX_SIZE)
+          throw out_of_range("Too large matrix");
       for (size_t i = 0; i < sz; i++)
       {
           pMem[i] = TDynamicVector<T>(sz);
@@ -226,15 +228,23 @@ public:
   }
 
   using TDynamicVector<TDynamicVector<T>>::operator[];
-
+  using TDynamicVector<TDynamicVector<T>>::at;
   using TDynamicVector<TDynamicVector<T>>::size;
   // сравнение
   bool operator==(const TDynamicMatrix& m) const noexcept
   {
-      return TDynamicVector<TDynamicVector<T>>::operator== (m);
+      if (sz != m.sz) { return false; }
+      for (size_t i = 0; i < sz; i++)
+      {
+          if (pMem[i] != m.pMem[i])
+          {
+              return false;
+          }
+      }
+      return true;
   }
 
-  // матрично-скалярные операции
+  //матрично-скалярные операции
   TDynamicMatrix operator*(const T& val) const
   {
       TDynamicMatrix res(sz);

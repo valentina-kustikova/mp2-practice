@@ -54,13 +54,13 @@ TEST(TDynamicMatrix, can_set_and_get_element)
 TEST(TDynamicMatrix, throws_when_set_element_with_negative_index)
 {
 	TDynamicMatrix<int> m(5);
-	ASSERT_ANY_THROW(m[-1][3] = 2);
+	ASSERT_ANY_THROW(m.at(-1).at(2) = 2);
 }
 
 TEST(TDynamicMatrix, throws_when_set_element_with_too_large_index)
 {
 	TDynamicMatrix<int> m(5);
-	ASSERT_ANY_THROW(m[5][3] = 2);
+	ASSERT_ANY_THROW(m.at(5).at(3) = 2);
 }
 
 TEST(TDynamicMatrix, can_assign_matrix_to_itself)
@@ -149,4 +149,48 @@ TEST(TDynamicMatrix, cant_subtract_matrixes_with_not_equal_size)
 {
 	TDynamicMatrix<int> m(3), m1(5);
 	ASSERT_ANY_THROW(m - m1);
+}
+
+TEST(TDynamicMatrix, can_multiply_matrix_by_scalar)
+{
+	TDynamicMatrix<int> m(3), exp(3);
+	int val = 3;
+	for (int i = 0; i < 3; i++)
+		for (int j = 0; j < 3; j++)
+		{
+			m[i][j] = 1;
+			exp[i][j] = 1*val;
+		}
+	ASSERT_NO_THROW(m*val);
+	EXPECT_TRUE(m == exp);
+}
+
+TEST(TDynamicMatrix, can_multiply_matrix_by_vector)
+{
+	TDynamicMatrix<int> m(3);
+	TDynamicVector<int> v(3), exp(3);
+	for (int i = 0; i < 3; i++)
+	{
+		for (int j = 0; j < 3; j++)
+		{
+			m[i][j] = 1;
+		}
+		v[i] = i;
+		exp[i] = 6;
+	}
+	ASSERT_NO_THROW(m * v);
+	EXPECT_TRUE((m*v) == exp);
+}
+
+TEST(TDynamicMatrix, cant_multiply_matrix_and_vector_with_not_equal_size)
+{
+	TDynamicMatrix<int> m(3);
+	TDynamicVector<int>v(4);
+	ASSERT_ANY_THROW(m * v);
+}
+
+TEST(TDynamicMatrix, cant_multiply_matrixes_with_not_equal_size)
+{
+	TDynamicMatrix<int> m(3), m1(5);
+	ASSERT_ANY_THROW(m * m1);
 }
