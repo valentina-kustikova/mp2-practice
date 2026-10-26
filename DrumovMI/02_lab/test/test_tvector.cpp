@@ -206,3 +206,8 @@ TEST(TDynamicVector, cant_multiply_vectors_with_not_equal_size)
 	ASSERT_ANY_THROW(v * v1);
 }
 
+TEST(TDynamicVector, can_move_assign) {
+	TDynamicVector<int> v(5);
+	TDynamicVector<int> v1(5);
+	ASSERT_NO_THROW(v1 = std::move(v));
+}

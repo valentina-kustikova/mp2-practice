@@ -160,8 +160,10 @@ TEST(TDynamicMatrix, can_add_matrices_with_equal_size)
 	std::cout << m1 << endl;
 
 	std::cout << "Matrix m + m1:" << endl;
-	std::cout << res << endl;
+	std::cout << m + m1 << endl;
 
+	std::cout << "Expected:" << endl;
+	std::cout << res << endl;
 
 	ASSERT_EQ(m + m1, res);
 }
@@ -193,6 +195,9 @@ TEST(TDynamicMatrix, can_subtract_matrices_with_equal_size)
 	std::cout << m1 << endl;
 
 	std::cout << "Matrix m - m1:" << endl;
+	std::cout << m - m1 << endl;
+
+	std::cout << "Expected:" << endl;
 	std::cout << res << endl;
 
 	ASSERT_EQ(m - m1, res);
@@ -224,6 +229,9 @@ TEST(TDynamicMatrix, can_multiply_matrices_with_equal_size) {
 	std::cout << m1 << endl;
 
 	std::cout << "Matrix m * m1:" << endl;
+	std::cout << m * m1 << endl;
+
+	std::cout << "Expected:" << endl;
 	std::cout << res << endl;
 
 	ASSERT_EQ(m * m1, res);
@@ -234,4 +242,38 @@ TEST(TDynamicMatrix, cant_multiply_matrices_with_not_equal_size) {
 	TDynamicMatrix<int> m1(5);
 	
 	ASSERT_ANY_THROW(m * m1);
+}
+
+TEST(TDynamicMatrix, can_multiply_matrix_by_vector_of_matching_size) {
+	TDynamicMatrix<int> m(3);
+	TDynamicVector<int> x(3);
+	TDynamicVector<int> res(3);
+	for (int i = 0; i < 3; i++) {
+		for (int j = i; j < 3; j++) {
+			m[i][j - i] = 1;
+		}
+		res[i] = 3 - i;
+		x[i] = 1;
+	}
+
+	std::cout << "Matrix m:" << endl;
+	std::cout << m << endl;
+
+	std::cout << "Vector x:" << endl;
+	std::cout << x << endl;
+
+	std::cout << "Vector m * x:" << endl;
+	std::cout << m * x << endl;
+
+	std::cout << "Expected:" << endl;
+	std::cout << res << endl;
+
+	ASSERT_EQ(m * x, res);
+}
+
+TEST(TDynamicMatrix, cant_multiply_matrix_by_vector_of_nonmatching_size) {
+	TDynamicMatrix<int> m(3);
+	TDynamicVector<int> x(5);
+
+	ASSERT_ANY_THROW(m * x);
 }

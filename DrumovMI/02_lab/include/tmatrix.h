@@ -222,9 +222,9 @@ public:
   // матрично-векторные операции
   TDynamicVector<T> operator*(const TDynamicVector<T>& v)
   {
-      if (sz != v.sz)
+      if (sz != v.size())
           throw std::runtime_error("Dimensions don't match");
-      TDynamicVector<T> res(v.sz);
+      TDynamicVector<T> res(v.size());
       for (int i = 0; i < sz; i++)
           for (int j = i; j < sz; j++)
               res[i] += pMem[i][j - i] * v[j];
