@@ -29,17 +29,14 @@ int TSet::GetMaxPower(void) const {
 }
 
 int TSet::IsMember(const int Elem) const {
-    if (Elem < 0 || Elem >= MaxPower) return 0;
     return BitField.GetBit(Elem);
 }
 
 void TSet::InsElem(const int Elem) {
-    if (Elem < 0 || Elem >= MaxPower) return;
     BitField.SetBit(Elem);
 }
 
 void TSet::DelElem(const int Elem) {
-    if (Elem < 0 || Elem >= MaxPower) return;
     BitField.ClrBit(Elem);
 }
 
@@ -53,48 +50,35 @@ const TSet& TSet::operator=(const TSet& s) {
 }
 
 int TSet::operator==(const TSet& s) const {
-    if (MaxPower != s.MaxPower) return 0;
     return BitField == s.BitField;
 }
 
 int TSet::operator!=(const TSet& s) const {
-    if (*this == s) return 0;
-    return 1;
+    return !(*this == s);
 }
 
 TSet TSet::operator+(const TSet& s) {
-    int newPower = (MaxPower > s.MaxPower) ? MaxPower : s.MaxPower;
-    TSet res(newPower);
-    res.BitField = BitField | s.BitField;
-    return res;
+    return TSet(BitField | s.BitField);
 }
 
 TSet TSet::operator+(const int Elem) {
-    if (Elem < 0 || Elem >= MaxPower) throw std::out_of_range("element out of universe");
     TSet res(*this);
-    if (Elem >= 0 && Elem < MaxPower) {
-        res.InsElem(Elem);
-    }
+    res.InsElem(Elem);
     return res;
 }
 
 TSet TSet::operator-(const int Elem) {
-    if (Elem < 0 || Elem >= MaxPower) throw std::out_of_range("element out of universe");
     TSet res(*this);
-    if (Elem >= 0 && Elem < MaxPower) {
-        res.DelElem(Elem);
-    }
+    res.DelElem(Elem);
     return res;
 }
 
 TSet TSet::operator*(const TSet& s) {
-    TBitField bf = BitField & s.BitField;
-    return TSet(bf);
+    return TSet(BitField & s.BitField);
 }
 
 TSet TSet::operator~(void) {
-    this->BitField = ~(this->BitField);
-    return *this;
+    return TSet(~(this->BitField));
 }
 
 // перегрузка ввода/вывода
@@ -105,9 +89,6 @@ istream& operator>>(istream& istr, TSet& s) {
     }
     int elem;
     while (istr >> elem) {
-        if (elem < 0 || elem >= s.GetMaxPower()) {
-            throw std::out_of_range("element out of universe");
-        }
         s.InsElem(elem);
     }
     istr.clear();
