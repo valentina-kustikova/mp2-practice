@@ -1,8 +1,6 @@
 #include "tmatrix.h"
 
 #include <stdexcept>
-#include <algorithm>
-#include <cassert>
 
 // ---------- TDynamicVector ----------
 
@@ -17,7 +15,8 @@ TDynamicVector<T>::TDynamicVector(size_t size) : sz(size)
 template<typename T>
 TDynamicVector<T>::TDynamicVector(T* arr, size_t s) : sz(s)
 {
-    assert(arr != nullptr && "TDynamicVector ctor requires non-nullptr arg");
+    if (arr == nullptr)
+        throw std::invalid_argument("TDynamicVector ctor requires non-null arg");
     if (sz == 0 || sz > MAX_VECTOR_SIZE)
         throw std::out_of_range("Vector size should be in (0, MAX_VECTOR_SIZE]");
     pMem = new T[sz];
