@@ -7,20 +7,17 @@
 
 #include "tset.h"
 
-// Fake variables used as placeholders in tests
-static const int FAKE_INT = -1;
-static TBitField FAKE_BITFIELD(1);
-static TSet FAKE_SET(1);
 
-TSet::TSet(int mp) : BitField(mp)
+
+TSet::TSet(int mp) : BitField(mp) , MaxPower(mp)
 {
-    MaxPower = mp;
+    
 }
 
 // конструктор копирования
-TSet::TSet(const TSet &s) : BitField(s.BitField)
+TSet::TSet(const TSet &s) : BitField(s.BitField) , MaxPower(s.MaxPower)
 {
-    MaxPower = s.MaxPower;
+    
 }
 
 // конструктор преобразования типа
@@ -41,27 +38,18 @@ int TSet::GetMaxPower(void) const // получить макс. к-во эл-т�
 
 int TSet::IsMember(const int Elem) const // элемент множества?
 {
-    if (Elem < 0 || Elem >= MaxPower) {
-        throw std::out_of_range("TSet::IsMember: element index out of range");
-    }
 
     return BitField.GetBit(Elem);
 }
 
 void TSet::InsElem(const int Elem) // включение элемента множества
 {
-    if (Elem < 0 || Elem >= MaxPower) {
-        throw std::out_of_range("TSet::InsElem: element index out of range");
-    }
 
     BitField.SetBit(Elem);
 }
 
 void TSet::DelElem(const int Elem) // исключение элемента множества
 {
-    if (Elem < 0 || Elem >= MaxPower) {
-        throw std::out_of_range("TSet::DelElem: element index out of range");
-    }
 
     BitField.ClrBit(Elem);
 }
@@ -89,9 +77,7 @@ int TSet::operator!=(const TSet &s) const // сравнение
 
 TSet TSet::operator+(const TSet &s) // объединение
 {
-    TBitField tmp = BitField | s.BitField;
-    TSet res(tmp);
-    return res;
+    return  TSet(BitField | s.BitField);
 }
 
 TSet TSet::operator+(const int Elem) // объединение с элементом
@@ -110,16 +96,12 @@ TSet TSet::operator-(const int Elem) // разность с элементом
 
 TSet TSet::operator*(const TSet &s) // пересечение
 {
-    TBitField tmp = BitField & s.BitField;
-    TSet res(tmp);
-    return res;
+    return TSet(BitField & s.BitField);
 }
 
 TSet TSet::operator~(void) // дополнение
 {
-    TBitField tmp = ~BitField;
-    TSet res(tmp);
-    return res;
+    return TSet(~BitField);
 }
 
 // перегрузка ввода/вывода
@@ -130,9 +112,6 @@ istream& operator>>(istream& istr, TSet& s) {
     }
     int elem;
     while (istr >> elem) {
-        if (elem < 0 || elem >= s.GetMaxPower()) {
-            throw std::out_of_range("element out of universe");
-        }
         s.InsElem(elem);
     }
     istr.clear();

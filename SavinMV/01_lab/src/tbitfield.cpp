@@ -7,9 +7,8 @@
 
 #include "tbitfield.h"
 
-// Fake variables used as placeholders in tests
-static const int FAKE_INT = -1;
-static TBitField FAKE_BITFIELD(1);
+
+
 static const int TELEM_BITS = sizeof(TELEM) * 8;
 
 TBitField::TBitField(int len)
@@ -64,7 +63,7 @@ void TBitField::SetBit(const int n) // установить бит
 {
     if (n < 0 || n >= BitLen)
         throw std::out_of_range("TBitField: bit index out of range");
-    pMem[GetMemIndex(n)] = pMem[GetMemIndex(n)] | GetMemMask(n);
+    pMem[GetMemIndex(n)] |= GetMemMask(n);
 }
 
 void TBitField::ClrBit(const int n) // очистить бит
@@ -132,18 +131,15 @@ TBitField TBitField::operator|(const TBitField &bf) // операция "или"
     }
 
     int i = minMemLen;
-    if (MemLen > bf.MemLen) {
-        while (i < MemLen) {
-            res.pMem[i] = pMem[i];
-            i++;
-        }
+    while (i < MemLen) {
+        res.pMem[i] = pMem[i];
+        i++;
     }
-    else {
-        while (i < bf.MemLen) {
-            res.pMem[i] = bf.pMem[i];
-            i++;
-        }
+    while (i < bf.MemLen) {
+        res.pMem[i] = bf.pMem[i];
+        i++;
     }
+    
     return res;
 }
 
