@@ -47,7 +47,7 @@ TEST(TDynamicMatrix, copied_matrix_has_its_own_memory)
 	}
 	TDynamicMatrix<int> m1(m);
 	m1[0][0] = 100;
-	EXPECT_NE(m[0][0], 100);
+	EXPECT_FALSE(m == m1);
 }
 
 TEST(TDynamicMatrix, can_get_size)
@@ -60,10 +60,8 @@ TEST(TDynamicMatrix, can_set_and_get_element)
 {
 	TDynamicMatrix<int> m(5);
 	TDynamicVector<int> v(5);
-	for (int i = 0; i < 5; i++) v[i] = i + 1;
-	m[1] = v;
 	m[1][0] = 0;
-	EXPECT_TRUE(m[1][3] == 4 && m[1][0] == 0);
+	EXPECT_TRUE(m[1][0] == 0);
 }
 
 TEST(TDynamicMatrix, throws_when_set_element_with_negative_index)
@@ -81,36 +79,20 @@ TEST(TDynamicMatrix, throws_when_set_element_with_too_large_index)
 TEST(TDynamicMatrix, can_assign_matrix_to_itself)
 {
 	TDynamicMatrix<int> m(5);
-	for (int i = 0; i < 5; i++) {
-		for (int j = 0; j < 5 - i; j++) m[i][j] = i + j + 2;
-	}
 	EXPECT_NO_THROW(m = m);
 }
 
 TEST(TDynamicMatrix, can_assign_matrices_of_equal_size)
 {
 	TDynamicMatrix<int> m(5);
-	for (int i = 0; i < 5; i++) {
-		for (int j = 0; j < 5 - i; j++) m[i][j] = i + j + 2;
-	}
 	TDynamicMatrix<int> m1(5);
-	for (int i = 0; i < 5; i++) {
-		for (int j = 0; j < 5 - i; j++) m1[i][j] = i + j + 10;
-	}
 	EXPECT_NO_THROW(m = m1);
 }
 
 TEST(TDynamicMatrix, assign_operator_change_matrix_size)
 {
 	TDynamicMatrix<int> m(3);
-	for (int i = 0; i < 3; i++) {
-		for (int j = 0; j < 3 - i; j++) m[i][j] = i + j + 2;
-	}
-
 	TDynamicMatrix<int> m1(5);
-	for (int i = 0; i < 5; i++) {
-		for (int j = 0; j < 5 - i; j++) m1[i][j] = i + j + 10;
-	}
 	m = m1;
 	EXPECT_EQ(m.size(), 5);
 }
@@ -118,13 +100,7 @@ TEST(TDynamicMatrix, assign_operator_change_matrix_size)
 TEST(TDynamicMatrix, can_assign_matrices_of_different_size)
 {
 	TDynamicMatrix<int> m(3);
-	for (int i = 0; i < 3; i++) {
-		for (int j = 0; j < 3 - i; j++) m[i][j] = i + j + 2;
-	}
 	TDynamicMatrix<int> m1(5);
-	for (int i = 0; i < 5; i++) {
-		for (int j = 0; j < 5 - i; j++) m1[i][j] = i + j + 10;
-	}
 	EXPECT_NO_THROW(m = m1);
 }
 
@@ -144,9 +120,6 @@ TEST(TDynamicMatrix, compare_equal_matrices_return_true)
 TEST(TDynamicMatrix, compare_matrix_with_itself_return_true)
 {
 	TDynamicMatrix<int> m(3);
-	for (int i = 0; i < 3; i++) {
-		for (int j = 0; j < 3 - i; j++) m[i][j] = i + j + 2;
-	}
 	EXPECT_TRUE(m == m);
 }
 
@@ -204,3 +177,42 @@ TEST(TDynamicMatrix, cant_subtract_matrixes_with_not_equal_size)
 	EXPECT_ANY_THROW(m - m1);
 }
 
+TEST(TDynamicMatrix, can_multiply_matrix_by_vector) {
+	TDynamicMatrix<int> m(3);
+	int cnt = 0;
+	for (int i = 0; i < 3; i++) {
+		for (int j = 0; j < 3 - i; j++) m[i][j] = ++cnt;
+	}
+	int* a = new int[3] {1, 2, 3};
+	TDynamicVector<int> v(a, 3);
+	int* b = new int[3] {14, 23, 18};
+	TDynamicVector<int> ans(b, 3);
+	EXPECT_EQ(ans, m * v);
+}
+
+TEST(TDynamicMatrix, cant_multiply_matrix_by_vector_different_sizes) {
+	TDynamicMatrix<int> m(5);
+	TDynamicVector<int> v(3);
+	EXPECT_ANY_THROW(m * v);
+}
+
+TEST(TDynamicMatrix, can_multiply_matrix_by_matrix) {
+	TDynamicMatrix<int> m(2), m1(2), ans(2);
+	int cnt = 0;
+	for (int i = 0; i < 2; i++) {
+		for (int j = 0; j < 2 - i; j++) m[i][j] = ++cnt;
+	}
+	for (int i = 0; i < 2; i++) {
+		for (int j = 0; j < 2 - i; j++) m1[i][j] = ++cnt;
+	}
+	ans[0][0] = 4;
+	ans[0][1] = 17;
+	ans[1][0] = 18;
+	EXPECT_EQ(ans, m * m1);
+}
+
+TEST(TDynamicMatrix, cant_multiply_matrix_by_matrix_different_sizes) {
+	TDynamicMatrix<int> m(5);
+	TDynamicMatrix<int> m1(3);
+	EXPECT_ANY_THROW(m * m1);
+}

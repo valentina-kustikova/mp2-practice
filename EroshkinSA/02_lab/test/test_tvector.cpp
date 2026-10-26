@@ -38,7 +38,7 @@ TEST(TDynamicVector, copied_vector_has_its_own_memory)
 	TDynamicVector<int> v(a, 3);
 	TDynamicVector<int> v1(v);
 	v[0] = 100;
-	EXPECT_EQ(v1[0], 1);
+	EXPECT_NE(v1, v);
 }
 
 TEST(TDynamicVector, can_get_size)
@@ -124,41 +124,37 @@ TEST(TDynamicVector, can_add_scalar_to_vector)
 {
 	int* a = new int[3] {1, 2, 3};
 	int* b = new int[3] {6, 7, 8};
-	TDynamicVector<int> v(a, 3), addv;
-	addv = v + 5;
+	TDynamicVector<int> v(a, 3);
 	TDynamicVector<int> v1(b, 3);
-	EXPECT_EQ(addv, v1);
+	EXPECT_EQ(v + 5, v1);
 }
 
 TEST(TDynamicVector, can_subtract_scalar_from_vector)
 {
 	int* a = new int[3] {1, 2, 3};
 	int* b = new int[3] {-4, -3, -2};
-	TDynamicVector<int> v(a, 3), subv;
-	subv = v - 5;
+	TDynamicVector<int> v(a, 3);
 	TDynamicVector<int> v1(b, 3);
-	EXPECT_EQ(subv, v1);
+	EXPECT_EQ(v - 5, v1);
 }
 
 TEST(TDynamicVector, can_multiply_scalar_by_vector)
 {
 	int* a = new int[3] {1, 2, 3};
 	int* b = new int[3] {5, 10, 15};
-	TDynamicVector<int> v(a, 3), mulv;
-	mulv = v * 5;
+	TDynamicVector<int> v(a, 3);
 	TDynamicVector<int> v1(b, 3);
-	EXPECT_EQ(mulv, v1);
+	EXPECT_EQ(v * 5, v1);
 }
 
 TEST(TDynamicVector, can_add_vectors_with_equal_size)
 {
 	int* a = new int[3] {1, 2, 3};
 	int* b = new int[3] {4, 5, 6};
-	TDynamicVector<int> v(a, 3), v1(b, 3), vsum;
-	vsum = v + v1;
+	TDynamicVector<int> v(a, 3), v1(b, 3);
 	int* c = new int[3] {5, 7, 9};
 	TDynamicVector<int> v2(c, 3);
-	EXPECT_EQ(vsum, v2);
+	EXPECT_EQ(v + v1, v2);
 }
 
 TEST(TDynamicVector, cant_add_vectors_with_not_equal_size)
@@ -171,11 +167,10 @@ TEST(TDynamicVector, can_subtract_vectors_with_equal_size)
 {
 	int* a = new int[3] {1, 2, 3};
 	int* b = new int[3] {4, 5, 6};
-	TDynamicVector<int> v(a, 3), v1(b, 3), vsub;
-	vsub = v1 - v;
+	TDynamicVector<int> v(a, 3), v1(b, 3);
 	int* c = new int[3] {3, 3, 3};
 	TDynamicVector<int> v2(c, 3);
-	EXPECT_EQ(vsub, v2);
+	EXPECT_EQ(v1 - v, v2);
 }
 
 TEST(TDynamicVector, cant_subtract_vectors_with_not_equal_size)
@@ -189,8 +184,7 @@ TEST(TDynamicVector, can_multiply_vectors_with_equal_size)
 	int* a = new int[3] {1, 2, 3};
 	int* b = new int[3] {4, 5, 6};
 	TDynamicVector<int> v(a, 3), v1(b, 3);
-	int scmul = v * v1;
-	EXPECT_EQ(scmul, 32);
+	EXPECT_EQ(v * v1, 32);
 }
 
 TEST(TDynamicVector, cant_multiply_vectors_with_not_equal_size)

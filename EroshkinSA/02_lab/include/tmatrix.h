@@ -112,20 +112,20 @@ public:
   }
 
   // скалярные операции
-  TDynamicVector operator+(T val)
+  TDynamicVector operator+(T val) const
   {
       TDynamicVector<T> res(sz);
       for (int i = 0; i < sz; i++) res.pMem[i] = val + pMem[i];
       return res;
   }
 
-  TDynamicVector operator-(T val)
+  TDynamicVector operator-(T val) const
   {
       TDynamicVector<T> res(sz);
-      for (int i = 0; i < sz; i++) res.pMem[i] = pMem[i] - val;
+      res = (*this) + (-val);
       return res;
   }
-  TDynamicVector operator*(T val)
+  TDynamicVector operator*(T val) const
   {
       TDynamicVector<T> res(sz);
       for (int i = 0; i < sz; i++) res.pMem[i] = val * pMem[i];
@@ -133,21 +133,19 @@ public:
   }
 
   // векторные операции
-  TDynamicVector operator+(const TDynamicVector& v)
+  TDynamicVector operator+(const TDynamicVector& v) const
   {
       if (sz != v.sz) throw std::exception("Invalid arguments");
       TDynamicVector<T> res(sz);
       for (int i = 0; i < sz; i++) res.pMem[i] = pMem[i] + v.pMem[i];
       return res;
   }
-  TDynamicVector operator-(const TDynamicVector& v)
+  TDynamicVector operator-(const TDynamicVector& v) const
   {
       if (sz != v.sz) throw std::exception("Invalid arguments");
-      TDynamicVector<T> res(sz);
-      for (int i = 0; i < sz; i++) res.pMem[i] = pMem[i] - v.pMem[i];
-      return res;
+      return operator+(v * (-1));
   }
-  T operator*(const TDynamicVector& v) //noexcept(noexcept(T()))
+  T operator*(const TDynamicVector& v) const //noexcept(noexcept(T()))
   {
       if (sz != v.sz) throw std::exception("Invalid arguments");
       T ans{};
@@ -210,7 +208,7 @@ public:
   }
 
   // матрично-скалярные операции
-  TDynamicMatrix operator*(const T& val)
+  TDynamicMatrix operator*(const T& val) const
   {
       TDynamicMatrix res(sz);
       for (int i = 0; i < sz; i++) res.pMem[i] = pMem[i] * val;
@@ -218,7 +216,7 @@ public:
   }
 
   // матрично-векторные операции
-  TDynamicVector<T> operator*(const TDynamicVector<T>& v)
+  TDynamicVector<T> operator*(const TDynamicVector<T>& v) const
   {
       if (v.size() != sz) throw std::exception("Invalid argument");
       TDynamicVector<T> res(sz);
@@ -231,25 +229,21 @@ public:
   }
 
   // матрично-матричные операции
-  TDynamicMatrix operator+(const TDynamicMatrix& m)
+  TDynamicMatrix operator+(const TDynamicMatrix& m) const
   {
       if (m.sz != sz) throw std::exception("Invalid argument");
       TDynamicMatrix<T> res(sz);
       for (int i = 0; i < sz; i++) {
-          for (int j = 0; j < sz - i; j++) res[i][j] = pMem[i][j] + m[i][j];
+          res[i] = pMem[i] + m[i];
       }
       return res;
   }
-  TDynamicMatrix operator-(const TDynamicMatrix& m)
+  TDynamicMatrix operator-(const TDynamicMatrix& m) const
   {
       if (m.sz != sz) throw std::exception("Invalid argument");
-      TDynamicMatrix<T> res(sz);
-      for (int i = 0; i < sz; i++) {
-          for (int j = 0; j < sz - i; j++) res[i][j] = pMem[i][j] - m[i][j];
-      }
-      return res;
+      return operator+(m * (-1));
   }
-  TDynamicMatrix operator*(const TDynamicMatrix& m)
+  TDynamicMatrix operator*(const TDynamicMatrix& m) const
   {
       if (m.sz != sz) throw std::exception("Invalid argument");
       TDynamicMatrix<T> res(sz);
