@@ -15,7 +15,6 @@ void main()
 
     TDynamicMatrix<int> a(5), b(5), c(5), d(5) , e(5), t(5);
     int i, j;
-
     cout << " Тестирование класса работы с матрицами: " << endl << endl;
     for (i = 0; i < 5; i++)
       for (j = i; j < 5; j++)

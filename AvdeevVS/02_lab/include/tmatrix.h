@@ -2,12 +2,13 @@
 //
 // Copyright (c) Сысоев А.В.
 //
-//
+//           ☦
 
 #ifndef __TDynamicMatrix_H__
 #define __TDynamicMatrix_H__
 
 #include <iostream>
+#include <cassert>
 
 using namespace std;
 
@@ -140,7 +141,7 @@ public:
   }
 
   // векторные операции
-  TDynamicVector operator+(const TDynamicVector& v)
+  TDynamicVector operator+(const TDynamicVector& v) 
   {
     if (this->sz != v.sz) throw invalid_argument("Addition of vectors of different lengths");
     TDynamicVector<T> res(*this);
@@ -149,7 +150,7 @@ public:
     }
     return res;
   }
-  TDynamicVector operator-(const TDynamicVector& v)
+  TDynamicVector operator-(const TDynamicVector& v) 
   {
     if (this->sz != v.sz) throw invalid_argument("Subtraction of vectors of different lengths");
     TDynamicVector<T> res(*this);
@@ -159,7 +160,7 @@ public:
     return res;
     //return (*this + (v*(-1)));
   }
-  T operator*(const TDynamicVector& v) noexcept(noexcept(T()))
+  T operator*(const TDynamicVector& v) //noexcept(noexcept(T()))
   {
     if (this->sz != v.sz) throw invalid_argument("The dot product for vectors of different lengths");
     T res{};
