@@ -207,6 +207,19 @@ TDynamicMatrix<T>::TDynamicMatrix(size_t s)
 }
 
 template<typename T>
+T& TDynamicMatrix<T>::at(size_t i, size_t j)
+{
+    // проверки обеих границ делегируются существующим at базового вектора и строки
+    return TDynamicVector<TDynamicVector<T>>::at(i).at(j);
+}
+
+template<typename T>
+const T& TDynamicMatrix<T>::at(size_t i, size_t j) const
+{
+    return TDynamicVector<TDynamicVector<T>>::at(i).at(j);
+}
+
+template<typename T>
 bool TDynamicMatrix<T>::operator==(const TDynamicMatrix& m) const noexcept
 {
     if (this == &m)

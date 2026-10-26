@@ -92,6 +92,12 @@ public:
     TDynamicMatrix(size_t s = 1);
 
     using TDynamicVector<TDynamicVector<T>>::operator[];
+    using TDynamicVector<TDynamicVector<T>>::size;   // размер матрицы (число строк)  (добавил сам)
+    using TDynamicVector<TDynamicVector<T>>::at;     // доступ к строке с контролем   (добавил сам)
+
+    // доступ к элементу с контролем по двум индексам   (добавил сам)
+    T& at(size_t i, size_t j);
+    const T& at(size_t i, size_t j) const;
 
     // сравнение
     bool operator==(const TDynamicMatrix& m) const noexcept;

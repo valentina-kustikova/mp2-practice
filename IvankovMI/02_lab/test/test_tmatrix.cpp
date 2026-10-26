@@ -49,11 +49,18 @@ TEST(TDynamicMatrix, copied_matrix_has_its_own_memory)
 	EXPECT_EQ(1, m1[0][0]);
 }
 
-TEST(TDynamicMatrix, can_get_size)
+TEST(TDynamicMatrix, can_get_size_1_method)
 {
 	TDynamicMatrix<int> m(5);
 
 	EXPECT_EQ(size_t(5), m[0].size());
+}
+
+TEST(TDynamicMatrix, can_get_size_2_method)
+{
+	TDynamicMatrix<int> m(5);
+
+	EXPECT_EQ(size_t(5), m.size());
 }
 
 TEST(TDynamicMatrix, can_set_and_get_element)
@@ -64,18 +71,39 @@ TEST(TDynamicMatrix, can_set_and_get_element)
 	EXPECT_EQ(4, m[0][0]);
 }
 
-TEST(TDynamicMatrix, throws_when_set_element_with_negative_index)
+TEST(TDynamicMatrix, throws_when_set_element_with_negative_index_1)
 {
 	TDynamicMatrix<int> m(3);
 
 	ASSERT_ANY_THROW(m[0].at(-1) = 1);
 }
 
-TEST(TDynamicMatrix, throws_when_set_element_with_too_large_index)
+TEST(TDynamicMatrix, throws_when_set_element_with_negative_index_2)
+{
+	TDynamicMatrix<int> m(3);
+
+	ASSERT_ANY_THROW(m.at(-1)[0] = 1);
+}
+
+TEST(TDynamicMatrix, throws_when_set_element_with_negative_index_3)
+{
+	TDynamicMatrix<int> m(3);
+
+	ASSERT_ANY_THROW(m.at(0, -1) = 1);
+}
+
+TEST(TDynamicMatrix, throws_when_set_element_with_too_large_index_1)
 {
 	TDynamicMatrix<int> m(3);
 
 	ASSERT_ANY_THROW(m[0].at(m[0].size()) = 1);
+}
+
+TEST(TDynamicMatrix, throws_when_set_element_with_too_large_index_2)
+{
+	TDynamicMatrix<int> m(3);
+
+	ASSERT_ANY_THROW(m.at(0, m.size()) = 1);
 }
 
 TEST(TDynamicMatrix, can_assign_matrix_to_itself)
@@ -104,7 +132,7 @@ TEST(TDynamicMatrix, can_assign_matrices_of_equal_size)
 	EXPECT_TRUE(m1 == m2);
 }
 
-TEST(TDynamicMatrix, assign_operator_change_matrix_size)
+TEST(TDynamicMatrix, assign_operator_change_matrix_size_1)
 {
 	TDynamicMatrix<int> m1(2);
 	TDynamicMatrix<int> m2(4);
@@ -117,7 +145,20 @@ TEST(TDynamicMatrix, assign_operator_change_matrix_size)
 	EXPECT_TRUE(m1 == m2);
 }
 
-TEST(TDynamicMatrix, can_assign_matrices_of_different_size)
+TEST(TDynamicMatrix, assign_operator_change_matrix_size_2)
+{
+	TDynamicMatrix<int> m1(2);
+	TDynamicMatrix<int> m2(4);
+
+	m2[3][3] = 9;
+
+	m1 = m2;
+
+	EXPECT_EQ(size_t(4), m1.size());
+	EXPECT_TRUE(m1 == m2);
+}
+
+TEST(TDynamicMatrix, can_assign_matrices_of_different_size_1)
 {
 	TDynamicMatrix<int> m1(2);
 	TDynamicMatrix<int> m2(4);
@@ -130,6 +171,22 @@ TEST(TDynamicMatrix, can_assign_matrices_of_different_size)
 	m1 = m2;
 
 	EXPECT_EQ(size_t(4), m1[0].size());
+	EXPECT_TRUE(m1 == m2);
+}
+
+TEST(TDynamicMatrix, can_assign_matrices_of_different_size_2)
+{
+	TDynamicMatrix<int> m1(2);
+	TDynamicMatrix<int> m2(4);
+
+	m2[0][0] = 1;
+	m2[1][1] = 2;
+	m2[2][2] = 3;
+	m2[3][3] = 4;
+
+	m1 = m2;
+
+	EXPECT_EQ(size_t(4), m1.size());
 	EXPECT_TRUE(m1 == m2);
 }
 
