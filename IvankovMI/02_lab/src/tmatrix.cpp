@@ -209,6 +209,8 @@ TDynamicMatrix<T>::TDynamicMatrix(size_t s)
 template<typename T>
 bool TDynamicMatrix<T>::operator==(const TDynamicMatrix& m) const noexcept
 {
+    if (this == &m)
+        return true;
     if (sz != m.sz)
         return false;
     for (size_t i = 0; i < sz; ++i)
