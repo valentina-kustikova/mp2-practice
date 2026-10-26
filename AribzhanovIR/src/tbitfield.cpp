@@ -98,7 +98,7 @@ int TBitField::GetBit(const int n) const // получить значение б
     }
     
 
-    return pMem[GetMemIndex(n)] & GetMemMask(n);
+    return (pMem[GetMemIndex(n)] & GetMemMask(n)) != 0;
     
 }
 
@@ -148,25 +148,19 @@ TBitField TBitField::operator|(const TBitField& bf) // операция "или"
     int min_sz = std::min(this->MemLen, bf.MemLen);
     TBitField result(res_sz);
     
-    for (int i = 0; i < min_sz; i++){
+    int i;
+    for (i = 0; i < min_sz; i++){
         
         result.pMem[i] = this->pMem[i] | bf.pMem[i];
     }
-    if(this->MemLen!= bf.MemLen){
-        if (min_sz == this->MemLen) {
-            for (int j = min_sz; j < res_sz;j++) {
-                result.pMem[j] = bf.pMem[j];
-            }
-        }
-        else {
-            for (int j = min_sz; j < res_sz;j++) {
-                result.pMem[j] = this->pMem[j];
-            }
-
-        }
-    }
     
-        
+    for (; i < bf.MemLen;i++) {
+        result.pMem[i] = bf.pMem[i];
+    }
+
+    for (; i < this->MemLen;i++) {
+        result.pMem[i] = this->pMem[i];
+    }    
     return result;
 }
 
@@ -216,8 +210,8 @@ istream &operator>>(istream &istr, TBitField &bf) // ввод
 ostream &operator<<(ostream &ostr, const TBitField &bf) // вывод
 {
     for (int i = 0; i < bf.BitLen; i++){
-        if(bf.GetBit(i))
-            ostr << i << "\t";
+        
+        ostr << bf.GetBit(i) << "\t";
     }
         
     return ostr;
