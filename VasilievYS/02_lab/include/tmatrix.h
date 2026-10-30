@@ -181,7 +181,7 @@ public:
       T res=0;
       for (size_t i=0; i < sz; i++)
       {
-          res = res + (pMem[i] * v.pMem[i]);
+          res += pMem[i] * v.pMem[i];
       }
       return res;
   }
@@ -302,7 +302,7 @@ public:
           {
               for (size_t k = 0; k < sz; k++)
               {
-                  res.pMem[i][j] = res.pMem[i][j] + pMem[i][k] * m.pMem[k][j];
+                  res.pMem[i][j] += pMem[i][k] * m.pMem[k][j];
               }
           }
       }

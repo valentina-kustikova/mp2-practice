@@ -162,7 +162,7 @@ TEST(TDynamicMatrix, can_multiply_matrix_by_scalar)
 			exp[i][j] = 1*val;
 		}
 	ASSERT_NO_THROW(m*val);
-	EXPECT_TRUE(m == exp);
+	EXPECT_TRUE((m*val) == exp);
 }
 
 TEST(TDynamicMatrix, can_multiply_matrix_by_vector)
@@ -176,7 +176,7 @@ TEST(TDynamicMatrix, can_multiply_matrix_by_vector)
 			m[i][j] = 1;
 		}
 		v[i] = i;
-		exp[i] = 6;
+		exp[i] = 3;
 	}
 	ASSERT_NO_THROW(m * v);
 	EXPECT_TRUE((m*v) == exp);
@@ -187,6 +187,19 @@ TEST(TDynamicMatrix, cant_multiply_matrix_and_vector_with_not_equal_size)
 	TDynamicMatrix<int> m(3);
 	TDynamicVector<int>v(4);
 	ASSERT_ANY_THROW(m * v);
+}
+
+TEST(TDynamicMatrix, can_multiply_matrices_with_equal_size)
+{
+	TDynamicMatrix<int> a(2), b(2), exp(2);
+	a[0][0] = 1; a[0][1] = 2;
+	a[1][0] = 3; a[1][1] = 4;
+	b[0][0] = 5; b[0][1] = 6;
+	b[1][0] = 7; b[1][1] = 8;
+	exp[0][0] = 19; exp[0][1] = 22;
+	exp[1][0] = 43; exp[1][1] = 50;
+
+	EXPECT_TRUE((a * b) == exp);
 }
 
 TEST(TDynamicMatrix, cant_multiply_matrixes_with_not_equal_size)
