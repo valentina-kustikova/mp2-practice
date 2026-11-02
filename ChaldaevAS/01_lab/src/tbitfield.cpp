@@ -69,11 +69,13 @@ const TBitField& TBitField::operator=(const TBitField &bf) // присваива
 {
     if (this == &bf) return *this;
 
-    if (MemLen != bf.MemLen) delete[] pMem; //todo if MemLen != bf.MemLen
+    if (MemLen != bf.MemLen) {
+        delete[] pMem; //todo if MemLen != bf.MemLen
+        MemLen = bf.MemLen;
+        pMem = new TELEM[MemLen];
+    }
 
     BitLen = bf.BitLen;
-    MemLen = bf.MemLen;
-    pMem = new TELEM[MemLen];
     for (int i = 0; i < MemLen; ++i) {
         pMem[i] = bf.pMem[i];
     }
@@ -96,9 +98,9 @@ int TBitField::operator!=(const TBitField &bf) const // сравнение
 TBitField TBitField::operator|(const TBitField &bf) // операция "или" //todo
 {
     int minMemLen = min(MemLen, bf.MemLen);
-    int maxMemLen = max(MemLen, bf.MemLen);
+    int maxBitLen = max(BitLen, bf.BitLen);
     int i = 0;
-    TBitField result(maxMemLen * BYTE_LEN);
+    TBitField result(maxBitLen);
     for (i; i < minMemLen; ++i) {
         result.pMem[i] = pMem[i] | bf.pMem[i];
     }
@@ -114,17 +116,13 @@ TBitField TBitField::operator|(const TBitField &bf) // операция "или"
     return result;
 }
 
-TBitField TBitField::operator&(const TBitField &bf) // операция "и"//todo ///НЕ ДОДЕЛАЛ
+TBitField TBitField::operator&(const TBitField &bf) // операция "и"//todo
 {
     int minMemLen = min(MemLen, bf.MemLen);
     int maxMemLen = max(MemLen, bf.MemLen);
     TBitField result(maxMemLen * BYTE_LEN);
     for (int i = 0; i < minMemLen; ++i) {
-        if (i < minMemLen) {
-            result.pMem[i] = pMem[i] & bf.pMem[i];
-            continue;
-        }
-        result.pMem[i] = 0;
+        result.pMem[i] = pMem[i] & bf.pMem[i];
     }
     return result;
 }
@@ -132,7 +130,7 @@ TBitField TBitField::operator&(const TBitField &bf) // операция "и"//to
 TBitField TBitField::operator~(void) // отрицание
 {
     TBitField result(BitLen);
-    int lastSignificantBits = BitLen % (sizeof(TELEM) * 8);
+    int lastSignificantBits = BitLen % (sizeof(TELEM) * BYTE_LEN);
 
     for (int i = 0; i < MemLen; ++i) {
         result.pMem[i] = ~(pMem[i]);
