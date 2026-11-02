@@ -116,14 +116,22 @@ TBitField TBitField::operator|(const TBitField& bf) // операция "или"
 
     int minMemLen = (MemLen < bf.MemLen) ? MemLen : bf.MemLen;
 
-    for (int i = 0; i < minMemLen; i++)
+    int i = 0;
+
+    while (i < minMemLen) {
         res.pMem[i] = pMem[i] | bf.pMem[i];
+        i++;
+    }
 
-    for (int i = minMemLen; i < MemLen; i++)
+    while (i < MemLen) {
         res.pMem[i] = pMem[i];
+        i++;
+    }
 
-    for (int i = minMemLen; i < bf.MemLen; i++)
+    while (i < bf.MemLen) {
         res.pMem[i] = bf.pMem[i];
+        i++;
+    }
 
     return res;
 }
