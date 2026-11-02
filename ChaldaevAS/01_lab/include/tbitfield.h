@@ -14,6 +14,8 @@ using namespace std;
 
 typedef unsigned int TELEM;
 
+const int BYTE_LEN = 8;
+
 class TBitField
 {
 private:

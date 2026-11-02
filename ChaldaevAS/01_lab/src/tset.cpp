@@ -58,55 +58,43 @@ const TSet& TSet::operator=(const TSet &s) // присваивание
 
 int TSet::operator==(const TSet &s) const // сравнение
 {
-    if (BitField != s.BitField) return 0;
-    return 1;
+    return (BitField == s.BitField);
 }
 
 int TSet::operator!=(const TSet &s) const // сравнение
 {
-    return 0 == (*this == s);
+    return !(*this == s);
 }
 
 TSet TSet::operator+(const TSet &s) // объединение
 {
-    TSet result(max(MaxPower, s.GetMaxPower()));
-    result.BitField = BitField | s.BitField;
-
-    return result;
+    return TSet(BitField | s.BitField);
 }
 
 TSet TSet::operator+(const int Elem) // объединение с элементом
 {
-    TSet result(MaxPower);
-    result.BitField = BitField;
-    result.BitField.SetBit(Elem);
-
+    TSet result(*this);
+    result.InsElem(Elem);
     return result;
 }
 
 TSet TSet::operator-(const int Elem) // разность с элементом
 {
-    TSet result(MaxPower);
-    result.BitField = BitField;
-    result.BitField.ClrBit(Elem);
-
+    TSet result(*this);
+    result.DelElem(Elem);
     return result;
 }
 
 TSet TSet::operator*(const TSet &s) // пересечение
 {
-    TSet result(max(MaxPower, s.MaxPower));
-    result.BitField = BitField & s.BitField;
-
+    TSet result(BitField & s.BitField); // todo
     return result;
 
 }
 
 TSet TSet::operator~(void) // дополнение
 {
-    TSet result(MaxPower);
-    result.BitField = ~BitField;
-
+    TSet result(~BitField); // todo
     return result;
 }
 
@@ -114,13 +102,13 @@ TSet TSet::operator~(void) // дополнение
 
 istream &operator>>(istream &istr, TSet &s) // ввод
 {
-    while (true) {
-        int streamEl;
-        istr >> streamEl;
+
+    int streamEl;
+
+    while (istr >> streamEl) {
         if (streamEl == -1) break;
         if (streamEl < 0 || streamEl >= s.GetMaxPower()) throw std::out_of_range("stream num out of range \n");
-        if (s.IsMember(streamEl)) s.DelElem(streamEl);
-        else s.InsElem(streamEl);
+        s.InsElem(streamEl);
     }
     return istr;
 }
