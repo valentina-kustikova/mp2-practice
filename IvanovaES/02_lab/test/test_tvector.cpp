@@ -1,6 +1,6 @@
 #include "tmatrix.h"
 
-#include <gtest.h>
+#include <gtest/gtest.h>
 
 TEST(TDynamicVector, can_create_vector_with_positive_length)
 {
@@ -40,7 +40,7 @@ TEST(TDynamicVector, copied_vector_has_its_own_memory)
 	v1[1] = 30;
 	TDynamicVector<int> v2(v1);
 	v2[0] = 10;
-	EXPECT_EQ(v1[0], 20);
+	EXPECT_NE(v1, v2);
 }
 
 TEST(TDynamicVector, can_get_size)
@@ -88,9 +88,7 @@ TEST(TDynamicVector, can_assign_vectors_of_equal_size)
 	
 	v1 = v2;
 	
-	EXPECT_EQ(2, v1.size());
-	EXPECT_EQ(v1[0], 10);
-	EXPECT_EQ(v1[1], 40);
+	EXPECT_EQ(v1, v2);
 }
 
 TEST(TDynamicVector, assign_operator_change_vector_size)
@@ -114,10 +112,7 @@ TEST(TDynamicVector, can_assign_vectors_of_different_size)
 
 	v1 = v2;
 
-	EXPECT_EQ(v1.size(), 3);
-	EXPECT_EQ(v1[0], 10);
-	EXPECT_EQ(v1[1], 40);
-	EXPECT_EQ(v1[2], 50);
+	EXPECT_EQ(v1, v2);
 }
 
 TEST(TDynamicVector, compare_equal_vectors_return_true)
@@ -150,15 +145,13 @@ TEST(TDynamicVector, vectors_with_different_size_are_not_equal)
 
 TEST(TDynamicVector, can_add_scalar_to_vector)
 {
-	TDynamicVector<int> v1(2);
-	v1[0] = 20;
-	v1[1] = 30;
-	v1 = v1 + 1;
-	EXPECT_EQ(v1[0], 21);
-	EXPECT_EQ(v1[1], 31);
+	TDynamicVector<int> v1(2), exp(2);
+	v1[0] = 20; exp[0] = 21;
+	v1[1] = 30; exp[1] = 31;
+	EXPECT_EQ(v1 + 1, exp);
 }
 
-TEST(TDynamicVector, can_subtract_scalar_from_vector)
+TEST(TDynamicVector, can_subtract_scalar_from_vector) // todo exp
 {
 	TDynamicVector<int> v1(2);
 	v1[0] = 20;
@@ -168,7 +161,7 @@ TEST(TDynamicVector, can_subtract_scalar_from_vector)
 	EXPECT_EQ(v1[1], 29);
 }
 
-TEST(TDynamicVector, can_multiply_scalar_by_vector)
+TEST(TDynamicVector, can_multiply_scalar_by_vector) // todo exp
 {
 	TDynamicVector<int> v1(2);
 	v1[0] = 20;
@@ -178,7 +171,7 @@ TEST(TDynamicVector, can_multiply_scalar_by_vector)
 	EXPECT_EQ(v1[1], 60);
 }
 
-TEST(TDynamicVector, can_add_vectors_with_equal_size)
+TEST(TDynamicVector, can_add_vectors_with_equal_size) // todo exp
 {
 	TDynamicVector<int> v1(2);
 	v1[0] = 20;
