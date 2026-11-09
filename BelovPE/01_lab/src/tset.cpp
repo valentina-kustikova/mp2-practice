@@ -88,14 +88,12 @@ TSet TSet::operator-(const int Elem) // разность с элементом
 
 TSet TSet::operator*(const TSet& s) // пересечение
 {
-    TBitField tmp = BitField & s.BitField;
-    return TSet(tmp);
+    return TSet(BitField & s.BitField);
 }
 
 TSet TSet::operator~(void) // дополнение
 {
-    TBitField tmp = ~BitField;
-    return TSet(tmp);
+    return TSet(~BitField);
 }
 
 // перегрузка ввода/вывода
