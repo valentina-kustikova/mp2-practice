@@ -2,6 +2,9 @@
 #define __POSTFIX_FORM_H__
 
 #include <iostream>
+#include <vector>
+#include <set>
+#include <map>
 #include "stack.h"
 
 using namespace std;
@@ -42,8 +45,6 @@ bool correctness(const string& s) {
 
 class ArithmeticExpression {
 	string expression, postfix_form = "";
-	set<char> operands;
-	map<char, double> value;
 public:
 	ArithmeticExpression(const string& exp) : expression(exp) {
 		string compressed = "";
@@ -64,7 +65,6 @@ public:
 			}
 			if (compressed[i] >= 'a' && compressed[i] <= 'z') {
 				postfix_form += compressed[i];
-				operands.insert(compressed[i]);
 			}
 			else {
 				if (compressed[i] == ')') {
@@ -102,12 +102,15 @@ public:
 		}
 	}
 
-	double compute() {
+	double compute(vector<pair<char, double>>& value) {
 		TStack<double> ans(postfix_form.size());
 		for (int i = 0; i < postfix_form.size(); i++) {
 			if (postfix_form[i] == '0') ans.push(0);
-			else if (postfix_form[i] >= 'a' && postfix_form[i] <= 'z')
-				ans.push(value[postfix_form[i]]);
+			else if (postfix_form[i] >= 'a' && postfix_form[i] <= 'z') {
+				for (pair<char, double> p : value) {
+					if (p.first == postfix_form[i]) ans.push(p.second);
+				}
+			}
 			else {
 				double op1, op2;
 				op1 = ans.top(); ans.pop();
@@ -137,18 +140,17 @@ public:
 		return ans.top();
 	}
 
-	void GetValues() {
+	/*void GetValues() {
 		double val;
 		for (char x : operands) {
 			cout << "Insert value of " << x << ":\n";
 			cin >> val;
 			value[x] = val;
 		}
-	}
+	}*/
 
-	void GetPostfixForm() const noexcept {
-		cout << "Original expression: " << expression << '\n';
-		cout << "Postfix form: " << postfix_form << '\n';
+	const string& GetPostfixForm() const noexcept {
+		return postfix_form;
 	}
 };
 
