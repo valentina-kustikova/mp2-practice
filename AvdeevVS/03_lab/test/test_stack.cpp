@@ -81,7 +81,7 @@ TEST(TStack, compare_stack_with_itself_return_true)
 TEST(TStack, vectors_with_different_size_are_not_equal)
 {
   TStack<int> st1(3), st2(4);
-  EXPECT_FALSE(st1 == st2);
+  EXPECT_NE(st1, st2);
 }
 
 TEST(TStack, checking_stack_for_emptiness_return_true)

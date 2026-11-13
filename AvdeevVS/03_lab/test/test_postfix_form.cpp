@@ -8,9 +8,39 @@ TEST(ArExpression, can_create_expression_with_positive_string)
   ASSERT_NO_THROW(ArExpression ae(s));
 }
 
-TEST(ArExpression, throws_when_create_expression_with_negative_string)
+TEST(ArExpression, throws_when_create_expression_with_negative_front_or_back)
 {
   string s = "+A+";
+  ASSERT_ANY_THROW(ArExpression ae(s));
+}
+
+TEST(ArExpression, throws_when_create_expression_with_extra_bracket)
+{
+  string s = "(A+B))";
+  ASSERT_ANY_THROW(ArExpression ae(s));
+}
+
+TEST(ArExpression, throws_when_create_expression_with_operation_before_bracket)
+{
+  string s = "(A+B/)";
+  ASSERT_ANY_THROW(ArExpression ae(s));
+}
+
+TEST(ArExpression, throws_when_create_expression_with_several_operations_in_a_row)
+{
+  string s = "A+-B";
+  ASSERT_ANY_THROW(ArExpression ae(s));
+}
+
+TEST(ArExpression, throws_when_create_expression_with_unknown_charecters)
+{
+  string s = "A~B";
+  ASSERT_ANY_THROW(ArExpression ae(s));
+}
+
+TEST(ArExpression, throws_when_create_expression_with_two_letters_in_a_row)
+{
+  string s = "AC+B";
   ASSERT_ANY_THROW(ArExpression ae(s));
 }
 

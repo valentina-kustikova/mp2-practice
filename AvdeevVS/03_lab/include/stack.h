@@ -66,6 +66,9 @@ public:
     }
     return true;
   }
+  bool operator!=(const TStack& st) const noexcept {
+    return (!(*this == st));
+  }
   TStack<T>& operator= (const TStack<T>& st) {
     if (this == &st) return *this;
     if (this->size != st.size) {
