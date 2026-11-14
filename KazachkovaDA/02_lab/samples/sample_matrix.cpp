@@ -35,8 +35,8 @@ void main()
   TDynamicMatrix<int> d = b - a;
   cout << "Matrix d = b - a" << endl << d << endl;
 
-  TDynamicMatrix<int> f = a * 2;
-  cout << "Matrix f = a * 2" << endl << f << endl;
+  TDynamicMatrix<int> f = a * 5;
+  cout << "Matrix f = a * 5" << endl << f << endl;
 
   TDynamicVector<int> g = a * v;
   cout << "Vector a * v (где v = [1, 2, 3, 4, 5]) = " << g << endl;

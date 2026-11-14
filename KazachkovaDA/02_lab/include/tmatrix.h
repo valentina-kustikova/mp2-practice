@@ -9,6 +9,7 @@
 
 #include <iostream>
 #include <cassert>
+#include <iomanip>
 
 using namespace std;
 
@@ -157,10 +158,7 @@ public:
   {
       if (sz != v.sz)
           throw out_of_range("Invalid arguments");
-      TDynamicVector<T> res(sz);
-      for (int i = 0; i < sz; i++)
-          res.pMem[i] = pMem[i] - v.pMem[i];
-      return res;
+      return (*this + v * (-1));
   }
   T operator*(const TDynamicVector& v) //noexcept(noexcept(T()))
   {
@@ -312,9 +310,9 @@ public:
       for (int i = 0; i < v.sz; i++)
       {
           for (int j = 0; j < i; j++)
-              ostr << '0' << '\t';
-          for (int j = 0; j < v.sz - i; i++)
-              ostr << v.pMem[i][j] << '\t';
+              ostr << setw(3) <<'0';
+          for (int j = 0; j < v.sz - i; j++)
+              ostr << setw(3) << v.pMem[i][j];
           ostr << endl;
       }
       return ostr;
