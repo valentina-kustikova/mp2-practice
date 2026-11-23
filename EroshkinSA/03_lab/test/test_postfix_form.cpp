@@ -61,21 +61,6 @@ TEST(ArithmeticExpression, cant_end_with_any_operation) {
 	EXPECT_ANY_THROW(ArithmeticExpression("-a+(b+c)+"));
 }
 
-TEST(isOperation, isOperation_is_true_on_operation) {
-	EXPECT_TRUE(isOperation('-'));
-}
-
-TEST(isOperation, isOperation_is_false_on_operand) {
-	EXPECT_FALSE(isOperation('a'));
-}
-
-TEST(isOperand, isOperand_is_false_on_operation) {
-	EXPECT_FALSE(isOperand('-'));
-}
-
-TEST(isOperand, isOperand_is_true_on_operand) {
-	EXPECT_TRUE(isOperand('a'));
-}
 
 TEST(ArithmeticExpression, can_get_postfix_form) {
 	ArithmeticExpression ae("a + b");

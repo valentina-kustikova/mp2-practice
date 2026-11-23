@@ -9,7 +9,7 @@ using namespace std;
 const int MAX_STACK_SIZE = 100000000;
 
 template<typename T>
-class TStack {
+class TStack {  // ==
 protected:
 	size_t sz;
 	int top_idx;
@@ -82,6 +82,18 @@ public:
 	void push(T x) {
 		if (isFull()) throw invalid_argument("Stack is full!");
 		pMem[++top_idx] = x;
+	}
+
+	bool operator==(const TStack& s) const {
+		if (sz != s.sz) return false;
+		for (int i = 0; i < sz; i++) {
+			if (pMem[i] != s.pMem[i]) return false;
+		}
+		return false;
+	}
+
+	bool operator!=(const TStack& s) const {
+		return (!(*this == s));
 	}
 };
 

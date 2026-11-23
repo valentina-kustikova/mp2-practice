@@ -9,42 +9,44 @@
 
 using namespace std;
 
-bool isOperation(char x) {
-	return (x == '+' || x == '-' || x == '/' || x == '*');
-}
-
-bool isOperand(char x) {
-	return (x >= 'a' && x <= 'z');
-}
-
-bool correctness(const string& s) {
-	TStack<char> braces(s.size());
-	for (int i = 0; i < s.size(); i++) {
-		if (s[i] == '(') braces.push(s[i]);
-		if (s[i] == ')') {
-			if (!braces.isEmpty()) braces.pop();
-			else return false;
-		}
-	}
-	if (!braces.isEmpty()) return false;
-	if (isOperation(s[0]) && s[0] != '-') return false;
-	if (isOperation(s[s.size() - 1])) return false;
-	for (int i = 0; i < s.size() - 1; i++){
-		if (s[i] == ')' && s[i + 1] == '(') return false;
-		if (isOperand(s[i]) && s[i + 1] == '(') return false;
-		if (s[i] == ')' && isOperand(s[i + 1])) return false;
-		if (isOperation(s[i]) && isOperation(s[i + 1])) return false;
-		if (s[i] == '(' &&
-			(isOperation(s[i + 1]) && s[i + 1] != '-' || s[i + 1] == ')'))
-			return false;
-		if (isOperand(s[i]) && isOperand(s[i + 1])) return false;
-		if (isOperation(s[i]) && s[i + 1] == ')') return false;
-	}
-	return true;
-}
 
 class ArithmeticExpression {
 	string expression, postfix_form = "";
+	//set<char> operands;
+	//map<char, double> value;
+	bool isOperation(char x) const {
+		return (x == '+' || x == '-' || x == '/' || x == '*');
+	}
+
+	bool isOperand(char x) const {
+		return (x >= 'a' && x <= 'z');
+	}
+
+	bool correctness(const string& s) const {
+		TStack<char> braces(s.size());
+		for (int i = 0; i < s.size(); i++) {
+			if (s[i] == '(') braces.push(s[i]);
+			if (s[i] == ')') {
+				if (!braces.isEmpty()) braces.pop();
+				else return false;
+			}
+		}
+		if (!braces.isEmpty()) return false;
+		if (isOperation(s[0]) && s[0] != '-') return false;
+		if (isOperation(s[s.size() - 1])) return false;
+		for (int i = 0; i < s.size() - 1; i++) {
+			if (s[i] == ')' && s[i + 1] == '(') return false;
+			if (isOperand(s[i]) && s[i + 1] == '(') return false;
+			if (s[i] == ')' && isOperand(s[i + 1])) return false;
+			if (isOperation(s[i]) && isOperation(s[i + 1])) return false;
+			if (s[i] == '(' &&
+				(isOperation(s[i + 1]) && s[i + 1] != '-' || s[i + 1] == ')'))
+				return false;
+			if (isOperand(s[i]) && isOperand(s[i + 1])) return false;
+			if (isOperation(s[i]) && s[i + 1] == ')') return false;
+		}
+		return true;
+	}
 public:
 	ArithmeticExpression(const string& exp) : expression(exp) {
 		string compressed = "";
@@ -102,7 +104,7 @@ public:
 		}
 	}
 
-	double compute(vector<pair<char, double>>& value) {
+	double compute(const vector<pair<char, double>>& value) {
 		TStack<double> ans(postfix_form.size());
 		for (int i = 0; i < postfix_form.size(); i++) {
 			if (postfix_form[i] == '0') ans.push(0);
@@ -119,7 +121,7 @@ public:
 					continue;
 				}
 				op2 = ans.top(); ans.pop();
-				switch (postfix_form[i]) {
+				switch (postfix_form[i]) { // block execute
 				case '+':
 					ans.push(op2 + op1);
 					break;

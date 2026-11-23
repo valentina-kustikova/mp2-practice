@@ -16,7 +16,7 @@ int main()
         //one.GetValues();
         vector<pair<char, double>> values;
         for (int i = 0; i < s.size(); i++) {
-            if (s[i] >= 'a' && s[i] <= 'z') {
+            if (s[i] >= 'a' && s[i] <= 'z') {            // get unique operands  in main   get value
                 bool f = 0;
                 for (int j = 0; j < values.size(); j++) {
                     if (values[j].first == s[i]) {
