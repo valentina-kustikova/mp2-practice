@@ -113,8 +113,8 @@ int TBitField::operator==(const TBitField &bf) const // сравнение
   if (BitLen != bf.BitLen)
     return 0;
 
-  for (int i = 0; i < BitLen; i++)
-    if (GetBit(i) != bf.GetBit(i))
+  for (int i = 0; i < MemLen; i++)
+    if (pMem[i] != bf.pMem[i])
       return 0;
 
   return 1;
@@ -130,12 +130,10 @@ TBitField TBitField::operator|(const TBitField &bf) // операция "или"
   int len = (BitLen > bf.BitLen) ? BitLen : bf.BitLen;
   TBitField res(len);
 
-  for (int i = 0; i < BitLen; i++)
-    if (GetBit(i))
-      res.SetBit(i);
-  for (int i = 0; i < bf.BitLen; i++)
-    if (bf.GetBit(i))
-      res.SetBit(i);
+  for (int i = 0; i < MemLen; i++)
+    res.pMem[i] = pMem[i];
+  for (int i = 0; i < bf.MemLen; i++)
+    res.pMem[i] |= bf.pMem[i];
 
   return res;
 }
@@ -145,10 +143,9 @@ TBitField TBitField::operator&(const TBitField &bf) // операция "и"
   int len = (BitLen > bf.BitLen) ? BitLen : bf.BitLen;
   TBitField res(len);
 
-  int minLen = (BitLen < bf.BitLen) ? BitLen : bf.BitLen;
-  for (int i = 0; i < minLen; i++)
-    if (GetBit(i) && bf.GetBit(i))
-      res.SetBit(i);
+  int minMemLen = (MemLen < bf.MemLen) ? MemLen : bf.MemLen;
+  for (int i = 0; i < minMemLen; i++)
+    res.pMem[i] = pMem[i] & bf.pMem[i];
 
   return res;
 }
@@ -157,9 +154,14 @@ TBitField TBitField::operator~(void) // отрицание
 {
   TBitField res(BitLen);
 
-  for (int i = 0; i < BitLen; i++)
-    if (!GetBit(i))
-      res.SetBit(i);
+  for (int i = 0; i < MemLen; i++)
+    res.pMem[i] = ~pMem[i];
+
+  // в последнем элементе обнуляем лишние биты за пределами BitLen
+  const int bitsInElem = sizeof(TELEM) * 8;
+  int tail = BitLen % bitsInElem;
+  if (tail != 0)
+    res.pMem[MemLen - 1] &= ((TELEM)1 << tail) - 1;
 
   return res;
 }
