@@ -245,7 +245,7 @@ TEST(TDynamicVector, can_multiply_scalar_by_vector) {
     EXPECT_EQ(v * 5, exp);
 }
 
-TEST(TDynamicVector, can_add_vectors_with_equal_size) { //todo
+TEST(TDynamicVector, can_add_vectors_with_equal_size) {
     TDynamicVector<int> v1(4);
     TDynamicVector<int> v2(4);
     TDynamicVector<int> exp(4);
@@ -265,7 +265,7 @@ TEST(TDynamicVector, cant_add_vectors_with_not_equal_size) {
     ASSERT_THROW(v1 + v2, invalid_argument);
 }
 
-TEST(TDynamicVector, can_subtract_vectors_with_equal_size) {  //todo
+TEST(TDynamicVector, can_subtract_vectors_with_equal_size) {
     TDynamicVector<int> v1(4);
     TDynamicVector<int> v2(4);
     TDynamicVector<int> exp(4);
