@@ -1,11 +1,11 @@
 #include "postfix_form.h"
 
-bool isoperation(char c) {
+bool ArExpression::isoperation(char c) const{
   string operation = "+-*/";
   return operation.find(c) != string::npos;
 }
 
-bool Mathematically_Correct(const string& s)  {
+bool ArExpression::Mathematically_Correct(const string& s)  const{
   if (s.empty()) return false;
   if (s.size() == 1 && !isalpha(s[0])) return false;
   TStack<char> bracket(s.size());
@@ -93,7 +93,7 @@ string ArExpression::GetPostfix() const {
   return pf;
 }
 
-void Vector_Filling(vector<pair<char, double>>& vp) {
+void ArExpression::Vector_Filling(vector<pair<char, double>>& vp) const{
   char c;
   double d;
   pair<char, double> p;

@@ -51,11 +51,32 @@ TEST(ArExpression, can_get_postfix_form)
   ASSERT_NO_THROW(ae.GetPostfix());
 }
 
-TEST(ArExpression, postfix_form_is_correct)
+TEST(ArExpression, postfix_form1_is_correct)
 {
   string s = "A+B-C";
   ArExpression ae(s);
   ASSERT_EQ(ae.GetPostfix(),"AB+C-" );
+}
+
+TEST(ArExpression, postfix_form2_is_correct)
+{
+	string s = "-A";
+	ArExpression ae(s);
+	ASSERT_EQ(ae.GetPostfix(), "0A-");
+}
+
+TEST(ArExpression, postfix_form3_is_correct)
+{
+	string s = "(A+B)*C/A";
+	ArExpression ae(s);
+	ASSERT_EQ(ae.GetPostfix(), "AB+C*A/");
+}
+
+TEST(ArExpression, postfix_form4_is_correct)
+{
+	string s = "A-B*(A-C)/(F-K)*S";
+	ArExpression ae(s);
+	ASSERT_EQ(ae.GetPostfix(), "ABAC-*FK-/S*-");
 }
 
 TEST(ArExpression, can_get_the_value_of_expression)

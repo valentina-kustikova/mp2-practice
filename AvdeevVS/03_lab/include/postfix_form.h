@@ -10,15 +10,13 @@
 
 using namespace std;
 
-bool isoperation(char);
-
-void Vector_Filling(vector<pair<char, double>>&);
-
-bool Mathematically_Correct(const string&);
-
 class ArExpression {
 
   string expr;
+
+  bool isoperation(char) const;
+  void Vector_Filling(vector<pair<char, double>>&) const;
+  bool Mathematically_Correct(const string&) const;
 
 public:
   explicit ArExpression(const string&);
