@@ -132,7 +132,7 @@ public:
           res.pMem[i] = pMem[i] + val;
       return res;
   }
-  TDynamicVector operator-(T val) // todo v+(-val)
+  TDynamicVector operator-(T val)
   {
       return (*this + (-val));
   }
@@ -154,11 +154,12 @@ public:
           res.pMem[i] = pMem[i] + v.pMem[i];
       return res;
   }
-  TDynamicVector operator-(const TDynamicVector& v) //todo v1+v2*(-1)
+  TDynamicVector operator-(const TDynamicVector& v)
   {
       if (sz != v.sz)
           throw out_of_range("Invalid arguments");
-      return (*this + v * (-1));
+      TDynamicVector vc(v);
+      return (*this + vc * (-1));
   }
   T operator*(const TDynamicVector& v) //noexcept(noexcept(T()))
   {
