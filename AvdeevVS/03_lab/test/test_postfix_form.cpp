@@ -14,9 +14,21 @@ TEST(ArExpression, throws_when_create_expression_with_negative_front_or_back)
   ASSERT_ANY_THROW(ArExpression ae(s));
 }
 
-TEST(ArExpression, throws_when_create_expression_with_extra_bracket)
+TEST(ArExpression, throws_when_create_expression_with_unfinished_parentheses_sequence)
 {
   string s = "(A+B))";
+  ASSERT_ANY_THROW(ArExpression ae(s));
+}
+
+TEST(ArExpression, throws_when_create_expression_with_incorrect_parentheses_sequence)
+{
+  string s = "(a+(b)";
+  ASSERT_ANY_THROW(ArExpression ae(s));
+}
+
+TEST(ArExpression, throws_when_create_expression_with_missing_operator_between_brackets)
+{
+  string s = "(a+b)(c+d)";
   ASSERT_ANY_THROW(ArExpression ae(s));
 }
 
@@ -79,55 +91,25 @@ TEST(ArExpression, postfix_form4_is_correct)
 	ASSERT_EQ(ae.GetPostfix(), "ABAC-*FK-/S*-");
 }
 
-TEST(ArExpression, can_get_the_value_of_expression)
+TEST(ArExpression, postfix_form5_is_correct)
 {
-  string s = "A+B-C";
+  string s = "-A+B/(C-E)*R+I*(-E-R)";
   ArExpression ae(s);
-  vector<pair<char, double>> fill = { {'A', 10.0}, {'B', 5.0}, {'C', 2.0} };
-  ASSERT_NO_THROW(ae.Compute(fill));
+  ASSERT_EQ(ae.GetPostfix(), "0A-BCE-/R*+I0E-R-*+");
 }
 
-TEST(ArExpression, the_value_of_expression_is_correct)
+TEST(ArExpression, postfix_form6_is_correct)
 {
-  string s = "A+B-C";
+  string s = "(A*B+C)-(A/(F-G))-((A+B)*C)";
   ArExpression ae(s);
-  vector<pair<char, double>> fill = { {'A', 10.0}, {'B', 5.0}, {'C', 2.0} };
-  ASSERT_EQ(ae.Compute(fill),13.0);
-}
-//тесты на внешние функции 
-TEST(Mathematically_Correct, can_check_expression_for_correctness)
-{
-  string s = "A+B-C";
-  ASSERT_NO_THROW(Mathematically_Correct(s));
+  ASSERT_EQ(ae.GetPostfix(), "AB*C+AFG-/-AB+C*-");
 }
 
-TEST(Mathematically_Correct, correct_expression_return_true)
+TEST(ArExpression, postfix_form7_is_correct)
 {
-  string s = "A+B-C";
-  ASSERT_TRUE(Mathematically_Correct(s));
+  string s = "A+B/(-C*D)";
+  ArExpression ae(s);
+  ASSERT_EQ(ae.GetPostfix(), "AB0CD*-/+");
 }
 
-TEST(Mathematically_Correct, uncorrect_expression_return_false)
-{
-  string s = "(A+B-C))";
-  ASSERT_FALSE(Mathematically_Correct(s));
-}
-
-TEST(isoperation, can_check_character_for_operations)
-{
-  char c = '+';
-  ASSERT_NO_THROW(isoperation(c));
-}
-
-TEST(isoperation, checking_positive_character_return_true)
-{
-  char c = '+';
-  ASSERT_TRUE(isoperation(c));
-}
-
-TEST(isoperation, checking_negative_character_return_false)
-{
-  char c = '~';
-  ASSERT_FALSE(isoperation(c));
-}
 

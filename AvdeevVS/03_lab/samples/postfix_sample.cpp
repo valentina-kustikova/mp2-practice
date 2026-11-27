@@ -41,15 +41,13 @@ int main()
       cin >> flag2;
       cin.ignore(numeric_limits<streamsize>::max(), '\n');
       while (flag2) {
-        cout << endl << " Введи значения для вычисления: (закончил вводить --> ctrl+z) " << endl;
-        vector <pair<char, double>> fill;
-        Vector_Filling(fill);
+        cout << endl << " Введи значения для вычисления: " << endl << endl;
         if (cin.fail()) {
           cin.clear();
         }
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        double value = ae.Compute();
         cout << endl << " Значение функции в данной точке --> " << fixed << setprecision(2) <<
-          ae.Compute(fill)<<endl<<endl;
+          value<<endl<<endl;
         cout << " Продолжаем с этой функцией для других значений? (1 - да, 0 - нет) --> ";
         cin >> flag2;
         cin.ignore(numeric_limits<streamsize>::max(), '\n');

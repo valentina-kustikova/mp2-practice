@@ -7,6 +7,7 @@
 #include <string>
 #include <cctype>
 #include <iomanip>
+#include <set>
 
 using namespace std;
 
@@ -17,11 +18,12 @@ class ArExpression {
   bool isoperation(char) const;
   void Vector_Filling(vector<pair<char, double>>&) const;
   bool Mathematically_Correct(const string&) const;
+  void Unique_Variables(set<char>&) const;
 
 public:
   explicit ArExpression(const string&);
   string GetPostfix() const;
-  double Compute(const vector<pair<char, double>>&) const;
+  double Compute() const;
   friend istream& operator>>(istream& in, ArExpression& ae) {
     string s;
     if (getline(in, s)) {

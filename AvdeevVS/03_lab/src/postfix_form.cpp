@@ -5,6 +5,12 @@ bool ArExpression::isoperation(char c) const{
   return operation.find(c) != string::npos;
 }
 
+void ArExpression::Unique_Variables(set<char>& vars) const {
+  for (int i = 0; i < expr.size(); i++) {
+    if (isalpha(expr[i])) vars.insert(expr[i]);
+  }
+}
+
 bool ArExpression::Mathematically_Correct(const string& s)  const{
   if (s.empty()) return false;
   if (s.size() == 1 && !isalpha(s[0])) return false;
@@ -28,7 +34,7 @@ bool ArExpression::Mathematically_Correct(const string& s)  const{
     if (s[i] == '(' && s[i + 1] == ')') return false;
     if (isoperation(s[i]) && s[i + 1] == ')') return false;
     if (s[i] == '(' && isoperation(s[i + 1]) && s[i+1]!='-') return false;
-    if (isalpha(s[i]) && s[i+1] == '(') return false;
+    if ((isalpha(s[i])||s[i]==')') && s[i + 1] == '(') return false;
     if (s[i] == ')' && isalpha(s[i + 1])) return false;
    }
   //------------------------------------
@@ -93,23 +99,28 @@ string ArExpression::GetPostfix() const {
   return pf;
 }
 
-void ArExpression::Vector_Filling(vector<pair<char, double>>& vp) const{
-  char c;
-  double d;
-  pair<char, double> p;
-  while (cin >> c >> d) {
-    p = { toupper(c), d };
-    vp.push_back(p);
+void ArExpression::Vector_Filling(vector<pair<char, double>>& vp) const {
+  vp.clear();
+  set<char> vars;
+  Unique_Variables(vars);
+  for (char c : vars) {
+    vp.push_back({ c , 0.0 });
+  }
+  double value;
+  for (int i = 0; i < vp.size(); i++) {
+    cout << " ¬веди переменную " << vp[i].first << " --> " << flush;;
+    while (!(cin >> value)) {
+      cin.clear();
+      cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    }
+    vp[i].second = value;
   }
 }
 
-double ArExpression::Compute(const vector<pair<char, double>>& v) const {
+double ArExpression::Compute() const {
+  vector<pair<char, double>> v;
+  Vector_Filling(v);
   if (v.size() == 0) throw invalid_argument("Vector of meanings is empty");
-  for (int i = 0; i < v.size(); i++) {
-    for (int j = 0; j < v.size(); j++) {
-      if (v[i].first == v[j].first && i != j) throw invalid_argument("Ambiguous meanings for expression");
-    }
-  }
   TStack<double> st(expr.size());
   string pfex = GetPostfix();
   for (int i = 0; i < pfex.size(); i++) {
