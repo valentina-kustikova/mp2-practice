@@ -28,7 +28,7 @@ TEST(TDynamicMatrix, copied_matrix_is_equal_to_source_one)
 {
 	TDynamicMatrix<int> m1(5);
 	for (int i = 0; i < 5; i++) {
-		for (int j = i; j < 5; j++) {
+		for (int j = 0; j < 5 - i; j++) {
 			m1[i][j] = i * 5 + j + 1;
 		}
 	}
@@ -39,11 +39,7 @@ TEST(TDynamicMatrix, copied_matrix_is_equal_to_source_one)
 TEST(TDynamicMatrix, copied_matrix_has_its_own_memory)
 {
 	TDynamicMatrix<int> m1(5);
-	for (int i = 0; i < 5; i++) {
-		for (int j = i; j < 5; j++) {
-			m1[i][j] = i * 5 + j + 1;
-		}
-	}
+	m1[0][2] = 3;
 	TDynamicMatrix<int> m2(m1);
 	m2[0][2] = 10;
 	EXPECT_EQ(m1[0][2], 3);
@@ -78,7 +74,7 @@ TEST(TDynamicMatrix, can_assign_matrix_to_itself)
 {
 	TDynamicMatrix<int> m(5);
 	for (int i = 0; i < 5; i++) {
-		for (int j = i; j < 5; j++) {
+		for (int j = 0; j < 5 - i; j++) {
 			m[i][j] = i * 5 + j + 1;
 		}
 	}
@@ -90,7 +86,7 @@ TEST(TDynamicMatrix, can_assign_matrices_of_equal_size)
 	TDynamicMatrix<int> m1(5);
 	TDynamicMatrix<int> m2(5);
 	for (int i = 0; i < 5; i++) {
-		for (int j = i; j < 5; j++) {
+		for (int j = 0; j < 5 - i; j++) {
 			m1[i][j] = i * 5 + j + 1;
 		}
 	}
@@ -118,7 +114,7 @@ TEST(TDynamicMatrix, compare_equal_matrices_return_true)
 	TDynamicMatrix<int> m1(5);
 	TDynamicMatrix<int> m2(5);
 	for (int i = 0; i < 5; i++) {
-		for (int j = i; j < 5; j++) {
+		for (int j = 0; j < 5 - i; j++) {
 			m1[i][j] = i * 5 + j + 1;
 			m2[i][j] = i * 5 + j + 1;
 		}
@@ -145,7 +141,7 @@ TEST(TDynamicMatrix, can_add_matrices_with_equal_size)
 	TDynamicMatrix<int> m2(5);
 	TDynamicMatrix<int> result(5);
 	for (int i = 0; i < 5; i++) {
-		for (int j = i; j < 5; j++) {
+		for (int j = 0; j < 5 - i; j++) {
 			m1[i][j] = i * 5 + j + 1;
 			m2[i][j] = i * 5 + j + 2;
 			result[i][j] = 2 * (i * 5 + j) + 3;
@@ -166,7 +162,7 @@ TEST(TDynamicMatrix, can_subtract_matrices_with_equal_size)
 	TDynamicMatrix<int> m2(5);
 	TDynamicMatrix<int> result(5);
 	for (int i = 0; i < 5; i++) {
-		for (int j = i; j < 5; j++) {
+		for (int j = 0; j < 5 - i; j++) {
 			m1[i][j] = i * 5 + j + 3;
 			m2[i][j] = i * 5 + j + 2;
 			result[i][j] = 1;

@@ -198,7 +198,7 @@ public:
       if (sz > MAX_MATRIX_SIZE)
           throw out_of_range("Matrix size exceeds MAX_MATRIX_SIZE");
     for (size_t i = 0; i < sz; i++)
-      pMem[i] = TDynamicVector<T>(sz);
+      pMem[i] = TDynamicVector<T>(sz - i);
   }
 
   using TDynamicVector<TDynamicVector<T>>::operator[];
@@ -210,9 +210,7 @@ public:
   {
       if (sz != m.sz) return false;
       for (int i = 0; i < sz; i++) {
-          for (int j = i; j < sz; j++) {
-              if (pMem[i][j] != m.pMem[i][j]) return false;
-          }
+          if (pMem[i] != m.pMem[i]) return false;
       }
       return true;
   }
@@ -222,9 +220,7 @@ public:
   {
       TDynamicMatrix temp(sz);
       for (int i = 0; i < sz; i++) {
-          for (int j = i; j < sz; j++) {
-              temp.pMem[i][j] = pMem[i][j] * val;
-          }
+          temp.pMem[i] = pMem[i] * val;
       }
       return temp;
   }
@@ -235,11 +231,9 @@ public:
       if (sz != v.size()) throw std::exception();
       TDynamicVector<T> temp(sz);
       for (int i = 0; i < sz; i++) {
-          T res{};
-          for (int j = i; j < sz; j++) {
-              res += (pMem[i][j] * v[j]);
+          for (int j = 0; j < sz - i; j++) {
+              temp[i] += (pMem[i][j] * v[j + i]);
           }
-          temp[i] = res;
       }
       return temp;
   }
@@ -247,37 +241,31 @@ public:
   // матрично-матричные операции
   TDynamicMatrix operator+(const TDynamicMatrix& m)
   {
-      if ((*this).sz != m.sz) throw std::exception();
+      if (sz != m.sz) throw std::exception();
       TDynamicMatrix temp(sz);
       for (int i = 0; i < sz; i++) {
-          for (int j = i; j < sz; j++) {
-              temp.pMem[i][j] = (*this).pMem[i][j] + m.pMem[i][j];
-          }
+          temp.pMem[i] = pMem[i] + m.pMem[i];
       }
       return temp;
   }
   TDynamicMatrix operator-(const TDynamicMatrix& m)
   {
-      if ((*this).sz != m.sz) throw std::exception();
+      if (sz != m.sz) throw std::exception();
       TDynamicMatrix temp(sz);
       for (int i = 0; i < sz; i++) {
-          for (int j = i; j < sz; j++) {
-              temp.pMem[i][j] = (*this).pMem[i][j] - m.pMem[i][j];
-          }
+          temp.pMem[i] = pMem[i] - m.pMem[i];
       }
       return temp;
   }
   TDynamicMatrix operator*(const TDynamicMatrix& m)
   {
-      if ((*this).sz != m.sz) throw std::exception();
+      if (sz != m.sz) throw std::exception();
       TDynamicMatrix temp(sz);
       for (int i = 0; i < sz; i++) {
-          for (int j = i; j < sz; j++) {
-              T res{};
-              for (int k = i; k <= j; k++) {
-                res += ((*this).pMem[i][k] * m.pMem[k][j]);
+          for (int j = 0; j < sz - i; j++) {
+              for (int k = 0; k <= j; k++) {
+                temp[i][j] += (pMem[i][k] * m.pMem[i + k][j - k]);
               }
-              temp.pMem[i][j] = res;
           }
       }
       return temp;
@@ -286,25 +274,19 @@ public:
   // ввод/вывод
   friend istream& operator>>(istream& istr, TDynamicMatrix& v)
   {
-      for (int i = 0; i < v.sz; i++)
-      {
-          for (int j = 0; j < v.sz; j++)
-          {
-              T value{};
-              istr >> value;
-              if (j >= i) v.pMem[i][j] = value;
-          }
+      for (int i = 0; i < v.sz; i++) {
+          istr >> v[i];
       }
       return istr;
   }
   friend ostream& operator<<(ostream& ostr, const TDynamicMatrix& v)
   {
-      for (size_t i = 0; i < v.sz; i++)
+      for (int i = 0; i < v.sz; i++)
       {
-          for (size_t j = 0; j < v.sz; j++) {
-              ostr << v.pMem[i][j] << ' ';
+          for (int j = 0; j < i; j++) {
+              ostr << '0' << ' ';
           }
-          ostr << '\n';
+          ostr << v[i] << '\n';
       }
       return ostr;
   }
