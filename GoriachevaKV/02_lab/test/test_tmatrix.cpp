@@ -177,3 +177,60 @@ TEST(TDynamicMatrix, cant_subtract_matrixes_with_not_equal_size)
 	ASSERT_ANY_THROW(m1 - m2);
 }
 
+TEST(TDynamicMatrix, can_multiply_matrix_by_scalar)
+{
+	TDynamicMatrix<int> m(3);
+	TDynamicMatrix<int> result(3);
+
+	m[0][0] = 1; m[0][1] = 2; m[0][2] = 3;
+	m[1][0] = 4; m[1][1] = 5; m[2][0] = 6;
+
+	result[0][0] = 2; result[0][1] = 4; result[0][2] = 6;
+	result[1][0] = 8; result[1][1] = 10; result[2][0] = 12;
+
+	EXPECT_EQ(m * 2, result);
+}
+
+TEST(TDynamicMatrix, can_multiply_matrix_by_vector)
+{
+	TDynamicMatrix<int> m(3);
+	TDynamicVector<int> v(3);
+	TDynamicVector<int> result(3);
+
+	v[0] = 1; v[1] = 2; v[2] = 3;
+
+	m[0][0] = 1; m[0][1] = 2; m[0][2] = 3;
+	m[1][0] = 4; m[1][1] = 5; m[2][0] = 6;
+
+	result[0] = 14; result[1] = 23; result[2] = 18;
+
+	EXPECT_EQ(m * v, result);
+}
+
+TEST(TDynamicMatrix, cant_multiply_matrix_and_vector_with_not_equal_size)
+{
+	TDynamicMatrix<int> m(3);
+	TDynamicVector<int> v(2);
+	ASSERT_ANY_THROW(m * v);
+}
+
+TEST(TDynamicMatrix, can_multiply_matrices_with_equal_size)
+{
+	TDynamicMatrix<int> m1(3), m2(3), result(3);
+	m1[0][0] = 1; m1[0][1] = 2; m1[0][2] = 3;
+	m1[1][0] = 4; m1[1][1] = 5; m1[2][0] = 6;
+
+	m2[0][0] = 12; m2[0][1] = 11; m2[0][2] = 10;
+	m2[1][0] = 9; m2[1][1] = 8; m2[2][0] = 7;
+
+	result[0][0] = 12; result[0][1] = 29; result[0][2] = 47;
+	result[1][0] = 36; result[1][1] = 67; result[2][0] = 42;
+
+	EXPECT_EQ(m1 * m2, result);
+}
+
+TEST(TDynamicMatrix, cant_multiply_matrices_with_not_equal_size)
+{
+	TDynamicMatrix<int> m1(3), m2(2);
+	ASSERT_ANY_THROW(m1 * m2);
+}
